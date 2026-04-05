@@ -8,7 +8,35 @@ const subscribeRoutes = require('./subscribe');
 
 dotenv.config();
 
+/** One-line suffix for analytics counter (no PII). */
+function counterLogSuffix(body) {
+  if (!body || typeof body !== 'object') return '';
+  const parts = [];
+  if (typeof body.url === 'string' && body.url) {
+    const u = body.url.length > 72 ? `${body.url.slice(0, 69)}…` : body.url;
+    parts.push(`page=${u}`);
+  }
+  if (typeof body.name === 'string' && body.name) {
+    parts.push(`event=${body.name}`);
+  }
+  return parts.length ? ` ${parts.join(' ')}` : '';
+}
+
 async function app (fastify, opts) {
+  fastify.addHook('onResponse', (request, reply, done) => {
+    const pathOnly = request.url.split('?')[0];
+    const ms =
+      reply.elapsedTime != null ? `${Math.round(reply.elapsedTime)}ms` : '';
+    let extra = '';
+    if (pathOnly.endsWith('/counter')) {
+      extra = counterLogSuffix(request.body);
+    }
+    request.log.info(
+      `${request.method} ${pathOnly} ${reply.statusCode} ${ms}${extra}`
+    );
+    done();
+  });
+
   // Register rate limiting (global default)
   await fastify.register(rateLimit, {
     max: 100,
@@ -70,7 +98,8 @@ async function app (fastify, opts) {
 
 module.exports = app;
 
-// Export options if needed
+// Passed to Fastify(). fastify-cli only merges this with `fastify start --options`.
+// Do not set `logger` here: CLI merges would lose pino-pretty; api/start.js sets logger: true.
 module.exports.options = {
-  logger: true
+  disableRequestLogging: true
 };

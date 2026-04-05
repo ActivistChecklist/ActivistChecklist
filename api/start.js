@@ -9,8 +9,8 @@ dotenv.config({
     : '.env'
 });
 
-// Instantiate Fastify with the options from server.js
-const server = Fastify(app.options || {});
+// Instantiate Fastify with the options from server.js (logger is not in server.js so CLI pretty-logs still work)
+const server = Fastify({ logger: true, ...(app.options || {}) });
 
 // Register your application as a normal plugin
 server.register(app);

@@ -48,7 +48,7 @@
     "snapshot-normalize": "node scripts/snapshot-normalize.mjs",
     "snapshot-compare": "node scripts/snapshot-compare.mjs",
     "compare": "node scripts/compare.mjs",
-    "api:dev": "source .env && fastify start --watch --ignore-watch '.git node_modules out .next content public scripts utils styles pages config compontents' --log-level info --pretty-logs --port ${API_PORT:-4321} api/server.js",
+    "api:dev": "source .env && fastify start --options --watch --ignore-watch '.git node_modules out .next content public scripts utils styles pages config compontents' --log-level info --pretty-logs --port ${API_PORT:-4321} api/server.js",
     "api:start": "yarn run pm2 start ecosystem.config.js",
     "api:stop": "yarn run pm2 stop ac-api",
     "api:restart": "yarn run pm2 restart ac-api",
