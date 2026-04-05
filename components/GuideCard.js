@@ -14,12 +14,10 @@ const GuideCard = ({
 }) => {
   const t = useTranslations();
   const translateText = createIntlTranslator(t);
-  const { href, icon, iconKey, title, description } = guideItem;
-  const { title: displayTitle, description: displayDescription } = getTranslatedNavItemFields(
-    guideItem.key ?? iconKey,
-    { title, description },
-    translateText
-  );
+  const { href, icon, iconKey, title, description, copyFromContent } = guideItem;
+  const { title: displayTitle, description: displayDescription } = copyFromContent
+    ? { title, description }
+    : getTranslatedNavItemFields(guideItem.key ?? iconKey, { title, description }, translateText);
   // Accept either a React component (icon) or a string key (iconKey) for server→client boundary
   const Icon = icon || getGuideIcon(iconKey);
 
