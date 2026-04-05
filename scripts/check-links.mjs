@@ -30,6 +30,9 @@ const OUT_DIR = path.resolve(__dirname, '..', 'out');
 // Prefixes to skip -- these are managed by other tools or are external
 const SKIP_PREFIXES = ['/_next/', '/pagefind/'];
 
+/** Any `scheme:` URL (http, mailto, javascript, vbscript, data, …); case-insensitive. */
+const URI_SCHEME = /^[a-z][a-z\d+.-]*:/i;
+
 // Patterns to extract href and src values from HTML
 const HREF_PATTERN = /href="([^"]*?)"/g;
 const SRC_PATTERN = /src="([^"]*?)"/g;
@@ -49,14 +52,12 @@ function getAllHtmlFiles(dir) {
 }
 
 function shouldSkip(localPath) {
-  // Skip external URLs
-  if (localPath.startsWith('http://') || localPath.startsWith('https://') || localPath.startsWith('//')) {
+  // Protocol-relative absolute URLs
+  if (localPath.startsWith('//')) {
     return true;
   }
-  // Skip non-path values
-  if (localPath.startsWith('mailto:') || localPath.startsWith('tel:') ||
-      localPath.startsWith('javascript:') || localPath.startsWith('data:') ||
-      localPath.startsWith('blob:')) {
+  // Skip any URI with a scheme (not only a fixed list; see js/incomplete-url-scheme-check)
+  if (URI_SCHEME.test(localPath)) {
     return true;
   }
   // Skip fragment-only links
