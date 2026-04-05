@@ -5,10 +5,10 @@
 
 **Practical digital security guides for activists and organizers.**
 
+[![Last commit to main](https://img.shields.io/github/last-commit/ActivistChecklist/ActivistChecklist/main?label=last%20commit)](https://github.com/ActivistChecklist/ActivistChecklist/commits/main)
 [![PR checks](https://github.com/ActivistChecklist/ActivistChecklist/actions/workflows/pr-checks.yml/badge.svg)](https://github.com/ActivistChecklist/ActivistChecklist/actions/workflows/pr-checks.yml)
 [![Deploy](https://github.com/ActivistChecklist/ActivistChecklist/actions/workflows/deploy-webhook.yml/badge.svg)](https://github.com/ActivistChecklist/ActivistChecklist/actions/workflows/deploy-webhook.yml)
 [![Crowdin](https://badges.crowdin.net/activistchecklist/localized.svg)](https://crowdin.com/project/activistchecklist)
-[![Node](https://img.shields.io/badge/node-%3E%3D22%20%3C23-339933?logo=node.js&logoColor=white)](https://github.com/ActivistChecklist/ActivistChecklist/blob/main/package.json)
 [![GPL-3.0](https://img.shields.io/badge/GPL--3.0-blue?logo=gnu&logoColor=white)](LICENSE-CODE)
 [![CC BY-SA 4.0](https://img.shields.io/badge/CC%20BY--SA%204.0-ef9421?logo=creativecommons&logoColor=white)](https://creativecommons.org/licenses/by-sa/4.0/)
 
@@ -30,9 +30,11 @@ Instructions: **[Contribute to Activist Checklist →](https://activistchecklist
 
 ## Internationalization & translation
 
-**[Crowdin](https://crowdin.com/) is coming soon**. Anyone will be able to contribute translations there. We’re starting with **Spanish**.
+[![Crowdin: Spanish translation status](https://img.shields.io/badge/dynamic/json?color=blue&label=Spanish&style=flat&query=%24.progress.0.data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-17633866-883364.json)](https://crowdin.com/project/activistchecklist)
 
-All translation work goes through Crowdin. Only edit English site copy under `content/en/`. Do not add or change translated pages in this repo.
+Translations are coordinated on **[Crowdin](https://crowdin.com/project/activistchecklist)**. Anyone can contribute. Create an account (you can use an anonymous email if you want) to review, edit, and approve translations. We’re starting with **Spanish**.
+
+Only edit English site copy under `content/en/` and `messages/en.json`. Do not add or change translated pages in this repo.
 
 ## Contact
 
