@@ -298,7 +298,9 @@
     "tipInvitation": "Have news you think should be included?",
     "tipLink": "Send us a tip",
     "tipSuffix": "and help keep our community informed.",
-    "noItems": "No news items found."
+    "noItems": "No news items found.",
+    "paywallBypassNotice": "This link bypasses the paywall.",
+    "seeOriginal": "See original"
   },
   "changelog": {
     "title": "Recent site updates",
