@@ -287,6 +287,10 @@
     "dialogTitle": "Send us a message",
     "successMessage": "Thanks for your feedback! We'll review it and use it to improve the guides. If you're finding the site valuable, please help spread the word!"
   },
+  "relatedGuides": {
+    "headingBlock": "Keep learning with these related guides",
+    "headingFooter": "If you found this helpful, also check out these guides"
+  },
   "checklists": {
     "title": "Checklists",
     "featured": "Featured Checklists",

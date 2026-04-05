@@ -23,6 +23,8 @@ function counterLogSuffix(body) {
 }
 
 async function app (fastify, opts) {
+  // Use the root logger here, not `request.log`: the child logger binds `reqId`,
+  // and pino-pretty prints bindings on a second line after every message.
   fastify.addHook('onResponse', (request, reply, done) => {
     const pathOnly = request.url.split('?')[0];
     const ms =
@@ -31,7 +33,7 @@ async function app (fastify, opts) {
     if (pathOnly.endsWith('/counter')) {
       extra = counterLogSuffix(request.body);
     }
-    request.log.info(
+    request.server.log.info(
       `${request.method} ${pathOnly} ${reply.statusCode} ${ms}${extra}`
     );
     done();

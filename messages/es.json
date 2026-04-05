@@ -287,6 +287,10 @@
     "dialogTitle": "Envíanos un mensaje",
     "successMessage": "¡Gracias por tu comentario! Lo revisaremos y lo usaremos para mejorar las guías. Si encuentras valioso el sitio, ¡ayúdanos a correr la voz!"
   },
+  "relatedGuides": {
+    "headingBlock": "Sigue aprendiendo con estas guías relacionadas",
+    "headingFooter": "Si te resultó útil, echa un vistazo también a estas guías"
+  },
   "checklists": {
     "title": "Listas",
     "featured": "Listas destacadas",
