@@ -6,13 +6,20 @@ import { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
 import { cn } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
 import { getGuideIcon } from '@/config/icons';
+import { createIntlTranslator, getTranslatedNavItemFields } from '@/lib/navigation-i18n';
 
 const GuideCard = ({
   guideItem,
   size = "medium"
 }) => {
   const t = useTranslations();
+  const translateText = createIntlTranslator(t);
   const { href, icon, iconKey, title, description } = guideItem;
+  const { title: displayTitle, description: displayDescription } = getTranslatedNavItemFields(
+    guideItem.key ?? iconKey,
+    { title, description },
+    translateText
+  );
   // Accept either a React component (icon) or a string key (iconKey) for server→client boundary
   const Icon = icon || getGuideIcon(iconKey);
 
@@ -24,10 +31,10 @@ const GuideCard = ({
             <Icon className="h-36 w-36 text-primary/9" strokeWidth={0.9} />
           </div>
           <CardHeader className="relative py-4 pb-2">
-            <CardTitle className="text-2xl">{title}</CardTitle>
+            <CardTitle className="text-2xl">{displayTitle}</CardTitle>
           </CardHeader>
           <CardContent className="relative pb-4 flex-1 pt-0">
-            <CardDescription className="text-lg">{description}</CardDescription>
+            <CardDescription className="text-lg">{displayDescription}</CardDescription>
           </CardContent>
           <CardFooter className="relative mt-auto pt-0">
             <span className="text-primary font-medium inline-flex items-center text-base">
@@ -47,11 +54,11 @@ const GuideCard = ({
             <div className="p-2 rounded-lg bg-primary/10 text-primary">
               <Icon className="h-5 w-5" />
             </div>
-            <CardTitle className="text-lg">{title}</CardTitle>
+            <CardTitle className="text-lg">{displayTitle}</CardTitle>
           </div>
         </CardHeader>
         <CardContent className="py-3 px-4 pt-0 flex-1">
-          <CardDescription className="text-sm">{description}</CardDescription>
+          <CardDescription className="text-sm">{displayDescription}</CardDescription>
         </CardContent>
         <CardFooter className="py-3 px-4 pt-0 mt-auto">
           <span className="text-primary font-medium inline-flex items-center text-sm">

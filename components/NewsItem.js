@@ -7,9 +7,32 @@ import Image from 'next/image';
 import { IoNewspaperOutline } from 'react-icons/io5';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { isPaywallBypassActiveForUrl } from '@/lib/paywall-bypass-url';
+import { useLocale, useTranslations } from 'next-intl';
+import { getIntlLocale } from '@/lib/i18n-config';
+
+function PaywallBypassNotice({ originalUrl }) {
+  const t = useTranslations();
+  return (
+    <div className="text-xs text-gray-500 italic">
+      {t('news.paywallBypassNotice')}{' '}
+      <a
+        href={originalUrl}
+        className="underline hover:no-underline hover:text-primary transition-colors duration-200"
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {t('news.seeOriginal')}
+      </a>
+      .
+    </div>
+  );
+}
 
 const NewsItem = ({ entry }) => {
   const isMobile = useIsMobile();
+  const locale = useLocale();
+  const dateLocale = getIntlLocale(locale);
 
   if (!entry) {
     return null;
@@ -30,7 +53,7 @@ const NewsItem = ({ entry }) => {
   const MetaRow = () => (
     <div className="text-sm text-gray-600 mb-2">
       <div className="flex flex-wrap items-center gap-1">
-        <span>{formatRelativeDate(dateString)}</span>
+        <span>{formatRelativeDate(dateString, dateLocale)}</span>
         {tags && tags.length > 0 && (
           <>
             <span>•</span>
@@ -131,21 +154,7 @@ const NewsItem = ({ entry }) => {
             </div>
           )}
 
-          {/* Paywall Notice */}
-          {showBypassNotice && (
-            <div className="text-xs text-gray-500 italic">
-              This link bypasses the paywall.{' '}
-              <a
-                href={originalUrl}
-                className="underline hover:no-underline hover:text-primary transition-colors duration-200"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-              >
-                See original
-              </a>.
-            </div>
-          )}
+          {showBypassNotice && <PaywallBypassNotice originalUrl={originalUrl} />}
         </div>
       ) : (
         // Desktop layout: side by side
@@ -185,21 +194,7 @@ const NewsItem = ({ entry }) => {
             {/* Meta row: Date • Source • Tags */}
             <MetaRow />
 
-            {/* Paywall Notice */}
-            {showBypassNotice && (
-              <div className="text-xs text-gray-500 italic">
-                This link bypasses the paywall.{' '}
-                <a
-                  href={originalUrl}
-                  className="underline hover:no-underline hover:text-primary transition-colors duration-200"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  See original
-                </a>.
-              </div>
-            )}
+            {showBypassNotice && <PaywallBypassNotice originalUrl={originalUrl} />}
           </div>
 
           {/* Image */}

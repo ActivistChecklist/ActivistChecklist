@@ -298,7 +298,9 @@
     "tipInvitation": "¿Tienes noticias que crees que deberían incluirse?",
     "tipLink": "Envíanos una pista",
     "tipSuffix": "y ayuda a mantener informada a nuestra comunidad.",
-    "noItems": "No se encontraron noticias."
+    "noItems": "No se encontraron noticias.",
+    "paywallBypassNotice": "Este enlace evita el muro de pago.",
+    "seeOriginal": "Ver original"
   },
   "changelog": {
     "title": "Actualizaciones recientes del sitio",
