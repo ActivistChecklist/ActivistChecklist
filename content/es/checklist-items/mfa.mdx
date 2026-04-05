@@ -1,0 +1,38 @@
+---
+title: Activa la autenticación de dos factores
+preview: |
+  Si alguien roba tu contraseña, la autenticación de dos factores les impide entrar a menos que también tengan tu teléfono.
+do: |
+  Activa la autenticación de dos factores en los sitios importantes
+dont: |
+  Usar solo una contraseña
+titleBadges: []
+---
+
+Después de ingresar tu contraseña, tendrás que ingresar un código desde tu teléfono para demostrar que eres tú. Piénsalo como tener una llave y un código de alarma para entrar a tu casa: alguien necesita los dos para entrar.
+
+Tu correo electrónico es la cuenta más importante que debes proteger con la autenticación de dos factores. Si un atacante accede a tu correo electrónico, puede restablecer todas tus otras contraseñas.
+
+<HowTo title="Cómo configurarlo">
+  **Instala una aplicación de autenticación:**
+
+  1. **Opción 1: 1Password:** Si usas [1Password](#password-manager), tiene una función de "autenticación" integrada ([detalles aquí](https://support.1password.com/one-time-passwords/)).
+  2. **Opción 2: Ente Auth:** Instala [Ente Auth](https://ente.io/auth/) (iPhone, Android)
+     * Opcional: Puedes crear una cuenta. Tus datos están cifrados de extremo a extremo. O puedes no tener una cuenta, pero podrías perder tus contraseñas de un solo uso si tu teléfono no tiene copia de seguridad.
+
+  **Para configurar la autenticación de dos factores:**
+
+  1. Ve a la configuración de Seguridad/Privacidad
+  2. Busca "2FA" o "autenticación de dos factores" o "autenticación multifactor"
+  3. Si hay disponible una opción de "aplicación de autenticación", ¡selecciónala! (Recuerda guardar los códigos de respaldo en algún lugar seguro, como tu gestor de contraseñas.)
+  4. Si "verificación por texto/SMS" es la única opción, selecciónala y sigue las instrucciones.
+  5. Enlaces para configurar 2FA en sitios comunes:
+     * [Google](https://myaccount.google.com/signinoptions/two-step-verification)
+     * [Apple ID](https://support.apple.com/en-us/HT204915)
+     * [Facebook](https://www.facebook.com/settings?tab=security)
+     * [Twitter / X](https://twitter.com/settings/security)
+     * [Instagram](https://help.instagram.com/566810106808145)
+     * O busca si un sitio web/servicio/aplicación tiene 2FA en el [Directorio 2FA](https://2fa.directory/us/).
+</HowTo>
+
+Nota: Cuando un servicio te permite elegir entre una **aplicación de autenticación** y **códigos de verificación por mensaje de texto/SMS,** siempre es mejor optar por la aplicación de autenticación. Es posible que un atacante [intercepte tus mensajes SMS](https://www.wired.com/2016/06/hey-stop-using-texts-two-factor-authentication/).
