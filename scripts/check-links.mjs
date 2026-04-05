@@ -89,8 +89,23 @@ function stripQueryAndFragment(urlPath) {
   return cleaned;
 }
 
-function pathResolves(localPath) {
-  const cleaned = stripQueryAndFragment(localPath);
+/**
+ * next-intl adds a locale prefix for non-default locales (e.g. /es/...), but
+ * public/ assets are copied to out/files/..., not out/es/files/.... Same for
+ * other root-level static paths. If the exact href does not exist, try without
+ * the first segment when it is a known locale code.
+ */
+function withoutLeadingLocaleSegment(urlPath) {
+  const norm = urlPath.startsWith('/') ? urlPath : `/${urlPath}`;
+  const segments = norm.split('/').filter(Boolean);
+  if (segments.length >= 1 && LOCALE_SEGMENTS.has(segments[0])) {
+    const rest = segments.slice(1).join('/');
+    return rest ? `/${rest}` : '/';
+  }
+  return null;
+}
+
+function pathResolvesExact(cleaned) {
   if (!cleaned || cleaned === '/') return true; // Root path always resolves
 
   const fullPath = path.join(OUT_DIR, cleaned);
@@ -113,6 +128,16 @@ function pathResolves(localPath) {
     return fs.existsSync(indexPath);
   }
 
+  return false;
+}
+
+function pathResolves(localPath) {
+  const cleaned = stripQueryAndFragment(localPath);
+  if (pathResolvesExact(cleaned)) return true;
+  const unlocaled = withoutLeadingLocaleSegment(cleaned);
+  if (unlocaled !== null && unlocaled !== cleaned) {
+    return pathResolvesExact(unlocaled);
+  }
   return false;
 }
 
