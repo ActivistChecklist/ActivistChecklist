@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { setRequestLocale } from 'next-intl/server';
+import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { getAllNewsItems, toNewsListItem } from '@/lib/content';
 import Layout from '@/components/layout/Layout';
 import NewsItem from '@/components/NewsItem';
@@ -49,6 +49,7 @@ function YearSection({ year, items }) {
 export default async function NewsPage({ params }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations();
 
   const newsItems = getAllNewsItems(locale).map((item) => toNewsListItem(item));
   const grouped = groupNewsByYear(newsItems);
@@ -62,9 +63,9 @@ export default async function NewsPage({ params }) {
         <header className="mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h1 className="page-title">Surveillance News</h1>
+              <h1 className="page-title">{t('news.title')}</h1>
               <p className="text-lg text-muted-foreground">
-                Latest news about state surveillance and threats facing social movements.
+                {t('news.description')}
               </p>
             </div>
             <RSSButton
@@ -79,20 +80,20 @@ export default async function NewsPage({ params }) {
         {/* News Submission Invitation */}
         <div className="mb-8 p-4 bg-muted rounded-lg border border-primary/40">
           <p className="text-sm text-muted-foreground">
-            Have news you think should be included?{' '}
+            {t('news.tipInvitation')}{' '}
             <Link
               href="/contact/"
               className="link text-sm"
             >
-              Send us a tip
+              {t('news.tipLink')}
             </Link>
-            {' '}and help keep our community informed.
+            {' '}{t('news.tipSuffix')}
           </p>
         </div>
 
         {newsItems.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-muted-foreground">No news items found.</p>
+            <p className="text-muted-foreground">{t('news.noItems')}</p>
           </div>
         ) : (
           <div className="space-y-0">

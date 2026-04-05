@@ -3,6 +3,7 @@ import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState, lazy, Suspense } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   Dialog,
   DialogContent,
@@ -16,29 +17,30 @@ const ContactForm = lazy(() => import('@/components/forms/ContactForm'));
 
 export function FeedbackCTA() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const t = useTranslations();
 
   return (
     <div className="print:hidden mt-8 px-8 py-12 bg-neutral-900 text-neutral-50 rounded-xl">
       <div className="max-w-2xl mx-auto text-center space-y-6">
-        <h3 className="text-2xl font-bold">Have Questions?</h3>
+        <h3 className="text-2xl font-bold">{t('feedbackCta.heading')}</h3>
         <p className="text-neutral-300 max-w-md mx-auto">
-          Let us know if you have questions or feedback so we can make these guides as useful as possible.
+          {t('feedbackCta.description')}
         </p>
         <div className="flex gap-2 max-w-md mx-auto">
           <Input
             type="text"
-            placeholder="Type your question..."
+            placeholder={t('feedbackCta.inputPlaceholder')}
             className="flex-1 bg-neutral-800 border-neutral-700 text-neutral-100 placeholder:text-neutral-400 ring-offset-neutral-900 focus-visible:ring-white"
             onClick={() => setIsDialogOpen(true)}
             readOnly
           />
-          <Button 
+          <Button
             variant="default"
             className="bg-primary hover:bg-primary/90 text-primary-foreground"
             onClick={() => setIsDialogOpen(true)}
           >
             <Send className="w-4 h-4" />
-            <span>Send</span>
+            <span>{t('feedbackCta.sendButton')}</span>
           </Button>
         </div>
       </div>
@@ -46,15 +48,15 @@ export function FeedbackCTA() {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Send us a message</DialogTitle>
+            <DialogTitle>{t('feedbackCta.dialogTitle')}</DialogTitle>
           </DialogHeader>
           <Suspense fallback={
             <div className="flex items-center justify-center py-8">
               <Loader2 className="h-8 w-8 animate-spin" />
             </div>
           }>
-            <ContactForm 
-              successMessage="Thanks for your feedback! We'll review it and use it to improve the guides. If you're finding the site valuable, please help spread the word!"
+            <ContactForm
+              successMessage={t('feedbackCta.successMessage')}
               context="feedback_cta"
             />
           </Suspense>
@@ -63,4 +65,3 @@ export function FeedbackCTA() {
     </div>
   );
 }
-

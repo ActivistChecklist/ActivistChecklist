@@ -687,14 +687,13 @@ export default config({
     // ── Changelog ───────────────────────────────────────────────────────────
     changelog: collection({
       label: 'Changelog',
-      slugField: 'slug',
+      slugField: 'date',
       path: 'content/en/changelog/*',
       previewUrl: KEYSTATIC_PREVIEW_TO_CHANGELOG,
       format: { contentField: 'body' },
       columns: ['type', 'date'],
       schema: {
-        slug: fields.slug({ name: { label: 'Slug' } }),
-        date: fields.date({ label: 'Date', validation: { isRequired: true } }),
+        date: fields.text({ label: 'Date (YYYY-MM-DD)', validation: { isRequired: true, length: { min: 10, max: 10 } } }),
         type: fields.select({
           label: 'Type',
           options: [

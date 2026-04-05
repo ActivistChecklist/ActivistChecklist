@@ -212,7 +212,7 @@
     }
   },
   "riskLevel": {
-    "everyoneLabel": "everyone",
+    "everyoneLabel": "todas las personas",
     "mediumLabel": "amenaza media",
     "highLabel": "amenaza alta",
     "everyoneDefault": "Esta sección es para cualquier persona que haga trabajo de activismo o defensa.",

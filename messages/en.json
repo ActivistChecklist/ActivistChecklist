@@ -163,5 +163,148 @@
     "loading": "Loading...",
     "error": "Something went wrong",
     "viewChecklist": "View checklist"
+  },
+  "notFound": {
+    "title": "Oops! This page doesn't exist",
+    "backToHome": "Back to Home",
+    "tryAnother": "Show another random \"missing page\" message",
+    "variations": {
+      "goneUnderground": {
+        "title": "Gone underground",
+        "message": "This page has disappeared! Maybe it's organizing something..."
+      },
+      "nothingToSee": {
+        "title": "Nothing to see here",
+        "message": "This page is practicing good OPSEC and staying off the grid."
+      },
+      "solidarity": {
+        "title": "Solidarity forever",
+        "message": "The page you're looking for is out on the picket line."
+      },
+      "securityCulture": {
+        "title": "Practicing good security culture",
+        "message": "This page is using end-to-end encryption... maybe a bit too well."
+      },
+      "whoseStreets": {
+        "title": "Whose streets?",
+        "message": "Our streets! But this particular URL leads nowhere..."
+      },
+      "identity": {
+        "title": "Identity protected",
+        "message": "This page is exercising its right to remain anonymous."
+      },
+      "directAction": {
+        "title": "Direct action",
+        "message": "This page is out disrupting business as usual."
+      },
+      "firedUp": {
+        "title": "Fired up",
+        "message": "This page is busy lighting the spark of revolution."
+      },
+      "mutualAid": {
+        "title": "Mutual aid station",
+        "message": "This page has relocated to help distribute resources to the community."
+      },
+      "beWater": {
+        "title": "Be water",
+        "message": "Like water, this page flows where it's needed most."
+      }
+    }
+  },
+  "riskLevel": {
+    "everyoneLabel": "everyone",
+    "mediumLabel": "medium-threat",
+    "highLabel": "high-threat",
+    "everyoneDefault": "This section is for anyone doing activism or advocacy work.",
+    "mediumDefault": "This section is for you if you are in a leadership role or you are doing activism that is more likely be targetted by the state or your opposition.",
+    "highDefault": "This section is for you are in a high-profile role or your activism involves high-risk work that could result in serious consequences or retaliation.",
+    "forYouIf": "This section is for you if:",
+    "forYou": "This section is for:"
+  },
+  "checklistItem": {
+    "informationalItem": "Informational item",
+    "copyLink": "Copy link to this item",
+    "linkCopied": "Link copied!",
+    "markAsDone": "Mark as done",
+    "completed": "Completed",
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "importantBadge": "Important"
+  },
+  "copyButton": {
+    "copy": "Copy",
+    "copied": "Copied",
+    "ariaLabel": "Copy to clipboard"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "intro": "Your feedback helps make this resource more useful and secure for everyone. We welcome suggestions for:",
+    "suggestion1": "Correcting any inaccuracies or outdated information",
+    "suggestion2": "Making our guides clearer and easier to understand",
+    "suggestion3": "Improving security recommendations",
+    "suggestion4": "Suggesting new topics we should cover",
+    "sendMessage": "Send us a message",
+    "recommended": "(recommended)",
+    "successMessage": "Message sent successfully! We'll get back to you soon.",
+    "otherWays": "Other ways to reach us",
+    "githubTitle": "Public Feedback (GitHub)",
+    "githubDescription": "If you're okay with sharing publicly, you can submit feedback, questions, and feature requests through our GitHub repository.",
+    "githubLink": "Visit GitHub Repository \u2192",
+    "emailTitle": "Encrypted Email",
+    "emailDescription": "Using Proton Mail? Your messages will be automatically encrypted. For other providers, you can use our PGP key. Or you can just email this address unencrypted.",
+    "pgpLink": "View PGP Key \u2192"
+  },
+  "contactForm": {
+    "messageLabel": "Your Message",
+    "messagePlaceholder": "Enter your message...",
+    "charactersRemaining": "{count} characters remaining",
+    "responseQuestion": "Would you like a response?",
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "Enter your email address",
+    "emailNote": "Note on email replies: Unless you use Proton Mail, your email provider can read any replies we send to your message.",
+    "signalUsernameLabel": "Signal Username",
+    "signalUsernamePlaceholder": "username.12",
+    "signalUsernameExample": "@snowden.04",
+    "signalUsernameHelp": "Your username is different than your display name. Find your username at Signal > User Icon (top right) > Settings. It will be listed near the top, just underneath your phone number.",
+    "signalPhoneLabel": "Signal Phone Number",
+    "signalPhonePlaceholder": "Enter your Signal phone number",
+    "sending": "Sending...",
+    "sendMessage": "Send Message",
+    "privacyLabel": "Privacy:",
+    "privacyText": "Your message is securely encrypted and sent to our Proton Mail account. We don't collect any personal information about you.",
+    "errorMessage": "Failed to send message. Please try again later.",
+    "responseNone": "No response needed (your message remains anonymous)",
+    "responseSignalUsername": "Reply by Signal (username)",
+    "responseSignalPhone": "Reply by Signal (phone number)",
+    "responseEmail": "Reply by Email",
+    "mostSecure": "Most Secure"
+  },
+  "feedbackCta": {
+    "heading": "Have Questions?",
+    "description": "Let us know if you have questions or feedback so we can make these guides as useful as possible.",
+    "inputPlaceholder": "Type your question...",
+    "sendButton": "Send",
+    "dialogTitle": "Send us a message",
+    "successMessage": "Thanks for your feedback! We'll review it and use it to improve the guides. If you're finding the site valuable, please help spread the word!"
+  },
+  "checklists": {
+    "title": "Checklists",
+    "featured": "Featured Checklists",
+    "more": "More Checklists"
+  },
+  "news": {
+    "title": "Surveillance News",
+    "description": "Latest news about state surveillance and threats facing social movements.",
+    "tipInvitation": "Have news you think should be included?",
+    "tipLink": "Send us a tip",
+    "tipSuffix": "and help keep our community informed.",
+    "noItems": "No news items found."
+  },
+  "changelog": {
+    "title": "Recent site updates",
+    "description": "A history of changes to checklists, pages, and resources on the site.",
+    "last30Days": "Last 30 days",
+    "previousChanges": "Previous changes",
+    "noEntries": "No changelog entries found."
   }
 }

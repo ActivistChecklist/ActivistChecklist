@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { setRequestLocale } from 'next-intl/server';
+import { setRequestLocale, getTranslations } from 'next-intl/server';
 import Layout from '@/components/layout/Layout';
 import { getAllGuides } from '@/lib/content';
 import { SECURITY_CHECKLISTS, NAV_ITEMS } from '@/config/navigation';
@@ -28,6 +28,7 @@ const TOP_8_SLUGS = SECURITY_CHECKLISTS.items.map(item => item.href.replace(/^\/
 export default async function ChecklistsPage({ params }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations();
 
   const allGuides = getAllGuides(locale);
   const guides = allGuides.map((guide) => ({
@@ -62,12 +63,12 @@ export default async function ChecklistsPage({ params }) {
     <Layout searchable={false} sidebarType={null} fullWidthMain={true}>
       <div className="">
         <h1 className="page-title">
-          Checklists
+          {t('checklists.title')}
         </h1>
 
         {/* Top 8 Checklists */}
         <section className="mb-12">
-          <h2 className="text-xl font-semibold mb-4 text-muted-foreground">Featured Checklists</h2>
+          <h2 className="text-xl font-semibold mb-4 text-muted-foreground">{t('checklists.featured')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {SECURITY_CHECKLISTS.items.map((guideItem, index) => (
               <GuideCard key={index} guideItem={{ href: guideItem.href, iconKey: guideItem.key, title: guideItem.title, description: guideItem.description }} size="large" />
@@ -78,7 +79,7 @@ export default async function ChecklistsPage({ params }) {
         {/* Other Checklists */}
         {otherGuideItems.length > 0 && (
           <section>
-            <h2 className="text-xl font-semibold mb-4 text-muted-foreground">More Checklists</h2>
+            <h2 className="text-xl font-semibold mb-4 text-muted-foreground">{t('checklists.more')}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {otherGuideItems.map((guideItem, index) => (
                 <GuideCard key={index} guideItem={guideItem} size="large" />

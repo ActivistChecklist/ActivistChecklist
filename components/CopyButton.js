@@ -3,11 +3,13 @@
 import { useState, useRef, useEffect } from 'react'
 import { IoCopyOutline, IoCheckmarkSharp } from "react-icons/io5"
 import { Button } from '@/components/ui/button'
+import { useTranslations } from 'next-intl'
 
 export default function CopyButton({ className = '' }) {
   const [copied, setCopied] = useState(false)
   const buttonRef = useRef(null)
   const timeoutRef = useRef(null)
+  const t = useTranslations()
 
   useEffect(() => {
     return () => {
@@ -74,17 +76,17 @@ export default function CopyButton({ className = '' }) {
       variant="muted"
       size="sm"
       className={className}
-      aria-label="Copy to clipboard"
+      aria-label={t('copyButton.ariaLabel')}
     >
       {copied ? (
         <>
           <IoCheckmarkSharp />
-          Copied
+          {t('copyButton.copied')}
         </>
       ) : (
         <>
           <IoCopyOutline />
-          Copy
+          {t('copyButton.copy')}
         </>
       )}
     </Button>

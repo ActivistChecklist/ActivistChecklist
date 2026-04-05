@@ -1,0 +1,6 @@
+files:
+  - source: /content/en/**/*.mdx
+    translation: /content/%two_letters_code%/**/%original_file_name%
+    type: mdx_v2
+  - source: /messages/en.json
+    translation: /messages/%two_letters_code%.json

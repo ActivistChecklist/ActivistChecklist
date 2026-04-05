@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { useAnalytics } from '@/hooks/use-analytics';
+import { useTranslations } from 'next-intl';
 import {
   Form,
   FormControl,
@@ -21,13 +22,18 @@ import { Loader2 } from "lucide-react";
 import { Alert } from '@/components/ui/alert';
 import { MAX_CHARS, RESPONSE_OPTIONS, formSchema } from './contactFormSchema';
 
-const ContactForm = ({ 
-  successMessage = 'Message sent successfully!',
-  context = 'default'
-}) => {
+const RESPONSE_LABEL_KEYS = {
+  none: 'contactForm.responseNone',
+  signal_username: 'contactForm.responseSignalUsername',
+  signal_phone: 'contactForm.responseSignalPhone',
+  email: 'contactForm.responseEmail',
+};
+
+const ContactForm = ({ successMessage, context = 'default' }) => {
   const [status, setStatus] = useState({ type: '', message: '' });
   const [showForm, setShowForm] = useState(true);
   const { trackEvent } = useAnalytics();
+  const t = useTranslations();
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -80,7 +86,7 @@ const ContactForm = ({
       const responseData = await response.json();
 
       if (response.ok) {
-        setStatus({ type: 'success', message: successMessage });
+        setStatus({ type: 'success', message: successMessage || t('contact.successMessage') });
         form.reset();
         setShowForm(false);
       } else {
@@ -88,9 +94,9 @@ const ContactForm = ({
       }
     } catch (error) {
       console.error(error);
-      setStatus({ 
-        type: 'error', 
-        message: 'Failed to send message. Please try again later.'
+      setStatus({
+        type: 'error',
+        message: t('contactForm.errorMessage'),
       });
     }
   };
@@ -98,7 +104,7 @@ const ContactForm = ({
   return (
     <div className="max-w-2xl mx-auto">
       {status.message && (
-        <Alert 
+        <Alert
           variant={status.type === 'success' ? 'success' : 'error'}
           className="mb-4"
         >
@@ -118,7 +124,7 @@ const ContactForm = ({
               name="message"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Your Message</FormLabel>
+                  <FormLabel>{t('contactForm.messageLabel')}</FormLabel>
                   <FormControl>
                     <textarea
                       {...field}
@@ -134,12 +140,12 @@ const ContactForm = ({
                           "focus-visible:ring-destructive",
                         ]
                       )}
-                      placeholder="Enter your message..."
+                      placeholder={t('contactForm.messagePlaceholder')}
                     />
                   </FormControl>
                   {remainingChars <= 500 && (
                     <FormDescription className="text-red-500">
-                      {remainingChars} characters remaining
+                      {t('contactForm.charactersRemaining', { count: remainingChars })}
                     </FormDescription>
                   )}
                   <FormMessage />
@@ -152,7 +158,7 @@ const ContactForm = ({
               name="responseType"
               render={({ field }) => (
                 <FormItem className="space-y-3">
-                  <FormLabel>Would you like a response?</FormLabel>
+                  <FormLabel>{t('contactForm.responseQuestion')}</FormLabel>
                   <FormControl>
                     <RadioGroup
                       onValueChange={field.onChange}
@@ -169,9 +175,9 @@ const ContactForm = ({
                               "flex items-center gap-2"
                             )}
                           >
-                            {option.label}
+                            {t(RESPONSE_LABEL_KEYS[option.value])}
                             {option.recommended && (
-                              <Badge variant="default">{option.recommended}</Badge>
+                              <Badge variant="default">{t('contactForm.mostSecure')}</Badge>
                             )}
                           </label>
                         </div>
@@ -189,10 +195,10 @@ const ContactForm = ({
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email Address</FormLabel>
+                    <FormLabel>{t('contactForm.emailLabel')}</FormLabel>
                     <FormControl>
-                      <Input 
-                        placeholder="Enter your email address" 
+                      <Input
+                        placeholder={t('contactForm.emailPlaceholder')}
                         {...field}
                         onBlur={field.onBlur}
                         className={cn(
@@ -204,7 +210,7 @@ const ContactForm = ({
                       />
                     </FormControl>
                     <FormDescription>
-                      Note on email replies: Unless you use Proton Mail, your email provider can read any replies we send to your message.
+                      {t('contactForm.emailNote')}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -218,11 +224,11 @@ const ContactForm = ({
                 name="signalUsername"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Signal Username</FormLabel>
+                    <FormLabel>{t('contactForm.signalUsernameLabel')}</FormLabel>
                     <FormControl>
                       <div className="relative">
-                        <Input 
-                          placeholder="username.12"
+                        <Input
+                          placeholder={t('contactForm.signalUsernamePlaceholder')}
                           {...field}
                           onBlur={field.onBlur}
                           onChange={(e) => {
@@ -242,7 +248,7 @@ const ContactForm = ({
                       </div>
                     </FormControl>
                     <FormDescription>
-                      Example: <code>@snowden.04</code> — Your username is different than your display name. Find your username at {'Signal > User Icon (top right) > Settings. It will be listed near the top, just underneath your phone number.'}
+                      Example: <code>{t('contactForm.signalUsernameExample')}</code> — {t('contactForm.signalUsernameHelp')}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -256,10 +262,10 @@ const ContactForm = ({
                 name="signalPhone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Signal Phone Number</FormLabel>
+                    <FormLabel>{t('contactForm.signalPhoneLabel')}</FormLabel>
                     <FormControl>
-                      <Input 
-                        placeholder="Enter your Signal phone number" 
+                      <Input
+                        placeholder={t('contactForm.signalPhonePlaceholder')}
                         {...field}
                         onBlur={field.onBlur}
                         className={cn(
@@ -284,15 +290,15 @@ const ContactForm = ({
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Sending...
+                  {t('contactForm.sending')}
                 </>
               ) : (
-                'Send Message'
+                t('contactForm.sendMessage')
               )}
             </Button>
             <div className="mb-8 text-sm text-muted-foreground">
               <p>
-                <b>Privacy:</b> Your message is securely encrypted and sent to our Proton Mail account. We don't collect any personal information about you.
+                <b>{t('contactForm.privacyLabel')}</b> {t('contactForm.privacyText')}
               </p>
             </div>
           </form>
@@ -302,4 +308,4 @@ const ContactForm = ({
   );
 };
 
-export default ContactForm; 
+export default ContactForm;
