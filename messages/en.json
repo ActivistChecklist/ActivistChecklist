@@ -294,7 +294,8 @@
   "checklists": {
     "title": "Checklists",
     "featured": "Featured Checklists",
-    "more": "More Checklists"
+    "more": "More Checklists",
+    "documentTitle": "Checklists | Activist Checklist"
   },
   "news": {
     "title": "Surveillance News",

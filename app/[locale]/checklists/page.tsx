@@ -2,12 +2,18 @@
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import Layout from '@/components/layout/Layout';
 import { getAllGuides } from '@/lib/content';
+import { guideToCardCopy } from '@/lib/guide-card-copy';
 import { SECURITY_CHECKLISTS, NAV_ITEMS } from '@/config/navigation';
 import GuideCard from '@/components/GuideCard';
 
-export const metadata = {
-  title: 'Checklists | Activist Checklist',
-};
+export async function generateMetadata({ params }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations({ locale });
+  return {
+    title: t('checklists.documentTitle'),
+  };
+}
 
 // Build a map from slug to nav item for easy lookup
 function buildSlugToNavItem() {
@@ -31,32 +37,34 @@ export default async function ChecklistsPage({ params }) {
   const t = await getTranslations();
 
   const allGuides = getAllGuides(locale);
-  const guides = allGuides.map((guide) => ({
-    slug: guide.frontmatter.slug || guide.slug,
-    content: { slug: guide.frontmatter.slug || guide.slug },
-  }));
+  const slugToGuide = new Map(
+    allGuides.map((g) => [g.frontmatter.slug || g.slug, g])
+  );
 
   const SLUG_TO_NAV_ITEM = buildSlugToNavItem();
 
-  // Separate guides into top 8 and others
-  const otherGuides = guides.filter(guide => !TOP_8_SLUGS.includes(guide.slug));
+  // Separate guides into top 8 and others (slugs from content, not only nav)
+  const otherGuides = allGuides.filter((guide) => {
+    const slug = guide.frontmatter.slug || guide.slug;
+    return !TOP_8_SLUGS.includes(slug);
+  });
 
-  // Convert other guides to GuideCard format using nav item data
+  // Titles and blurbs from MDX frontmatter; href/iconKey from nav when present
   const otherGuideItems = otherGuides
-    .map(guide => {
-      const navItem = SLUG_TO_NAV_ITEM[guide.slug];
-      if (navItem) {
-        return {
-          href: navItem.href,
-          iconKey: navItem.key,
-          title: navItem.title,
-          description: navItem.description,
-        };
-      }
-      return null;
+    .map((guide) => {
+      const slug = guide.frontmatter.slug || guide.slug;
+      const navItem = SLUG_TO_NAV_ITEM[slug];
+      if (!navItem) return null;
+      const copy = guideToCardCopy(guide);
+      return {
+        href: navItem.href,
+        iconKey: navItem.key,
+        title: copy.title,
+        description: copy.description,
+        copyFromContent: true,
+      };
     })
     .filter(Boolean)
-    // Sort alphabetically by title
     .sort((a, b) => a.title.localeCompare(b.title));
 
   return (
@@ -70,9 +78,27 @@ export default async function ChecklistsPage({ params }) {
         <section className="mb-12">
           <h2 className="text-xl font-semibold mb-4 text-muted-foreground">{t('checklists.featured')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {SECURITY_CHECKLISTS.items.map((guideItem, index) => (
-              <GuideCard key={index} guideItem={{ href: guideItem.href, iconKey: guideItem.key, title: guideItem.title, description: guideItem.description }} size="large" />
-            ))}
+            {SECURITY_CHECKLISTS.items.map((guideItem, index) => {
+              const slug = guideItem.href.replace(/^\/+|\/+$/g, '');
+              const guide = slugToGuide.get(slug);
+              const copy = guide ? guideToCardCopy(guide) : {
+                title: guideItem.title,
+                description: guideItem.description,
+              };
+              return (
+                <GuideCard
+                  key={index}
+                  guideItem={{
+                    href: guideItem.href,
+                    iconKey: guideItem.key,
+                    title: copy.title,
+                    description: copy.description,
+                    copyFromContent: !!guide,
+                  }}
+                  size="large"
+                />
+              );
+            })}
           </div>
         </section>
 
