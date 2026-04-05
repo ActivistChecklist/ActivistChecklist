@@ -7,6 +7,7 @@
 
 [![PR checks](https://github.com/ActivistChecklist/ActivistChecklist/actions/workflows/pr-checks.yml/badge.svg)](https://github.com/ActivistChecklist/ActivistChecklist/actions/workflows/pr-checks.yml)
 [![Deploy](https://github.com/ActivistChecklist/ActivistChecklist/actions/workflows/deploy-webhook.yml/badge.svg)](https://github.com/ActivistChecklist/ActivistChecklist/actions/workflows/deploy-webhook.yml)
+[![Crowdin](https://badges.crowdin.net/activistchecklist/localized.svg)](https://crowdin.com/project/activistchecklist)
 [![Node](https://img.shields.io/badge/node-%3E%3D22%20%3C23-339933?logo=node.js&logoColor=white)](https://github.com/ActivistChecklist/ActivistChecklist/blob/main/package.json)
 [![GPL-3.0](https://img.shields.io/badge/GPL--3.0-blue?logo=gnu&logoColor=white)](LICENSE-CODE)
 [![CC BY-SA 4.0](https://img.shields.io/badge/CC%20BY--SA%204.0-ef9421?logo=creativecommons&logoColor=white)](https://creativecommons.org/licenses/by-sa/4.0/)

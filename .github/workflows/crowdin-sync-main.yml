@@ -1,6 +1,9 @@
-# One runner: wait for Crowdin GitHub sync, hide untranslatable strings, then AI pre-translate
-# only for source files touched in this commit. See scripts/crowdin-hide-strings.mjs and
-# scripts/crowdin-pre-translate.mjs.
+# One runner: optional delay, hide untranslatable strings, then AI pre-translate for files touched
+# in this commit. See scripts/crowdin-hide-strings.mjs and scripts/crowdin-pre-translate.mjs.
+#
+# Crowdin’s GitHub integration pulls source changes from the repo continuously (not only on the
+# hourly sync schedule). See https://support.crowdin.com/github-integration/
+# A short fixed sleep runs before Crowdin API steps; optional extra minutes on manual dispatch.
 
 name: Crowdin sync (main)
 
@@ -14,8 +17,8 @@ on:
   workflow_dispatch:
     inputs:
       delay_minutes:
-        description: "Minutes to wait for Crowdin sync"
-        default: "3"
+        description: "Extra minutes after the fixed buffer (0 = buffer only)"
+        default: "0"
         type: string
       head_sha:
         description: "Optional commit SHA (default — branch HEAD)"
@@ -46,12 +49,16 @@ jobs:
         with:
           node-version-file: .nvmrc
 
-      - name: Wait for Crowdin to sync
+      - name: Wait before Crowdin API steps
         run: |
-          DELAY='${{ github.event.inputs.delay_minutes }}'
-          if [ -z "$DELAY" ]; then DELAY=3; fi
-          echo "Waiting ${DELAY} minutes for Crowdin to pick up new files..."
-          sleep "${DELAY}m"
+          BUFFER_SEC=45
+          echo "Fixed buffer: ${BUFFER_SEC}s before Crowdin steps (import may lag the push slightly)."
+          sleep "$BUFFER_SEC"
+          EXTRA='${{ github.event.inputs.delay_minutes }}'
+          if [ -n "$EXTRA" ] && [ "$EXTRA" != "0" ]; then
+            echo "Additional wait: ${EXTRA} minute(s)."
+            sleep "${EXTRA}m"
+          fi
 
       - name: Hide untranslatable strings
         env:
