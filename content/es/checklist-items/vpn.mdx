@@ -1,0 +1,59 @@
+---
+title: Instala un VPN de confianza con bloqueo de anuncios para que a la policía le sea más difícil hacer vigilancia sin orden judicial
+preview: |
+  Un VPN hace que sea más difícil para los sitios web rastrearte y evita que tu proveedor de internet registre tu tráfico.
+do: |
+  Instala un VPN de confianza y mantenlo activado. Recomendamos [Mullvad VPN](https://mullvad.net/en) ($5/mes) o [IVPN](https://www.ivpn.net/) ($6/mes).
+dont: |
+  Usar un VPN aleatorio que encuentres en línea. Nord VPN, Surfshark, ExpressVPN, etc. son populares pero no tan confiables.
+titleBadges: []
+firstPublished: 2025-06-13
+lastUpdated: 2026-03-09
+---
+
+Cada vez que te conectas a internet (desde el teléfono o la computadora), tu proveedor de internet revela tu ubicación aproximada a cada sitio/aplicación que usas.
+
+Sabemos que [las agencias policiales están usando herramientas para rastrear tu ubicación](https://www.404media.co/inside-ices-tool-to-monitor-phones-in-entire-neighborhoods/) usando datos recopilados de las aplicaciones que tienes y los anuncios que ves. Usar un VPN con funciones de bloqueo de anuncios activadas hace que sea mucho más difícil que te rastreen. Además, la policía puede obtener una citación judicial para acceder a tu tráfico de internet a través de tu proveedor.
+
+Un VPN (Virtual Private Network) ayuda a ocultar tu ubicación y hace que sea un poco más difícil identificarte.
+
+Un VPN con bloqueo de anuncios activado es especialmente importante en tu teléfono.
+
+<Alert type="warning">
+  **Un VPN no te hace completamente anónime.** Para navegación sensible que requiera mayor anonimato, considera usar [Tor Browser](https://activistchecklist.org/research) como un segundo navegador junto al que usas a diario.
+</Alert>
+
+**Opciones:** Todas estas son opciones muy confiables.
+
+* [**Mullvad VPN**](https://mullvad.net/en/vpn) **(recomendación principal)**: Mejor privacidad ya que no se almacena información de pago, pero tienes que pagar manualmente cada ciclo.
+* [**IVPN**](https://www.ivpn.net/en/) puede ser más fácil porque se renueva automáticamente.
+* [**Proton VPN**](https://protonvpn.com/) tiene un plan gratuito sólido, pero es solo para 1 dispositivo. Para obtener el bloqueo de anuncios, necesitas un plan de pago. (Consulta nuestra [nota](/proton/) sobre las preocupaciones acerca del CEO de Proton y por qué seguimos ofreciendo opciones de Proton.)
+
+<HowTo title="Cómo configurar Mullvad VPN">
+  ***Aplicación móvil***
+
+  1. **Crea un número de cuenta y anótalo:** Crea un [número de cuenta de Mullvad](https://mullvad.net/en/account/create) (no hay contraseña) y *<u>**anótalo**</u>* en un lugar seguro como tu gestor de contraseñas.
+  2. **Paga (es decir, "Agregar tiempo"):** No hay renovación automática, así que todos los pagos son manuales. Pagar anualmente puede facilitar las cosas para que no tengas que recordarlo.
+  3. **Instala la aplicación móvil de Mullvad** ([iPhone](https://apps.apple.com/us/app/mullvad-vpn/id1488466513), [Android](https://mullvad.net/en/download/vpn/android)) y usa tu número de cuenta para iniciar sesión.
+  4. **Activa el bloqueo de anuncios:** Ícono de engranaje ⚙️ > VPN Settings > DNS Settings > DNS content blockers > **Activa Ads, Trackers y (opcionalmente) Malware**
+
+  ***Aplicación de escritorio***
+
+  1. **Instala la aplicación de escritorio de Mullvad** ([Mac,](https://mullvad.net/en/download/vpn/macos) [Windows)](https://mullvad.net/en/download/vpn/windows). Obtén el número de cuenta desde la aplicación del teléfono.
+  2. **Activa la conexión automática:** Encuentra Mullvad en tu barra de herramientas > Ícono de engranaje ⚙️ > VPN Settings > Activa "Launch app on start-up" y "Auto-connect"
+  3. **Activa el bloqueo de anuncios:** Encuentra Mullvad en tu barra de herramientas > Ícono de engranaje ⚙️ > VPN Settings > DNS content blockers > **Activa Ads, Trackers y (opcionalmente) Malware**
+
+  Recomendamos mantener el VPN activado en todo momento, a menos que tengas problemas para conectarte a un sitio (ver más abajo).
+
+  *Nota:* En lugar de una tarjeta de crédito, también puedes comprar una tarjeta de cupón para [Mullvad](https://www.amazon.com/Mullvad-VPN-Devices-Protect-Security/dp/B092M55HJ2/) o [IVPN](https://www.amazon.com/IVPN-Privacy-Protection-Surveillance-Open-Source/dp/B0BL8FWDRL/) para que tu identidad esté aún más protegida. (Sí, a nosotres también nos molesta Amazon, pero ese es el único lugar en línea donde puedes comprar estas tarjetas.)
+</HowTo>
+
+**Desventajas de usar un VPN**
+
+* Te encontrarás con más CAPTCHAs en los sitios web
+* Algunos sitios web pueden bloquear el acceso por VPN, y tendrás que desactivarlo y recordar volver a activarlo después
+* Algunos servicios de streaming pueden no funcionar
+
+Si experimentas un comportamiento extraño en un sitio web, intenta desactivar el VPN temporalmente para ver si carga. Pero, como es fácil olvidarse de volver a activar el VPN, la mejor solución es habilitar el [split tunneling](https://mullvad.net/en/help/split-tunneling-with-the-mullvad-app) en Mullvad. Puedes configurarlo para que un navegador secundario omita el VPN. Por ejemplo, si usas Brave como tu navegador principal, puedes configurar Chrome o Safari para que no pasen por el VPN y usar ese navegador solo cuando un sitio web no funcione.
+
+*Nota:* Debes usar un VPN de confianza que no guarde registros de tu tráfico de internet y que se resista a las solicitudes del gobierno. Hemos verificado nuestras principales recomendaciones.
