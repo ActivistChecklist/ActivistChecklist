@@ -1,0 +1,131 @@
+---
+title: Por qué necesitamos eliminar todo lo que está después del '?' en los enlaces
+relatedGuides:
+  - essentials
+  - signal
+firstPublished: 2025-10-21
+lastUpdated: 2026-03-11
+image: /images/content/dont-make-me-tap-the-sign-share.jpg
+---
+
+<Alert type="success">
+  **Conclusión:** Si eliminas todo lo que está después del ? en los enlaces que compartes, ayudarás a que las demás personas de tus grupos no queden asociadas entre sí ni contigo (esto es problemático porque puede reducir el anonimato en el activismo).
+</Alert>
+
+## Versión corta
+
+<ImageEmbed src="/images/content/link-sharing-dont-make-me-tap-the-sign.jpg" alt="Captura de pantalla de un meme de los Simpsons con un conductor de autobús diciendo &#x22;no me hagas señalar el letrero&#x22; - El letrero dice &#x22;Elimina todo lo que está después del signo de interrogación en las URLs para que no nos rastreen a todas cuando hagamos clic&#x22;" size="xs" alignment="right" />
+
+**La situación con los enlaces compartidos:** Las grandes plataformas sociales (YouTube, Instagram, etc.) ahora agregan un ***código único*** cada vez que alguien hace clic en "copiar enlace" en una publicación.
+
+**Contexto:**
+
+* Todas las personas que hagan clic en él quedarán vinculadas entre sí como un grupo asociado en ese sitio web.
+* Si compartes el enlace en un grupo activista (especialmente en Signal) donde algunas personas corren el riesgo de ser señaladas por su actividad política, el sitio web (Instagram, etc.) sabrá quién está interactuando con quién.  Esto puede des-anonimizar a personas que intentan proteger su trabajo activista.
+* Estas empresas terminarán por construir una copia de la lista de miembros de tu grupo.
+* Estas empresas quieren esta información para vendernos publicidad, pero el gobierno puede obligar a una empresa a entregar los datos y usarlos para perseguir a quienes resisten.
+
+**Buena práctica para tu comunidad:** Elimina todo lo que está después del "?" antes de compartir un enlace, sin importar dónde lo compartas.
+
+**Buena práctica de protección para ti:** También estate atenta a los "?" en los enlaces que otras personas comparten. ¡NO hagas clic en ese enlace!! Mantén presionado en tu teléfono y copia el enlace. Pégalo en tu navegador. Elimina el código de rastreo que aparece después del signo de interrogación. ENTONCES puedes hacer clic en él.
+
+## Recuérdaselo a quienes se olvidan
+
+Aquí hay un mensaje de ejemplo que puedes usar si alguien se olvida.
+
+> <CopyButton />
+>
+> *Recordatorio rápido: Por favor, edita tu mensaje para eliminar el código de rastreo (todo lo que está después del "?"). Esto nos ayuda a estar más seguras a todas. [https://activistchecklist.org/links](https://activistchecklist.org/links)*
+
+## Qué puedes hacer
+
+<Alert type="success">
+  **Hazlo automático:** Puedes configurar tu navegador para que elimine automáticamente todos los enlaces de rastreo si usas [Brave](https://brave.com/) o el plugin uBlock Origin. Solo necesitas activar una lista de bloqueo llamada "**AdGuard/uBO - URL Tracking Protection.**" Puedes hacerlo en Brave yendo a Configuración > Escudos > Filtros de contenido > Filtros. [Leer más](https://shreyasminocha.me/blog/removing-tracking-query-params)
+</Alert>
+
+<HowTo title="Cómo eliminar el código de rastreo único">
+  **Para eliminar el código de rastreo ANTES de publicar:**
+
+  1. Copia el enlace desde una app de redes sociales
+  2. Pégalo en la app de mensajería (Signal, etc.)
+  3. Elimina todo lo que está después del "?"
+  4. Presiona **Enviar**
+
+  **Si quieres eliminar un código de rastreo DESPUÉS de haberlo publicado:**
+
+  1. En Signal/WhatsApp/iMessage, mantén presionado un mensaje hasta que aparezca un menú.
+  2. Haz clic en **Editar**
+  3. Elimina todo lo que está después del "?"
+  4. Presiona **Guardar**
+</HowTo>
+
+**Otros consejos:**
+
+* Si usas el navegador Brave o Firefox, puedes hacer clic derecho y seleccionar "Copiar enlace limpio..." que eliminará automáticamente estos códigos de rastreo.
+
+## Ejemplos
+
+¿Qué sitios de redes sociales hacen este tipo de rastreo?
+
+<StyledSpan className="bg-destructive text-destructive-foreground font-bold">Elimina la sección en rojo antes de compartir o visitar el enlace</StyledSpan>
+
+***Instagram:***
+
+* **⚠️ Tiene rastreo:**
+
+  `https://www.instagram.com/p/CX7K9mNvAa5/` <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-destructive! text-destructive-foreground! font-bold!">?igshid=MzRlODBiNWFlZA==</StyledSpan>
+* **✅ Rastreo eliminado:**
+
+  <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-transparent! text-success!">https://www.instagram.com/p/CX7K9mNvAa5/</StyledSpan>
+
+**Facebook:**
+
+* **⚠️ Tiene rastreo:**
+
+  `https://www.facebook.com/share/p/15BkR7qJ8M/` <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-destructive! text-destructive-foreground! font-bold!">?mibextid=oFDknk</StyledSpan>
+* **✅ Rastreo eliminado:**
+
+  <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-transparent! text-success!">https://www.facebook.com/share/p/15BkR7qJ8M/</StyledSpan>
+
+**YouTube:**
+
+* **⚠️ Tiene rastreo:**
+
+  `https://youtu.be/zX9Ke_VXnIA` <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-destructive! text-destructive-foreground! font-bold!">?si=YpziAaccKeIEab6z</StyledSpan>
+* **✅ Rastreo eliminado:**
+
+  <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-transparent! text-success!">https://youtu.be/zX9Ke_VXnIA</StyledSpan>
+
+**Spotify:**
+
+* **⚠️ Tiene rastreo:**
+
+  `https://open.spotify.com/track/1eSNRUK0HIwOFHwWRjHJEo` <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-destructive! text-destructive-foreground! font-bold!">?si=3f7e61d1a8c26b0a</StyledSpan>
+* **✅ Rastreo eliminado:**
+
+  <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-transparent! text-success!">https://open.spotify.com/track/1eSNRUK0HIwOFHwWRjHJEo</StyledSpan>
+
+## Excepciones
+
+Puedes conservar el ? en algunos sitios web
+
+* ✅ **Zoom:**
+
+  <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-transparent! text-success!">https://us02web.zoom.us/j/68714384251?pwd=mT9pKvXcRwLz2nYqF83S</StyledSpan>
+* **✅  YouTube:** Puedes conservar `?v=...` pero eliminar `?si=...`
+
+  <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-transparent! text-success!">https://www.youtube.com/watch?v=zX9Ke_VXnIA</StyledSpan>
+
+## FAQ
+
+**¿Esto significa que Signal no es seguro?**
+
+Signal es tan seguro como podemos conseguir mientras seguimos usando un teléfono. Este rastreo no está ocurriendo dentro de Signal. Está ocurriendo en las grandes plataformas tecnológicas porque han encontrado otra manera de rastrearnos para vendernos publicidad.
+
+**¿Qué pasa con los códigos de rastreo del tipo ?utm_source=?**
+
+Esos importan menos. No te rastrean de forma única ni nos asocian entre nosotras.
+
+**Eliminé la parte del código de rastreo y ahora el enlace no funciona. ¿Qué debo hacer?**
+
+En algunos sitios, lo que está después del ? es necesario para que el enlace funcione, lo que puede hacer que este proceso sea confuso. Si no estás segura de cómo compartir el enlace de forma segura, intenta encontrar contenido similar en otro sitio que no tenga código de rastreo.
