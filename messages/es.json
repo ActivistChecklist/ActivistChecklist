@@ -164,6 +164,22 @@
     "error": "Algo salió mal",
     "viewChecklist": "Ver lista"
   },
+  "search": {
+    "placeholder": "Buscar...",
+    "dialogTitle": "Buscar en el sitio",
+    "dialogDescription": "Busca en todas las páginas y guías de este sitio",
+    "popularHeading": "Búsquedas populares",
+    "topGuidesHeading": "Guías destacadas",
+    "pressEnter": "Pulsa <kbd>↵</kbd> para buscar",
+    "searching": "Buscando...",
+    "noResults": "No hay resultados para «{query}»",
+    "untitled": "Sin título",
+    "suggestion0": "seguridad teléfono protesta",
+    "suggestion1": "Signal mensajería segura",
+    "suggestion2": "rastreo de ubicación",
+    "suggestion3": "código de acceso seguridad",
+    "suggestion4": "protección alto riesgo"
+  },
   "notFound": {
     "title": "¡Vaya! Esta página no existe",
     "backToHome": "Volver al inicio",
