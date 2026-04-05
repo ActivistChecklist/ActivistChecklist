@@ -21,7 +21,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { cn } from "@/lib/utils"
-import { translateMainNavigation } from "@/lib/navigation-i18n"
+import { createIntlTranslator, translateMainNavigation } from "@/lib/navigation-i18n"
 
 const TopNav = ({ hideOnScroll = false, maxWidth }) => {
   const pathname = usePathname()
@@ -29,13 +29,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
 
-  const translateText = (key, fallback) => {
-    try {
-      return t(key);
-    } catch {
-      return fallback;
-    }
-  };
+  const translateText = createIntlTranslator(t);
 
   const translatedMainNav = translateMainNavigation(navigationConfig.mainNav, translateText);
 
