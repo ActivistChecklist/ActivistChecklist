@@ -341,10 +341,13 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
                     {t('search.topGuidesHeading')}
                   </h3>
                   <div className="grid grid-cols-1 gap-2">
-                    {topGuidesForUi.map((guide, index) => (
+                    {topGuidesForUi.map((guide) => (
                       <GuideCard
-                        key={index}
-                        {...guide}
+                        key={guide.key}
+                        href={guide.href}
+                        icon={guide.icon}
+                        title={guide.title}
+                        description={guide.description}
                         onClose={() => setOpen(false)}
                       />
                     ))}
