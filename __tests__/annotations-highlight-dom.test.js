@@ -27,6 +27,20 @@ describe('highlightDom', () => {
     expect(root.textContent).toBe(before)
   })
 
+  it('walks only main#main-content when present (ignores chrome siblings)', () => {
+    const root = createRoot(
+      '<div class="chrome">Skip nav chrome</div><main id="main-content"><p>Hello</p><p>World</p></main><footer>Foot</footer>'
+    )
+    document.body.appendChild(root)
+
+    applyDraftQuoteHighlight(root, 'Hello World')
+
+    const spans = root.querySelectorAll('span[data-annotation-draft]')
+    expect(spans.length).toBe(2)
+    expect(root.textContent).toContain('Skip nav chrome')
+    root.remove()
+  })
+
   it('matches scrubbed selection across block elements (spaced fallback)', () => {
     const root = createRoot('<p>Hello</p><p>World</p>')
     document.body.appendChild(root)
@@ -59,6 +73,30 @@ describe('highlightDom', () => {
     const quote = `A ${half} ${half}`
 
     applyDraftQuoteHighlight(root, quote)
+
+    const spans = root.querySelectorAll('span[data-annotation-draft]')
+    expect(spans.length).toBeGreaterThan(0)
+    root.remove()
+  })
+
+  it('anchor head+tail when full quote is not a contiguous DOM substring (duplicated block)', () => {
+    const chunk = Array.from({ length: 120 }, (_, i) => `w${i}`).join(' ')
+    const root = createRoot(`<p>${chunk}</p>`)
+    document.body.appendChild(root)
+    const quote = `${chunk} EXTRA_GAP ${chunk}`
+
+    applyDraftQuoteHighlight(root, quote)
+
+    const spans = root.querySelectorAll('span[data-annotation-draft]')
+    expect(spans.length).toBeGreaterThan(0)
+    root.remove()
+  })
+
+  it('long-quote compact fallback when selection omits space between inline nodes', () => {
+    const root = createRoot('<p><strong>Hello</strong><em>World</em></p>')
+    document.body.appendChild(root)
+
+    applyDraftQuoteHighlight(root, 'HelloWorld')
 
     const spans = root.querySelectorAll('span[data-annotation-draft]')
     expect(spans.length).toBeGreaterThan(0)

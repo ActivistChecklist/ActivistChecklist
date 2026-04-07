@@ -1,9 +1,82 @@
 'use client';
 
-import { forwardRef } from 'react';
+import { forwardRef, useLayoutEffect, useRef, useState } from 'react';
 import { ChevronsRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { withLocalePath } from '@/features/annotations/annotationPaths';
+
+function panelHeightCapPx() {
+  if (typeof window === 'undefined') {
+    return 900;
+  }
+  return Math.max(240, window.innerHeight - 7 * 16);
+}
+
+/**
+ * Smoothly animates max-height when inner content grows or shrinks (e.g. threads resolved,
+ * replies toggled, new composer). ResizeObserver keeps target height in sync with content.
+ */
+function AnimatedPanelColumn({ className, children }) {
+  const innerRef = useRef(null);
+  const [maxHeightPx, setMaxHeightPx] = useState(null);
+  const [canTransition, setCanTransition] = useState(false);
+
+  useLayoutEffect(() => {
+    const inner = innerRef.current;
+    if (!inner || typeof window === 'undefined') {
+      return undefined;
+    }
+
+    const sync = () => {
+      const cap = panelHeightCapPx();
+      const next = Math.min(inner.scrollHeight, cap);
+      setMaxHeightPx((prev) => {
+        if (prev === next) {
+          return prev;
+        }
+        return next;
+      });
+    };
+
+    sync();
+    const ro = new ResizeObserver(() => {
+      sync();
+    });
+    ro.observe(inner);
+
+    const onResize = () => {
+      sync();
+    };
+    window.addEventListener('resize', onResize);
+
+    let transitionTimer;
+    const rafId = requestAnimationFrame(() => {
+      transitionTimer = window.setTimeout(() => {
+        setCanTransition(true);
+      }, 0);
+    });
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', onResize);
+      cancelAnimationFrame(rafId);
+      if (transitionTimer != null) {
+        clearTimeout(transitionTimer);
+      }
+    };
+  }, []);
+
+  return (
+    <div
+      className={`overflow-y-auto ${className} ${
+        canTransition ? 'transition-[max-height] duration-300 ease-out motion-reduce:transition-none' : ''
+      } ${maxHeightPx == null ? 'max-h-[calc(100vh-7rem)]' : ''}`}
+      style={maxHeightPx != null ? { maxHeight: `${Math.ceil(maxHeightPx)}px` } : undefined}
+    >
+      <div ref={innerRef}>{children}</div>
+    </div>
+  );
+}
 
 export const AnnotationPanel = forwardRef(function AnnotationPanel({
   isPanelExpanded,
@@ -42,7 +115,7 @@ export const AnnotationPanel = forwardRef(function AnnotationPanel({
       )}
 
       {isPanelExpanded && (
-        <div className="w-[min(19rem,calc(100vw-2rem))] max-h-[calc(100vh-7rem)] overflow-y-auto rounded-lg border bg-background/95 p-3 shadow-xl backdrop-blur supports-backdrop-filter:bg-background/85">
+        <AnimatedPanelColumn className="w-[min(19rem,calc(100vw-2rem))] rounded-lg border bg-background/95 p-3 shadow-xl backdrop-blur supports-backdrop-filter:bg-background/85">
           <div className="text-[11px]">
             <div className="flex items-start justify-between gap-2">
               <div className="min-w-0">
@@ -142,7 +215,7 @@ export const AnnotationPanel = forwardRef(function AnnotationPanel({
             </p>
           )}
           {children}
-        </div>
+        </AnimatedPanelColumn>
       )}
     </aside>
   );

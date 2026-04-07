@@ -24,10 +24,11 @@ import {
   computeSelectionPromptPosition,
   escapeAttrValue,
   expandCollapsedAncestorsForNode,
+  isAnnotationHighlightDebugEnabled,
   rangeAnchorRect,
   setActiveHighlightInRoot,
 } from '@/features/annotations/highlightDom';
-import { ANNOTATION_MAX_QUOTE_LEN } from '@/lib/annotations/sanitize';
+import { ANNOTATION_MAX_QUOTE_LEN, normalizeQuoteMatchText } from '@/lib/annotations/sanitize';
 import { loadSeenThreadMap, saveSeenThreadMap } from '@/features/annotations/seenThreads';
 import { useSessionAuthor } from '@/features/annotations/sessionAuthor';
 
@@ -382,13 +383,28 @@ export default function AnnotationShell({ enabled, path, locale, scope, children
       return;
     }
     const root = contentRef.current;
-    const anchorInside = containsNode(root, selection?.anchorNode);
-    const focusInside = containsNode(root, selection?.focusNode);
+    const selectionRoot =
+      root?.querySelector?.('#main-content') ||
+      root?.querySelector?.('main[role="main"]') ||
+      root?.querySelector?.('main') ||
+      root;
+    const anchorInside = containsNode(selectionRoot, selection?.anchorNode);
+    const focusInside = containsNode(selectionRoot, selection?.focusNode);
     if (!anchorInside || !focusInside) {
       return;
     }
     const slice = text.slice(0, ANNOTATION_MAX_QUOTE_LEN);
     pendingQuoteRef.current = slice;
+    if (isAnnotationHighlightDebugEnabled()) {
+      const scrubbedLen = normalizeQuoteMatchText(slice).length;
+      console.log('[annotations:highlight] mouseUp selection', {
+        rawTrimmedLen: text.length,
+        storedSliceLen: slice.length,
+        normalizedLen: scrubbedLen,
+        head200: slice.slice(0, 200),
+        tail80: slice.length > 280 ? slice.slice(-80) : undefined,
+      });
+    }
     setSelectedQuote('');
     setActiveThreadId('');
     setShowResolved(false);

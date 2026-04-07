@@ -1,4 +1,48 @@
-import { scrubAnnotationQuoteText } from '@/lib/annotations/sanitize';
+import { normalizeQuoteMatchText, scrubAnnotationQuoteText } from '@/lib/annotations/sanitize';
+
+/**
+ * Quote-match diagnostics. In the browser console:
+ *   window.__ANNOTATION_HIGHLIGHT_DEBUG__ = true   // force logs (e.g. production preview)
+ *   window.__ANNOTATION_HIGHLIGHT_DEBUG__ = false  // silence logs in development
+ * Default: log when NODE_ENV === 'development' unless explicitly disabled.
+ */
+export function isAnnotationHighlightDebugEnabled() {
+  if (typeof window !== 'undefined' && window.__ANNOTATION_HIGHLIGHT_DEBUG__ === false) {
+    return false;
+  }
+  if (typeof window !== 'undefined' && window.__ANNOTATION_HIGHLIGHT_DEBUG__ === true) {
+    return true;
+  }
+  return typeof process !== 'undefined' && process.env.NODE_ENV === 'development';
+}
+
+function snippet(str, head = 96, tail = 48) {
+  if (str == null || typeof str !== 'string') {
+    return String(str);
+  }
+  if (str.length <= head + tail + 5) {
+    return str;
+  }
+  return `${str.slice(0, head)} …[${str.length} chars]… ${str.slice(-tail)}`;
+}
+
+function logHighlight(stage, payload) {
+  if (!isAnnotationHighlightDebugEnabled()) {
+    return;
+  }
+  console.log(`[annotations:highlight] ${stage}`, payload);
+}
+
+/** First index where a and b differ; -1 if equal up to min length. */
+function firstDiffIndex(a, b) {
+  const n = Math.min(a.length, b.length);
+  for (let i = 0; i < n; i += 1) {
+    if (a[i] !== b[i]) {
+      return i;
+    }
+  }
+  return a.length === b.length ? -1 : n;
+}
 
 export function clearThreadHighlights(root) {
   if (!root) {
@@ -155,56 +199,197 @@ function spacedIndexToCompactOffset(textNodes, spacedIndex) {
   return 0;
 }
 
+/** Above this, RegExp construction becomes slow and can fail on some engines. */
+const MAX_REGEX_WORDS = 200;
+
+/**
+ * Detailed reason long spaced matcher failed (indexOf vs mapping).
+ * Must stay below mapNormTrimmedRangeToRawExclusive in source order is not required at runtime.
+ */
+function logLongQuoteSpacedMiss(spaced, quoteRaw) {
+  if (!isAnnotationHighlightDebugEnabled()) {
+    return;
+  }
+  const q = scrubAnnotationQuoteText(quoteRaw);
+  if (!q) {
+    logHighlight('miss: longQuote+spaced', { reason: 'empty q after scrub' });
+    return;
+  }
+  const normSpaced = normalizeQuoteMatchText(spaced);
+  const normIdx = normSpaced.indexOf(q);
+  if (normIdx === -1) {
+    const take = Math.min(q.length, normSpaced.length);
+    const prefixA = normSpaced.slice(0, take);
+    const prefixB = q.slice(0, take);
+    logHighlight('miss: longQuote+spaced', {
+      reason: 'indexOf === -1 (quote not found in normalized spaced DOM text)',
+      qLen: q.length,
+      normSpacedLen: normSpaced.length,
+      firstDiffInComparablePrefix: firstDiffIndex(prefixA, prefixB),
+      normSpacedHead: snippet(normSpaced, 160, 80),
+      qHead: snippet(q, 160, 80),
+    });
+    return;
+  }
+  const span = mapNormTrimmedRangeToRawExclusive(spaced, normIdx, normIdx + q.length);
+  if (!span) {
+    logHighlight('miss: longQuote+spaced', {
+      reason: 'mapNormTrimmedRangeToRawExclusive returned null',
+      normIdx,
+      qLen: q.length,
+    });
+  }
+}
+
+function logLongQuoteCompactMiss(compact, quoteRaw) {
+  if (!isAnnotationHighlightDebugEnabled()) {
+    return;
+  }
+  const q = scrubAnnotationQuoteText(quoteRaw);
+  if (!q) {
+    logHighlight('miss: longQuote+compact', { reason: 'empty q after scrub' });
+    return;
+  }
+  const normCompact = normalizeQuoteMatchText(compact);
+  const normIdx = normCompact.indexOf(q);
+  if (normIdx === -1) {
+    const take = Math.min(q.length, normCompact.length);
+    logHighlight('miss: longQuote+compact', {
+      reason: 'indexOf === -1',
+      qLen: q.length,
+      normCompactLen: normCompact.length,
+      firstDiffInComparablePrefix: firstDiffIndex(normCompact.slice(0, take), q.slice(0, take)),
+      normCompactHead: snippet(normCompact, 160, 80),
+      qHead: snippet(q, 160, 80),
+    });
+    return;
+  }
+  const span = mapNormTrimmedRangeToRawExclusive(compact, normIdx, normIdx + q.length);
+  if (!span) {
+    logHighlight('miss: longQuote+compact', {
+      reason: 'mapNormTrimmedRangeToRawExclusive returned null',
+      normIdx,
+      qLen: q.length,
+    });
+  }
+}
+
 /**
  * Try compact DOM text first (join text nodes). If that fails, try spaced join (simulates
  * block boundaries that appear in selection.toString() / scrubbed quotes).
  */
 function findQuoteMatchForDom(textNodes, quoteRaw) {
   const compact = textNodes.map((n) => n.nodeValue).join('');
+  const spaced = textNodes.map((n) => n.nodeValue).join(' ');
+  const q = scrubAnnotationQuoteText(quoteRaw);
+
   let match = findFlexibleQuoteMatch(compact, quoteRaw);
   if (match) {
+    logHighlight('match: flexibleRegex+compact', { textNodeCount: textNodes.length, mode: 'compact', match });
     return { mode: 'compact', match, compactStart: match.start };
   }
-  const spaced = textNodes.map((n) => n.nodeValue).join(' ');
+  logHighlight('miss: flexibleRegex+compact', {
+    textNodeCount: textNodes.length,
+    compactLen: compact.length,
+    qLen: q ? q.length : 0,
+    regexWordCount: q ? q.split(/\s+/).filter(Boolean).length : 0,
+    overRegexWordCap: q ? q.split(/\s+/).filter(Boolean).length > MAX_REGEX_WORDS : false,
+  });
+
   match = findFlexibleQuoteMatch(spaced, quoteRaw);
   if (match) {
+    logHighlight('match: flexibleRegex+spaced', { textNodeCount: textNodes.length, mode: 'spaced', match });
     return {
       mode: 'spaced',
       match,
       compactStart: spacedIndexToCompactOffset(textNodes, match.start),
     };
   }
+  logHighlight('miss: flexibleRegex+spaced', { spacedLen: spaced.length, qLen: q ? q.length : 0 });
+
   match = findLongQuoteInSpaced(spaced, quoteRaw);
   if (match) {
+    logHighlight('match: longQuote+spaced', { mode: 'spaced', match });
     return {
       mode: 'spaced',
       match,
       compactStart: spacedIndexToCompactOffset(textNodes, match.start),
     };
   }
+  logLongQuoteSpacedMiss(spaced, quoteRaw);
+
+  match = findLongQuoteInCompact(compact, quoteRaw);
+  if (match) {
+    logHighlight('match: longQuote+compact', { mode: 'compact', match });
+    return {
+      mode: 'compact',
+      match,
+      compactStart: match.start,
+    };
+  }
+  logLongQuoteCompactMiss(compact, quoteRaw);
+
+  const anchorResult = findQuoteMatchByAnchors(textNodes, spaced, compact, quoteRaw);
+  if (anchorResult) {
+    logHighlight('match: anchor head+tail', {
+      mode: anchorResult.mode,
+      match: anchorResult.match,
+    });
+    return anchorResult;
+  }
+
+  logHighlight('miss: all matchers failed', {
+    textNodeCount: textNodes.length,
+    compactLen: compact.length,
+    spacedLen: spaced.length,
+    qLen: q ? q.length : 0,
+    qHead: q ? snippet(q, 120, 60) : '',
+    normCompactHead: snippet(normalizeQuoteMatchText(compact), 120, 60),
+    normSpacedHead: snippet(normalizeQuoteMatchText(spaced), 120, 60),
+  });
   return null;
 }
 
 export function applyDraftQuoteHighlight(root, quoteRaw) {
   if (!root) {
+    logHighlight('draft highlight: skip (no root)', {});
     return;
   }
   const quote = String(quoteRaw || '').trim();
-  if (!quote || !scrubAnnotationQuoteText(quote)) {
+  if (!quote) {
+    logHighlight('draft highlight: skip (empty quote)', {});
+    return;
+  }
+  const scrubbed = scrubAnnotationQuoteText(quote);
+  if (!scrubbed) {
+    logHighlight('draft highlight: skip (empty after scrub)', { rawLen: quote.length });
     return;
   }
   const textNodes = collectAnnotationTextNodes(root);
+  logHighlight('draft highlight: input', {
+    textNodeCount: textNodes.length,
+    quoteLen: quote.length,
+    scrubbedLen: scrubbed.length,
+  });
   const result = findQuoteMatchForDom(textNodes, quote);
   if (!result) {
+    logHighlight('draft highlight: abort — no DOM match (no yellow highlight)', {});
     return;
   }
+  let wrappedAny = false;
   if (result.mode === 'compact') {
-    wrapMatchAcrossTextNodes(textNodes, result.match.start, result.match.end, (range) => {
+    wrappedAny = wrapMatchAcrossTextNodes(textNodes, result.match.start, result.match.end, (range) => {
       wrapRangeWithDraftQuoteSpan(range);
     });
   } else {
-    wrapMatchAcrossSpacedTextNodes(textNodes, result.match.start, result.match.end, (range) => {
+    wrappedAny = wrapMatchAcrossSpacedTextNodes(textNodes, result.match.start, result.match.end, (range) => {
       wrapRangeWithDraftQuoteSpan(range);
+    });
+  }
+  if (!wrappedAny && isAnnotationHighlightDebugEnabled()) {
+    console.warn('[annotations:highlight] draft highlight: match found but wrap produced no spans', {
+      mode: result.mode,
+      match: result.match,
     });
   }
 }
@@ -316,12 +501,32 @@ function escapeRegexChars(s) {
 }
 
 /**
+ * Walk only the primary article/main region. The annotation `root` wraps the whole page
+ * (skip link, nav, footer, etc.); selection and highlights refer to article text only.
+ */
+function getAnnotationTextSearchRoot(root) {
+  if (!root || typeof root.querySelector !== 'function') {
+    return root;
+  }
+  const main =
+    root.querySelector('#main-content') ||
+    root.querySelector('main[role="main"]') ||
+    root.querySelector('article') ||
+    root.querySelector('main');
+  if (main instanceof HTMLElement && root.contains(main)) {
+    return main;
+  }
+  return root;
+}
+
+/**
  * Text nodes in order, excluding scripts only.
  * Include whitespace-only nodes so concatenation matches the DOM.
  */
 function collectAnnotationTextNodes(root) {
+  const searchRoot = getAnnotationTextSearchRoot(root);
   const nodes = [];
-  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+  const walker = document.createTreeWalker(searchRoot, NodeFilter.SHOW_TEXT, {
     acceptNode: (node) => {
       const parentTag = node.parentElement?.tagName;
       if (parentTag === 'SCRIPT' || parentTag === 'STYLE' || parentTag === 'NOSCRIPT') {
@@ -335,9 +540,6 @@ function collectAnnotationTextNodes(root) {
   }
   return nodes;
 }
-
-/** Above this, RegExp construction becomes slow and can fail on some engines. */
-const MAX_REGEX_WORDS = 200;
 
 function findFlexibleQuoteMatch(fullText, quoteRaw) {
   const q = scrubAnnotationQuoteText(quoteRaw);
@@ -361,58 +563,141 @@ function findFlexibleQuoteMatch(fullText, quoteRaw) {
 }
 
 /**
- * Map indices in spaced.replace(/\s+/g, ' ').trim() back to offsets in the original spaced string.
+ * Map indices in normalizeQuoteMatchText(raw) back to [start, end) offsets in raw.
+ * Mirrors scrubText: control chars to space, then collapse whitespace (same as normalizeQuoteMatchText).
  */
-function mapTrimmedNormRangeToSpacedExclusive(spaced, normStart, normEndExclusive) {
-  let norm = '';
-  const charStart = [];
-  for (let i = 0; i < spaced.length; i += 1) {
-    const ch = spaced[i];
+function mapNormTrimmedRangeToRawExclusive(raw, normStart, normEndExclusive) {
+  const norm = normalizeQuoteMatchText(raw);
+  if (normStart < 0 || normEndExclusive > norm.length || normEndExclusive <= normStart) {
+    return null;
+  }
+  let step1 = '';
+  for (let i = 0; i < raw.length; i += 1) {
+    let ch = raw[i];
+    const c = ch.charCodeAt(0);
+    if (c <= 0x1f || c === 0x7f) {
+      ch = ' ';
+    }
+    step1 += ch;
+  }
+  let collapsed = '';
+  const cMap = [];
+  for (let i = 0; i < step1.length; i += 1) {
+    const ch = step1[i];
     if (/\s/.test(ch)) {
-      if (norm.length === 0 || norm[norm.length - 1] !== ' ') {
-        norm += ' ';
-        charStart[norm.length - 1] = i;
+      if (collapsed.length === 0 || collapsed[collapsed.length - 1] !== ' ') {
+        collapsed += ' ';
+        cMap[collapsed.length - 1] = i;
       }
     } else {
-      norm += ch;
-      charStart[norm.length - 1] = i;
+      collapsed += ch;
+      cMap[collapsed.length - 1] = i;
     }
   }
-  const trimmed = norm.trim();
+  const trimmed = collapsed.trim();
   if (!trimmed.length) {
     return null;
   }
-  const lead = norm.indexOf(trimmed[0]);
+  const lead = collapsed.indexOf(trimmed[0]);
   if (lead < 0) {
     return null;
   }
   const absStart = lead + normStart;
   const absEndChar = lead + normEndExclusive - 1;
-  if (absStart < 0 || absStart >= norm.length || absEndChar < absStart || absEndChar >= norm.length) {
+  if (absStart < 0 || absStart >= collapsed.length || absEndChar < absStart || absEndChar >= collapsed.length) {
     return null;
   }
-  return { start: charStart[absStart], end: charStart[absEndChar] + 1 };
+  const rawStart = cMap[absStart];
+  const rawEnd = cMap[absEndChar] + 1;
+  return { start: rawStart, end: rawEnd };
 }
 
 /**
- * Long quotes: substring match on normalized spaced text (avoids giant regex).
+ * Long quotes: substring on normalizeQuoteMatchText(spaced) (same pipeline as scrubbed quotes).
  */
 function findLongQuoteInSpaced(spaced, quoteRaw) {
   const q = scrubAnnotationQuoteText(quoteRaw);
   if (!q) {
     return null;
   }
-  const normSpaced = spaced.replace(/\s+/g, ' ').trim();
+  const normSpaced = normalizeQuoteMatchText(spaced);
   const normIdx = normSpaced.indexOf(q);
   if (normIdx === -1) {
     return null;
   }
-  const normEndExclusive = normIdx + q.length;
-  const span = mapTrimmedNormRangeToSpacedExclusive(spaced, normIdx, normEndExclusive);
+  const span = mapNormTrimmedRangeToRawExclusive(spaced, normIdx, normIdx + q.length);
   if (!span) {
     return null;
   }
   return { start: span.start, end: span.end };
+}
+
+/**
+ * When selection omits spaces that join(' ') inserts between nodes (e.g. inline elements), match on compact concat.
+ */
+function findLongQuoteInCompact(compact, quoteRaw) {
+  const q = scrubAnnotationQuoteText(quoteRaw);
+  if (!q) {
+    return null;
+  }
+  const normCompact = normalizeQuoteMatchText(compact);
+  const normIdx = normCompact.indexOf(q);
+  if (normIdx === -1) {
+    return null;
+  }
+  const span = mapNormTrimmedRangeToRawExclusive(compact, normIdx, normIdx + q.length);
+  if (!span) {
+    return null;
+  }
+  return { start: span.start, end: span.end };
+}
+
+/** When full quote is not a substring (e.g. duplicated accordion lines in selection), match head+tail. */
+const ANCHOR_HEAD_CHARS = 96;
+const ANCHOR_TAIL_CHARS = 96;
+const ANCHOR_MIN_QUOTE_LEN = ANCHOR_HEAD_CHARS + ANCHOR_TAIL_CHARS + 64;
+
+function findQuoteMatchByAnchors(textNodes, spaced, compact, quoteRaw) {
+  const q = scrubAnnotationQuoteText(quoteRaw);
+  if (!q || q.length < ANCHOR_MIN_QUOTE_LEN) {
+    return null;
+  }
+  const head = q.slice(0, ANCHOR_HEAD_CHARS);
+  const tail = q.slice(-ANCHOR_TAIL_CHARS);
+
+  const tryRaw = (raw, mode) => {
+    const norm = normalizeQuoteMatchText(raw);
+    const start = norm.indexOf(head);
+    if (start === -1) {
+      return null;
+    }
+    const tailAt = norm.indexOf(tail, start + ANCHOR_HEAD_CHARS);
+    if (tailAt === -1) {
+      return null;
+    }
+    const endExclusive = tailAt + tail.length;
+    if (endExclusive <= start) {
+      return null;
+    }
+    const span = mapNormTrimmedRangeToRawExclusive(raw, start, endExclusive);
+    if (!span) {
+      return null;
+    }
+    if (mode === 'spaced') {
+      return {
+        mode: 'spaced',
+        match: span,
+        compactStart: spacedIndexToCompactOffset(textNodes, span.start),
+      };
+    }
+    return {
+      mode: 'compact',
+      match: span,
+      compactStart: span.start,
+    };
+  };
+
+  return tryRaw(spaced, 'spaced') || tryRaw(compact, 'compact');
 }
 
 function attachHighlightSpan(span, thread, onThreadClick) {
