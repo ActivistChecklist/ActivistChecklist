@@ -18,6 +18,12 @@ const STATIC_EXPORT_STUBS = [
   [/app[\\/]api[\\/]keystatic[\\/]checklist-item-preview[\\/]route\.ts$/, 'keystatic-checklist-preview.ts'],
   [/app[\\/]preview[\\/]start[\\/]route\.ts$/, 'preview-start-static.ts'],
   [/app[\\/]preview[\\/]end[\\/]route\.ts$/, 'preview-end-static.ts'],
+  [/features[\\/]annotations[\\/]AnnotationShell\.jsx$/, 'annotation-shell-static.jsx'],
+  [/app[\\/]api[\\/]annotations[\\/]route\.js$/, 'annotations-api-static.js'],
+  [/app[\\/]api[\\/]annotations[\\/]threads[\\/]route\.js$/, 'annotations-api-static.js'],
+  [/app[\\/]api[\\/]annotations[\\/]threads[\\/]\\[id\\][\\/]route\.js$/, 'annotations-api-static.js'],
+  [/app[\\/]api[\\/]annotations[\\/]comments[\\/]route\.js$/, 'annotations-api-static.js'],
+  [/app[\\/]api[\\/]annotations[\\/]overview[\\/]route\.js$/, 'annotations-api-static.js'],
 ];
 
 const baseConfig = {

@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
 
 import DraftPreviewBanner from '@/components/layout/DraftPreviewBanner';
+import AnnotationShell from '@/features/annotations/AnnotationShell';
+import { getAnnotationsConfig } from '@/lib/annotations/env';
 
 /**
  * Draft preview UI only for content routes (not the whole locale tree), so the root
@@ -15,11 +17,19 @@ export default async function SlugLayout({
 }) {
   const { locale, slug: slugParts } = await params;
   const slug = slugParts?.join('/') || '';
+  const annotations = getAnnotationsConfig();
 
   return (
     <>
       <DraftPreviewBanner locale={locale} slug={slug} />
-      {children}
+      <AnnotationShell
+        enabled={annotations.enabled}
+        path={`/${slug}/`}
+        locale={locale}
+        scope={annotations.scope}
+      >
+        {children}
+      </AnnotationShell>
     </>
   );
 }
