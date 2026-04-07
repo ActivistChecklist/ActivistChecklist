@@ -8,6 +8,7 @@
 [![Last commit to main](https://img.shields.io/github/last-commit/ActivistChecklist/ActivistChecklist/main?label=last%20commit)](https://github.com/ActivistChecklist/ActivistChecklist/commits/main)
 [![PR checks](https://github.com/ActivistChecklist/ActivistChecklist/actions/workflows/pr-checks.yml/badge.svg)](https://github.com/ActivistChecklist/ActivistChecklist/actions/workflows/pr-checks.yml)
 [![Deploy](https://github.com/ActivistChecklist/ActivistChecklist/actions/workflows/deploy-webhook.yml/badge.svg)](https://github.com/ActivistChecklist/ActivistChecklist/actions/workflows/deploy-webhook.yml)
+[![Healthchecks](https://healthchecks.io/badge/48683141-3e2b-4da2-a269-5d8293/cxb5iwnK-2.svg)](https://healthchecks.io/)
 [![Crowdin](https://badges.crowdin.net/activistchecklist/localized.svg)](https://crowdin.com/project/activistchecklist)
 [![GPL-3.0](https://img.shields.io/badge/GPL--3.0-blue?logo=gnu&logoColor=white)](LICENSE-CODE)
 [![CC BY-SA 4.0](https://img.shields.io/badge/CC%20BY--SA%204.0-ef9421?logo=creativecommons&logoColor=white)](https://creativecommons.org/licenses/by-sa/4.0/)
