@@ -10,8 +10,9 @@ name: Crowdin sync (main)
 on:
   push:
     branches: [main]
+    # Keep in sync with `files[].source` in crowdin.yml
     paths:
-      - "content/**"
+      - "content/en/**/*.mdx"
       - "messages/en.json"
 
   workflow_dispatch:
