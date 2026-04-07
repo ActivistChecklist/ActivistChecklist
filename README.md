@@ -1,7 +1,6 @@
 <div align="center">
 
 [![Activist Checklist](public/images/logo-bg-white.png)](https://activistchecklist.org/)
-[ActivistChecklist.org](https://activistchecklist.org)
 
 **Practical digital security guides for activists and organizers.**
 
