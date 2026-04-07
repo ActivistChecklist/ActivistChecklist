@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { handleReviewCommentsRequest, type ReviewCommentsRouteContext } from './handler';
 
 describe('handleReviewCommentsRequest — feature gate before DB', () => {
-  it('returns 404 for GET threads when annotations are disabled', async () => {
+  it('returns 404 for GET threads when review comments are disabled', async () => {
     const request = new Request(
       'http://localhost/api/review-comments?path=%2Ffoo%2F&locale=en&contentHash=',
       { method: 'GET', headers: { host: 'localhost' } }
@@ -10,7 +10,7 @@ describe('handleReviewCommentsRequest — feature gate before DB', () => {
     const ctx: ReviewCommentsRouteContext = { params: Promise.resolve({ path: [] }) };
 
     const res = await handleReviewCommentsRequest(request, ctx, {
-      getAnnotationsRuntimeConfig: () => ({ enabled: false, publicReadWrite: false }),
+      getReviewCommentsRuntimeConfig: () => ({ enabled: false, publicReadWrite: false }),
     });
 
     expect(res.status).toBe(404);
@@ -18,7 +18,7 @@ describe('handleReviewCommentsRequest — feature gate before DB', () => {
     expect(body.error).toBeDefined();
   });
 
-  it('returns 404 for POST threads when annotations are disabled', async () => {
+  it('returns 404 for POST threads when review comments are disabled', async () => {
     const request = new Request('http://localhost/api/review-comments/threads', {
       method: 'POST',
       headers: { host: 'localhost', 'Content-Type': 'application/json' },
@@ -27,7 +27,7 @@ describe('handleReviewCommentsRequest — feature gate before DB', () => {
     const ctx: ReviewCommentsRouteContext = { params: Promise.resolve({ path: ['threads'] }) };
 
     const res = await handleReviewCommentsRequest(request, ctx, {
-      getAnnotationsRuntimeConfig: () => ({ enabled: false, publicReadWrite: true }),
+      getReviewCommentsRuntimeConfig: () => ({ enabled: false, publicReadWrite: true }),
     });
 
     expect(res.status).toBe(404);

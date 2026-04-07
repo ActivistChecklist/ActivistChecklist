@@ -15,8 +15,8 @@ import {
   sanitizeThreadInput,
   sanitizeUuidParam,
 } from '../shared/sanitize';
-import { isAnnotationDbUnavailable, requireAnnotationsEnabled, type AnnotationsGate } from './http';
-import { getAnnotationsConfig, type AnnotationsRuntimeConfig } from './env';
+import { isReviewCommentsDbUnavailable, requireReviewCommentsEnabled, type ReviewCommentsGate } from './http';
+import { getReviewCommentsRuntimeConfigFromEnv, type ReviewCommentsRuntimeConfig } from './env';
 import { reviewCommentsScopeFromRequest } from '../src/scopeFromHost';
 
 function jsonError(message: string, status: number, extra: Record<string, unknown> = {}): Response {
@@ -28,7 +28,7 @@ function publicWriteDeniedResponse(): Response {
 }
 
 /** When `REVIEW_COMMENTS_PUBLIC_WRITE` is false, block POST / PATCH / DELETE. */
-function requirePublicWriteGate(gate: AnnotationsGate): Response | null {
+function requirePublicWriteGate(gate: ReviewCommentsGate): Response | null {
   if (!gate.ok) {
     return null;
   }
@@ -59,12 +59,14 @@ export type ReviewCommentsRouteContext = {
 export type ReviewCommentsHandlerOptions = {
   /**
    * Override feature flags (`enabled`, `publicReadWrite`). Document scope is always taken from
-   * the incoming request `Host` / `X-Forwarded-Host`. Defaults to the package’s `getAnnotationsConfig`.
+   * the incoming request `Host` / `X-Forwarded-Host`. Defaults to `getReviewCommentsRuntimeConfigFromEnv`.
    */
-  getAnnotationsRuntimeConfig?: (env?: NodeJS.ProcessEnv) => AnnotationsRuntimeConfig;
+  getReviewCommentsRuntimeConfig?: (env?: NodeJS.ProcessEnv) => ReviewCommentsRuntimeConfig;
 };
 
-type ResolveConfig = (env?: NodeJS.ProcessEnv) => AnnotationsRuntimeConfig;
+type ResolveConfig = (env?: NodeJS.ProcessEnv) => ReviewCommentsRuntimeConfig;
+
+export type { ReviewCommentsRuntimeConfig } from './env';
 
 /**
  * Single entry for Next.js App Router: pass all methods to this handler with params from [[...path]].
@@ -75,7 +77,8 @@ export async function handleReviewCommentsRequest(
   routeContext: ReviewCommentsRouteContext = {},
   options?: ReviewCommentsHandlerOptions
 ): Promise<Response> {
-  const resolveConfig: ResolveConfig = options?.getAnnotationsRuntimeConfig ?? getAnnotationsConfig;
+  const resolveConfig: ResolveConfig =
+    options?.getReviewCommentsRuntimeConfig ?? getReviewCommentsRuntimeConfigFromEnv;
 
   const method = request.method;
   const params = routeContext.params != null ? await routeContext.params : {};
@@ -108,7 +111,7 @@ export async function handleReviewCommentsRequest(
 }
 
 async function handleListDocumentThreads(request: Request, getConfig: ResolveConfig): Promise<Response> {
-  const gate = requireAnnotationsEnabled(getConfig);
+  const gate = requireReviewCommentsEnabled(getConfig);
   if (!gate.ok) {
     return gate.response;
   }
@@ -138,7 +141,7 @@ async function handleListDocumentThreads(request: Request, getConfig: ResolveCon
     const threads = await listThreadsForDocument(document.id as string);
     return Response.json({ document, threads });
   } catch (error) {
-    if (isAnnotationDbUnavailable(error)) {
+    if (isReviewCommentsDbUnavailable(error)) {
       return Response.json({
         document: null,
         threads: [],
@@ -150,7 +153,7 @@ async function handleListDocumentThreads(request: Request, getConfig: ResolveCon
 }
 
 async function handleOverview(request: Request, getConfig: ResolveConfig): Promise<Response> {
-  const gate = requireAnnotationsEnabled(getConfig);
+  const gate = requireReviewCommentsEnabled(getConfig);
   if (!gate.ok) {
     return gate.response;
   }
@@ -167,7 +170,7 @@ async function handleOverview(request: Request, getConfig: ResolveConfig): Promi
     const documents = await listScopeOverview(reviewCommentsScopeFromRequest(request));
     return Response.json({ documents });
   } catch (error) {
-    if (isAnnotationDbUnavailable(error)) {
+    if (isReviewCommentsDbUnavailable(error)) {
       return Response.json({ documents: [], dbOffline: true });
     }
     throw error;
@@ -175,7 +178,7 @@ async function handleOverview(request: Request, getConfig: ResolveConfig): Promi
 }
 
 async function handleCreateThread(request: Request, getConfig: ResolveConfig): Promise<Response> {
-  const gate = requireAnnotationsEnabled(getConfig);
+  const gate = requireReviewCommentsEnabled(getConfig);
   if (!gate.ok) {
     return gate.response;
   }
@@ -233,9 +236,9 @@ async function handleCreateThread(request: Request, getConfig: ResolveConfig): P
 
     return Response.json({ thread }, { status: 201 });
   } catch (error) {
-    if (isAnnotationDbUnavailable(error)) {
+    if (isReviewCommentsDbUnavailable(error)) {
       return Response.json(
-        { error: 'Annotations database is not connected in this environment.' },
+        { error: 'Review comments database is not connected in this environment.' },
         { status: 503 }
       );
     }
@@ -248,7 +251,7 @@ async function handlePatchThread(
   threadId: string,
   getConfig: ResolveConfig
 ): Promise<Response> {
-  const gate = requireAnnotationsEnabled(getConfig);
+  const gate = requireReviewCommentsEnabled(getConfig);
   if (!gate.ok) {
     return gate.response;
   }
@@ -286,7 +289,7 @@ async function handlePatchThread(
 }
 
 async function handleCreateComment(request: Request, getConfig: ResolveConfig): Promise<Response> {
-  const gate = requireAnnotationsEnabled(getConfig);
+  const gate = requireReviewCommentsEnabled(getConfig);
   if (!gate.ok) {
     return gate.response;
   }
@@ -333,9 +336,9 @@ async function handleCreateComment(request: Request, getConfig: ResolveConfig): 
 
     return Response.json({ comment }, { status: 201 });
   } catch (error) {
-    if (isAnnotationDbUnavailable(error)) {
+    if (isReviewCommentsDbUnavailable(error)) {
       return Response.json(
-        { error: 'Annotations database is not connected in this environment.' },
+        { error: 'Review comments database is not connected in this environment.' },
         { status: 503 }
       );
     }
@@ -348,7 +351,7 @@ async function handlePatchComment(
   commentId: string,
   getConfig: ResolveConfig
 ): Promise<Response> {
-  const gate = requireAnnotationsEnabled(getConfig);
+  const gate = requireReviewCommentsEnabled(getConfig);
   if (!gate.ok) {
     return gate.response;
   }
@@ -391,9 +394,9 @@ async function handlePatchComment(
     }
     return Response.json({ comment });
   } catch (error) {
-    if (isAnnotationDbUnavailable(error)) {
+    if (isReviewCommentsDbUnavailable(error)) {
       return Response.json(
-        { error: 'Annotations database is not connected in this environment.' },
+        { error: 'Review comments database is not connected in this environment.' },
         { status: 503 }
       );
     }
@@ -406,7 +409,7 @@ async function handleDeleteComment(
   commentId: string,
   getConfig: ResolveConfig
 ): Promise<Response> {
-  const gate = requireAnnotationsEnabled(getConfig);
+  const gate = requireReviewCommentsEnabled(getConfig);
   if (!gate.ok) {
     return gate.response;
   }
@@ -438,9 +441,9 @@ async function handleDeleteComment(
     }
     return Response.json({ ok: true });
   } catch (error) {
-    if (isAnnotationDbUnavailable(error)) {
+    if (isReviewCommentsDbUnavailable(error)) {
       return Response.json(
-        { error: 'Annotations database is not connected in this environment.' },
+        { error: 'Review comments database is not connected in this environment.' },
         { status: 503 }
       );
     }

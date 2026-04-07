@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { requireAnnotationsEnabled } from './http';
-import type { AnnotationsRuntimeConfig } from './env';
+import { requireReviewCommentsEnabled } from './http';
+import type { ReviewCommentsRuntimeConfig } from './env';
 
-describe('requireAnnotationsEnabled', () => {
+describe('requireReviewCommentsEnabled', () => {
   it('blocks API when runtime config has enabled: false', () => {
-    const gate = requireAnnotationsEnabled(() =>
-      ({ enabled: false, publicReadWrite: false } satisfies AnnotationsRuntimeConfig)
+    const gate = requireReviewCommentsEnabled(() =>
+      ({ enabled: false, publicReadWrite: false } satisfies ReviewCommentsRuntimeConfig)
     );
     expect(gate.ok).toBe(false);
     if (!gate.ok) {
@@ -14,8 +14,8 @@ describe('requireAnnotationsEnabled', () => {
   });
 
   it('allows API when enabled: true', () => {
-    const gate = requireAnnotationsEnabled(() =>
-      ({ enabled: true, publicReadWrite: false } satisfies AnnotationsRuntimeConfig)
+    const gate = requireReviewCommentsEnabled(() =>
+      ({ enabled: true, publicReadWrite: false } satisfies ReviewCommentsRuntimeConfig)
     );
     expect(gate.ok).toBe(true);
   });

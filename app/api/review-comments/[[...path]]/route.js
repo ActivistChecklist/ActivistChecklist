@@ -4,7 +4,7 @@ import { getReviewCommentsConfig } from '@/lib/review-comments/env';
 export const dynamic = 'force-dynamic';
 
 const handlerOptions = {
-  getAnnotationsRuntimeConfig: getReviewCommentsConfig,
+  getReviewCommentsRuntimeConfig: getReviewCommentsConfig,
 };
 
 function handler(request, context) {

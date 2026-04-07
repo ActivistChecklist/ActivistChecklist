@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { sanitizeAnchorSelector, sanitizeUuidParam } from './sanitize';
+import { sanitizeAnchorSelector, sanitizeCommentInput, sanitizeUuidParam } from './sanitize';
 
 describe('sanitizeUuidParam', () => {
   it('accepts RFC 4122 UUIDs and lowercases', () => {
@@ -36,5 +36,25 @@ describe('sanitizeAnchorSelector', () => {
     expect(sanitizeAnchorSelector([])).toEqual({});
     expect(sanitizeAnchorSelector('x')).toEqual({});
     expect(sanitizeAnchorSelector(null)).toEqual({});
+  });
+});
+
+describe('sanitizeCommentInput', () => {
+  it('preserves newlines in body for rendering (pre-wrap)', () => {
+    const { body } = sanitizeCommentInput({
+      body: 'line one\nline two\r\nline three',
+      createdBy: 'x',
+    });
+    expect(body).toContain('line one\n');
+    expect(body).toContain('\nline two\n');
+    expect(body).toContain('\nline three');
+  });
+
+  it('still strips null bytes from comment body', () => {
+    const { body } = sanitizeCommentInput({
+      body: 'a\u0000b',
+      createdBy: 'x',
+    });
+    expect(body).toBe('ab');
   });
 });

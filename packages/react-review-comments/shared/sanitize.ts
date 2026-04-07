@@ -35,6 +35,17 @@ function scrubText(value: string, maxLen: number): string {
   return normalizeQuoteMatchText(value).slice(0, maxLen);
 }
 
+/** Strips dangerous control chars but keeps line breaks (LF); used for comment bodies only. */
+function scrubCommentBody(value: string, maxLen: number): string {
+  if (typeof value !== 'string') {
+    return '';
+  }
+  let s = value.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  s = s.replace(/[\u0000-\u0009\u000B\u000C\u000E-\u001F\u007F]/g, '');
+  s = s.replace(/[ \t]+/g, ' ');
+  return s.trim().slice(0, maxLen);
+}
+
 /**
  * Validates thread / comment ids from URLs or JSON before they reach MongoDB filters
  * (plain string equality only; still reject malformed or non-string-shaped input).
@@ -173,7 +184,7 @@ export function sanitizeCommentInput({
   createdBy: string;
 }): { body: string; createdBy: string } {
   return {
-    body: scrubText(body, MAX_COMMENT_LEN),
+    body: scrubCommentBody(body, MAX_COMMENT_LEN),
     createdBy: scrubText(createdBy, MAX_AUTHOR_LEN) || 'Anonymous',
   };
 }

@@ -1,24 +1,27 @@
-import { getAnnotationsConfig, type AnnotationsRuntimeConfig } from './env';
+import {
+  getReviewCommentsRuntimeConfigFromEnv,
+  type ReviewCommentsRuntimeConfig,
+} from './env';
 
-export function annotationsUnavailableResponse(): Response {
+export function reviewCommentsUnavailableResponse(): Response {
   return Response.json({ error: 'Not found' }, { status: 404 });
 }
 
-export type AnnotationsGate =
-  | { ok: true; config: AnnotationsRuntimeConfig }
+export type ReviewCommentsGate =
+  | { ok: true; config: ReviewCommentsRuntimeConfig }
   | { ok: false; response: Response };
 
-export function requireAnnotationsEnabled(
-  getConfig: (env?: NodeJS.ProcessEnv) => AnnotationsRuntimeConfig = getAnnotationsConfig
-): AnnotationsGate {
+export function requireReviewCommentsEnabled(
+  getConfig: (env?: NodeJS.ProcessEnv) => ReviewCommentsRuntimeConfig = getReviewCommentsRuntimeConfigFromEnv
+): ReviewCommentsGate {
   const config = getConfig(process.env);
   if (!config.enabled) {
-    return { ok: false, response: annotationsUnavailableResponse() };
+    return { ok: false, response: reviewCommentsUnavailableResponse() };
   }
   return { ok: true, config };
 }
 
-export function isAnnotationDbUnavailable(error: unknown): boolean {
+export function isReviewCommentsDbUnavailable(error: unknown): boolean {
   const message = String((error as Error)?.message || '');
   return (
     message.includes('Missing REVIEW_COMMENTS_MONGODB_URL') ||

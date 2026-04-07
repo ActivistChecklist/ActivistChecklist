@@ -127,7 +127,7 @@ import { getReviewCommentsConfig } from './your-app/review-comments-env';
 export const dynamic = 'force-dynamic';
 
 const handlerOptions = {
-  getAnnotationsRuntimeConfig: getReviewCommentsConfig,
+  getReviewCommentsRuntimeConfig: getReviewCommentsConfig,
 };
 
 function handler(request: Request, context: ReviewCommentsRouteContext) {
@@ -140,11 +140,11 @@ export const PATCH = handler;
 export const DELETE = handler;
 ```
 
-Pass **`getAnnotationsRuntimeConfig`** only for feature flags (`enabled`, public write). Document scope in Mongo always comes from the request **Host** (see `src/scopeFromHost.ts`). If you omit it, the handler uses `server/env.ts` defaults.
+Pass **`getReviewCommentsRuntimeConfig`** only for feature flags (`enabled`, public write). Document scope in Mongo always comes from the request **Host** (see `src/scopeFromHost.ts`). If you omit it, the handler uses **`getReviewCommentsRuntimeConfigFromEnv`** in `server/env.ts`.
 
 The handler reads `context.params` (awaited internally) for subpaths such as `/overview`, `/threads`, `/comments`, etc.
 
-`getAnnotationsRuntimeConfig` only reads **`process.env`** (feature flags, Mongo). **Per-request** rules (who may use the API) belong in **your route** (or middleware): call `handleReviewCommentsRequest` only after your checks pass.
+`getReviewCommentsRuntimeConfig` only reads **`process.env`** (feature flags, Mongo). **Per-request** rules (who may use the API) belong in **your route** (or middleware): call `handleReviewCommentsRequest` only after your checks pass.
 
 ### Gating example 1: signed-in users only
 
@@ -175,7 +175,7 @@ import { auth } from '@/auth';
 import { handleReviewCommentsRequest, type ReviewCommentsRouteContext } from '@activistchecklist/react-review-comments/server';
 import { getReviewCommentsConfig } from './your-app/review-comments-env';
 
-const handlerOptions = { getAnnotationsRuntimeConfig: getReviewCommentsConfig };
+const handlerOptions = { getReviewCommentsRuntimeConfig: getReviewCommentsConfig };
 
 async function gated(request: Request, context: ReviewCommentsRouteContext) {
   const session = await auth();
@@ -227,7 +227,7 @@ async function gatedBySecret(request: Request, context: ReviewCommentsRouteConte
     return Response.json({ error: 'Forbidden' }, { status: 403 });
   }
   return handleReviewCommentsRequest(request, context, {
-    getAnnotationsRuntimeConfig: getReviewCommentsConfig,
+    getReviewCommentsRuntimeConfig: getReviewCommentsConfig,
   });
 }
 ```
