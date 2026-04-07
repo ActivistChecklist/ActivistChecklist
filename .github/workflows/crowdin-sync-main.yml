@@ -60,7 +60,9 @@ jobs:
             sleep "${EXTRA}m"
           fi
 
+      # Temporarily off — set `if:` back to run on push/workflow_dispatch when re-enabling.
       - name: Hide untranslatable strings
+        if: false
         env:
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
