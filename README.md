@@ -22,9 +22,9 @@
 
 You can view the live site here: **[ActivistChecklist.org →](https://activistchecklist.org)**
 
-## Edit content
+## Suggest content changes
 
-You don't need to be a coder to make edits to this site. The site has a **visual editor** so you can propose changes. All you need is a GitHub account.
+You don't need to be a coder to suggest edits to this site. The site has a **visual editor** so you can propose changes. All you need is a GitHub account.
 
 Instructions: [How to suggestion content changes on Activist Checklist](https://activistchecklist.org/contribute/) using our visual editor
 

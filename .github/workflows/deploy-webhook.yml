@@ -1,4 +1,4 @@
-name: Build and Deploy (via webhook)
+name: Deploy
 
 on:
   push:

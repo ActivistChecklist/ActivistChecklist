@@ -2,7 +2,7 @@
 # Crowdin translation PRs (branch name l10n_*): only fast path checks — no test/build (saves CI and
 # those PRs are almost entirely translated JSON/MDX from Crowdin).
 
-name: Run Tests and Static Build (for PRs)
+name: Tests & Build (PRs)
 
 on:
   pull_request:
