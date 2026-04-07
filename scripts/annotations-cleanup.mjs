@@ -1,9 +1,10 @@
 import dotenv from 'dotenv';
-import { collection, ensureAnnotationSchema } from '../lib/annotations/db.js';
+import { REVIEW_COMMENTS_COLLECTIONS as C } from '@activistchecklist/react-review-comments/server/collections';
+import { collection, ensureAnnotationSchema } from '@activistchecklist/react-review-comments/server/db';
 
 dotenv.config();
 
-const daysRaw = process.argv[2] || process.env.ANNOTATIONS_CLEANUP_DAYS || '45';
+const daysRaw = process.argv[2] || process.env.REVIEW_COMMENTS_CLEANUP_DAYS || '45';
 const days = Number.parseInt(daysRaw, 10);
 
 if (!Number.isFinite(days) || days < 1) {
@@ -12,14 +13,14 @@ if (!Number.isFinite(days) || days < 1) {
 }
 
 async function main() {
-  const connectionString = process.env.ANNOTATIONS_MONGODB_URL || process.env.MONGODB_URL;
+  const connectionString = process.env.REVIEW_COMMENTS_MONGODB_URL;
   if (!connectionString) {
-    throw new Error('Missing ANNOTATIONS_MONGODB_URL or MONGODB_URL');
+    throw new Error('Missing REVIEW_COMMENTS_MONGODB_URL');
   }
   await ensureAnnotationSchema();
-  const documents = await collection('annotation_documents');
-  const threads = await collection('annotation_threads');
-  const comments = await collection('annotation_comments');
+  const documents = await collection(C.documents);
+  const threads = await collection(C.threads);
+  const comments = await collection(C.comments);
   const cutoff = new Date(Date.now() - (days * 24 * 60 * 60 * 1000));
 
   const oldDocs = await documents.find({ updated_at: { $lt: cutoff } }, { projection: { id: 1 } }).toArray();
@@ -38,10 +39,10 @@ async function main() {
   }
   const docDeleteResult = await documents.deleteMany({ updated_at: { $lt: cutoff } });
   const deletedDocuments = docDeleteResult.deletedCount || 0;
-  console.log(`Annotations cleanup complete. Deleted docs: ${deletedDocuments}, threads: ${deletedThreads}, comments: ${deletedComments}. TTL days: ${days}.`);
+  console.log(`Review comments cleanup complete. Deleted docs: ${deletedDocuments}, threads: ${deletedThreads}, comments: ${deletedComments}. TTL days: ${days}.`);
 }
 
 main().catch((error) => {
-  console.error('Annotations cleanup failed:', error?.message || error);
+  console.error('Review comments cleanup failed:', error?.message || error);
   process.exit(1);
 });

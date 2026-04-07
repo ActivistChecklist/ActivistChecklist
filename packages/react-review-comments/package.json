@@ -1,0 +1,51 @@
+{
+  "name": "@activistchecklist/react-review-comments",
+  "version": "0.1.0",
+  "description": "Google-Docs-style anchored review comments for React and Next.js (client shell + optional API handler).",
+  "license": "GPL-3.0",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./server": "./server/handler.ts",
+    "./server/collections": "./server/collections.ts",
+    "./server/db": "./server/db.ts",
+    "./styles.css": "./src/rrc.css",
+    "./highlightDom": "./src/highlightDom.ts"
+  },
+  "files": [
+    "src",
+    "server",
+    "shared",
+    "LICENSE",
+    "README.md"
+  ],
+  "peerDependencies": {
+    "@annotorious/react": ">=3",
+    "@recogito/react-text-annotator": ">=3",
+    "lucide-react": ">=0.400",
+    "next": ">=14",
+    "react": "^18.2.0 || ^19.0.0",
+    "react-dom": "^18.2.0 || ^19.0.0"
+  },
+  "dependencies": {
+    "mongodb": "^7.1.1"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^10.0.0",
+    "@testing-library/react": "^16.0.0",
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "jsdom": "^29.0.2",
+    "typescript": "~5.7.0",
+    "vitest": "^4.1.2"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  }
+}

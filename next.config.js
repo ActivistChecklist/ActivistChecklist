@@ -18,12 +18,8 @@ const STATIC_EXPORT_STUBS = [
   [/app[\\/]api[\\/]keystatic[\\/]checklist-item-preview[\\/]route\.ts$/, 'keystatic-checklist-preview.ts'],
   [/app[\\/]preview[\\/]start[\\/]route\.ts$/, 'preview-start-static.ts'],
   [/app[\\/]preview[\\/]end[\\/]route\.ts$/, 'preview-end-static.ts'],
-  [/features[\\/]annotations[\\/]AnnotationShell\.jsx$/, 'annotation-shell-static.jsx'],
-  [/app[\\/]api[\\/]annotations[\\/]route\.js$/, 'annotations-api-static.js'],
-  [/app[\\/]api[\\/]annotations[\\/]threads[\\/]route\.js$/, 'annotations-api-static.js'],
-  [/app[\\/]api[\\/]annotations[\\/]threads[\\/]\\[id\\][\\/]route\.js$/, 'annotations-api-static.js'],
-  [/app[\\/]api[\\/]annotations[\\/]comments[\\/]route\.js$/, 'annotations-api-static.js'],
-  [/app[\\/]api[\\/]annotations[\\/]overview[\\/]route\.js$/, 'annotations-api-static.js'],
+  [/packages[\\/]react-review-comments[\\/]src[\\/]ReviewCommentsShell\.tsx$/, 'annotation-shell-static.jsx'],
+  [/app[\\/]api[\\/]review-comments[\\/]\\[\\[\\.\\.\\.path\\]\\][\\/]route\.js$/, 'review-comments-api-static.js'],
 ];
 
 const baseConfig = {
@@ -34,7 +30,7 @@ const baseConfig = {
   // Native / ESM-heavy deps: bundling breaks default export interop (e.g. "(0 , cH.default) is not a function" during OG image generation).
   // Keystatic must read KEYSTATIC_* from real process.env at runtime (Railway secrets), not from build-time inlining.
   serverExternalPackages: ['sharp', 'satori', '@keystatic/core', '@keystatic/next'],
-  transpilePackages: ['next-mdx-remote'],
+  transpilePackages: ['next-mdx-remote', '@activistchecklist/react-review-comments'],
   trailingSlash: true,
   images: {
     unoptimized: true,

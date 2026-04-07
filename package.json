@@ -4,6 +4,9 @@
   "description": "ActivistChecklist.org",
   "license": "GPL-3.0",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "engines": {
     "node": ">=22 <23"
   },
@@ -14,7 +17,7 @@
     "clean": "rm -rf .next build node_modules out && yarn cache clean && yarn install",
     "dev": "concurrently -n \"API,NEXT\" -c \"blue,green\" \"NODE_NO_WARNINGS=1 yarn api:dev\" \"yarn next dev\"",
     "next:dev": "next dev",
-    "test": "vitest run",
+    "test": "vitest run && yarn workspace @activistchecklist/react-review-comments test",
     "test:watch": "vitest",
     "lint:paths": "node scripts/trailing-slash-paths.mjs --check",
     "fix:paths": "node scripts/trailing-slash-paths.mjs --fix",
@@ -48,8 +51,8 @@
     "snapshot-normalize": "node scripts/snapshot-normalize.mjs",
     "snapshot-compare": "node scripts/snapshot-compare.mjs",
     "compare": "node scripts/compare.mjs",
-    "annotations:cleanup": "node scripts/annotations-cleanup.mjs",
-    "annotations:init": "node scripts/annotations-init.mjs",
+    "annotations:cleanup": "tsx scripts/annotations-cleanup.mjs",
+    "annotations:init": "tsx scripts/annotations-init.mjs",
     "api:dev": "source .env && fastify start --watch --ignore-watch '.git node_modules out .next content public scripts utils styles pages config compontents' --log-level info --pretty-logs --port ${API_PORT:-4321} api/server.js",
     "api:start": "yarn run pm2 start ecosystem.config.js",
     "api:stop": "yarn run pm2 stop ac-api",
@@ -59,6 +62,7 @@
     "api:logs": "yarn run pm2 logs ac-api"
   },
   "dependencies": {
+    "@activistchecklist/react-review-comments": "*",
     "@annotorious/react": "^3.8.0",
     "@fastify/cors": "^11.2.0",
     "@fastify/helmet": "^13.0.2",
@@ -146,6 +150,7 @@
     "satori": "^0.26.0",
     "sharp": "^0.34.5",
     "tailwindcss": "^4.2.2",
+    "tsx": "^4.21.0",
     "typescript": "6.0.2",
     "vitest": "^4.1.2",
     "yarn": "^1.22.22"
