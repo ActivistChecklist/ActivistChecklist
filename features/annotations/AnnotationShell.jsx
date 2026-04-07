@@ -24,8 +24,10 @@ import {
   computeSelectionPromptPosition,
   escapeAttrValue,
   expandCollapsedAncestorsForNode,
+  rangeAnchorRect,
   setActiveHighlightInRoot,
 } from '@/features/annotations/highlightDom';
+import { ANNOTATION_MAX_QUOTE_LEN } from '@/lib/annotations/sanitize';
 import { loadSeenThreadMap, saveSeenThreadMap } from '@/features/annotations/seenThreads';
 import { useSessionAuthor } from '@/features/annotations/sessionAuthor';
 
@@ -385,14 +387,14 @@ export default function AnnotationShell({ enabled, path, locale, scope, children
     if (!anchorInside || !focusInside) {
       return;
     }
-    const slice = text.slice(0, 1200);
+    const slice = text.slice(0, ANNOTATION_MAX_QUOTE_LEN);
     pendingQuoteRef.current = slice;
     setSelectedQuote('');
     setActiveThreadId('');
     setShowResolved(false);
     try {
       const range = selection.getRangeAt(0);
-      const rect = range.getBoundingClientRect();
+      const rect = rangeAnchorRect(range);
       setSelectionPrompt({
         quote: slice,
         ...computeSelectionPromptPosition(rect),
@@ -442,7 +444,7 @@ export default function AnnotationShell({ enabled, path, locale, scope, children
       }
       const sel = window.getSelection();
       const tSel = (sel?.toString() || '').trim();
-      if (!tSel || tSel.slice(0, 1200) !== quote) {
+      if (!tSel || tSel.slice(0, ANNOTATION_MAX_QUOTE_LEN) !== quote) {
         setSelectionPrompt(null);
         return;
       }
@@ -451,7 +453,7 @@ export default function AnnotationShell({ enabled, path, locale, scope, children
         return;
       }
       try {
-        const r = sel.getRangeAt(0).getBoundingClientRect();
+        const r = rangeAnchorRect(sel.getRangeAt(0));
         setSelectionPrompt((prev) =>
           prev ? { ...prev, ...computeSelectionPromptPosition(r) } : null
         );
@@ -478,11 +480,11 @@ export default function AnnotationShell({ enabled, path, locale, scope, children
         return;
       }
       const tSel = (sel.toString() || '').trim();
-      if (!tSel || tSel.slice(0, 1200) !== quote) {
+      if (!tSel || tSel.slice(0, ANNOTATION_MAX_QUOTE_LEN) !== quote) {
         return;
       }
       try {
-        const r = sel.getRangeAt(0).getBoundingClientRect();
+        const r = rangeAnchorRect(sel.getRangeAt(0));
         setSelectionPrompt((prev) =>
           prev ? { ...prev, ...computeSelectionPromptPosition(r) } : null
         );

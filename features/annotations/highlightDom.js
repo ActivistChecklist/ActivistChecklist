@@ -4,6 +4,7 @@ export function clearThreadHighlights(root) {
   if (!root) {
     return;
   }
+  threadHoverCounts.clear();
   const highlights = root.querySelectorAll('span[data-annotation-thread-id]');
   highlights.forEach((node) => {
     const parent = node.parentNode;
@@ -20,6 +21,7 @@ const ANNOTATION_HIGHLIGHT_INACTIVE = 'rgba(251, 191, 36, 0.35)';
 const ANNOTATION_HIGHLIGHT_ACTIVE = 'rgba(245, 158, 11, 0.62)';
 const ANNOTATION_HIGHLIGHT_ACTIVE_HOVER = 'rgba(245, 158, 11, 0.72)';
 const ANNOTATION_HIGHLIGHT_INACTIVE_HOVER = 'rgba(245, 158, 11, 0.5)';
+const threadHoverCounts = new Map();
 
 export function clearDraftQuoteHighlights(root) {
   if (!root) {
@@ -63,6 +65,126 @@ function wrapRangeWithDraftQuoteSpan(range) {
   }
 }
 
+function wrapMatchAcrossTextNodes(textNodes, matchStart, matchEnd, wrapRange) {
+  if (!Array.isArray(textNodes) || textNodes.length === 0 || matchEnd <= matchStart) {
+    return false;
+  }
+  let wrappedAny = false;
+  let cursor = 0;
+  for (const node of textNodes) {
+    const len = node.nodeValue.length;
+    const nodeStart = cursor;
+    const nodeEnd = cursor + len;
+    cursor = nodeEnd;
+    if (matchEnd <= nodeStart) {
+      break;
+    }
+    if (matchStart >= nodeEnd) {
+      continue;
+    }
+    const localStart = Math.max(0, matchStart - nodeStart);
+    const localEnd = Math.min(len, matchEnd - nodeStart);
+    if (localEnd <= localStart) {
+      continue;
+    }
+    const segmentRange = document.createRange();
+    segmentRange.setStart(node, localStart);
+    segmentRange.setEnd(node, localEnd);
+    wrapRange(segmentRange);
+    wrappedAny = true;
+  }
+  return wrappedAny;
+}
+
+/**
+ * Offsets are in "spaced" string: textNodes.map(n => n.nodeValue).join(' ');
+ * Used when selection.toString() inserts word boundaries between blocks but join('') does not.
+ */
+function wrapMatchAcrossSpacedTextNodes(textNodes, matchStart, matchEnd, wrapRange) {
+  if (!Array.isArray(textNodes) || textNodes.length === 0 || matchEnd <= matchStart) {
+    return false;
+  }
+  let wrappedAny = false;
+  let cursor = 0;
+  for (let i = 0; i < textNodes.length; i += 1) {
+    const node = textNodes[i];
+    const len = node.nodeValue.length;
+    const nodeStart = cursor;
+    const nodeEnd = cursor + len;
+    cursor = nodeEnd;
+    if (i < textNodes.length - 1) {
+      cursor += 1;
+    }
+    if (matchEnd <= nodeStart) {
+      break;
+    }
+    if (matchStart >= nodeEnd) {
+      continue;
+    }
+    const localStart = Math.max(0, matchStart - nodeStart);
+    const localEnd = Math.min(len, matchEnd - nodeStart);
+    if (localEnd <= localStart) {
+      continue;
+    }
+    const segmentRange = document.createRange();
+    segmentRange.setStart(node, localStart);
+    segmentRange.setEnd(node, localEnd);
+    wrapRange(segmentRange);
+    wrappedAny = true;
+  }
+  return wrappedAny;
+}
+
+/** First character index in compact join('') for a given index into spaced join(' '). */
+function spacedIndexToCompactOffset(textNodes, spacedIndex) {
+  let s = 0;
+  for (let i = 0; i < textNodes.length; i += 1) {
+    const len = textNodes[i].nodeValue.length;
+    if (spacedIndex < s + len) {
+      let compact = 0;
+      for (let j = 0; j < i; j += 1) {
+        compact += textNodes[j].nodeValue.length;
+      }
+      return compact + (spacedIndex - s);
+    }
+    s += len;
+    if (i < textNodes.length - 1) {
+      s += 1;
+    }
+  }
+  return 0;
+}
+
+/**
+ * Try compact DOM text first (join text nodes). If that fails, try spaced join (simulates
+ * block boundaries that appear in selection.toString() / scrubbed quotes).
+ */
+function findQuoteMatchForDom(textNodes, quoteRaw) {
+  const compact = textNodes.map((n) => n.nodeValue).join('');
+  let match = findFlexibleQuoteMatch(compact, quoteRaw);
+  if (match) {
+    return { mode: 'compact', match, compactStart: match.start };
+  }
+  const spaced = textNodes.map((n) => n.nodeValue).join(' ');
+  match = findFlexibleQuoteMatch(spaced, quoteRaw);
+  if (match) {
+    return {
+      mode: 'spaced',
+      match,
+      compactStart: spacedIndexToCompactOffset(textNodes, match.start),
+    };
+  }
+  match = findLongQuoteInSpaced(spaced, quoteRaw);
+  if (match) {
+    return {
+      mode: 'spaced',
+      match,
+      compactStart: spacedIndexToCompactOffset(textNodes, match.start),
+    };
+  }
+  return null;
+}
+
 export function applyDraftQuoteHighlight(root, quoteRaw) {
   if (!root) {
     return;
@@ -72,20 +194,19 @@ export function applyDraftQuoteHighlight(root, quoteRaw) {
     return;
   }
   const textNodes = collectAnnotationTextNodes(root);
-  const fullText = textNodes.map((n) => n.nodeValue).join('');
-  const match = findFlexibleQuoteMatch(fullText, quote);
-  if (!match) {
+  const result = findQuoteMatchForDom(textNodes, quote);
+  if (!result) {
     return;
   }
-  const startPoint = mapGlobalOffsetToPoint(textNodes, match.start);
-  const endPoint = mapGlobalOffsetToPoint(textNodes, match.end);
-  if (!startPoint || !endPoint) {
-    return;
+  if (result.mode === 'compact') {
+    wrapMatchAcrossTextNodes(textNodes, result.match.start, result.match.end, (range) => {
+      wrapRangeWithDraftQuoteSpan(range);
+    });
+  } else {
+    wrapMatchAcrossSpacedTextNodes(textNodes, result.match.start, result.match.end, (range) => {
+      wrapRangeWithDraftQuoteSpan(range);
+    });
   }
-  const range = document.createRange();
-  range.setStart(startPoint.node, startPoint.offset);
-  range.setEnd(endPoint.node, endPoint.offset);
-  wrapRangeWithDraftQuoteSpan(range);
 }
 
 export function setActiveHighlightInRoot(root, activeThreadId) {
@@ -122,6 +243,46 @@ export function computeSelectionPromptPosition(rect) {
   return { top, left };
 }
 
+/** Some browsers return a zero rect for very large multi-block ranges; union client rects instead. */
+export function rangeAnchorRect(range) {
+  if (!range) {
+    return { top: 0, left: 0, right: 0, bottom: 0, width: 0, height: 0 };
+  }
+  const rect = range.getBoundingClientRect();
+  if (rect.width > 0 || rect.height > 0) {
+    return rect;
+  }
+  const rects = range.getClientRects();
+  if (rects.length === 0) {
+    return rect;
+  }
+  let top = Infinity;
+  let left = Infinity;
+  let right = -Infinity;
+  let bottom = -Infinity;
+  for (let i = 0; i < rects.length; i += 1) {
+    const r = rects[i];
+    if (r.width === 0 && r.height === 0) {
+      continue;
+    }
+    top = Math.min(top, r.top);
+    left = Math.min(left, r.left);
+    right = Math.max(right, r.right);
+    bottom = Math.max(bottom, r.bottom);
+  }
+  if (top === Infinity) {
+    return rects[0];
+  }
+  return {
+    top,
+    left,
+    right,
+    bottom,
+    width: right - left,
+    height: bottom - top,
+  };
+}
+
 export function expandCollapsedAncestorsForNode(node) {
   if (!node || typeof document === 'undefined') {
     return;
@@ -155,7 +316,7 @@ function escapeRegexChars(s) {
 }
 
 /**
- * Text nodes in order, excluding scripts and text inside thread highlights.
+ * Text nodes in order, excluding scripts only.
  * Include whitespace-only nodes so concatenation matches the DOM.
  */
 function collectAnnotationTextNodes(root) {
@@ -164,9 +325,6 @@ function collectAnnotationTextNodes(root) {
     acceptNode: (node) => {
       const parentTag = node.parentElement?.tagName;
       if (parentTag === 'SCRIPT' || parentTag === 'STYLE' || parentTag === 'NOSCRIPT') {
-        return NodeFilter.FILTER_REJECT;
-      }
-      if (node.parentElement?.closest('[data-annotation-thread-id]')) {
         return NodeFilter.FILTER_REJECT;
       }
       return NodeFilter.FILTER_ACCEPT;
@@ -178,6 +336,9 @@ function collectAnnotationTextNodes(root) {
   return nodes;
 }
 
+/** Above this, RegExp construction becomes slow and can fail on some engines. */
+const MAX_REGEX_WORDS = 200;
+
 function findFlexibleQuoteMatch(fullText, quoteRaw) {
   const q = scrubAnnotationQuoteText(quoteRaw);
   if (!q) {
@@ -185,6 +346,9 @@ function findFlexibleQuoteMatch(fullText, quoteRaw) {
   }
   const parts = q.split(/\s+/).filter(Boolean);
   if (parts.length === 0) {
+    return null;
+  }
+  if (parts.length > MAX_REGEX_WORDS) {
     return null;
   }
   const pattern = parts.map(escapeRegexChars).join('\\s+');
@@ -196,20 +360,59 @@ function findFlexibleQuoteMatch(fullText, quoteRaw) {
   return { start: m.index, end: m.index + m[0].length };
 }
 
-function mapGlobalOffsetToPoint(nodes, pos) {
-  let cum = 0;
-  for (const node of nodes) {
-    const len = node.nodeValue.length;
-    if (pos < cum + len) {
-      return { node, offset: pos - cum };
+/**
+ * Map indices in spaced.replace(/\s+/g, ' ').trim() back to offsets in the original spaced string.
+ */
+function mapTrimmedNormRangeToSpacedExclusive(spaced, normStart, normEndExclusive) {
+  let norm = '';
+  const charStart = [];
+  for (let i = 0; i < spaced.length; i += 1) {
+    const ch = spaced[i];
+    if (/\s/.test(ch)) {
+      if (norm.length === 0 || norm[norm.length - 1] !== ' ') {
+        norm += ' ';
+        charStart[norm.length - 1] = i;
+      }
+    } else {
+      norm += ch;
+      charStart[norm.length - 1] = i;
     }
-    cum += len;
   }
-  if (nodes.length > 0 && pos === cum) {
-    const last = nodes[nodes.length - 1];
-    return { node: last, offset: last.nodeValue.length };
+  const trimmed = norm.trim();
+  if (!trimmed.length) {
+    return null;
   }
-  return null;
+  const lead = norm.indexOf(trimmed[0]);
+  if (lead < 0) {
+    return null;
+  }
+  const absStart = lead + normStart;
+  const absEndChar = lead + normEndExclusive - 1;
+  if (absStart < 0 || absStart >= norm.length || absEndChar < absStart || absEndChar >= norm.length) {
+    return null;
+  }
+  return { start: charStart[absStart], end: charStart[absEndChar] + 1 };
+}
+
+/**
+ * Long quotes: substring match on normalized spaced text (avoids giant regex).
+ */
+function findLongQuoteInSpaced(spaced, quoteRaw) {
+  const q = scrubAnnotationQuoteText(quoteRaw);
+  if (!q) {
+    return null;
+  }
+  const normSpaced = spaced.replace(/\s+/g, ' ').trim();
+  const normIdx = normSpaced.indexOf(q);
+  if (normIdx === -1) {
+    return null;
+  }
+  const normEndExclusive = normIdx + q.length;
+  const span = mapTrimmedNormRangeToSpacedExclusive(spaced, normIdx, normEndExclusive);
+  if (!span) {
+    return null;
+  }
+  return { start: span.start, end: span.end };
 }
 
 function attachHighlightSpan(span, thread, onThreadClick) {
@@ -223,20 +426,39 @@ function attachHighlightSpan(span, thread, onThreadClick) {
   span.dataset.annotationActive = 'false';
   span.title = 'Open comment';
   span.addEventListener('mouseenter', () => {
-    const isActive = span.dataset.annotationActive === 'true';
-    span.style.setProperty(
-      'background-color',
-      isActive ? ANNOTATION_HIGHLIGHT_ACTIVE_HOVER : ANNOTATION_HIGHLIGHT_INACTIVE_HOVER,
-      'important'
+    const nextCount = (threadHoverCounts.get(thread.id) || 0) + 1;
+    threadHoverCounts.set(thread.id, nextCount);
+    const allThreadSpans = document.querySelectorAll(
+      `span[data-annotation-thread-id="${escapeAttrValue(thread.id)}"]`
     );
+    allThreadSpans.forEach((node) => {
+      const isActive = node.dataset.annotationActive === 'true';
+      node.style.setProperty(
+        'background-color',
+        isActive ? ANNOTATION_HIGHLIGHT_ACTIVE_HOVER : ANNOTATION_HIGHLIGHT_INACTIVE_HOVER,
+        'important'
+      );
+    });
   });
   span.addEventListener('mouseleave', () => {
-    const isActive = span.dataset.annotationActive === 'true';
-    span.style.setProperty(
-      'background-color',
-      isActive ? ANNOTATION_HIGHLIGHT_ACTIVE : ANNOTATION_HIGHLIGHT_INACTIVE,
-      'important'
+    const currentCount = threadHoverCounts.get(thread.id) || 0;
+    const nextCount = Math.max(0, currentCount - 1);
+    if (nextCount > 0) {
+      threadHoverCounts.set(thread.id, nextCount);
+      return;
+    }
+    threadHoverCounts.delete(thread.id);
+    const allThreadSpans = document.querySelectorAll(
+      `span[data-annotation-thread-id="${escapeAttrValue(thread.id)}"]`
     );
+    allThreadSpans.forEach((node) => {
+      const isActive = node.dataset.annotationActive === 'true';
+      node.style.setProperty(
+        'background-color',
+        isActive ? ANNOTATION_HIGHLIGHT_ACTIVE : ANNOTATION_HIGHLIGHT_INACTIVE,
+        'important'
+      );
+    });
   });
   span.addEventListener('click', (event) => {
     event.preventDefault();
@@ -267,12 +489,11 @@ export function computeQuoteDocumentOrder(root, quoteRaw) {
     return null;
   }
   const textNodes = collectAnnotationTextNodes(root);
-  const fullText = textNodes.map((n) => n.nodeValue).join('');
-  const match = findFlexibleQuoteMatch(fullText, quote);
-  if (!match) {
+  const result = findQuoteMatchForDom(textNodes, quote);
+  if (!result) {
     return null;
   }
-  return match.start;
+  return result.compactStart;
 }
 
 export function applyThreadHighlights(root, threads, onThreadClick) {
@@ -296,23 +517,20 @@ export function applyThreadHighlights(root, threads, onThreadClick) {
       continue;
     }
     const textNodes = collectAnnotationTextNodes(root);
-    const fullText = textNodes.map((n) => n.nodeValue).join('');
-    const match = findFlexibleQuoteMatch(fullText, quoteRaw);
-    if (!match) {
+    const result = findQuoteMatchForDom(textNodes, quoteRaw);
+    if (!result) {
       continue;
     }
-    orderByThreadId[thread.id] = match.start;
-
-    const startPoint = mapGlobalOffsetToPoint(textNodes, match.start);
-    const endPoint = mapGlobalOffsetToPoint(textNodes, match.end);
-    if (!startPoint || !endPoint) {
-      continue;
+    orderByThreadId[thread.id] = result.compactStart;
+    if (result.mode === 'compact') {
+      wrapMatchAcrossTextNodes(textNodes, result.match.start, result.match.end, (range) => {
+        wrapRangeWithHighlightSpan(range, thread, onThreadClick);
+      });
+    } else {
+      wrapMatchAcrossSpacedTextNodes(textNodes, result.match.start, result.match.end, (range) => {
+        wrapRangeWithHighlightSpan(range, thread, onThreadClick);
+      });
     }
-
-    const range = document.createRange();
-    range.setStart(startPoint.node, startPoint.offset);
-    range.setEnd(endPoint.node, endPoint.offset);
-    wrapRangeWithHighlightSpan(range, thread, onThreadClick);
   }
   return orderByThreadId;
 }

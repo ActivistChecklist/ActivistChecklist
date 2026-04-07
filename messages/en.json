@@ -336,7 +336,7 @@
     "hideResolvedToggle": "Hide resolved",
     "noOpenThreads": "No open comments on this page.",
     "noResolvedThreads": "No resolved comments yet.",
-    "hiddenCommentsCount": "{count, plural, one {# more comment hidden} other {# more comments hidden}}",
+    "hiddenCommentsCount": "{count, plural, one {Show # reply} other {Show # replies}}",
     "showMore": "More",
     "showLess": "Less",
     "commentingAs": "Commenting as",

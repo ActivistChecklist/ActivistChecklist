@@ -135,6 +135,7 @@
     "feed": "^5.2.0",
     "http-server": "^14.1.1",
     "husky": "^9.1.7",
+    "jsdom": "^29.0.2",
     "next-sitemap": "^4.2.3",
     "node-fetch": "^3.3.2",
     "open-graph-scraper": "^6.11.0",

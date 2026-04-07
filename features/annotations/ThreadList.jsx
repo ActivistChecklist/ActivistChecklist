@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { Check } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import {
@@ -10,6 +10,8 @@ import {
   ExpandableCommentBody,
 } from '@/features/annotations/AnnotationCommentUi';
 import { ThreadReplyComposer } from '@/features/annotations/ThreadReplyComposer';
+
+const RESOLVE_EXIT_MS = 260;
 
 export function ThreadList({
   threads,
@@ -30,6 +32,9 @@ export function ThreadList({
   const [replyByThread, setReplyByThread] = useState({});
   const [editingCommentId, setEditingCommentId] = useState('');
   const [editingDraft, setEditingDraft] = useState('');
+  const [resolvingThreadIds, setResolvingThreadIds] = useState({});
+  const threadContainerRefs = useRef(new Map());
+  const prevThreadTopByIdRef = useRef(new Map());
 
   useEffect(() => {
     const hasReplyDraft = Object.values(replyByThread).some((value) =>
@@ -40,6 +45,39 @@ export function ThreadList({
     return () => onDraftStateChange(false);
   }, [replyByThread, editingCommentId, editingDraft, onDraftStateChange]);
 
+  useLayoutEffect(() => {
+    const nextThreadTopById = new Map();
+    threadContainerRefs.current.forEach((el, id) => {
+      if (!el || !el.isConnected) {
+        return;
+      }
+      nextThreadTopById.set(id, el.getBoundingClientRect().top);
+    });
+
+    const prevThreadTopById = prevThreadTopByIdRef.current;
+    nextThreadTopById.forEach((nextTop, id) => {
+      if (!prevThreadTopById.has(id)) {
+        return;
+      }
+      const el = threadContainerRefs.current.get(id);
+      if (!el) {
+        return;
+      }
+      const deltaY = prevThreadTopById.get(id) - nextTop;
+      if (Math.abs(deltaY) < 1) {
+        return;
+      }
+      el.style.transition = 'none';
+      el.style.transform = `translateY(${deltaY}px)`;
+      requestAnimationFrame(() => {
+        el.style.transition = 'transform 280ms ease';
+        el.style.transform = 'translateY(0)';
+      });
+    });
+
+    prevThreadTopByIdRef.current = nextThreadTopById;
+  }, [threads, draftInsertIndex, draftComposer]);
+
   if (threads.length === 0 && !draftComposer) {
     return (
       <p className="mt-3 rounded-md border border-border/60 bg-muted/30 px-3 py-2 text-sm text-muted-foreground">
@@ -48,14 +86,49 @@ export function ThreadList({
     );
   }
 
+  function markResolving(threadId, value) {
+    setResolvingThreadIds((prev) => {
+      if (value) {
+        return { ...prev, [threadId]: true };
+      }
+      const next = { ...prev };
+      delete next[threadId];
+      return next;
+    });
+  }
+
+  async function handleToggleResolved(thread) {
+    const nextStatus = thread.status === 'resolved' ? 'open' : 'resolved';
+    if (nextStatus === 'resolved') {
+      markResolving(thread.id, true);
+      await new Promise((resolve) => {
+        window.setTimeout(resolve, RESOLVE_EXIT_MS);
+      });
+    }
+    try {
+      await onToggleResolved(thread.id, nextStatus);
+    } finally {
+      markResolving(thread.id, false);
+    }
+  }
+
   return (
     <div className="mt-3 space-y-3">
       {threads.map((thread, idx) => (
-        <div key={thread.id}>
+        <div
+          key={thread.id}
+          ref={(node) => {
+            if (node) {
+              threadContainerRefs.current.set(thread.id, node);
+            } else {
+              threadContainerRefs.current.delete(thread.id);
+            }
+          }}
+        >
           {draftComposer && draftInsertIndex === idx && draftComposer}
-          <div
-            id={`annotation-thread-${thread.id}`}
-            className={`rounded-2xl p-3 shadow-sm transition-colors ${
+          {(() => {
+            const isResolving = Boolean(resolvingThreadIds[thread.id]);
+            const baseThreadClass = `rounded-2xl p-3 shadow-sm transition-all duration-300 ease-out motion-reduce:transition-none ${
               thread.status === 'resolved'
                 ? activeThreadId === thread.id
                   ? 'bg-gray-100 shadow-md dark:bg-gray-800'
@@ -63,7 +136,14 @@ export function ThreadList({
                 : activeThreadId === thread.id
                   ? 'bg-background shadow-md dark:bg-card'
                   : 'bg-muted/40 hover:bg-muted/55 dark:bg-muted/20 dark:hover:bg-muted/30'
-            }`}
+            }`;
+            const resolvingClass = isResolving
+              ? 'pointer-events-none opacity-0 -translate-x-2 scale-[0.98]'
+              : 'opacity-100 translate-x-0 scale-100';
+            return (
+          <div
+            id={`annotation-thread-${thread.id}`}
+            className={`${baseThreadClass} ${resolvingClass}`}
             onClick={() => {
               if (activeThreadId !== thread.id) {
                 onThreadFocus?.(thread);
@@ -120,12 +200,7 @@ export function ThreadList({
                                           ? t('annotations.reopen')
                                           : t('annotations.resolve')
                                       }
-                                      onClick={() =>
-                                        onToggleResolved(
-                                          thread.id,
-                                          thread.status === 'resolved' ? 'open' : 'resolved'
-                                        )
-                                      }
+                                      onClick={() => handleToggleResolved(thread)}
                                     >
                                       <Check className="h-5 w-5" strokeWidth={2.25} />
                                     </button>
@@ -221,6 +296,8 @@ export function ThreadList({
               );
             })()}
           </div>
+            );
+          })()}
         </div>
       ))}
       {draftComposer && (draftInsertIndex == null || draftInsertIndex >= threads.length) && draftComposer}
