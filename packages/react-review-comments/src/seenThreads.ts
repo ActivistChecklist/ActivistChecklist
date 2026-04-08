@@ -13,27 +13,59 @@ export function normalizeThreadUpdatedAt(value: unknown): string {
   return String(value).trim();
 }
 
+/** Case-insensitive trim match for `created_by` vs session author. */
+export function reviewCommentAuthorsMatch(a: string | undefined, b: string | undefined): boolean {
+  return (a || '').trim().toLowerCase() === (b || '').trim().toLowerCase();
+}
+
 /** Thread has activity the user has not acknowledged (localStorage seen map vs thread updated_at). */
 export function isThreadUnread(
-  thread: Pick<RrcThread, 'id' | 'updated_at' | 'updatedAt'>,
-  seenMap: Record<string, string>
+  thread: Pick<RrcThread, 'id' | 'updated_at' | 'updatedAt' | 'comments'>,
+  seenMap: Record<string, string>,
+  currentAuthor?: string
 ): boolean {
   const tu = normalizeThreadUpdatedAt(thread.updated_at ?? thread.updatedAt);
   if (!tu) {
     return false;
   }
   const seen = normalizeThreadUpdatedAt(seenMap[thread.id]);
-  return !seen || seen !== tu;
+  if (seen && seen === tu) {
+    return false;
+  }
+
+  const me = (currentAuthor || '').trim();
+  if (!me || !thread.comments?.length) {
+    return !seen || seen !== tu;
+  }
+
+  const commentsAfterSeen = thread.comments.filter((c) => {
+    const cat = normalizeThreadUpdatedAt(c.created_at ?? c.createdAt);
+    if (!cat) {
+      return false;
+    }
+    return !seen || cat > seen;
+  });
+
+  if (commentsAfterSeen.length === 0) {
+    return !seen || seen !== tu;
+  }
+
+  return commentsAfterSeen.some((c) => !reviewCommentAuthorsMatch(c.created_by, me));
 }
 
 /**
  * Comment is "new" if created after last seen stamp, or (first open of an unread thread) the latest comment.
+ * Never "new" for the current session author's own comments.
  */
 export function isCommentNewSinceSeen(
   comment: RrcComment,
   thread: RrcThread,
-  seenMap: Record<string, string>
+  seenMap: Record<string, string>,
+  currentAuthor?: string
 ): boolean {
+  if (currentAuthor && reviewCommentAuthorsMatch(comment.created_by, currentAuthor)) {
+    return false;
+  }
   const cAt = normalizeThreadUpdatedAt(comment.created_at ?? comment.createdAt);
   if (!cAt) {
     return false;
@@ -42,7 +74,7 @@ export function isCommentNewSinceSeen(
   if (lastSeen) {
     return cAt > lastSeen;
   }
-  if (!isThreadUnread(thread, seenMap)) {
+  if (!isThreadUnread(thread, seenMap, currentAuthor)) {
     return false;
   }
   let newestId = '';

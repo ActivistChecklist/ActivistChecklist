@@ -312,6 +312,7 @@ export async function listScopeOverview(scope: ReviewCommentsScope): Promise<
       status: unknown;
       updatedAt: unknown;
       commentCount: number;
+      lastCommentAuthor?: string;
     }>;
   }>
 > {
@@ -338,9 +339,19 @@ export async function listScopeOverview(scope: ReviewCommentsScope): Promise<
       ? await commentsColl.find({ thread_id: { $in: threadIds }, deleted_at: null }).toArray()
       : [];
   const commentCountByThreadId = new Map<string, number>();
+  /** Latest comment per thread by `created_at` (ISO string compare). */
+  const latestCommentByThreadId = new Map<string, { at: string; created_by: string }>();
   for (const comment of commentsRows) {
     const tid = comment.thread_id as string;
     commentCountByThreadId.set(tid, (commentCountByThreadId.get(tid) || 0) + 1);
+    const cat = String((comment as Record<string, unknown>).created_at ?? '');
+    const prev = latestCommentByThreadId.get(tid);
+    if (!prev || cat > prev.at) {
+      latestCommentByThreadId.set(tid, {
+        at: cat,
+        created_by: String((comment as Record<string, unknown>).created_by ?? ''),
+      });
+    }
   }
   const activeThreads = threadsRows.filter(
     (thread) => (commentCountByThreadId.get(thread.id as string) || 0) > 0
@@ -369,12 +380,17 @@ export async function listScopeOverview(scope: ReviewCommentsScope): Promise<
       threadCount: threads.length,
       commentCount,
       lastActivityAt,
-      threads: threads.map((thread) => ({
-        id: thread.id as string,
-        status: thread.status,
-        updatedAt: thread.updated_at,
-        commentCount: commentCountByThreadId.get(thread.id as string) || 0,
-      })),
+      threads: threads.map((thread) => {
+        const tid = thread.id as string;
+        const latest = latestCommentByThreadId.get(tid);
+        return {
+          id: tid,
+          status: thread.status,
+          updatedAt: thread.updated_at,
+          commentCount: commentCountByThreadId.get(tid) || 0,
+          ...(latest?.created_by ? { lastCommentAuthor: latest.created_by } : {}),
+        };
+      }),
     };
   });
 }

@@ -4,6 +4,7 @@ import {
   isCommentNewSinceSeen,
   isThreadUnread,
   loadSeenThreadMap,
+  reviewCommentAuthorsMatch,
   saveSeenThreadMap,
 } from './seenThreads';
 import type { RrcThread } from './types';
@@ -69,5 +70,35 @@ describe('isThreadUnread / isCommentNewSinceSeen', () => {
   it('isCommentNewSinceSeen picks newest comment when thread never seen', () => {
     expect(isCommentNewSinceSeen(baseThread.comments[0], baseThread, {})).toBe(false);
     expect(isCommentNewSinceSeen(baseThread.comments[1], baseThread, {})).toBe(true);
+  });
+
+  it('does not treat own comments as new when currentAuthor matches created_by', () => {
+    const seen = { th1: '2024-01-01T00:00:00.000Z' };
+    expect(isCommentNewSinceSeen(baseThread.comments[1], baseThread, seen, 'b')).toBe(false);
+  });
+
+  it('isThreadUnread is false when only new activity is from currentAuthor', () => {
+    const mineOnly: RrcThread = {
+      id: 'th2',
+      quote_text: 'q',
+      comments: [
+        {
+          id: 'c1',
+          created_by: 'Me',
+          created_at: '2024-03-01T00:00:00.000Z',
+          body: 'solo',
+        },
+      ],
+      updated_at: '2024-03-01T00:00:00.000Z',
+    };
+    expect(isThreadUnread(mineOnly, {}, 'Me')).toBe(false);
+    expect(isThreadUnread(mineOnly, {}, 'Other')).toBe(true);
+  });
+});
+
+describe('reviewCommentAuthorsMatch', () => {
+  it('compares trimmed case-insensitively', () => {
+    expect(reviewCommentAuthorsMatch('  A  ', 'a')).toBe(true);
+    expect(reviewCommentAuthorsMatch('x', 'y')).toBe(false);
   });
 });

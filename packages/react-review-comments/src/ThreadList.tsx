@@ -18,10 +18,11 @@ const RESOLVE_EXIT_MS = 260;
 function threadCardClass(
   thread: RrcThread,
   activeThreadId: string,
-  seenMap: Record<string, string>
+  seenMap: Record<string, string>,
+  currentAuthor: string
 ): string {
   const parts = ['rrc-thread-card'];
-  if (isThreadUnread(thread, seenMap)) {
+  if (isThreadUnread(thread, seenMap, currentAuthor)) {
     parts.push('rrc-thread-card--unread');
   }
   const isActive = activeThreadId === thread.id;
@@ -49,9 +50,12 @@ export function ThreadList({
   draftInsertIndex,
   onThreadFocus,
   onReplyCancel,
+  currentAuthor,
 }: {
   threads: RrcThread[];
   locale: string;
+  /** Session author; own comments are not "new" / unread for styling. */
+  currentAuthor: string;
   seenMap: Record<string, string>;
   onReply: (args: {
     threadId: string;
@@ -125,7 +129,7 @@ export function ThreadList({
           {draftComposer && draftInsertIndex === idx && draftComposer}
           {(() => {
             const isResolving = Boolean(resolvingThreadIds[thread.id]);
-            const cardClass = threadCardClass(thread, activeThreadId, seenMap);
+            const cardClass = threadCardClass(thread, activeThreadId, seenMap, currentAuthor);
             return (
               <div
                 className={
@@ -162,7 +166,12 @@ export function ThreadList({
                           const createdAt = comment.created_at || comment.createdAt;
                           const showThreadActions = index === 0;
                           const isEditing = editingCommentId === comment.id;
-                          const isNewComment = isCommentNewSinceSeen(comment, thread, seenMap);
+                          const isNewComment = isCommentNewSinceSeen(
+                            comment,
+                            thread,
+                            seenMap,
+                            currentAuthor
+                          );
                           return (
                             <div
                               key={comment.id}

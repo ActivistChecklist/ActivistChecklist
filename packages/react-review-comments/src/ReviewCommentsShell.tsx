@@ -33,6 +33,7 @@ import {
   isThreadUnread,
   loadSeenThreadMap,
   normalizeThreadUpdatedAt,
+  reviewCommentAuthorsMatch,
   saveSeenThreadMap,
 } from './seenThreads';
 import { useSessionAuthor } from './sessionAuthor';
@@ -163,6 +164,7 @@ export default function ReviewCommentsShell({ children }: { children: ReactNode 
 
   const unreadByDocumentId = useMemo(() => {
     const output: Record<string, number> = {};
+    const me = author.trim();
     for (const doc of documentsWithComments) {
       output[doc.documentId] = doc.threads.reduce((count, thread) => {
         const seenUpdatedAt = normalizeThreadUpdatedAt(seenMap[thread.id]);
@@ -171,13 +173,20 @@ export default function ReviewCommentsShell({ children }: { children: ReactNode 
           return count;
         }
         if (!seenUpdatedAt || seenUpdatedAt !== threadUpdated) {
+          if (
+            me &&
+            thread.lastCommentAuthor &&
+            reviewCommentAuthorsMatch(thread.lastCommentAuthor, me)
+          ) {
+            return count;
+          }
           return count + 1;
         }
         return count;
       }, 0);
     }
     return output;
-  }, [documentsWithComments, seenMap]);
+  }, [documentsWithComments, seenMap, author]);
 
   const unreadTotal = useMemo(
     () =>
@@ -256,14 +265,14 @@ export default function ReviewCommentsShell({ children }: { children: ReactNode 
       panelUnreadAutoFocusDoneRef.current = true;
       return;
     }
-    const firstUnread = visibleThreads.find((t) => isThreadUnread(t, seenMap));
+    const firstUnread = visibleThreads.find((t) => isThreadUnread(t, seenMap, author));
     if (!firstUnread) {
       panelUnreadAutoFocusDoneRef.current = true;
       return;
     }
     setActiveThreadId(firstUnread.id);
     panelUnreadAutoFocusDoneRef.current = true;
-  }, [enabled, isPanelExpanded, visibleThreads, seenMap, activeThreadId]);
+  }, [enabled, isPanelExpanded, visibleThreads, seenMap, activeThreadId, author]);
 
   useEffect(() => {
     if (isInteracting || selectedQuote) {
@@ -696,6 +705,7 @@ export default function ReviewCommentsShell({ children }: { children: ReactNode 
           <ThreadList
             threads={visibleThreads}
             locale={locale}
+            currentAuthor={author}
             seenMap={seenMap}
             activeThreadId={activeThreadId}
             onThreadFocus={(thread) => {

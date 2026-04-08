@@ -131,6 +131,8 @@ export interface OverviewDocument {
     status?: string;
     updatedAt?: Date | string;
     commentCount: number;
+    /** Author of the latest comment (for unread vs own-reply heuristics). */
+    lastCommentAuthor?: string;
   }>;
 }
 
