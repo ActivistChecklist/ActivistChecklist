@@ -53,10 +53,6 @@ export async function ensureAnnotationSchema(): Promise<void> {
     { scope_key: 1, site_path: 1, locale: 1 },
     { unique: true, name: 'uniq_scope_path_locale' }
   );
-  await documents.createIndex(
-    { repo_full_name: 1, pr_number: 1, deployment_key: 1 },
-    { name: 'idx_documents_scope' }
-  );
 
   await threads.createIndex({ document_id: 1, created_at: 1 }, { name: 'idx_threads_document_created' });
   await threads.createIndex({ updated_at: -1 }, { name: 'idx_threads_updated' });

@@ -5,7 +5,6 @@ export const ANNOTATION_MAX_QUOTE_LEN = 10000;
 const MAX_QUOTE_LEN = ANNOTATION_MAX_QUOTE_LEN;
 const MAX_COMMENT_LEN = 3000;
 const MAX_AUTHOR_LEN = 80;
-const MAX_SCOPE_LEN = 200;
 
 /** RFC 4122 UUID (any version), lowercase normalized for storage and comparison. */
 const UUID_RE =
@@ -122,30 +121,6 @@ export function sanitizeDocumentInput({
   const safeLocale = scrubText(locale, MAX_LOCALE_LEN);
   const safeHash = scrubText(contentHash || '', 128);
   return { path: safePath, locale: safeLocale, contentHash: safeHash };
-}
-
-export function sanitizeScopeInput({
-  scopeKey,
-  repoFullName,
-  prNumber,
-  deploymentKey,
-}: {
-  scopeKey: string;
-  repoFullName: string;
-  prNumber: string;
-  deploymentKey: string;
-}): {
-  scopeKey: string;
-  repoFullName: string;
-  prNumber: string;
-  deploymentKey: string;
-} {
-  return {
-    scopeKey: scrubText(scopeKey, MAX_SCOPE_LEN),
-    repoFullName: scrubText(repoFullName, MAX_SCOPE_LEN),
-    prNumber: scrubText(prNumber, 32),
-    deploymentKey: scrubText(deploymentKey, MAX_SCOPE_LEN),
-  };
 }
 
 export function sanitizeThreadInput({

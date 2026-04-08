@@ -4,12 +4,11 @@ import { useState, useEffect } from 'react';
 import { useReviewComments } from './context';
 import { annotationSubmitErrorMessage, isAnnotationDbError } from './annotationErrors';
 import { ComposerAuthorRow, GdocsCommentField } from './AnnotationCommentUi';
-import type { ReviewCommentsScope, RrcThread } from './types';
+import type { RrcThread } from './types';
 
 export function SelectionComposer({
   path,
   locale,
-  scope,
   author,
   updateAuthor,
   selectedQuote,
@@ -20,7 +19,6 @@ export function SelectionComposer({
 }: {
   path: string;
   locale: string;
-  scope: ReviewCommentsScope;
   author: string;
   updateAuthor: (next: string) => void;
   selectedQuote: string;
@@ -57,7 +55,6 @@ export function SelectionComposer({
       const response = await api.createThread({
         path,
         locale,
-        scope,
         quoteText,
         comment: comment.trim(),
         createdBy: author,

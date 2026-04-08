@@ -1,14 +1,11 @@
 import type { ReactNode } from 'react';
 
 /**
- * Stored on Mongo documents / threads. The stock API sets this from the request
- * `Host` / `X-Forwarded-Host` (see `scopeFromHost.ts`); legacy fields remain for schema compatibility.
+ * Partitions stored comments by site. The stock API sets `scopeKey` from the request
+ * `Host` / `X-Forwarded-Host` (see `scopeFromHost.ts`).
  */
 export interface ReviewCommentsScope {
   scopeKey: string;
-  repoFullName: string;
-  prNumber: string;
-  deploymentKey: string;
 }
 
 /** UI strings; function entries support i18n-style interpolation. */
@@ -63,6 +60,8 @@ export interface ReviewCommentsLabels {
   commentingAsCompact: (args: { author: string }) => string;
   show: string;
   hide: string;
+  /** Short label on comments newer than last-seen (e.g. ribbon on new reply). */
+  newCommentBadge: string;
 }
 
 export type PartialReviewCommentsLabels = Partial<ReviewCommentsLabels>;
@@ -90,7 +89,6 @@ export interface RrcThread {
 export interface CreateThreadPayload {
   path: string;
   locale: string;
-  scope: ReviewCommentsScope;
   quoteText: string;
   comment: string;
   createdBy: string;
@@ -102,26 +100,21 @@ export interface CreateCommentPayload {
   threadId: string;
   comment: string;
   createdBy: string;
-  scope: ReviewCommentsScope;
 }
 
 export interface ReviewCommentsApi {
-  fetchThreads: (args: {
-    path: string;
-    locale: string;
-    scope: ReviewCommentsScope;
-  }) => Promise<{ document: unknown; threads: RrcThread[]; dbOffline?: boolean }>;
+  fetchThreads: (args: { path: string; locale: string }) => Promise<{
+    document: unknown;
+    threads: RrcThread[];
+    dbOffline?: boolean;
+  }>;
   fetchOverview: () => Promise<{
     documents: OverviewDocument[];
     dbOffline?: boolean;
   }>;
   createThread: (payload: CreateThreadPayload) => Promise<{ thread: RrcThread }>;
   createComment: (payload: CreateCommentPayload) => Promise<{ comment: RrcComment }>;
-  patchThreadStatus: (
-    threadId: string,
-    status: string,
-    scope: ReviewCommentsScope
-  ) => Promise<{ thread: unknown }>;
+  patchThreadStatus: (threadId: string, status: string) => Promise<{ thread: unknown }>;
   patchComment: (commentId: string, comment: string) => Promise<{ comment: RrcComment }>;
   deleteComment: (commentId: string) => Promise<unknown>;
 }

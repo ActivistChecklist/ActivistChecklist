@@ -20,7 +20,8 @@ function mergeLabels(overrides: PartialReviewCommentsLabels | undefined): Review
   return { ...defaultReviewCommentsLabels, ...overrides };
 }
 
-export function ReviewCommentsProvider({
+/** Context + API only. Prefer the package `ReviewCommentsProvider` in apps (includes shell + styles). */
+export function ReviewCommentsContextProvider({
   children,
   apiBase,
   enabled,
@@ -32,12 +33,7 @@ export function ReviewCommentsProvider({
   const labels = useMemo(() => mergeLabels(labelsOverride), [labelsOverride]);
   const normalizedBase = String(apiBase || '/api/review-comments').replace(/\/$/, '');
   const api = useMemo(() => createReviewCommentsApi(normalizedBase), [normalizedBase]);
-  const defaultScope: ReviewCommentsScope = {
-    scopeKey: 'unknown',
-    repoFullName: 'unknown',
-    prNumber: 'unknown',
-    deploymentKey: 'unknown',
-  };
+  const defaultScope: ReviewCommentsScope = { scopeKey: 'unknown' };
   const value = useMemo(
     () => ({
       api,
@@ -59,7 +55,9 @@ export function ReviewCommentsProvider({
 export function useReviewComments(): ReviewCommentsContextValue {
   const ctx = useContext(ReviewCommentsContext);
   if (!ctx) {
-    throw new Error('useReviewComments must be used within ReviewCommentsProvider');
+    throw new Error(
+      'useReviewComments must be used within ReviewCommentsContextProvider (or ReviewCommentsProvider)'
+    );
   }
   return ctx;
 }

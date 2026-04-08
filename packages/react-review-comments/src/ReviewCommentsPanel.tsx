@@ -12,14 +12,14 @@ import { useReviewComments } from './context';
 import { withLocalePath } from './annotationPaths';
 import type { OverviewDocument } from './types';
 
-/** Matches .rrc-aside: distance from viewport top to bottom margin (scrollable panel fill). */
+/** Matches expanded .rrc-aside: distance from viewport top to bottom margin (scrollable panel fill). */
 function viewportPanelHeightCapPx(aside: HTMLElement | null): number {
   if (typeof window === 'undefined') {
     return 900;
   }
   const vh = window.innerHeight;
   const topPx =
-    aside instanceof HTMLElement ? aside.getBoundingClientRect().top : vh * 0.25;
+    aside instanceof HTMLElement ? aside.getBoundingClientRect().top : 16;
   const bottomMarginPx = 16;
   return Math.max(240, Math.floor(vh - topPx - bottomMarginPx));
 }
@@ -98,6 +98,8 @@ export type ReviewCommentsPanelProps = {
   isPanelExpanded: boolean;
   onExpand: () => void;
   onCollapse: () => void;
+  /** True while overview fetch is in flight (avoid showing "0 comments" in the collapsed badge). */
+  badgeCountsLoading: boolean;
   unreadTotal: number;
   totalThreads: number;
   documentsWithComments: OverviewDocument[];
@@ -117,6 +119,7 @@ export const ReviewCommentsPanel = forwardRef<HTMLElement, ReviewCommentsPanelPr
       isPanelExpanded,
       onExpand,
       onCollapse,
+      badgeCountsLoading,
       unreadTotal,
       totalThreads,
       documentsWithComments,
@@ -134,18 +137,28 @@ export const ReviewCommentsPanel = forwardRef<HTMLElement, ReviewCommentsPanelPr
     const { labels } = useReviewComments();
 
     return (
-      <aside ref={ref} className="rrc-root rrc-aside">
+      <aside
+        ref={ref}
+        className={`rrc-root rrc-aside ${isPanelExpanded ? 'rrc-aside--expanded' : 'rrc-aside--collapsed'}`}
+      >
         {!isPanelExpanded && (
           <button
             type="button"
+            aria-busy={badgeCountsLoading}
             className={
-              unreadTotal > 0 ? 'rrc-panel-collapsed rrc-panel-collapsed--unread' : 'rrc-panel-collapsed'
+              !badgeCountsLoading && unreadTotal > 0
+                ? 'rrc-panel-collapsed rrc-panel-collapsed--unread'
+                : 'rrc-panel-collapsed'
             }
             onClick={onExpand}
           >
-            {unreadTotal > 0
-              ? labels.collapsedUnreadBadge({ unread: unreadTotal, total: totalThreads })
-              : labels.collapsedBadge({ count: totalThreads })}
+            {badgeCountsLoading ? (
+              <span className="rrc-collapsed-count-skeleton" aria-hidden="true" />
+            ) : unreadTotal > 0 ? (
+              labels.collapsedUnreadBadge({ unread: unreadTotal, total: totalThreads })
+            ) : (
+              labels.collapsedBadge({ count: totalThreads })
+            )}
           </button>
         )}
 
@@ -156,8 +169,16 @@ export const ReviewCommentsPanel = forwardRef<HTMLElement, ReviewCommentsPanelPr
                 <div className="rrc-truncate">
                   <h2 className="rrc-panel-title">{labels.prOverviewTitle}</h2>
                   <p className="rrc-panel-sub">
-                    <span>{labels.threadCount({ count: totalThreads })}</span>
-                    {unreadTotal > 0 && <span>· {labels.unreadBadge({ count: unreadTotal })}</span>}
+                    <span>
+                      {badgeCountsLoading ? (
+                        <span className="rrc-panel-count-skeleton" aria-hidden="true" />
+                      ) : (
+                        labels.threadCount({ count: totalThreads })
+                      )}
+                    </span>
+                    {!badgeCountsLoading && unreadTotal > 0 && (
+                      <span>· {labels.unreadBadge({ count: unreadTotal })}</span>
+                    )}
                     {resolvedCount > 0 && (
                       <button type="button" className="rrc-link-btn" onClick={onToggleResolved}>
                         {showResolved

@@ -1,5 +1,3 @@
-import type { ReviewCommentsScope } from '../src/types';
-
 const TRUE_VALUES = new Set(['1', 'true', 'yes', 'on']);
 
 function isTrue(value: string | undefined): boolean {
@@ -23,11 +21,6 @@ export function isReviewCommentsEnabled(env: NodeJS.ProcessEnv = process.env): b
 export interface ReviewCommentsRuntimeConfig {
   enabled: boolean;
   publicReadWrite: boolean;
-  /**
-   * Optional legacy override. The stock API handler partitions by the incoming request
-   * `Host` / `X-Forwarded-Host` instead (see `src/scopeFromHost.ts`).
-   */
-  scope?: ReviewCommentsScope;
 }
 
 /**

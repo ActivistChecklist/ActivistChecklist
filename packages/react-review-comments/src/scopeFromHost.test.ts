@@ -6,9 +6,7 @@ describe('reviewCommentsScopeFromHostHeader', () => {
     const prod = reviewCommentsScopeFromHostHeader('www.example.com');
     const preview = reviewCommentsScopeFromHostHeader('my-app-git-abc.vercel.app');
     expect(prod.scopeKey).not.toBe(preview.scopeKey);
-    expect(prod.repoFullName).toBe(prod.scopeKey);
-    expect(prod.prNumber).toBe('default');
-    expect(prod.deploymentKey).toBe('default');
+    expect(Object.keys(prod)).toEqual(['scopeKey']);
   });
 
   it('normalizes host to lowercase and trims', () => {
@@ -21,7 +19,6 @@ describe('reviewCommentsScopeFromHostHeader', () => {
   it('returns unknown scope when host is missing', () => {
     const u = reviewCommentsScopeFromHostHeader(null);
     expect(u.scopeKey).toBe('unknown');
-    expect(u.repoFullName).toBe('unknown');
   });
 });
 

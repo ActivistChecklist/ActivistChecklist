@@ -1,6 +1,6 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { render, waitFor } from '@testing-library/react';
-import { ReviewCommentsProvider } from './context';
+import { ReviewCommentsContextProvider } from './context';
 import ReviewCommentsShell from './ReviewCommentsShell';
 import type { ReviewCommentsScope } from './types';
 
@@ -12,12 +12,7 @@ vi.mock('@recogito/react-text-annotator', () => ({
   TextAnnotator: ({ children }: { children: React.ReactNode }) => <div data-mock="text-annotator">{children}</div>,
 }));
 
-const scope: ReviewCommentsScope = {
-  scopeKey: 'www.example.com',
-  repoFullName: 'www.example.com',
-  prNumber: 'default',
-  deploymentKey: 'default',
-};
+const scope: ReviewCommentsScope = { scopeKey: 'www.example.com' };
 
 function mockFetchThreadsAndOverview() {
   return vi.spyOn(globalThis, 'fetch').mockImplementation((input) => {
@@ -41,7 +36,7 @@ describe('ReviewCommentsShell — enabled flag', () => {
 
   it('when disabled, does not mount the comments panel (no .rrc-aside)', () => {
     const { container } = render(
-      <ReviewCommentsProvider
+      <ReviewCommentsContextProvider
         apiBase="/api/review-comments"
         enabled={false}
         path="/guide/"
@@ -51,7 +46,7 @@ describe('ReviewCommentsShell — enabled flag', () => {
         <ReviewCommentsShell>
           <main data-testid="body">Article</main>
         </ReviewCommentsShell>
-      </ReviewCommentsProvider>
+      </ReviewCommentsContextProvider>
     );
 
     expect(container.querySelector('[data-testid="body"]')).toBeTruthy();
@@ -63,7 +58,7 @@ describe('ReviewCommentsShell — enabled flag', () => {
     mockFetchThreadsAndOverview();
 
     const { container } = render(
-      <ReviewCommentsProvider
+      <ReviewCommentsContextProvider
         apiBase="/api/review-comments"
         enabled
         path="/guide/"
@@ -73,7 +68,7 @@ describe('ReviewCommentsShell — enabled flag', () => {
         <ReviewCommentsShell>
           <main>Article</main>
         </ReviewCommentsShell>
-      </ReviewCommentsProvider>
+      </ReviewCommentsContextProvider>
     );
 
     await waitFor(() => {

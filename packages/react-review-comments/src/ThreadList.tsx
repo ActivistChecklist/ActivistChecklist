@@ -11,11 +11,19 @@ import {
 } from './AnnotationCommentUi';
 import { ThreadReplyComposer } from './ThreadReplyComposer';
 import type { RrcThread } from './types';
+import { isCommentNewSinceSeen, isThreadUnread } from './seenThreads';
 
 const RESOLVE_EXIT_MS = 260;
 
-function threadCardClass(thread: RrcThread, activeThreadId: string): string {
+function threadCardClass(
+  thread: RrcThread,
+  activeThreadId: string,
+  seenMap: Record<string, string>
+): string {
   const parts = ['rrc-thread-card'];
+  if (isThreadUnread(thread, seenMap)) {
+    parts.push('rrc-thread-card--unread');
+  }
   const isActive = activeThreadId === thread.id;
   if (thread.status === 'resolved') {
     parts.push('rrc-thread-card--resolved');
@@ -29,6 +37,7 @@ function threadCardClass(thread: RrcThread, activeThreadId: string): string {
 export function ThreadList({
   threads,
   locale,
+  seenMap,
   onReply,
   onToggleResolved,
   onEditComment,
@@ -43,6 +52,7 @@ export function ThreadList({
 }: {
   threads: RrcThread[];
   locale: string;
+  seenMap: Record<string, string>;
   onReply: (args: {
     threadId: string;
     comment: string;
@@ -115,7 +125,7 @@ export function ThreadList({
           {draftComposer && draftInsertIndex === idx && draftComposer}
           {(() => {
             const isResolving = Boolean(resolvingThreadIds[thread.id]);
-            const cardClass = threadCardClass(thread, activeThreadId);
+            const cardClass = threadCardClass(thread, activeThreadId, seenMap);
             return (
               <div
                 className={
@@ -152,8 +162,13 @@ export function ThreadList({
                           const createdAt = comment.created_at || comment.createdAt;
                           const showThreadActions = index === 0;
                           const isEditing = editingCommentId === comment.id;
+                          const isNewComment = isCommentNewSinceSeen(comment, thread, seenMap);
                           return (
-                            <div key={comment.id} className="rrc-comment-row">
+                            <div
+                              key={comment.id}
+                              className={`rrc-comment-row${isNewComment ? ' rrc-comment-row--new' : ''}`}
+                              data-new-comment={isNewComment ? 'true' : undefined}
+                            >
                               <UserAvatar name={comment.created_by} size="md" />
                               <div className="rrc-comment-body">
                                 <div className="rrc-comment-meta">
@@ -161,9 +176,14 @@ export function ThreadList({
                                     <p className="rrc-comment-author">
                                       {comment.created_by}
                                     </p>
-                                    <p className="rrc-comment-time">
-                                      {formatCommentTime(createdAt, locale, labels)}
-                                    </p>
+                                    <div className="rrc-comment-time-line">
+                                      <p className="rrc-comment-time">
+                                        {formatCommentTime(createdAt, locale, labels)}
+                                      </p>
+                                      {isNewComment && (
+                                        <span className="rrc-new-comment-badge">{labels.newCommentBadge}</span>
+                                      )}
+                                    </div>
                                   </div>
                                   <div className="rrc-thread-actions">
                                     {showThreadActions && (

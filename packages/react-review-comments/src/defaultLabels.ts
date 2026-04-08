@@ -55,4 +55,5 @@ export const defaultReviewCommentsLabels: ReviewCommentsLabels = {
   commentingAsCompact: ({ author }) => `As: ${author}`,
   show: 'Show',
   hide: 'Hide',
+  newCommentBadge: 'New',
 };

@@ -1,6 +1,14 @@
 'use client';
 
-import { useMemo, useState, useEffect, useLayoutEffect, useRef, type ReactNode } from 'react';
+import {
+  useMemo,
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useCallback,
+  type ReactNode,
+} from 'react';
 import { Annotorious } from '@annotorious/react';
 import { TextAnnotator } from '@recogito/react-text-annotator';
 import { useReviewComments } from './context';
@@ -21,7 +29,12 @@ import {
   setActiveHighlightInRoot,
 } from './highlightDom';
 import { ANNOTATION_MAX_QUOTE_LEN, normalizeQuoteMatchText } from '../shared/sanitize';
-import { loadSeenThreadMap, saveSeenThreadMap } from './seenThreads';
+import {
+  isThreadUnread,
+  loadSeenThreadMap,
+  normalizeThreadUpdatedAt,
+  saveSeenThreadMap,
+} from './seenThreads';
 import { useSessionAuthor } from './sessionAuthor';
 import type { OverviewDocument, RrcThread } from './types';
 
@@ -49,6 +62,10 @@ export default function ReviewCommentsShell({ children }: { children: ReactNode 
   const pendingQuoteRef = useRef('');
   const skipNextContentMouseUpRef = useRef(false);
   const lastAddCommentCommitAtRef = useRef<number | null>(null);
+  const overviewRouteRef = useRef<{ path: string; locale: string; scopeKey: string } | null>(null);
+  const panelUnreadAutoFocusDoneRef = useRef(false);
+  const prevActiveThreadIdForSeenRef = useRef('');
+  const [overviewCountsPending, setOverviewCountsPending] = useState(true);
   const { author, updateAuthor } = useSessionAuthor();
 
   useEffect(() => {
@@ -61,7 +78,7 @@ export default function ReviewCommentsShell({ children }: { children: ReactNode 
     }
     let cancelled = false;
     api
-      .fetchThreads({ path, locale, scope })
+      .fetchThreads({ path, locale })
       .then((response) => {
         if (!cancelled) {
           setThreads(response.threads || []);
@@ -75,8 +92,19 @@ export default function ReviewCommentsShell({ children }: { children: ReactNode 
 
   useEffect(() => {
     if (!enabled) {
+      overviewRouteRef.current = null;
+      setOverviewCountsPending(false);
       return;
     }
+    const sk = scope.scopeKey;
+    const prev = overviewRouteRef.current;
+    const routeChanged =
+      !prev || prev.path !== path || prev.locale !== locale || prev.scopeKey !== sk;
+    overviewRouteRef.current = { path, locale, scopeKey: sk };
+    if (routeChanged) {
+      setOverviewCountsPending(true);
+    }
+
     let cancelled = false;
     api
       .fetchOverview()
@@ -85,30 +113,48 @@ export default function ReviewCommentsShell({ children }: { children: ReactNode 
           setOverview(response.documents || []);
         }
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => {
+        if (!cancelled) {
+          setOverviewCountsPending(false);
+        }
+      });
     return () => {
       cancelled = true;
     };
   }, [api, enabled, path, locale, scope, threads.length]);
 
+  const markThreadSeen = useCallback(
+    (threadId: string, updatedAt: unknown) => {
+      const u = normalizeThreadUpdatedAt(updatedAt);
+      if (!u) {
+        return;
+      }
+      setSeenMap((prev) => {
+        if (normalizeThreadUpdatedAt(prev[threadId]) === u) {
+          return prev;
+        }
+        const next = { ...prev, [threadId]: u };
+        saveSeenThreadMap(scope, next);
+        return next;
+      });
+    },
+    [scope]
+  );
+
   useEffect(() => {
-    if (!enabled || threads.length === 0) {
+    const prev = prevActiveThreadIdForSeenRef.current;
+    if (prev === activeThreadId) {
       return;
     }
-    const nextSeenMap = { ...seenMap };
-    let changed = false;
-    for (const thread of threads) {
-      const updatedAt = String(thread.updated_at ?? thread.updatedAt ?? '');
-      if (nextSeenMap[thread.id] !== updatedAt) {
-        nextSeenMap[thread.id] = updatedAt;
-        changed = true;
+    if (prev) {
+      const t = threads.find((th) => th.id === prev);
+      if (t) {
+        markThreadSeen(prev, t.updated_at ?? t.updatedAt);
       }
     }
-    if (changed) {
-      setSeenMap(nextSeenMap);
-      saveSeenThreadMap(scope, nextSeenMap);
-    }
-  }, [enabled, threads, scope, seenMap]);
+    prevActiveThreadIdForSeenRef.current = activeThreadId;
+  }, [activeThreadId, threads, markThreadSeen]);
 
   const documentsWithComments = useMemo(
     () => overview.filter((doc) => doc.threadCount > 0),
@@ -119,8 +165,11 @@ export default function ReviewCommentsShell({ children }: { children: ReactNode 
     const output: Record<string, number> = {};
     for (const doc of documentsWithComments) {
       output[doc.documentId] = doc.threads.reduce((count, thread) => {
-        const seenUpdatedAt = seenMap[thread.id];
-        const threadUpdated = String(thread.updatedAt ?? '');
+        const seenUpdatedAt = normalizeThreadUpdatedAt(seenMap[thread.id]);
+        const threadUpdated = normalizeThreadUpdatedAt(thread.updatedAt);
+        if (!threadUpdated) {
+          return count;
+        }
         if (!seenUpdatedAt || seenUpdatedAt !== threadUpdated) {
           return count + 1;
         }
@@ -188,6 +237,35 @@ export default function ReviewCommentsShell({ children }: { children: ReactNode 
   const isPanelExpanded = manualExpanded;
 
   useEffect(() => {
+    if (!isPanelExpanded) {
+      panelUnreadAutoFocusDoneRef.current = false;
+    }
+  }, [isPanelExpanded]);
+
+  useEffect(() => {
+    if (!enabled || !isPanelExpanded) {
+      return;
+    }
+    if (!visibleThreads.length) {
+      return;
+    }
+    if (panelUnreadAutoFocusDoneRef.current) {
+      return;
+    }
+    if (activeThreadId && visibleThreads.some((t) => t.id === activeThreadId)) {
+      panelUnreadAutoFocusDoneRef.current = true;
+      return;
+    }
+    const firstUnread = visibleThreads.find((t) => isThreadUnread(t, seenMap));
+    if (!firstUnread) {
+      panelUnreadAutoFocusDoneRef.current = true;
+      return;
+    }
+    setActiveThreadId(firstUnread.id);
+    panelUnreadAutoFocusDoneRef.current = true;
+  }, [enabled, isPanelExpanded, visibleThreads, seenMap, activeThreadId]);
+
+  useEffect(() => {
     if (isInteracting || selectedQuote) {
       setManualExpanded(true);
     }
@@ -217,13 +295,14 @@ export default function ReviewCommentsShell({ children }: { children: ReactNode 
       setShowResolved(thread.status === 'resolved');
       setActiveThreadId(thread.id);
       setManualExpanded(true);
+      markThreadSeen(thread.id, thread.updated_at ?? thread.updatedAt);
     });
     setThreadOrderById(nextOrderById);
     return () => {
       clearDraftQuoteHighlights(root);
       clearThreadHighlights(root);
     };
-  }, [enabled, threads]);
+  }, [enabled, threads, markThreadSeen]);
 
   useLayoutEffect(() => {
     if (!enabled) {
@@ -275,11 +354,20 @@ export default function ReviewCommentsShell({ children }: { children: ReactNode 
     if (!activeThreadId || !isPanelExpanded) {
       return;
     }
-    const target = document.getElementById(`rrc-thread-${activeThreadId}`);
-    if (target) {
-      target.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-    }
-  }, [activeThreadId, isPanelExpanded, showResolved, visibleThreads.length]);
+    const raf = requestAnimationFrame(() => {
+      const threadEl = document.getElementById(`rrc-thread-${activeThreadId}`);
+      if (!threadEl) {
+        return;
+      }
+      const newRow = threadEl.querySelector('.rrc-comment-row--new');
+      if (newRow instanceof HTMLElement) {
+        newRow.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        return;
+      }
+      threadEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [activeThreadId, isPanelExpanded, showResolved, visibleThreads.length, seenMap]);
 
   useEffect(() => {
     if (!activeThreadId) {
@@ -320,20 +408,7 @@ export default function ReviewCommentsShell({ children }: { children: ReactNode 
     };
   }, []);
 
-  if (!enabled) {
-    return children;
-  }
-
-  function handleCollapsePanel() {
-    setManualExpanded(false);
-    setSelectedQuote('');
-    setSelectionPrompt(null);
-    if (typeof window !== 'undefined') {
-      window.getSelection()?.removeAllRanges();
-    }
-  }
-
-  function commitSelectionFromPrompt() {
+  const commitSelectionFromPrompt = useCallback(() => {
     const q = pendingQuoteRef.current;
     if (!q) {
       return;
@@ -348,6 +423,63 @@ export default function ReviewCommentsShell({ children }: { children: ReactNode 
     setManualExpanded(true);
     setSelectionPrompt(null);
     pendingQuoteRef.current = '';
+    if (typeof window !== 'undefined') {
+      window.getSelection()?.removeAllRanges();
+    }
+  }, []);
+
+  const [addCommentShortcutHint, setAddCommentShortcutHint] = useState('');
+
+  useEffect(() => {
+    if (typeof navigator === 'undefined') {
+      return;
+    }
+    setAddCommentShortcutHint(
+      /Mac|iPhone|iPad|iPod/.test(navigator.platform) ? '⌥M' : 'Alt+M'
+    );
+  }, []);
+
+  useEffect(() => {
+    if (!enabled || !selectionPrompt) {
+      return undefined;
+    }
+    function onKeyDown(e: KeyboardEvent) {
+      /* `code` avoids macOS Option+M producing a non-`m` `key` value. */
+      if (e.code !== 'KeyM') {
+        return;
+      }
+      if (!e.altKey || e.metaKey || e.ctrlKey || e.shiftKey) {
+        return;
+      }
+      const t = e.target;
+      if (t instanceof HTMLElement) {
+        const tag = t.tagName;
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || t.isContentEditable) {
+          return;
+        }
+      }
+      e.preventDefault();
+      e.stopPropagation();
+      commitSelectionFromPrompt();
+    }
+    window.addEventListener('keydown', onKeyDown, true);
+    return () => window.removeEventListener('keydown', onKeyDown, true);
+  }, [enabled, selectionPrompt, commitSelectionFromPrompt]);
+
+  if (!enabled) {
+    return children;
+  }
+
+  function handleCollapsePanel() {
+    if (activeThreadId) {
+      const t = threads.find((th) => th.id === activeThreadId);
+      if (t) {
+        markThreadSeen(activeThreadId, t.updated_at ?? t.updatedAt);
+      }
+    }
+    setManualExpanded(false);
+    setSelectedQuote('');
+    setSelectionPrompt(null);
     if (typeof window !== 'undefined') {
       window.getSelection()?.removeAllRanges();
     }
@@ -521,7 +653,11 @@ export default function ReviewCommentsShell({ children }: { children: ReactNode 
   }, [selectionPrompt]);
 
   const showEmptyHint =
-    totalThreads === 0 && threads.length === 0 && !selectedQuote && !selectionPrompt;
+    !overviewCountsPending &&
+    totalThreads === 0 &&
+    threads.length === 0 &&
+    !selectedQuote &&
+    !selectionPrompt;
 
   return (
     <Annotorious>
@@ -545,6 +681,7 @@ export default function ReviewCommentsShell({ children }: { children: ReactNode 
           isPanelExpanded={isPanelExpanded}
           onExpand={() => setManualExpanded(true)}
           onCollapse={handleCollapsePanel}
+          badgeCountsLoading={overviewCountsPending}
           unreadTotal={unreadTotal}
           totalThreads={totalThreads}
           documentsWithComments={documentsWithComments}
@@ -559,6 +696,7 @@ export default function ReviewCommentsShell({ children }: { children: ReactNode 
           <ThreadList
             threads={visibleThreads}
             locale={locale}
+            seenMap={seenMap}
             activeThreadId={activeThreadId}
             onThreadFocus={(thread) => {
               setSelectedQuote('');
@@ -567,7 +705,7 @@ export default function ReviewCommentsShell({ children }: { children: ReactNode 
             }}
             onReplyCancel={() => setActiveThreadId('')}
             onReply={async ({ threadId, comment, clear }) => {
-              const response = await api.createComment({ threadId, comment, createdBy: author, scope });
+              const response = await api.createComment({ threadId, comment, createdBy: author });
               clear();
               setThreads((prev) =>
                 prev.map((thread) =>
@@ -575,6 +713,10 @@ export default function ReviewCommentsShell({ children }: { children: ReactNode 
                     ? { ...thread, comments: [...thread.comments, response.comment] }
                     : thread
                 )
+              );
+              markThreadSeen(
+                threadId,
+                response.comment.created_at ?? response.comment.createdAt ?? new Date().toISOString()
               );
             }}
             onEditComment={async ({ threadId, commentId, body }) => {
@@ -608,7 +750,7 @@ export default function ReviewCommentsShell({ children }: { children: ReactNode 
               );
             }}
             onToggleResolved={async (threadId, status) => {
-              await api.patchThreadStatus(threadId, status, scope);
+              await api.patchThreadStatus(threadId, status);
               setThreads((prev) =>
                 prev.map((thread) => (thread.id === threadId ? { ...thread, status } : thread))
               );
@@ -621,7 +763,6 @@ export default function ReviewCommentsShell({ children }: { children: ReactNode 
                 <SelectionComposer
                   path={path}
                   locale={locale}
-                  scope={scope}
                   author={author}
                   updateAuthor={updateAuthor}
                   selectedQuote={selectedQuote}
@@ -642,7 +783,10 @@ export default function ReviewCommentsShell({ children }: { children: ReactNode 
                       selection?.removeAllRanges();
                     }
                   }}
-                  onCreated={(thread) => setThreads((prev) => [...prev, thread])}
+                  onCreated={(thread) => {
+                    setThreads((prev) => [...prev, thread]);
+                    markThreadSeen(thread.id, thread.updated_at ?? thread.updatedAt);
+                  }}
                   onDraftStateChange={setSelectionDraftActive}
                 />
               ) : null
@@ -657,6 +801,11 @@ export default function ReviewCommentsShell({ children }: { children: ReactNode 
           >
             <button
               type="button"
+              aria-label={
+                addCommentShortcutHint
+                  ? `${labels.addComment} (${addCommentShortcutHint})`
+                  : labels.addComment
+              }
               onMouseDown={(event) => {
                 event.preventDefault();
                 event.stopPropagation();
@@ -664,6 +813,9 @@ export default function ReviewCommentsShell({ children }: { children: ReactNode 
               }}
             >
               {labels.addComment}
+              {addCommentShortcutHint ? (
+                <span className="rrc-selection-prompt-kbd"> {addCommentShortcutHint}</span>
+              ) : null}
             </button>
           </div>
         ) : null}

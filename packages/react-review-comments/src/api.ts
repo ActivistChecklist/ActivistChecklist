@@ -4,7 +4,6 @@ import type {
   CreateThreadPayload,
   OverviewDocument,
   ReviewCommentsApi,
-  ReviewCommentsScope,
   RrcComment,
   RrcThread,
 } from './types';
@@ -28,14 +27,10 @@ export function createReviewCommentsApi(apiBase: string): ReviewCommentsApi {
   const base = String(apiBase || '/api/review-comments').replace(/\/$/, '');
 
   const api: ReviewCommentsApi = {
-    async fetchThreads({ path, locale, scope }: { path: string; locale: string; scope: ReviewCommentsScope }) {
+    async fetchThreads({ path, locale }: { path: string; locale: string }) {
       const params = new URLSearchParams({
         path,
         locale,
-        scopeKey: scope.scopeKey,
-        repoFullName: scope.repoFullName,
-        prNumber: scope.prNumber,
-        deploymentKey: scope.deploymentKey,
       });
       const response = await fetch(`${base}?${params.toString()}`, {
         method: 'GET',
@@ -74,12 +69,12 @@ export function createReviewCommentsApi(apiBase: string): ReviewCommentsApi {
       return parseJson(response) as Promise<{ comment: RrcComment }>;
     },
 
-    async patchThreadStatus(threadId: string, status: string, scope: ReviewCommentsScope) {
+    async patchThreadStatus(threadId: string, status: string) {
       const response = await fetch(`${base}/threads/${encodeURIComponent(threadId)}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'same-origin',
-        body: JSON.stringify({ status, scope }),
+        body: JSON.stringify({ status }),
       });
       return parseJson(response) as Promise<{ thread: unknown }>;
     },

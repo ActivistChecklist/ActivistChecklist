@@ -2,10 +2,9 @@ export {
   reviewCommentsScopeFromHostHeader,
   reviewCommentsScopeFromRequest,
 } from './scopeFromHost';
-export { ReviewCommentsProvider, useReviewComments } from './context';
+export { ReviewCommentsContextProvider, useReviewComments } from './context';
+export { ReviewCommentsProvider } from './ReviewCommentsProvider';
 export { default as ReviewCommentsShell } from './ReviewCommentsShell';
-export { ReviewCommentsBoundary } from './ReviewCommentsBoundary';
-export type { ReviewCommentsBoundaryProps } from './ReviewCommentsBoundary';
 export { ReviewCommentsPanel } from './ReviewCommentsPanel';
 export { createReviewCommentsApi } from './api';
 export { defaultReviewCommentsLabels } from './defaultLabels';

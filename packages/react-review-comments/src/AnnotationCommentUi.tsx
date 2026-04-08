@@ -1,6 +1,14 @@
 'use client';
 
-import { useState, useEffect, useRef, useLayoutEffect, type ChangeEvent, type KeyboardEvent } from 'react';
+import {
+  Fragment,
+  useState,
+  useEffect,
+  useRef,
+  useLayoutEffect,
+  type ChangeEvent,
+  type KeyboardEvent,
+} from 'react';
 import { Check, MoreVertical, X } from 'lucide-react';
 import { useReviewComments } from './context';
 import type { ReviewCommentsLabels } from './types';
@@ -250,10 +258,18 @@ export function ExpandableCommentBody({ body }: { body?: string }) {
   const maxLen = 280;
   const isLong = text.length > maxLen;
   const visibleText = isLong && !expanded ? `${text.slice(0, maxLen)}...` : text;
+  const lines = visibleText.split('\n');
 
   return (
     <div style={{ marginTop: '0.375rem' }}>
-      <p className="rrc-expand-body">{visibleText}</p>
+      <p className="rrc-expand-body">
+        {lines.map((line, i) => (
+          <Fragment key={i}>
+            {line}
+            {i < lines.length - 1 ? <br /> : null}
+          </Fragment>
+        ))}
+      </p>
       {isLong && (
         <button
           type="button"

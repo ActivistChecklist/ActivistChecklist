@@ -9,17 +9,11 @@ function uuid(): string {
 
 export async function getOrCreateDocument({
   scopeKey,
-  repoFullName,
-  prNumber,
-  deploymentKey,
   path,
   locale,
   contentHash,
 }: {
   scopeKey: string;
-  repoFullName: string;
-  prNumber: string;
-  deploymentKey: string;
   path: string;
   locale: string;
   contentHash: string;
@@ -47,9 +41,6 @@ export async function getOrCreateDocument({
   const created = {
     id,
     scope_key: scopeKey,
-    repo_full_name: repoFullName,
-    pr_number: prNumber,
-    deployment_key: deploymentKey,
     site_path: path,
     locale,
     content_hash: contentHash || null,
@@ -153,9 +144,6 @@ async function assertThreadInScope(threadId: string, scope: ReviewCommentsScope)
   const doc = await docsColl.findOne({
     id: thread.document_id,
     scope_key: scope.scopeKey,
-    repo_full_name: scope.repoFullName,
-    pr_number: scope.prNumber,
-    deployment_key: scope.deploymentKey,
   });
   return Boolean(doc);
 }
@@ -213,9 +201,6 @@ async function getThreadIdForCommentInScope(
   const doc = await docsColl.findOne({
     id: thread.document_id,
     scope_key: scope.scopeKey,
-    repo_full_name: scope.repoFullName,
-    pr_number: scope.prNumber,
-    deployment_key: scope.deploymentKey,
   });
   return doc ? (comment.thread_id as string) : null;
 }
@@ -338,9 +323,6 @@ export async function listScopeOverview(scope: ReviewCommentsScope): Promise<
   const docsRows = await documents
     .find({
       scope_key: scope.scopeKey,
-      repo_full_name: scope.repoFullName,
-      pr_number: scope.prNumber,
-      deployment_key: scope.deploymentKey,
     })
     .sort({ site_path: 1 })
     .toArray();
