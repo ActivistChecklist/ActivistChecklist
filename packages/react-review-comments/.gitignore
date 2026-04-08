@@ -1,0 +1,15 @@
+# Dependencies (if tooling installs locally)
+node_modules/
+
+# Build / cache
+dist/
+build/
+*.tsbuildinfo
+.turbo/
+
+# Logs & OS noise
+*.log
+.DS_Store
+
+# Test / coverage
+coverage/
