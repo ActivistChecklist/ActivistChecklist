@@ -4,9 +4,10 @@ estimatedTime: 15 minutos
 excerpt: |
   Configura Signal para proteger tus mensajes y llamadas
 relatedGuides:
+  - essentials
   - protest
   - travel
-  - doxxing
+  - spyware
 firstPublished: 2025-01-27
 lastUpdated: 2026-04-03
 ---
@@ -24,6 +25,8 @@ Esta guía te ayuda a tomar el control de tus conversaciones privadas en [Signal
     <ChecklistItem slug="signal-enable-username" />
 
     <ChecklistItem slug="signal-link-previews" />
+
+    <ChecklistItem slug="signal-relay-calls" />
   </ChecklistItemGroup>
 </Section>
 
@@ -39,8 +42,6 @@ Esta guía te ayuda a tomar el control de tus conversaciones privadas en [Signal
 
     <ChecklistItem slug="signal-hide-calls-in-recent" />
 
-    <ChecklistItem slug="signal-relay-calls" />
-
     <ChecklistItem slug="signal-leave-extra-groups" />
 
     <ChecklistItem slug="signal-pin" />
@@ -55,6 +56,28 @@ Esta guía te ayuda a tomar el control de tus conversaciones privadas en [Signal
   </ChecklistItemGroup>
 </Section>
 
+<Section title="Asegura tu teléfono">
+  Signal es tan seguro como el teléfono en el que está instalado. Si tu dispositivo es confiscado o hackeado, la policía tiene herramientas forenses que pueden descifrar códigos de acceso débiles y extraer mensajes directamente de tu dispositivo. Estos pasos protegen tus mensajes de Signal a nivel del dispositivo.
+
+  <RiskLevel level="everyone" />
+
+  <ChecklistItemGroup>
+    <ChecklistItem slug="passcode" />
+
+    <ChecklistItem slug="phone-os-update" />
+
+    <ChecklistItem slug="biometrics-disable" />
+  </ChecklistItemGroup>
+</Section>
+
+<Section title="Protección adicional">
+  <RiskLevel level="medium" />
+
+  <ChecklistItemGroup>
+    <ChecklistItem slug="lockdown" />
+  </ChecklistItemGroup>
+</Section>
+
 <Section title="¿Han hackeado Signal? ¿Es seguro? ¿Es seguro?" slug="secure">
   Cada pocos meses vemos circular publicaciones que afirman que Signal no es seguro o que ha sido hackeado.
 
@@ -64,7 +87,7 @@ Esta guía te ayuda a tomar el control de tus conversaciones privadas en [Signal
 
   Hay riesgos al usar Signal, pero generalmente están relacionados con usarlo de forma segura, no con la tecnología en sí misma.
 
-  Por ejemplo, si alguien se infiltra en un grupo privado de Signal, podría tomar capturas de pantalla de todos los mensajes y publicarlos en línea.
+  Por ejemplo, si alguien se infiltra en un grupo privado de Signal, podría capturar pantallas de todos los mensajes y publicarlos en línea.
 
   También es posible que la policía confisque tu teléfono y lo desbloquee si tienes un código de acceso débil. Pero eso no es un fallo de Signal. Todos tus mensajes están disponibles si alguien tiene acceso físico a tu teléfono y puede desbloquearlo. Por eso recomendamos tener un [código de acceso fuerte](/essentials/) y [mantener siempre actualizado el sistema operativo de tu dispositivo](/essentials/).
 </Section>
