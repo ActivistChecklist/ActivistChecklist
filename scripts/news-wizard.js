@@ -23,7 +23,7 @@ const readline = require('readline');
 const { execFileSync } = require('child_process');
 const matter = require('gray-matter');
 const ogs = require('open-graph-scraper');
-const chalk = require('chalk').default;
+const chalk = require('chalk');
 
 const { loadNewsItems } = require('./fetch-news-images.js');
 
