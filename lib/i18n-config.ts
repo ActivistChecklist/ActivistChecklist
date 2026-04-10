@@ -1,1 +1,1 @@
-export { DEFAULT_LOCALE, LOCALES } from './i18n-config.mjs';
+export { DEFAULT_LOCALE, LOCALES, getIntlLocale } from './i18n-config.mjs';

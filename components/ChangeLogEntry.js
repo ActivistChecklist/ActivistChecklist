@@ -3,10 +3,14 @@ import React, { useState, useEffect } from 'react';
 import Markdown from '@/components/Markdown';
 import { cn, formatRelativeDate } from "@/lib/utils";
 import { IoStar } from 'react-icons/io5';
+import { useLocale } from 'next-intl';
+import { getIntlLocale } from '@/lib/i18n-config';
 
 const ChangeLogEntry = ({ entry }) => {
   const [entryDate, setEntryDate] = useState('');
   const [isClient, setIsClient] = useState(false);
+  const locale = useLocale();
+  const dateLocale = getIntlLocale(locale);
 
   if (!entry) {
     console.log('⚠️ ChangeLogEntry: entry is undefined. Skipping');
@@ -19,10 +23,9 @@ const ChangeLogEntry = ({ entry }) => {
   const hoverDate = new Date(dateString).toISOString().split('T')[0];
 
   useEffect(() => {
-    // Mark as client-side and format date
     setIsClient(true);
-    setEntryDate(formatRelativeDate(dateString));
-  }, [dateString]);
+    setEntryDate(formatRelativeDate(dateString, dateLocale));
+  }, [dateString, dateLocale]);
 
   // Show fallback date format during SSR/hydration
   const displayDate = isClient ? entryDate : hoverDate;

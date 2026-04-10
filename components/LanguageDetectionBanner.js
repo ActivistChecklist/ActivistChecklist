@@ -10,7 +10,6 @@ import {
   getDetectedLocaleFromNavigatorLanguage,
   shouldShowLanguageBanner,
 } from '@/lib/language-detection';
-import { isTranslationUiVisible } from '@/utils/core';
 import { Link, usePathname } from '@/i18n/navigation';
 
 export default function LanguageDetectionBanner() {
@@ -23,7 +22,7 @@ export default function LanguageDetectionBanner() {
   const availableLocales = Object.keys(LOCALES);
 
   useEffect(() => {
-    if (!isTranslationUiVisible || availableLocales.length <= 1) return;
+    if (availableLocales.length <= 1) return;
     if (locale !== DEFAULT_LOCALE) return;
 
     if (localStorage.getItem(LANGUAGE_BANNER_STORAGE_KEY)) return;
@@ -45,7 +44,6 @@ export default function LanguageDetectionBanner() {
   };
 
   if (
-    !isTranslationUiVisible ||
     !shouldShowLanguageBanner({
       currentLocale: locale,
       defaultLocale: DEFAULT_LOCALE,

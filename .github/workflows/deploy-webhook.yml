@@ -1,22 +1,27 @@
-name: Build and Deploy (via webhook)
+name: Deploy
 
 on:
   push:
     branches:
       - main
 
+# Optional: add repository secret HEALTHCHECKS_DEPLOY_PING_URL with your check's Ping URL
+# (from Healthchecks.io, e.g. https://hc-ping.com/...). On success we GET that URL; on
+# failure we POST to .../fail with the deploy step output (truncated to 100 kB).
+
 jobs:
   trigger_build_and_deploy_webhook:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger server deploy webhook
+        id: deploy
         env:
           DEPLOY_URL: https://activistchecklist.org/webhooks/deploy.php
           DEPLOY_SECRET: ${{ secrets.DEPLOY_SECRET }}
           REPO_FULL_NAME: ${{ github.repository }}
           REF: ${{ github.ref }}
         run: |
-          node - <<'NODE'
+          node - <<'NODE' 2>&1 | tee deploy-log.txt
           const crypto = require('crypto');
           const fs = require('fs');
           const os = require('os');
@@ -99,3 +104,38 @@ jobs:
             process.exit(1);
           }
           NODE
+
+      - name: Notify Healthchecks.io
+        if: always()
+        continue-on-error: true
+        env:
+          HEALTHCHECKS_DEPLOY_PING_URL: ${{ secrets.HEALTHCHECKS_DEPLOY_PING_URL }}
+          JOB_STATUS: ${{ job.status }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          if [ -z "$HEALTHCHECKS_DEPLOY_PING_URL" ]; then
+            echo 'Skipping Healthchecks: HEALTHCHECKS_DEPLOY_PING_URL secret is not set.'
+            exit 0
+          fi
+
+          BASE="${HEALTHCHECKS_DEPLOY_PING_URL%/}"
+
+          if [ "$JOB_STATUS" = 'success' ]; then
+            curl -fsS -m 30 --retry 3 "$BASE"
+            echo 'Healthchecks: success ping sent.'
+            exit 0
+          fi
+
+          # failure, cancelled, etc. — signal failure with logs (Healthchecks stores first 100 kB of body)
+          (
+            echo "job_status=${JOB_STATUS}"
+            echo "run_url=${RUN_URL}"
+            echo '--- deploy log ---'
+            if [ -f deploy-log.txt ]; then
+              cat deploy-log.txt
+            else
+              echo '(deploy-log.txt missing)'
+            fi
+          ) | head -c 100000 | curl -fsS -m 30 --retry 3 --data-binary @- "${BASE}/fail"
+
+          echo 'Healthchecks: failure ping sent with log excerpt.'

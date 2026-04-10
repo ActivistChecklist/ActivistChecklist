@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { IoCloudDownloadOutline, IoDocumentsOutline, IoOpenOutline } from 'react-icons/io5';
+import Link from '@/components/Link';
 import { trackFileDownload } from '@/lib/download-tracker';
 
 // Static registry of icons used in content. Add new icons here as needed.
@@ -41,8 +42,7 @@ export const ButtonEmbed = (props) => {
     (typeof hrefProp === 'string' ? hrefProp : null) ??
     (typeof urlLegacy === 'string' ? urlLegacy : null);
   const href = raw || '#';
-  const target = targetProp || (href.startsWith('http') ? '_blank' : undefined);
-  
+
   const iconElement = icon ? <DynamicIcon iconName={icon} /> : null;
   const position = iconPosition || 'left';
   
@@ -67,25 +67,30 @@ export const ButtonEmbed = (props) => {
     }
   };
   
+  const inner = (
+    <>
+      {iconElement && position === 'left' && iconElement}
+      {title}
+      {iconElement && position === 'right' && iconElement}
+    </>
+  );
+
   return (
     <div className={getAlignmentClass()}>
-      <Button 
+      <Button
         asChild
         variant={variant || 'default'}
         size={size || 'default'}
         className={className}
       >
-        <a 
+        <Link
           href={href}
-          target={target}
-          rel={target === '_blank' ? 'noopener noreferrer' : undefined}
           onClick={handleClick}
+          {...(targetProp ? { target: targetProp } : {})}
           {...(download && { download: '' })}
         >
-          {iconElement && position === 'left' && iconElement}
-          {title}
-          {iconElement && position === 'right' && iconElement}
-        </a>
+          {inner}
+        </Link>
       </Button>
     </div>
   );

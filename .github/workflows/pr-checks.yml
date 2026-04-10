@@ -1,4 +1,8 @@
-name: Run Tests and Static Build (for PRs)
+# Full suite: tests + static build (link checks run inside buildstatic).
+# Crowdin translation PRs (branch name l10n_*): only fast path checks — no test/build (saves CI and
+# those PRs are almost entirely translated JSON/MDX from Crowdin).
+
+name: Tests & Build (PRs)
 
 on:
   pull_request:
@@ -12,6 +16,7 @@ permissions:
 
 jobs:
   pr_checks:
+    if: ${{ !startsWith(github.head_ref, 'l10n_') }}
     runs-on: ubuntu-latest
     timeout-minutes: 25
 
@@ -48,3 +53,24 @@ jobs:
           BUILD_MODE: static
           NEXT_TELEMETRY_DISABLED: 1
         run: yarn buildstatic
+
+  pr_checks_l10n:
+    if: ${{ startsWith(github.head_ref, 'l10n_') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+
+      - name: Yarn install
+        run: yarn run install:ci
+
+      - name: Internal paths (trailing slashes)
+        run: yarn lint:paths

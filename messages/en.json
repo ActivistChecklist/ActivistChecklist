@@ -164,6 +164,22 @@
     "error": "Something went wrong",
     "viewChecklist": "View checklist"
   },
+  "search": {
+    "placeholder": "Search...",
+    "dialogTitle": "Search site content",
+    "dialogDescription": "Search across all pages and guides on this site",
+    "popularHeading": "Popular searches",
+    "topGuidesHeading": "Top guides",
+    "pressEnter": "Press <kbd>↵</kbd> to search",
+    "searching": "Searching...",
+    "noResults": "No results found for \"{query}\"",
+    "untitled": "Untitled",
+    "suggestion0": "phone security protest",
+    "suggestion1": "signal secure messaging",
+    "suggestion2": "location tracking",
+    "suggestion3": "passcode security",
+    "suggestion4": "high risk protection"
+  },
   "notFound": {
     "title": "Oops! This page doesn't exist",
     "backToHome": "Back to Home",
@@ -287,10 +303,15 @@
     "dialogTitle": "Send us a message",
     "successMessage": "Thanks for your feedback! We'll review it and use it to improve the guides. If you're finding the site valuable, please help spread the word!"
   },
+  "relatedGuides": {
+    "headingBlock": "Keep learning with these related guides",
+    "headingFooter": "If you found this helpful, also check out these guides"
+  },
   "checklists": {
     "title": "Checklists",
     "featured": "Featured Checklists",
-    "more": "More Checklists"
+    "more": "More Checklists",
+    "documentTitle": "Checklists | Activist Checklist"
   },
   "news": {
     "title": "Surveillance News",
@@ -298,7 +319,9 @@
     "tipInvitation": "Have news you think should be included?",
     "tipLink": "Send us a tip",
     "tipSuffix": "and help keep our community informed.",
-    "noItems": "No news items found."
+    "noItems": "No news items found.",
+    "paywallBypassNotice": "This link bypasses the paywall.",
+    "seeOriginal": "See original"
   },
   "changelog": {
     "title": "Recent site updates",

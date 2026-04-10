@@ -25,8 +25,8 @@ describe('buildHreflangAlternateRefs', () => {
     vi.unstubAllEnvs();
   });
 
-  it('emits en, es, and x-default when translation UI would show (non-production or env set)', () => {
-    vi.stubEnv('NODE_ENV', 'development');
+  it('emits en, es, and x-default (including in production)', () => {
+    vi.stubEnv('NODE_ENV', 'production');
     const refs = buildHreflangAlternateRefs('/signal/');
     expect(refs).toHaveLength(3);
     expect(refs.find((r) => r.hreflang === 'en').href).toBe(
@@ -38,22 +38,6 @@ describe('buildHreflangAlternateRefs', () => {
     expect(refs.find((r) => r.hreflang === 'x-default').href).toBe(
       'https://activistchecklist.org/signal/',
     );
-  });
-
-  it('omits es hreflang when production and NEXT_PUBLIC_SHOW_TRANSLATION_UI is not true', () => {
-    vi.stubEnv('NODE_ENV', 'production');
-    vi.stubEnv('NEXT_PUBLIC_SHOW_TRANSLATION_UI', '');
-    const refs = buildHreflangAlternateRefs('/signal/');
-    expect(refs).toHaveLength(2);
-    expect(refs.some((r) => r.hreflang === 'es')).toBe(false);
-    expect(refs.map((r) => r.hreflang).sort()).toEqual(['en', 'x-default']);
-  });
-
-  it('includes es in production when NEXT_PUBLIC_SHOW_TRANSLATION_UI=true', () => {
-    vi.stubEnv('NODE_ENV', 'production');
-    vi.stubEnv('NEXT_PUBLIC_SHOW_TRANSLATION_UI', 'true');
-    const refs = buildHreflangAlternateRefs('/signal/');
-    expect(refs.some((r) => r.hreflang === 'es')).toBe(true);
   });
 });
 

@@ -1,23 +1,9 @@
 /**
  * Extra sitemap fields for SEO: hreflang alternates (matches app alternate metadata)
  * and coarse priority / changefreq hints.
- *
- * Spanish URLs / `hreflang="es"` are omitted when translation UI is hidden — same rule as
- * `isTranslationUiVisible` in utils/core.js (`NEXT_PUBLIC_SHOW_TRANSLATION_UI`).
  */
 
 const SITE_URL = 'https://activistchecklist.org'.replace(/\/$/, '');
-
-/**
- * Mirrors utils/core.js — language switcher is off in production unless env is set.
- * @returns {boolean}
- */
-function isTranslationUiVisible() {
-  return (
-    process.env.NODE_ENV !== 'production' ||
-    process.env.NEXT_PUBLIC_SHOW_TRANSLATION_UI === 'true'
-  );
-}
 
 /**
  * @param {string} dedupeKey — trailing-slash path, may be `/es/...` or English canonical
@@ -49,15 +35,6 @@ function buildHreflangAlternateRefs(dedupeKey) {
     enPath === '/'
       ? `${SITE_URL}/`
       : `${SITE_URL}${enPath.endsWith('/') ? enPath : `${enPath}/`}`;
-
-  const base = [
-    { href: enUrl, hreflang: 'en', hrefIsAbsolute: true },
-    { href: enUrl, hreflang: 'x-default', hrefIsAbsolute: true },
-  ];
-
-  if (!isTranslationUiVisible()) {
-    return base;
-  }
 
   const esUrl =
     enPath === '/'
@@ -93,7 +70,6 @@ function seoPriorityAndChangefreq(dedupeKey) {
 module.exports = {
   SITE_URL,
   normalizeToEnCanonicalPath,
-  isTranslationUiVisible,
   buildHreflangAlternateRefs,
   seoPriorityAndChangefreq,
 };
