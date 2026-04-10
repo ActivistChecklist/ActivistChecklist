@@ -23,7 +23,7 @@ const readline = require('readline');
 const { execFileSync } = require('child_process');
 const matter = require('gray-matter');
 const ogs = require('open-graph-scraper');
-const chalk = require('chalk').default;
+const chalk = require('chalk');
 
 const { loadNewsItems } = require('./fetch-news-images.js');
 
@@ -270,15 +270,30 @@ async function resolveTagsWithTypoHints(rawTags, getRl) {
   return dedupeTagsCaseInsensitive(resolved);
 }
 
+const GIT_ENV = {
+  ...process.env,
+  GIT_TERMINAL_PROMPT: '0',
+  GIT_SSH_COMMAND: 'ssh -o ConnectTimeout=15 -o ServerAliveInterval=5 -o ServerAliveCountMax=2',
+};
+
 function git(args, options = {}) {
-  const output = execFileSync('git', args, {
-    encoding: 'utf8',
-    cwd: path.join(__dirname, '..'),
-    stdio: ['ignore', 'pipe', 'pipe'],
-    ...options,
-  });
-  if (typeof output === 'string') return output.trim();
-  return '';
+  const cmd = `git ${args.join(' ')}`;
+  console.error(`[git] ${cmd}`);
+  try {
+    const output = execFileSync('git', args, {
+      encoding: 'utf8',
+      cwd: path.join(__dirname, '..'),
+      stdio: ['ignore', 'pipe', 'inherit'],
+      env: GIT_ENV,
+      ...options,
+    });
+    if (typeof output === 'string') return output.trim();
+    return '';
+  } catch (err) {
+    const stderr = err.stderr ? err.stderr.trim() : '';
+    const detail = stderr || err.message || String(err);
+    throw new Error(`git command failed: ${cmd}\n  ${detail}`);
+  }
 }
 
 function tryGit(args, options = {}) {
@@ -429,7 +444,8 @@ function buildContentBranchName(slug) {
   let candidate = base;
   let n = 2;
   while (tryGit(['ls-remote', '--exit-code', '--heads', 'origin', `refs/heads/${candidate}`]).ok) {
-    candidate = `${base}-${n}`.slice(0, 120);
+    const suffix = `-${n}`;
+    candidate = `${base.slice(0, 120 - suffix.length)}${suffix}`;
     n += 1;
   }
   return candidate;
@@ -484,7 +500,7 @@ function transactionalCommitToContentBranch({ slug, mdxBody, articleTitle }) {
     git(['-C', worktreeDir, 'add', ...filesToCommit], { stdio: 'inherit' });
     const repoBin = path.join(repoNodeModules, '.bin');
     const commitEnv = {
-      ...process.env,
+      ...GIT_ENV,
       NODE_PATH: process.env.NODE_PATH
         ? `${repoNodeModules}${path.delimiter}${process.env.NODE_PATH}`
         : repoNodeModules,
