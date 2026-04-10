@@ -371,9 +371,10 @@ async function maybeCreatePullRequest(getRl, { branchName, articleTitle, article
   printGhIdentityBanner(auth);
   const line = await promptLine(
     getRl(),
-    'Create a pull request into main and enable auto-merge when checks pass? [y/N]: '
+    'Create a pull request into main and enable auto-merge when checks pass? [Y/n]: '
   );
-  const yes = /^y(es)?$/i.test(String(line || '').trim());
+  const answer = String(line || '').trim();
+  const yes = answer === '' || /^y(es)?$/i.test(answer);
   if (!yes) {
     console.log('Skipped PR creation.');
     return;
