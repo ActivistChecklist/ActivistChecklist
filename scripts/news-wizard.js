@@ -270,15 +270,30 @@ async function resolveTagsWithTypoHints(rawTags, getRl) {
   return dedupeTagsCaseInsensitive(resolved);
 }
 
+const GIT_ENV = {
+  ...process.env,
+  GIT_TERMINAL_PROMPT: '0',
+  GIT_SSH_COMMAND: 'ssh -o ConnectTimeout=15 -o ServerAliveInterval=5 -o ServerAliveCountMax=2',
+};
+
 function git(args, options = {}) {
-  const output = execFileSync('git', args, {
-    encoding: 'utf8',
-    cwd: path.join(__dirname, '..'),
-    stdio: ['ignore', 'pipe', 'pipe'],
-    ...options,
-  });
-  if (typeof output === 'string') return output.trim();
-  return '';
+  const cmd = `git ${args.join(' ')}`;
+  console.error(`[git] ${cmd}`);
+  try {
+    const output = execFileSync('git', args, {
+      encoding: 'utf8',
+      cwd: path.join(__dirname, '..'),
+      stdio: ['ignore', 'pipe', 'inherit'],
+      env: GIT_ENV,
+      ...options,
+    });
+    if (typeof output === 'string') return output.trim();
+    return '';
+  } catch (err) {
+    const stderr = err.stderr ? err.stderr.trim() : '';
+    const detail = stderr || err.message || String(err);
+    throw new Error(`git command failed: ${cmd}\n  ${detail}`);
+  }
 }
 
 function tryGit(args, options = {}) {
@@ -356,9 +371,10 @@ async function maybeCreatePullRequest(getRl, { branchName, articleTitle, article
   printGhIdentityBanner(auth);
   const line = await promptLine(
     getRl(),
-    'Create a pull request into main and enable auto-merge when checks pass? [y/N]: '
+    'Create a pull request into main and enable auto-merge when checks pass? [Y/n]: '
   );
-  const yes = /^y(es)?$/i.test(String(line || '').trim());
+  const answer = String(line || '').trim();
+  const yes = answer === '' || /^y(es)?$/i.test(answer);
   if (!yes) {
     console.log('Skipped PR creation.');
     return;
@@ -429,7 +445,8 @@ function buildContentBranchName(slug) {
   let candidate = base;
   let n = 2;
   while (tryGit(['ls-remote', '--exit-code', '--heads', 'origin', `refs/heads/${candidate}`]).ok) {
-    candidate = `${base}-${n}`.slice(0, 120);
+    const suffix = `-${n}`;
+    candidate = `${base.slice(0, 120 - suffix.length)}${suffix}`;
     n += 1;
   }
   return candidate;
@@ -484,7 +501,7 @@ function transactionalCommitToContentBranch({ slug, mdxBody, articleTitle }) {
     git(['-C', worktreeDir, 'add', ...filesToCommit], { stdio: 'inherit' });
     const repoBin = path.join(repoNodeModules, '.bin');
     const commitEnv = {
-      ...process.env,
+      ...GIT_ENV,
       NODE_PATH: process.env.NODE_PATH
         ? `${repoNodeModules}${path.delimiter}${process.env.NODE_PATH}`
         : repoNodeModules,
