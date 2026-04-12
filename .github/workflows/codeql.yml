@@ -1,0 +1,70 @@
+# Advanced CodeQL
+
+name: CodeQL
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: "25 2 * * 1"
+
+concurrency:
+  group: codeql-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+  security-events: write
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.name }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - codeql-language: javascript
+            name: javascript-typescript
+          - codeql-language: actions
+            name: actions
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.codeql-language }}
+
+      # Next.js: explicit install + build matches CI and gives CodeQL a reliable trace
+      # (generic Autobuild often misses Yarn/Node version from .nvmrc).
+      - name: Setup Node
+        if: matrix.codeql-language == 'javascript'
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+
+      - name: Install dependencies
+        if: matrix.codeql-language == 'javascript'
+        run: yarn run install:ci
+
+      # Invoke Next directly so package.json `postbuild` (sitemap/RSS) does not run in this job.
+      - name: Build application
+        if: matrix.codeql-language == 'javascript'
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+        run: ./node_modules/.bin/next build
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{ matrix.name }}"

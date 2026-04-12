@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Menu } from "lucide-react"
 import Search from "@/components/Search"
 import LanguageSwitcher from "@/components/LanguageSwitcher"
+import { DarkModeToggle } from "@/components/layout/DarkModeToggle"
 import { navigationConfig, isNavItemActive, isSubItemActive } from "@/config/navigation"
 import {
   NavigationMenu,
@@ -56,12 +57,19 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
     <>
       {/* If printing, show the logo */}
       <div className="hidden print:block print:relative">
-        <Image 
-          className="print:absolute print:top-0 print:right-0" 
-          src={navigationConfig.logo.image} 
-          alt={navigationConfig.logo.ariaLabel} 
-          width={250} 
-          height={20} 
+        <Image
+          className="print:absolute print:top-0 print:right-0 dark:hidden"
+          src={navigationConfig.logo.image}
+          alt={navigationConfig.logo.ariaLabel}
+          width={250}
+          height={20}
+        />
+        <Image
+          className="print:absolute print:top-0 print:right-0 hidden dark:block"
+          src="/images/logo-bg-white-transparent.png"
+          alt={navigationConfig.logo.ariaLabel}
+          width={250}
+          height={20}
         />
       </div>
       <header className={cn(
@@ -108,7 +116,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                             href={item.href || '#'} 
                             className={cn(
                               "block text-lg font-semibold pl-2 border-l-2 border-l-transparent hover:border-l-foreground/20",
-                              isNavItemActive(item, pathname) && "border-primary text-primary"
+                              isNavItemActive(item, pathname) && "border-link text-link"
                             )}
                           >
                             {item.label}
@@ -119,7 +127,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                               href={subItem.href}
                               className={cn(
                                 "flex items-center gap-2 pl-4 py-1 text-md border-l-2 border-l-transparent hover:border-l-foreground/20",
-                                isSubItemActive(subItem, pathname) && "border-primary font-bold text-primary"
+                                isSubItemActive(subItem, pathname) && "border-link font-bold text-link"
                               )}
                             >
                               {subItem.icon && <subItem.icon className="h-4 w-4" />}
@@ -146,6 +154,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                   </nav>
                   <div className="pt-4 border-t mt-4 flex items-center gap-2">
                     <Search variant="searchbar" />
+                    <DarkModeToggle />
                   </div>
                 </SheetContent>
               </Sheet>
@@ -154,7 +163,8 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                 className="flex items-center space-x-2 ml-0 font-bold text-xl" 
                 aria-label={navigationConfig.logo.ariaLabel}
               >
-                <Image src={navigationConfig.logo.image} alt={navigationConfig.logo.ariaLabel} width={250} height={20} />
+                <Image src={navigationConfig.logo.image} alt={navigationConfig.logo.ariaLabel} width={250} height={20} className="dark:hidden" />
+                <Image src="/images/logo-bg-white-transparent.png" alt={navigationConfig.logo.ariaLabel} width={250} height={20} className="hidden dark:block" />
               </Link>
             </div>
             <div className="flex items-center gap-4">
@@ -168,7 +178,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                             <NavigationMenuTrigger
                               className={cn(
                                 "px-4 py-2 h-auto",
-                                isNavItemActive(item, pathname) && "text-primary font-bold"
+                                isNavItemActive(item, pathname) && "text-link font-bold"
                               )}
                             >
                               {item.label}
@@ -186,7 +196,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                                       <Link
                                         href={subItem.href}
                                         className={cn(
-                                          "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-hidden transition-colors hover:bg-muted hover:text-primary focus:bg-muted focus:text-primary",
+                                          "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-hidden transition-colors hover:bg-muted hover:text-link focus:bg-muted focus:text-link",
                                           isSubItemActive(subItem, pathname) && "bg-muted"
                                         )}
                                       >
@@ -212,7 +222,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                                       <Link
                                         href={item.footerLink.href}
                                         className={cn(
-                                          "block select-none rounded-md p-2 no-underline outline-hidden transition-colors hover:bg-muted hover:text-primary focus:bg-muted focus:text-primary text-center",
+                                          "block select-none rounded-md p-2 no-underline outline-hidden transition-colors hover:bg-muted hover:text-link focus:bg-muted focus:text-link text-center",
                                           item.footerLink.type === "full-width" && item.items.length % 2 === 0 ? "bg-muted" : "bg-muted h-full flex items-center justify-center",
                                           item.footerLink.className
                                         )}
@@ -255,8 +265,8 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                     <social.icon className="h-5 w-5" aria-hidden="true" />
                   </a>
                 ))}
-                <LanguageSwitcher />
                 <Search variant="button" />
+                <LanguageSwitcher />
               </div>
             </div>
           </div>

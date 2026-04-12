@@ -9,8 +9,8 @@
 [![Deploy](https://github.com/ActivistChecklist/ActivistChecklist/actions/workflows/deploy-webhook.yml/badge.svg)](https://github.com/ActivistChecklist/ActivistChecklist/actions/workflows/deploy-webhook.yml)
 [![Healthchecks](https://healthchecks.io/badge/48683141-3e2b-4da2-a269-5d8293/cxb5iwnK-2.svg)](https://healthchecks.io/)
 [![Crowdin](https://badges.crowdin.net/activistchecklist/localized.svg)](https://crowdin.com/project/activistchecklist)
-[![GPL-3.0](https://img.shields.io/badge/GPL--3.0-blue?logo=gnu&logoColor=white)](LICENSE-CODE)
-[![CC BY-SA 4.0](https://img.shields.io/badge/CC%20BY--SA%204.0-ef9421?logo=creativecommons&logoColor=white)](https://creativecommons.org/licenses/by-sa/4.0/)
+[![Node](https://img.shields.io/badge/node-%3E%3D22%20%3C23-339933?logo=node.js&logoColor=white)](https://github.com/ActivistChecklist/ActivistChecklist/blob/main/package.json)
+[![Bluesky](https://img.shields.io/bluesky/followers/activistchecklist.org)](https://bsky.app/profile/activistchecklist.org)
 
 [Visit the site](#visit-the-site) • [Edit content](#edit-content) • [Internationalization & translation](#internationalization--translation) • [Contact](#contact) • [Local development](#local-development) • [Repository layout](#repository-layout) • [License](#license)
 
@@ -97,3 +97,5 @@ ActivistChecklist.org
 
 - **Code:** [GNU General Public License v3.0](LICENSE-CODE)
 - **Content and non-code assets:** [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
+
+Anyone is free to use, share, and adapt the site's content and guides as long as they give appropriate credit and distribute any adaptations under the same [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) license.

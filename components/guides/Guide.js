@@ -67,9 +67,9 @@ export default function Guide({ frontmatter, serializedIntro, serializedBody, ch
   return (
     <ChecklistItemsContext.Provider value={checklistItems}>
       {/* Header */}
-      <div className="relative bg-linear-to-r from-primary/15 via-primary/10 to-transparent rounded-lg px-6 py-6 mb-6 overflow-hidden print:bg-transparent print:p-0 print:mb-2">
+      <div className="relative bg-linear-to-r from-primary/15 via-primary/10 to-transparent dark:from-primary/40 dark:via-primary/25 rounded-lg px-6 py-6 mb-6 overflow-hidden print:bg-transparent print:p-0 print:mb-2">
         <div className="absolute top-1.5 bottom-1.5 right-3 aspect-square flex items-center justify-center pointer-events-none print:hidden">
-          <GuideIcon className="h-5/6 w-5/6 text-primary/15" />
+          <GuideIcon className="h-5/6 w-5/6 text-primary/15 dark:text-primary/40" />
         </div>
         <h1 className="relative mb-3 print:mb-0">
           {frontmatter.title}

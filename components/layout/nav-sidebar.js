@@ -39,7 +39,7 @@ export function NavSidebar() {
                 "font-normal relative pl-4 py-0 border-l-2 border-l-transparent hover:border-l-foreground/20",
                 "transition-all duration-200",
                 "hover:bg-accent rounded-l-none rounded-r-lg h-10 my-0",
-                isSubItemActive(item, pathname) && "border-primary font-bold text-primary hover:text-primary hover:border-primary"
+                isSubItemActive(item, pathname) && "border-link font-bold text-link hover:text-link hover:border-link"
               )}
             >
               <Link href={item.href}>

@@ -10,6 +10,10 @@
  *   yarn news "https://..." --tags="ice, surveillance"
  *
  * First positional argument is the article URL (no flag). Other options use --key=value.
+ *
+ * After a successful push, if GitHub CLI (`gh`) is installed and authenticated, you can open a
+ * pull request into main and enable auto-merge. The wizard prints a highlighted reminder of which
+ * GitHub account will create the PR before you confirm.
  */
 
 const fs = require('fs');
@@ -19,8 +23,20 @@ const readline = require('readline');
 const { execFileSync } = require('child_process');
 const matter = require('gray-matter');
 const ogs = require('open-graph-scraper');
+const chalk = require('chalk');
 
 const { loadNewsItems } = require('./fetch-news-images.js');
+
+function printGhIdentityBanner(auth) {
+  const login = auth.login || '(unknown login)';
+  console.log('');
+  console.log(chalk.bgCyan.black.bold('  gh  ') + chalk.bold('  Pull requests will be created as:'));
+  console.log(chalk.bold('      ') + chalk.green.bold(login) + (auth.name ? chalk.gray(`  (${auth.name})`) : ''));
+  if (auth.profileUrl) {
+    console.log(chalk.gray('      ') + chalk.cyan.underline(auth.profileUrl));
+  }
+  console.log('');
+}
 
 function parseArgv(argv) {
   const positional = [];
@@ -93,13 +109,20 @@ function pickSourceDisplayName(articleUrl, siteNameHint, explicit) {
 }
 
 function parsePublishedDate(result) {
-  const raw =
+  const published =
     result.articlePublishedTime ||
     result.ogArticlePublishedTime ||
     result.articlePublishedDate ||
     result.publishedTime ||
     result.ogDate ||
     null;
+  const modified =
+    result.articleModifiedTime ||
+    result.ogArticleModifiedTime ||
+    result.articleModifiedDate ||
+    result.modifiedTime ||
+    null;
+  const raw = published || modified || null;
   if (!raw) return null;
   const d = new Date(raw);
   if (Number.isNaN(d.getTime())) return null;
@@ -254,15 +277,30 @@ async function resolveTagsWithTypoHints(rawTags, getRl) {
   return dedupeTagsCaseInsensitive(resolved);
 }
 
+const GIT_ENV = {
+  ...process.env,
+  GIT_TERMINAL_PROMPT: '0',
+  GIT_SSH_COMMAND: 'ssh -o ConnectTimeout=15 -o ServerAliveInterval=5 -o ServerAliveCountMax=2',
+};
+
 function git(args, options = {}) {
-  const output = execFileSync('git', args, {
-    encoding: 'utf8',
-    cwd: path.join(__dirname, '..'),
-    stdio: ['ignore', 'pipe', 'pipe'],
-    ...options,
-  });
-  if (typeof output === 'string') return output.trim();
-  return '';
+  const cmd = `git ${args.join(' ')}`;
+  console.error(`[git] ${cmd}`);
+  try {
+    const output = execFileSync('git', args, {
+      encoding: 'utf8',
+      cwd: path.join(__dirname, '..'),
+      stdio: ['ignore', 'pipe', 'inherit'],
+      env: GIT_ENV,
+      ...options,
+    });
+    if (typeof output === 'string') return output.trim();
+    return '';
+  } catch (err) {
+    const stderr = err.stderr ? err.stderr.trim() : '';
+    const detail = stderr || err.message || String(err);
+    throw new Error(`git command failed: ${cmd}\n  ${detail}`);
+  }
 }
 
 function tryGit(args, options = {}) {
@@ -270,6 +308,136 @@ function tryGit(args, options = {}) {
     return { ok: true, value: git(args, options) };
   } catch (error) {
     return { ok: false, error };
+  }
+}
+
+const REPO_ROOT = path.join(__dirname, '..');
+
+function tryGh(args, options = {}) {
+  try {
+    const output = execFileSync('gh', args, {
+      encoding: 'utf8',
+      cwd: REPO_ROOT,
+      stdio: ['ignore', 'pipe', 'pipe'],
+      ...options,
+    });
+    return { ok: true, output: typeof output === 'string' ? output.trim() : '' };
+  } catch (error) {
+    return { ok: false, error };
+  }
+}
+
+/**
+ * Returns { ok, login?, name?, profileUrl? } — ok is true only when gh is installed and authenticated.
+ */
+function getGhSessionInfo() {
+  const st = tryGh(['auth', 'status']);
+  if (!st.ok) {
+    return { ok: false, reason: 'not_logged_in' };
+  }
+  const raw = tryGh(['api', 'user']);
+  if (!raw.ok) {
+    return { ok: false, reason: 'user_api_failed' };
+  }
+  try {
+    const u = JSON.parse(raw.output || '{}');
+    return {
+      ok: true,
+      login: u.login || null,
+      name: u.name || null,
+      profileUrl: u.html_url || null,
+    };
+  } catch {
+    return { ok: false, reason: 'parse_failed' };
+  }
+}
+
+function parsePrUrlFromCreateOutput(text) {
+  const m = String(text || '').match(/https:\/\/github\.com\/[^\s/]+\/[^\s/]+\/pull\/\d+/);
+  return m ? m[0] : null;
+}
+
+/**
+ * After a content branch is pushed, optionally create a PR and enable auto-merge.
+ */
+async function maybeCreatePullRequest(getRl, { branchName, articleTitle, articleUrl }) {
+  const ghInstalled = tryGh(['--version']);
+  if (!ghInstalled.ok) {
+    console.log('\n💡 Install GitHub CLI (`gh`) and run `gh auth login` to open a pull request from this wizard.');
+    return;
+  }
+
+  const auth = getGhSessionInfo();
+  if (!auth.ok) {
+    console.log(
+      '\n💡 GitHub CLI is not logged in. Run `gh auth login`, then re-run or open a PR manually from the pushed branch.'
+    );
+    return;
+  }
+
+  printGhIdentityBanner(auth);
+  const line = await promptLine(
+    getRl(),
+    'Create a pull request into main and enable auto-merge when checks pass? [Y/n]: '
+  );
+  const answer = String(line || '').trim();
+  const yes = answer === '' || /^y(es)?$/i.test(answer);
+  if (!yes) {
+    console.log('Skipped PR creation.');
+    return;
+  }
+
+  const prTitle = `Adding news: ${articleTitle}`;
+  const prBody = `Add news item.\n\nArticle: ${articleUrl}\n`;
+  const create = tryGh(
+    [
+      'pr',
+      'create',
+      '--base',
+      'main',
+      '--head',
+      branchName,
+      '--title',
+      prTitle,
+      '--body',
+      prBody,
+    ],
+    { stdio: ['ignore', 'pipe', 'inherit'] }
+  );
+  if (!create.ok) {
+    console.error('\n❌ gh pr create failed. Open a PR manually from branch:', branchName);
+    return;
+  }
+
+  let prUrl = parsePrUrlFromCreateOutput(create.output);
+  if (!prUrl) {
+    const headRef = auth.login ? `${auth.login}:${branchName}` : branchName;
+    const listed = tryGh(['pr', 'list', '--head', headRef, '--json', 'url']);
+    if (listed.ok) {
+      try {
+        const rows = JSON.parse(listed.output || '[]');
+        if (rows[0]?.url) prUrl = rows[0].url;
+      } catch {
+        // ignore
+      }
+    }
+  }
+  if (!prUrl) {
+    console.log('\n✅ Pull request created. Enable auto-merge in the GitHub UI if you want it.');
+    return;
+  }
+
+  console.log(`\n✅ Created: ${prUrl}`);
+  const merge = tryGh(
+    ['pr', 'merge', prUrl, '--auto', '--squash', '--subject', prTitle],
+    { stdio: 'inherit' }
+  );
+  if (!merge.ok) {
+    console.warn(
+      '\n⚠️  Could not enable auto-merge (repo settings or permissions). You can enable it on the PR in GitHub.'
+    );
+  } else {
+    console.log('Auto-merge enabled (squash); the PR will merge when required checks pass.');
   }
 }
 
@@ -284,13 +452,14 @@ function buildContentBranchName(slug) {
   let candidate = base;
   let n = 2;
   while (tryGit(['ls-remote', '--exit-code', '--heads', 'origin', `refs/heads/${candidate}`]).ok) {
-    candidate = `${base}-${n}`.slice(0, 120);
+    const suffix = `-${n}`;
+    candidate = `${base.slice(0, 120 - suffix.length)}${suffix}`;
     n += 1;
   }
   return candidate;
 }
 
-function transactionalCommitToContentBranch({ slug, mdxBody }) {
+function transactionalCommitToContentBranch({ slug, mdxBody, articleTitle }) {
   const repoRoot = path.join(__dirname, '..');
   const worktreeDir = fs.mkdtempSync(path.join(os.tmpdir(), 'news-wizard-main-'));
   const branchName = buildContentBranchName(slug);
@@ -339,7 +508,7 @@ function transactionalCommitToContentBranch({ slug, mdxBody }) {
     git(['-C', worktreeDir, 'add', ...filesToCommit], { stdio: 'inherit' });
     const repoBin = path.join(repoNodeModules, '.bin');
     const commitEnv = {
-      ...process.env,
+      ...GIT_ENV,
       NODE_PATH: process.env.NODE_PATH
         ? `${repoNodeModules}${path.delimiter}${process.env.NODE_PATH}`
         : repoNodeModules,
@@ -347,7 +516,7 @@ function transactionalCommitToContentBranch({ slug, mdxBody }) {
         ? `${repoBin}${path.delimiter}${process.env.PATH}`
         : repoBin,
     };
-    git(['-C', worktreeDir, 'commit', '-m', `content: add news item "${slug}"`], {
+    git(['-C', worktreeDir, 'commit', '-m', articleTitle], {
       stdio: 'inherit',
       env: commitEnv,
     });
@@ -446,7 +615,6 @@ async function main() {
     console.log('\n--- Review (edit the MDX file afterward if anything looks wrong) ---');
     console.log(`URL:              ${articleUrl}`);
     console.log(`Title:            ${title}`);
-    console.log(`Slug:             ${slug}`);
     console.log(`Source:           ${JSON.stringify(sourceField)}`);
     if (publisherHint) {
       console.log(`Site / publisher: ${publisherHint}`);
@@ -479,6 +647,8 @@ async function main() {
       firstPublished: today,
       lastUpdated: today,
     };
+    // Filename is the canonical slug; do not add a `slug` frontmatter field.
+    delete frontmatter.slug;
     const tagArr = formatTagsForFrontmatter(tags);
     if (tagArr) {
       frontmatter.tags = tagArr;
@@ -490,9 +660,16 @@ async function main() {
     const pushedBranch = transactionalCommitToContentBranch({
       slug,
       mdxBody,
+      articleTitle: title,
     });
 
     console.log(`✅ Done. Committed and pushed to ${pushedBranch}.`);
+
+    await maybeCreatePullRequest(getRl, {
+      branchName: pushedBranch,
+      articleTitle: title,
+      articleUrl,
+    });
   } finally {
     if (rl) rl.close();
   }
