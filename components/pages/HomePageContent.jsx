@@ -86,11 +86,7 @@ export default function HomePageContent({ children, changelogEntries = [], lates
                   </div>
                 )}
               </div>
-              <div className="absolute bottom-0 left-0 right-0" style={{ height: '80px' }}>
-                <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: '100%' }}>
-                  <polygon points="0,80 1440,15 1440,80" fill="white" />
-                </svg>
-              </div>
+              <div className="absolute bottom-0 left-0 right-0 bg-background" style={{ height: '80px', clipPath: 'polygon(0 100%, 100% 20%, 100% 100%)' }} />
             </header>
           </div>
 
