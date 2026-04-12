@@ -9,7 +9,10 @@ import Layout from '@/components/layout/Layout';
 import Guide from '@/components/guides/Guide';
 import ContentPage from '@/components/pages/Page';
 import { mdxOptions } from '@/lib/mdx-options';
-import { shouldShowTranslationUnreviewedNotice } from '@/lib/crowdin-translation-status';
+import {
+  getRouteTranslationStatus,
+  shouldShowTranslationUnreviewedNotice,
+} from '@/lib/crowdin-translation-status';
 import {
   getAllGuides,
   getAllPages,
@@ -42,6 +45,9 @@ function buildContentNotices({ locale, isFallback, slug, t }) {
     slug !== 'contribute' &&
     shouldShowTranslationUnreviewedNotice(slug, locale)
   ) {
+    const routeStatus = getRouteTranslationStatus(slug, locale);
+    const approvalPercent =
+      routeStatus?.approvalPercent != null ? routeStatus.approvalPercent : 0;
     notices.push({
       id: 'translation-unreviewed',
       type: 'warning',
@@ -50,6 +56,7 @@ function buildContentNotices({ locale, isFallback, slug, t }) {
           <strong className="font-semibold">{t('pageNotices.translationUnreviewedTitle')}</strong>
           {': '}
           {t.rich('pageNotices.translationUnreviewed', {
+            approvalPercent,
             link: (chunks) => (
               <Link
                 href={`/${locale}/contribute/`}
