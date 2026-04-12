@@ -89,3 +89,5 @@ ActivistChecklist.org
 
 - **Code:** [GNU General Public License v3.0](LICENSE-CODE)
 - **Content and non-code assets:** [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
+
+Anyone is free to use, share, and adapt the site's content and guides as long as they give appropriate credit and distribute any adaptations under the same [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) license.

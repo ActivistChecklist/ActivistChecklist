@@ -109,13 +109,20 @@ function pickSourceDisplayName(articleUrl, siteNameHint, explicit) {
 }
 
 function parsePublishedDate(result) {
-  const raw =
+  const published =
     result.articlePublishedTime ||
     result.ogArticlePublishedTime ||
     result.articlePublishedDate ||
     result.publishedTime ||
     result.ogDate ||
     null;
+  const modified =
+    result.articleModifiedTime ||
+    result.ogArticleModifiedTime ||
+    result.articleModifiedDate ||
+    result.modifiedTime ||
+    null;
+  const raw = published || modified || null;
   if (!raw) return null;
   const d = new Date(raw);
   if (Number.isNaN(d.getTime())) return null;
