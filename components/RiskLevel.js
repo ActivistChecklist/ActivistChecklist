@@ -1,23 +1,13 @@
+'use client';
 import React from "react";
+import { useTranslations } from 'next-intl';
 import { cn } from "@/lib/utils";
 import styles from "../styles/RiskLevel.module.css";
 
 const LEVEL_CONFIG = {
-  everyone: {
-    label: "everyone",
-    bars: 1,
-    defaultText: "This section is for anyone doing activism or advocacy work.",
-  },
-  medium: {
-    label: "medium-threat",
-    bars: 2,
-    defaultText: "This section is for you if you are in a leadership role or you are doing activism that is more likely be targetted by the state or your opposition.",
-  },
-  high: {
-    label: "high-threat",
-    bars: 3,
-    defaultText: "This section is for you are in a high-profile role or your activism involves high-risk work that could result in serious consequences or retaliation.",
-  },
+  everyone: { bars: 1 },
+  medium: { bars: 2 },
+  high: { bars: 3 },
 };
 
 /** Map MDX `level` values to LEVEL_CONFIG keys (same rules as the main callout). */
@@ -48,8 +38,10 @@ function SignalBars({ filledCount, className }) {
 }
 
 export function RiskLevelBadge({ level, className, showLabel = true }) {
+  const t = useTranslations();
   const key = resolveLevelKey(level);
   const config = LEVEL_CONFIG[key];
+  const label = key === 'high' ? t('riskLevel.highLabel') : key === 'medium' ? t('riskLevel.mediumLabel') : t('riskLevel.everyoneLabel');
   const toneClass =
     key === "high"
       ? styles.badgeToneHigh
@@ -65,37 +57,35 @@ export function RiskLevelBadge({ level, className, showLabel = true }) {
         !showLabel && styles.riskLevelBadgeBarsOnly,
         className,
       )}
-      title={!showLabel ? config.label : undefined}
+      title={!showLabel ? label : undefined}
     >
       <SignalBars filledCount={config.bars} />
-      {showLabel ? config.label : null}
+      {showLabel ? label : null}
     </span>
   );
 }
-
-const INTRO_LINES = {
-  for_you_if: "This section is for you if:",
-  for_you: "This section is for:",
-};
 
 /**
  * RiskLevel — renders a risk/audience callout box.
  *   <RiskLevel level="everyone">markdown children</RiskLevel>
  */
 export function RiskLevel({ level, mode = "default", children, className, ...props }) {
+  const t = useTranslations();
   const normalizedLevel = (level || "everyone").toLowerCase().replace(/-|\s/g, "_");
-  const config = LEVEL_CONFIG[resolveLevelKey(level)] || LEVEL_CONFIG.everyone;
+  const key = resolveLevelKey(level);
   const levelClass = styles[normalizedLevel] || styles.everyone;
   const useDefaultText = (mode === "default" || !mode) && !children;
   const showHeader = mode === "for_you_if" || mode === "for_you";
-  const introText = INTRO_LINES[mode] || INTRO_LINES.for_you_if;
+
+  const defaultText = key === 'high' ? t('riskLevel.highDefault') : key === 'medium' ? t('riskLevel.mediumDefault') : t('riskLevel.everyoneDefault');
+  const introText = mode === 'for_you' ? t('riskLevel.forYou') : t('riskLevel.forYouIf');
 
   const bodyContent = children;
 
   return (
     <div
       className={cn(styles.riskLevel, levelClass, "prose", className)}
-     
+
       {...props}
     >
       {useDefaultText ? (
@@ -104,7 +94,7 @@ export function RiskLevel({ level, mode = "default", children, className, ...pro
             <RiskLevelBadge level={normalizedLevel} />
           </span>
           <div className={cn(styles.riskLevelBody, styles.riskLevelBodyInline)}>
-            <p>{config.defaultText}</p>
+            <p>{defaultText}</p>
           </div>
         </div>
       ) : showHeader ? (

@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client';
 import React, { useState, useEffect } from 'react';
-import { NextIntlClientProvider } from 'next-intl';
+import { NextIntlClientProvider, useTranslations } from 'next-intl';
 import { ThemeProvider } from '@/components/layout/ThemeProvider';
 import Link from '@/components/Link';
 import {
@@ -15,139 +15,107 @@ import { cn } from '@/lib/utils';
 import { NAV_ITEMS } from '@/config/navigation';
 
 const VARIATIONS = [
-  {
-    icon: FaGhost,
-    title: "Gone underground",
-    message: "This page has disappeared! Maybe it's organizing something..."
-  },
-  {
-    icon: FaEye,
-    title: "Nothing to see here",
-    message: "This page is practicing good OPSEC and staying off the grid."
-  },
-  {
-    icon: FaPeopleGroup,
-    title: "Solidarity forever",
-    message: "The page you're looking for is out on the picket line."
-  },
-  {
-    icon: FaShieldHalved,
-    title: "Practicing good security culture",
-    message: "This page is using end-to-end encryption... maybe a bit too well."
-  },
-  {
-    icon: FaBullhorn,
-    title: "Whose streets?",
-    message: "Our streets! But this particular URL leads nowhere..."
-  },
-  {
-    icon: FaFingerprint,
-    title: "Identity protected",
-    message: "This page is exercising its right to remain anonymous."
-  },
-  {
-    icon: FaHandFist,
-    title: "Direct action",
-    message: "This page is out disrupting business as usual."
-  },
-  {
-    icon: FaFire,
-    title: "Fired up",
-    message: "This page is busy lighting the spark of revolution."
-  },
-  {
-    icon: FaCampground,
-    title: "Mutual aid station",
-    message: "This page has relocated to help distribute resources to the community."
-  },
-  {
-    icon: FaWater,
-    title: "Be water",
-    message: "Like water, this page flows where it's needed most."
-  }
+  { icon: FaGhost, key: 'goneUnderground' },
+  { icon: FaEye, key: 'nothingToSee' },
+  { icon: FaPeopleGroup, key: 'solidarity' },
+  { icon: FaShieldHalved, key: 'securityCulture' },
+  { icon: FaBullhorn, key: 'whoseStreets' },
+  { icon: FaFingerprint, key: 'identity' },
+  { icon: FaHandFist, key: 'directAction' },
+  { icon: FaFire, key: 'firedUp' },
+  { icon: FaCampground, key: 'mutualAid' },
+  { icon: FaWater, key: 'beWater' },
 ];
 
-export default function NotFoundContent({ messages }) {
-  const [visual, setVisual] = useState(VARIATIONS[0]);
+function NotFoundInner() {
+  const t = useTranslations();
+  const [variationIndex, setVariationIndex] = useState(0);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    setVisual(VARIATIONS[Math.floor(Math.random() * VARIATIONS.length)]);
+    setVariationIndex(Math.floor(Math.random() * VARIATIONS.length));
   }, []);
 
-  const Icon = visual.icon;
+  const variation = VARIATIONS[variationIndex];
+  const Icon = variation.icon;
 
   const handleNewMessage = () => {
     let newIndex;
     do {
       newIndex = Math.floor(Math.random() * VARIATIONS.length);
-    } while (VARIATIONS[newIndex].title === visual.title);
-    setVisual(VARIATIONS[newIndex]);
+    } while (newIndex === variationIndex);
+    setVariationIndex(newIndex);
   };
 
   return (
+    <Layout sidebarType={null} searchable={false}>
+      <div className="container max-w-2xl mx-auto px-4 py-16 text-center">
+        <div className={cn(
+          "mb-8 p-8 rounded-full w-32 h-32 mx-auto",
+          "bg-linear-to-br from-primary/20 via-accent/10 to-primary/20",
+          "flex items-center justify-center",
+          "group hover:scale-105 transition-transform duration-300",
+          "hover:bg-primary/30",
+          !mounted && "invisible"
+        )}>
+          <Icon className={cn(
+            "w-16 h-16 text-primary",
+            "group-hover:text-primary transition-colors duration-300"
+          )} />
+        </div>
+
+        <div className={cn("space-y-2", !mounted && "invisible")}>
+          <h3 className="text-2xl leading-tight font-semibold bg-linear-to-br from-primary via-primary to-primary/70 bg-clip-text text-transparent">
+            {t('notFound.title')}
+          </h3>
+          <h1 className="text-4xl leading-tight font-bold bg-linear-to-br from-primary via-primary to-primary/70 bg-clip-text text-transparent">
+            {t(`notFound.variations.${variation.key}.title`)}
+          </h1>
+        </div>
+
+        <p className={cn("text-xl text-muted-foreground mt-4 mb-8", !mounted && "invisible")}>
+          {t(`notFound.variations.${variation.key}.message`)}
+        </p>
+
+        <div className={cn("flex justify-center items-center relative", !mounted && "invisible")}>
+          <Button asChild variant="default" size="lg" className="group">
+            <Link href={NAV_ITEMS.HOME.href}>
+              <FaArrowLeft className="mr-2 transition-transform duration-300 ease-out group-hover:-translate-x-1" />
+              {t('notFound.backToHome')}
+            </Link>
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="xl"
+            onClick={handleNewMessage}
+            className={cn(
+              "opacity-20 hover:opacity-90 transition-opacity duration-300",
+              "hover:bg-transparent",
+              "group",
+              "absolute md:-right-16 -right-8"
+            )}
+            title="Try your luck?"
+          >
+            <Sparkles className={cn(
+              "w-7 h-7 transition-all duration-500",
+              "group-hover:rotate-12 group-hover:scale-[2.0]",
+              "group-hover:animate-rainbow-shift"
+            )} />
+            <span className="sr-only">{t('notFound.tryAnother')}</span>
+          </Button>
+        </div>
+      </div>
+    </Layout>
+  );
+}
+
+export default function NotFoundContent({ messages }) {
+  return (
     <NextIntlClientProvider locale="en" messages={messages}>
       <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-        <Layout sidebarType={null} searchable={false}>
-          <div className="container max-w-2xl mx-auto px-4 py-16 text-center">
-            <div className={cn(
-              "mb-8 p-8 rounded-full w-32 h-32 mx-auto",
-              "bg-linear-to-br from-primary/20 via-accent/10 to-primary/20",
-              "flex items-center justify-center",
-              "group hover:scale-105 transition-transform duration-300",
-              "hover:bg-primary/30",
-              !mounted && "invisible"
-            )}>
-              <Icon className={cn(
-                "w-16 h-16 text-primary",
-                "group-hover:text-primary transition-colors duration-300"
-              )} />
-            </div>
-
-            <div className={cn("space-y-2", !mounted && "invisible")}>
-              <h3 className="text-2xl leading-tight font-semibold bg-linear-to-br from-primary via-primary to-primary/70 bg-clip-text text-transparent">
-                Oops! This page doesn&apos;t exist
-              </h3>
-              <h1 className="text-4xl leading-tight font-bold bg-linear-to-br from-primary via-primary to-primary/70 bg-clip-text text-transparent">
-                {visual.title}
-              </h1>
-            </div>
-
-            <p className={cn("text-xl text-muted-foreground mt-4 mb-8", !mounted && "invisible")}>
-              {visual.message}
-            </p>
-
-            <div className={cn("flex justify-center items-center relative", !mounted && "invisible")}>
-              <Button asChild variant="default" size="lg" className="group">
-                <Link href={NAV_ITEMS.HOME.href}>
-                  <FaArrowLeft className="mr-2 transition-transform duration-300 ease-out group-hover:-translate-x-1" />
-                  Back to Home
-                </Link>
-              </Button>
-
-              <Button
-                variant="ghost"
-                size="xl"
-                onClick={handleNewMessage}
-                className={cn(
-                  "opacity-20 hover:opacity-90 transition-opacity duration-300",
-                  "hover:bg-transparent",
-                  "group",
-                  "absolute md:-right-16 -right-8"
-                )}
-                title="Try your luck?"
-              >
-                <Sparkles className={cn(
-                  "w-7 h-7 transition-all duration-500",
-                  "group-hover:rotate-12 group-hover:scale-[2.0]",
-                  "group-hover:animate-rainbow-shift"
-                )} />
-                <span className="sr-only">Show another random &quot;missing page&quot; message</span>
-              </Button>
-            </div>
-          </div>
-        </Layout>
+        <NotFoundInner />
       </ThemeProvider>
     </NextIntlClientProvider>
   );

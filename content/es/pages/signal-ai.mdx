@@ -1,0 +1,111 @@
+---
+title: ¿Está Apple Intelligence leyendo mis mensajes de Signal?
+relatedGuides: []
+firstPublished: 2025-02-20
+lastUpdated: 2025-10-21
+---
+
+<Alert type="info" title="tl;dr">
+  Si tienes un iPhone 15 Pro/Max, iPhone 16 o más reciente, **es buena idea desactivar Apple Intelligence** por completo para proteger el contenido de tus notificaciones (incluyendo Signal), ya que Apple no ha aclarado qué datos se envían fuera del dispositivo y cuáles no. Puedes desactivar Apple Intelligence yendo a la app de Ajustes > Apple Intelligence y Siri > Desactivar Apple Intelligence.
+</Alert>
+
+Cada pocos meses circula un mensaje en los hilos de Signal que dice algo como: "¡Signal ha sido comprometido!" A menudo estas preocupaciones son exageradas o están desactualizadas. Creemos que es importante difundir información de seguridad precisa para que las personas no pierdan confianza en herramientas que realmente son confiables.
+
+## ¿De qué trata este mensaje viral sobre Signal y Apple Intelligence?
+
+Alrededor de diciembre de 2024, empezamos a ver este mensaje viral compartido en muchos grupos de activismo. Si bien parte de esto es correcto, contiene información engañosa e incorrecta que queremos aclarar.
+
+Aquí está el mensaje viral ***inexacto*** que ha estado circulando. <StyledSpan className="text-error">Las afirmaciones inexactas están resaltadas en texto rojo.</StyledSpan>
+
+> Apple Intelligence ahora puede <StyledSpan className="text-error">leer mensajes de Signal</StyledSpan> en los iPhones nuevos. Si tienes un iPhone más nuevo, 15 o 16, y descargaste iOS 18.1, asegúrate de desactivar la Inteligencia Artificial de Apple en los ajustes, o ve a Siri/IA y asegúrate de que no esté habilitada para Signal. Si no lo haces, <StyledSpan className="text-error">escaneará tus mensajes de Signal y leerá el contenido</StyledSpan>. Para hacerlo, ve a <StyledSpan className="text-error">Ajustes › Siri › baja hasta Apps › Signal › desactiva "Aprender de esta app" y las otras dos opciones.</StyledSpan>
+
+## Afirmaciones inexactas
+
+❌ <StyledSpan className="text-error font-bold">Inexacto</StyledSpan>\
+**Desactivar "Aprender de esta app" protegerá tus mensajes de Signal**
+
+* "Aprender de esta app" existe desde 2015 y solo tiene que ver con que tu teléfono sugiera apps que tiendes a usar en ciertos momentos del día (o lugares). [La función "Aprender de esta app" no tiene nada que ver con Apple Intelligence](https://www.intego.com/mac-security-blog/no-siris-learn-from-this-app-setting-is-not-sending-data-from-your-apps-to-third-parties/#sources).
+
+🟡 <StyledSpan className="text-warning font-bold">Parcialmente exacto</StyledSpan>\
+**Apple Intelligence está "escaneando tus mensajes de Signal"**
+
+* **La verdad es que Apple Intelligence crea resúmenes basados en el contenido de tus *notificaciones* de Signal, no de todos tus mensajes dentro de la app**. Si desactivas las vistas previas de notificaciones, Apple Intelligence no se usará con Signal.
+* Es importante señalar que **Apple Intelligence no está accediendo a tus mensajes almacenados.**
+* También vale la pena mencionar que si esta herramienta está "leyendo" o no tus mensajes es menos relevante. De hecho, el sistema operativo de tu teléfono siempre puede acceder a cualquier cosa en la pantalla. **La pregunta más relevante es: ¿esta información llega a salir de tu dispositivo?**
+* Si bien es posible que los resúmenes de notificaciones de IA solo se procesen en tu dispositivo (lo que mantendría tus mensajes seguros), Apple no les ha dado a los usuarios la capacidad de saber qué solicitudes de IA se quedan en el dispositivo y cuáles van a sus servidores. Por eso recomendamos desactivar esta función de IA, total o parcialmente.
+
+## Afirmaciones exactas
+
+✅ <StyledSpan className="text-success font-bold">Exacto</StyledSpan>\
+**Aplica a iOS 18.1+:** Apple Intelligence es una función nueva que comienza en iOS 18.1 en adelante.
+
+* También está activada por defecto en iOS 18.3 en adelante.
+
+✅ <StyledSpan className="text-success font-bold">Exacto</StyledSpan>\
+**Aplica a iPhone 15/16+:** Apple Intelligence actualmente solo está disponible para iPhone 15 Pro, iPhone 15 Max y todos los modelos de iPhone 16.
+
+* Podemos esperar que esté en futuros modelos de iPhone con procesadores de gama alta.
+* Apple Intelligence también está habilitada para Macs con chip "Silicon" (M1, M2, M3, etc.) e iPads de la serie M. [Ver la lista completa de dispositivos compatibles con Apple Intelligence](https://9to5mac.com/every-device-that-supports-apple-intelligence/).
+
+## Qué puedes hacer para protegerte
+
+### Paso 1: Desactiva las vistas previas de mensajes en las notificaciones de Signal
+
+Esta es nuestra solución principal porque ya [la recomendamos en nuestra lista de verificación para protestas](/protest/). Es buena idea no mostrar nunca el contenido de los mensajes ni los nombres en las notificaciones, en caso de que tu teléfono sea confiscado o esté fuera de tu alcance.
+
+<HowTo title="Cómo desactivar las vistas previas de notificaciones de Signal">
+  Abre Signal > Toca tu avatar > Ajustes > Notificaciones > Contenido de notificación > **Selecciona** "**Sin nombre ni contenido**"
+</HowTo>
+
+Si tienes la **app de escritorio de Signal** instalada, también deberías desactivar las vistas previas de mensajes allí (en la misma ubicación del menú).
+
+### Paso 2: Desactiva Apple Intelligence por completo (o solo para las notificaciones de Signal)
+
+También recomendamos desactivar Apple Intelligence por completo. Esto evitará que cualquiera de tus otras notificaciones sea resumida (y posiblemente enviada fuera de tu dispositivo en el proceso).
+
+<HowTo title="Opción A: Cómo desactivar Apple Intelligence por completo">
+  **En tu iPhone:** Abre la app de Ajustes en tu iPhone > Apple Intelligence y Siri > **Desactiva "Apple Intelligence"** > Confirmar
+
+  **En tu computadora:** Si tienes una computadora Apple con procesador M1, puedes desactivar Apple Intelligence yendo a  > Configuración del Sistema > Apple Intelligence y Siri > **Desactiva "Apple Intelligence"** > Confirmar
+</HowTo>
+
+Si prefieres mantener Apple Intelligence activada y solo desactivarla para las notificaciones de Signal, así puedes hacerlo:
+
+<HowTo title="Opción B: Cómo desactivar Apple Intelligence solo para las notificaciones de Signal">
+  Abre la app de Ajustes > Notificaciones > Resumir notificaciones > **Desactiva "Signal"**
+</HowTo>
+
+### (opcional) Paso 3: Otros pasos para asegurar Signal
+
+Tenemos una guía completa sobre cómo configurar Signal para que sea lo más seguro posible:
+
+<Button title="Lista de verificación de Signal →" href="/signal/" target="_self" size="lg" />
+
+Esta guía te ayudará a configurar los mensajes temporales por defecto, requerir FaceID para abrir la app, y más.
+
+También puedes [ver nuestras otras listas de verificación](/checklists/) aquí.
+
+## Compartamos un mensaje más preciso en nuestros hilos de Signal
+
+Si quieres compartir algunos consejos de seguridad en tus hilos de Signal, queremos ofrecerte una versión que puedes copiar y pegar.
+
+> <CopyButton />
+>
+> Ha estado circulando un mensaje que dice que Apple Intelligence puede "leer" tus mensajes de Signal. Por si lo viste, quiero compartirte información más precisa:
+>
+> * Apple Intelligence solo está accediendo a tus notificaciones de Signal (no a todos tus mensajes). Es parte de la función de "resúmenes de notificaciones". Actualmente solo está disponible en iPhone 15 Pro/Max e iPhone 16 (todos los modelos) con iOS 18.1+.
+> * Desactivar Apple Intelligence es la medida más segura, ya que Apple no ha aclarado qué información envía fuera de tu dispositivo y qué no. Puedes hacerlo en tu teléfono y computadora en Ajustes > Apple Intelligence y Siri > Desactivar
+> * Si quieres mantener Apple Intelligence activada, puedes desactivar las vistas previas de mensajes en las notificaciones de Signal yendo a Signal > Toca tu avatar > Ajustes > Notificaciones > Contenido de notificación > Selecciona "Sin nombre ni contenido" (De todas formas es un buen mecanismo de seguridad en caso de que tu dispositivo sea confiscado o esté fuera de tu alcance.)
+>
+> Puedes ver las instrucciones completas y el contexto aquí: [https://activistchecklist.org/signal-ai](https://activistchecklist.org/signal-ai)
+
+¡Siéntete libre de quitar el enlace si prefieres!
+
+## Cómo desactivar la IA en teléfonos Android
+
+Los teléfonos Android más nuevos ofrecen Gemini AI (de Google). Google ha sido aún menos claro que Apple sobre qué información se envía fuera de tu dispositivo. Por eso sugerimos [desactivar Gemini en un dispositivo Android](https://www.cnet.com/tech/mobile/i-tried-to-turn-off-the-ai-on-my-pixel-9-it-wasnt-easy/).
+
+## Lecturas adicionales
+
+* [¿Es Signal seguro?](/signal-secure/). Nuestro artículo sobre la seguridad de Signal, incluyendo el cifrado, qué puede compartir Signal, código abierto y mitos comunes.
+* [¿Pueden los bots leer tus mensajes cifrados? Cifrado, privacidad y el dilema emergente de la IA](https://www.techpolicy.press/can-bots-read-your-encrypted-messages-encryption-privacy-and-the-emerging-ai-dilemma/)

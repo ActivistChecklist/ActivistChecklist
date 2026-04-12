@@ -12,22 +12,21 @@ import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/comp
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useAnalytics } from '@/hooks/use-analytics';
+import { useTranslations } from 'next-intl';
 import { migrateLegacyChecklistKeysForSlug } from '@/lib/checklist-storage-migrate';
-// Dictionary mapping title badge types to Badge components
-const TITLE_BADGE_TYPES = {
-  important: {
-    label: "Important",
-    variant: "destructive"
-  }
+
+const TITLE_BADGE_VARIANTS = {
+  important: "destructive",
 };
 
 const InfoItemIcon = () => {
+  const t = useTranslations();
   return (
     <TooltipProvider>
       <Tooltip delayDuration={0}>
         <TooltipTrigger asChild>
           <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
-            <IoInformationCircleOutline 
+            <IoInformationCircleOutline
               className={cn(
                 "h-[1.7rem] w-[1.7rem]",
                 "text-primary",
@@ -36,12 +35,12 @@ const InfoItemIcon = () => {
             />
           </div>
         </TooltipTrigger>
-        <TooltipContent 
+        <TooltipContent
           side="top"
           sideOffset={5}
           className="z-100"
         >
-          Informational item
+          {t('checklistItem.informationalItem')}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
@@ -49,6 +48,7 @@ const InfoItemIcon = () => {
 }
 
 const CopyLinkButton = ({ slug, onCopy }) => {
+  const t = useTranslations();
   const [linkCopied, setLinkCopied] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [linkHref, setLinkHref] = useState(() => `#${slug}`);
@@ -100,7 +100,7 @@ const CopyLinkButton = ({ slug, onCopy }) => {
               "print:hidden",
               linkCopied && "text-green-600"
             )}
-            aria-label="Copy link to this item"
+            aria-label={t('checklistItem.copyLink')}
           >
             <Link2
               aria-hidden
@@ -119,7 +119,7 @@ const CopyLinkButton = ({ slug, onCopy }) => {
           </a>
         </TooltipTrigger>
         <TooltipContent side="top" sideOffset={5}>
-          {linkCopied ? "Link copied!" : "Copy link to this item"}
+          {linkCopied ? t('checklistItem.linkCopied') : t('checklistItem.copyLink')}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
@@ -154,6 +154,7 @@ const ChecklistItem = ({
   const [hasMounted, setHasMounted] = useState(false);
   const [enableTransitions, setEnableTransitions] = useState(false);
   const { trackEvent } = useAnalytics();
+  const t = useTranslations();
   const hasTrackedExpansion = useRef(false);
   const cardRef = useRef(null);
   // Use slug-based keys so progress persists across remigrations (not _uid)
@@ -377,19 +378,19 @@ const ChecklistItem = ({
                     {itemTitleBadges && itemTitleBadges.length > 0 && (
                       <>
                         {itemTitleBadges.map((badgeType, index) => {
-                          const badgeConfig = TITLE_BADGE_TYPES[badgeType];
-                          if (!badgeConfig) return null;
-                          
+                          const variant = TITLE_BADGE_VARIANTS[badgeType];
+                          if (!variant) return null;
+
                           return (
-                            <Badge 
+                            <Badge
                               key={index}
-                              variant={badgeConfig.variant}
+                              variant={variant}
                               className={cn(
                                 "text-xs inline mr-2 align-middle",
                                 isChecked && "opacity-50"
                               )}
                             >
-                              {badgeConfig.label}
+                              {t('checklistItem.importantBadge')}
                             </Badge>
                           );
                         })}
@@ -468,7 +469,7 @@ const ChecklistItem = ({
               >
                 <ChevronDown aria-hidden className="h-4 w-4" />
               </span>
-              {isExpanded ? "Collapse" : "Expand"}
+              {isExpanded ? t('checklistItem.collapse') : t('checklistItem.expand')}
             </Button>
           </div>
         </div>
@@ -534,7 +535,7 @@ const ChecklistItem = ({
                     // Checked state - primary-foreground checkmark
                     isChecked && "text-primary-foreground"
                   )} />
-                  {isChecked ? "Completed" : "Mark as done"}
+                  {isChecked ? t('checklistItem.completed') : t('checklistItem.markAsDone')}
                 </Button>
               </div>
             )}

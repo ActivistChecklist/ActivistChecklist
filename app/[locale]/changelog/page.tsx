@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { setRequestLocale } from 'next-intl/server';
+import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { getAllChangelogEntries, toChangelogListEntry } from '@/lib/content';
 import Layout from '@/components/layout/Layout';
 import ChangeLogEntry from '@/components/ChangeLogEntry';
@@ -75,6 +75,7 @@ function TimelineSection({ title, entries, isFirst = false }) {
 export default async function ChangelogPage({ params }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations();
 
   const changelogEntries = getAllChangelogEntries(locale).map(toChangelogListEntry);
   const grouped = groupEntriesByTime(changelogEntries);
@@ -88,9 +89,9 @@ export default async function ChangelogPage({ params }) {
         <header className="mb-8">
           <div className="flex items-start justify-between">
             <div>
-              <h1 className="page-title">Recent site updates</h1>
+              <h1 className="page-title">{t('changelog.title')}</h1>
               <p className="text-lg text-muted-foreground">
-                A history of changes to checklists, pages, and resources on the site.
+                {t('changelog.description')}
               </p>
             </div>
             <RSSButton
@@ -103,18 +104,18 @@ export default async function ChangelogPage({ params }) {
 
         {changelogEntries.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-muted-foreground">No changelog entries found.</p>
+            <p className="text-muted-foreground">{t('changelog.noEntries')}</p>
           </div>
         ) : (
           <div className="space-y-0">
             <TimelineSection
-              title="Last 30 days"
+              title={t('changelog.last30Days')}
               entries={grouped.last30Days}
               isFirst={true}
             />
 
             <TimelineSection
-              title="Previous changes"
+              title={t('changelog.previousChanges')}
               entries={grouped.thisYear}
             />
 

@@ -163,5 +163,148 @@
     "loading": "Cargando...",
     "error": "Algo salió mal",
     "viewChecklist": "Ver lista"
+  },
+  "notFound": {
+    "title": "¡Vaya! Esta página no existe",
+    "backToHome": "Volver al inicio",
+    "tryAnother": "Mostrar otro mensaje de \"página no encontrada\"",
+    "variations": {
+      "goneUnderground": {
+        "title": "Se fue a la clandestinidad",
+        "message": "¡Esta página ha desaparecido! Quizás está organizando algo..."
+      },
+      "nothingToSee": {
+        "title": "Nada que ver aquí",
+        "message": "Esta página practica buena seguridad operacional y se mantiene fuera del radar."
+      },
+      "solidarity": {
+        "title": "Solidaridad para siempre",
+        "message": "La página que buscas está en el piquete."
+      },
+      "securityCulture": {
+        "title": "Practicando una buena cultura de seguridad",
+        "message": "Esta página usa cifrado de extremo a extremo... quizás demasiado bien."
+      },
+      "whoseStreets": {
+        "title": "¿De quién son las calles?",
+        "message": "¡Nuestras calles! Pero esta URL en particular no lleva a ningún lado..."
+      },
+      "identity": {
+        "title": "Identidad protegida",
+        "message": "Esta página está ejerciendo su derecho a permanecer anónima."
+      },
+      "directAction": {
+        "title": "Acción directa",
+        "message": "Esta página está interrumpiendo el curso normal de las cosas."
+      },
+      "firedUp": {
+        "title": "Con las pilas puestas",
+        "message": "Esta página está ocupada encendiendo la chispa de la revolución."
+      },
+      "mutualAid": {
+        "title": "Punto de ayuda mutua",
+        "message": "Esta página se ha trasladado para ayudar a distribuir recursos a la comunidad."
+      },
+      "beWater": {
+        "title": "Sé agua",
+        "message": "Como el agua, esta página fluye donde más se necesita."
+      }
+    }
+  },
+  "riskLevel": {
+    "everyoneLabel": "todas las personas",
+    "mediumLabel": "amenaza media",
+    "highLabel": "amenaza alta",
+    "everyoneDefault": "Esta sección es para cualquier persona que haga trabajo de activismo o defensa.",
+    "mediumDefault": "Esta sección es para ti si ocupas un rol de liderazgo o haces activismo que tiene más probabilidades de ser atacado por el Estado o tu oposición.",
+    "highDefault": "Esta sección es para ti si ocupas un rol de alto perfil o tu activismo implica trabajo de alto riesgo que podría resultar en consecuencias graves o represalias.",
+    "forYouIf": "Esta sección es para ti si:",
+    "forYou": "Esta sección es para:"
+  },
+  "checklistItem": {
+    "informationalItem": "Elemento informativo",
+    "copyLink": "Copiar enlace a este elemento",
+    "linkCopied": "¡Enlace copiado!",
+    "markAsDone": "Marcar como hecho",
+    "completed": "Completado",
+    "expand": "Expandir",
+    "collapse": "Contraer",
+    "importantBadge": "Importante"
+  },
+  "copyButton": {
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "ariaLabel": "Copiar al portapapeles"
+  },
+  "contact": {
+    "title": "Contáctanos",
+    "intro": "Tus comentarios nos ayudan a hacer este recurso más útil y seguro para todos. Agradecemos sugerencias para:",
+    "suggestion1": "Corregir inexactitudes o información desactualizada",
+    "suggestion2": "Hacer nuestras guías más claras y fáciles de entender",
+    "suggestion3": "Mejorar las recomendaciones de seguridad",
+    "suggestion4": "Sugerir nuevos temas que deberíamos cubrir",
+    "sendMessage": "Envíanos un mensaje",
+    "recommended": "(recomendado)",
+    "successMessage": "¡Mensaje enviado con éxito! Te responderemos pronto.",
+    "otherWays": "Otras formas de contactarnos",
+    "githubTitle": "Comentarios públicos (GitHub)",
+    "githubDescription": "Si te parece bien compartir públicamente, puedes enviar comentarios, preguntas y solicitudes de funciones a través de nuestro repositorio de GitHub.",
+    "githubLink": "Visitar repositorio de GitHub →",
+    "emailTitle": "Correo cifrado",
+    "emailDescription": "¿Usas Proton Mail? Tus mensajes se cifrarán automáticamente. Para otros proveedores, puedes usar nuestra clave PGP. O simplemente puedes enviarnos un correo sin cifrar.",
+    "pgpLink": "Ver clave PGP →"
+  },
+  "contactForm": {
+    "messageLabel": "Tu mensaje",
+    "messagePlaceholder": "Escribe tu mensaje...",
+    "charactersRemaining": "{count} caracteres restantes",
+    "responseQuestion": "¿Te gustaría recibir una respuesta?",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "Ingresa tu correo electrónico",
+    "emailNote": "Nota sobre respuestas por correo: A menos que uses Proton Mail, tu proveedor de correo puede leer las respuestas que te enviemos.",
+    "signalUsernameLabel": "Nombre de usuario de Signal",
+    "signalUsernamePlaceholder": "usuario.12",
+    "signalUsernameExample": "@snowden.04",
+    "signalUsernameHelp": "Tu nombre de usuario es diferente a tu nombre visible. Encuentra tu nombre de usuario en Signal > Ícono de usuario (arriba a la derecha) > Configuración. Aparecerá cerca de la parte superior, justo debajo de tu número de teléfono.",
+    "signalPhoneLabel": "Número de teléfono de Signal",
+    "signalPhonePlaceholder": "Ingresa tu número de teléfono de Signal",
+    "sending": "Enviando...",
+    "sendMessage": "Enviar mensaje",
+    "privacyLabel": "Privacidad:",
+    "privacyText": "Tu mensaje se cifra de forma segura y se envía a nuestra cuenta de Proton Mail. No recopilamos ninguna información personal sobre ti.",
+    "errorMessage": "No se pudo enviar el mensaje. Por favor, inténtalo de nuevo más tarde.",
+    "responseNone": "No necesito respuesta (tu mensaje permanece anónimo)",
+    "responseSignalUsername": "Responder por Signal (nombre de usuario)",
+    "responseSignalPhone": "Responder por Signal (número de teléfono)",
+    "responseEmail": "Responder por correo electrónico",
+    "mostSecure": "Más seguro"
+  },
+  "feedbackCta": {
+    "heading": "¿Tienes preguntas?",
+    "description": "Cuéntanos si tienes preguntas o comentarios para que podamos hacer estas guías lo más útiles posible.",
+    "inputPlaceholder": "Escribe tu pregunta...",
+    "sendButton": "Enviar",
+    "dialogTitle": "Envíanos un mensaje",
+    "successMessage": "¡Gracias por tu comentario! Lo revisaremos y lo usaremos para mejorar las guías. Si encuentras valioso el sitio, ¡ayúdanos a correr la voz!"
+  },
+  "checklists": {
+    "title": "Listas",
+    "featured": "Listas destacadas",
+    "more": "Más listas"
+  },
+  "news": {
+    "title": "Noticias de vigilancia",
+    "description": "Últimas noticias sobre vigilancia estatal y amenazas que enfrentan los movimientos sociales.",
+    "tipInvitation": "¿Tienes noticias que crees que deberían incluirse?",
+    "tipLink": "Envíanos una pista",
+    "tipSuffix": "y ayuda a mantener informada a nuestra comunidad.",
+    "noItems": "No se encontraron noticias."
+  },
+  "changelog": {
+    "title": "Actualizaciones recientes del sitio",
+    "description": "Un historial de cambios en las listas, páginas y recursos del sitio.",
+    "last30Days": "Últimos 30 días",
+    "previousChanges": "Cambios anteriores",
+    "noEntries": "No se encontraron entradas en el registro de cambios."
   }
 }

@@ -25,6 +25,14 @@
 * **`globals.css`** is for: design tokens (CSS variables in `:root`/`.dark`), base element resets, cross-cutting utility classes (`.link`, `.prose`, print styles). No component-specific rules.
 * **`style={}`** only for truly dynamic runtime values (e.g., calculated pixel offsets). Never for static styles.
 
+## Internationalization (i18n) rules
+
+* All user-facing strings in the public site must go into `messages/en.json`. Never hardcode English text directly in components or pages.
+* Crowdin handles translation of new strings, so you only need to add to `messages/en.json`.
+* Use `useTranslations()` in client components and `await getTranslations()` in server components (from `next-intl` and `next-intl/server` respectively).
+* The convention in this project is `const t = useTranslations()` without a namespace, using full dot-notation paths (e.g., `t('contact.title')`).
+* This does not apply to admin/Keystatic interfaces, scripts, or internal tooling.
+
 ## Coding principles
 
 * Always make sure to write code with security as a core principle. Don't be excessive (ex: lots of try/catch loops), but do use thinking time to consider how an attacker could mount a meaningful attack.
