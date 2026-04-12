@@ -38,11 +38,7 @@ export function Footer() {
 
   return (
     <footer className="print:hidden bg-gray-900 text-gray-400">
-      <div className="w-full overflow-hidden leading-none bg-background" style={{ height: '80px' }}>
-        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: '100%' }}>
-          <polygon points="0,80 1440,15 1440,80" fill="#111827" />
-        </svg>
-      </div>
+      <div className="w-full bg-gray-900" style={{ height: '80px', clipPath: 'polygon(0 100%, 100% 20%, 100% 100%)' }} />
       <div className="container max-w-6xl mx-auto px-4 md:px-8 pt-12 pb-12">
 
         {/* Main columns */}
