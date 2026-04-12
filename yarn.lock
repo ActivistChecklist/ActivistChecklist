@@ -945,35 +945,40 @@
   resolved "https://registry.yarnpkg.com/@oxc-project/types/-/types-0.122.0.tgz#2f4e77a3b183c87b2a326affd703ef71ba836601"
   integrity sha512-oLAl5kBpV4w69UtFZ9xqcmTi+GENWOcPF7FCrczTiBbmC0ibXxCwyvZGbO39rCVEuLGAZM84DH0pUIyyv/YJzA==
 
-"@pagefind/darwin-arm64@1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@pagefind/darwin-arm64/-/darwin-arm64-1.4.0.tgz#0315030e6a89bec3121273b1851f7aadf0b12425"
-  integrity sha512-2vMqkbv3lbx1Awea90gTaBsvpzgRs7MuSgKDxW0m9oV1GPZCZbZBJg/qL83GIUEN2BFlY46dtUZi54pwH+/pTQ==
+"@pagefind/darwin-arm64@1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@pagefind/darwin-arm64/-/darwin-arm64-1.5.0.tgz#5fb409c3d515aef7b906e72ee5b136009db51f0a"
+  integrity sha512-OXQVlxALU9+Lz/LxkAa+RvaxY1cnRKUDCuwl9o8PY5Lg/znP573y4WIbVOOIz8Bv7uj7r00TGy7pD+NSLMJGBw==
 
-"@pagefind/darwin-x64@1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@pagefind/darwin-x64/-/darwin-x64-1.4.0.tgz#671e1fe0f0733350a3eb244ace2675166186793e"
-  integrity sha512-e7JPIS6L9/cJfow+/IAqknsGqEPjJnVXGjpGm25bnq+NPdoD3c/7fAwr1OXkG4Ocjx6ZGSCijXEV4ryMcH2E3A==
+"@pagefind/darwin-x64@1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@pagefind/darwin-x64/-/darwin-x64-1.5.0.tgz#a4809866f9b7a8debac8dda10c3b8dd0f1d02d33"
+  integrity sha512-+LK1Xq5n/B0hHc08DW61SnfIlfLKyXZ1oKcbfZ1MimE7Rn0Q6R0VI/TlC04f/JDPm+67zAOwPGizzvefOi5vqQ==
 
-"@pagefind/freebsd-x64@1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@pagefind/freebsd-x64/-/freebsd-x64-1.4.0.tgz#3419701ce810e7ec050bbf4786b1c3bee78ec51b"
-  integrity sha512-WcJVypXSZ+9HpiqZjFXMUobfFfZZ6NzIYtkhQ9eOhZrQpeY5uQFqNWLCk7w9RkMUwBv1HAMDW3YJQl/8OqsV0Q==
+"@pagefind/freebsd-x64@1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@pagefind/freebsd-x64/-/freebsd-x64-1.5.0.tgz#a5812cebf4985dc695164fcd39f5ec413fc7c9fd"
+  integrity sha512-kicDfUF9gn/z06NimTwNlZXF8z3pLsN3BIPPt6N8unuh0n55fr64tVs2p3a5RKYmQkJGjPfOE/C9GI5YTEpURg==
 
-"@pagefind/linux-arm64@1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@pagefind/linux-arm64/-/linux-arm64-1.4.0.tgz#ba2a5c8d10d5273fe61a8d230b546b08d22cb676"
-  integrity sha512-PIt8dkqt4W06KGmQjONw7EZbhDF+uXI7i0XtRLN1vjCUxM9vGPdtJc2mUyVPevjomrGz5M86M8bqTr6cgDp1Uw==
+"@pagefind/linux-arm64@1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@pagefind/linux-arm64/-/linux-arm64-1.5.0.tgz#c51995275ac2df270ba27d6e1949f9568b5cea6f"
+  integrity sha512-e5rDB3wPm89bcSLiatKBDTrVTbsMQrrtkXRaAoUJYU0C1suXVvEzZfjmMvrUDvYhZBx/Ls8hGuGxlqSJBz3gDg==
 
-"@pagefind/linux-x64@1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@pagefind/linux-x64/-/linux-x64-1.4.0.tgz#1e56bb3c91fd0128be84e98897c9785c489fbbb7"
-  integrity sha512-z4oddcWwQ0UHrTHR8psLnVlz6USGJ/eOlDPTDYZ4cI8TK8PgwRUPQZp9D2iJPNIPcS6Qx/E4TebjuGJOyK8Mmg==
+"@pagefind/linux-x64@1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@pagefind/linux-x64/-/linux-x64-1.5.0.tgz#11454f2fb63a4a81c4df855b82b5f43d4af17722"
+  integrity sha512-vh52DcBiF/mRMmq+Rwt3M3RgEWgl00jFk/M5NWhLEHJFq4+papQXwbyKbi7cNlxaeYrKx6wOfW3fm9cftfc/Kg==
 
-"@pagefind/windows-x64@1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@pagefind/windows-x64/-/windows-x64-1.4.0.tgz#ba68fd609621132e8e314a89e2d2d52516f61723"
-  integrity sha512-NkT+YAdgS2FPCn8mIA9bQhiBs+xmniMGq1LFPDhcFn0+2yIUEiIG06t7bsZlhdjknEQRTSdT7YitP6fC5qwP0g==
+"@pagefind/windows-arm64@1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@pagefind/windows-arm64/-/windows-arm64-1.5.0.tgz#bf090665e54e5e0980f1e3afafb68f8ba8793a55"
+  integrity sha512-kg+szZwffZdyWn6SL6RHjAYjhSvJ2bT4qkv3KepGsbmD9fuSHUSC+2kydDneDVUA9qEDRf9uSFoEAsXsp1/JKA==
+
+"@pagefind/windows-x64@1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@pagefind/windows-x64/-/windows-x64-1.5.0.tgz#042cbb3189d4b189f454787cad8b471b7bd7714c"
+  integrity sha512-8eOCmB8lnpyvwz+HrcTXLuBxhj7UseAFh6KGEXRe8UCcAfVQih+qPy/4akJRezViI+ONijz9oi7HpMkw9rdtBg==
 
 "@parcel/watcher-android-arm64@2.5.6":
   version "2.5.6"
@@ -3338,10 +3343,10 @@
   resolved "https://registry.yarnpkg.com/@types/ms/-/ms-2.1.0.tgz#052aa67a48eccc4309d7f0191b7e41434b90bb78"
   integrity sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==
 
-"@types/node@25.5.0":
-  version "25.5.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-25.5.0.tgz#5c99f37c443d9ccc4985866913f1ed364217da31"
-  integrity sha512-jp2P3tQMSxWugkCUKLRPVUpGaL5MVFwF8RDuSRztfwgN1wmqJeMSbKlnEtQqU8UrhTmzEmZdu2I6v2dpp7XIxw==
+"@types/node@25.5.2":
+  version "25.5.2"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-25.5.2.tgz#94861e32f9ffd8de10b52bbec403465c84fff762"
+  integrity sha512-tO4ZIRKNC+MDWV4qKVZe3Ql/woTnmHDr5JD8UI5hn2pwBrHEwOEMZK7WlNb5RKB6EoJ02gwmQS9OrjuFnZYdpg==
   dependencies:
     undici-types "~7.18.0"
 
@@ -4177,10 +4182,10 @@ domutils@^3.0.1, domutils@^3.2.2:
     domelementtype "^2.3.0"
     domhandler "^5.0.3"
 
-dotenv@^17.4.0:
-  version "17.4.0"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-17.4.0.tgz#9a5de24d7112a889b4b179ffbe83933298c41d37"
-  integrity sha512-kCKF62fwtzwYm0IGBNjRUjtJgMfGapII+FslMHIjMR5KTnwEmBmWLDRSnc3XSNP8bNy34tekgQyDT0hr7pERRQ==
+dotenv@^17.4.1:
+  version "17.4.1"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-17.4.1.tgz#d8e2179fe287365ef3aecb9459668454168eda88"
+  integrity sha512-k8DaKGP6r1G30Lx8V4+pCsLzKr8vLmV2paqEj1Y55GdAgJuIqpRp5FfajGF8KtwMxCz9qJc6wUIJnm053d/WCw==
 
 dunder-proto@^1.0.1:
   version "1.0.1"
@@ -6318,17 +6323,18 @@ pac-resolver@^7.0.1:
     degenerator "^5.0.0"
     netmask "^2.0.2"
 
-pagefind@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/pagefind/-/pagefind-1.4.0.tgz#0154b0a44b5ef9ef55c156824a3244bfc0c4008d"
-  integrity sha512-z2kY1mQlL4J8q5EIsQkLzQjilovKzfNVhX8De6oyE6uHpfFtyBaqUpcl/XzJC/4fjD8vBDyh1zolimIcVrCn9g==
+pagefind@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/pagefind/-/pagefind-1.5.0.tgz#ef14fb08340f9c99172a9b3afbf9f3472e2b2e5d"
+  integrity sha512-7vQ2xh0ZmjPjsuWONR68nqzb+QNfpPh7pdT6n6YDAthWAQiUkSACVegSswY5zPNONGYFWebFVgdnS5/m/Qqn+w==
   optionalDependencies:
-    "@pagefind/darwin-arm64" "1.4.0"
-    "@pagefind/darwin-x64" "1.4.0"
-    "@pagefind/freebsd-x64" "1.4.0"
-    "@pagefind/linux-arm64" "1.4.0"
-    "@pagefind/linux-x64" "1.4.0"
-    "@pagefind/windows-x64" "1.4.0"
+    "@pagefind/darwin-arm64" "1.5.0"
+    "@pagefind/darwin-x64" "1.5.0"
+    "@pagefind/freebsd-x64" "1.5.0"
+    "@pagefind/linux-arm64" "1.5.0"
+    "@pagefind/linux-x64" "1.5.0"
+    "@pagefind/windows-arm64" "1.5.0"
+    "@pagefind/windows-x64" "1.5.0"
 
 pako@^0.2.5:
   version "0.2.9"
@@ -6812,10 +6818,10 @@ react-dom@^19.2.4:
   dependencies:
     scheduler "^0.27.0"
 
-react-hook-form@^7.71.2:
-  version "7.72.0"
-  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.72.0.tgz#995a655b894249fd8798f36383e43f55ed66ae25"
-  integrity sha512-V4v6jubaf6JAurEaVnT9aUPKFbNtDgohj5CIgVGyPHvT9wRx5OZHVjz31GsxnPNI278XMu+ruFz+wGOscHaLKw==
+react-hook-form@^7.72.1:
+  version "7.72.1"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.72.1.tgz#19a8bbeaf685934f4c9fc422294cc730ade2780e"
+  integrity sha512-RhwBoy2ygeVZje+C+bwJ8g0NjTdBmDlJvAUHTxRjTmSUKPYsKfMphkS2sgEMotsY03bP358yEYlnUeZy//D9Ig==
 
 react-icons@^5.6.0:
   version "5.6.0"
