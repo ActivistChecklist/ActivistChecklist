@@ -24,7 +24,7 @@ export default async function LocaleLayout({ children, params }) {
       <body className="min-h-screen bg-background font-body antialiased">
         <AnnouncementProvider value={announcement}>
           <NextIntlClientProvider locale={locale} messages={messages}>
-            <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
               {children}
             </ThemeProvider>
           </NextIntlClientProvider>

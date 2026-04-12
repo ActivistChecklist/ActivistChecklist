@@ -13,15 +13,24 @@
 
 /* Pill colors (also used by floating section header; not only inside .riskLevel). */
 .badgeToneEveryone {
-  @apply bg-green-200 dark:bg-green-800/70 text-green-900 dark:text-green-100;
+  @apply bg-green-200 text-green-900;
+  :global(.dark) & {
+    @apply bg-green-800/70 text-green-100;
+  }
 }
 
 .badgeToneMedium {
-  @apply bg-amber-200 dark:bg-amber-800/70 text-amber-900 dark:text-amber-100;
+  @apply bg-amber-200 text-amber-900;
+  :global(.dark) & {
+    @apply bg-amber-800/70 text-amber-100;
+  }
 }
 
 .badgeToneHigh {
-  @apply bg-red-200 dark:bg-red-800/70 text-red-900 dark:text-red-100;
+  @apply bg-red-200 text-red-900;
+  :global(.dark) & {
+    @apply bg-red-800/70 text-red-100;
+  }
 }
 
 .riskLevelBadgeInline {
@@ -78,85 +87,187 @@
    All text is colored to match the level (green/yellow/red) with dark shades for contrast.
    Everyone level uses green-200/900 to match saturation/hue of amber-200/900 and red-200/900. */
 .everyone {
-  @apply bg-green-50 dark:bg-green-950/40 text-green-900 dark:text-green-200;
+  @apply bg-green-50 text-green-900;
+
+  :global(.dark) & {
+    @apply bg-green-950/40 text-green-200;
+  }
 }
 
+.everyone .riskLevelBadge {
+  @apply bg-green-200 text-green-900;
+
+  :global(.dark) & {
+    @apply bg-green-800/70 text-green-100;
+  }
+}
+
+/* Dark styles for `ul li::before`: nested `:global(.dark) &` makes Tailwind v4 emit
+   invalid empty `:global(.dark) :is()` under CSS Modules; use flat selectors instead. */
 .everyone .riskLevelBody ul li::before {
-  @apply text-green-800 dark:text-green-200;
+  @apply text-green-800;
+}
+
+:global(.dark) .everyone .riskLevelBody ul li::before {
+  @apply text-green-200;
 }
 
 .everyone .riskLevelIntro {
-  @apply text-green-900 dark:text-green-200;
+  @apply text-green-900;
+
+  :global(.dark) & {
+    @apply text-green-200;
+  }
 }
 
 .everyone a {
-  @apply text-green-900 dark:text-green-200 underline;
+  @apply text-green-900 underline;
+
+  :global(.dark) & {
+    @apply text-green-200;
+  }
 }
 
 .everyone .riskLevelBody * {
-  @apply !text-green-900 dark:!text-green-200;
+  @apply !text-green-900;
+
+  :global(.dark) & {
+    @apply !text-green-200;
+  }
 }
 
 .everyone .riskLevelBody a {
-  @apply text-green-900 dark:text-green-200 underline;
+  @apply text-green-900 underline;
+
+  :global(.dark) & {
+    @apply text-green-200;
+  }
 }
 
 .medium_risk,
 .medium {
-  @apply bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200;
+  @apply bg-amber-50 text-amber-900;
+
+  :global(.dark) & {
+    @apply bg-amber-950/40 text-amber-200;
+  }
+}
+
+.medium_risk .riskLevelBadge,
+.medium .riskLevelBadge {
+  @apply bg-amber-200 text-amber-900;
+
+  :global(.dark) & {
+    @apply bg-amber-800/70 text-amber-100;
+  }
 }
 
 .medium_risk .riskLevelBody ul li::before,
 .medium .riskLevelBody ul li::before {
-  @apply text-amber-800 dark:text-amber-200;
+  @apply text-amber-800;
+}
+
+:global(.dark) .medium_risk .riskLevelBody ul li::before,
+:global(.dark) .medium .riskLevelBody ul li::before {
+  @apply text-amber-200;
 }
 
 .medium_risk .riskLevelIntro,
 .medium .riskLevelIntro {
-  @apply text-amber-900 dark:text-amber-200;
+  @apply text-amber-900;
+
+  :global(.dark) & {
+    @apply text-amber-200;
+  }
 }
 
 .high_risk,
 .high {
-  @apply bg-red-50 dark:bg-red-950/40 text-red-900 dark:text-red-200;
+  @apply bg-red-50 text-red-900;
+
+  :global(.dark) & {
+    @apply bg-red-950/40 text-red-200;
+  }
+}
+
+.high_risk .riskLevelBadge,
+.high .riskLevelBadge {
+  @apply bg-red-200 text-red-900;
+
+  :global(.dark) & {
+    @apply bg-red-800/70 text-red-100;
+  }
 }
 
 .high_risk .riskLevelBody ul li::before,
 .high .riskLevelBody ul li::before {
-  @apply text-red-800 dark:text-red-200;
+  @apply text-red-800;
+}
+
+:global(.dark) .high_risk .riskLevelBody ul li::before,
+:global(.dark) .high .riskLevelBody ul li::before {
+  @apply text-red-200;
 }
 
 .high_risk .riskLevelIntro,
 .high .riskLevelIntro {
-  @apply text-red-900 dark:text-red-200;
+  @apply text-red-900;
+
+  :global(.dark) & {
+    @apply text-red-200;
+  }
 }
 
 .medium_risk a,
 .medium a {
-  @apply text-amber-900 dark:text-amber-200 underline;
+  @apply text-amber-900 underline;
+
+  :global(.dark) & {
+    @apply text-amber-200;
+  }
 }
 
 .medium_risk .riskLevelBody *,
 .medium .riskLevelBody * {
-  @apply !text-amber-900 dark:!text-amber-200;
+  @apply !text-amber-900;
+
+  :global(.dark) & {
+    @apply !text-amber-200;
+  }
 }
 
 .medium_risk .riskLevelBody a,
 .medium .riskLevelBody a {
-  @apply text-amber-900 dark:text-amber-200 underline;
+  @apply text-amber-900 underline;
+
+  :global(.dark) & {
+    @apply text-amber-200;
+  }
 }
 
 .high_risk a,
 .high a {
-  @apply text-red-900 dark:text-red-200 underline;
+  @apply text-red-900 underline;
+
+  :global(.dark) & {
+    @apply text-red-200;
+  }
 }
 
 .high_risk .riskLevelBody *,
 .high .riskLevelBody * {
-  @apply !text-red-900 dark:!text-red-200;
+  @apply !text-red-900;
+
+  :global(.dark) & {
+    @apply !text-red-200;
+  }
 }
 
 .high_risk .riskLevelBody a,
 .high .riskLevelBody a {
-  @apply text-red-900 dark:text-red-200 underline;
+  @apply text-red-900 underline;
+
+  :global(.dark) & {
+    @apply text-red-200;
+  }
 }

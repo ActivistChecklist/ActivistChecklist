@@ -178,10 +178,11 @@
     --popover-foreground: 0 0% 1%;
     --card: 0 0% 100%;
     --card-foreground: var(--foreground);
-    --border: 0 0 85%;
+    --border: 0 0% 85%;
     --input: 0 0% 85%;
     --primary: var(--brand);
-    --primary-foreground: 124.53 100% 97.59%;
+    --primary-foreground: 0 0% 100%;
+    --link: var(--primary);
     --secondary: 233.21 40.74% 40.17%;
     --secondary-foreground: 233.21 0% 100%;
     --accent: var(--brand-gray-20);
@@ -234,36 +235,38 @@
   .dark {
     --background: 0 0% 4%;
     --foreground: 0 0% 99%;
-    --muted: 0 0% 5%;
+    --muted: 247 15% 14%;
     --muted-foreground: 0 0% 64%;
-    --popover: 0 0% 4%;
+    --popover: 247 10% 6%;
     --popover-foreground: 0 0% 99%;
-    --card: 0 0% 4%;
+    --card: 247 8% 7%;
     --card-foreground: 0 0% 99%;
-    --border: 113 11% 14%;
-    --input: 113 11% 14%;
-    --primary: 113 80% 27%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 113 10% 14%;
-    --secondary-foreground: 113 10% 74%;
-    --accent: 113 10% 14%;
-    --accent-foreground: 113 10% 74%;
+    --border: 247 10% 16%;
+    --input: 247 10% 16%;
+    --primary: 246 90% 82%;
+    --primary-hover: 246 90% 70%;
+    --primary-foreground: 247 50% 10%;
+    --link: 246 90% 82%;
+    --secondary: 247 20% 28%;
+    --secondary-foreground: 247 10% 92%;
+    --accent: 247 10% 16%;
+    --accent-foreground: 247 10% 88%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 85.7% 97.3%;
     --ring: var(--primary);
     --chart-1: var(--primary);
-    --chart-2: 113 10% 14%;
-    --chart-3: 113 10% 14%;
-    --chart-4: 113 10% 17%;
+    --chart-2: 247 10% 18%;
+    --chart-3: 247 10% 18%;
+    --chart-4: 247 10% 22%;
     --chart-5: var(--primary);
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-background: 247 15% 8%;
+    --sidebar-foreground: 247 5% 95%;
+    --sidebar-primary: 247 100% 68%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 247 10% 16%;
+    --sidebar-accent-foreground: 247 5% 95%;
+    --sidebar-border: 247 10% 16%;
+    --sidebar-ring: 247 100% 68%;
 
     /* Alert Colors - Dark Mode */
     --warning: 38 92% 50%;
@@ -303,26 +306,43 @@
 
   /* Standard link styling */
   .link {
-    @apply font-medium text-primary underline underline-offset-4 decoration-1 hover:decoration-2 transition-colors;
+    @apply font-medium underline underline-offset-4 decoration-1 hover:decoration-2 transition-colors;
+    color: hsl(var(--link));
   }
 
   .search-dialog a {
-    @apply underline underline-offset-4 decoration-muted-foreground/70 hover:decoration-2 hover:text-primary hover:decoration-primary;
+    @apply underline underline-offset-4 decoration-muted-foreground/70 hover:decoration-2 transition-colors;
+    &:hover { color: hsl(var(--link)); text-decoration-color: hsl(var(--link)); }
   }
 
   /* Inline markdown (outside prose) should keep standard link styling */
   .inline-markdown a:not(.button) {
-    @apply font-medium text-primary underline underline-offset-4 decoration-1 hover:decoration-2;
+    @apply font-medium underline underline-offset-4 decoration-1 hover:decoration-2;
+    color: hsl(var(--link));
   }
 
   /* Muted links that stay muted until hover - override prose styling */
   .muted-links a:not(.button) {
-    @apply text-muted-foreground! underline! underline-offset-4! decoration-muted-foreground/70! hover:decoration-2! hover:text-primary! hover:decoration-primary! transition-colors!;
+    @apply text-muted-foreground! underline! underline-offset-4! decoration-muted-foreground/70! hover:decoration-2! transition-colors!;
+    &:hover { color: hsl(var(--link)) !important; text-decoration-color: hsl(var(--link)) !important; }
+  }
+
+  /* Primary button hover in dark mode — inset shadow works on both solid and gradient backgrounds */
+  .dark .button.bg-primary:hover {
+    box-shadow: inset 0 0 0 9999px rgba(0, 0, 0, 0.18);
   }
 
   mark {
     @apply bg-amber-200 dark:bg-amber-900/50 px-0.5 rounded-sm;
     color: inherit;
+  }
+
+  .text-link {
+    color: hsl(var(--link));
+  }
+
+  .border-link {
+    border-color: hsl(var(--link));
   }
 
   /* Text utility classes */
@@ -487,12 +507,8 @@
       top: 2.1rem;
       left: 0;
       right: 0;
-      border-top: 1px solid #b8bdcc;
+      border-top: 1px solid hsl(var(--border));
       height: 1px;
-    }
-
-    .dark h2::before {
-      border-top-color: #4a5568;
     }
 
     h3 {
@@ -555,7 +571,8 @@
 
     /* Links */
     a:not(.button) {
-      @apply font-medium text-primary underline underline-offset-4 decoration-1 hover:decoration-2;
+      @apply font-medium underline underline-offset-4 decoration-1 hover:decoration-2;
+      color: hsl(var(--link));
     }
 
     /* Make links in do/dont sections inherit font weight */
@@ -609,7 +626,7 @@
     }
 
     tbody tr {
-      @apply m-0 border-t p-0 even:bg-background odd:bg-white dark:odd:bg-gray-900 text-sm;
+      @apply m-0 border-t p-0 even:bg-background odd:bg-muted/30 text-sm;
     }
   }
 }

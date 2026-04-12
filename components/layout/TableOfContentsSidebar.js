@@ -72,7 +72,7 @@ export function TableOfContentsSidebar({ initialHeaders = [] }) {
                   "pl-3 border-l-2",
                   header.level === 3 && "ml-4",
                   activeId === header.id
-                    ? "text-primary border-primary font-bold"
+                    ? "text-link border-link font-bold"
                     : "text-muted-foreground border-transparent hover:text-foreground hover:border-muted-foreground"
                 )}
                 onClick={(e) => {

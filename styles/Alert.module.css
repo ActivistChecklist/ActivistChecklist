@@ -58,7 +58,7 @@
 
 /* Variant styles */
 .default {
-  @apply bg-slate-100 text-foreground border-muted-foreground;
+  @apply bg-muted text-foreground border-muted-foreground;
 }
 
 .default svg {
