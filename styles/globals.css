@@ -182,6 +182,7 @@
     --input: 0 0% 85%;
     --primary: var(--brand);
     --primary-foreground: 0 0% 100%;
+    --link: var(--primary);
     --secondary: 233.21 40.74% 40.17%;
     --secondary-foreground: 233.21 0% 100%;
     --accent: var(--brand-gray-20);
@@ -242,8 +243,9 @@
     --card-foreground: 0 0% 99%;
     --border: 247 10% 16%;
     --input: 247 10% 16%;
-    --primary: 247 100% 68%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 246 90% 82%;
+    --primary-foreground: 247 50% 10%;
+    --link: 246 90% 82%;
     --secondary: 247 20% 28%;
     --secondary-foreground: 247 10% 92%;
     --accent: 247 10% 16%;
@@ -303,26 +305,38 @@
 
   /* Standard link styling */
   .link {
-    @apply font-medium text-primary underline underline-offset-4 decoration-1 hover:decoration-2 transition-colors;
+    @apply font-medium underline underline-offset-4 decoration-1 hover:decoration-2 transition-colors;
+    color: hsl(var(--link));
   }
 
   .search-dialog a {
-    @apply underline underline-offset-4 decoration-muted-foreground/70 hover:decoration-2 hover:text-primary hover:decoration-primary;
+    @apply underline underline-offset-4 decoration-muted-foreground/70 hover:decoration-2 transition-colors;
+    &:hover { color: hsl(var(--link)); text-decoration-color: hsl(var(--link)); }
   }
 
   /* Inline markdown (outside prose) should keep standard link styling */
   .inline-markdown a:not(.button) {
-    @apply font-medium text-primary underline underline-offset-4 decoration-1 hover:decoration-2;
+    @apply font-medium underline underline-offset-4 decoration-1 hover:decoration-2;
+    color: hsl(var(--link));
   }
 
   /* Muted links that stay muted until hover - override prose styling */
   .muted-links a:not(.button) {
-    @apply text-muted-foreground! underline! underline-offset-4! decoration-muted-foreground/70! hover:decoration-2! hover:text-primary! hover:decoration-primary! transition-colors!;
+    @apply text-muted-foreground! underline! underline-offset-4! decoration-muted-foreground/70! hover:decoration-2! transition-colors!;
+    &:hover { color: hsl(var(--link)) !important; text-decoration-color: hsl(var(--link)) !important; }
   }
 
   mark {
     @apply bg-amber-200 dark:bg-amber-900/50 px-0.5 rounded-sm;
     color: inherit;
+  }
+
+  .text-link {
+    color: hsl(var(--link));
+  }
+
+  .border-link {
+    border-color: hsl(var(--link));
   }
 
   /* Text utility classes */
@@ -551,7 +565,8 @@
 
     /* Links */
     a:not(.button) {
-      @apply font-medium text-primary underline underline-offset-4 decoration-1 hover:decoration-2;
+      @apply font-medium underline underline-offset-4 decoration-1 hover:decoration-2;
+      color: hsl(var(--link));
     }
 
     /* Make links in do/dont sections inherit font weight */

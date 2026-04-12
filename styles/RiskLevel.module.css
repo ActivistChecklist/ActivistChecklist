@@ -13,15 +13,24 @@
 
 /* Pill colors (also used by floating section header; not only inside .riskLevel). */
 .badgeToneEveryone {
-  @apply bg-green-200 dark:bg-green-800/70 text-green-900 dark:text-green-100;
+  @apply bg-green-200 text-green-900;
+  :global(.dark) & {
+    @apply bg-green-800/70 text-green-100;
+  }
 }
 
 .badgeToneMedium {
-  @apply bg-amber-200 dark:bg-amber-800/70 text-amber-900 dark:text-amber-100;
+  @apply bg-amber-200 text-amber-900;
+  :global(.dark) & {
+    @apply bg-amber-800/70 text-amber-100;
+  }
 }
 
 .badgeToneHigh {
-  @apply bg-red-200 dark:bg-red-800/70 text-red-900 dark:text-red-100;
+  @apply bg-red-200 text-red-900;
+  :global(.dark) & {
+    @apply bg-red-800/70 text-red-100;
+  }
 }
 
 .riskLevelBadgeInline {

@@ -122,7 +122,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                             href={item.href || '#'} 
                             className={cn(
                               "block text-lg font-semibold pl-2 border-l-2 border-l-transparent hover:border-l-foreground/20",
-                              isNavItemActive(item, pathname) && "border-primary text-primary"
+                              isNavItemActive(item, pathname) && "border-link text-link"
                             )}
                           >
                             {item.label}
@@ -133,7 +133,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                               href={subItem.href}
                               className={cn(
                                 "flex items-center gap-2 pl-4 py-1 text-md border-l-2 border-l-transparent hover:border-l-foreground/20",
-                                isSubItemActive(subItem, pathname) && "border-primary font-bold text-primary"
+                                isSubItemActive(subItem, pathname) && "border-link font-bold text-link"
                               )}
                             >
                               {subItem.icon && <subItem.icon className="h-4 w-4" />}
@@ -184,7 +184,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                             <NavigationMenuTrigger
                               className={cn(
                                 "px-4 py-2 h-auto",
-                                isNavItemActive(item, pathname) && "text-primary font-bold"
+                                isNavItemActive(item, pathname) && "text-link font-bold"
                               )}
                             >
                               {item.label}
@@ -202,7 +202,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                                       <Link
                                         href={subItem.href}
                                         className={cn(
-                                          "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-hidden transition-colors hover:bg-muted hover:text-primary focus:bg-muted focus:text-primary",
+                                          "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-hidden transition-colors hover:bg-muted hover:text-link focus:bg-muted focus:text-link",
                                           isSubItemActive(subItem, pathname) && "bg-muted"
                                         )}
                                       >
@@ -228,7 +228,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                                       <Link
                                         href={item.footerLink.href}
                                         className={cn(
-                                          "block select-none rounded-md p-2 no-underline outline-hidden transition-colors hover:bg-muted hover:text-primary focus:bg-muted focus:text-primary text-center",
+                                          "block select-none rounded-md p-2 no-underline outline-hidden transition-colors hover:bg-muted hover:text-link focus:bg-muted focus:text-link text-center",
                                           item.footerLink.type === "full-width" && item.items.length % 2 === 0 ? "bg-muted" : "bg-muted h-full flex items-center justify-center",
                                           item.footerLink.className
                                         )}
