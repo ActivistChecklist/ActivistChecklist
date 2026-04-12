@@ -12,6 +12,7 @@ import { getGuideIcon } from '@/config/icons';
 import RelatedGuides from '@/components/RelatedGuides';
 import { LOCALES } from "@/lib/i18n-config";
 import { formatContentDate } from '@/lib/utils';
+import PageNotices from '@/components/layout/PageNotices';
 
 function parseRelatedGuides(value) {
   if (Array.isArray(value)) return value.filter(Boolean);
@@ -31,7 +32,7 @@ function parseRelatedGuides(value) {
  *   - checklistItems: { [slug]: { frontmatter, serializedBody } } map for ChecklistItemsContext
  *   - locale: BCP 47 locale string for date formatting (provided by parent Server Component)
  */
-export default function Guide({ frontmatter, serializedIntro, serializedBody, checklistItems = {}, slug, locale }) {
+export default function Guide({ frontmatter, serializedIntro, serializedBody, checklistItems = {}, slug, locale, notices = [] }) {
   const t = useTranslations();
   // Prefer locale from NextIntlClientProvider (set by the locale layout), fall back to prop
   const intlLocale = useLocale() || locale || 'en';
@@ -87,6 +88,8 @@ export default function Guide({ frontmatter, serializedIntro, serializedBody, ch
           </div>
         )}
       </div>
+
+      <PageNotices initialNotices={notices} />
 
       {/* Body */}
       <div className="mx-auto">

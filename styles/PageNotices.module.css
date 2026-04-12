@@ -1,0 +1,41 @@
+@reference "./globals.css";
+
+.container {
+  @apply flex flex-col gap-2 mb-8;
+}
+
+.notice {
+  @apply flex items-stretch text-sm rounded-md overflow-hidden;
+}
+
+/* Colored icon column */
+.iconCol {
+  @apply flex items-center justify-center shrink-0 w-12;
+}
+
+.icon {
+  @apply h-6 w-6 text-white shrink-0;
+}
+
+/* Text column — normal inline flow so rich text + links stay one sentence */
+.textCol {
+  @apply block py-3 px-4 leading-snug text-foreground flex-1 min-w-0;
+}
+
+/* ── Warning ── */
+.warning .iconCol {
+  @apply bg-warning;
+}
+
+.warning .textCol {
+  @apply bg-warning/10;
+}
+
+/* ── Info ── */
+.info .iconCol {
+  @apply bg-info;
+}
+
+.info .textCol {
+  @apply bg-info/10;
+}

@@ -1,14 +1,15 @@
 // @ts-nocheck
+import Link from 'next/link';
 import { unstable_noStore as noStore } from 'next/cache';
 import { draftMode } from 'next/headers';
 import { notFound } from 'next/navigation';
-import { setRequestLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { serialize } from 'next-mdx-remote/serialize';
 import Layout from '@/components/layout/Layout';
 import Guide from '@/components/guides/Guide';
 import ContentPage from '@/components/pages/Page';
-import TranslationFallbackBanner from '@/components/TranslationFallbackBanner';
 import { mdxOptions } from '@/lib/mdx-options';
+import { shouldShowTranslationUnreviewedNotice } from '@/lib/crowdin-translation-status';
 import {
   getAllGuides,
   getAllPages,
@@ -26,6 +27,44 @@ import { LOCALES, DEFAULT_LOCALE } from '@/lib/i18n-config';
 
 const DEFAULT_DESCRIPTION =
   'Plain language steps for digital security, because protecting yourself helps keep your whole community safer. Built by activists, for activists with field-tested, community-verified guides.';
+
+function buildContentNotices({ locale, isFallback, slug, t }) {
+  const notices = [];
+  if (isFallback) {
+    notices.push({
+      id: 'lang-fallback',
+      type: 'info',
+      message: t('translationFallback.message'),
+    });
+  }
+  if (
+    !isFallback &&
+    slug !== 'contribute' &&
+    shouldShowTranslationUnreviewedNotice(slug, locale)
+  ) {
+    notices.push({
+      id: 'translation-unreviewed',
+      type: 'warning',
+      message: (
+        <span className="inline">
+          <strong className="font-semibold">{t('pageNotices.translationUnreviewedTitle')}</strong>
+          {': '}
+          {t.rich('pageNotices.translationUnreviewed', {
+            link: (chunks) => (
+              <Link
+                href={`/${locale}/contribute/`}
+                className="inline underline font-medium"
+              >
+                {chunks}
+              </Link>
+            ),
+          })}
+        </span>
+      ),
+    });
+  }
+  return notices;
+}
 
 export async function generateStaticParams() {
   // Return slugs for all locales — the parent [locale] layout handles the locale segment
@@ -116,6 +155,8 @@ export default async function SlugPage({ params }) {
     noStore();
   }
 
+  const t = await getTranslations();
+
   // ── Try guide ──────────────────────────────────────────────
   const guide = await resolveGuide(slug, locale);
   if (guide) {
@@ -160,9 +201,10 @@ export default async function SlugPage({ params }) {
       console.warn(`OG image skipped for guide "${slug}":`, err.message);
     }
 
+    const guideNotices = buildContentNotices({ locale, isFallback, slug, t });
+
     return (
       <Layout sidebarType="toc">
-        {isFallback && <TranslationFallbackBanner />}
         <Guide
           frontmatter={serializeFrontmatter(frontmatter)}
           serializedIntro={serializedIntro}
@@ -170,6 +212,7 @@ export default async function SlugPage({ params }) {
           checklistItems={checklistItems}
           slug={slug}
           locale={locale}
+          notices={guideNotices}
         />
       </Layout>
     );
@@ -190,13 +233,15 @@ export default async function SlugPage({ params }) {
       console.warn(`OG image skipped for page "${slug}":`, err.message);
     }
 
+    const pageNotices = buildContentNotices({ locale, isFallback, slug, t });
+
     return (
       <Layout sidebarType="navigation">
-        {isFallback && <TranslationFallbackBanner />}
         <ContentPage
           frontmatter={serializeFrontmatter(frontmatter)}
           serializedBody={serializedBody}
           locale={locale}
+          notices={pageNotices}
         />
       </Layout>
     );
