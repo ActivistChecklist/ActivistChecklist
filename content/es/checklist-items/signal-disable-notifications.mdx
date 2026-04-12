@@ -1,12 +1,30 @@
 ---
 title: Ocultar la vista previa de mensajes y el nombre del remitente en las notificaciones de Signal
 preview: |
-  Si te confiscan el teléfono (y sigue encendido), la policía puede leer los mensajes en tu pantalla de inicio sin desbloquearlo.
+  Si confiscan tu teléfono, los polis pueden acceder a tu historial de notificaciones.
 titleBadges: []
 firstPublished: 2026-01-28
-lastUpdated: 2026-01-28
+lastUpdated: 2026-04-06
 ---
 
+Si confiscan tu teléfono, hay dos formas en que los polis pueden acceder a tu historial de notificaciones:
+
+1. Pueden ver las notificaciones en tu pantalla de inicio sin desbloquear tu teléfono.
+2. Si usan herramientas de hackeo, pueden acceder al registro de notificaciones que ha recibido tu teléfono. ([Ejemplo del caso Prairieland](https://bsky.app/profile/activistchecklist.org/post/3mityctmsfc2v).)
+
+Esto solo aplica a los mensajes entrantes. Y esto es un riesgo incluso después de que el mensaje haya desaparecido de Signal (si tienes activados los mensajes que desaparecen).
+
 <HowTo title="Cómo desactivar las notificaciones de Signal">
-  Abre Signal > Settings > Notifications > Notification Content > **Selecciona** "**No Name or Content**"
+  * *En iPhone:* Signal > Foto de perfil > Configuración > Notificaciones > Contenido de notificación > **Selecciona "Sin nombre ni contenido"**
+  * *En Android:* Signal > Foto de perfil > Configuración > Notificaciones > Mostrar > **Selecciona "Sin nombre ni mensaje"**
 </HowTo>
+
+<Alert type="warning">
+  Si desactivas las notificaciones de Signal a nivel del sistema operativo del teléfono, no recibirás avisos sobre llamadas entrantes de Signal.
+</Alert>
+
+<Alert type="info">
+  Si usas Signal Desktop, asegúrate de desactivar las notificaciones allí también.
+</Alert>
+
+**Nota:** Si quieres borrar el historial de notificaciones que iOS ya ha almacenado, la única manera de hacerlo es restablecer tu teléfono de fábrica y configurarlo como dispositivo nuevo — no desde una copia de seguridad, ya que las copias de seguridad incluyen el historial de notificaciones.
