@@ -38,9 +38,8 @@ export function Footer() {
 
   return (
     <footer className="print:hidden bg-gray-900 text-gray-400">
-      <div className="w-full overflow-hidden leading-none" style={{ height: '80px' }}>
+      <div className="w-full overflow-hidden leading-none bg-background" style={{ height: '80px' }}>
         <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: '100%' }}>
-          <rect width="1440" height="80" style={{ fill: 'hsl(var(--background))' }} />
           <polygon points="0,80 1440,15 1440,80" fill="#111827" />
         </svg>
       </div>
