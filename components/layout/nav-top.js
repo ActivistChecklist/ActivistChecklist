@@ -63,12 +63,19 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
     <>
       {/* If printing, show the logo */}
       <div className="hidden print:block print:relative">
-        <Image 
-          className="print:absolute print:top-0 print:right-0" 
-          src={navigationConfig.logo.image} 
-          alt={navigationConfig.logo.ariaLabel} 
-          width={250} 
-          height={20} 
+        <Image
+          className="print:absolute print:top-0 print:right-0 dark:hidden"
+          src={navigationConfig.logo.image}
+          alt={navigationConfig.logo.ariaLabel}
+          width={250}
+          height={20}
+        />
+        <Image
+          className="print:absolute print:top-0 print:right-0 hidden dark:block"
+          src="/images/logo-bg-white-transparent.png"
+          alt={navigationConfig.logo.ariaLabel}
+          width={250}
+          height={20}
         />
       </div>
       <header className={cn(
@@ -162,7 +169,8 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                 className="flex items-center space-x-2 ml-0 font-bold text-xl" 
                 aria-label={navigationConfig.logo.ariaLabel}
               >
-                <Image src={navigationConfig.logo.image} alt={navigationConfig.logo.ariaLabel} width={250} height={20} />
+                <Image src={navigationConfig.logo.image} alt={navigationConfig.logo.ariaLabel} width={250} height={20} className="dark:hidden" />
+                <Image src="/images/logo-bg-white-transparent.png" alt={navigationConfig.logo.ariaLabel} width={250} height={20} className="hidden dark:block" />
               </Link>
             </div>
             <div className="flex items-center gap-4">
