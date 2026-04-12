@@ -32,8 +32,9 @@
 * Use `useTranslations()` in client components and `await getTranslations()` in server components (from `next-intl` and `next-intl/server` respectively).
 * The convention in this project is `const t = useTranslations()` without a namespace, using full dot-notation paths (e.g., `t('contact.title')`).
 * This does not apply to admin/Keystatic interfaces, scripts, or internal tooling.
+* Do not manually edit non-English content
 
-## Coding principles
+## Coding security principles
 
 * Always make sure to write code with security as a core principle. Don't be excessive (ex: lots of try/catch loops), but do use thinking time to consider how an attacker could mount a meaningful attack.
 * Never hardcode secrets — use environment variables.

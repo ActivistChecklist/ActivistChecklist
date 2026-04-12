@@ -4,9 +4,6 @@
  * next-intl `localePrefix: 'as-needed'`: English has no `/en/` prefix; Spanish stays `/es/...`.
  * postbuild mirrors `out/en/*` to the site root after sitemap generation; the sitemap should
  * list canonical public URLs, not internal `/en/` paths.
- *
- * When `NEXT_PUBLIC_SHOW_TRANSLATION_UI` is not `true` in production (same as LanguageSwitcher),
- * `/es/*` URLs are omitted from the sitemap and hreflang omits `es`.
  */
 
 const fs = require('fs');
@@ -22,7 +19,6 @@ const { buildLastmodByPath, lookupContentLastmod } = require('./scripts/sitemap-
 const {
   buildHreflangAlternateRefs,
   seoPriorityAndChangefreq,
-  isTranslationUiVisible,
 } = require('./scripts/sitemap-seo-fields.cjs');
 
 /** Dedupe after canonicalization (e.g. if both `/en/foo/` and `/foo/` ever appeared). */
@@ -60,13 +56,6 @@ module.exports = {
     }
 
     const dedupeKey = loc.endsWith('/') || loc === '/' ? loc : `${loc}/`;
-
-    if (
-      !isTranslationUiVisible() &&
-      (dedupeKey.startsWith('/es/') || dedupeKey === '/es')
-    ) {
-      return null;
-    }
 
     if (canonicalLocEmitted.has(dedupeKey)) {
       return null;

@@ -87,17 +87,16 @@ export default async function ChangelogPage({ params }) {
     <Layout>
       <div className="max-w-4xl mx-auto">
         <header className="mb-8">
-          <div className="flex items-start justify-between">
-            <div>
-              <h1 className="page-title">{t('changelog.title')}</h1>
-              <p className="text-lg text-muted-foreground">
-                {t('changelog.description')}
-              </p>
-            </div>
+          <h1 className="page-title">{t('changelog.title')}</h1>
+          <div className="mt-2 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <p className="text-lg text-muted-foreground sm:min-w-0 sm:flex-1 sm:pr-4">
+              {t('changelog.description')}
+            </p>
             <RSSButton
               href="/rss/changelog.xml"
               variant="outline"
               size="sm"
+              className="w-fit shrink-0 self-start sm:mt-0.5"
             />
           </div>
         </header>

@@ -15,6 +15,12 @@
  *   yarn crowdin:hide-strings           (dry run — reads CROWDIN_* from .env)
  *   yarn crowdin:hide-strings --apply   (hides strings and clears stray translations)
  *
+ * Only strings in Crowdin source files under content/en/** /*.mdx are affected (Crowdin paths may
+ * include a branch prefix, e.g. /main/content/en/...). Same English text in messages/en.json
+ * (e.g. riskLevel.everyoneLabel vs level="everyone" in MDX) must not be hidden or cleared.
+ * Unhide is conservative (obsolete MDX matches or messages/en.json collisions only), so a path
+ * bug cannot mass-unhide every hidden string.
+ *
  * Add to package.json:
  *   "scripts": {
  *     "crowdin:hide-strings": "node scripts/crowdin-hide-slugs.mjs",
@@ -27,7 +33,7 @@ import { readFileSync, readdirSync, statSync } from "fs";
 import { join, extname, basename } from "path";
 
 // Load .env file if present (Node 22+ built-in)
-try { process.loadEnvFile(); } catch {}
+try { process.loadEnvFile(); } catch { }
 
 // --- Colors ---
 const c = {
@@ -210,9 +216,9 @@ async function crowdinFetch(path, { method = "GET", body } = {}) {
   }
 }
 
-const crowdinGet    = (path)         => crowdinFetch(path);
-const crowdinPatch  = (path, data)   => crowdinFetch(path, { method: "PATCH",  body: data });
-const crowdinDelete = (path)         => crowdinFetch(path, { method: "DELETE" });
+const crowdinGet = (path) => crowdinFetch(path);
+const crowdinPatch = (path, data) => crowdinFetch(path, { method: "PATCH", body: data });
+const crowdinDelete = (path) => crowdinFetch(path, { method: "DELETE" });
 
 // --- Step 3: Find and hide strings / clear translations in Crowdin ---
 
@@ -226,6 +232,89 @@ async function runConcurrent(concurrency, tasks) {
     }
   }
   await Promise.all(Array.from({ length: Math.min(concurrency, tasks.length) }, worker));
+}
+
+async function getDefaultBranchId() {
+  const data = await crowdinGet(`/projects/${PROJECT_ID}/branches?limit=500`);
+  const list = data.data || [];
+  if (list.length === 0) return null;
+  const names = list.map((b) => b.data?.name);
+  for (const prefer of ["main", "master"]) {
+    const idx = names.indexOf(prefer);
+    if (idx !== -1) return list[idx].data.id;
+  }
+  return list[0].data.id;
+}
+
+async function paginateFiles(querySuffix) {
+  const files = [];
+  let offset = 0;
+  const limit = 500;
+  while (true) {
+    const data = await crowdinGet(
+      `/projects/${PROJECT_ID}/files?limit=${limit}&offset=${offset}${querySuffix}`
+    );
+    for (const item of data.data || []) {
+      const row = item.data;
+      if (row.path && row.id) {
+        files.push(row);
+      }
+    }
+    if ((data.data || []).length < limit) break;
+    offset += limit;
+  }
+  return files;
+}
+
+/**
+ * Merge branch-scoped (recursive) and project-level file lists. Crowdin paths may include a
+ * version-branch prefix (e.g. /main/content/en/...) — see crowdin-pre-translate.mjs findCrowdinFile.
+ */
+async function listAllProjectFiles(branchId) {
+  const byId = new Map();
+  function merge(rows) {
+    for (const row of rows) {
+      if (!byId.has(row.id)) {
+        byId.set(row.id, row);
+      }
+    }
+  }
+  if (branchId) {
+    merge(await paginateFiles(`&branchId=${branchId}&recursion=1`));
+  }
+  merge(await paginateFiles(""));
+  return [...byId.values()];
+}
+
+function normalizeCrowdinPath(crowdinPath) {
+  return String(crowdinPath || "")
+    .replace(/\\/g, "/")
+    .replace(/\/+/g, "/")
+    .replace(/^\/+/, "");
+}
+
+/** Crowdin path for files we scan for untranslatable JSX (CONTENT_DIR). */
+function isMdxContentEnFile(crowdinPath) {
+  const p = normalizeCrowdinPath(crowdinPath);
+  if (!p.endsWith(".mdx")) return false;
+  return /(^|\/)content\/en\//.test(p);
+}
+
+/** messages/en.json — can collide with MDX attribute text (e.g. everyoneLabel vs level=). */
+function isMessagesEnJsonFile(crowdinPath) {
+  const p = normalizeCrowdinPath(crowdinPath);
+  return /(^|\/)messages\/en\.json$/.test(p);
+}
+
+/**
+ * Hide/clear only for strings that belong to scanned MDX — not messages/en.json etc., even
+ * when the English text matches (e.g. "everyone" in level= vs everyoneLabel).
+ */
+function shouldHideInCrowdin(fileId, text, untranslatableValues, fileIdToPath) {
+  if (!untranslatableValues.has(text)) return false;
+  const path = fileIdToPath.get(fileId);
+  if (!path) return false;
+  return isMdxContentEnFile(path);
 }
 
 async function getTargetLanguages() {
@@ -246,15 +335,15 @@ async function clearTranslationsForString(stringId, languageId) {
   return translations.length;
 }
 
-async function getAllStrings() {
+async function getAllStrings(branchId) {
   const strings = [];
   let offset = 0;
   const limit = 500;
 
   while (true) {
-    const data = await crowdinGet(
-      `/projects/${PROJECT_ID}/strings?limit=${limit}&offset=${offset}`
-    );
+    let url = `/projects/${PROJECT_ID}/strings?limit=${limit}&offset=${offset}`;
+    if (branchId) url += `&branchId=${branchId}`;
+    const data = await crowdinGet(url);
     strings.push(...data.data);
     if (data.data.length < limit) break;
     offset += limit;
@@ -315,32 +404,51 @@ async function run() {
     }
   }
 
+  const branchId = await getDefaultBranchId();
+  const projectFiles = await listAllProjectFiles(branchId);
+  const fileIdToPath = new Map(projectFiles.map((f) => [f.id, f.path]));
+
   // Fetch all strings from Crowdin
   console.log(`${c.blue}Fetching${c.reset} strings from Crowdin project ${c.white}${PROJECT_ID}${c.reset}...`);
-  const allStrings = await getAllStrings();
+  const allStrings = await getAllStrings(branchId);
   console.log(`${c.green}Found${c.reset} ${c.bold}${allStrings.length}${c.reset} total strings in project.\n`);
 
-  // Categorize all Crowdin strings
+  // Categorize Crowdin strings: only MDX under content/en/ + matching text (see file header).
   const toHide = [];
   const alreadyHidden = [];
-  const toUnhide = []; // hidden in Crowdin but no longer in our untranslatable set
+  const toUnhide = []; // hidden but should not be (wrong file, or no longer untranslatable)
+
+  const matchedMdxValues = new Set();
 
   for (const item of allStrings) {
-    const { id, text, isHidden } = item.data;
-    if (untranslatableValues.has(text)) {
+    const { id, text, isHidden, fileId } = item.data;
+    const hideThis = shouldHideInCrowdin(fileId, text, untranslatableValues, fileIdToPath);
+    const sourcePath = fileIdToPath.get(fileId);
+
+    if (hideThis) {
+      matchedMdxValues.add(text);
       if (isHidden) {
-        alreadyHidden.push({ id, text });
+        alreadyHidden.push({ id, text, fileId });
       } else {
-        toHide.push({ id, text });
+        toHide.push({ id, text, fileId });
       }
     } else if (isHidden) {
-      // Was hidden (likely by a previous script run) but is no longer untranslatable
-      toUnhide.push({ id, text });
+      // Do not unhide every hidden string when hideThis is false (e.g. path detection bugs);
+      // only: (1) obsolete — text no longer extracted from MDX, or (2) JSON file collision.
+      const obsolete = !untranslatableValues.has(text);
+      const messagesCollision =
+        untranslatableValues.has(text) && isMessagesEnJsonFile(sourcePath);
+      if (obsolete || messagesCollision) {
+        toUnhide.push({ id, text, fileId });
+      }
     }
   }
 
+  let notInCrowdin = 0;
+  for (const v of untranslatableValues) {
+    if (!matchedMdxValues.has(v)) notInCrowdin++;
+  }
   const totalFound = toHide.length + alreadyHidden.length;
-  const notInCrowdin = untranslatableValues.size - totalFound;
 
   console.log(`${c.bold}Summary:${c.reset}`);
   console.log(`  ${c.gray}Matched in Crowdin:${c.reset}  ${c.bold}${totalFound}${c.reset}`);
@@ -351,9 +459,9 @@ async function run() {
 
   const allMatched = [...toHide, ...alreadyHidden];
 
-  // --- Unhide strings that are no longer untranslatable ---
+  // --- Unhide strings (obsolete MDX match, or non-MDX source such as messages/en.json) ---
   if (toUnhide.length > 0) {
-    console.log(`${c.bold}${DRY_RUN ? "Would unhide" : "Unhiding"} ${toUnhide.length} string(s) no longer in the untranslatable set:${c.reset}\n`);
+    console.log(`${c.bold}${DRY_RUN ? "Would unhide" : "Unhiding"} ${toUnhide.length} string(s) that should stay visible/translatable:${c.reset}\n`);
 
     for (const { id, text } of toUnhide) {
       if (DRY_RUN) {

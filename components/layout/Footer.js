@@ -4,18 +4,12 @@ import { DarkModeToggle } from "@/components/layout/DarkModeToggle"
 import { CompactNewsletterSubscribe } from "@/components/NewsletterSubscribe"
 import { footerConfig } from '@/config/navigation'
 import { useTranslations } from 'next-intl'
-import { translateNavigationItem } from '@/lib/navigation-i18n'
+import { createIntlTranslator, translateNavigationItem } from '@/lib/navigation-i18n'
 
 export function Footer() {
   const t = useTranslations();
 
-  const translateText = (key, fallback) => {
-    try {
-      return t(key);
-    } catch {
-      return fallback;
-    }
-  };
+  const translateText = createIntlTranslator(t);
 
   const sectionTitleKeys = {
     Navigation: 'footer.sections.navigation',

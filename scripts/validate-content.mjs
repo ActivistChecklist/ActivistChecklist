@@ -52,7 +52,7 @@ const ALLOWED_COMPONENTS = new Set([
   'RiskLevel', 'Table', 'RelatedGuides', 'RelatedGuide', 'Section', 'ChecklistItem',
   'ChecklistItemGroup',
   'CopyButton', 'Badge', 'InlineChecklist',
-  'StyledSpan',
+  'StyledSpan', 'SimpleImage', 'TranslationStats',
 ]);
 
 const ALLOWED_HTML_ELEMENTS = new Set([

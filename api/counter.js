@@ -167,10 +167,6 @@ async function sendEvent(request) {
     ip: anonymizedIP
   };
 
-  if (process.env.NODE_ENV === 'development') {
-    console.log("payload", payload);
-  }
-
   return sendUmamiEvent(payload, userAgent);
 }
 
