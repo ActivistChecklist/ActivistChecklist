@@ -19,7 +19,7 @@ const buttonVariants = cva(
         ghostOutline: "border-2 border-accent text-accent-foreground hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        muted: "bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground",
+        muted: "bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground dark:border dark:border-border dark:text-foreground",
       },
       size: {
         sm: "h-8 rounded-md px-3",
