@@ -5,6 +5,7 @@ const rateLimit = require('@fastify/rate-limit');
 const contactRoutes = require('./contact');
 const counterRoutes = require('./counter');
 const subscribeRoutes = require('./subscribe');
+const crowdinStatsRoutes = require('./crowdin-stats');
 
 dotenv.config();
 
@@ -94,6 +95,7 @@ async function app (fastify, opts) {
     await fastify.register(contactRoutes);
     await fastify.register(counterRoutes);
     await fastify.register(subscribeRoutes);
+    await fastify.register(crowdinStatsRoutes);
     
   }, { prefix: '/api-server' });
 }
