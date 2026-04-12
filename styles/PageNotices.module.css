@@ -22,6 +22,15 @@
   @apply block py-3 px-4 leading-snug text-foreground flex-1 min-w-0;
 }
 
+.textCol a {
+  @apply font-medium underline decoration-solid decoration-1 underline-offset-[0.2em];
+  @apply transition-[text-decoration-thickness,text-underline-offset,color] duration-150 ease-out;
+}
+
+.textCol a:hover {
+  @apply decoration-2;
+}
+
 /* ── Warning ── */
 .warning .iconCol {
   @apply bg-warning;

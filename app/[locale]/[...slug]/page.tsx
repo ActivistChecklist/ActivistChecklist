@@ -58,10 +58,7 @@ function buildContentNotices({ locale, isFallback, slug, t }) {
           {t.rich('pageNotices.translationUnreviewed', {
             approvalPercent,
             link: (chunks) => (
-              <Link
-                href={`/${locale}/contribute/`}
-                className="inline underline font-medium"
-              >
+              <Link href={`/${locale}/contribute/`} className="inline">
                 {chunks}
               </Link>
             ),
