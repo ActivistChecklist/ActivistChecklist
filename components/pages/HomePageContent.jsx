@@ -55,7 +55,7 @@ export default function HomePageContent({ children, changelogEntries = [], lates
           <div className="">
             <header className={cn(
               "not-prose relative left-1/2 w-dvw max-w-none -translate-x-1/2",
-              "relative mb-16 -mt-8 py-16 px-4 overflow-hidden",
+              "relative mb-16 -mt-8 pt-16 pb-32 px-4 overflow-hidden",
               /* v4: use bg-radial / bg-linear-to-* so from/via/to populate --tw-gradient-stops */
               "bg-radial-[ellipse_at_top] from-primary/20 via-background to-background",
               "before:content-[''] before:fixed before:inset-0 before:bg-linear-to-r before:from-primary/10 before:via-accent/5 before:to-primary/10 before:opacity-70 before:pointer-events-none"
@@ -85,6 +85,11 @@ export default function HomePageContent({ children, changelogEntries = [], lates
                     <Markdown content={latestMajorBodyText} isProse={false} inlineOnly={true} />
                   </div>
                 )}
+              </div>
+              <div className="absolute bottom-0 left-0 right-0" style={{ height: '80px' }}>
+                <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: '100%' }}>
+                  <polygon points="0,80 1440,15 1440,80" fill="white" />
+                </svg>
               </div>
             </header>
           </div>
@@ -144,7 +149,7 @@ export default function HomePageContent({ children, changelogEntries = [], lates
           {children}
 
           {/* Recent Updates */}
-          <section className="mb-16">
+          <section>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold">{t('homepage.recentUpdatesHeading')}</h2>
               <Button asChild variant="outline" size="sm">
