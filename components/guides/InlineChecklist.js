@@ -132,7 +132,7 @@ export function InlineChecklist({ children, storageKey, className }) {
                   className={cn(
                     "flex items-start gap-3 cursor-pointer select-none transition-all",
                     "hover:bg-muted/40 -mx-2 px-2 py-1 rounded-md",
-                    isChecked && "bg-gray-100"
+                    isChecked && "bg-primary/10"
                   )}
                 >
                   <span

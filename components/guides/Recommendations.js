@@ -24,8 +24,8 @@ export const RecommendationItem = ({ type, content, className }) => {
   if (!content) return null
 
   const styles = {
-    do: "text-success bg-background",
-    dont: "text-destructive-text bg-background",
+    do: "text-success bg-success/10",
+    dont: "text-destructive bg-destructive/10",
     empty: "text-transparent bg-transparent",
   }
 

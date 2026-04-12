@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Shield, Users, ArrowRight, Sparkles } from 'lucide-react';
+import { Shield, Users, ArrowRight, Sparkles, Check } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import { Card, CardHeader, CardFooter, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -71,8 +71,8 @@ export default function HomePageContent({ children, changelogEntries = [], lates
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button asChild variant="default" size="xl" className="group bg-linear-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary transition-all">
                     <Link href={NAV_ITEMS.ESSENTIALS.href} className="block group">
+                      <Check className="mr-2" />
                       {t('hero.primaryCta')}
-                      <ArrowRight className="ml-2 transition-transform duration-300 ease-out group-hover:translate-x-1" />
                     </Link>
                   </Button>
                   <Button asChild variant="muted" size="xl">

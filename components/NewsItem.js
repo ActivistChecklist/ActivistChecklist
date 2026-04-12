@@ -28,14 +28,14 @@ const NewsItem = ({ entry }) => {
 
   // Meta row component
   const MetaRow = () => (
-    <div className="text-sm text-gray-600 mb-2">
+    <div className="text-sm text-muted-foreground mb-2">
       <div className="flex flex-wrap items-center gap-1">
         <span>{formatRelativeDate(dateString)}</span>
         {tags && tags.length > 0 && (
           <>
             <span>•</span>
             {tags.map((tag, index) => (
-              <span key={index} className="bg-gray-200 text-gray-600 px-2 py-1 rounded text-xs whitespace-nowrap">
+              <span key={index} className="bg-muted text-muted-foreground px-2 py-1 rounded text-xs whitespace-nowrap">
                 {tag}
               </span>
             ))}
@@ -53,10 +53,7 @@ const NewsItem = ({ entry }) => {
           {/* Title and Image in a row */}
           <div className="flex gap-3">
             <div className="flex-1 min-w-0">
-              <h3 className={cn(
-                "text-lg font-semibold mb-2 line-clamp-3 transition-all duration-100",
-                hasUrl ? "text-black" : "text-gray-900"
-              )}>
+              <h3 className="text-lg font-semibold mb-2 line-clamp-3 transition-all duration-100 text-foreground">
                 {hasUrl ? (
                   <Link
                     href={originalUrl}
@@ -69,7 +66,7 @@ const NewsItem = ({ entry }) => {
                   <span>{title || 'News Item'}</span>
                 )}
                 {displaySource && (
-                  <span className="text-lg font-normal text-gray-400 group-hover:text-gray-600 ml-1">
+                  <span className="text-lg font-normal text-muted-foreground group-hover:text-foreground/70 ml-1">
                     • {displaySource}
                   </span>
                 )}
@@ -83,7 +80,7 @@ const NewsItem = ({ entry }) => {
                   href={originalUrl}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="w-32 h-20 bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center relative">
+                  <div className="w-32 h-20 bg-muted rounded-lg overflow-hidden flex items-center justify-center relative">
                     {imageInfo.exists ? (
                       <Image
                         src={imageInfo.src}
@@ -94,14 +91,14 @@ const NewsItem = ({ entry }) => {
                         loading="lazy"
                       />
                     ) : (
-                      <div className="flex flex-col items-center justify-center text-gray-400">
+                      <div className="flex flex-col items-center justify-center text-muted-foreground">
                         <IoNewspaperOutline className="w-8 h-8" />
                       </div>
                     )}
                   </div>
                 </Link>
               ) : (
-                <div className="w-32 h-20 bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center relative">
+                <div className="w-32 h-20 bg-muted rounded-lg overflow-hidden flex items-center justify-center relative">
                   {imageInfo.exists ? (
                     <Image
                       src={imageInfo.src}
@@ -112,7 +109,7 @@ const NewsItem = ({ entry }) => {
                       loading="lazy"
                     />
                   ) : (
-                    <div className="flex flex-col items-center justify-center text-gray-400">
+                    <div className="flex flex-col items-center justify-center text-muted-foreground">
                       <IoNewspaperOutline className="w-8 h-8" />
                     </div>
                   )}
@@ -133,7 +130,7 @@ const NewsItem = ({ entry }) => {
 
           {/* Paywall Notice */}
           {showBypassNotice && (
-            <div className="text-xs text-gray-500 italic">
+            <div className="text-xs text-muted-foreground italic">
               This link bypasses the paywall.{' '}
               <a
                 href={originalUrl}
@@ -153,10 +150,7 @@ const NewsItem = ({ entry }) => {
           {/* Main content */}
           <div className="flex-1 min-w-0">
             {/* Title */}
-            <h3 className={cn(
-              "text-lg font-semibold mb-2 line-clamp-3 transition-all duration-100",
-              hasUrl ? "text-black" : "text-gray-900"
-            )}>
+            <h3 className="text-lg font-semibold mb-2 line-clamp-3 transition-all duration-100 text-foreground">
               {hasUrl ? (
                 <Link
                   href={originalUrl}
@@ -169,7 +163,7 @@ const NewsItem = ({ entry }) => {
                 <span>{title || 'News Item'}</span>
               )}
               {displaySource && (
-                <span className="text-lg font-normal text-gray-400 group-hover:text-gray-600 ml-1">
+                <span className="text-lg font-normal text-muted-foreground group-hover:text-foreground/70 ml-1">
                   • {displaySource}
                 </span>
               )}
@@ -187,7 +181,7 @@ const NewsItem = ({ entry }) => {
 
             {/* Paywall Notice */}
             {showBypassNotice && (
-              <div className="text-xs text-gray-500 italic">
+              <div className="text-xs text-muted-foreground italic">
                 This link bypasses the paywall.{' '}
                 <a
                   href={originalUrl}
@@ -209,7 +203,7 @@ const NewsItem = ({ entry }) => {
                 href={originalUrl}
                 onClick={(e) => e.stopPropagation()}
               >
-                <div className="w-48 h-28 bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center relative">
+                <div className="w-48 h-28 bg-muted rounded-lg overflow-hidden flex items-center justify-center relative">
                   {imageInfo.exists ? (
                     <Image
                       src={imageInfo.src}
@@ -220,14 +214,14 @@ const NewsItem = ({ entry }) => {
                       loading="lazy"
                     />
                   ) : (
-                    <div className="flex flex-col items-center justify-center text-gray-400">
+                    <div className="flex flex-col items-center justify-center text-muted-foreground">
                       <IoNewspaperOutline className="w-10 h-10" />
                     </div>
                   )}
                 </div>
               </Link>
             ) : (
-              <div className="w-48 h-28 bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center relative">
+              <div className="w-48 h-28 bg-muted rounded-lg overflow-hidden flex items-center justify-center relative">
                 {imageInfo.exists ? (
                   <Image
                     src={imageInfo.src}
@@ -238,7 +232,7 @@ const NewsItem = ({ entry }) => {
                     loading="lazy"
                   />
                 ) : (
-                  <div className="flex flex-col items-center justify-center text-gray-400">
+                  <div className="flex flex-col items-center justify-center text-muted-foreground">
                     <IoNewspaperOutline className="w-10 h-10" />
                   </div>
                 )}
@@ -252,10 +246,7 @@ const NewsItem = ({ entry }) => {
 
   // Return the content in a div container
   return (
-    <div
-
-      className="news-item mb-4 bg-gray-50 border border-gray-300 rounded-lg p-4 hover:shadow-xs hover:bg-gray-100 transition-all duration-200 group"
-    >
+    <div className="news-item mb-4 bg-card border border-border rounded-lg p-4 hover:shadow-xs hover:bg-accent/20 transition-all duration-200 group">
       <NewsItemContent />
     </div>
   );

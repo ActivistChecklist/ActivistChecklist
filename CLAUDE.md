@@ -17,6 +17,14 @@
 * Never include Claude's name in the commit
 * Never include "Co-authored-by" lines in commits (e.g., "Co-authored-by: Cursor <...>")
 
+## CSS rules
+
+* **Tailwind utility classes** (inline on elements) are the default for layout, spacing, and color. Use semantic color tokens (`bg-background`, `text-foreground`, `text-muted-foreground`, `text-primary`, etc.) — never raw scale values like `bg-gray-100` or `text-zinc-600` in components.
+* **`dark:` variants** are for one-off dark mode adjustments that can't be expressed through the CSS variable system alone. The variable system handles most cases automatically.
+* **CSS Modules** (`.module.css`) are for scoped component styles with multiple named variants or complex selectors (Alert and RiskLevel are the right use cases). Don't use them for single-element components.
+* **`globals.css`** is for: design tokens (CSS variables in `:root`/`.dark`), base element resets, cross-cutting utility classes (`.link`, `.prose`, print styles). No component-specific rules.
+* **`style={}`** only for truly dynamic runtime values (e.g., calculated pixel offsets). Never for static styles.
+
 ## Internationalization (i18n) rules
 
 * All user-facing strings in the public site must go into `messages/en.json`. Never hardcode English text directly in components or pages.
