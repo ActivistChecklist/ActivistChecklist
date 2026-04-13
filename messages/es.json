@@ -118,6 +118,10 @@
     "message": "Esta página aún no está disponible en tu idioma. Estás viendo la versión en inglés.",
     "suggest": "Puedes usar la función de traducción integrada de tu navegador para traducir esta página."
   },
+  "pageNotices": {
+    "translationUnreviewedTitle": "Traducido automáticamente",
+    "translationUnreviewed": "Esta página fue traducida automáticamente. Solo el {approvalPercent}% de esta página ha sido revisada por personas hasta ahora. Otros textos pueden tener errores. <link>Ayúdanos a revisar esta traducción</link>."
+  },
   "languageDetection": {
     "message": "Este sitio está disponible en {language}.",
     "switchButton": "Cambiar a {language}",
@@ -127,8 +131,8 @@
     "ariaLabel": "Cambiar idioma"
   },
   "meta": {
-    "lastUpdatedOn": "Última actualización:",
-    "lastReviewedOn": "Última revisión:",
+    "lastUpdatedOn": "Última actualización",
+    "lastReviewedOn": "Última revisión",
     "takesAbout": "Toma aproximadamente",
     "viewLatestGuideAt": "Consulta la versión más reciente de esta guía en"
   },
@@ -153,7 +157,7 @@
   "newsletter": {
     "subscribe": "Suscribirse",
     "successLong": "Ya estás suscrito. ¿Quieres avisarle por Signal a una amistad sobre este proyecto?",
-    "successShort": "Gracias por suscribirte.",
+    "successShort": "¡Gracias por suscribirte!",
     "placeholders": {
       "emailLong": "Ingresa tu correo",
       "emailShort": "Correo"
@@ -169,16 +173,16 @@
     "dialogTitle": "Buscar en el sitio",
     "dialogDescription": "Busca en todas las páginas y guías de este sitio",
     "popularHeading": "Búsquedas populares",
-    "topGuidesHeading": "Guías destacadas",
-    "pressEnter": "Pulsa <kbd>↵</kbd> para buscar",
+    "topGuidesHeading": "Guías principales",
+    "pressEnter": "Presiona <kbd>↵</kbd> para buscar",
     "searching": "Buscando...",
-    "noResults": "No hay resultados para «{query}»",
+    "noResults": "No se encontraron resultados para \"{query}\"",
     "untitled": "Sin título",
-    "suggestion0": "seguridad teléfono protesta",
-    "suggestion1": "Signal mensajería segura",
+    "suggestion0": "seguridad del teléfono en protestas",
+    "suggestion1": "mensajería segura con Signal",
     "suggestion2": "rastreo de ubicación",
-    "suggestion3": "código de acceso seguridad",
-    "suggestion4": "protección alto riesgo"
+    "suggestion3": "seguridad con contraseña",
+    "suggestion4": "protección de alto riesgo"
   },
   "notFound": {
     "title": "¡Vaya! Esta página no existe",
@@ -305,13 +309,13 @@
   },
   "relatedGuides": {
     "headingBlock": "Sigue aprendiendo con estas guías relacionadas",
-    "headingFooter": "Si te resultó útil, echa un vistazo también a estas guías"
+    "headingFooter": "Si esto te fue útil, también revisa estas guías"
   },
   "checklists": {
     "title": "Listas",
     "featured": "Listas destacadas",
     "more": "Más listas",
-    "documentTitle": "Listas | Activist Checklist"
+    "documentTitle": "Listas de verificación | Activist Checklist"
   },
   "news": {
     "title": "Noticias de vigilancia",
