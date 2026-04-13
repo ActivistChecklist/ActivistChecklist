@@ -32,7 +32,9 @@ You can also make content edits directly in the `.mdx` files and submit a pull r
 
 ## Internationalization & translation
 
-[![Crowdin: Spanish translation status](https://img.shields.io/badge/dynamic/json?color=blue&label=Spanish&style=flat&query=%24.progress.0.data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-17633866-883364.json)](https://crowdin.com/project/activistchecklist)
+| Language | Translated | Human-reviewed |
+|----------|------------|---------------|
+| Spanish  | ![Spanish translation status](https://img.shields.io/badge/dynamic/json?color=blue&label=translated&style=flat&query=%24.progress.0.data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-17633866-883364.json) | ![Spanish approved translation status](https://img.shields.io/badge/dynamic/json?color=brightgreen&label=human-reviewed&style=flat&query=%24.progress.0.data.approvalProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-17633866-883364.json) |
 
 Anyone can help with translations by visiting [our Crowdin project page](https://crowdin.com/project/activistchecklist). Create an account (you can use an anonymous email if you want) to review, edit, and approve translations. We’re starting with Spanish.
 
