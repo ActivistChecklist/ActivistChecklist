@@ -36,6 +36,9 @@ You can also make content edits directly in the `.mdx` files and submit a pull r
 |----------|------------|---------------|
 | Spanish  | ![Spanish translation status](https://img.shields.io/badge/dynamic/json?color=blue&label=translated&style=flat&query=%24.progress.0.data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-17633866-883364.json) | ![Spanish approved translation status](https://img.shields.io/badge/dynamic/json?color=brightgreen&label=human-reviewed&style=flat&query=%24.progress.0.data.approvalProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-17633866-883364.json) |
 
+
+
+https://progress-bar.xyz/dynamic/json/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fguibranco%2Fprogressbar%2Fmain%2Fdocs%2Fdynamic-json-sample.json&query=demo.metrics.translationPercent&title=JSON%20Demo
 Anyone can help with translations by visiting [our Crowdin project page](https://crowdin.com/project/activistchecklist). Create an account (you can use an anonymous email if you want) to review, edit, and approve translations. We’re starting with Spanish.
 
 All english copy edits should be in the repo (in `content/en/*` and `messages/en.json`). All translation edits should be made on Crowdin.
