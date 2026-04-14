@@ -22,15 +22,15 @@ if [[ ! -d "$LOCAL_ASSETS" ]]; then
   exit 1
 fi
 
-DELETE_FLAG=()
+RSYNC_FLAGS=(-avz)
 if [[ "${DEPLOY_ASSETS_DELETE:-0}" == "1" ]]; then
-  DELETE_FLAG=(--delete)
+  RSYNC_FLAGS+=(--delete)
 fi
 
 ensure_remote_large_assets_dir
 REMOTE_DIR="$FTP_DIR/large-assets"
 echo "===> Syncing large assets → $FTP_USER@$FTP_HOST:$REMOTE_DIR/"
-rsync -avz "${DELETE_FLAG[@]}" \
+rsync "${RSYNC_FLAGS[@]}" \
   --exclude '.gitignore' \
   --exclude '.gitkeep' \
   "$LOCAL_ASSETS/" "$FTP_USER@$FTP_HOST:$REMOTE_DIR/"
