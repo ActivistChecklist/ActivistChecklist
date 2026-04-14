@@ -6,6 +6,19 @@ const fs = require('fs/promises')
 const readline = require('readline')
 const MetadataStripper = require('../lib/metadata-library.cjs').MetadataStripper
 
+function promptLine(questionText) {
+  return new Promise((resolve) => {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    })
+    rl.question(questionText, (answer) => {
+      rl.close()
+      resolve(answer.trim().toLowerCase())
+    })
+  })
+}
+
 const program = new Command()
 
 program
@@ -21,6 +34,8 @@ const stripCommand = program
   .option('-v, --verbose', 'Verbose output')
   .option('-b, --backup', 'Create backup files before processing')
   .option('--dry-run', 'Show what would be processed without making changes')
+  .option('--confirm', 'After scan, show summary and prompt once before stripping')
+  .option('--yes', 'Skip confirmation (use with --confirm in non-interactive environments)')
   .option('--images <types>', 'Comma-separated list of image file extensions', 'jpg,jpeg,png,gif,webp,tiff,bmp')
   .option('--pdfs <types>', 'Comma-separated list of PDF file extensions', 'pdf')
   .option('--videos <types>', 'Comma-separated list of video file extensions', 'mp4,avi,mov,wmv,flv,webm,mkv')
@@ -83,17 +98,45 @@ const stripCommand = program
         }
 
         console.log(`📊 Found ${scanResults.filesWithMetadata} files with metadata concerns`)
+        console.log(`   High: ${scanResults.highConcerns} · Medium: ${scanResults.mediumConcerns} · Low: ${scanResults.lowConcerns}`)
         console.log(`⏱️ Scan completed in: ${((scanEndTime - scanStartTime) / 1000).toFixed(2)}s`)
         console.log('')
+
+        if (options.confirm) {
+          displayConfirmConcernPreview(stripper, scanResults)
+        }
+
+        const filesToProcess = scanResults.files
+          .filter(file => file.hasMetadata)
+          .map(file => file.filePath)
+
+        if (options.confirm && !options.yes) {
+          if (!process.stdin.isTTY) {
+            console.error('❌ --confirm needs an interactive terminal, or pass --yes to strip without prompting.')
+            process.exit(1)
+          }
+
+          const maxList = 20
+          console.log('📋 Files that would be scrubbed:')
+          filesToProcess.slice(0, maxList).forEach((filePath) => {
+            console.log(`   - ${path.relative(inputPath, filePath) || path.basename(filePath)}`)
+          })
+          if (filesToProcess.length > maxList) {
+            console.log(`   … and ${filesToProcess.length - maxList} more`)
+          }
+          console.log('')
+
+          const answer = await promptLine(`Strip metadata from ${filesToProcess.length} file(s)? (yes/no): `)
+          if (answer !== 'y' && answer !== 'yes') {
+            console.log('ℹ️  Aborted. No files were modified.')
+            return
+          }
+          console.log('')
+        }
 
         // Now perform the actual stripping - only process files with metadata concerns
         console.log('🔄 Stripping metadata from files with concerns...')
         const startTime = Date.now()
-
-        // Get the file paths that have metadata concerns
-        const filesToProcess = scanResults.files
-          .filter(file => file.hasMetadata)
-          .map(file => file.filePath)
 
         const results = await stripper.stripSelectedFiles(scanResults, filesToProcess)
         const endTime = Date.now()
@@ -427,6 +470,31 @@ async function performDryRunDirectory(dirPath, stripper) {
       }
     }
   }
+}
+
+/**
+ * Show a concise concern preview before confirm prompt
+ */
+function displayConfirmConcernPreview(stripper, scanResults) {
+  const report = stripper.generateReport(scanResults)
+
+  const printCategory = (title, icon, concerns, maxItems = 8) => {
+    if (!concerns || concerns.length === 0) return
+    console.log(`${icon} ${title}`)
+    console.log('─'.repeat(60))
+    concerns.slice(0, maxItems).forEach((concern) => {
+      const fileName = path.basename(concern.filePath)
+      console.log(`   ${icon} ${concern.field}: ${concern.value} (${fileName})`)
+    })
+    if (concerns.length > maxItems) {
+      console.log(`   … and ${concerns.length - maxItems} more`)
+    }
+    console.log('')
+  }
+
+  printCategory('High concerns', '🔴', report.highConcerns, 8)
+  printCategory('Medium concerns', '🟡', report.mediumConcerns, 8)
+  printCategory('Low concerns', '🟢', report.lowConcerns, 5)
 }
 
 /**
