@@ -22,6 +22,11 @@ export default async function LocaleLayout({ children, params }) {
   return (
     <html lang={locale} suppressHydrationWarning>
       <body className="min-h-screen bg-background font-body antialiased">
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(localStorage.getItem('non-us-notice-dismissed')==='true')document.documentElement.dataset.nonUsDismissed='true'}catch(e){}`,
+          }}
+        />
         <AnnouncementProvider value={announcement}>
           <NextIntlClientProvider locale={locale} messages={messages}>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>

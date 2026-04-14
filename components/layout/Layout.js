@@ -13,6 +13,7 @@ import { LayoutProvider, useLayout } from "@/contexts/LayoutContext";
 import SkipLink from "./SkipLink";
 import PageCounter from "./PageCounter";
 import AnnouncementBar from "./AnnouncementBar";
+import NonUsNotice from "./NonUsNotice";
 import LanguageDetectionBanner from '@/components/LanguageDetectionBanner';
 import Script from 'next/script';
 import { extractHeaders } from "@/components/layout/TableOfContentsSidebar";
@@ -61,6 +62,7 @@ const LayoutContent = ({ children, className, fullWidthMain = false, searchable 
                       role="main" 
                       {...(searchable && { 'data-pagefind-body': true })}
                     >
+                      <NonUsNotice />
                       {children}
                     </main>
                   </div>

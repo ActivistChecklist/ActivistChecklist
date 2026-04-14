@@ -48,3 +48,39 @@
 .info .textCol {
   @apply bg-info/10;
 }
+
+/* ── Dismiss button ── */
+.dismiss {
+  @apply flex items-center justify-center shrink-0 self-start;
+  @apply w-8 h-8 m-1 rounded-md;
+  @apply text-muted-foreground cursor-pointer;
+  @apply transition-colors duration-150 ease-out;
+  background: transparent;
+  border: 0;
+}
+
+.dismiss svg {
+  @apply w-5 h-5;
+}
+
+.dismiss:hover {
+  @apply text-foreground bg-foreground/5;
+}
+
+.dismiss:focus-visible {
+  @apply outline-none ring-2 ring-ring ring-offset-1 ring-offset-transparent;
+}
+
+.warning .dismiss {
+  @apply bg-warning/0;
+}
+
+.warning .dismiss:hover {
+  @apply bg-warning/20;
+}
+
+@media print {
+  .dismiss {
+    display: none;
+  }
+}
