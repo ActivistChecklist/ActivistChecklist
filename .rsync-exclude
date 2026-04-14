@@ -31,6 +31,10 @@ node_modules
 webhooks/deploy-webhook.error.log
 webhooks/webhook-secrets.local.php
 
+# Large files only on the server (scp or SFTP into docroot large-assets/).
+# Same rule as webhooks: excluded paths are not deleted by rsync --delete.
+large-assets/***
+
 # Build / dev artifacts
 out
 .next

@@ -83,6 +83,8 @@ RSYNC_EXCLUDE=()
 if [[ -f "$REPO_DIR/.rsync-exclude" ]]; then
   RSYNC_EXCLUDE=(--exclude-from="$REPO_DIR/.rsync-exclude")
 fi
+# Docroot folder for server-only large files (see .rsync-exclude); not from git or out/.
+mkdir -p "$DEPLOY_TARGET/large-assets"
 rsync -a --delete "${RSYNC_EXCLUDE[@]}" "$REPO_DIR/out/" "$DEPLOY_TARGET/"
 
 # Post-deploy smoke checks (informational only; deploy already published).
