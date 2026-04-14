@@ -102,6 +102,10 @@ const stripCommand = program
         console.log(`⏱️ Scan completed in: ${((scanEndTime - scanStartTime) / 1000).toFixed(2)}s`)
         console.log('')
 
+        if (options.confirm) {
+          displayConfirmConcernPreview(stripper, scanResults)
+        }
+
         const filesToProcess = scanResults.files
           .filter(file => file.hasMetadata)
           .map(file => file.filePath)
@@ -466,6 +470,31 @@ async function performDryRunDirectory(dirPath, stripper) {
       }
     }
   }
+}
+
+/**
+ * Show a concise concern preview before confirm prompt
+ */
+function displayConfirmConcernPreview(stripper, scanResults) {
+  const report = stripper.generateReport(scanResults)
+
+  const printCategory = (title, icon, concerns, maxItems = 8) => {
+    if (!concerns || concerns.length === 0) return
+    console.log(`${icon} ${title}`)
+    console.log('─'.repeat(60))
+    concerns.slice(0, maxItems).forEach((concern) => {
+      const fileName = path.basename(concern.filePath)
+      console.log(`   ${icon} ${concern.field}: ${concern.value} (${fileName})`)
+    })
+    if (concerns.length > maxItems) {
+      console.log(`   … and ${concerns.length - maxItems} more`)
+    }
+    console.log('')
+  }
+
+  printCategory('High concerns', '🔴', report.highConcerns, 8)
+  printCategory('Medium concerns', '🟡', report.mediumConcerns, 8)
+  printCategory('Low concerns', '🟢', report.lowConcerns, 5)
 }
 
 /**
