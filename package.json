@@ -44,6 +44,7 @@
     "serve": "npx serve out",
     "deploy": "bash scripts/deploy.sh",
     "deploy:remote": "bash scripts/deploy-remote.sh",
+    "deploy:assets": "bash scripts/deploy-assets.sh",
     "deploy:secrets": "bash scripts/deploy-secrets.sh",
     "snapshot": "node scripts/snapshot.mjs",
     "snapshot-normalize": "node scripts/snapshot-normalize.mjs",

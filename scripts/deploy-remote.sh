@@ -10,6 +10,8 @@ ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 ENV_FILE="${ENV_FILE:-$ROOT/.env}"
 # shellcheck disable=SC1091
 source "$SCRIPT_DIR/load-env.sh"
+# shellcheck disable=SC1091
+source "$SCRIPT_DIR/lib/ensure-remote-large-assets-dir.sh"
 
 : "${REMOTE_SSH_HOST:?Set REMOTE_SSH_HOST in .env (e.g. user@host or SSH alias)}"
 LOCAL_ENV_PRODUCTION_FILE="${LOCAL_ENV_PRODUCTION_FILE:-$ROOT/.env.production.local}"
@@ -32,6 +34,8 @@ RSYNC_EXCLUDE=()
 if [[ -f "$ROOT/.rsync-exclude" ]]; then
   RSYNC_EXCLUDE=(--exclude-from="$ROOT/.rsync-exclude")
 fi
+# Server-only large files (see .rsync-exclude); create once so uploads have a stable path.
+ensure_remote_large_assets_dir
 rsync -avz --delete "${RSYNC_EXCLUDE[@]}" "$ROOT/out/" "$FTP_USER@$FTP_HOST:$FTP_DIR"
 
 echo "===> Uploading remote .env.production from $LOCAL_ENV_PRODUCTION_FILE..."

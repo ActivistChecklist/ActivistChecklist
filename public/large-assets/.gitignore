@@ -1,0 +1,5 @@
+# Large files live here locally for testing only; do not commit them.
+# Production copies go only on the server under docroot large-assets/ (see .rsync-exclude).
+*
+!.gitignore
+!.gitkeep
