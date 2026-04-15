@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { IoWarning, IoClose } from 'react-icons/io5';
 import { useTranslations } from 'next-intl';
 import styles from '@/styles/PageNotices.module.css';
+import Notice from './Notice';
 import {
   isUsTimezone,
   detectBrowserTimezone,
@@ -52,20 +52,12 @@ export default function NonUsNotice() {
       aria-label="Page notices"
       data-non-us-notice
     >
-      <div className={`${styles.notice} ${styles.warning}`}>
-        <div className={styles.iconCol}>
-          <IoWarning className={styles.icon} aria-hidden />
-        </div>
-        <div className={styles.textCol}>{t('pageNotices.nonUsThreatModel')}</div>
-        <button
-          type="button"
-          className={styles.dismiss}
-          onClick={dismiss}
-          aria-label={t('pageNotices.dismiss')}
-        >
-          <IoClose aria-hidden />
-        </button>
-      </div>
+      <Notice
+        type="warning"
+        message={t('pageNotices.nonUsThreatModel')}
+        onDismiss={dismiss}
+        dismissLabel={t('pageNotices.dismiss')}
+      />
     </div>
   );
 }

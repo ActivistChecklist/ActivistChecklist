@@ -32,21 +32,21 @@
 }
 
 /* ── Warning ── */
+.warning {
+  @apply bg-warning/10;
+}
+
 .warning .iconCol {
   @apply bg-warning;
 }
 
-.warning .textCol {
-  @apply bg-warning/10;
+/* ── Info ── */
+.info {
+  @apply bg-info/10;
 }
 
-/* ── Info ── */
 .info .iconCol {
   @apply bg-info;
-}
-
-.info .textCol {
-  @apply bg-info/10;
 }
 
 /* ── Dismiss button ── */
