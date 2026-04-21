@@ -1,4 +1,4 @@
-# Claude rules
+# AI Agent rules
 
 ## General rules
 
