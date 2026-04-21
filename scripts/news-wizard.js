@@ -179,11 +179,12 @@ function titleFromUrlPath(articleUrl) {
 
 function decodeHtmlEntities(text) {
   return String(text || '')
-    .replace(/&amp;/g, '&')
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
     .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'");
+    .replace(/&#39;/g, "'")
+    // Decode ampersands last to avoid turning '&amp;lt;' into '<' in one pass.
+    .replace(/&amp;/g, '&');
 }
 
 function parseHtmlMetadata(html) {
