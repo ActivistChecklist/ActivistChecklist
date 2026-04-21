@@ -89,7 +89,7 @@ const NewsItem = ({ entry }) => {
                   <span>{title || 'News Item'}</span>
                 )}
                 {displaySource && (
-                  <span className="text-lg font-normal text-muted-foreground group-hover:text-foreground/70 ml-1">
+                  <span className="text-lg font-normal text-muted-foreground group-hover:text-foreground/70 ms-1">
                     • {displaySource}
                   </span>
                 )}
@@ -172,7 +172,7 @@ const NewsItem = ({ entry }) => {
                 <span>{title || 'News Item'}</span>
               )}
               {displaySource && (
-                <span className="text-lg font-normal text-muted-foreground group-hover:text-foreground/70 ml-1">
+                <span className="text-lg font-normal text-muted-foreground group-hover:text-foreground/70 ms-1">
                   • {displaySource}
                 </span>
               )}

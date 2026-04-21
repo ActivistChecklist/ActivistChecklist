@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
-import { useTranslations } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { Menu } from "lucide-react"
@@ -23,14 +23,17 @@ import {
 } from "@/components/ui/navigation-menu"
 import { cn } from "@/lib/utils"
 import { createIntlTranslator, translateMainNavigation } from "@/lib/navigation-i18n"
+import { isRtlLocale } from "@/lib/rtl"
 
 const TopNav = ({ hideOnScroll = false, maxWidth }) => {
   const pathname = usePathname()
+  const locale = useLocale()
   const t = useTranslations()
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
 
   const translateText = createIntlTranslator(t);
+  const sheetSide = isRtlLocale(locale) ? "right" : "left";
 
   const translatedMainNav = translateMainNavigation(navigationConfig.mainNav, translateText);
 
@@ -58,14 +61,14 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
       {/* If printing, show the logo */}
       <div className="hidden print:block print:relative">
         <Image
-          className="print:absolute print:top-0 print:right-0 dark:hidden"
+          className="print:absolute print:top-0 print:inset-e-0 dark:hidden"
           src={navigationConfig.logo.image}
           alt={navigationConfig.logo.ariaLabel}
           width={250}
           height={20}
         />
         <Image
-          className="print:absolute print:top-0 print:right-0 hidden dark:block"
+          className="print:absolute print:top-0 print:inset-e-0 hidden dark:block"
           src="/images/logo-bg-white-transparent.png"
           alt={navigationConfig.logo.ariaLabel}
           width={250}
@@ -90,13 +93,13 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                   <Button 
                     variant="ghost" 
                     size="icon" 
-                    className="md:hidden mr-2 text-foreground hover:text-foreground/80"
+                    className="md:hidden me-2 text-foreground hover:text-foreground/80"
                     aria-label="Open navigation menu"
                   >
                     <Menu className="h-6 w-6" aria-hidden="true" />
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="left">
+                <SheetContent side={sheetSide}>
                   <nav className="flex flex-col mt-6">
                     {translatedMainNav.map((item) => (
                       item.type === "link" ? (
@@ -104,7 +107,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                           key={item.key} 
                           href={item.href} 
                           className={cn(
-                            "text-lg font-semibold border-l-2 border-l-transparent hover:border-l-foreground/20 pl-2",
+                            "text-lg font-semibold border-s-2 border-s-transparent hover:border-s-foreground/20 ps-2",
                             isNavItemActive(item, pathname) && "border-primary"
                           )}
                         >
@@ -115,7 +118,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                           <Link 
                             href={item.href || '#'} 
                             className={cn(
-                              "block text-lg font-semibold pl-2 border-l-2 border-l-transparent hover:border-l-foreground/20",
+                              "block text-lg font-semibold ps-2 border-s-2 border-s-transparent hover:border-s-foreground/20",
                               isNavItemActive(item, pathname) && "border-link text-link"
                             )}
                           >
@@ -126,7 +129,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                               key={subItem.key}
                               href={subItem.href}
                               className={cn(
-                                "flex items-center gap-2 pl-4 py-1 text-md border-l-2 border-l-transparent hover:border-l-foreground/20",
+                                "flex items-center gap-2 ps-4 py-1 text-md border-s-2 border-s-transparent hover:border-s-foreground/20",
                                 isSubItemActive(subItem, pathname) && "border-link font-bold text-link"
                               )}
                             >
@@ -138,7 +141,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                             <Link
                               href="/checklists/"
                               className={cn(
-                                "flex items-center gap-2 pl-4 py-2 text-md border-l-2 border-l-transparent hover:border-l-foreground/20 text-muted-foreground group",
+                                "flex items-center gap-2 ps-4 py-2 text-md border-s-2 border-s-transparent hover:border-s-foreground/20 text-muted-foreground group",
                                 item.footerLink?.className
                               )}
                             >
@@ -160,7 +163,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
               </Sheet>
               <Link 
                 href={navigationConfig.logo.href} 
-                className="flex items-center space-x-2 ml-0 font-bold text-xl" 
+                className="flex items-center gap-2 ms-0 font-bold text-xl" 
                 aria-label={navigationConfig.logo.ariaLabel}
               >
                 <Image src={navigationConfig.logo.image} alt={navigationConfig.logo.ariaLabel} width={250} height={20} className="dark:hidden" />
@@ -168,7 +171,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
               </Link>
             </div>
             <div className="flex items-center gap-4">
-              <div className="hidden md:flex items-center space-x-4">
+              <div className="hidden md:flex items-center gap-4">
                 <NavigationMenu>
                   <NavigationMenuList>
                     {translatedMainNav.map((item, mainIndex) => (

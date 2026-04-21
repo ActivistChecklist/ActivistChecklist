@@ -430,7 +430,7 @@
       
       /* Optimize sections and blockquotes */
       blockquote {
-        border-left: 3px solid #ccc !important;
+        border-inline-start: 3px solid #ccc !important;
         padding: 0.5em 1em !important;
         margin: 1em 0 !important;
       }
@@ -505,8 +505,7 @@
       content: " ";
       position: absolute;
       top: 2.1rem;
-      left: 0;
-      right: 0;
+      inset-inline: 0;
       border-top: 1px solid hsl(var(--border));
       height: 1px;
     }
@@ -527,11 +526,11 @@
 
     /* Lists */
     ul {
-      @apply ml-6 list-disc [&>li]:mt-2;
+      @apply ms-6 list-disc [&>li]:mt-2;
     }
     
     ol {
-      @apply ml-6 list-decimal [&>li]:mt-2;
+      @apply ms-6 list-decimal [&>li]:mt-2;
     }
 
     li {
@@ -546,7 +545,7 @@
 
     /* Blockquotes */
     blockquote {
-      @apply mt-6 border-l-4 bg-border/20 p-4 pl-6 mr-4 md:mr-36;
+      @apply mt-6 border-s-4 bg-border/20 p-4 ps-6 me-4 md:me-36;
     }
 
 
@@ -557,11 +556,11 @@
     
     /* Override prose img margins for floated images */
     img.float-left {
-      @apply ml-0! mr-6!;
+      @apply ms-0! me-6!;
     }
     
     img.float-right {
-      @apply mr-0! ml-6!;
+      @apply me-0! ms-6!;
     }
 
     /* Inline code */
@@ -618,11 +617,11 @@
     }
 
     th {
-      @apply border px-4 py-2 bg-foreground text-background text-left font-bold text-xs uppercase [[align=center]]:text-center [[align=right]]:text-right;
+      @apply border px-4 py-2 bg-foreground text-background text-start font-bold text-xs uppercase [[align=center]]:text-center [[align=right]]:text-end;
     }
 
     td {
-      @apply border px-4 py-2 text-left align-top [[align=center]]:text-center [[align=right]]:text-right;
+      @apply border px-4 py-2 text-start align-top [[align=center]]:text-center [[align=right]]:text-end;
     }
 
     tbody tr {
@@ -634,6 +633,6 @@
 
 @layer base {
   :not(.checklist-item *) > .how-to-container {
-    @apply bg-muted p-4 md:p-8 md:pl-12 block rounded-lg mt-4;
+    @apply bg-muted p-4 md:p-8 md:ps-12 block rounded-lg mt-4;
   }
 }

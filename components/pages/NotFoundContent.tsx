@@ -81,7 +81,7 @@ function NotFoundInner() {
         <div className={cn("flex justify-center items-center relative", !mounted && "invisible")}>
           <Button asChild variant="default" size="lg" className="group">
             <Link href={NAV_ITEMS.HOME.href}>
-              <FaArrowLeft className="mr-2 transition-transform duration-300 ease-out group-hover:-translate-x-1" />
+              <FaArrowLeft className="me-2 transition-transform duration-300 ease-out group-hover:-translate-x-1 [dir=rtl]:rotate-180 [dir=rtl]:group-hover:translate-x-1" />
               {t('notFound.backToHome')}
             </Link>
           </Button>
@@ -94,7 +94,7 @@ function NotFoundInner() {
               "opacity-20 hover:opacity-90 transition-opacity duration-300",
               "hover:bg-transparent",
               "group",
-              "absolute md:-right-16 -right-8"
+              "absolute md:-inset-e-16 -inset-e-8"
             )}
             title="Try your luck?"
           >

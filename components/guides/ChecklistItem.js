@@ -25,7 +25,7 @@ const InfoItemIcon = () => {
     <TooltipProvider>
       <Tooltip delayDuration={0}>
         <TooltipTrigger asChild>
-          <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
+          <div className="absolute inset-s-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
             <IoInformationCircleOutline
               className={cn(
                 "h-[1.7rem] w-[1.7rem]",
@@ -105,14 +105,14 @@ const CopyLinkButton = ({ slug, onCopy }) => {
             <Link2
               aria-hidden
               className={cn(
-                "absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-200",
+                "absolute inset-s-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-200",
                 linkCopied && "opacity-0"
               )}
             />
             <Check
               aria-hidden
               className={cn(
-                "absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 text-green-600 transition-opacity duration-200",
+                "absolute inset-s-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 text-green-600 transition-opacity duration-200",
                 linkCopied ? "opacity-100" : "opacity-0"
               )}
             />
@@ -316,7 +316,7 @@ const ChecklistItem = ({
       ref={cardRef}
       className={cn(
         "checklist-item",
-        "transform mb-0 shadow-none bg-none rounded-none border-muted border-b-0 border-r-0 border-l-0 border-t",
+        "transform mb-0 shadow-none bg-none rounded-none border-muted border-b-0 border-e-0 border-s-0 border-t",
         "hover:z-20 relative",
         !isExpanded && !isChecked && "hover:bg-muted/40",
         isExpanded && "mb-4 rounded-lg border-transparent",
@@ -326,7 +326,7 @@ const ChecklistItem = ({
     >
       <CardHeader 
         className={cn(
-          "p-3 pl-3 md:pl-5 cursor-pointer",
+          "p-3 ps-3 md:ps-5 cursor-pointer",
           isExpanded && "rounded-t-lg"
         )}
         aria-expanded={isExpanded}
@@ -386,7 +386,7 @@ const ChecklistItem = ({
                               key={index}
                               variant={variant}
                               className={cn(
-                                "text-xs inline mr-2 align-middle",
+                                "text-xs inline me-2 align-middle",
                                 isChecked && "opacity-50"
                               )}
                             >
@@ -399,7 +399,7 @@ const ChecklistItem = ({
                     {itemTitle}
                     <span
                       className={cn(
-                        "inline-flex h-7 shrink-0 items-center justify-center align-middle ml-2 print:hidden",
+                        "inline-flex h-7 shrink-0 items-center justify-center align-middle ms-2 print:hidden",
                         isExpanded ? "w-7" : "w-px"
                       )}
                       aria-hidden={!isExpanded}
@@ -454,7 +454,7 @@ const ChecklistItem = ({
               aria-controls={`checklist-body-${itemSlug}`}
               className={cn(
                 "flex h-9 w-full justify-start gap-2 px-2 sm:hidden",
-                "-ml-2",
+                "-ms-2",
                 "text-muted-foreground hover:bg-primary/10 hover:text-muted-foreground",
                 "print:hidden",
                 enableTransitions ? "transition-colors duration-300" : "transition-none",
@@ -485,9 +485,9 @@ const ChecklistItem = ({
         )}
       >
       <div className="overflow-hidden">
-        <div className="ml-4 md:ml-9 pl-0 mb-6">
+        <div className="ms-4 md:ms-9 ps-0 mb-6">
           <CardContent className={cn(
-            "py-0 pt-0 pl-0 md:pl-4 pr-4 md:pr-6",
+            "py-0 pt-0 ps-0 md:ps-4 pe-4 md:pe-6",
             "prose prose-slate max-w-none",
             isChecked && "text-muted-foreground"
           )}>
