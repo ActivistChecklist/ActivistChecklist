@@ -27,7 +27,7 @@ const VARIATIONS = [
   { icon: FaWater, key: 'beWater' },
 ];
 
-function NotFoundInner() {
+export function NotFoundInner() {
   const t = useTranslations();
   const [variationIndex, setVariationIndex] = useState(0);
   const [mounted, setMounted] = useState(false);
