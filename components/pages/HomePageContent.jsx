@@ -76,7 +76,7 @@ export default function HomePageContent({ children, changelogEntries = [], lates
                     </Link>
                   </Button>
                   <Button asChild variant="muted" size="xl">
-                    <Link href={SECURITY_CHECKLISTS.href}>{t('hero.secondaryCta')}</Link>
+                    <Link href={NAV_ITEMS.PARTY.href}>{t('hero.secondaryCta')}</Link>
                   </Button>
                 </div>
                 {latestMajorBodyText && (

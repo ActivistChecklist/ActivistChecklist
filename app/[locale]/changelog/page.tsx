@@ -3,6 +3,7 @@ import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { getAllChangelogEntries, toChangelogListEntry } from '@/lib/content';
 import Layout from '@/components/layout/Layout';
 import ChangeLogEntry from '@/components/ChangeLogEntry';
+import ChangeLogTimelineMarker from '@/components/ChangeLogTimelineMarker';
 import RSSButton from '@/components/ui/RSSButton';
 import { cn } from "@/lib/utils";
 
@@ -57,8 +58,7 @@ function TimelineSection({ title, entries, isFirst = false }) {
         {entries.map((entry, index) => (
           <div key={entry.slug} id={entry.slug} className="relative">
             <div className="py-3 pl-12 text-sm text-muted-foreground relative">
-              {/* Timeline dot */}
-              <div className="absolute left-6 top-[18px] w-2 h-2 bg-primary rounded-full -translate-x-1/2"></div>
+              <ChangeLogTimelineMarker type={entry.type} />
               {/* Timeline line */}
               {index < entries.length - 1 && (
                 <div className="absolute left-6 top-[26px] w-px bg-border h-full -translate-x-1/2"></div>
