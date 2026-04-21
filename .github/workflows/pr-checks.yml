@@ -6,6 +6,7 @@ name: Tests & Build (PRs)
 
 on:
   pull_request:
+  workflow_dispatch:
 
 concurrency:
   group: pr-checks-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
