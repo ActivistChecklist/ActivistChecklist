@@ -75,7 +75,12 @@ export default function HomePageContent({ children, changelogEntries = [], lates
                       {t('hero.primaryCta')}
                     </Link>
                   </Button>
-                  <Button asChild variant="muted" size="xl">
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="xl"
+                    className="border-primary/30 bg-background/90 text-foreground hover:bg-background hover:border-primary/50 shadow-xs"
+                  >
                     <Link href={NAV_ITEMS.PARTY.href}>{t('hero.secondaryCta')}</Link>
                   </Button>
                 </div>

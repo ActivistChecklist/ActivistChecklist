@@ -43,7 +43,7 @@ function createFeed({ title, description, feedPath, updated }) {
     favicon: `${SITE_URL}/favicon.ico`,
     copyright: 'All rights reserved, Activist Checklist',
     updated: updated || new Date(),
-    generator: 'Activist Checklist RSS Generator',
+    generator: 'Activist Checklist',
     feedLinks: { rss2: `${SITE_URL}${feedPath}` },
     author: DEFAULT_AUTHOR,
   });
