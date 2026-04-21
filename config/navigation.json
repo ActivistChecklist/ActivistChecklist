@@ -119,6 +119,10 @@
     "links": {
       "label": "Remove link tracking",
       "href": "/links/"
+    },
+    "party": {
+      "label": "Host a security party",
+      "href": "/party/"
     }
   },
   "menus": {
@@ -142,6 +146,7 @@
       "label": "Resources",
       "href": "/resources/",
       "items": [
+        "party",
         "links",
         "police-door-poster",
         "flyer",

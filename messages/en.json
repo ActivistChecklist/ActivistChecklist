@@ -85,7 +85,7 @@
     "title": "Digital Security Checklists for Activists",
     "description": "Plain language steps for digital security. Because protecting yourself helps keep your whole community safer.",
     "primaryCta": "Digital Security Essentials",
-    "secondaryCta": "See all checklists"
+    "secondaryCta": "Host a security party"
   },
   "trustPoints": {
     "experienceTitle": "Built from experience",
@@ -332,6 +332,7 @@
     "description": "A history of changes to checklists, pages, and resources on the site.",
     "last30Days": "Last 30 days",
     "previousChanges": "Previous changes",
-    "noEntries": "No changelog entries found."
+    "noEntries": "No changelog entries found.",
+    "majorUpdate": "Major update"
   }
 }
