@@ -152,26 +152,126 @@ function pickTitle(result) {
   return (
     (result.ogTitle && String(result.ogTitle).trim()) ||
     (result.twitterTitle && String(result.twitterTitle).trim()) ||
+    (result.htmlTitle && String(result.htmlTitle).trim()) ||
     null
   );
 }
 
-async function fetchOg(url) {
-  const { error, result } = await ogs({
-    url,
-    timeout: 15000,
+function titleFromUrlPath(articleUrl) {
+  try {
+    const pathname = new URL(articleUrl).pathname || '';
+    const part = pathname
+      .split('/')
+      .filter(Boolean)
+      .pop();
+    if (!part) return null;
+    const cleaned = decodeURIComponent(part)
+      .replace(/\.[a-z0-9]+$/i, '')
+      .replace(/[-_]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (!cleaned) return null;
+    return cleaned.replace(/\b\w/g, (c) => c.toUpperCase());
+  } catch {
+    return null;
+  }
+}
+
+function decodeHtmlEntities(text) {
+  return String(text || '')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'");
+}
+
+function parseHtmlMetadata(html) {
+  const out = {};
+  const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+  if (titleMatch?.[1]) {
+    out.htmlTitle = decodeHtmlEntities(titleMatch[1].trim());
+  }
+
+  const metaRegex = /<meta\s+[^>]*>/gi;
+  const attrRegex = /([a-zA-Z:-]+)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+))/g;
+  const tags = html.match(metaRegex) || [];
+  for (const tag of tags) {
+    const attrs = {};
+    let m;
+    while ((m = attrRegex.exec(tag)) !== null) {
+      const key = String(m[1] || '').toLowerCase();
+      const value = m[2] || m[3] || m[4] || '';
+      attrs[key] = decodeHtmlEntities(value.trim());
+    }
+    const prop = attrs.property || attrs.name;
+    if (!prop) continue;
+    const lcProp = prop.toLowerCase();
+    const content = attrs.content || '';
+    if (!content) continue;
+
+    if (lcProp === 'og:title' && !out.ogTitle) out.ogTitle = content;
+    if (lcProp === 'twitter:title' && !out.twitterTitle) out.twitterTitle = content;
+    if (lcProp === 'og:site_name' && !out.ogSiteName) out.ogSiteName = content;
+    if (lcProp === 'article:publisher' && !out.articlePublisher) out.articlePublisher = content;
+    if (lcProp === 'article:published_time' && !out.articlePublishedTime) out.articlePublishedTime = content;
+    if (lcProp === 'article:modified_time' && !out.articleModifiedTime) out.articleModifiedTime = content;
+  }
+  return out;
+}
+
+async function fetchHtmlMetadata(url) {
+  const response = await fetch(url, {
+    method: 'GET',
     headers: {
       'User-Agent':
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-      Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+      Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
       'Accept-Language': 'en-US,en;q=0.9',
       DNT: '1',
     },
+    redirect: 'follow',
   });
-  if (error) {
-    throw new Error(`Open Graph fetch failed: ${error}`);
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}`);
   }
-  return result;
+  const html = await response.text();
+  return parseHtmlMetadata(html);
+}
+
+async function fetchOg(url) {
+  try {
+    const { error, result } = await ogs({
+      url,
+      timeout: 15000,
+      headers: {
+        'User-Agent':
+          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.9',
+        DNT: '1',
+      },
+    });
+    if (error) {
+      throw new Error(`Open Graph fetch failed: ${String(error)}`);
+    }
+    return result;
+  } catch (err) {
+    const ogDetail =
+      err?.message ||
+      err?.error ||
+      err?.details ||
+      (typeof err === 'object' ? JSON.stringify(err) : String(err));
+    try {
+      return await fetchHtmlMetadata(url);
+    } catch (fallbackErr) {
+      const fallbackDetail =
+        fallbackErr?.message ||
+        fallbackErr?.error ||
+        (typeof fallbackErr === 'object' ? JSON.stringify(fallbackErr) : String(fallbackErr));
+      throw new Error(`Open Graph fetch failed: ${ogDetail}. Fallback metadata fetch failed: ${fallbackDetail}`);
+    }
+  }
 }
 
 function formatTagsForFrontmatter(tags) {
@@ -596,19 +696,17 @@ async function main() {
       throw new Error('URL must be http or https.');
     }
 
-    console.log('\nFetching page metadata…');
     const og = await fetchOg(articleUrl);
 
-    const title = flagTitle || pickTitle(og);
+    const title = flagTitle || pickTitle(og) || titleFromUrlPath(articleUrl);
     if (!title) {
       throw new Error('Could not determine title (no og:title). Pass --title="…" to set it manually.');
     }
 
-    const published = flagDate || parsePublishedDate(og);
+    let published = flagDate || parsePublishedDate(og);
     if (!published) {
-      throw new Error(
-        'Could not determine published date from metadata. Pass --date=YYYY-MM-DD to set it manually.'
-      );
+      published = todayIsoLocal();
+      console.warn('⚠️  Could not determine published date from metadata. Using today; pass --date=YYYY-MM-DD to override.');
     }
 
     const ogSiteName = og.ogSiteName ? String(og.ogSiteName).trim() : '';
