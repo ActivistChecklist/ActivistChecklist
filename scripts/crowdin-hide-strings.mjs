@@ -9,7 +9,7 @@
  * This includes:
  *   - JSX attributes: slug, type, size, level, mode, alignment, target, variant, icon, href, src, className
  *   - Frontmatter arrays: relatedGuides, titleBadges
- *   - Frontmatter scalars: slug, type, date, firstPublished, lastUpdated, image, imageOverride, url, source, tags
+ *   - Frontmatter scalars: slug, type, date, firstPublished, lastUpdated, image, imageOverride, url, source, tags, showToc
  *
  * Usage:
  *   yarn crowdin:hide-strings           (dry run — reads CROWDIN_* from .env)
@@ -77,6 +77,7 @@ Example:
 // --- Step 1: Extract untranslatable values from MDX files ---
 
 // Frontmatter scalar fields whose values should not be translated
+// Keep in sync with Keystatic / MDX frontmatter: when you add a non-copy field there, add its key here too.
 const UNTRANSLATABLE_FRONTMATTER_SCALARS = [
   "slug",           // URL identifiers
   "type",           // enum: major, minor, info, etc.
@@ -88,6 +89,7 @@ const UNTRANSLATABLE_FRONTMATTER_SCALARS = [
   "url",            // external URLs
   "source",         // publication/author attribution
   "tags",           // comma-separated tag identifiers
+  "showToc",        // boolean: layout / “On this page” sidebar (pages)
 ];
 
 // JSX attributes whose values should not be translated

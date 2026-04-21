@@ -239,10 +239,13 @@ export default async function SlugPage({ params }) {
 
     const pageNotices = buildContentNotices({ locale, isFallback, slug, t });
 
+    const fm = serializeFrontmatter(frontmatter);
+    const pageSidebarType = fm.showToc === true ? 'toc' : 'navigation';
+
     return (
-      <Layout sidebarType="navigation">
+      <Layout sidebarType={pageSidebarType}>
         <ContentPage
-          frontmatter={serializeFrontmatter(frontmatter)}
+          frontmatter={fm}
           serializedBody={serializedBody}
           locale={locale}
           notices={pageNotices}

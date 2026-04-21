@@ -646,6 +646,13 @@ export default config({
         ),
         firstPublished: fields.date({ label: 'First Published' }),
         lastUpdated: fields.date({ label: 'Last Updated' }),
+        // Untranslatable frontmatter: if you add/remove fields here, sync UNTRANSLATABLE_FRONTMATTER_SCALARS in scripts/crowdin-hide-strings.mjs (see lib/content.js readMdxFile).
+        showToc: fields.checkbox({
+          label: '“On this page” sidebar',
+          description:
+            'Shows the same left “On this page” table of contents as guides (uses ## headings only).',
+          defaultValue: false,
+        }),
         body: fields.mdx({
           label: 'Body',
           options: mdxEditorOptionsContent,

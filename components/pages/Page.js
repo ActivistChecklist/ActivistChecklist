@@ -34,8 +34,8 @@ export default function Page({ frontmatter, serializedBody, locale, notices = []
   const { setSidebarType } = useLayout();
 
   useEffect(() => {
-    setSidebarType('navigation');
-  }, []);
+    setSidebarType(frontmatter.showToc === true ? 'toc' : 'navigation');
+  }, [setSidebarType, frontmatter.showToc]);
 
   const metaBarItems = [
     getDateMetaItem(frontmatter.lastUpdated, t('meta.lastUpdatedOn'), dateLocale),
