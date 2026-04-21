@@ -23,17 +23,28 @@ const readline = require('readline');
 const { execFileSync } = require('child_process');
 const matter = require('gray-matter');
 const ogs = require('open-graph-scraper');
-const chalk = require('chalk');
+const chalkModule = require('chalk');
+const chalk = chalkModule.default || chalkModule;
 
 const { loadNewsItems } = require('./fetch-news-images.js');
 
 function printGhIdentityBanner(auth) {
   const login = auth.login || '(unknown login)';
+  const bannerLabel =
+    typeof chalk?.bgCyan?.black?.bold === 'function' ? chalk.bgCyan.black.bold('  gh  ') : '  gh  ';
+  const bannerText = typeof chalk?.bold === 'function' ? chalk.bold('  Pull requests will be created as:') : '  Pull requests will be created as:';
+  const spacer = typeof chalk?.bold === 'function' ? chalk.bold('      ') : '      ';
+  const loginStyled = typeof chalk?.green?.bold === 'function' ? chalk.green.bold(login) : login;
+  const nameStyled =
+    auth.name && typeof chalk?.gray === 'function' ? chalk.gray(`  (${auth.name})`) : auth.name ? `  (${auth.name})` : '';
+  const profilePrefix = typeof chalk?.gray === 'function' ? chalk.gray('      ') : '      ';
+  const profileStyled =
+    typeof chalk?.cyan?.underline === 'function' ? chalk.cyan.underline(auth.profileUrl || '') : auth.profileUrl || '';
   console.log('');
-  console.log(chalk.bgCyan.black.bold('  gh  ') + chalk.bold('  Pull requests will be created as:'));
-  console.log(chalk.bold('      ') + chalk.green.bold(login) + (auth.name ? chalk.gray(`  (${auth.name})`) : ''));
+  console.log(bannerLabel + bannerText);
+  console.log(spacer + loginStyled + nameStyled);
   if (auth.profileUrl) {
-    console.log(chalk.gray('      ') + chalk.cyan.underline(auth.profileUrl));
+    console.log(profilePrefix + profileStyled);
   }
   console.log('');
 }
