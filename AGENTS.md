@@ -6,7 +6,7 @@
 
 ## Content writing ruels
 
-* IMPORTANT: Do not use em-dashes.
+* IMPORTANT: Do NOT use em-dashes when writing content or text in .mdx files or static strings.
 
 ## Git commit rules
 
