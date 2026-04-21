@@ -85,7 +85,7 @@
     "title": "Listas de seguridad digital para activistas",
     "description": "Pasos en lenguaje sencillo para la seguridad digital. Porque protegerte a ti mismo ayuda a mantener a toda tu comunidad más segura.",
     "primaryCta": "Fundamentos de seguridad digital",
-    "secondaryCta": "Organiza una fiesta de seguridad"
+    "secondaryCta": "Host a security party"
   },
   "trustPoints": {
     "experienceTitle": "Construido desde la experiencia",
@@ -120,7 +120,7 @@
   },
   "pageNotices": {
     "translationUnreviewedTitle": "Traducido automáticamente",
-    "translationUnreviewed": "Esta página fue traducida automáticamente. Solo el {approvalPercent}% de esta página ha sido revisada por personas hasta ahora. Otros textos pueden tener errores. <link>Ayúdanos a revisar esta traducción</link>."
+    "translationUnreviewed": "Esta página fue traducida automáticamente. Solo el {approvalPercent}% de esta página ha sido revisado por personas hasta ahora. Otros textos pueden tener errores. <link>Ayúdanos a revisar esta traducción</link>."
   },
   "languageDetection": {
     "message": "Este sitio está disponible en {language}.",
@@ -170,7 +170,7 @@
   },
   "search": {
     "placeholder": "Buscar...",
-    "dialogTitle": "Buscar en el sitio",
+    "dialogTitle": "Buscar contenido del sitio",
     "dialogDescription": "Busca en todas las páginas y guías de este sitio",
     "popularHeading": "Búsquedas populares",
     "topGuidesHeading": "Guías principales",
@@ -179,9 +179,9 @@
     "noResults": "No se encontraron resultados para \"{query}\"",
     "untitled": "Sin título",
     "suggestion0": "seguridad del teléfono en protestas",
-    "suggestion1": "mensajería segura con Signal",
+    "suggestion1": "mensajería segura con signal",
     "suggestion2": "rastreo de ubicación",
-    "suggestion3": "seguridad con contraseña",
+    "suggestion3": "seguridad con código de acceso",
     "suggestion4": "protección de alto riesgo"
   },
   "notFound": {
@@ -315,7 +315,7 @@
     "title": "Listas",
     "featured": "Listas destacadas",
     "more": "Más listas",
-    "documentTitle": "Listas de verificación | Activist Checklist"
+    "documentTitle": "Listas | Activist Checklist"
   },
   "news": {
     "title": "Noticias de vigilancia",
@@ -333,6 +333,6 @@
     "last30Days": "Últimos 30 días",
     "previousChanges": "Cambios anteriores",
     "noEntries": "No se encontraron entradas en el registro de cambios.",
-    "majorUpdate": "Actualización importante"
+    "majorUpdate": "Major update"
   }
 }
