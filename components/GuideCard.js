@@ -25,18 +25,18 @@ const GuideCard = ({
     return (
       <Link href={href} className="block group">
         <Card className="relative h-full overflow-hidden rounded-lg border border-primary/15 shadow-xs transition-all duration-200 hover:shadow-xl hover:scale-[1.01] hover:border-primary/40 flex flex-col bg-linear-to-br from-card via-card to-primary/15 dark:to-primary/45">
-          <div className="absolute top-1/2 right-2 -translate-y-1/2 w-36 h-36 flex items-center justify-center pointer-events-none">
+          <div className="absolute top-1/2 inset-e-2 -translate-y-1/2 w-36 h-36 flex items-center justify-center pointer-events-none">
             <Icon className="h-28 w-28 text-primary/9 dark:text-primary/35" strokeWidth={0.9} />
           </div>
           <CardHeader className="relative py-4 pb-2">
             <CardTitle className="text-2xl">{displayTitle}</CardTitle>
           </CardHeader>
-          <CardContent className="relative pb-4 flex-1 pt-0 pr-32">
+          <CardContent className="relative pb-4 flex-1 pt-0 pe-32">
             <CardDescription className="text-lg">{displayDescription}</CardDescription>
           </CardContent>
           <CardFooter className="relative mt-auto pt-0">
             <span className="text-primary font-medium inline-flex items-center text-base">
-              {t('common.viewChecklist')} <ArrowRight className="ml-2 transition-transform duration-300 ease-out group-hover:translate-x-1" />
+              {t('common.viewChecklist')} <ArrowRight className="ms-2 transition-transform duration-300 ease-out group-hover:translate-x-1 [dir=rtl]:rotate-180 [dir=rtl]:group-hover:-translate-x-1" />
             </span>
           </CardFooter>
         </Card>
@@ -60,7 +60,7 @@ const GuideCard = ({
         </CardContent>
         <CardFooter className="py-3 px-4 pt-0 mt-auto">
           <span className="text-primary font-medium inline-flex items-center text-sm">
-            {t('common.viewChecklist')} <ArrowRight className="ml-2 transition-transform duration-300 ease-out group-hover:translate-x-1" />
+            {t('common.viewChecklist')} <ArrowRight className="ms-2 transition-transform duration-300 ease-out group-hover:translate-x-1 [dir=rtl]:rotate-180 [dir=rtl]:group-hover:-translate-x-1" />
           </span>
         </CardFooter>
       </Card>

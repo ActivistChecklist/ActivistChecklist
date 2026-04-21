@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/components/layout/ThemeProvider';
 import { AnnouncementProvider } from '@/contexts/AnnouncementContext';
 import { getAnnouncement } from '@/lib/content';
 import { routing } from '@/i18n/routing';
+import { getLocaleDir } from '@/lib/rtl';
 import '@/styles/globals.css';
 
 export function generateStaticParams() {
@@ -14,13 +15,14 @@ export function generateStaticParams() {
 export default async function LocaleLayout({ children, params }) {
   const { locale } = await params;
   if (!routing.locales.includes(locale)) notFound();
+  const dir = getLocaleDir(locale);
 
   setRequestLocale(locale);
   const messages = (await import(`@/messages/${locale}.json`)).default;
   const announcement = getAnnouncement(locale);
 
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang={locale} dir={dir} suppressHydrationWarning>
       <body className="min-h-screen bg-background font-body antialiased">
         <AnnouncementProvider value={announcement}>
           <NextIntlClientProvider locale={locale} messages={messages}>

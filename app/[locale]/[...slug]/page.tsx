@@ -27,6 +27,7 @@ import {
 import { getBaseUrl } from '@/lib/utils';
 import { getOgImagePathForSlug } from '@/lib/og-image';
 import { LOCALES, DEFAULT_LOCALE } from '@/lib/i18n-config';
+import { getOpenGraphLocale } from '@/lib/rtl';
 
 const DEFAULT_DESCRIPTION =
   'Plain language steps for digital security, because protecting yourself helps keep your whole community safer. Built by activists, for activists with field-tested, community-verified guides.';
@@ -126,6 +127,10 @@ export async function generateMetadata({ params }) {
   });
 
   const canonical = locale === DEFAULT_LOCALE ? `${baseUrl}/${slug}/` : `${baseUrl}/${locale}/${slug}/`;
+  const openGraphLocale = getOpenGraphLocale(locale);
+  const openGraphAlternateLocales = Object.keys(LOCALES)
+    .filter((loc) => loc !== locale)
+    .map((loc) => getOpenGraphLocale(loc));
 
   return {
     title: pageTitle,
@@ -139,6 +144,8 @@ export async function generateMetadata({ params }) {
       description: pageDescription,
       url: canonical,
       type: 'article',
+      locale: openGraphLocale,
+      alternateLocale: openGraphAlternateLocales,
       siteName: 'Activist Checklist',
       images: [ogImageUrl],
     },

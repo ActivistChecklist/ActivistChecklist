@@ -56,12 +56,12 @@ function TimelineSection({ title, entries, isFirst = false }) {
       <div className="relative">
         {entries.map((entry, index) => (
           <div key={entry.slug} id={entry.slug} className="relative">
-            <div className="py-3 pl-12 text-sm text-muted-foreground relative">
+            <div className="py-3 ps-12 text-sm text-muted-foreground relative">
               {/* Timeline dot */}
-              <div className="absolute left-6 top-[18px] w-2 h-2 bg-primary rounded-full -translate-x-1/2"></div>
+              <div className="absolute inset-s-6 top-[18px] w-2 h-2 bg-primary rounded-full -translate-x-1/2"></div>
               {/* Timeline line */}
               {index < entries.length - 1 && (
-                <div className="absolute left-6 top-[26px] w-px bg-border h-full -translate-x-1/2"></div>
+                <div className="absolute inset-s-6 top-[26px] w-px bg-border h-full -translate-x-1/2"></div>
               )}
               <ChangeLogEntry entry={entry} />
             </div>
@@ -89,7 +89,7 @@ export default async function ChangelogPage({ params }) {
         <header className="mb-8">
           <h1 className="page-title">{t('changelog.title')}</h1>
           <div className="mt-2 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-            <p className="text-lg text-muted-foreground sm:min-w-0 sm:flex-1 sm:pr-4">
+            <p className="text-lg text-muted-foreground sm:min-w-0 sm:flex-1 sm:pe-4">
               {t('changelog.description')}
             </p>
             <RSSButton

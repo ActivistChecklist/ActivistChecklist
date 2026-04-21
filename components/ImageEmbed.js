@@ -39,8 +39,8 @@ export const ImageEmbed = ({
   const getAlignmentClass = () => {
     if (isMobile) return 'mx-auto block';
     switch (alignment) {
-      case 'left':  return 'float-left mr-6 mb-4 mt-2';
-      case 'right': return 'float-right ml-6 mb-4 mt-2';
+      case 'left':  return 'float-left me-6 mb-4 mt-2';
+      case 'right': return 'float-right ms-6 mb-4 mt-2';
       case 'full':  return 'w-full block';
       default:      return 'mx-auto block';
     }

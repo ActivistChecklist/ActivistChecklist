@@ -69,8 +69,8 @@ export function TableOfContentsSidebar({ initialHeaders = [] }) {
                 href={`#${header.id}`}
                 className={cn(
                   "block py-1 text-sm text-pretty",
-                  "pl-3 border-l-2",
-                  header.level === 3 && "ml-4",
+                  "ps-3 border-s-2",
+                  header.level === 3 && "ms-4",
                   activeId === header.id
                     ? "text-link border-link font-bold"
                     : "text-muted-foreground border-transparent hover:text-foreground hover:border-muted-foreground"

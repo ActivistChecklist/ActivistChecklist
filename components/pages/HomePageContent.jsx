@@ -54,7 +54,7 @@ export default function HomePageContent({ children, changelogEntries = [], lates
           {/* Hero Section */}
           <div className="">
             <header className={cn(
-              "not-prose relative left-1/2 w-dvw max-w-none -translate-x-1/2",
+              "not-prose relative inset-s-1/2 w-dvw max-w-none -translate-x-1/2",
               "relative mb-16 -mt-8 py-16 px-4 overflow-hidden",
               /* v4: use bg-radial / bg-linear-to-* so from/via/to populate --tw-gradient-stops */
               "bg-radial-[ellipse_at_top] from-primary/20 via-background to-background",
@@ -71,7 +71,7 @@ export default function HomePageContent({ children, changelogEntries = [], lates
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button asChild variant="default" size="xl" className="group bg-linear-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary transition-all">
                     <Link href={NAV_ITEMS.ESSENTIALS.href} className="block group">
-                      <Check className="mr-2" />
+                      <Check className="me-2" />
                       {t('hero.primaryCta')}
                     </Link>
                   </Button>
@@ -81,7 +81,7 @@ export default function HomePageContent({ children, changelogEntries = [], lates
                 </div>
                 {latestMajorBodyText && (
                   <div className="mt-8 text-muted-foreground">
-                    <Sparkles className="h-4 w-4 inline mr-1" />
+                    <Sparkles className="h-4 w-4 inline me-1" />
                     <Markdown content={latestMajorBodyText} isProse={false} inlineOnly={true} />
                   </div>
                 )}
@@ -100,7 +100,7 @@ export default function HomePageContent({ children, changelogEntries = [], lates
             <div className="mt-8 text-center">
               <Button asChild variant="outline" size="lg">
                 <Link href={SECURITY_CHECKLISTS.href} className="group">
-                  {t('homepage.browseAll')} <ArrowRight className="ml-2 transition-transform duration-300 ease-out group-hover:translate-x-1" />
+                  {t('homepage.browseAll')} <ArrowRight className="ms-2 transition-transform duration-300 ease-out group-hover:translate-x-1 [dir=rtl]:rotate-180 [dir=rtl]:group-hover:-translate-x-1" />
                 </Link>
               </Button>
             </div>
@@ -149,7 +149,7 @@ export default function HomePageContent({ children, changelogEntries = [], lates
               <h2 className="text-2xl font-bold">{t('homepage.recentUpdatesHeading')}</h2>
               <Button asChild variant="outline" size="sm">
                 <Link href={NAV_ITEMS.CHANGELOG.href} className="group">
-                  {t('homepage.viewAllUpdates')} <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 ease-out group-hover:translate-x-1" />
+                  {t('homepage.viewAllUpdates')} <ArrowRight className="ms-2 h-4 w-4 transition-transform duration-300 ease-out group-hover:translate-x-1 [dir=rtl]:rotate-180 [dir=rtl]:group-hover:-translate-x-1" />
                 </Link>
               </Button>
             </div>
