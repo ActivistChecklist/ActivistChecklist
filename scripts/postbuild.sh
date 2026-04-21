@@ -22,6 +22,7 @@ if [ "$BUILD_MODE" = "static" ]; then
   yarn index
 
   cp public/.htaccess out/.htaccess
+  node scripts/inject-htaccess-redirects.cjs out/.htaccess
 
   # Copy English content to root so bare URLs (e.g. /about/) work on any static server.
   # Spanish stays at /es/. The .htaccess rewrite is a fallback for Apache.
