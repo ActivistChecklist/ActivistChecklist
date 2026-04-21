@@ -2,6 +2,9 @@ import { Feed } from 'feed';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { remark } from 'remark';
+import remarkGfm from 'remark-gfm';
+import remarkHtml from 'remark-html';
 import { applyPaywallBypassHref } from '../lib/paywall-bypass-url.js';
 import { sectionStart, sectionEnd, detail } from './lib/build-cli.mjs';
 
@@ -11,6 +14,22 @@ const ROOT = path.resolve(__dirname, '..');
 const { getAllChangelogEntries, getAllNewsItems } = await import('../lib/content.js');
 
 const SITE_URL = 'https://activistchecklist.org';
+
+function absolutizeMarkdownLinks(markdown = '') {
+  return String(markdown).replace(
+    /\[([^\]]+)\]\((\/[^)\s]*)\)/g,
+    (_match, text, href) => `[${text}](${SITE_URL}${href})`
+  );
+}
+
+async function renderMarkdownToHtml(markdown = '') {
+  const withAbsoluteLinks = absolutizeMarkdownLinks(markdown);
+  const file = await remark()
+    .use(remarkGfm)
+    .use(remarkHtml)
+    .process(withAbsoluteLinks);
+  return String(file).trim();
+}
 
 function writeFeed(feed, filename) {
   const outDir = path.join(ROOT, 'out', 'rss');
@@ -45,12 +64,14 @@ async function generateChangelogRSS() {
   for (const entry of entries) {
     const slug = entry.slug;
     const date = new Date(entry.frontmatter.date);
+    const entryMarkdown = entry.content.trim() || 'Site update';
+    const entryContent = await renderMarkdownToHtml(entryMarkdown);
     feed.addItem({
       title: slug,
       id: `${SITE_URL}/changelog#${slug}`,
       link: `${SITE_URL}/changelog#${slug}`,
-      description: entry.content.trim() || 'Site update',
-      content: entry.content.trim() || 'Site update',
+      description: entryContent,
+      content: entryContent,
       author: [{ name: 'Activist Checklist', email: 'contact@activistchecklist.org', link: SITE_URL }],
       date,
     });
