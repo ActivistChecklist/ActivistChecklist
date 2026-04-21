@@ -6,7 +6,7 @@
 
 ## Content writing ruels
 
-* Do not use em-dashes.
+* IMPORTANT: Do not use em-dashes.
 
 ## Git commit rules
 
