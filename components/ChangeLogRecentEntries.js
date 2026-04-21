@@ -21,12 +21,12 @@ const ChangeLogRecentEntries = ({ entries = [] }) => {
       <div className="relative">
         {entries.map((entry, index) => (
           <div key={entry.slug} className="relative">
-            <div className="py-3 pl-12 text-sm text-muted-foreground relative">
+            <div className="py-3 ps-12 text-sm text-muted-foreground relative">
               {/* Timeline dot */}
-              <div className="absolute left-6 top-[18px] w-2 h-2 bg-primary rounded-full -translate-x-1/2"></div>
+              <div className="absolute inset-s-6 top-[18px] w-2 h-2 bg-primary rounded-full -translate-x-1/2"></div>
               {/* Timeline line */}
               {index < entries.length - 1 && (
-                <div className="absolute left-6 top-[26px] w-px bg-border h-full -translate-x-1/2"></div>
+                <div className="absolute inset-s-6 top-[26px] w-px bg-border h-full -translate-x-1/2"></div>
               )}
               <ChangeLogEntry entry={entry} />
             </div>
