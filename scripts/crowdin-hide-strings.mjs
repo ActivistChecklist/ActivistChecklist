@@ -9,7 +9,7 @@
  * This includes:
  *   - JSX attributes: slug, type, size, level, mode, alignment, target, variant, icon, href, src, className
  *   - Frontmatter arrays: relatedGuides, titleBadges
- *   - Frontmatter scalars: slug, type, date, firstPublished, lastUpdated, image, imageOverride, url, source, tags, showToc
+ *   - Frontmatter scalars: slug, type, date, firstPublished, lastUpdated, image, imageOverride, url, source, tags, showToc, tocDepth
  *
  * Usage:
  *   yarn crowdin:hide-strings           (dry run — reads CROWDIN_* from .env)
@@ -90,6 +90,7 @@ const UNTRANSLATABLE_FRONTMATTER_SCALARS = [
   "source",         // publication/author attribution
   "tags",           // comma-separated tag identifiers
   "showToc",        // boolean: layout / “On this page” sidebar (pages)
+  "tocDepth",       // 2 or 3: which heading levels appear in the left TOC
 ];
 
 // JSX attributes whose values should not be translated
