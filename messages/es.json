@@ -332,6 +332,7 @@
     "description": "Un historial de cambios en las listas, páginas y recursos del sitio.",
     "last30Days": "Últimos 30 días",
     "previousChanges": "Cambios anteriores",
-    "noEntries": "No se encontraron entradas en el registro de cambios."
+    "noEntries": "No se encontraron entradas en el registro de cambios.",
+    "majorUpdate": "Actualización importante"
   }
 }

@@ -332,6 +332,7 @@
     "description": "A history of changes to checklists, pages, and resources on the site.",
     "last30Days": "Last 30 days",
     "previousChanges": "Previous changes",
-    "noEntries": "No changelog entries found."
+    "noEntries": "No changelog entries found.",
+    "majorUpdate": "Major update"
   }
 }

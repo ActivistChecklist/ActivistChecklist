@@ -61,7 +61,7 @@ function TimelineSection({ title, entries, isFirst = false }) {
               <ChangeLogTimelineMarker type={entry.type} />
               {/* Timeline line */}
               {index < entries.length - 1 && (
-                <div className="absolute left-6 top-[26px] w-px bg-border h-full -translate-x-1/2"></div>
+                <div className="absolute z-0 left-6 top-[26px] w-px bg-border h-full -translate-x-1/2"></div>
               )}
               <ChangeLogEntry entry={entry} />
             </div>
@@ -76,6 +76,7 @@ export default async function ChangelogPage({ params }) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations();
+  const currentYear = new Date().getFullYear();
 
   const changelogEntries = getAllChangelogEntries(locale).map(toChangelogListEntry);
   const grouped = groupEntriesByTime(changelogEntries);
@@ -114,7 +115,7 @@ export default async function ChangelogPage({ params }) {
             />
 
             <TimelineSection
-              title={t('changelog.previousChanges')}
+              title={currentYear.toString()}
               entries={grouped.thisYear}
             />
 
