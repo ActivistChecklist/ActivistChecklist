@@ -85,7 +85,7 @@
     "title": "Listas de seguridad digital para activistas",
     "description": "Pasos en lenguaje sencillo para la seguridad digital. Porque protegerte a ti mismo ayuda a mantener a toda tu comunidad más segura.",
     "primaryCta": "Fundamentos de seguridad digital",
-    "secondaryCta": "Host a security party"
+    "secondaryCta": "Organiza una fiesta de seguridad"
   },
   "trustPoints": {
     "experienceTitle": "Construido desde la experiencia",
@@ -333,6 +333,6 @@
     "last30Days": "Últimos 30 días",
     "previousChanges": "Cambios anteriores",
     "noEntries": "No se encontraron entradas en el registro de cambios.",
-    "majorUpdate": "Major update"
+    "majorUpdate": "Actualización importante"
   }
 }
