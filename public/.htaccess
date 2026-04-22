@@ -24,8 +24,10 @@ ErrorDocument 404 /404/index.html
   RewriteRule ^(.*)$ /en/$1 [L]
 </IfModule>
 
-# Redirects
-Redirect 301 /government /federal
+# Redirects: Apache lines are generated at static build from lib/redirects.config.cjs (see postbuild).
+### BEGIN GENERATED REDIRECTS (from lib/redirects.config.cjs) ###
+
+### END GENERATED REDIRECTS ###
 
 # Security Headers
 <IfModule mod_headers.c>
