@@ -61,7 +61,7 @@ export function TranslationStats() {
 
   if (state === 'loading') {
     return (
-      <div className="flex items-center gap-2 text-muted-foreground text-sm py-2">
+      <div className="mt-6 flex items-center gap-2 text-muted-foreground text-sm py-2">
         <Loader2 className="h-4 w-4 animate-spin" />
         Loading translation stats...
       </div>
@@ -70,13 +70,13 @@ export function TranslationStats() {
 
   if (state === 'error' || languages.length === 0) {
     return (
-      <p className="text-sm text-muted-foreground">Translation stats unavailable.</p>
+      <p className="mt-6 text-sm text-muted-foreground">Translation stats unavailable.</p>
     );
   }
 
   return (
     <TooltipProvider delayDuration={0}>
-    <div className="not-prose">
+    <div className="not-prose mt-6">
       <Table>
         <TableHeader>
           <TableRow>
