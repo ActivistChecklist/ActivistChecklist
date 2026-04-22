@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
+import { useGuideHashScroll } from '@/hooks/use-guide-hash-scroll';
 import { MDXRemote } from 'next-mdx-remote';
 import { Clock, Calendar } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
@@ -38,6 +39,8 @@ export default function Guide({ frontmatter, serializedIntro, serializedBody, ch
   const intlLocale = useLocale() || locale || 'en';
   const dateLocale = LOCALES[intlLocale]?.intlLocale || 'en-US';
   const { setSidebarType } = useLayout();
+
+  useGuideHashScroll();
 
   useEffect(() => {
     setSidebarType('toc');
