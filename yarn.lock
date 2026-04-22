@@ -8,8 +8,8 @@
   integrity sha512-/1iHy9TTr63gE1YcR5idjx8UREz1s0kFhydf3bBLCXyqjhkIc6igAzTOx3zPifCwFR87tsh/4Pa9cNts6d2otw==
 
 "@activistchecklist/react-review-comments@github:ActivistChecklist/react-review-comments#main":
-  version "0.1.0"
-  resolved "https://codeload.github.com/ActivistChecklist/react-review-comments/tar.gz/f4918ed5c9463dd2763cd615129fc4fddd4b9561"
+  version "0.1.1"
+  resolved "https://codeload.github.com/ActivistChecklist/react-review-comments/tar.gz/dc69d0de38ff6e51f53b8744d029c58b3a578ba5"
   dependencies:
     "@annotorious/react" "^3.8.0"
     "@recogito/react-text-annotator" "^3.4.9"
