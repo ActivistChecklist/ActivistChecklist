@@ -4,6 +4,9 @@
   "description": "ActivistChecklist.org",
   "license": "GPL-3.0",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "engines": {
     "node": ">=22 <23"
   },
@@ -50,15 +53,20 @@
     "snapshot-normalize": "node scripts/snapshot-normalize.mjs",
     "snapshot-compare": "node scripts/snapshot-compare.mjs",
     "compare": "node scripts/compare.mjs",
+    "annotations:cleanup": "tsx scripts/annotations-cleanup.mjs",
+    "annotations:init": "tsx scripts/annotations-init.mjs",
     "api:dev": "source .env && fastify start --options --watch --ignore-watch '.git node_modules out .next content public scripts utils styles pages config compontents' --log-level info --pretty-logs --port ${API_PORT:-4321} api/server.js",
     "api:start": "yarn run pm2 start ecosystem.config.js",
     "api:stop": "yarn run pm2 stop ac-api",
     "api:restart": "yarn run pm2 restart ac-api",
     "api:status": "yarn run pm2 status ac-api",
     "api:delete": "yarn run pm2 delete ac-api",
-    "api:logs": "yarn run pm2 logs ac-api"
+    "api:logs": "yarn run pm2 logs ac-api",
+    "mongo:start": "sh -c 'docker start ac-mongo >/dev/null 2>&1 || docker run -d --name ac-mongo -p 27017:27017 -v ac-mongo-data:/data/db mongo:7'"
   },
   "dependencies": {
+    "@activistchecklist/react-review-comments": "github:ActivistChecklist/react-review-comments#main",
+    "@annotorious/react": "^3.8.0",
     "@fastify/cors": "^11.2.0",
     "@fastify/helmet": "^13.0.2",
     "@fastify/rate-limit": "^10.3.0",
@@ -87,6 +95,8 @@
     "@radix-ui/react-toggle": "^1.1.10",
     "@radix-ui/react-toggle-group": "^1.1.11",
     "@radix-ui/react-tooltip": "^1.2.8",
+    "@recogito/react-text-annotator": "^3.4.9",
+    "@recogito/text-annotator": "^3.4.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
@@ -95,12 +105,14 @@
     "fluent-ffmpeg": "^2.1.3",
     "gray-matter": "^4.0.3",
     "js-yaml": "^4.1.1",
-    "next": "^15.5.15",
     "lucide-react": "^1.8.0",
+    "mongodb": "^7.1.1",
+    "next": "^15.5.15",
     "next-intl": "^4.9.1",
     "next-mdx-remote": "^6.0.0",
     "next-themes": "^0.4.6",
     "openpgp": "^6.3.0",
+    "openseadragon": "^6.0.2",
     "pdf-lib": "^1.17.1",
     "pm2": "^6.0.14",
     "react": "^19.2.5",
@@ -130,6 +142,7 @@
     "feed": "^5.2.1",
     "http-server": "^14.1.1",
     "husky": "^9.1.7",
+    "jsdom": "^29.0.2",
     "next-sitemap": "^4.2.3",
     "node-fetch": "^3.3.2",
     "open-graph-scraper": "^6.11.0",
@@ -140,6 +153,7 @@
     "satori": "^0.26.0",
     "sharp": "^0.34.5",
     "tailwindcss": "^4.2.2",
+    "tsx": "^4.21.0",
     "typescript": "6.0.3",
     "vitest": "^4.1.4",
     "yarn": "^1.22.22"
@@ -152,8 +166,8 @@
     "markdown-it": ">=14.1.1",
     "ajv": ">=8.18.0",
     "rollup": ">=4.59.0",
-    "basic-ftp": ">=5.3.0",
-    "undici": ">=7.24.0",
+    "basic-ftp": ">=5.2.2",
+    "undici": "^7.24.5",
     "yauzl": ">=3.2.1"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
