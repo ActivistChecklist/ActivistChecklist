@@ -1,0 +1,45 @@
+name: Sync GitHub Labels
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/labels.yml"
+      - ".github/workflows/label-sync.yml"
+      - ".coderabbit.yaml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate CodeRabbit and GitHub labels stay in sync
+        run: |
+          node -e '
+          const fs = require("fs");
+          const labelsText = fs.readFileSync(".github/labels.yml", "utf8");
+          const rabbitText = fs.readFileSync(".coderabbit.yaml", "utf8");
+          const labels = [...labelsText.matchAll(/^- name:\s*"([^"]+)"/gm)].map((m) => m[1]).sort();
+          const rabbitLabels = [...rabbitText.matchAll(/^\s*-\s*label:\s*"([^"]+)"/gm)].map((m) => m[1]).sort();
+          const missingInRabbit = labels.filter((name) => !rabbitLabels.includes(name));
+          const missingInLabels = rabbitLabels.filter((name) => !labels.includes(name));
+          if (missingInRabbit.length || missingInLabels.length) {
+            console.error("Label mismatch between .github/labels.yml and .coderabbit.yaml");
+            if (missingInRabbit.length) console.error("Missing in .coderabbit.yaml:", missingInRabbit.join(", "));
+            if (missingInLabels.length) console.error("Missing in .github/labels.yml:", missingInLabels.join(", "));
+            process.exit(1);
+          }
+          console.log("Label sets are in sync.");
+          '
+      - name: Sync labels with repository config
+        uses: EndBug/label-sync@v2
+        with:
+          config-file: .github/labels.yml
+          delete-other-labels: true
+          token: ${{ secrets.GITHUB_TOKEN }}

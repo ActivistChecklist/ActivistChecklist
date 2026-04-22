@@ -1,0 +1,81 @@
+# LABEL SYNC CONTRACT:
+# Keep `name` values in this file synced 1:1 with
+# `.coderabbit.yaml` `issue_enrichment.labeling.labeling_instructions[].label`.
+# If you add, remove, or rename a label here, make the same change there.
+# CI validates this in `.github/workflows/label-sync.yml`.
+
+- name: "bug 🐛"
+  color: "d73a4a"
+  description: "Something is not working"
+
+- name: "feature ✨"
+  color: "a2eeef"
+  description: "New feature or enhancement request"
+
+- name: "content 📝"
+  color: "1d76db"
+  description: "Checklist items, guides, security advice, or site copy"
+
+- name: "documentation 📖"
+  color: "0075ca"
+  description: "Improvements or additions to developer documentation"
+
+- name: "security 🔐"
+  color: "b60205"
+  description: "Security vulnerabilities, privacy risks, or threat modeling concerns"
+
+- name: "i18n 🌐"
+  color: "5319e7"
+  description: "Localization, translation, Crowdin, or language-specific issues"
+
+- name: "ux 🎨"
+  color: "c2e0c6"
+  description: "Usability, interaction design, readability, or visual clarity improvements"
+
+- name: "infrastructure 🦺"
+  color: "0052cc"
+  description: "CI/CD, deployment, hosting, build tooling, and operational reliability"
+
+- name: "backlog 🧠"
+  color: "ededed"
+  description: "Valid idea captured for later, not currently prioritized"
+
+- name: "question ❓"
+  color: "d876e3"
+  description: "Further information is requested"
+
+- name: "duplicate 🔁"
+  color: "cfd3d7"
+  description: "This issue or pull request already exists"
+
+- name: "wontfix 🚫"
+  color: "ffffff"
+  description: "This will not be worked on"
+
+- name: "good first issue 🌱"
+  color: "7057ff"
+  description: "Good for first-time contributors"
+
+- name: "effort: low ⚡"
+  color: "0e8a16"
+  description: "Small task, likely under 1-2 hours"
+
+- name: "effort: medium 🕔"
+  color: "fbca04"
+  description: "Moderate task, likely a half day to a full day"
+
+- name: "effort: high 🏔️"
+  color: "fbca04"
+  description: "Large task requiring significant effort"
+
+- name: "priority: high 🔴"
+  color: "b60205"
+  description: "Urgent issue needing prompt attention"
+
+- name: "priority: medium 🟡"
+  color: "fbca04"
+  description: "Important but not urgent"
+
+- name: "priority: low 🟢"
+  color: "0e8a16"
+  description: "Nice-to-have with low urgency"
