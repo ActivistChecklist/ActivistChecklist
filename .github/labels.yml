@@ -67,15 +67,3 @@
 - name: "effort: high 🏔️"
   color: "fbca04"
   description: "Large task requiring significant effort"
-
-- name: "priority: high 🔴"
-  color: "b60205"
-  description: "Urgent issue needing prompt attention"
-
-- name: "priority: medium 🟡"
-  color: "fbca04"
-  description: "Important but not urgent"
-
-- name: "priority: low 🟢"
-  color: "0e8a16"
-  description: "Nice-to-have with low urgency"
