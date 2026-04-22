@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils';
 import { IoLogoRss } from 'react-icons/io5';
 import Link from 'next/link';
 
+/** Uses `next/link` on purpose: feeds are static at `/rss/*.xml` (root only). Locale-aware Link would rewrite to `/es/rss/…` and 404. */
 const RSSButton = ({ 
   href, 
   className, 

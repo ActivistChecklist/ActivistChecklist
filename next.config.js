@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const createNextIntlPlugin = require('next-intl/plugin');
+const { REDIRECTS } = require('./lib/redirects.config.cjs');
 
 /**
  * Omit Keystatic from the webpack graph only for static export (BUILD_MODE=static).
@@ -21,6 +22,13 @@ const STATIC_EXPORT_STUBS = [
 ];
 
 const baseConfig = {
+  async redirects() {
+    return REDIRECTS.map(({ source, destination, permanent = true }) => ({
+      source,
+      destination,
+      permanent,
+    }));
+  },
   // Smaller server/client bundles and faster compiles for barrel-import icon packages.
   experimental: {
     optimizePackageImports: ['lucide-react', 'react-icons'],

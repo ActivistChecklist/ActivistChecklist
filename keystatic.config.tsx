@@ -549,6 +549,16 @@ export default config({
         ),
         firstPublished: fields.date({ label: 'First Published' }),
         lastUpdated: fields.date({ label: 'Last Updated' }),
+        // Untranslatable: sync UNTRANSLATABLE_FRONTMATTER_SCALARS in scripts/crowdin-hide-strings.mjs
+        tocDepth: fields.select({
+          label: 'Left TOC depth',
+          description: 'Which heading levels appear in “On this page” (2 = ## only, 3 = ## and ###).',
+          options: [
+            { label: '2 — ## only', value: '2' },
+            { label: '3 — ## and ###', value: '3' },
+          ],
+          defaultValue: '2',
+        }),
         body: fields.mdx({
           label: 'Guide Content',
           options: mdxEditorOptionsContent,
@@ -646,6 +656,22 @@ export default config({
         ),
         firstPublished: fields.date({ label: 'First Published' }),
         lastUpdated: fields.date({ label: 'Last Updated' }),
+        // Untranslatable frontmatter: if you add/remove fields here, sync UNTRANSLATABLE_FRONTMATTER_SCALARS in scripts/crowdin-hide-strings.mjs (see lib/content.js readMdxFile).
+        showToc: fields.checkbox({
+          label: '“On this page” sidebar',
+          description:
+            'Shows the left “On this page” table of contents (same as guides). Use TOC depth below for ## vs ###.',
+          defaultValue: false,
+        }),
+        tocDepth: fields.select({
+          label: 'Left TOC depth (when “On this page” is on)',
+          description: '2 = ## only. 3 = ## and ###.',
+          options: [
+            { label: '2 — ## only', value: '2' },
+            { label: '3 — ## and ###', value: '3' },
+          ],
+          defaultValue: '2',
+        }),
         body: fields.mdx({
           label: 'Body',
           options: mdxEditorOptionsContent,

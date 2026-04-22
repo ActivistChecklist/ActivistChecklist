@@ -1,7 +1,7 @@
 'use client';
 import * as React from "react"
 import { useState, useEffect } from "react"
-import Link from "next/link"
+import Link from "@/components/Link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { useTranslations } from "next-intl"
