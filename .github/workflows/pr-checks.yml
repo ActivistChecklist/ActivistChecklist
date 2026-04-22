@@ -36,10 +36,12 @@ jobs:
               - 'app/**'
               - 'api/**'
               - 'components/**'
+              - 'contexts/**'
+              - 'i18n/**'
+              - 'hooks/**'
               - 'lib/**'
               - 'pages/**'
               - 'scripts/**'
-              - 'styles/**'
               - 'package.json'
               - 'yarn.lock'
               - 'next.config.*'
@@ -71,7 +73,8 @@ jobs:
         run: yarn lint:paths
 
   pr_build:
-    if: ${{ github.head_ref != 'l10n_main' && github.ref_name != 'l10n_main' && needs.detect_changes.outputs.runtime_changed == 'true' }}
+    if: ${{ github.head_ref != 'l10n_main' && github.ref_name != 'l10n_main' &&
+      needs.detect_changes.outputs.runtime_changed == 'true' }}
     needs: detect_changes
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -106,4 +109,3 @@ jobs:
           BUILD_MODE: static
           NEXT_TELEMETRY_DISABLED: 1
         run: yarn buildstatic
-
