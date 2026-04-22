@@ -6,7 +6,7 @@
 
 [build]
 builder = "RAILPACK"
-buildCommand = "node -e \"const fs=require('fs');const y=fs.readFileSync('yarn.lock','utf8');const m=y.match(/react-review-comments\\/tar\\.gz\\/([a-f0-9]{7,40})/);console.log('RRC_LOCK_SHA='+(m?m[1]:'NOT_FOUND'));\" && node -e \"const fs=require('fs');const p='node_modules/@activistchecklist/react-review-comments/src/highlightDom.ts';if(!fs.existsSync(p)){console.log('RRC_FILE_MISSING='+p);process.exit(0);}const s=fs.readFileSync(p,'utf8');console.log('RRC_HAS_DEBUG_FLAG='+String(s.includes('__ANNOTATION_HIGHLIGHT_DEBUG__')));console.log(s.split('\\n').slice(0,30).join('\\n'));\" && NODE_ENV=production yarn build"
+buildCommand = "NODE_ENV=production yarn build"
 
 [deploy]
 startCommand = "yarn start"
