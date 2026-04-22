@@ -1,0 +1,84 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+#
+# LABEL SYNC CONTRACT:
+# Keep `issue_enrichment.labeling.labeling_instructions[].label` in this file
+# synced 1:1 with `.github/labels.yml` `name` values.
+# If you add, remove, or rename a label here, make the same change there.
+# CI validates this in `.github/workflows/label-sync.yml`.
+
+language: "en-US"
+
+reviews:
+  profile: "chill"
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  auto_review:
+    enabled: true
+    drafts: false
+  path_filters:
+    - "!**/*.lock"
+    - "!**/yarn.lock"
+    - "!**/package-lock.json"
+    - "!out/**"
+  path_instructions:
+    - path: "content/**"
+      instructions: |
+        This is activist-facing security content. Flag anything that is:
+        - Factually incorrect or outdated security advice
+        - Unclear or inaccessible to non-technical readers
+        - Missing important caveats or threat model context
+    - path: "**/*.mdx"
+      instructions: |
+        Check that frontmatter is complete and valid.
+        Flag hardcoded English strings that should be wrapped for i18n/Crowdin.
+    - path: "pages/api/**"
+      instructions: |
+        Review carefully for authentication, input validation, and data exposure risks.
+  finishing_touches:
+    docstrings:
+      enabled: false
+
+issue_enrichment:
+  labeling:
+    auto_apply_labels: true
+    labeling_instructions:
+      - label: "bug 🐛"
+        instructions: "Apply when something is broken, not working as expected, or causing errors"
+      - label: "feature ✨"
+        instructions: "Apply when requesting new functionality or a meaningful enhancement"
+      - label: "content 📝"
+        instructions: "Apply when the issue is about checklist items, guides, security advice, or written content on the site"
+      - label: "documentation 📖"
+        instructions: "Apply when the issue is about README, code comments, contributing guides, or developer-facing docs (not site content)"
+      - label: "security 🔐"
+        instructions: "Apply when the issue involves security vulnerabilities, privacy risks, threat modeling, or sensitive data handling, both in the codebase and in the advice the site gives to activists"
+      - label: "i18n 🌐"
+        instructions: "Apply when the issue involves translation, Crowdin, localization, RTL support, or language-specific content"
+      - label: "ux 🎨"
+        instructions: "Apply when the issue involves user experience, interaction design, readability, information hierarchy, or visual clarity"
+      - label: "infrastructure 🦺"
+        instructions: "Apply when the issue involves CI, deployment, workflows, hosting, caching, build tooling, or operational reliability"
+      - label: "backlog 🧠"
+        instructions: "Apply when the idea is valid but intentionally deferred rather than actively prioritized for the current cycle"
+      - label: "question ❓"
+        instructions: "Apply when the submitter is asking a question rather than reporting a problem or requesting a feature"
+      - label: "duplicate 🔁"
+        instructions: "Apply when the issue duplicates an existing open or recently closed issue"
+      - label: "wontfix 🚫"
+        instructions: "Apply when the issue is out of scope or intentionally not being addressed"
+      - label: "good first issue 🌱"
+        instructions: "Apply when the issue is well-scoped, clearly defined, and approachable for a new contributor without deep codebase knowledge"
+      - label: "effort: low ⚡"
+        instructions: "Apply when the fix or implementation is straightforward and likely under 1-2 hours of work"
+      - label: "effort: medium 🕔"
+        instructions: "Apply when the issue requires moderate implementation work, likely a half day to a full day"
+      - label: "effort: high 🏔️"
+        instructions: "Apply when the issue requires significant architectural thought, coordination, or many hours of work"
+      - label: "priority: high 🔴"
+        instructions: "Apply when the issue is urgent, affects core functionality, involves a security risk, or is blocking other work"
+      - label: "priority: medium 🟡"
+        instructions: "Apply when the issue is important but not urgent and can be addressed in the normal course of work"
+      - label: "priority: low 🟢"
+        instructions: "Apply when the issue is a nice-to-have or minor improvement with no urgency"
