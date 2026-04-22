@@ -22,8 +22,8 @@
 
 We are a small all-volunteer project. The biggest needs are writing and editing guides, reviewing translations, and coding. Full step-by-step instructions are in the [Activist Checklist Contributor Guide](https://docs.activistchecklist.org/).
 
-- **Submit an idea or reqestu**: [Submit an idea](https://github.com/ActivistChecklist/ActivistChecklist/issues)
-- **Editing and writing**: [Get started with editing or writing →](https://docs.activistchecklist.org/writing/start-writing/)
+- **Submit an idea or request**: [Submit an idea on Github](https://github.com/ActivistChecklist/ActivistChecklist/issues) or through our [contact form](https://activistchecklist.org/contact/)
+- **Editing and writing**: [Get started with editing or writing guides →](https://docs.activistchecklist.org/writing/start-writing/)
 - **Translating**: [Get started with translations →](https://docs.activistchecklist.org/translating/start-translating/)
 - **Coding**: [Get started with coding →](https://docs.activistchecklist.org/coding/start-coding/)
 
