@@ -9,7 +9,7 @@
 
 "@activistchecklist/react-review-comments@github:ActivistChecklist/react-review-comments#main":
   version "0.1.0"
-  resolved "https://codeload.github.com/ActivistChecklist/react-review-comments/tar.gz/b4d4cae6e61437adf7a3fb3da58ce9555a90a926"
+  resolved "https://codeload.github.com/ActivistChecklist/react-review-comments/tar.gz/f4918ed5c9463dd2763cd615129fc4fddd4b9561"
   dependencies:
     "@annotorious/react" "^3.8.0"
     "@recogito/react-text-annotator" "^3.4.9"
