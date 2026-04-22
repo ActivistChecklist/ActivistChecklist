@@ -12,92 +12,35 @@
 [![Node](https://img.shields.io/badge/node-%3E%3D22%20%3C23-339933?logo=node.js&logoColor=white)](https://github.com/ActivistChecklist/ActivistChecklist/blob/main/package.json)
 [![Bluesky](https://img.shields.io/bluesky/followers/activistchecklist.org)](https://bsky.app/profile/activistchecklist.org)
 
-[Visit the site](#visit-the-site) • [Edit content](#edit-content) • [Internationalization & translation](#internationalization--translation) • [Contact](#contact) • [Local development](#local-development) • [Repository layout](#repository-layout) • [License](#license)
-
 </div>
 
 ---
 
-## Visit the site
+**[ActivistChecklist.org](https://activistchecklist.org)** — visit the live site.
 
-You can view the live site here: **[ActivistChecklist.org →](https://activistchecklist.org)**
+## How to contribute
 
-## Suggest content changes
+We are a small all-volunteer project. The biggest needs are writing and editing guides, reviewing translations, and coding. Full step-by-step instructions are in the [Activist Checklist Contributor Guide](https://docs.activistchecklist.org/).
 
-You don't need to be a coder to suggest edits to this site. The site has a **visual editor** so you can propose changes. All you need is a GitHub account.
+- **Submit an idea or reqestu**: [Submit an idea](https://github.com/ActivistChecklist/ActivistChecklist/issues)
+- **Editing and writing**: [Get started with editing or writing →](https://docs.activistchecklist.org/writing/start-writing/)
+- **Translating**: [Get started with translations →](https://docs.activistchecklist.org/translating/start-translating/)
+- **Coding**: [Get started with coding →](https://docs.activistchecklist.org/coding/start-coding/)
 
-Instructions: [How to suggestion content changes on Activist Checklist](https://activistchecklist.org/contribute/) using our visual editor
-
-You can also make content edits directly in the `.mdx` files and submit a pull request, if you're comfortable with using git.
-
-## Internationalization & translation
+## Translations
 
 | Language | Translated | Human-reviewed |
 |---|---|---|
 | Spanish | ![Spanish translation progress](https://progress-bar.xyz/dynamic/json/?width=200&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-17633866-883364.json&&query=progress.0.data.translationProgress) | ![Spanish human-reviewed progress](https://progress-bar.xyz/dynamic/json/?width=200&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-17633866-883364.json&&query=progress.0.data.approvalProgress) |
 
-Anyone can help with translations by visiting [our Crowdin project page](https://crowdin.com/project/activistchecklist). Create an account (you can use an anonymous email if you want) to review, edit, and approve translations. We’re starting with Spanish.
-
-All english copy edits should be in the repo (in `content/en/*` and `messages/en.json`). All translation edits should be made on Crowdin.
-
-## Contact
-
-- **[GitHub Issues](https://github.com/ActivistChecklist/ActivistChecklist/issues):** bugs, ideas, and public discussion about the project.
-- **[Contact](https://activistchecklist.org/contact/):** reach the maintainers directly when GitHub isn’t the right channel.
-- **Security:** Please do not open public issues for unfixed vulnerabilities. Report them privately through [our contact page](https://activistchecklist.org/contact/) (encrypted email and Signal is available).
+Translations are automatic. Human reviewers edit and approve them on [Crowdin](https://crowdin.com/project/activistchecklist).
 
 ## Local development
 
-### Stack
+See [CONTRIBUTORS.md](contributors.md) for local development setup instructions.
 
-[Next.js](https://nextjs.org/) (App Router), content lives in **MDX** files under `content/en/`, [Keystatic](https://keystatic.com/) for the visual editor, Tailwind CSS, next-intl for locales, and a small [Fastify](https://fastify.dev/) API (contact form, stats, newsletter) alongside Next’s own API routes.
+## Contact
 
-**Prerequisites (macOS):**  
-Install [Homebrew](https://brew.sh) if you do not have it, then:
-
-```bash
-brew install node yarn ffmpeg exiftool
-```
-
-That gives you Node and Yarn for this project, plus **ffmpeg** and **exiftool** for image/video metadata scrubbing (e.g. `yarn metadata scrub`). On Linux or Windows, install the same tools with your package manager or each tool’s official packages.
-
-**Clone the repository:**
-
-```bash
-git clone https://github.com/ActivistChecklist/ActivistChecklist.git
-cd ActivistChecklist
-yarn install
-cp .env.template .env   # defaults are fine for basic editing
-yarn dev
-```
-
-**Keystatic CMS:** Editing uses **local filesystem** storage by default (no GitHub OAuth required). To use **GitHub-backed** storage, OAuth app values, or preview flows, set the optional variables documented in **`.env.template`**.
-
-- **Site:** You can view the site at [http://localhost:3000](http://localhost:3000)
-- **Fastify API (contact, stats, newsletter):** port `4321` by default (`API_PORT`), routes under `/api-server/` — The site runs fine without this API
-
-## Repository layout
-
-```text
-ActivistChecklist.org
-├── app/           Next.js App Router (pages, API routes, Keystatic)
-├── api/           Fastify server (/api-server/ — separate from the Next.js app)
-├── components/    React UI
-├── config/        Navigation, icons, site config
-├── content/       MDX source (English under content/en/, etc.)
-├── hooks/         React hooks
-├── i18n/          Internationalization (routing, request config)
-├── lib/           Shared libraries
-├── messages/      UI strings per locale (e.g. en.json, es.json)
-├── public/        Static assets
-├── scripts/       Build, deploy, and tooling
-├── styles/        CSS
-└── utils/         Helpers
-```
-
-## License
-
-- **Code:** [GNU General Public License v3.0](LICENSE-CODE)
-- **Content and non-code assets:** [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
-
-Anyone is free to use, share, and adapt the site's content and guides as long as they give appropriate credit and distribute any adaptations under the same [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) license.
+- [GitHub Issues](https://github.com/ActivistChecklist/ActivistChecklist/issues): bugs, ideas, public discussion
+- [Contact form](https://activistchecklist.org/contact/): Reach maintainers directly
+- Security issues: Please report privately through the [contact form](https://activistchecklist.org/contact/) (emails are automatically encrypted)
