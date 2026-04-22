@@ -1,5 +1,5 @@
 // @ts-nocheck
-import Link from 'next/link';
+import Link from '@/components/Link';
 import { unstable_noStore as noStore } from 'next/cache';
 import { draftMode } from 'next/headers';
 import { notFound } from 'next/navigation';
@@ -65,7 +65,7 @@ function buildContentNotices({ locale, isFallback, slug, t }) {
           {t.rich('pageNotices.translationUnreviewed', {
             approvalPercent,
             link: (chunks) => (
-              <Link href={`/${locale}/contribute/`} className="inline">
+              <Link href="/contribute/" className="inline">
                 {chunks}
               </Link>
             ),

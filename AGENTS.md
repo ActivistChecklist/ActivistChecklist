@@ -32,6 +32,7 @@
 * The convention in this project is `const t = useTranslations()` without a namespace, using full dot-notation paths (e.g., `t('contact.title')`).
 * This does not apply to admin/Keystatic interfaces, scripts, or internal tooling.
 * Do not manually edit non-English content
+* **Internal links:** use `import Link from '@/components/Link'`, not `next/link`, so paths get the right locale prefix (`/es/…`, etc.). Exception: root-only URLs that must not be prefixed (e.g. `/rss/*.xml`) — note why in a comment if you use `next/link`.
 
 ## Coding security principles
 
