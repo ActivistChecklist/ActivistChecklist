@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/@0no-co/graphql.web/-/graphql.web-1.2.0.tgz#296d00581bfaaabfda1e976849d927824aaea81b"
   integrity sha512-/1iHy9TTr63gE1YcR5idjx8UREz1s0kFhydf3bBLCXyqjhkIc6igAzTOx3zPifCwFR87tsh/4Pa9cNts6d2otw==
 
-"@activistchecklist/react-review-comments@^0.1.2":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@activistchecklist/react-review-comments/-/react-review-comments-0.1.2.tgz#f1acd2fc2b4d8da94cadfc655d85f8e3477ad98d"
-  integrity sha512-aghwdoIzb8mfEaiRIeTvTbKAdp9MONqhZCu76nifunAO5akijlVXpMOggClnSqOJMh2a97LkQzbVrxeCqD7/zg==
+"@activistchecklist/react-review-comments@^0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@activistchecklist/react-review-comments/-/react-review-comments-0.1.5.tgz#7062f40caadeb42cea78572ac00a0951008f14e5"
+  integrity sha512-ifurMc+ZNpGJDtVfwFK0eRCaH/chrrA/MVeYnSYquNL9AXuKguZ3ivUowlAzyp9SkZrSwC87tjBTdOYVTpDgsQ==
   dependencies:
     "@annotorious/react" "^3.8.0"
     "@recogito/react-text-annotator" "^3.4.9"
