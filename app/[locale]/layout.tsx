@@ -4,7 +4,12 @@ import { notFound } from 'next/navigation';
 import { ThemeProvider } from '@/components/layout/ThemeProvider';
 import { AnnouncementProvider } from '@/contexts/AnnouncementContext';
 import { getAnnouncement } from '@/lib/content';
+import { getReviewCommentsConfig } from '@/lib/review-comments/env';
 import { routing } from '@/i18n/routing';
+import {
+  ReviewCommentsProvider,
+  type ReviewCommentsProviderProps,
+} from '@activistchecklist/react-review-comments';
 import '@/styles/globals.css';
 
 export function generateStaticParams() {
@@ -18,6 +23,10 @@ export default async function LocaleLayout({ children, params }) {
   setRequestLocale(locale);
   const messages = (await import(`@/messages/${locale}.json`)).default;
   const announcement = getAnnouncement(locale);
+  const reviewComments = getReviewCommentsConfig();
+  const reviewCommentsProviderProps = {
+    enabled: reviewComments.enabled,
+  } satisfies Pick<ReviewCommentsProviderProps, 'enabled'>;
 
   return (
     <html lang={locale} suppressHydrationWarning>
@@ -25,7 +34,9 @@ export default async function LocaleLayout({ children, params }) {
         <AnnouncementProvider value={announcement}>
           <NextIntlClientProvider locale={locale} messages={messages}>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-              {children}
+              <ReviewCommentsProvider {...reviewCommentsProviderProps}>
+                {children}
+              </ReviewCommentsProvider>
             </ThemeProvider>
           </NextIntlClientProvider>
         </AnnouncementProvider>

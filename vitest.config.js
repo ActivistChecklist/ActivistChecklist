@@ -8,6 +8,8 @@ export default defineConfig({
     globals: true,
     exclude: [
       ...configDefaults.exclude,
+      // Workspace packages run their own Vitest (e.g. jsdom for highlightDom).
+      'packages/**',
       ...(isGitHubActions ? ['__tests__/og-image.test.js'] : []),
     ],
   },
