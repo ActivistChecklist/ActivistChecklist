@@ -637,3 +637,9 @@
     @apply bg-muted p-4 md:p-8 md:pl-12 block rounded-lg mt-4;
   }
 }
+
+/* Hide non-US threat-model notice pre-hydration when the user has already dismissed it.
+   Set by an inline script in app/[locale]/layout.tsx reading localStorage before paint. */
+html[data-non-us-dismissed="true"] [data-non-us-notice] {
+  display: none;
+}

@@ -1,25 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { IoWarning, IoInformationCircle } from 'react-icons/io5';
 import styles from '@/styles/PageNotices.module.css';
-
-const ICONS = {
-  warning: IoWarning,
-  info: IoInformationCircle,
-};
-
-function Notice({ type = 'warning', message }) {
-  const Icon = ICONS[type] ?? ICONS.warning;
-  return (
-    <div className={`${styles.notice} ${styles[type]}`}>
-      <div className={styles.iconCol}>
-        <Icon className={styles.icon} aria-hidden />
-      </div>
-      <div className={styles.textCol}>{message}</div>
-    </div>
-  );
-}
+import Notice from './Notice';
 
 /**
  * PageNotices — page-level status notices rendered above article content.
