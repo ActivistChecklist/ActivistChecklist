@@ -1,0 +1,338 @@
+{
+  "site": {
+    "title": "Digital Security Checklists for Activists",
+    "description": "Plain language steps for digital security. Because protecting yourself helps keep your whole community safer."
+  },
+  "nav": {
+    "home": "Home",
+    "checklists": "Security Checklists",
+    "news": "News",
+    "resources": "Resources",
+    "about": "About",
+    "browseAllChecklists": "Browse all checklists"
+  },
+  "navItems": {
+    "essentials": {
+      "title": "Security essentials",
+      "description": "Core security practices every activist should follow."
+    },
+    "signal": {
+      "title": "Signal security",
+      "description": "Secure your Signal messaging app for safer communications."
+    },
+    "protest": {
+      "title": "Prepare for a protest",
+      "description": "Digital security for anyone attending a protest."
+    },
+    "ice": {
+      "title": "ICE watch digital security",
+      "description": "Digital security for ICE watch and rapid response networks."
+    },
+    "doxxing": {
+      "title": "Doxxing defense",
+      "description": "Protect yourself from doxxing and online harassment."
+    },
+    "travel": {
+      "title": "Travel & flight security",
+      "description": "Digital security practices for activists traveling."
+    },
+    "emergency": {
+      "title": "Emergency planning",
+      "description": "Establish an emergency support network in case you're detained or threatened."
+    },
+    "secondary": {
+      "title": "Secondary phone",
+      "description": "Set up an extra phone for activism and protests."
+    },
+    "links": {
+      "title": "Remove link tracking",
+      "label": "Remove link tracking"
+    },
+    "policeDoorPoster": {
+      "title": "Police at the door poster",
+      "label": "\"Police at the door\" poster"
+    },
+    "flyer": {
+      "title": "Printable flyer",
+      "label": "Printable flyer"
+    },
+    "movies": {
+      "title": "Movies, books, & podcasts",
+      "label": "Movies, books, & podcasts"
+    },
+    "resources": {
+      "title": "Resources",
+      "label": "Resources"
+    },
+    "about": {
+      "title": "About this site",
+      "label": "About"
+    },
+    "changelog": {
+      "title": "Recent site updates",
+      "label": "Recent site updates"
+    },
+    "contact": {
+      "title": "Contact",
+      "label": "Contact"
+    },
+    "privacy": {
+      "title": "Privacy",
+      "label": "Privacy"
+    }
+  },
+  "hero": {
+    "title": "Digital Security Checklists for Activists",
+    "description": "Plain language steps for digital security. Because protecting yourself helps keep your whole community safer.",
+    "primaryCta": "Digital Security Essentials",
+    "secondaryCta": "Host a security party"
+  },
+  "trustPoints": {
+    "experienceTitle": "Built from experience",
+    "experienceDescription": "Our guides draw from real organizing work and direct feedback from activists. While every situation is unique, we aim to share practical insights that can help inform your decisions.",
+    "updatedTitle": "Regularly updated",
+    "updatedDescription": "Our content is regularly reviewed by organizers who understand security concerns. We work to keep information current as risks and technologies evolve."
+  },
+  "misconceptions": {
+    "sectionTitle": "Common Misconceptions",
+    "sectionDescription": "When we start talking about digital security, we often hear these concerns. We think there's more to the story.",
+    "nothingToHideTitle": "\"I have nothing to hide\"",
+    "nothingToHideDescription": "The more engaged you are in any social movement work, the more your data can be used to map networks of activists. The best time to start protecting yourself is <b>before</b> you're as deeply involved.",
+    "alreadyKnowTitle": "\"They already know everything\"",
+    "alreadyKnowDescription": "While data collection is widespread, you can significantly reduce your digital footprint and protect future activities.",
+    "dontCareTitle": "\"They don't care about what I'm doing\"",
+    "dontCareDescription": "Mass surveillance affects everyone. Your data can be used to profile communities, predict protests, or target those you care about. Protecting your communications helps protect all of us."
+  },
+  "homepage": {
+    "checklistsHeading": "Digital Security & Physical Safety Checklists",
+    "browseAll": "See all checklists",
+    "trustHeading": "Simple guides to keep us more safe",
+    "trustDescription": "We built this because digital security shouldn't be overwhelming. We take a harm reduction approach: start where you are and do what you can.",
+    "latestNewsHeading": "Latest Surveillance News",
+    "viewAllNews": "View all news",
+    "recentUpdatesHeading": "Recent Site Updates",
+    "viewAllUpdates": "View all updates",
+    "noRecentChanges": "No recent changes available"
+  },
+  "translationFallback": {
+    "message": "This page is not yet available in your language. You are viewing the English version.",
+    "suggest": "You can use your browser's built-in translation feature to translate this page."
+  },
+  "pageNotices": {
+    "translationUnreviewedTitle": "Automatically translated",
+    "translationUnreviewed": "This page was automatically translated. Only {approvalPercent}% of this page is human-reviewed so far. Other text may have errors. <link>Help us review this translation</link>."
+  },
+  "languageDetection": {
+    "message": "This site is available in {language}.",
+    "switchButton": "Switch to {language}",
+    "dismiss": "Dismiss"
+  },
+  "languageSwitcher": {
+    "ariaLabel": "Switch language"
+  },
+  "meta": {
+    "lastUpdatedOn": "Last updated on",
+    "lastReviewedOn": "Last reviewed on",
+    "takesAbout": "Takes about",
+    "viewLatestGuideAt": "View the latest guide at"
+  },
+  "footer": {
+    "branding": {
+      "title": "Activist Checklist",
+      "description": "Plain language steps for digital security, because protecting yourself helps keep your whole community safer."
+    },
+    "stayUpdated": "Stay Updated",
+    "sections": {
+      "navigation": "Navigation",
+      "topChecklists": "Top Checklists"
+    },
+    "disclaimer": "Heads up: We provide info and resources, not legal advice. Consult an attorney for your specific situation.",
+    "licenseNotice": "Content available under <cc>Creative Commons BY-SA</cc>. See our <sources>sources</sources>. Source code available on <github>GitHub</github>.",
+    "social": {
+      "blueskyAriaLabel": "Follow us on Bluesky",
+      "githubAriaLabel": "View our GitHub repository",
+      "mastodonAriaLabel": "Follow us on Mastodon"
+    }
+  },
+  "newsletter": {
+    "subscribe": "Subscribe",
+    "successLong": "You're subscribed! Want to message a friend on Signal to let them know about this project?",
+    "successShort": "Thanks for subscribing!",
+    "placeholders": {
+      "emailLong": "Enter your email",
+      "emailShort": "Email"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "viewChecklist": "View checklist"
+  },
+  "search": {
+    "placeholder": "Search...",
+    "dialogTitle": "Search site content",
+    "dialogDescription": "Search across all pages and guides on this site",
+    "popularHeading": "Popular searches",
+    "topGuidesHeading": "Top guides",
+    "pressEnter": "Press <kbd>↵</kbd> to search",
+    "searching": "Searching...",
+    "noResults": "No results found for \"{query}\"",
+    "untitled": "Untitled",
+    "suggestion0": "phone security protest",
+    "suggestion1": "signal secure messaging",
+    "suggestion2": "location tracking",
+    "suggestion3": "passcode security",
+    "suggestion4": "high risk protection"
+  },
+  "notFound": {
+    "title": "Oops! This page doesn't exist",
+    "backToHome": "Back to Home",
+    "tryAnother": "Show another random \"missing page\" message",
+    "variations": {
+      "goneUnderground": {
+        "title": "Gone underground",
+        "message": "This page has disappeared! Maybe it's organizing something..."
+      },
+      "nothingToSee": {
+        "title": "Nothing to see here",
+        "message": "This page is practicing good OPSEC and staying off the grid."
+      },
+      "solidarity": {
+        "title": "Solidarity forever",
+        "message": "The page you're looking for is out on the picket line."
+      },
+      "securityCulture": {
+        "title": "Practicing good security culture",
+        "message": "This page is using end-to-end encryption... maybe a bit too well."
+      },
+      "whoseStreets": {
+        "title": "Whose streets?",
+        "message": "Our streets! But this particular URL leads nowhere..."
+      },
+      "identity": {
+        "title": "Identity protected",
+        "message": "This page is exercising its right to remain anonymous."
+      },
+      "directAction": {
+        "title": "Direct action",
+        "message": "This page is out disrupting business as usual."
+      },
+      "firedUp": {
+        "title": "Fired up",
+        "message": "This page is busy lighting the spark of revolution."
+      },
+      "mutualAid": {
+        "title": "Mutual aid station",
+        "message": "This page has relocated to help distribute resources to the community."
+      },
+      "beWater": {
+        "title": "Be water",
+        "message": "Like water, this page flows where it's needed most."
+      }
+    }
+  },
+  "riskLevel": {
+    "everyoneLabel": "everyone",
+    "mediumLabel": "medium-threat",
+    "highLabel": "high-threat",
+    "everyoneDefault": "This section is for anyone doing activism or advocacy work.",
+    "mediumDefault": "This section is for you if you are in a leadership role or you are doing activism that is more likely be targetted by the state or your opposition.",
+    "highDefault": "This section is for you are in a high-profile role or your activism involves high-risk work that could result in serious consequences or retaliation.",
+    "forYouIf": "This section is for you if:",
+    "forYou": "This section is for:"
+  },
+  "checklistItem": {
+    "informationalItem": "Informational item",
+    "copyLink": "Copy link to this item",
+    "linkCopied": "Link copied!",
+    "markAsDone": "Mark as done",
+    "completed": "Completed",
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "importantBadge": "Important"
+  },
+  "copyButton": {
+    "copy": "Copy",
+    "copied": "Copied",
+    "ariaLabel": "Copy to clipboard"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "intro": "Your feedback helps make this resource more useful and secure for everyone. We welcome suggestions for:",
+    "suggestion1": "Correcting any inaccuracies or outdated information",
+    "suggestion2": "Making our guides clearer and easier to understand",
+    "suggestion3": "Improving security recommendations",
+    "suggestion4": "Suggesting new topics we should cover",
+    "sendMessage": "Send us a message",
+    "recommended": "(recommended)",
+    "successMessage": "Message sent successfully! We'll get back to you soon.",
+    "otherWays": "Other ways to reach us",
+    "githubTitle": "Public Feedback (GitHub)",
+    "githubDescription": "If you're okay with sharing publicly, you can submit feedback, questions, and feature requests through our GitHub repository.",
+    "githubLink": "Visit GitHub Repository →",
+    "emailTitle": "Encrypted Email",
+    "emailDescription": "Using Proton Mail? Your messages will be automatically encrypted. For other providers, you can use our PGP key. Or you can just email this address unencrypted.",
+    "pgpLink": "View PGP Key →"
+  },
+  "contactForm": {
+    "messageLabel": "Your Message",
+    "messagePlaceholder": "Enter your message...",
+    "charactersRemaining": "{count} characters remaining",
+    "responseQuestion": "Would you like a response?",
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "Enter your email address",
+    "emailNote": "Note on email replies: Unless you use Proton Mail, your email provider can read any replies we send to your message.",
+    "signalUsernameLabel": "Signal Username",
+    "signalUsernamePlaceholder": "username.12",
+    "signalUsernameExample": "@snowden.04",
+    "signalUsernameHelp": "Your username is different than your display name. Find your username at Signal > User Icon (top right) > Settings. It will be listed near the top, just underneath your phone number.",
+    "signalPhoneLabel": "Signal Phone Number",
+    "signalPhonePlaceholder": "Enter your Signal phone number",
+    "sending": "Sending...",
+    "sendMessage": "Send Message",
+    "privacyLabel": "Privacy:",
+    "privacyText": "Your message is securely encrypted and sent to our Proton Mail account. We don't collect any personal information about you.",
+    "errorMessage": "Failed to send message. Please try again later.",
+    "responseNone": "No response needed (your message remains anonymous)",
+    "responseSignalUsername": "Reply by Signal (username)",
+    "responseSignalPhone": "Reply by Signal (phone number)",
+    "responseEmail": "Reply by Email",
+    "mostSecure": "Most Secure"
+  },
+  "feedbackCta": {
+    "heading": "Have Questions?",
+    "description": "Let us know if you have questions or feedback so we can make these guides as useful as possible.",
+    "inputPlaceholder": "Type your question...",
+    "sendButton": "Send",
+    "dialogTitle": "Send us a message",
+    "successMessage": "Thanks for your feedback! We'll review it and use it to improve the guides. If you're finding the site valuable, please help spread the word!"
+  },
+  "relatedGuides": {
+    "headingBlock": "Keep learning with these related guides",
+    "headingFooter": "If you found this helpful, also check out these guides"
+  },
+  "checklists": {
+    "title": "Checklists",
+    "featured": "Featured Checklists",
+    "more": "More Checklists",
+    "documentTitle": "Checklists | Activist Checklist"
+  },
+  "news": {
+    "title": "Surveillance News",
+    "description": "Latest news about state surveillance and threats facing social movements.",
+    "tipInvitation": "Have news you think should be included?",
+    "tipLink": "Send us a tip",
+    "tipSuffix": "and help keep our community informed.",
+    "noItems": "No news items found.",
+    "paywallBypassNotice": "This link bypasses the paywall.",
+    "seeOriginal": "See original"
+  },
+  "changelog": {
+    "title": "Recent site updates",
+    "description": "A history of changes to checklists, pages, and resources on the site.",
+    "last30Days": "Last 30 days",
+    "previousChanges": "Previous changes",
+    "noEntries": "No changelog entries found.",
+    "majorUpdate": "Major update"
+  }
+}
