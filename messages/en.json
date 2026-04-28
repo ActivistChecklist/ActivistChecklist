@@ -120,7 +120,9 @@
   },
   "pageNotices": {
     "translationUnreviewedTitle": "Automatically translated",
-    "translationUnreviewed": "This page was automatically translated. Only {approvalPercent}% of this page is human-reviewed so far. Other text may have errors. <link>Help us review this translation</link>."
+    "translationUnreviewed": "This page was automatically translated. Only {approvalPercent}% of this page is human-reviewed so far. Other text may have errors. <link>Help us review this translation</link>.",
+    "nonUsThreatModel": "This site's guidance is written for a US-based threat model. Laws in your country may differ, and some activities described here, such as using encrypted messaging apps, may be restricted or illegal elsewhere. Check your local laws before following this advice.",
+    "dismiss": "Dismiss"
   },
   "languageDetection": {
     "message": "This site is available in {language}.",
