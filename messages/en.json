@@ -152,6 +152,10 @@
       "blueskyAriaLabel": "Follow us on Bluesky",
       "githubAriaLabel": "View our GitHub repository",
       "mastodonAriaLabel": "Follow us on Mastodon"
+    },
+    "onion": {
+      "label": "Tor",
+      "ariaLabel": "Visit our Tor onion service"
     }
   },
   "newsletter": {
