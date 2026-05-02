@@ -494,17 +494,32 @@ if ($logRaw === false) {
   exit('Configuration error');
 }
 
-if ($logFile !== null) {
-  $line = sprintf(
-    "[%s] exit=%d delivery=%s\n--- stdout ---\n%s\n--- stderr ---\n%s\n",
-    gmdate('c'),
-    $code,
-    $_SERVER['HTTP_X_GITHUB_DELIVERY'] ?? '',
-    is_string($stdout) ? $stdout : '',
-    is_string($stderr) ? $stderr : ''
-  );
-  if (file_put_contents($logFile, $line, FILE_APPEND | LOCK_EX) === false) {
-    error_log('deploy-webhook: could not write log file: ' . $logFile);
+$line = sprintf(
+  "[%s] exit=%d delivery=%s\n--- stdout ---\n%s\n--- stderr ---\n%s\n",
+  gmdate('c'),
+  $code,
+  $_SERVER['HTTP_X_GITHUB_DELIVERY'] ?? '',
+  is_string($stdout) ? $stdout : '',
+  is_string($stderr) ? $stderr : ''
+);
+
+// Try the configured log path first, then a known-writable repo-root fallback so we
+// never silently lose the deploy output. If user explicitly set log_file => false
+// ($logFile === null), respect that and skip logging entirely.
+$logFallback = $repoRoot . DIRECTORY_SEPARATOR . '.deploy-webhook.log';
+$logged = false;
+$loggingDisabled = ($logFile === null);
+if (!$loggingDisabled) {
+  if (@file_put_contents($logFile, $line, FILE_APPEND | LOCK_EX) === false) {
+    error_log('deploy-webhook: could not write log_file (configured); falling back');
+    if ($logFile !== $logFallback
+        && @file_put_contents($logFallback, $line, FILE_APPEND | LOCK_EX) !== false) {
+      $logged = true;
+    } else {
+      error_log('deploy-webhook: could not write fallback log at repo root either');
+    }
+  } else {
+    $logged = true;
   }
 }
 
@@ -514,28 +529,15 @@ if ($code !== 0) {
   header('Content-Type: text/plain; charset=UTF-8');
   $delivery = $_SERVER['HTTP_X_GITHUB_DELIVERY'] ?? '';
   $deliveryLine = is_string($delivery) && $delivery !== '' ? $delivery : '(unknown)';
-
-  // Surface the script's actual output to the caller (GitHub Actions log) so failures
-  // are diagnosable without server access. Endpoint requires HMAC; only authorized
-  // callers see this. Tail to keep the response small.
-  $tailBytes = 8000;
-  $stderrTail = is_string($stderr) ? (string) substr($stderr, -$tailBytes) : '';
-  $stdoutTail = is_string($stdout) ? (string) substr($stdout, -$tailBytes) : '';
-  $stderrTail = $stderrTail === '' ? '(empty)' : $stderrTail;
-  $stdoutTail = $stdoutTail === '' ? '(empty)' : $stdoutTail;
-  $logFileLine = $logFile !== null ? $logFile : '(disabled)';
+  $logStatus = $loggingDisabled
+    ? 'disabled'
+    : ($logged ? 'written' : 'WRITE FAILED - check PHP error log');
 
   $body = <<<TXT
 Deploy failed (exit code {$code}).
 
 GitHub delivery: {$deliveryLine}
-Full log on server: {$logFileLine}
-
---- script stderr (last {$tailBytes} bytes) ---
-{$stderrTail}
-
---- script stdout (last {$tailBytes} bytes) ---
-{$stdoutTail}
+Server log: {$logStatus}
 TXT;
   exit($body);
 }
