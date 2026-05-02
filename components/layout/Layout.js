@@ -14,7 +14,6 @@ import SkipLink from "./SkipLink";
 import PageCounter from "./PageCounter";
 import AnnouncementBar from "./AnnouncementBar";
 import LanguageDetectionBanner from '@/components/LanguageDetectionBanner';
-import Script from 'next/script';
 import { extractHeaders } from "@/components/layout/TableOfContentsSidebar";
 import { cn } from "@/lib/utils";
 
