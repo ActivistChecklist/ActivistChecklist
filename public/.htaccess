@@ -37,4 +37,8 @@ ErrorDocument 404 /404/index.html
   Header set Referrer-Policy "strict-origin-when-cross-origin"
   Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
   Header set X-XSS-Protection "0"
+
+  # Advertise the Tor onion mirror to Tor Browser. OnionSpray serves the onion
+  # from a separate host, so this header is only sent from the clearnet origin.
+  Header set Onion-Location "http://actchkqornmbfjlsiepfm57lqlqsbpflih6kzomq73gfsz4cesuhujad.onion%{REQUEST_URI}e"
 </IfModule>
