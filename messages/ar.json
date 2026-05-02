@@ -1,338 +1,342 @@
 {
   "site": {
-    "title": "Digital Security Checklists for Activists",
-    "description": "Plain language steps for digital security. Because protecting yourself helps keep your whole community safer."
+    "title": "قوائم تحقق الأمن الرقمي للناشطين",
+    "description": "خطوات بلغة بسيطة للأمن الرقمي. لأن حمايتك لنفسك تساعد في الحفاظ على أمان مجتمعك بأكمله."
   },
   "nav": {
-    "home": "Home",
-    "checklists": "Security Checklists",
-    "news": "News",
-    "resources": "Resources",
-    "about": "About",
-    "browseAllChecklists": "Browse all checklists"
+    "home": "الرئيسية",
+    "checklists": "قوائم التحقق الأمنية",
+    "news": "الأخبار",
+    "resources": "الموارد",
+    "about": "حول",
+    "browseAllChecklists": "تصفح جميع قوائم التحقق"
   },
   "navItems": {
     "essentials": {
-      "title": "Security essentials",
-      "description": "Core security practices every activist should follow."
+      "title": "أساسيات الأمن",
+      "description": "ممارسات أمنية أساسية يجب على كل ناشط اتباعها."
     },
     "signal": {
-      "title": "Signal security",
-      "description": "Secure your Signal messaging app for safer communications."
+      "title": "أمان Signal",
+      "description": "أمّن تطبيق المراسلة Signal لاتصالات أكثر أمانًا."
     },
     "protest": {
-      "title": "Prepare for a protest",
-      "description": "Digital security for anyone attending a protest."
+      "title": "الاستعداد للاحتجاج",
+      "description": "الأمن الرقمي لكل من يحضر احتجاجًا."
     },
     "ice": {
-      "title": "ICE watch digital security",
-      "description": "Digital security for ICE watch and rapid response networks."
+      "title": "الأمن الرقمي لمراقبة ICE",
+      "description": "الأمن الرقمي لشبكات مراقبة ICE والاستجابة السريعة."
     },
     "doxxing": {
-      "title": "Doxxing defense",
-      "description": "Protect yourself from doxxing and online harassment."
+      "title": "الدفاع ضد الدوكسينغ",
+      "description": "احمِ نفسك من الدوكسينغ والمضايقة الإلكترونية."
     },
     "travel": {
-      "title": "Travel & flight security",
-      "description": "Digital security practices for activists traveling."
+      "title": "أمن السفر والرحلات الجوية",
+      "description": "ممارسات الأمن الرقمي للناشطين المسافرين."
     },
     "emergency": {
-      "title": "Emergency planning",
-      "description": "Establish an emergency support network in case you're detained or threatened."
+      "title": "التخطيط للطوارئ",
+      "description": "أنشئ شبكة دعم طارئة في حال اعتقالك أو تعرضك للتهديد."
     },
     "secondary": {
-      "title": "Secondary phone",
-      "description": "Set up an extra phone for activism and protests."
+      "title": "الهاتف الثانوي",
+      "description": "أعدّ هاتفًا إضافيًا للنشاط الاحتجاجي والمظاهرات."
     },
     "links": {
-      "title": "Remove link tracking",
-      "label": "Remove link tracking"
+      "title": "إزالة تتبع الروابط",
+      "label": "إزالة تتبع الروابط"
     },
     "policeDoorPoster": {
-      "title": "Police at the door poster",
-      "label": "\"Police at the door\" poster"
+      "title": "ملصق \"الشرطة على الباب\"",
+      "label": "ملصق \"الشرطة على الباب\""
     },
     "flyer": {
-      "title": "Printable flyer",
-      "label": "Printable flyer"
+      "title": "نشرة قابلة للطباعة",
+      "label": "نشرة قابلة للطباعة"
     },
     "movies": {
-      "title": "Movies, books, & podcasts",
-      "label": "Movies, books, & podcasts"
+      "title": "أفلام وكتب وبودكاست",
+      "label": "أفلام وكتب وبودكاست"
     },
     "resources": {
-      "title": "Resources",
-      "label": "Resources"
+      "title": "الموارد",
+      "label": "الموارد"
     },
     "about": {
-      "title": "About this site",
-      "label": "About"
+      "title": "حول هذا الموقع",
+      "label": "حول"
     },
     "changelog": {
-      "title": "Recent site updates",
-      "label": "Recent site updates"
+      "title": "آخر تحديثات الموقع",
+      "label": "آخر تحديثات الموقع"
     },
     "contact": {
-      "title": "Contact",
-      "label": "Contact"
+      "title": "التواصل",
+      "label": "التواصل"
     },
     "privacy": {
-      "title": "Privacy",
-      "label": "Privacy"
+      "title": "الخصوصية",
+      "label": "الخصوصية"
     }
   },
   "hero": {
-    "title": "Digital Security Checklists for Activists",
-    "description": "Plain language steps for digital security. Because protecting yourself helps keep your whole community safer.",
-    "primaryCta": "Digital Security Essentials",
-    "secondaryCta": "Host a security party"
+    "title": "قوائم تحقق الأمن الرقمي للناشطين",
+    "description": "خطوات بلغة بسيطة للأمن الرقمي. لأن حمايتك لنفسك تساعد في الحفاظ على أمان مجتمعك بأكمله.",
+    "primaryCta": "أساسيات الأمن الرقمي",
+    "secondaryCta": "نظّم حفلة أمن"
   },
   "trustPoints": {
-    "experienceTitle": "Built from experience",
-    "experienceDescription": "Our guides draw from real organizing work and direct feedback from activists. While every situation is unique, we aim to share practical insights that can help inform your decisions.",
-    "updatedTitle": "Regularly updated",
-    "updatedDescription": "Our content is regularly reviewed by organizers who understand security concerns. We work to keep information current as risks and technologies evolve."
+    "experienceTitle": "مبنيّ من التجربة الحقيقية",
+    "experienceDescription": "تستند أدلتنا إلى العمل التنظيمي الفعلي وردود الفعل المباشرة من الناشطين. وبما أن كل موقف فريد من نوعه، نسعى إلى مشاركة رؤى عملية تساعدك في اتخاذ قراراتك.",
+    "updatedTitle": "يُحدَّث بانتظام",
+    "updatedDescription": "يراجع المنظمون الذين يفهمون مخاوف الأمن محتوانا بانتظام. نعمل على إبقاء المعلومات محدّثة مع تطور المخاطر والتقنيات."
   },
   "misconceptions": {
-    "sectionTitle": "Common Misconceptions",
-    "sectionDescription": "When we start talking about digital security, we often hear these concerns. We think there's more to the story.",
-    "nothingToHideTitle": "\"I have nothing to hide\"",
-    "nothingToHideDescription": "The more engaged you are in any social movement work, the more your data can be used to map networks of activists. The best time to start protecting yourself is <b>before</b> you're as deeply involved.",
-    "alreadyKnowTitle": "\"They already know everything\"",
-    "alreadyKnowDescription": "While data collection is widespread, you can significantly reduce your digital footprint and protect future activities.",
-    "dontCareTitle": "\"They don't care about what I'm doing\"",
-    "dontCareDescription": "Mass surveillance affects everyone. Your data can be used to profile communities, predict protests, or target those you care about. Protecting your communications helps protect all of us."
+    "sectionTitle": "المفاهيم الخاطئة الشائعة",
+    "sectionDescription": "حين نبدأ الحديث عن الأمن الرقمي، كثيرًا ما نسمع هذه المخاوف. نعتقد أن الصورة أكثر تعقيدًا مما تبدو.",
+    "nothingToHideTitle": "\"ليس لديّ ما أخفيه\"",
+    "nothingToHideDescription": "كلما كنت أكثر انخراطًا في أي عمل حركي اجتماعي، كلما أمكن استخدام بياناتك لرسم خرائط شبكات الناشطين. أفضل وقت للبدء في حماية نفسك هو <b>قبل</b> أن تتعمق في الأمر.",
+    "alreadyKnowTitle": "\"يعرفون كل شيء بالفعل\"",
+    "alreadyKnowDescription": "رغم أن جمع البيانات منتشر على نطاق واسع، يمكنك تقليص بصمتك الرقمية بشكل كبير وحماية أنشطتك المستقبلية.",
+    "dontCareTitle": "\"لا يهتمون بما أفعله\"",
+    "dontCareDescription": "المراقبة الجماعية تطال الجميع. يمكن استخدام بياناتك لتصنيف المجتمعات، أو التنبؤ بالاحتجاجات، أو استهداف من تهتم بهم. حماية اتصالاتك تساعد في حماية جميعنا."
   },
   "homepage": {
-    "checklistsHeading": "Digital Security & Physical Safety Checklists",
-    "browseAll": "See all checklists",
-    "trustHeading": "Simple guides to keep us more safe",
-    "trustDescription": "We built this because digital security shouldn't be overwhelming. We take a harm reduction approach: start where you are and do what you can.",
-    "latestNewsHeading": "Latest Surveillance News",
-    "viewAllNews": "View all news",
-    "recentUpdatesHeading": "Recent Site Updates",
-    "viewAllUpdates": "View all updates",
-    "noRecentChanges": "No recent changes available"
+    "checklistsHeading": "قوائم تحقق الأمن الرقمي والسلامة الجسدية",
+    "browseAll": "عرض جميع قوائم التحقق",
+    "trustHeading": "أدلة بسيطة لنبقى أكثر أمانًا",
+    "trustDescription": "بنينا هذا لأن الأمن الرقمي لا ينبغي أن يكون أمرًا مرهقًا. نتبع نهج الحد من الضرر: ابدأ من حيث أنت وافعل ما تستطيع.",
+    "latestNewsHeading": "أحدث أخبار المراقبة",
+    "viewAllNews": "عرض جميع الأخبار",
+    "recentUpdatesHeading": "آخر تحديثات الموقع",
+    "viewAllUpdates": "عرض جميع التحديثات",
+    "noRecentChanges": "لا توجد تغييرات حديثة متاحة"
   },
   "translationFallback": {
-    "message": "This page is not yet available in your language. You are viewing the English version.",
-    "suggest": "You can use your browser's built-in translation feature to translate this page."
+    "message": "هذه الصفحة غير متاحة بعد بلغتك. أنت تشاهد النسخة الإنجليزية.",
+    "suggest": "يمكنك استخدام ميزة الترجمة المدمجة في متصفحك لترجمة هذه الصفحة."
   },
   "pageNotices": {
-    "translationUnreviewedTitle": "Automatically translated",
-    "translationUnreviewed": "This page was automatically translated. Only {approvalPercent}% of this page is human-reviewed so far. Other text may have errors. <link>Help us review this translation</link>."
+    "translationUnreviewedTitle": "تُرجم تلقائيًا",
+    "translationUnreviewed": "تُرجمت هذه الصفحة تلقائيًا. {approvalPercent}% فقط من هذه الصفحة تمت مراجعتها بشريًا حتى الآن. قد تحتوي نصوص أخرى على أخطاء. <link>ساعدنا في مراجعة هذه الترجمة</link>."
   },
   "languageDetection": {
-    "message": "This site is available in {language}.",
-    "switchButton": "Switch to {language}",
-    "dismiss": "Dismiss"
+    "message": "هذا الموقع متاح باللغة {language}.",
+    "switchButton": "التبديل إلى {language}",
+    "dismiss": "تجاهل"
   },
   "languageSwitcher": {
-    "ariaLabel": "Switch language"
+    "ariaLabel": "تبديل اللغة"
   },
   "meta": {
-    "lastUpdatedOn": "Last updated on",
-    "lastReviewedOn": "Last reviewed on",
-    "takesAbout": "Takes about",
-    "viewLatestGuideAt": "View the latest guide at"
+    "lastUpdatedOn": "آخر تحديث في",
+    "lastReviewedOn": "آخر مراجعة في",
+    "takesAbout": "يستغرق حوالي",
+    "viewLatestGuideAt": "اعرض أحدث دليل على"
   },
   "footer": {
     "branding": {
       "title": "Activist Checklist",
-      "description": "Plain language steps for digital security, because protecting yourself helps keep your whole community safer."
+      "description": "خطوات بلغة بسيطة للأمن الرقمي، لأن حمايتك لنفسك تساعد في الحفاظ على أمان مجتمعك بأكمله."
     },
-    "stayUpdated": "Stay Updated",
+    "stayUpdated": "ابقَ على اطلاع",
     "sections": {
-      "navigation": "Navigation",
-      "topChecklists": "Top Checklists"
+      "navigation": "التنقل",
+      "topChecklists": "أبرز قوائم التحقق"
     },
-    "disclaimer": "Heads up: We provide info and resources, not legal advice. Consult an attorney for your specific situation.",
-    "licenseNotice": "Content available under <cc>Creative Commons BY-SA</cc>. See our <sources>sources</sources>. Source code available on <github>GitHub</github>.",
+    "disclaimer": "تنبيه: نقدم معلومات وموارد، وليس استشارة قانونية. استشر محاميًا لحالتك الخاصة.",
+    "licenseNotice": "المحتوى متاح بموجب <cc>Creative Commons BY-SA</cc>. اطلع على <sources>مصادرنا</sources>. الكود المصدري متاح على <github>GitHub</github>.",
     "social": {
-      "blueskyAriaLabel": "Follow us on Bluesky",
-      "githubAriaLabel": "View our GitHub repository",
-      "mastodonAriaLabel": "Follow us on Mastodon"
+      "blueskyAriaLabel": "تابعنا على Bluesky",
+      "githubAriaLabel": "اعرض مستودعنا على GitHub",
+      "mastodonAriaLabel": "تابعنا على Mastodon"
+    },
+    "onion": {
+      "label": "Tor",
+      "ariaLabel": "زيارة خدمة Tor الخفية لدينا"
     }
   },
   "newsletter": {
-    "subscribe": "Subscribe",
-    "successLong": "You're subscribed! Want to message a friend on Signal to let them know about this project?",
-    "successShort": "Thanks for subscribing!",
+    "subscribe": "اشترك",
+    "successLong": "أنت مشترك الآن! هل تريد إرسال رسالة لصديق على Signal لإعلامه بهذا المشروع؟",
+    "successShort": "شكرًا على اشتراكك!",
     "placeholders": {
-      "emailLong": "Enter your email",
-      "emailShort": "Email"
+      "emailLong": "أدخل بريدك الإلكتروني",
+      "emailShort": "البريد الإلكتروني"
     }
   },
   "common": {
-    "loading": "Loading...",
-    "error": "Something went wrong",
-    "viewChecklist": "View checklist"
+    "loading": "جارٍ التحميل...",
+    "error": "حدث خطأ ما",
+    "viewChecklist": "عرض قائمة التحقق"
   },
   "search": {
-    "placeholder": "Search...",
-    "dialogTitle": "Search site content",
-    "dialogDescription": "Search across all pages and guides on this site",
-    "popularHeading": "Popular searches",
-    "topGuidesHeading": "Top guides",
-    "pressEnter": "Press <kbd>↵</kbd> to search",
-    "searching": "Searching...",
-    "noResults": "No results found for \"{query}\"",
-    "untitled": "Untitled",
-    "suggestion0": "phone security protest",
-    "suggestion1": "signal secure messaging",
-    "suggestion2": "location tracking",
-    "suggestion3": "passcode security",
-    "suggestion4": "high risk protection"
+    "placeholder": "بحث...",
+    "dialogTitle": "البحث في محتوى الموقع",
+    "dialogDescription": "ابحث في جميع الصفحات والأدلة على هذا الموقع",
+    "popularHeading": "عمليات البحث الشائعة",
+    "topGuidesHeading": "أبرز الأدلة",
+    "pressEnter": "اضغط <kbd>↵</kbd> للبحث",
+    "searching": "جارٍ البحث...",
+    "noResults": "لم يتم العثور على نتائج لـ \"{query}\"",
+    "untitled": "بدون عنوان",
+    "suggestion0": "أمن الهاتف في الاحتجاجات",
+    "suggestion1": "مراسلة آمنة عبر signal",
+    "suggestion2": "تتبع الموقع",
+    "suggestion3": "أمان رمز المرور",
+    "suggestion4": "حماية عالية المخاطر"
   },
   "notFound": {
-    "title": "Oops! This page doesn't exist",
-    "backToHome": "Back to Home",
-    "tryAnother": "Show another random \"missing page\" message",
+    "title": "عذرًا! هذه الصفحة غير موجودة",
+    "backToHome": "العودة إلى الرئيسية",
+    "tryAnother": "عرض رسالة عشوائية أخرى لـ\"صفحة مفقودة\"",
     "variations": {
       "goneUnderground": {
-        "title": "Gone underground",
-        "message": "This page has disappeared! Maybe it's organizing something..."
+        "title": "اختفت تحت الأرض",
+        "message": "اختفت هذه الصفحة! ربما تنظّم شيئًا ما..."
       },
       "nothingToSee": {
-        "title": "Nothing to see here",
-        "message": "This page is practicing good OPSEC and staying off the grid."
+        "title": "لا شيء يستحق الرؤية هنا",
+        "message": "هذه الصفحة تمارس OPSEC جيدًا وتبتعد عن الأنظار."
       },
       "solidarity": {
-        "title": "Solidarity forever",
-        "message": "The page you're looking for is out on the picket line."
+        "title": "التضامن إلى الأبد",
+        "message": "الصفحة التي تبحث عنها خرجت في خط النضال."
       },
       "securityCulture": {
-        "title": "Practicing good security culture",
-        "message": "This page is using end-to-end encryption... maybe a bit too well."
+        "title": "تمارس ثقافة أمنية جيدة",
+        "message": "هذه الصفحة تستخدم التشفير من طرف إلى طرف... ربما بشكل مبالغ فيه."
       },
       "whoseStreets": {
-        "title": "Whose streets?",
-        "message": "Our streets! But this particular URL leads nowhere..."
+        "title": "لمن هذه الشوارع؟",
+        "message": "شوارعنا! لكن هذا الرابط لا يؤدي إلى أي مكان..."
       },
       "identity": {
-        "title": "Identity protected",
-        "message": "This page is exercising its right to remain anonymous."
+        "title": "الهوية محمية",
+        "message": "هذه الصفحة تمارس حقها في البقاء مجهولة الهوية."
       },
       "directAction": {
-        "title": "Direct action",
-        "message": "This page is out disrupting business as usual."
+        "title": "العمل المباشر",
+        "message": "هذه الصفحة مشغولة بتعطيل الأعمال كالمعتاد."
       },
       "firedUp": {
-        "title": "Fired up",
-        "message": "This page is busy lighting the spark of revolution."
+        "title": "متحمسة ومشتعلة",
+        "message": "هذه الصفحة مشغولة بإشعال شرارة الثورة."
       },
       "mutualAid": {
-        "title": "Mutual aid station",
-        "message": "This page has relocated to help distribute resources to the community."
+        "title": "محطة التضامن المتبادل",
+        "message": "انتقلت هذه الصفحة لمساعدة توزيع الموارد على المجتمع."
       },
       "beWater": {
-        "title": "Be water",
-        "message": "Like water, this page flows where it's needed most."
+        "title": "كن كالماء",
+        "message": "كالماء، تتدفق هذه الصفحة إلى حيث تُحتاج أكثر."
       }
     }
   },
   "riskLevel": {
     "everyoneLabel": "everyone",
-    "mediumLabel": "medium-threat",
-    "highLabel": "high-threat",
-    "everyoneDefault": "This section is for anyone doing activism or advocacy work.",
-    "mediumDefault": "This section is for you if you are in a leadership role or you are doing activism that is more likely be targetted by the state or your opposition.",
-    "highDefault": "This section is for you are in a high-profile role or your activism involves high-risk work that could result in serious consequences or retaliation.",
-    "forYouIf": "This section is for you if:",
-    "forYou": "This section is for:"
+    "mediumLabel": "تهديد متوسط",
+    "highLabel": "تهديد عالٍ",
+    "everyoneDefault": "هذا القسم مخصص لكل من يمارس نشاطًا أو عمل مناصرة.",
+    "mediumDefault": "هذا القسم مخصص لك إذا كنت في دور قيادي أو تمارس نشاطًا أكثر عرضةً لاستهداف الدولة أو المعارضة.",
+    "highDefault": "هذا القسم مخصص لك إذا كنت في دور بارز أو يتضمن نشاطك عملًا عالي الخطورة قد يؤدي إلى عواقب خطيرة أو انتقام.",
+    "forYouIf": "هذا القسم مخصص لك إذا:",
+    "forYou": "هذا القسم مخصص لـ:"
   },
   "checklistItem": {
-    "informationalItem": "Informational item",
-    "copyLink": "Copy link to this item",
-    "linkCopied": "Link copied!",
-    "markAsDone": "Mark as done",
-    "completed": "Completed",
-    "expand": "Expand",
-    "collapse": "Collapse",
-    "importantBadge": "Important"
+    "informationalItem": "عنصر معلوماتي",
+    "copyLink": "نسخ رابط هذا العنصر",
+    "linkCopied": "تم نسخ الرابط!",
+    "markAsDone": "وضع علامة \"تم\"",
+    "completed": "مكتمل",
+    "expand": "توسيع",
+    "collapse": "طي",
+    "importantBadge": "مهم"
   },
   "copyButton": {
-    "copy": "Copy",
-    "copied": "Copied",
-    "ariaLabel": "Copy to clipboard"
+    "copy": "نسخ",
+    "copied": "تم النسخ",
+    "ariaLabel": "نسخ إلى الحافظة"
   },
   "contact": {
-    "title": "Contact Us",
-    "intro": "Your feedback helps make this resource more useful and secure for everyone. We welcome suggestions for:",
-    "suggestion1": "Correcting any inaccuracies or outdated information",
-    "suggestion2": "Making our guides clearer and easier to understand",
-    "suggestion3": "Improving security recommendations",
-    "suggestion4": "Suggesting new topics we should cover",
-    "sendMessage": "Send us a message",
-    "recommended": "(recommended)",
-    "successMessage": "Message sent successfully! We'll get back to you soon.",
-    "otherWays": "Other ways to reach us",
-    "githubTitle": "Public Feedback (GitHub)",
-    "githubDescription": "If you're okay with sharing publicly, you can submit feedback, questions, and feature requests through our GitHub repository.",
-    "githubLink": "Visit GitHub Repository →",
-    "emailTitle": "Encrypted Email",
-    "emailDescription": "Using Proton Mail? Your messages will be automatically encrypted. For other providers, you can use our PGP key. Or you can just email this address unencrypted.",
-    "pgpLink": "View PGP Key →"
+    "title": "تواصل معنا",
+    "intro": "ملاحظاتك تساعد في جعل هذا المورد أكثر فائدة وأمانًا للجميع. نرحب بمقترحاتك بخصوص:",
+    "suggestion1": "تصحيح أي معلومات غير دقيقة أو قديمة",
+    "suggestion2": "جعل أدلتنا أوضح وأسهل في الفهم",
+    "suggestion3": "تحسين توصيات الأمن",
+    "suggestion4": "اقتراح موضوعات جديدة ينبغي تناولها",
+    "sendMessage": "أرسل لنا رسالة",
+    "recommended": "(موصى به)",
+    "successMessage": "تم إرسال الرسالة بنجاح! سنعود إليك قريبًا.",
+    "otherWays": "طرق أخرى للتواصل معنا",
+    "githubTitle": "ملاحظات عامة (GitHub)",
+    "githubDescription": "إذا كنت مرتاحًا للمشاركة العلنية، يمكنك تقديم ملاحظاتك وأسئلتك وطلبات الميزات عبر مستودعنا على GitHub.",
+    "githubLink": "زيارة مستودع GitHub ←",
+    "emailTitle": "البريد الإلكتروني المشفّر",
+    "emailDescription": "هل تستخدم Proton Mail؟ ستكون رسائلك مشفرة تلقائيًا. بالنسبة لمزودي الخدمة الآخرين، يمكنك استخدام مفتاح PGP الخاص بنا. أو يمكنك فقط إرسال بريد إلكتروني إلى هذا العنوان بدون تشفير.",
+    "pgpLink": "عرض مفتاح PGP ←"
   },
   "contactForm": {
-    "messageLabel": "Your Message",
-    "messagePlaceholder": "Enter your message...",
-    "charactersRemaining": "{count} characters remaining",
-    "responseQuestion": "Would you like a response?",
-    "emailLabel": "Email Address",
-    "emailPlaceholder": "Enter your email address",
-    "emailNote": "Note on email replies: Unless you use Proton Mail, your email provider can read any replies we send to your message.",
-    "signalUsernameLabel": "Signal Username",
+    "messageLabel": "رسالتك",
+    "messagePlaceholder": "أدخل رسالتك...",
+    "charactersRemaining": "تبقّى {count} حرف",
+    "responseQuestion": "هل تريد ردًا؟",
+    "emailLabel": "عنوان البريد الإلكتروني",
+    "emailPlaceholder": "أدخل عنوان بريدك الإلكتروني",
+    "emailNote": "ملاحظة حول ردود البريد الإلكتروني: ما لم تستخدم Proton Mail، يستطيع مزود بريدك الإلكتروني قراءة أي ردود نرسلها على رسالتك.",
+    "signalUsernameLabel": "اسم مستخدم Signal",
     "signalUsernamePlaceholder": "username.12",
     "signalUsernameExample": "@snowden.04",
-    "signalUsernameHelp": "Your username is different than your display name. Find your username at Signal > User Icon (top right) > Settings. It will be listed near the top, just underneath your phone number.",
-    "signalPhoneLabel": "Signal Phone Number",
-    "signalPhonePlaceholder": "Enter your Signal phone number",
-    "sending": "Sending...",
-    "sendMessage": "Send Message",
-    "privacyLabel": "Privacy:",
-    "privacyText": "Your message is securely encrypted and sent to our Proton Mail account. We don't collect any personal information about you.",
-    "errorMessage": "Failed to send message. Please try again later.",
-    "responseNone": "No response needed (your message remains anonymous)",
-    "responseSignalUsername": "Reply by Signal (username)",
-    "responseSignalPhone": "Reply by Signal (phone number)",
-    "responseEmail": "Reply by Email",
-    "mostSecure": "Most Secure"
+    "signalUsernameHelp": "اسم المستخدم الخاص بك يختلف عن اسمك المعروض. يمكنك العثور على اسم المستخدم في Signal > أيقونة المستخدم (أعلى اليمين) > الإعدادات. ستجده مدرجًا بالقرب من الأعلى، أسفل رقم هاتفك مباشرة.",
+    "signalPhoneLabel": "رقم هاتف Signal",
+    "signalPhonePlaceholder": "أدخل رقم هاتف Signal الخاص بك",
+    "sending": "جارٍ الإرسال...",
+    "sendMessage": "إرسال الرسالة",
+    "privacyLabel": "الخصوصية:",
+    "privacyText": "رسالتك مشفرة بأمان وترسل إلى حساب Proton Mail الخاص بنا. نحن لا نجمع أي معلومات شخصية عنك.",
+    "errorMessage": "فشل إرسال الرسالة. يرجى المحاولة مرة أخرى لاحقًا.",
+    "responseNone": "لا حاجة للرد (تبقى رسالتك مجهولة الهوية)",
+    "responseSignalUsername": "الرد عبر Signal (اسم المستخدم)",
+    "responseSignalPhone": "الرد عبر Signal (رقم الهاتف)",
+    "responseEmail": "الرد عبر البريد الإلكتروني",
+    "mostSecure": "الأكثر أمانًا"
   },
   "feedbackCta": {
-    "heading": "Have Questions?",
-    "description": "Let us know if you have questions or feedback so we can make these guides as useful as possible.",
-    "inputPlaceholder": "Type your question...",
-    "sendButton": "Send",
-    "dialogTitle": "Send us a message",
-    "successMessage": "Thanks for your feedback! We'll review it and use it to improve the guides. If you're finding the site valuable, please help spread the word!"
+    "heading": "هل لديك أسئلة؟",
+    "description": "أخبرنا إذا كان لديك أسئلة أو ملاحظات حتى نتمكن من جعل هذه الأدلة مفيدة قدر الإمكان.",
+    "inputPlaceholder": "اكتب سؤالك...",
+    "sendButton": "إرسال",
+    "dialogTitle": "أرسل لنا رسالة",
+    "successMessage": "شكرًا على ملاحظاتك! سنراجعها ونستخدمها لتحسين الأدلة. إذا وجدت الموقع مفيدًا، ساعدنا في نشر الكلمة!"
   },
   "relatedGuides": {
-    "headingBlock": "Keep learning with these related guides",
-    "headingFooter": "If you found this helpful, also check out these guides"
+    "headingBlock": "واصل التعلم مع هذه الأدلة ذات الصلة",
+    "headingFooter": "إذا وجدت هذا مفيدًا، اطلع أيضًا على هذه الأدلة"
   },
   "checklists": {
-    "title": "Checklists",
-    "featured": "Featured Checklists",
-    "more": "More Checklists",
-    "documentTitle": "Checklists | Activist Checklist"
+    "title": "قوائم التحقق",
+    "featured": "قوائم التحقق المميزة",
+    "more": "المزيد من قوائم التحقق",
+    "documentTitle": "قوائم التحقق | Activist Checklist"
   },
   "news": {
-    "title": "Surveillance News",
-    "description": "Latest news about state surveillance and threats facing social movements.",
-    "tipInvitation": "Have news you think should be included?",
-    "tipLink": "Send us a tip",
-    "tipSuffix": "and help keep our community informed.",
-    "noItems": "No news items found.",
-    "paywallBypassNotice": "This link bypasses the paywall.",
-    "seeOriginal": "See original"
+    "title": "أخبار المراقبة",
+    "description": "أحدث الأخبار حول مراقبة الدولة والتهديدات التي تواجه الحركات الاجتماعية.",
+    "tipInvitation": "هل لديك خبر تعتقد أنه يستحق التضمين؟",
+    "tipLink": "أرسل لنا معلومة",
+    "tipSuffix": "وساعدنا في إبقاء مجتمعنا على اطلاع.",
+    "noItems": "لم يتم العثور على أخبار.",
+    "paywallBypassNotice": "هذا الرابط يتجاوز الحاجز المدفوع.",
+    "seeOriginal": "عرض النسخة الأصلية"
   },
   "changelog": {
-    "title": "Recent site updates",
-    "description": "A history of changes to checklists, pages, and resources on the site.",
-    "last30Days": "Last 30 days",
-    "previousChanges": "Previous changes",
-    "noEntries": "No changelog entries found.",
-    "majorUpdate": "Major update"
+    "title": "آخر تحديثات الموقع",
+    "description": "سجل بالتغييرات التي أُجريت على قوائم التحقق والصفحات والموارد في الموقع.",
+    "last30Days": "آخر 30 يومًا",
+    "previousChanges": "التغييرات السابقة",
+    "noEntries": "لم يتم العثور على إدخالات في سجل التغييرات.",
+    "majorUpdate": "تحديث رئيسي"
   }
 }
