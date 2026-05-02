@@ -514,14 +514,28 @@ if ($code !== 0) {
   header('Content-Type: text/plain; charset=UTF-8');
   $delivery = $_SERVER['HTTP_X_GITHUB_DELIVERY'] ?? '';
   $deliveryLine = is_string($delivery) && $delivery !== '' ? $delivery : '(unknown)';
+
+  // Surface the script's actual output to the caller (GitHub Actions log) so failures
+  // are diagnosable without server access. Endpoint requires HMAC; only authorized
+  // callers see this. Tail to keep the response small.
+  $tailBytes = 8000;
+  $stderrTail = is_string($stderr) ? (string) substr($stderr, -$tailBytes) : '';
+  $stdoutTail = is_string($stdout) ? (string) substr($stdout, -$tailBytes) : '';
+  $stderrTail = $stderrTail === '' ? '(empty)' : $stderrTail;
+  $stdoutTail = $stdoutTail === '' ? '(empty)' : $stdoutTail;
+  $logFileLine = $logFile !== null ? $logFile : '(disabled)';
+
   $body = <<<TXT
 Deploy failed (exit code {$code}).
 
 GitHub delivery: {$deliveryLine}
+Full log on server: {$logFileLine}
 
-Check the deploy webhook log on the server for full stdout/stderr.
+--- script stderr (last {$tailBytes} bytes) ---
+{$stderrTail}
 
-If the log shows another run holding the lock, wait and re-dispatch the webhook or push again.
+--- script stdout (last {$tailBytes} bytes) ---
+{$stdoutTail}
 TXT;
   exit($body);
 }

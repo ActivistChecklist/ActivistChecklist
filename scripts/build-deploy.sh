@@ -28,9 +28,21 @@ nvm_yarn_err() {
   log "$1"
 }
 
-exec 9>"$LOCK_FILE"
+if ! exec 9>"$LOCK_FILE"; then
+  log "ERROR: cannot open lock file for writing: $LOCK_FILE (whoami=$(whoami))"
+  exit 1
+fi
 if ! flock -n 9; then
-  log "ERROR: Another deploy holds the lock; exiting without deploying."
+  # The lock is kernel-level via flock(2); the file persisting after a run is normal
+  # and does NOT itself block the next run. If we land here, a process is actively
+  # holding the lock — identify it.
+  holder=""
+  if command -v fuser >/dev/null 2>&1; then
+    holder="$(fuser "$LOCK_FILE" 2>&1 || true)"
+  elif command -v lsof >/dev/null 2>&1; then
+    holder="$(lsof "$LOCK_FILE" 2>&1 || true)"
+  fi
+  log "ERROR: Another deploy holds the lock; exiting without deploying. lock=$LOCK_FILE holder=${holder:-unknown}"
   # Non-zero so the webhook returns failure to GitHub (do not report success when no deploy ran).
   exit 1
 fi
