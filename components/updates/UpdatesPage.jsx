@@ -125,9 +125,7 @@ export default function UpdatesPage() {
     return (
       <div className="space-y-6">
         <PageHero />
-        <div className="flex h-12 items-center justify-center text-sm text-muted-foreground">
-          {t('updates.loading')}
-        </div>
+        <LoadingSkeleton label={t('updates.loading')} />
       </div>
     );
   }
@@ -209,6 +207,48 @@ export default function UpdatesPage() {
       ) : null}
 
       <FooterCredit />
+    </div>
+  );
+}
+
+/**
+ * Layout-shaped skeleton shown while the snapshot loads. Mirrors the rendered
+ * shell — 4 platform-card placeholders, a search-input bar, a footer line —
+ * so the page doesn't reflow when data arrives. Pulse + aria-busy for SR users.
+ */
+function LoadingSkeleton({ label }) {
+  return (
+    <div
+      role="status"
+      aria-busy="true"
+      aria-label={label}
+      className="space-y-6 animate-pulse"
+    >
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4" aria-hidden="true">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div
+            key={i}
+            className="flex flex-col items-center gap-2 rounded-lg border-2 border-border bg-muted/40 p-4"
+          >
+            <div className="h-8 w-8 rounded-md bg-muted-foreground/20" />
+            <div className="h-4 w-16 rounded bg-muted-foreground/20" />
+          </div>
+        ))}
+      </div>
+
+      <div
+        className="flex items-center gap-2 rounded-lg border-2 border-input bg-background px-4 py-3 shadow-sm"
+        aria-hidden="true"
+      >
+        <div className="h-5 w-5 rounded bg-muted-foreground/20" />
+        <div className="h-4 flex-1 rounded bg-muted-foreground/20" />
+      </div>
+
+      <div className="flex justify-center pt-4" aria-hidden="true">
+        <div className="h-3 w-48 rounded bg-muted-foreground/15" />
+      </div>
+
+      <span className="sr-only">{label}</span>
     </div>
   );
 }
