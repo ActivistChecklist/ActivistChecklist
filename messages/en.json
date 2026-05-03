@@ -60,6 +60,10 @@
       "title": "Movies, books, & podcasts",
       "label": "Movies, books, & podcasts"
     },
+    "updates": {
+      "title": "Security update checker",
+      "label": "Security update checker"
+    },
     "resources": {
       "title": "Resources",
       "label": "Resources"
