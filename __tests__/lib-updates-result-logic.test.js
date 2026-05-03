@@ -214,6 +214,78 @@ describe('classifyResult — supportedOsRange cross-reference', () => {
   });
 });
 
+describe('classifyResult — eol-soon warning state', () => {
+  function deviceProductLocal(overrides = {}) {
+    return normalizeProduct({
+      id: 'pixel', label: 'Google Pixel', kind: 'device', family: 'google', formFactor: 'phone',
+      endoflifeUrl: 'https://x', releases: [], ...overrides,
+    });
+  }
+  function osProductLocal(overrides = {}) {
+    return normalizeProduct({
+      id: 'macos', label: 'Apple macOS', kind: 'os', family: 'apple', formFactor: 'os',
+      endoflifeUrl: 'https://x', releases: [], ...overrides,
+    });
+  }
+
+  it('device with eolFrom 6 months out → device-eol-soon', () => {
+    const product = deviceProductLocal();
+    const r = normalizeRelease({
+      id: 'pixel-7',
+      label: 'Pixel 7',
+      releaseDate: '2022-10-13',
+      eolFrom: '2026-11-01',
+    });
+    const c = classifyResult({ product, release: r }, { now: NOW });
+    expect(c.variant).toBe('device-eol-soon');
+    expect(c.reason).toBe('eolFrom-soon');
+    expect(c.effectiveEolFrom).toBe('2026-11-01');
+  });
+
+  it('device with eolFrom 2 years out → still device-supported', () => {
+    const product = deviceProductLocal();
+    const r = normalizeRelease({
+      id: 'pixel-9', label: 'Pixel 9', releaseDate: '2024-08-22', eolFrom: '2028-08-01',
+    });
+    expect(classifyResult({ product, release: r }, { now: NOW }).variant).toBe('device-supported');
+  });
+
+  it('os with eolFrom 4 months out → os-eol-soon', () => {
+    const product = osProductLocal();
+    const r = normalizeRelease({ id: '14', label: '14', releaseDate: '2023-09-26', eolFrom: '2026-09-15' });
+    const c = classifyResult({ product, release: r }, { now: NOW });
+    expect(c.variant).toBe('os-eol-soon');
+  });
+
+  it('Mac whose top macOS reaches EOL within 9 months → device-eol-soon', () => {
+    // Build a snapshot so the cross-reference path can find the OS major and read its eolFrom.
+    const snap = normalizeSnapshot({
+      schemaVersion: 1, generatedAt: '2026-05-03T00:00:00Z', source: 'x',
+      products: [
+        {
+          id: 'macbook-pro', label: 'Apple MacBook Pro', kind: 'device', family: 'apple', formFactor: 'laptop',
+          endoflifeUrl: 'https://x', releases: [
+            // 2018 MBP — Apple still ships macOS 15 to it but 15 will EOL soon.
+            { id: '13in-2018', label: 'MacBook Pro 13-inch (2018)', releaseDate: '2018-07-12', supportedOsRange: '15' },
+          ],
+        },
+        {
+          id: 'macos', label: 'Apple macOS', kind: 'os', family: 'apple', formFactor: 'os',
+          endoflifeUrl: 'https://x', releases: [
+            { id: '15', label: 'macOS 15 (Sequoia)', releaseDate: '2024-09-16', latestVersion: '15.7.5', codename: 'Sequoia', eolFrom: '2026-12-01' },
+          ],
+        },
+      ],
+    });
+    const product = snap.products.find((p) => p.id === 'macbook-pro');
+    const r = product.releases[0];
+    const c = classifyResult({ product, release: r }, { now: NOW, snapshot: snap });
+    expect(c.variant).toBe('device-eol-soon');
+    expect(c.reason).toBe('os-eolFrom-soon');
+    expect(c.effectiveEolFrom).toBe('2026-12-01');
+  });
+});
+
 describe('buildLatestOsReminder', () => {
   // Build a snapshot mirroring the real shape so the helper has full context to navigate.
   function makeSnapshot() {

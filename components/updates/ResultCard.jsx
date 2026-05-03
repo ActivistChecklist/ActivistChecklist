@@ -113,15 +113,77 @@ function CtaList({ items }) {
   );
 }
 
+/**
+ * "Why this matters" block. Lives INSIDE the colored result box for failure/warning
+ * states so the threat-model context is part of the result, not a sibling. Slightly
+ * lighter background tone so it sits visually separate from the heading.
+ */
 function ThreatModelBlock({ soft = false }) {
   const t = useTranslations();
   return (
-    <div className="rounded-md border border-border bg-card p-4">
+    <div className="rounded-md border border-border bg-background/60 p-3">
       <p className="mb-1 text-sm font-medium text-foreground">
         {t('updates.result.threatModelHeader')}
       </p>
       <p className="text-sm leading-relaxed text-foreground/90">
         {soft ? t('updates.result.threatModelSoft') : t('updates.result.threatModel')}
+      </p>
+    </div>
+  );
+}
+
+/** Form-factor → realistic security-update window for buying guidance. */
+const FORM_FACTOR_UPDATE_YEARS = {
+  phone: { min: 5, max: 7, key: 'phoneYears' },
+  tablet: { min: 5, max: 7, key: 'tabletYears' },
+  laptop: { min: 7, max: 10, key: 'laptopYears' },
+  desktop: { min: 7, max: 10, key: 'laptopYears' },
+  watch: { min: 4, max: 6, key: 'watchYears' },
+};
+
+/**
+ * Guidance shown alongside the EOL action: typical update windows + a nudge to
+ * pre-check used purchases through this same tool.
+ */
+function BuyingGuidance({ formFactor }) {
+  const t = useTranslations();
+  const spec = FORM_FACTOR_UPDATE_YEARS[formFactor];
+  if (!spec) return null;
+  return (
+    <div className="rounded-md border border-border bg-background/60 p-3">
+      <p className="mb-1 text-sm font-medium text-foreground">
+        {t('updates.result.buyingGuidance.heading')}
+      </p>
+      <p className="text-sm leading-relaxed text-foreground/90">
+        {t(`updates.result.buyingGuidance.${spec.key}`, { min: spec.min, max: spec.max })}{' '}
+        {t('updates.result.buyingGuidance.checkBeforeBuying')}
+      </p>
+    </div>
+  );
+}
+
+/**
+ * Action paragraph for an out-of-date device — phrased per form factor (phone /
+ * laptop / desktop / tablet / watch / generic).
+ */
+function EolGuidance({ formFactor }) {
+  const t = useTranslations();
+  const key = (
+    {
+      phone: 'actionPhone',
+      laptop: 'actionLaptop',
+      desktop: 'actionDesktop',
+      tablet: 'actionTablet',
+      watch: 'actionWatch',
+    }
+  )[formFactor] || 'actionGeneric';
+  return (
+    <div className="space-y-1">
+      <p className="text-xs font-semibold uppercase tracking-wide text-foreground/70">
+        {t('updates.result.eolGuidance.heading')}
+      </p>
+      <p className="text-sm leading-relaxed text-foreground/90">
+        {t(`updates.result.eolGuidance.${key}`)}
       </p>
     </div>
   );
@@ -564,7 +626,7 @@ function DeviceMaxOsWarning({ snapshot, product, release }) {
 
 /* ────────── Other variants (unchanged shape, no in-box reset) ────────── */
 
-function DeviceUncertain({ snapshot, product, release, classification }) {
+function DeviceUncertain({ snapshot, product, release, classification, onReset }) {
   const t = useTranslations();
   const displayLabel = buildDisplayLabel(product, release);
   const ageText = formatYearsAgo(classification.ageYears, t);
@@ -579,7 +641,7 @@ function DeviceUncertain({ snapshot, product, release, classification }) {
   }
 
   return (
-    <div className="space-y-4">
+    <SlideInBox>
       <ResultBox
         tone="amber"
         icon={AlertTriangle}
@@ -602,14 +664,50 @@ function DeviceUncertain({ snapshot, product, release, classification }) {
             })}
           </p>
         ) : null}
+        <ThreatModelBlock soft />
         <CtaList items={[{ href: ESSENTIALS_HREF, label: t('updates.result.ctaEssentials') }]} />
+        <CrossResetButton product={product} onReset={onReset} />
       </ResultBox>
-      <ThreatModelBlock soft />
-    </div>
+    </SlideInBox>
   );
 }
 
-function DeviceEol({ product, release, classification }) {
+/**
+ * Yellow warning shown when the device IS still supported today, but its end-of-support
+ * date is within EOL_WARNING_MONTHS. Emphasises the runway and re-states the threat
+ * model, and gives the user a head-start on planning a replacement.
+ */
+function DeviceEolSoon({ snapshot, product, release, classification, onReset }) {
+  const t = useTranslations();
+  const displayLabel = buildDisplayLabel(product, release);
+  const eolDate = classification.effectiveEolFrom;
+  const months = eolDate
+    ? Math.max(0, Math.round((new Date(eolDate) - new Date()) / (30.44 * 24 * 60 * 60 * 1000)))
+    : null;
+
+  const title = months != null && months > 0
+    ? t('updates.result.eolSoon.titleMonths', { label: displayLabel, months })
+    : t('updates.result.eolSoon.titleSoon', { label: displayLabel });
+
+  const subtitle = eolDate
+    ? t('updates.result.eolSoon.subtitleDate', { date: formatMonthYear(eolDate) })
+    : null;
+
+  return (
+    <SlideInBox>
+      <ResultBox tone="amber" icon={AlertTriangle} title={title} subtitle={subtitle}>
+        <p className="text-sm text-foreground/90">
+          {t('updates.result.eolSoon.action')}
+        </p>
+        <ThreatModelBlock />
+        <BuyingGuidance formFactor={product.formFactor} />
+        <CrossResetButton product={product} onReset={onReset} />
+      </ResultBox>
+    </SlideInBox>
+  );
+}
+
+function DeviceEol({ product, release, classification, onReset }) {
   const t = useTranslations();
   const displayLabel = buildDisplayLabel(product, release);
 
@@ -629,22 +727,19 @@ function DeviceEol({ product, release, classification }) {
   }
 
   return (
-    <div className="space-y-4">
+    <SlideInBox>
       <ResultBox
         tone="red"
         icon={XCircle}
         title={t('updates.result.deviceUnsupportedTitle', { label: displayLabel })}
         subtitle={subtitle}
       >
-        <CtaList
-          items={[
-            { href: ESSENTIALS_HREF, label: t('updates.result.ctaEssentials') },
-            { href: SECURITY_ESSENTIALS_HREF, label: t('updates.result.ctaSecurityChecklist') },
-          ]}
-        />
+        <ThreatModelBlock />
+        <EolGuidance formFactor={product.formFactor} />
+        <BuyingGuidance formFactor={product.formFactor} />
+        <CrossResetButton product={product} onReset={onReset} />
       </ResultBox>
-      <ThreatModelBlock />
-    </div>
+    </SlideInBox>
   );
 }
 
@@ -677,7 +772,7 @@ function OsSupported({ product, release }) {
   );
 }
 
-function OsEol({ product, release }) {
+function OsEol({ product, release, onReset }) {
   const t = useTranslations();
   const displayLabel = buildDisplayLabel(product, release);
 
@@ -690,7 +785,7 @@ function OsEol({ product, release }) {
   }
 
   return (
-    <div className="space-y-4">
+    <SlideInBox>
       <ResultBox
         tone="red"
         icon={XCircle}
@@ -702,15 +797,16 @@ function OsEol({ product, release }) {
         }
       >
         {advice ? <p className="text-sm text-foreground/90">{advice}</p> : null}
+        <ThreatModelBlock />
         <CtaList
           items={[
             { href: ESSENTIALS_HREF, label: t('updates.result.ctaEssentials') },
             { href: SECURITY_ESSENTIALS_HREF, label: t('updates.result.ctaSecurityChecklist') },
           ]}
         />
+        <CrossResetButton product={product} onReset={onReset} />
       </ResultBox>
-      <ThreatModelBlock />
-    </div>
+    </SlideInBox>
   );
 }
 
@@ -721,9 +817,14 @@ export default function ResultCard({ snapshot, product, release, onReset }) {
 
   const Variant = {
     'device-supported': DeviceSupported,
+    'device-eol-soon': DeviceEolSoon,
     'device-uncertain': DeviceUncertain,
     'device-eol': DeviceEol,
     'os-supported': OsSupported,
+    // OS approaching EOL reuses the OsSupported component for now (still receiving
+    // updates today) — the only behavioural diff is the warning copy lands via the
+    // existing osEoasNote / latestVersion subtitle. We can split this later if needed.
+    'os-eol-soon': OsSupported,
     'os-eol': OsEol,
   }[classification.variant];
 

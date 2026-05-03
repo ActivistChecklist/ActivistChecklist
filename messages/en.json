@@ -487,11 +487,35 @@
       "deviceMaxOsEolWarning": "Your {label} tops out at {os} {maxVersion}, which has officially ended support. You may still receive occasional updates, but treat this device as low-trust for sensitive work and plan to replace it.",
       "deviceUpgradePlan": "If long-term security matters for your work, plan a hardware upgrade.",
       "threatModelHeader": "Why this matters",
-      "threatModel": "Phones that no longer receive security updates accumulate publicly known vulnerabilities. That raises the risk if your device is seized at a border, taken by police, or targeted with spyware.",
+      "threatModel": "Devices that no longer receive security updates accumulate publicly known vulnerabilities. That raises the risk if your device is seized at a border, taken by police, or targeted with spyware.",
       "threatModelSoft": "Until you confirm, treat this device as potentially out-of-date for sensitive work.",
       "whatToDo": "What to do",
       "ctaEssentials": "Read our digital security essentials",
       "ctaSecurityChecklist": "See the security essentials checklist",
+      "eolSoon": {
+        "titleMonths": "{label} will lose security updates in about {months, plural, =1 {1 month} other {# months}}.",
+        "titleSoon": "{label} will lose security updates soon.",
+        "subtitleDate": "Updates expected to end {date}.",
+        "actionHeading": "What to do",
+        "action": "Start planning a replacement now. Once updates stop, your device begins accumulating publicly known vulnerabilities."
+      },
+      "buyingGuidance": {
+        "heading": "When you replace it",
+        "phoneYears": "Most phones get security updates for {min}-{max} years from their release date.",
+        "laptopYears": "Most laptops get security updates for {min}-{max} years from their release date.",
+        "tabletYears": "Most tablets get security updates for {min}-{max} years from their release date.",
+        "watchYears": "Most smartwatches get security updates for {min}-{max} years from their release date.",
+        "checkBeforeBuying": "If you're buying used, search for the model here first to see how long it'll keep getting updates."
+      },
+      "eolGuidance": {
+        "heading": "What to do",
+        "actionPhone": "Plan to replace this phone. The longer you stay on an unsupported device, the more known vulnerabilities accumulate against it.",
+        "actionLaptop": "Plan to replace this laptop. The longer you stay on an unsupported device, the more known vulnerabilities accumulate against it.",
+        "actionDesktop": "Plan to replace this Mac. The longer you stay on an unsupported device, the more known vulnerabilities accumulate against it.",
+        "actionTablet": "Plan to replace this tablet. The longer you stay on an unsupported device, the more known vulnerabilities accumulate against it.",
+        "actionWatch": "This watch is no longer receiving security updates. Consider replacing it.",
+        "actionGeneric": "Plan to replace this device."
+      },
       "deviceConfirmedShort": "{label} is still receiving security updates.",
       "osCheckStep": {
         "headingForOs": "Which version of {os} are you running?",
