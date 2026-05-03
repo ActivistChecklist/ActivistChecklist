@@ -175,7 +175,7 @@ export default function UpdatesPage() {
         <FamilyCategorySelector value={category} onChange={handleCategoryChange} />
       )}
 
-      <div ref={searchBoxRef}>
+      <div ref={searchBoxRef} className="mx-auto w-full max-w-md">
         <DeviceSearchInput
           snapshot={snapshot}
           priorityProductIds={priorityProductIds}

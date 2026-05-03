@@ -39,6 +39,23 @@ function formatYearsAgo(years, t) {
 
 /* ────────── Shared building blocks ────────── */
 
+/**
+ * Wraps a result block in a snappy slide-up + fade-in. Pair with a `key` prop on the
+ * caller to replay the animation when contents swap (e.g. picker → success).
+ */
+function SlideInBox({ children, className }) {
+  return (
+    <div
+      className={cn(
+        'animate-in fade-in slide-in-from-bottom-2 duration-200',
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+
 const TONE_RING = {
   green: 'border-success/30 bg-success/5',
   red: 'border-destructive/30 bg-destructive/5',
@@ -449,30 +466,38 @@ function DeviceSupported({ snapshot, product, release, onReset }) {
 
   return (
     <div className="space-y-4">
-      <DeviceConfirmedSummary release={release} displayLabel={displayLabel} />
+      <SlideInBox>
+        <DeviceConfirmedSummary release={release} displayLabel={displayLabel} />
+      </SlideInBox>
 
-      {step === 'pick' ? (
-        <OsPickerStep
-          snapshot={snapshot}
-          product={product}
-          release={release}
-          onPickLatest={pickLatest}
-          onPickOlder={pickOlder}
-        />
-      ) : step === 'needs-update' ? (
-        <OsNeedsUpdateBox snapshot={snapshot} product={product} onDidUpdate={didUpdate} />
-      ) : (
-        <FinalSuccessBox
-          snapshot={snapshot}
-          product={product}
-          release={release}
-          displayLabel={displayLabel}
-          pickedOption={pickedOption}
-          onReset={onReset}
-        />
-      )}
+      {/* keyed by `step` so each transition between picker / needs-update / success
+          re-mounts the inner box and replays the slide-up + fade-in. */}
+      <SlideInBox key={step}>
+        {step === 'pick' ? (
+          <OsPickerStep
+            snapshot={snapshot}
+            product={product}
+            release={release}
+            onPickLatest={pickLatest}
+            onPickOlder={pickOlder}
+          />
+        ) : step === 'needs-update' ? (
+          <OsNeedsUpdateBox snapshot={snapshot} product={product} onDidUpdate={didUpdate} />
+        ) : (
+          <FinalSuccessBox
+            snapshot={snapshot}
+            product={product}
+            release={release}
+            displayLabel={displayLabel}
+            pickedOption={pickedOption}
+            onReset={onReset}
+          />
+        )}
+      </SlideInBox>
 
-      <DeviceMaxOsWarning snapshot={snapshot} product={product} release={release} />
+      <SlideInBox>
+        <DeviceMaxOsWarning snapshot={snapshot} product={product} release={release} />
+      </SlideInBox>
     </div>
   );
 }

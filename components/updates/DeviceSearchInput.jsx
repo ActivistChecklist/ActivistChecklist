@@ -99,12 +99,12 @@ export default function DeviceSearchInput({
   const hasPriority = Array.isArray(priorityProductIds) && priorityProductIds.length > 0;
   const trimmed = searchQuery.trim();
 
-  // Show dropdown when the user is actively searching (query non-empty OR priority + results)
-  // and we don't currently have a finalized selection.
+  // Show the results dropdown only when there are results — otherwise we'd render an
+  // empty bordered popover with nothing in it. The no-matches panel takes that slot when
+  // the user typed something we couldn't find.
   const showResults =
-    open && !hasSelection && (trimmed.length > 0 || (hasPriority && results.length > 0));
+    open && !hasSelection && results.length > 0 && (trimmed.length > 0 || hasPriority);
 
-  // "No matches" is only useful when the user typed something AND there are zero hits.
   const showNoMatches = open && !hasSelection && trimmed.length > 0 && results.length === 0;
 
   useEffect(() => {
@@ -164,11 +164,11 @@ export default function DeviceSearchInput({
         <div className="relative">
           <div
             className={cn(
-              'flex items-center gap-2 rounded-lg border-2 border-input bg-background px-4 py-3 shadow-sm transition-colors',
+              'flex items-center gap-2 rounded-lg border-2 border-input bg-background px-4 py-4 shadow-sm transition-colors sm:py-5',
               'focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20'
             )}
           >
-            <Search className="h-5 w-5 shrink-0 text-muted-foreground" aria-hidden="true" />
+            <Search className="h-6 w-6 shrink-0 text-muted-foreground" aria-hidden="true" />
             <CommandPrimitive.Input
               ref={inputRef}
               value={query}
@@ -176,7 +176,7 @@ export default function DeviceSearchInput({
               onFocus={() => setOpen(true)}
               placeholder={t('updates.searchPlaceholder')}
               aria-label={t('updates.searchAriaLabel')}
-              className="flex-1 bg-transparent text-base outline-hidden placeholder:text-muted-foreground"
+              className="flex-1 bg-transparent text-lg outline-hidden placeholder:text-muted-foreground sm:text-xl"
             />
             {showClearButton ? (
               <button
