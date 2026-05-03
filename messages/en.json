@@ -517,7 +517,10 @@
         "deviceCheckUntil": "{label} is receiving security updates through {date}.",
         "osCheck": "{os} is on the latest version ({version}).",
         "osCheckCodename": "{os} {version} ({codename}) is the latest version.",
-        "osCheckNoVersion": "Operating system is up to date."
+        "osCheckNoVersion": "Operating system is up to date.",
+        "checkPhoneNext": "Check your phone next",
+        "checkLaptopNext": "Check your laptop next",
+        "checkAnotherDevice": "Check another device"
       },
       "windowsUpdateHelp": "Open Settings → Windows Update and click 'Check for updates'."
     },

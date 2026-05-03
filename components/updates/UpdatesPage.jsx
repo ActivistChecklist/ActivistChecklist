@@ -195,6 +195,7 @@ export default function UpdatesPage() {
             snapshot={snapshot}
             product={found.product}
             release={found.release}
+            onReset={handleReset}
           />
         </div>
       ) : null}

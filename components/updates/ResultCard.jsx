@@ -313,7 +313,29 @@ function PickerButton({ onClick, label }) {
   );
 }
 
-function FinalSuccessBox({ snapshot, product, release, displayLabel, pickedOption }) {
+/**
+ * Cross-form-factor reset prompt: after checking a phone, suggest checking a laptop next
+ * (and vice-versa). Returns null for form factors that don't have a clean opposite (tablet,
+ * watch, OS) — the search input + clear button is the reset path for those.
+ */
+function CrossResetButton({ product, onReset }) {
+  const t = useTranslations();
+  if (!onReset) return null;
+  let label = null;
+  if (product.formFactor === 'phone') {
+    label = t('updates.result.finalSuccess.checkLaptopNext');
+  } else if (product.formFactor === 'laptop' || product.formFactor === 'desktop') {
+    label = t('updates.result.finalSuccess.checkPhoneNext');
+  }
+  if (!label) return null;
+  return (
+    <div className="mt-5">
+      <PickerButton onClick={onReset} label={label} />
+    </div>
+  );
+}
+
+function FinalSuccessBox({ snapshot, product, release, displayLabel, pickedOption, onReset }) {
   const t = useTranslations();
   const osProduct = osProductForDevice(snapshot, product);
 
@@ -367,7 +389,7 @@ function FinalSuccessBox({ snapshot, product, release, displayLabel, pickedOptio
           <span>{osLine}</span>
         </li>
       </ul>
-      <CtaList items={[{ href: ESSENTIALS_HREF, label: t('updates.result.ctaEssentials') }]} />
+      <CrossResetButton product={product} onReset={onReset} />
     </ResultBox>
   );
 }
@@ -407,7 +429,7 @@ function OsNeedsUpdateBox({ snapshot, product, onDidUpdate }) {
   );
 }
 
-function DeviceSupported({ snapshot, product, release }) {
+function DeviceSupported({ snapshot, product, release, onReset }) {
   const displayLabel = buildDisplayLabel(product, release);
   // step: 'pick' | 'success' | 'needs-update'
   const [step, setStep] = useState('pick');
@@ -446,6 +468,7 @@ function DeviceSupported({ snapshot, product, release }) {
           release={release}
           displayLabel={displayLabel}
           pickedOption={pickedOption}
+          onReset={onReset}
         />
       )}
 
@@ -668,7 +691,7 @@ function OsEol({ product, release }) {
 
 /* ────────── Public component ────────── */
 
-export default function ResultCard({ snapshot, product, release }) {
+export default function ResultCard({ snapshot, product, release, onReset }) {
   const classification = classifyResult({ product, release }, { snapshot });
 
   const Variant = {
@@ -686,6 +709,7 @@ export default function ResultCard({ snapshot, product, release }) {
       snapshot={snapshot}
       product={product}
       release={release}
+      onReset={onReset}
       classification={classification}
     />
   );
