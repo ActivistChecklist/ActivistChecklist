@@ -24,6 +24,7 @@ permissions:
 
 jobs:
   analyze:
+    if: ${{ !startsWith(github.head_ref, 'l10n_') && !startsWith(github.ref_name, 'l10n_') }}
     name: Analyze (${{ matrix.name }})
     runs-on: ubuntu-latest
     timeout-minutes: 45

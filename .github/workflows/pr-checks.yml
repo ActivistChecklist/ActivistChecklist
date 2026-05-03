@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   detect_changes:
-    if: ${{ github.head_ref != 'l10n_main' && github.ref_name != 'l10n_main' }}
+    if: ${{ !startsWith(github.head_ref, 'l10n_') && !startsWith(github.ref_name, 'l10n_') }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
@@ -49,7 +49,7 @@ jobs:
               - 'tailwind.config.*'
 
   pr_quality:
-    if: ${{ github.head_ref != 'l10n_main' && github.ref_name != 'l10n_main' }}
+    if: ${{ !startsWith(github.head_ref, 'l10n_') && !startsWith(github.ref_name, 'l10n_') }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -73,7 +73,7 @@ jobs:
         run: yarn lint:paths
 
   pr_build:
-    if: ${{ github.head_ref != 'l10n_main' && github.ref_name != 'l10n_main' &&
+    if: ${{ !startsWith(github.head_ref, 'l10n_') && !startsWith(github.ref_name, 'l10n_') &&
       needs.detect_changes.outputs.runtime_changed == 'true' }}
     needs: detect_changes
     runs-on: ubuntu-latest
