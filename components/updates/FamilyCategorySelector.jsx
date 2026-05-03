@@ -57,7 +57,10 @@ export default function FamilyCategorySelector({ value, onChange }) {
   }
 
   return (
-    <div className="min-h-[7rem]">
+    // Stable height across L1 → L2 → L3 transitions so the page doesn't jump.
+    // 14rem fits the 3-row mobile grid (Android has 6 sub-cards in 2 cols);
+    // 10rem is enough for desktop (4-card L1 row, 3-col L2 grid).
+    <div className="min-h-[14rem] sm:min-h-[10rem]">
       {step === 'l1' ? <L1 onPick={pickPlatform} /> : null}
       {step === 'l2' ? (
         <L2
@@ -174,11 +177,21 @@ function L3({ platform, subCategory, onClickPlatform, onClear }) {
   const Icon = BRAND_ICON[subCategory?.family];
 
   // "How to find this" hint is keyed by sub-category labelKey when we have copy for it.
+  // We use t.rich so messages can include <code>winver</code> for monospace tokens.
   let findHint = null;
   if (subCategory?.labelKey) {
     try {
-      const path = t(`updates.findYourModel.${subCategory.labelKey}`);
-      if (path && !path.startsWith('updates.findYourModel.')) findHint = path;
+      const key = `updates.findYourModel.${subCategory.labelKey}`;
+      const raw = t(key);
+      if (raw && !raw.startsWith('updates.findYourModel.')) {
+        findHint = t.rich(key, {
+          code: (chunks) => (
+            <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-base text-foreground">
+              {chunks}
+            </code>
+          ),
+        });
+      }
     } catch {
       findHint = null;
     }

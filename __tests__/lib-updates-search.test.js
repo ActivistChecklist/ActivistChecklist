@@ -138,4 +138,17 @@ describe('searchIndex', () => {
     expect(results.slice(0, 3).every((r) => r.productId === 'iphone')).toBe(true);
     expect(results.slice(3).some((r) => r.productId !== 'iphone')).toBe(true);
   });
+
+  it('year tokens in the query bias toward closer-year items, not recency', () => {
+    const rows = buildSearchIndex(SNAP, { now: NOW });
+    const fuse = buildFuse(rows);
+    // Two MacBook Pro entries: 2024 (newer) and 2018 (older). Search "macbook pro 2018"
+    // should rank the 2018 model first even though 2024 is newer.
+    const results = searchIndex(rows, fuse, 'macbook pro 2018', null);
+    const labels = results.map((r) => r.displayLabel);
+    const idx2018 = labels.findIndex((l) => l.includes('2018'));
+    const idx2024 = labels.findIndex((l) => l.includes('2024'));
+    expect(idx2018).toBeGreaterThanOrEqual(0);
+    expect(idx2018).toBeLessThan(idx2024);
+  });
 });

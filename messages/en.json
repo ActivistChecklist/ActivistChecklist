@@ -403,7 +403,7 @@
       "oneplus": "Settings → About device",
       "nokia": "Settings → About phone",
       "androidOs": "Settings → About phone → Android version",
-      "windows": "Press Windows key + R, type winver, then Enter"
+      "windows": "Press Windows key + R, type <code>winver</code>, then Enter"
     },
     "otherInfo": {
       "title": "Other devices",
@@ -501,6 +501,8 @@
         "optionLatestCodename": "{os} {version} ({codename})",
         "optionOlder": "Older than {os} {version}",
         "optionOlderCodename": "Older than {os} {version} ({codename})",
+        "optionMajor": "{os} {major}",
+        "optionMajorCodename": "{os} {major} ({codename})",
         "optionUnknown": "Older than that, or I'm not sure"
       },
       "osNeedsUpdate": {

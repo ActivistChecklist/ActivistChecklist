@@ -216,40 +216,67 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
 
       <div className="mt-5 space-y-2">
         {options.length > 0 ? (
-          options.map((opt) => (
-            <div key={opt.major} className="flex flex-wrap gap-2">
-              <PickerButton
-                onClick={() => onPickOlder(opt)}
-                label={
-                  opt.codename
-                    ? t('updates.result.osCheckStep.optionOlderCodename', {
-                        os: osLabel || '',
-                        version: opt.latestVersion,
-                        codename: opt.codename,
-                      })
-                    : t('updates.result.osCheckStep.optionOlder', {
-                        os: osLabel || '',
-                        version: opt.latestVersion,
-                      })
-                }
-              />
-              <PickerButton
-                onClick={() => onPickLatest(opt)}
-                label={
-                  opt.codename
-                    ? t('updates.result.osCheckStep.optionLatestCodename', {
-                        os: osLabel || '',
-                        version: opt.latestVersion,
-                        codename: opt.codename,
-                      })
-                    : t('updates.result.osCheckStep.optionLatest', {
-                        os: osLabel || '',
-                        version: opt.latestVersion,
-                      })
-                }
-              />
-            </div>
-          ))
+          options.map((opt) => {
+            // OSes with point versions (iOS/macOS/Windows) get a pair of buttons —
+            // "Older than X.Y.Z" + "X.Y.Z" — so users can flag a stale patch within the
+            // current major. OSes without point versions (Android — Google doesn't
+            // expose a single "current version" string) get one button per major.
+            if (opt.latestVersion) {
+              return (
+                <div key={opt.major} className="flex flex-wrap gap-2">
+                  <PickerButton
+                    onClick={() => onPickOlder(opt)}
+                    label={
+                      opt.codename
+                        ? t('updates.result.osCheckStep.optionOlderCodename', {
+                            os: osLabel || '',
+                            version: opt.latestVersion,
+                            codename: opt.codename,
+                          })
+                        : t('updates.result.osCheckStep.optionOlder', {
+                            os: osLabel || '',
+                            version: opt.latestVersion,
+                          })
+                    }
+                  />
+                  <PickerButton
+                    onClick={() => onPickLatest(opt)}
+                    label={
+                      opt.codename
+                        ? t('updates.result.osCheckStep.optionLatestCodename', {
+                            os: osLabel || '',
+                            version: opt.latestVersion,
+                            codename: opt.codename,
+                          })
+                        : t('updates.result.osCheckStep.optionLatest', {
+                            os: osLabel || '',
+                            version: opt.latestVersion,
+                          })
+                    }
+                  />
+                </div>
+              );
+            }
+            return (
+              <div key={opt.major} className="flex flex-wrap gap-2">
+                <PickerButton
+                  onClick={() => onPickLatest(opt)}
+                  label={
+                    opt.codename
+                      ? t('updates.result.osCheckStep.optionMajorCodename', {
+                          os: osLabel || '',
+                          major: opt.major,
+                          codename: opt.codename,
+                        })
+                      : t('updates.result.osCheckStep.optionMajor', {
+                          os: osLabel || '',
+                          major: opt.major,
+                        })
+                  }
+                />
+              </div>
+            );
+          })
         ) : (
           // No OS data — single confirmation button (e.g., OnePlus, watches without OS lookup).
           <PickerButton
@@ -308,15 +335,17 @@ function FinalSuccessBox({ snapshot, product, release, displayLabel, pickedOptio
 
   let osLine;
   if (pickedOption && osLabel) {
+    // For OSes without point versions (Android), the major IS the version they confirm.
+    const versionLabel = pickedOption.latestVersion || String(pickedOption.major);
     osLine = pickedOption.codename
       ? t('updates.result.finalSuccess.osCheckCodename', {
           os: osLabel,
-          version: pickedOption.latestVersion,
+          version: versionLabel,
           codename: pickedOption.codename,
         })
       : t('updates.result.finalSuccess.osCheck', {
           os: osLabel,
-          version: pickedOption.latestVersion,
+          version: versionLabel,
         });
   } else {
     osLine = t('updates.result.finalSuccess.osCheckNoVersion');
