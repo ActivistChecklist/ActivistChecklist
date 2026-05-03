@@ -18,6 +18,15 @@ ErrorDocument 404 /404/index.html
   RewriteCond %{REQUEST_URI} ^/index\.html$ [NC]
   RewriteRule ^ - [E=ONION_URI:/]
 
+  # 301 /en/<path> → /<path>: default locale should not appear in the URL.
+  # postbuild.sh mirrors out/en/* to out/, so /en/<path> exists on disk and Apache
+  # would otherwise serve it directly. Match THE_REQUEST (the original request line)
+  # so this fires before any internal rewrite — using REQUEST_URI would loop with
+  # the bare→/en/ rewrite below. The trailing (/|\?|\s) ensures `en` is a full
+  # path segment, so /english/* and similar are not affected.
+  RewriteCond %{THE_REQUEST} ^[A-Z]+\s/+en(/|\?|\s) [NC]
+  RewriteRule ^en(/.*)?$ /$1 [R=301,L,QSA]
+
   # Skip if the file/directory already exists at the bare path
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
