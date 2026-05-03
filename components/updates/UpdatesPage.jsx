@@ -185,12 +185,14 @@ export default function UpdatesPage() {
       </div>
 
       {found ? (
-        <div className="animate-in fade-in slide-in-from-bottom-2 duration-200">
+        <div
+          key={`${found.product.id}/${found.release.id}`}
+          className="animate-in fade-in slide-in-from-bottom-2 duration-200"
+        >
           <ResultCard
             snapshot={snapshot}
             product={found.product}
             release={found.release}
-            onReset={handleReset}
           />
         </div>
       ) : null}

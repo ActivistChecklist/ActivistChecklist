@@ -476,18 +476,26 @@
       "ctaSecurityChecklist": "See the security essentials checklist",
       "deviceConfirmedShort": "{label} is still receiving security updates.",
       "osCheckStep": {
-        "heading": "Now make sure your operating system is up to date",
-        "subheading": "The latest {os} is {version}.",
-        "subheadingNoVersion": "Make sure your device is on the latest available version.",
-        "settingsPathPrefix": "Open",
-        "confirmButton": "Done — I'm on the latest version",
-        "skipNote": "If you can't update right now, your device is still safer than out-of-date hardware, but plan to update soon."
+        "headingForOs": "Which version of {os} are you running?",
+        "headingGeneric": "Which version is your device running?",
+        "subheadingHelp": "Open it on your device to check:",
+        "optionLatest": "{version}",
+        "optionLatestCodename": "{version} ({codename})",
+        "optionOlder": "Older than {version}",
+        "optionOlderCodename": "Older than {version} ({codename})",
+        "optionUnknown": "Older than that, or I'm not sure"
+      },
+      "osNeedsUpdate": {
+        "heading": "Your operating system needs an update",
+        "body": "Update to {version} via your device's software update settings to get the latest security patches.",
+        "didUpdateButton": "Done — I've updated"
       },
       "finalSuccess": {
         "heading": "You're up to date.",
         "deviceCheck": "{label} is still receiving security updates.",
         "deviceCheckUntil": "{label} is receiving security updates through {date}.",
         "osCheck": "{os} is on the latest version ({version}).",
+        "osCheckCodename": "{os} {version} ({codename}) is the latest version.",
         "osCheckNoVersion": "Operating system is up to date."
       },
       "windowsUpdateHelp": "Open Settings → Windows Update and click 'Check for updates'."

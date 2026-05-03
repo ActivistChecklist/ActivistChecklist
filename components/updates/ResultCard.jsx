@@ -7,7 +7,6 @@ import {
   XCircle,
   AlertTriangle,
   Check,
-  ArrowLeft,
   ArrowRight,
   ExternalLink,
 } from 'lucide-react';
@@ -18,39 +17,13 @@ import {
   classifyResult,
   buildLatestOsReminder,
   buildDeviceMaxOsWarning,
+  buildOsCheckOptions,
 } from '@/lib/updates/result-logic';
+import { osProductForDevice } from '@/lib/updates/snapshot';
+import { buildDisplayLabel } from '@/lib/updates/search';
 
 const ESSENTIALS_HREF = '/guides/essentials';
 const SECURITY_ESSENTIALS_HREF = '/checklists/items/security-essentials';
-
-const MANUFACTURER_PREFIX = /^(Apple|Google|Samsung|Microsoft|Motorola|OnePlus|Nokia) /;
-
-const PRODUCT_SHORT_LABEL = {
-  'apple-watch': 'Apple Watch',
-  'samsung-mobile': 'Galaxy',
-  'motorola-mobility': 'Motorola',
-  'oneplus': 'OnePlus',
-  'nokia': 'Nokia',
-};
-
-function shortLabelFor(product) {
-  return PRODUCT_SHORT_LABEL[product.id] || product.label.replace(MANUFACTURER_PREFIX, '');
-}
-
-/**
- * Build a clean display label for a (product, release). Mirrors the autocomplete logic
- * so the result-screen heading and the dropdown label are consistent.
- */
-function buildDisplayLabel(product, release) {
-  const isOs = product.kind === 'os';
-  const tidy = isOs
-    ? release.label.replace(/\s*\((W|E)\)\s*/g, '').trim()
-    : release.label;
-  const shortName = shortLabelFor(product);
-  if (!shortName) return tidy;
-  if (tidy.toLowerCase().startsWith(shortName.toLowerCase())) return tidy;
-  return `${shortName} ${tidy}`.trim();
-}
 
 function formatMonthYear(iso, locale = 'en-US') {
   if (!iso) return '';
@@ -67,35 +40,22 @@ function formatYearsAgo(years, t) {
 
 /* ────────── Shared building blocks ────────── */
 
-function ResetButton({ onReset }) {
-  const t = useTranslations();
-  return (
-    <button
-      type="button"
-      onClick={onReset}
-      className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
-    >
-      <ArrowLeft className="h-4 w-4" />
-      {t('updates.result.checkAnother')}
-    </button>
-  );
-}
-
 const TONE_RING = {
   green: 'border-success/30 bg-success/5',
   red: 'border-destructive/30 bg-destructive/5',
   amber: 'border-warning/30 bg-warning/5',
+  primary: 'border-primary/30 bg-primary/5',
 };
 const TONE_ICON_COLOR = {
   green: 'text-success',
   red: 'text-destructive',
   amber: 'text-warning',
+  primary: 'text-primary',
 };
 
-function ResultBox({ tone, icon: IconProp, title, subtitle, children, onReset }) {
+function ResultBox({ tone, icon: IconProp, title, subtitle, children }) {
   return (
     <div className={cn('rounded-lg border-2 p-6', TONE_RING[tone])}>
-      <ResetButton onReset={onReset} />
       <div className="flex items-start gap-4">
         <IconProp
           className={cn('h-12 w-12 shrink-0', TONE_ICON_COLOR[tone])}
@@ -137,23 +97,6 @@ function CtaList({ items }) {
   );
 }
 
-function SettingsPath({ osId, prefix }) {
-  const t = useTranslations();
-  let path;
-  try {
-    path = t(`updates.result.settingsPath.${osId}`);
-  } catch {
-    path = null;
-  }
-  if (!path || path.startsWith('updates.result.settingsPath.')) return null;
-  return (
-    <p className="text-sm text-muted-foreground">
-      {prefix || t('updates.result.settingsPathPrefix')}{' '}
-      <span className="font-medium text-foreground">{path}</span>.
-    </p>
-  );
-}
-
 function ThreatModelBlock({ soft = false }) {
   const t = useTranslations();
   return (
@@ -190,105 +133,189 @@ function SourceLink({ product }) {
   );
 }
 
-/* ────────── DeviceSupported flow (multi-step) ────────── */
-
-function DeviceCheckedStep({ snapshot, product, release, classification, displayLabel, onConfirmOs, onReset }) {
+/**
+ * The settings-path callout shown inside the OS-check step. Big and bold —
+ * this is the actionable instruction.
+ */
+function PromMenuPath({ osId }) {
   const t = useTranslations();
-
-  // Compute OS reminder context (latest version + family OS id) up front so the big
-  // next-step card can display the latest version.
-  const reminder = buildLatestOsReminder(snapshot, product, release);
-
-  let osLabel = null;
-  let latestVersion = null;
-  let osId = null;
-  if (reminder && reminder.case !== 'oneplus') {
-    osId = reminder.osProduct.id;
-    try {
-      osLabel = t(`updates.result.supportedOsLabel.${osId}`);
-    } catch {
-      osLabel = reminder.osProduct.label;
-    }
-    latestVersion = reminder.version || null;
+  let path;
+  try {
+    path = t(`updates.result.settingsPath.${osId}`);
+  } catch {
+    path = null;
   }
-
+  if (!path || path.startsWith('updates.result.settingsPath.')) return null;
   return (
-    <div className="space-y-5">
-      {/* Step 1: small confirmation that the device is OK */}
-      <div className="flex items-start gap-3 rounded-md border border-success/30 bg-success/5 p-4">
-        <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-success" aria-hidden="true" />
-        <div className="min-w-0 flex-1 space-y-1">
-          <p className="text-sm font-medium text-foreground">
-            {t('updates.result.deviceConfirmedShort', { label: displayLabel })}
-          </p>
-          {release.eolFrom ? (
-            <p className="text-xs text-muted-foreground">
-              {t('updates.result.deviceSupportedSubtitleUntil', { date: formatMonthYear(release.eolFrom) })}
-            </p>
-          ) : null}
-          <button
-            type="button"
-            onClick={onReset}
-            className="text-xs text-muted-foreground hover:text-foreground"
-          >
-            {t('updates.result.checkAnother')}
-          </button>
-        </div>
-      </div>
+    <p className="rounded-md bg-background/60 px-4 py-3 text-base font-semibold text-foreground sm:text-lg">
+      {path}
+    </p>
+  );
+}
 
-      {/* Step 2: big next-step prompt — check the OS */}
-      <div className="rounded-lg border-2 border-primary/30 bg-primary/5 p-6">
-        <h3 className="text-xl font-semibold leading-tight text-foreground sm:text-2xl">
-          {t('updates.result.osCheckStep.heading')}
-        </h3>
-        {osLabel && latestVersion ? (
-          <p className="mt-2 text-base text-foreground/80">
-            {t('updates.result.osCheckStep.subheading', { os: osLabel, version: latestVersion })}
-          </p>
-        ) : (
-          <p className="mt-2 text-base text-foreground/80">
-            {t('updates.result.osCheckStep.subheadingNoVersion')}
-          </p>
-        )}
+/**
+ * Inline settings-path used inside coloured boxes (smaller).
+ */
+function SettingsPathInline({ osId }) {
+  const t = useTranslations();
+  let path;
+  try {
+    path = t(`updates.result.settingsPath.${osId}`);
+  } catch {
+    path = null;
+  }
+  if (!path || path.startsWith('updates.result.settingsPath.')) return null;
+  return (
+    <p className="text-sm text-muted-foreground">
+      {t('updates.result.settingsPathPrefix')}{' '}
+      <span className="font-medium text-foreground">{path}</span>.
+    </p>
+  );
+}
 
-        {osId ? (
-          <div className="mt-3">
-            <SettingsPath osId={osId} prefix={t('updates.result.osCheckStep.settingsPathPrefix')} />
-          </div>
-        ) : null}
+/* ────────── DeviceSupported flow (cumulative steps) ────────── */
 
-        <div className="mt-5 flex flex-wrap items-center gap-3">
-          <button
-            type="button"
-            onClick={onConfirmOs}
-            className="inline-flex items-center gap-1.5 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
-          >
-            <Check className="h-4 w-4" />
-            {t('updates.result.osCheckStep.confirmButton')}
-          </button>
-        </div>
-
-        <p className="mt-3 text-xs text-muted-foreground">
-          {t('updates.result.osCheckStep.skipNote')}
+/**
+ * Step 1 (always shown for green device results): a small confirmation card.
+ * Stays visible while the user works through Step 2 (OS check) and Step 3 (final success).
+ */
+function DeviceConfirmedSummary({ release, displayLabel }) {
+  const t = useTranslations();
+  return (
+    <div className="flex items-start gap-3 rounded-md border border-success/30 bg-success/5 p-4">
+      <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0 text-success" aria-hidden="true" />
+      <div className="min-w-0 flex-1 space-y-0.5">
+        <p className="text-base font-medium text-foreground sm:text-lg">
+          {t('updates.result.deviceConfirmedShort', { label: displayLabel })}
         </p>
+        {release.eolFrom ? (
+          <p className="text-xs text-muted-foreground">
+            {t('updates.result.deviceSupportedSubtitleUntil', {
+              date: formatMonthYear(release.eolFrom),
+            })}
+          </p>
+        ) : null}
       </div>
     </div>
   );
 }
 
-function FinalSuccessBox({ snapshot, product, release, displayLabel, onReset }) {
+/**
+ * The OS-version picker. Renders one row per non-EOL major: "Older than X" + "X (Codename)?".
+ * Falls back to a single "Done — I'm on the latest" button if we have no version data.
+ */
+function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder }) {
   const t = useTranslations();
-  const reminder = buildLatestOsReminder(snapshot, product, release);
+  const options = buildOsCheckOptions(snapshot, product, release);
+
+  const osProduct = osProductForDevice(snapshot, product);
+  const osId = osProduct?.id || null;
 
   let osLabel = null;
-  let latestVersion = null;
-  if (reminder && reminder.case !== 'oneplus' && reminder.osProduct) {
+  if (osId) {
     try {
-      osLabel = t(`updates.result.supportedOsLabel.${reminder.osProduct.id}`);
+      osLabel = t(`updates.result.supportedOsLabel.${osId}`);
     } catch {
-      osLabel = reminder.osProduct.label;
+      osLabel = osProduct.label;
     }
-    latestVersion = reminder.version || null;
+  }
+
+  const heading = osLabel
+    ? t('updates.result.osCheckStep.headingForOs', { os: osLabel })
+    : t('updates.result.osCheckStep.headingGeneric');
+
+  return (
+    <div className="rounded-lg border-2 border-primary/30 bg-primary/5 p-6">
+      <h3 className="text-xl font-semibold leading-tight text-foreground sm:text-2xl">
+        {heading}
+      </h3>
+
+      {osId ? (
+        <div className="mt-3 space-y-2">
+          <p className="text-sm text-muted-foreground">{t('updates.result.osCheckStep.subheadingHelp')}</p>
+          <PromMenuPath osId={osId} />
+        </div>
+      ) : null}
+
+      <div className="mt-5 space-y-2">
+        {options.length > 0 ? (
+          options.map((opt) => (
+            <div key={opt.major} className="flex flex-wrap gap-2">
+              <PickerButton
+                onClick={() => onPickOlder(opt)}
+                label={
+                  opt.codename
+                    ? t('updates.result.osCheckStep.optionOlderCodename', {
+                        version: opt.latestVersion,
+                        codename: opt.codename,
+                      })
+                    : t('updates.result.osCheckStep.optionOlder', { version: opt.latestVersion })
+                }
+                tone="secondary"
+              />
+              <PickerButton
+                onClick={() => onPickLatest(opt)}
+                label={
+                  opt.codename
+                    ? t('updates.result.osCheckStep.optionLatestCodename', {
+                        version: opt.latestVersion,
+                        codename: opt.codename,
+                      })
+                    : t('updates.result.osCheckStep.optionLatest', { version: opt.latestVersion })
+                }
+                tone="primary"
+              />
+            </div>
+          ))
+        ) : (
+          // No OS data — single confirmation button (e.g., OnePlus, watches without OS lookup).
+          <PickerButton
+            onClick={() => onPickLatest(null)}
+            label={t('updates.result.osCheckStep.optionLatest', { version: '' }).trim() || 'Done'}
+            tone="primary"
+          />
+        )}
+        {options.length > 0 ? (
+          <button
+            type="button"
+            onClick={() => onPickOlder(null)}
+            className="text-sm text-muted-foreground hover:text-foreground"
+          >
+            {t('updates.result.osCheckStep.optionUnknown')}
+          </button>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+function PickerButton({ onClick, label, tone }) {
+  const cls =
+    tone === 'primary'
+      ? 'bg-primary text-primary-foreground hover:bg-primary/90'
+      : 'border border-border bg-background text-foreground hover:bg-muted';
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn('rounded-md px-4 py-2 text-sm font-medium', cls)}
+    >
+      {label}
+    </button>
+  );
+}
+
+function FinalSuccessBox({ snapshot, product, release, displayLabel, pickedOption }) {
+  const t = useTranslations();
+  const osProduct = osProductForDevice(snapshot, product);
+
+  let osLabel = null;
+  if (osProduct) {
+    try {
+      osLabel = t(`updates.result.supportedOsLabel.${osProduct.id}`);
+    } catch {
+      osLabel = osProduct.label;
+    }
   }
 
   const deviceLine = release.eolFrom
@@ -298,75 +325,123 @@ function FinalSuccessBox({ snapshot, product, release, displayLabel, onReset }) 
       })
     : t('updates.result.finalSuccess.deviceCheck', { label: displayLabel });
 
-  const osLine = osLabel && latestVersion
-    ? t('updates.result.finalSuccess.osCheck', { os: osLabel, version: latestVersion })
-    : t('updates.result.finalSuccess.osCheckNoVersion');
+  let osLine;
+  if (pickedOption && osLabel) {
+    osLine = pickedOption.codename
+      ? t('updates.result.finalSuccess.osCheckCodename', {
+          os: osLabel,
+          version: pickedOption.latestVersion,
+          codename: pickedOption.codename,
+        })
+      : t('updates.result.finalSuccess.osCheck', {
+          os: osLabel,
+          version: pickedOption.latestVersion,
+        });
+  } else {
+    osLine = t('updates.result.finalSuccess.osCheckNoVersion');
+  }
 
   return (
     <ResultBox
       tone="green"
       icon={CheckCircle2}
       title={t('updates.result.finalSuccess.heading')}
-      onReset={onReset}
     >
-      <ul className="mt-3 space-y-2">
-        <li className="flex items-start gap-2 text-sm text-foreground">
+      <ul className="mt-2 space-y-2">
+        <li className="flex items-start gap-2 text-sm text-foreground sm:text-base">
           <Check className="mt-0.5 h-4 w-4 shrink-0 text-success" aria-hidden="true" />
           <span>{deviceLine}</span>
         </li>
-        <li className="flex items-start gap-2 text-sm text-foreground">
+        <li className="flex items-start gap-2 text-sm text-foreground sm:text-base">
           <Check className="mt-0.5 h-4 w-4 shrink-0 text-success" aria-hidden="true" />
           <span>{osLine}</span>
         </li>
       </ul>
-      <CtaList
-        items={[
-          { href: ESSENTIALS_HREF, label: t('updates.result.ctaEssentials') },
-        ]}
-      />
+      <CtaList items={[{ href: ESSENTIALS_HREF, label: t('updates.result.ctaEssentials') }]} />
     </ResultBox>
   );
 }
 
-function DeviceSupported({ snapshot, product, release, classification, onReset }) {
+function OsNeedsUpdateBox({ pickedOption, onDidUpdate }) {
   const t = useTranslations();
-  const displayLabel = buildDisplayLabel(product, release);
-  const [osVerified, setOsVerified] = useState(false);
+  return (
+    <div className="rounded-lg border-2 border-warning/30 bg-warning/5 p-6">
+      <div className="flex items-start gap-4">
+        <AlertTriangle className="h-12 w-12 shrink-0 text-warning" aria-hidden="true" />
+        <div className="min-w-0 flex-1 space-y-2">
+          <h2 className="text-2xl font-semibold leading-tight text-foreground sm:text-3xl">
+            {t('updates.result.osNeedsUpdate.heading')}
+          </h2>
+          <p className="text-base text-foreground/80">
+            {t('updates.result.osNeedsUpdate.body', {
+              version: pickedOption?.latestVersion || 'the latest version',
+            })}
+          </p>
+          <div className="pt-2">
+            <button
+              type="button"
+              onClick={onDidUpdate}
+              className="inline-flex items-center gap-1.5 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+            >
+              <Check className="h-4 w-4" />
+              {t('updates.result.osNeedsUpdate.didUpdateButton')}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-  if (osVerified) {
-    return (
-      <div className="space-y-4">
+function DeviceSupported({ snapshot, product, release }) {
+  const displayLabel = buildDisplayLabel(product, release);
+  // step: 'pick' | 'success' | 'needs-update'
+  const [step, setStep] = useState('pick');
+  const [pickedOption, setPickedOption] = useState(null);
+
+  function pickLatest(opt) {
+    setPickedOption(opt);
+    setStep('success');
+  }
+  function pickOlder(opt) {
+    setPickedOption(opt);
+    setStep('needs-update');
+  }
+  function didUpdate() {
+    setStep('success');
+  }
+
+  return (
+    <div className="space-y-4">
+      <DeviceConfirmedSummary release={release} displayLabel={displayLabel} />
+
+      {step === 'pick' ? (
+        <OsPickerStep
+          snapshot={snapshot}
+          product={product}
+          release={release}
+          onPickLatest={pickLatest}
+          onPickOlder={pickOlder}
+        />
+      ) : step === 'needs-update' ? (
+        <OsNeedsUpdateBox pickedOption={pickedOption} onDidUpdate={didUpdate} />
+      ) : (
         <FinalSuccessBox
           snapshot={snapshot}
           product={product}
           release={release}
           displayLabel={displayLabel}
-          onReset={onReset}
+          pickedOption={pickedOption}
         />
-        <DeviceMaxOsWarning snapshot={snapshot} product={product} release={release} />
-        <SourceLink product={product} />
-      </div>
-    );
-  }
+      )}
 
-  return (
-    <div className="space-y-4">
-      <DeviceCheckedStep
-        snapshot={snapshot}
-        product={product}
-        release={release}
-        classification={classification}
-        displayLabel={displayLabel}
-        onConfirmOs={() => setOsVerified(true)}
-        onReset={onReset}
-      />
       <DeviceMaxOsWarning snapshot={snapshot} product={product} release={release} />
       <SourceLink product={product} />
     </div>
   );
 }
 
-/* ────────── DeviceMaxOsWarning (unchanged behaviour) ────────── */
+/* ────────── DeviceMaxOsWarning ────────── */
 
 function DeviceMaxOsWarning({ snapshot, product, release }) {
   const t = useTranslations();
@@ -426,9 +501,9 @@ function DeviceMaxOsWarning({ snapshot, product, release }) {
   );
 }
 
-/* ────────── Other variants ────────── */
+/* ────────── Other variants (unchanged shape, no in-box reset) ────────── */
 
-function DeviceUncertain({ snapshot, product, release, classification, onReset }) {
+function DeviceUncertain({ snapshot, product, release, classification }) {
   const t = useTranslations();
   const displayLabel = buildDisplayLabel(product, release);
   const ageText = formatYearsAgo(classification.ageYears, t);
@@ -449,7 +524,6 @@ function DeviceUncertain({ snapshot, product, release, classification, onReset }
         icon={AlertTriangle}
         title={t('updates.result.deviceUncertainTitle', { label: displayLabel })}
         subtitle={t('updates.result.deviceUncertainSubtitle', { label: displayLabel, age: ageText })}
-        onReset={onReset}
       >
         {supportInfo ? (
           <p className="text-sm text-foreground/90">
@@ -467,9 +541,7 @@ function DeviceUncertain({ snapshot, product, release, classification, onReset }
             })}
           </p>
         ) : null}
-        <CtaList
-          items={[{ href: ESSENTIALS_HREF, label: t('updates.result.ctaEssentials') }]}
-        />
+        <CtaList items={[{ href: ESSENTIALS_HREF, label: t('updates.result.ctaEssentials') }]} />
       </ResultBox>
       <ThreatModelBlock soft />
       <SourceLink product={product} />
@@ -477,7 +549,7 @@ function DeviceUncertain({ snapshot, product, release, classification, onReset }
   );
 }
 
-function DeviceEol({ product, release, classification, onReset }) {
+function DeviceEol({ product, release, classification }) {
   const t = useTranslations();
   const displayLabel = buildDisplayLabel(product, release);
 
@@ -503,7 +575,6 @@ function DeviceEol({ product, release, classification, onReset }) {
         icon={XCircle}
         title={t('updates.result.deviceUnsupportedTitle', { label: displayLabel })}
         subtitle={subtitle}
-        onReset={onReset}
       >
         <CtaList
           items={[
@@ -518,7 +589,7 @@ function DeviceEol({ product, release, classification, onReset }) {
   );
 }
 
-function OsSupported({ product, release, onReset }) {
+function OsSupported({ product, release }) {
   const t = useTranslations();
   const displayLabel = buildDisplayLabel(product, release);
 
@@ -533,25 +604,22 @@ function OsSupported({ product, release, onReset }) {
             ? t('updates.result.osLatestVersion', { version: release.latestVersion })
             : null
         }
-        onReset={onReset}
       >
-        <SettingsPath osId={product.id} />
+        <SettingsPathInline osId={product.id} />
         {product.id === 'windows' ? (
           <p className="text-sm text-foreground/90">{t('updates.result.windowsUpdateHelp')}</p>
         ) : null}
         {release.isEoas && !release.isEol ? (
           <p className="text-sm text-muted-foreground">{t('updates.result.osEoasNote')}</p>
         ) : null}
-        <CtaList
-          items={[{ href: ESSENTIALS_HREF, label: t('updates.result.ctaEssentials') }]}
-        />
+        <CtaList items={[{ href: ESSENTIALS_HREF, label: t('updates.result.ctaEssentials') }]} />
       </ResultBox>
       <SourceLink product={product} />
     </div>
   );
 }
 
-function OsEol({ product, release, onReset }) {
+function OsEol({ product, release }) {
   const t = useTranslations();
   const displayLabel = buildDisplayLabel(product, release);
 
@@ -574,7 +642,6 @@ function OsEol({ product, release, onReset }) {
             ? t('updates.result.osUnsupportedSubtitleEnded', { date: formatMonthYear(release.eolFrom) })
             : null
         }
-        onReset={onReset}
       >
         {advice ? <p className="text-sm text-foreground/90">{advice}</p> : null}
         <CtaList
@@ -592,7 +659,7 @@ function OsEol({ product, release, onReset }) {
 
 /* ────────── Public component ────────── */
 
-export default function ResultCard({ snapshot, product, release, onReset }) {
+export default function ResultCard({ snapshot, product, release }) {
   const classification = classifyResult({ product, release }, { snapshot });
 
   const Variant = {
@@ -611,7 +678,6 @@ export default function ResultCard({ snapshot, product, release, onReset }) {
       product={product}
       release={release}
       classification={classification}
-      onReset={onReset}
     />
   );
 }

@@ -5,6 +5,7 @@ import {
   classifyResult,
   buildLatestOsReminder,
   buildDeviceMaxOsWarning,
+  buildOsCheckOptions,
 } from '../lib/updates/result-logic';
 
 const NOW = new Date('2026-05-03T00:00:00Z');
@@ -368,5 +369,102 @@ describe('buildDeviceMaxOsWarning', () => {
     const product = snap.products.find((p) => p.id === 'iphone');
     const r = product.releases.find((x) => x.id === '12-pro');
     expect(buildDeviceMaxOsWarning(snap, product, r, null)).toBeNull();
+  });
+});
+
+describe('buildOsCheckOptions', () => {
+  function makeSnapshot() {
+    return normalizeSnapshot({
+      schemaVersion: 1, generatedAt: '2026-05-03T00:00:00Z', source: 'x',
+      products: [
+        {
+          id: 'iphone', label: 'Apple iPhone', kind: 'device', family: 'apple', formFactor: 'phone',
+          endoflifeUrl: 'https://x', releases: [
+            { id: '12-pro', label: '12 Pro', releaseDate: '2020-10-23', supportedOsRange: '14 - 26' },
+            { id: '8', label: '8', releaseDate: '2017-09-22', supportedOsRange: '11 - 16' },
+          ],
+        },
+        {
+          id: 'ios', label: 'Apple iOS', kind: 'os', family: 'apple', formFactor: 'os',
+          endoflifeUrl: 'https://x', releases: [
+            { id: '26', label: '26', releaseDate: '2025-09-15', latestVersion: '26.4.2' },
+            { id: '18', label: '18', releaseDate: '2024-09-16', isEol: true, latestVersion: '18.7.8' },
+          ],
+        },
+        {
+          id: 'macbook-pro', label: 'Apple MacBook Pro', kind: 'device', family: 'apple', formFactor: 'laptop',
+          endoflifeUrl: 'https://x', releases: [
+            { id: 'mbp-2024', label: 'MacBook Pro (2024)', releaseDate: '2024-11-08', supportedOsRange: '26' },
+            { id: 'mbp-2017', label: 'MacBook Pro (2017)', releaseDate: '2017-06-05', supportedOsRange: '13' },
+          ],
+        },
+        {
+          id: 'macos', label: 'Apple macOS', kind: 'os', family: 'apple', formFactor: 'os',
+          endoflifeUrl: 'https://x', releases: [
+            { id: '26', label: 'macOS 26 (Tahoe)', releaseDate: '2025-09-15', latestVersion: '26.0.1', codename: 'Tahoe' },
+            { id: '15', label: 'macOS 15 (Sequoia)', releaseDate: '2024-09-16', latestVersion: '15.7.5', codename: 'Sequoia' },
+            { id: '14', label: 'macOS 14 (Sonoma)', releaseDate: '2023-09-26', latestVersion: '14.8.5', codename: 'Sonoma' },
+            { id: '13', label: 'macOS 13 (Ventura)', releaseDate: '2022-10-24', isEol: true, latestVersion: '13.7.8', codename: 'Ventura' },
+          ],
+        },
+        {
+          id: 'samsung-mobile', label: 'Samsung Mobile', kind: 'device', family: 'samsung', formFactor: 'phone',
+          endoflifeUrl: 'https://x', releases: [
+            { id: 'galaxy-s25', label: 'Galaxy S25', releaseDate: '2025-01-01' },
+          ],
+        },
+        {
+          id: 'android', label: 'Android', kind: 'os', family: 'google', formFactor: 'os',
+          endoflifeUrl: 'https://x', releases: [
+            { id: '16', label: '16', releaseDate: '2025-08-15', latestVersion: '16.0.0' },
+            { id: '15', label: '15', releaseDate: '2024-10-15', latestVersion: '15.0.2' },
+          ],
+        },
+      ],
+    });
+  }
+
+  it('iPhone 12 Pro returns iOS 26 only (one major still supported within range)', () => {
+    const snap = makeSnapshot();
+    const product = snap.products.find((p) => p.id === 'iphone');
+    const r = product.releases.find((x) => x.id === '12-pro');
+    const opts = buildOsCheckOptions(snap, product, r);
+    expect(opts).toEqual([
+      { major: 26, latestVersion: '26.4.2', codename: null, eolFrom: null },
+    ]);
+  });
+
+  it('iPhone 8 (max iOS 16) returns nothing (16 is EOL, no non-EOL within range)', () => {
+    const snap = makeSnapshot();
+    const product = snap.products.find((p) => p.id === 'iphone');
+    const r = product.releases.find((x) => x.id === '8');
+    expect(buildOsCheckOptions(snap, product, r)).toEqual([]);
+  });
+
+  it('MacBook Pro 2024 returns 3 macOS majors (26, 15, 14) with codenames', () => {
+    const snap = makeSnapshot();
+    const product = snap.products.find((p) => p.id === 'macbook-pro');
+    const r = product.releases.find((x) => x.id === 'mbp-2024');
+    const opts = buildOsCheckOptions(snap, product, r);
+    expect(opts).toHaveLength(3);
+    expect(opts.map((o) => o.major)).toEqual([26, 15, 14]);
+    expect(opts[0].codename).toBe('Tahoe');
+    expect(opts[2].codename).toBe('Sonoma');
+  });
+
+  it('MacBook Pro 2017 (max macOS 13) returns nothing (13 EOL, no in-range majors)', () => {
+    const snap = makeSnapshot();
+    const product = snap.products.find((p) => p.id === 'macbook-pro');
+    const r = product.releases.find((x) => x.id === 'mbp-2017');
+    expect(buildOsCheckOptions(snap, product, r)).toEqual([]);
+  });
+
+  it('Samsung phone (no supportedOsRange) returns ALL non-EOL Android majors', () => {
+    const snap = makeSnapshot();
+    const product = snap.products.find((p) => p.id === 'samsung-mobile');
+    const r = product.releases[0];
+    const opts = buildOsCheckOptions(snap, product, r);
+    // No range scoping — both Android 15 and 16 are returned, sorted desc.
+    expect(opts.map((o) => o.major)).toEqual([16, 15]);
   });
 });
