@@ -5,6 +5,11 @@ ErrorDocument 404 /404/index.html
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
+  # Capture REQUEST_URI into an env var so mod_headers can reference it (it can't
+  # access REQUEST_URI directly, only env vars). Used by the Onion-Location header
+  # below. The "-" target is a no-op pass-through; only the [E=...] flag has effect.
+  RewriteRule ^ - [E=ONION_URI:%{REQUEST_URI}]
+
   # Skip if the file/directory already exists at the bare path
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
@@ -40,5 +45,7 @@ ErrorDocument 404 /404/index.html
 
   # Advertise the Tor onion mirror to Tor Browser. OnionSpray serves the onion
   # from a separate host, so this header is only sent from the clearnet origin.
-  Header set Onion-Location "http://actchkqornmbfjlsiepfm57lqlqsbpflih6kzomq73gfsz4cesuhujad.onion%{REQUEST_URI}e"
+  # Reads ONION_URI which is set by the RewriteRule above (mod_headers can't read
+  # REQUEST_URI directly, hence the env-var dance).
+  Header set Onion-Location "http://actchkqornmbfjlsiepfm57lqlqsbpflih6kzomq73gfsz4cesuhujad.onion%{ONION_URI}e"
 </IfModule>
