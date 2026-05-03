@@ -284,6 +284,120 @@ describe('classifyResult — eol-soon warning state', () => {
     expect(c.reason).toBe('os-eolFrom-soon');
     expect(c.effectiveEolFrom).toBe('2026-12-01');
   });
+
+  it('eolFrom in the past stays device-eol, never device-eol-soon', () => {
+    const product = deviceProductLocal();
+    const r = normalizeRelease({
+      id: 'pixel-old', label: 'Old', releaseDate: '2020-01-01', eolFrom: '2026-04-30',
+    });
+    const c = classifyResult({ product, release: r }, { now: NOW });
+    expect(c.variant).toBe('device-eol');
+    expect(c.reason).toBe('eolFrom-past');
+  });
+
+  it('eolFrom 1 month away → device-eol-soon (well inside the warning window)', () => {
+    const product = deviceProductLocal();
+    const r = normalizeRelease({
+      id: 'p', label: 'P', releaseDate: '2022-01-01', eolFrom: '2026-06-03',
+    });
+    expect(classifyResult({ product, release: r }, { now: NOW }).variant).toBe('device-eol-soon');
+  });
+
+  it('eolFrom roughly 9 months away → still device-eol-soon (boundary inclusive)', () => {
+    const product = deviceProductLocal();
+    // ~9 months from 2026-05-03 ≈ 2027-02-01. The 9-month cutoff is months ≤ 9, so this lands inside.
+    const r = normalizeRelease({
+      id: 'p', label: 'P', releaseDate: '2024-02-01', eolFrom: '2027-01-25',
+    });
+    expect(classifyResult({ product, release: r }, { now: NOW }).variant).toBe('device-eol-soon');
+  });
+
+  it('eolFrom well past 9 months away → device-supported', () => {
+    const product = deviceProductLocal();
+    const r = normalizeRelease({
+      id: 'p', label: 'P', releaseDate: '2024-02-01', eolFrom: '2027-06-01',
+    });
+    expect(classifyResult({ product, release: r }, { now: NOW }).variant).toBe('device-supported');
+  });
+
+  it('isMaintained=false beats eol-soon (red wins over yellow)', () => {
+    const product = deviceProductLocal();
+    // Edge case: a release with eolFrom in the warning window AND isMaintained=false.
+    // Rule 2 (unmaintained) fires before rule 4 (eolFrom future) → device-eol.
+    const r = normalizeRelease({
+      id: 'p', label: 'P', releaseDate: '2022-01-01', eolFrom: '2026-09-01', isMaintained: false,
+    });
+    expect(classifyResult({ product, release: r }, { now: NOW }).variant).toBe('device-eol');
+  });
+
+  it('explicit isEol=true with future eolFrom → device-eol (red beats yellow)', () => {
+    const product = deviceProductLocal();
+    const r = normalizeRelease({
+      id: 'p', label: 'P', releaseDate: '2022-01-01', eolFrom: '2026-09-01', isEol: true,
+    });
+    expect(classifyResult({ product, release: r }, { now: NOW }).variant).toBe('device-eol');
+  });
+});
+
+describe('effectiveDeviceEolFrom', () => {
+  function snap() {
+    return normalizeSnapshot({
+      schemaVersion: 1, generatedAt: '2026-05-03T00:00:00Z', source: 'x',
+      products: [
+        {
+          id: 'macbook-pro', label: 'Apple MacBook Pro', kind: 'device', family: 'apple', formFactor: 'laptop',
+          endoflifeUrl: 'https://x', releases: [
+            { id: 'mbp-2018', label: 'MBP 2018', releaseDate: '2018-07-12', supportedOsRange: '15' },
+            { id: 'mbp-direct', label: 'MBP direct EOL', releaseDate: '2020-01-01', eolFrom: '2027-01-01', supportedOsRange: '15' },
+          ],
+        },
+        {
+          id: 'macos', label: 'Apple macOS', kind: 'os', family: 'apple', formFactor: 'os',
+          endoflifeUrl: 'https://x', releases: [
+            { id: '15', label: 'macOS 15', releaseDate: '2024-09-16', latestVersion: '15.7.5', codename: 'Sequoia', eolFrom: '2027-09-15' },
+          ],
+        },
+        {
+          id: 'apple-watch', label: 'Apple Watch', kind: 'device', family: 'apple', formFactor: 'watch',
+          endoflifeUrl: 'https://x', releases: [
+            { id: 'aw1', label: 'Series 1', releaseDate: '2016-09-16' },
+          ],
+        },
+      ],
+    });
+  }
+
+  it('returns the device eolFrom directly when present', async () => {
+    const { effectiveDeviceEolFrom } = await import('../lib/updates/result-logic');
+    const s = snap();
+    const product = s.products.find((p) => p.id === 'macbook-pro');
+    const r = product.releases.find((x) => x.id === 'mbp-direct');
+    expect(effectiveDeviceEolFrom(s, product, r)).toBe('2027-01-01');
+  });
+
+  it('falls back to max-supported macOS eolFrom when no device date', async () => {
+    const { effectiveDeviceEolFrom } = await import('../lib/updates/result-logic');
+    const s = snap();
+    const product = s.products.find((p) => p.id === 'macbook-pro');
+    const r = product.releases.find((x) => x.id === 'mbp-2018');
+    expect(effectiveDeviceEolFrom(s, product, r)).toBe('2027-09-15');
+  });
+
+  it('returns null for devices with no eolFrom and no supportedOsRange', async () => {
+    const { effectiveDeviceEolFrom } = await import('../lib/updates/result-logic');
+    const s = snap();
+    const product = s.products.find((p) => p.id === 'apple-watch');
+    const r = product.releases[0];
+    expect(effectiveDeviceEolFrom(s, product, r)).toBeNull();
+  });
+
+  it('returns null when called without a snapshot', async () => {
+    const { effectiveDeviceEolFrom } = await import('../lib/updates/result-logic');
+    const s = snap();
+    const product = s.products.find((p) => p.id === 'macbook-pro');
+    const r = product.releases.find((x) => x.id === 'mbp-2018');
+    expect(effectiveDeviceEolFrom(null, product, r)).toBeNull();
+  });
 });
 
 describe('buildLatestOsReminder', () => {
