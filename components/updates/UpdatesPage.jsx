@@ -199,7 +199,7 @@ export default function UpdatesPage() {
                 rel="noopener noreferrer"
                 className="text-primary underline"
               >
-                {chunks ?? t('updates.snapshotStaleBannerLink')}
+                {chunks}
               </a>
             ),
           })}
@@ -272,14 +272,14 @@ function FooterCredit() {
   return (
     <p className="pt-4 text-center text-xs text-muted-foreground">
       {t.rich('updates.footer', {
-        endoflife: () => (
+        endoflife: (chunks) => (
           <a
             href="https://endoflife.date"
             target="_blank"
             rel="noopener noreferrer"
             className="underline hover:text-foreground"
           >
-            {t('updates.footerEndoflifeLinkText')}
+            {chunks}
           </a>
         ),
       })}

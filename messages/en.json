@@ -352,14 +352,11 @@
     "searchAriaLabel": "Search for your device or operating system",
     "clearAriaLabel": "Clear search",
     "noMatches": "No matches in our list.",
-    "noMatchesHelp": "Try the manufacturer name (e.g. \"Galaxy A14\" instead of just \"A14\"), or check {link} for devices we don't track.",
+    "noMatchesHelp": "Try the manufacturer name (e.g. \"Galaxy A14\" instead of just \"A14\"), or check <link>endoflife.date</link> for devices we don't track.",
     "noMatchesSupported": "We currently track Apple, Google, Samsung, Motorola, OnePlus, Nokia, plus iOS, iPadOS, macOS, Android, and Windows.",
-    "endoflifeLinkText": "endoflife.date",
     "loading": "Loading device list...",
-    "loadError": "We couldn't load the device list. {retryLink} or check {link} directly.",
-    "retryLink": "Try again",
-    "snapshotStaleBanner": "Our device list may be out of date. Last updated {date}. {link}",
-    "snapshotStaleBannerLink": "Check endoflife.date directly",
+    "loadError": "We couldn't load the device list. <retryLink>Try again</retryLink> or check <link>endoflife.date</link> directly.",
+    "snapshotStaleBanner": "Our device list may be out of date. Last updated {date}. <link>Check endoflife.date directly</link>",
     "categoryPill": {
       "phone": "Phone",
       "tablet": "Tablet",
@@ -410,12 +407,11 @@
     },
     "otherInfo": {
       "title": "Other devices",
-      "body": "We currently track Apple, Google, Samsung, Motorola, OnePlus, and Nokia devices, plus iOS, iPadOS, macOS, Android, and Windows. For anything else, check {link} directly."
+      "body": "We currently track Apple, Google, Samsung, Motorola, OnePlus, and Nokia devices, plus iOS, iPadOS, macOS, Android, and Windows. For anything else, check <link>endoflife.date</link> directly."
     },
     "result": {
       "checkAnother": "Check another device",
-      "source": "Source: {link}",
-      "sourceLinkText": "endoflife.date",
+      "source": "Source: <link>endoflife.date</link>",
       "settingsPathPrefix": "Check yours at",
       "settingsPath": {
         "ios": "Settings → General → Software Update",
@@ -436,7 +432,7 @@
       "ageYearsAgo": "{years, plural, =0 {this year} =1 {1 year ago} other {# years ago}}",
       "deviceUncertainTitle": "We can't confirm whether {label} is still receiving updates.",
       "deviceUncertainSubtitle": "Released {age}. The manufacturer hasn't published an end-of-support date, and devices this old may or may not still be patched.",
-      "deviceUncertainCheck": "Check the manufacturer's support page: {link}.",
+      "deviceUncertainCheck": "Check the manufacturer's support page: <link></link>.",
       "manufacturerSupport": {
         "apple": { "label": "Apple Support", "url": "https://support.apple.com/" },
         "google": { "label": "Google Pixel support", "url": "https://support.google.com/pixelphone/answer/4457705" },
@@ -475,11 +471,27 @@
       "threatModelHeader": "Why this matters",
       "threatModel": "Phones that no longer receive security updates accumulate publicly known vulnerabilities. That raises the risk if your device is seized at a border, taken by police, or targeted with spyware.",
       "threatModelSoft": "Until you confirm, treat this device as potentially out-of-date for sensitive work.",
+      "whatToDo": "What to do",
       "ctaEssentials": "Read our digital security essentials",
       "ctaSecurityChecklist": "See the security essentials checklist",
+      "deviceConfirmedShort": "{label} is still receiving security updates.",
+      "osCheckStep": {
+        "heading": "Now make sure your operating system is up to date",
+        "subheading": "The latest {os} is {version}.",
+        "subheadingNoVersion": "Make sure your device is on the latest available version.",
+        "settingsPathPrefix": "Open",
+        "confirmButton": "Done — I'm on the latest version",
+        "skipNote": "If you can't update right now, your device is still safer than out-of-date hardware, but plan to update soon."
+      },
+      "finalSuccess": {
+        "heading": "You're up to date.",
+        "deviceCheck": "{label} is still receiving security updates.",
+        "deviceCheckUntil": "{label} is receiving security updates through {date}.",
+        "osCheck": "{os} is on the latest version ({version}).",
+        "osCheckNoVersion": "Operating system is up to date."
+      },
       "windowsUpdateHelp": "Open Settings → Windows Update and click 'Check for updates'."
     },
-    "footer": "Powered by {endoflife} · Updated daily.",
-    "footerEndoflifeLinkText": "endoflife.date"
+    "footer": "Powered by <endoflife>endoflife.date</endoflife> · Updated daily."
   }
 }
