@@ -1,0 +1,126 @@
+{
+  "_comment": "Hand-curated Mac → max-supported-macOS major version. endoflife.date does not track Mac hardware EOL because Apple does not publish per-model dates; instead each new macOS silently drops some Macs. We fill that gap here. Update once a year when a new macOS releases. Cross-check against Apple's compatibility list for the new macOS and bump maxMacOs entries that still appear on the list. Coverage: 2018+ models. Older Macs are always EOL via the macOS flow.",
+  "schemaVersion": 1,
+  "lastVerified": "2026-05-03",
+  "sources": [
+    "https://support.apple.com/en-us/120282",
+    "https://en.wikipedia.org/wiki/MacOS_Tahoe_26",
+    "https://en.wikipedia.org/wiki/MacOS_Sequoia"
+  ],
+  "products": [
+    {
+      "id": "macbook-pro",
+      "label": "Apple MacBook Pro",
+      "kind": "device",
+      "family": "apple",
+      "formFactor": "laptop",
+      "endoflifeUrl": "https://support.apple.com/en-us/HT201624",
+      "releases": [
+        { "id": "14in-2024-m4",       "label": "MacBook Pro 14-inch (2024, M4)",      "releaseDate": "2024-11-08", "supportedOsRange": "26" },
+        { "id": "16in-2024-m4",       "label": "MacBook Pro 16-inch (2024, M4)",      "releaseDate": "2024-11-08", "supportedOsRange": "26" },
+        { "id": "14in-2023-m3",       "label": "MacBook Pro 14-inch (2023, M3)",      "releaseDate": "2023-11-07", "supportedOsRange": "26" },
+        { "id": "16in-2023-m3",       "label": "MacBook Pro 16-inch (2023, M3)",      "releaseDate": "2023-11-07", "supportedOsRange": "26" },
+        { "id": "14in-2023-m2",       "label": "MacBook Pro 14-inch (2023, M2 Pro/Max)", "releaseDate": "2023-01-17", "supportedOsRange": "26" },
+        { "id": "16in-2023-m2",       "label": "MacBook Pro 16-inch (2023, M2 Pro/Max)", "releaseDate": "2023-01-17", "supportedOsRange": "26" },
+        { "id": "13in-2022-m2",       "label": "MacBook Pro 13-inch (2022, M2)",       "releaseDate": "2022-06-24", "supportedOsRange": "26" },
+        { "id": "14in-2021-m1",       "label": "MacBook Pro 14-inch (2021, M1 Pro/Max)", "releaseDate": "2021-10-26", "supportedOsRange": "26" },
+        { "id": "16in-2021-m1",       "label": "MacBook Pro 16-inch (2021, M1 Pro/Max)", "releaseDate": "2021-10-26", "supportedOsRange": "26" },
+        { "id": "13in-2020-m1",       "label": "MacBook Pro 13-inch (2020, M1)",        "releaseDate": "2020-11-17", "supportedOsRange": "26" },
+        { "id": "13in-2020-intel-4tb","label": "MacBook Pro 13-inch (2020, Intel, 4 Thunderbolt ports)", "releaseDate": "2020-05-04", "supportedOsRange": "26" },
+        { "id": "13in-2020-intel-2tb","label": "MacBook Pro 13-inch (2020, Intel, 2 Thunderbolt ports)", "releaseDate": "2020-05-04", "supportedOsRange": "15" },
+        { "id": "16in-2019-intel",    "label": "MacBook Pro 16-inch (2019)",            "releaseDate": "2019-11-13", "supportedOsRange": "26" },
+        { "id": "13in-2019-intel-4tb","label": "MacBook Pro 13-inch (2019, 4 Thunderbolt ports)", "releaseDate": "2019-07-09", "supportedOsRange": "15" },
+        { "id": "13in-2019-intel-2tb","label": "MacBook Pro 13-inch (2019, 2 Thunderbolt ports)", "releaseDate": "2019-07-09", "supportedOsRange": "15" },
+        { "id": "15in-2019-intel",    "label": "MacBook Pro 15-inch (2019)",            "releaseDate": "2019-05-21", "supportedOsRange": "15" },
+        { "id": "13in-2018-intel",    "label": "MacBook Pro 13-inch (2018)",            "releaseDate": "2018-07-12", "supportedOsRange": "15" },
+        { "id": "15in-2018-intel",    "label": "MacBook Pro 15-inch (2018)",            "releaseDate": "2018-07-12", "supportedOsRange": "15" }
+      ]
+    },
+    {
+      "id": "macbook-air",
+      "label": "Apple MacBook Air",
+      "kind": "device",
+      "family": "apple",
+      "formFactor": "laptop",
+      "endoflifeUrl": "https://support.apple.com/en-us/HT201862",
+      "releases": [
+        { "id": "13in-2025-m4", "label": "MacBook Air 13-inch (2025, M4)", "releaseDate": "2025-03-12", "supportedOsRange": "26" },
+        { "id": "15in-2025-m4", "label": "MacBook Air 15-inch (2025, M4)", "releaseDate": "2025-03-12", "supportedOsRange": "26" },
+        { "id": "13in-2024-m3", "label": "MacBook Air 13-inch (2024, M3)", "releaseDate": "2024-03-08", "supportedOsRange": "26" },
+        { "id": "15in-2024-m3", "label": "MacBook Air 15-inch (2024, M3)", "releaseDate": "2024-03-08", "supportedOsRange": "26" },
+        { "id": "15in-2023-m2", "label": "MacBook Air 15-inch (2023, M2)", "releaseDate": "2023-06-13", "supportedOsRange": "26" },
+        { "id": "13in-2022-m2", "label": "MacBook Air 13-inch (2022, M2)", "releaseDate": "2022-07-15", "supportedOsRange": "26" },
+        { "id": "13in-2020-m1", "label": "MacBook Air 13-inch (2020, M1)", "releaseDate": "2020-11-17", "supportedOsRange": "26" },
+        { "id": "13in-2020-intel", "label": "MacBook Air 13-inch (2020, Intel)", "releaseDate": "2020-03-18", "supportedOsRange": "15" },
+        { "id": "13in-2019-intel", "label": "MacBook Air 13-inch (2019)", "releaseDate": "2019-07-09", "supportedOsRange": "14" },
+        { "id": "13in-2018-intel", "label": "MacBook Air 13-inch (2018)", "releaseDate": "2018-11-07", "supportedOsRange": "14" }
+      ]
+    },
+    {
+      "id": "mac-mini",
+      "label": "Apple Mac mini",
+      "kind": "device",
+      "family": "apple",
+      "formFactor": "desktop",
+      "endoflifeUrl": "https://support.apple.com/en-us/HT201894",
+      "releases": [
+        { "id": "2024-m4",    "label": "Mac mini (2024, M4 / M4 Pro)", "releaseDate": "2024-11-08", "supportedOsRange": "26" },
+        { "id": "2023-m2",    "label": "Mac mini (2023, M2 / M2 Pro)", "releaseDate": "2023-01-17", "supportedOsRange": "26" },
+        { "id": "2020-m1",    "label": "Mac mini (2020, M1)",          "releaseDate": "2020-11-17", "supportedOsRange": "26" },
+        { "id": "2018-intel", "label": "Mac mini (2018, Intel)",       "releaseDate": "2018-11-07", "supportedOsRange": "15" }
+      ]
+    },
+    {
+      "id": "imac",
+      "label": "Apple iMac",
+      "kind": "device",
+      "family": "apple",
+      "formFactor": "desktop",
+      "endoflifeUrl": "https://support.apple.com/en-us/HT201634",
+      "releases": [
+        { "id": "24in-2024-m4", "label": "iMac 24-inch (2024, M4)", "releaseDate": "2024-11-08", "supportedOsRange": "26" },
+        { "id": "24in-2023-m3", "label": "iMac 24-inch (2023, M3)", "releaseDate": "2023-11-07", "supportedOsRange": "26" },
+        { "id": "24in-2021-m1", "label": "iMac 24-inch (2021, M1)", "releaseDate": "2021-05-21", "supportedOsRange": "26" },
+        { "id": "27in-2020-intel",   "label": "iMac 27-inch (Retina 5K, 2020)",   "releaseDate": "2020-08-04", "supportedOsRange": "15" },
+        { "id": "27in-2019-intel",   "label": "iMac 27-inch (Retina 5K, 2019)",   "releaseDate": "2019-03-19", "supportedOsRange": "15" },
+        { "id": "215in-2019-intel",  "label": "iMac 21.5-inch (Retina 4K, 2019)", "releaseDate": "2019-03-19", "supportedOsRange": "15" }
+      ]
+    },
+    {
+      "id": "imac-pro",
+      "label": "Apple iMac Pro",
+      "kind": "device",
+      "family": "apple",
+      "formFactor": "desktop",
+      "endoflifeUrl": "https://support.apple.com/en-us/HT208068",
+      "releases": [
+        { "id": "2017", "label": "iMac Pro (2017)", "releaseDate": "2017-12-14", "supportedOsRange": "15" }
+      ]
+    },
+    {
+      "id": "mac-studio",
+      "label": "Apple Mac Studio",
+      "kind": "device",
+      "family": "apple",
+      "formFactor": "desktop",
+      "endoflifeUrl": "https://support.apple.com/en-us/111900",
+      "releases": [
+        { "id": "2025-m4", "label": "Mac Studio (2025, M4 Max / M3 Ultra)", "releaseDate": "2025-03-12", "supportedOsRange": "26" },
+        { "id": "2023-m2", "label": "Mac Studio (2023, M2 Max / M2 Ultra)", "releaseDate": "2023-06-13", "supportedOsRange": "26" },
+        { "id": "2022-m1", "label": "Mac Studio (2022, M1 Max / M1 Ultra)", "releaseDate": "2022-03-18", "supportedOsRange": "26" }
+      ]
+    },
+    {
+      "id": "mac-pro",
+      "label": "Apple Mac Pro",
+      "kind": "device",
+      "family": "apple",
+      "formFactor": "desktop",
+      "endoflifeUrl": "https://support.apple.com/en-us/HT201796",
+      "releases": [
+        { "id": "2023-m2",    "label": "Mac Pro (2023, M2 Ultra)", "releaseDate": "2023-06-13", "supportedOsRange": "26" },
+        { "id": "2019-intel", "label": "Mac Pro (2019, Intel)",    "releaseDate": "2019-12-10", "supportedOsRange": "26" }
+      ]
+    }
+  ]
+}
