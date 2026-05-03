@@ -338,5 +338,144 @@
     "previousChanges": "Previous changes",
     "noEntries": "No changelog entries found.",
     "majorUpdate": "Major update"
+  },
+  "updates": {
+    "metaTitle": "Is your device still receiving security updates? | Activist Checklist",
+    "metaDescription": "Check whether your phone, tablet, watch, or laptop is still getting security updates. Out-of-date devices accumulate publicly known vulnerabilities and are easier to compromise if seized or targeted.",
+    "title": "Is your device still receiving security updates?",
+    "intro": "Type your device or operating system below. We'll tell you whether it's still getting patches, what version you should be on, and what to do if it isn't.",
+    "searchPlaceholder": "e.g. iPhone 12 Pro, Pixel 7, Windows 10",
+    "searchAriaLabel": "Search for your device or operating system",
+    "clearAriaLabel": "Clear search",
+    "noMatches": "No matches.",
+    "noMatchesHelp": "Don't see your device? Check {link} directly.",
+    "endoflifeLinkText": "endoflife.date",
+    "loading": "Loading device list...",
+    "loadError": "We couldn't load the device list. {retryLink} or check {link} directly.",
+    "retryLink": "Try again",
+    "snapshotStaleBanner": "Our device list may be out of date. Last updated {date}. {link}",
+    "snapshotStaleBannerLink": "Check endoflife.date directly",
+    "categoryPill": {
+      "phone": "Phone",
+      "tablet": "Tablet",
+      "watch": "Watch",
+      "laptop": "Laptop",
+      "desktop": "Desktop",
+      "os": "OS"
+    },
+    "family": {
+      "apple": {
+        "buttonTitle": "Apple",
+        "buttonSubtitle": "How to find your model",
+        "modalTitle": "Find your Apple device",
+        "modalSteps": [
+          "On iPhone or iPad: open Settings → General → About. Your model name (e.g. iPhone 12 Pro) is at the top.",
+          "On Mac: click the Apple menu → About This Mac. Your model and year are listed there.",
+          "On Apple Watch: open the Watch app on your iPhone, then My Watch → General → About."
+        ],
+        "modalNote": "Then come back here and search for it."
+      },
+      "android": {
+        "buttonTitle": "Android",
+        "buttonSubtitle": "How to find your model",
+        "modalTitle": "Find your Android device",
+        "modalSteps": [
+          "Open Settings → About phone (or Settings → System → About phone on some devices).",
+          "Your model name appears near the top.",
+          "To check your Android version: same screen, scroll to Android version."
+        ],
+        "modalNote": "Manufacturers we support: Google Pixel, Samsung Galaxy, Motorola, OnePlus, and Nokia."
+      },
+      "windows": {
+        "buttonTitle": "Windows",
+        "buttonSubtitle": "How to find your version",
+        "modalTitle": "Find your Windows version",
+        "modalSteps": [
+          "Press Windows key + R to open the Run dialog.",
+          "Type winver and press Enter.",
+          "The dialog shows your Windows version (e.g. Windows 11 24H2)."
+        ],
+        "modalNote": "We can't check Windows laptops by model — only Windows itself."
+      },
+      "other": {
+        "buttonTitle": "Other",
+        "buttonSubtitle": "Unsupported devices",
+        "modalTitle": "Other devices",
+        "modalBody": "We currently support Apple, Google, Samsung, Motorola, OnePlus, and Nokia devices, plus iOS, iPadOS, macOS, Android, and Windows operating systems. For other devices (Linux laptops, niche Android brands, BlackBerry, etc.), check the manufacturer's support page or {link} directly.",
+        "modalLink": "endoflife.date"
+      }
+    },
+    "modalClose": "Close",
+    "filterChip": {
+      "active": "Showing {family} only",
+      "remove": "Remove filter"
+    },
+    "result": {
+      "checkAnother": "Check another device",
+      "source": "Source: {link}",
+      "sourceLinkText": "endoflife.date",
+      "settingsPathPrefix": "Check yours at",
+      "settingsPath": {
+        "ios": "Settings → General → Software Update",
+        "ipados": "Settings → General → Software Update",
+        "macos": "Apple menu → System Settings → General → Software Update",
+        "android": "Settings → System → Software update",
+        "windows": "Settings → Windows Update",
+        "watchos": "Watch app on your iPhone → My Watch → General → Software Update"
+      },
+      "deviceSupportedTitle": "{label} is still receiving security updates.",
+      "deviceSupportedSubtitleUntil": "Updates expected through {date}.",
+      "deviceSupportedSubtitleRecent": "End-of-support date not yet announced.",
+      "deviceUnsupportedTitle": "{label} is no longer receiving security updates.",
+      "deviceUnsupportedSubtitleEnded": "Security support ended {date}.",
+      "deviceUnsupportedSubtitleUnmaintained": "The manufacturer has stopped issuing security updates.",
+      "deviceUnsupportedSubtitleAge": "Released {age}. No published end-of-support date and the manufacturer doesn't appear to be issuing updates.",
+      "deviceUncertainTitle": "We can't confirm whether {label} is still receiving updates.",
+      "deviceUncertainSubtitle": "Released {age}. The manufacturer hasn't published an end-of-support date, and devices this old may or may not still be patched.",
+      "deviceUncertainCheck": "Check the manufacturer's support page: {link}.",
+      "manufacturerSupport": {
+        "apple": { "label": "Apple Support", "url": "https://support.apple.com/" },
+        "google": { "label": "Google Pixel support", "url": "https://support.google.com/pixelphone/answer/4457705" },
+        "samsung": { "label": "Samsung Mobile Security", "url": "https://security.samsungmobile.com/workScope.smsb" },
+        "motorola": { "label": "Motorola software updates", "url": "https://en-us.support.motorola.com/app/software-security-update" },
+        "oneplus": { "label": "OnePlus community", "url": "https://www.oneplus.com/support" },
+        "nokia": { "label": "Nokia security updates", "url": "https://www.nokia.com/phones/en_int/security-updates" }
+      },
+      "osSupportedTitle": "{label} is still receiving security updates.",
+      "osLatestVersion": "Latest version: {version}.",
+      "osEoasNote": "The vendor has moved this version to security-only updates. Plan an upgrade when convenient.",
+      "osUnsupportedTitle": "{label} is no longer receiving security updates.",
+      "osUnsupportedSubtitleEnded": "Support ended {date}.",
+      "osUpgradeAdvice": {
+        "ios": "Update to the latest iOS, or replace the device if it can't run a supported version.",
+        "ipados": "Update to the latest iPadOS, or replace the device if it can't run a supported version.",
+        "macos": "Update to a newer macOS version, or replace the device if it can't run a supported version.",
+        "android": "Update to a newer Android version if your device supports it, or replace the device.",
+        "windows": "Upgrade to Windows 11. If your PC isn't compatible, plan a hardware replacement."
+      },
+      "latestOsReminderTitle": "Make sure you're up to date",
+      "latestOsReminderWithVersion": "Make sure you're running {os} {version}.",
+      "latestOsReminderFamilyLatest": "Make sure you're running the latest {os} (currently {version}).",
+      "latestOsReminderGeneric": "Make sure your device is fully updated.",
+      "supportedOsLabel": {
+        "ios": "iOS",
+        "ipados": "iPadOS",
+        "macos": "macOS",
+        "android": "Android"
+      },
+      "deviceMaxOsWarningTitle": "A note about your device's OS",
+      "deviceMaxOsWarning": "Your {label} only supports up to {os} {maxVersion}. {os} {maxVersion} will lose security updates before {os} {latestVersion} does. Newer devices will keep getting patches longer.",
+      "deviceMaxOsWarningWithDate": "Your {label} only supports up to {os} {maxVersion}, which is expected to lose security updates around {eolDate}. Newer devices that can run {os} {latestVersion} will keep getting patches longer.",
+      "deviceMaxOsEolWarning": "Your {label} tops out at {os} {maxVersion}, which has officially ended support. You may still receive occasional security patches, but treat this device as low-trust for sensitive work and plan to replace it.",
+      "deviceUpgradePlan": "If long-term security matters for your work, plan a hardware upgrade.",
+      "threatModelHeader": "Why this matters",
+      "threatModel": "Phones that no longer receive security updates accumulate publicly known vulnerabilities. That raises the risk if your device is seized at a border, taken by police, or targeted with spyware.",
+      "threatModelSoft": "Until you confirm, treat this device as potentially out-of-date for sensitive work.",
+      "ctaEssentials": "Read our digital security essentials",
+      "ctaSecurityChecklist": "See the security essentials checklist",
+      "windowsUpdateHelp": "Open Settings → Windows Update and click 'Check for updates'."
+    },
+    "footer": "Powered by {endoflife} · Updated daily.",
+    "footerEndoflifeLinkText": "endoflife.date"
   }
 }
