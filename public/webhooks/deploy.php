@@ -533,11 +533,80 @@ if ($code !== 0) {
     ? 'disabled'
     : ($logged ? 'written' : 'WRITE FAILED - check PHP error log');
 
+  // Sanitize before embedding in the HTTP response (which surfaces in the GitHub
+  // Actions log and could be public). Collect every plausible username and home
+  // directory from PHP-side detection AND from the script's own output (in case
+  // PHP-FPM runs as a different user than the deploy command, or POSIX is disabled).
+  $combinedOutput = (is_string($stderr) ? $stderr : '') . "\n" . (is_string($stdout) ? $stdout : '');
+  $homesForSan = [];
+  $usersForSan = [];
+  if (isset($env['HOME']) && is_string($env['HOME']) && $env['HOME'] !== '') {
+    $homesForSan[] = $env['HOME'];
+  }
+  if (isset($env['USER']) && is_string($env['USER']) && $env['USER'] !== '') {
+    $usersForSan[] = $env['USER'];
+  }
+  if (function_exists('posix_geteuid') && function_exists('posix_getpwuid')) {
+    $info = @posix_getpwuid(posix_geteuid());
+    if (is_array($info)) {
+      if (isset($info['name']) && is_string($info['name'])) $usersForSan[] = $info['name'];
+      if (isset($info['dir']) && is_string($info['dir'])) $homesForSan[] = $info['dir'];
+    }
+  }
+  if (preg_match_all('/\b(?:user|whoami|USER|LOGNAME)=(\S+)/', $combinedOutput, $matches)) {
+    foreach ($matches[1] as $u) $usersForSan[] = $u;
+  }
+  if (preg_match_all('/\bHOME=(\S+)/', $combinedOutput, $matches)) {
+    foreach ($matches[1] as $h) {
+      // Skip already-sanitized values from prior log lines if any.
+      if ($h !== '~' && $h !== '') $homesForSan[] = $h;
+    }
+  }
+  // Longest paths first so /home/x/y is replaced before /home/x.
+  $homesForSan = array_values(array_unique($homesForSan));
+  $usersForSan = array_values(array_unique($usersForSan));
+  usort($homesForSan, fn($a, $b) => strlen($b) - strlen($a));
+
+  $sanitize = function (string $s) use ($homesForSan, $usersForSan, $secret, $deployEnv): string {
+    if ($secret !== '' && strlen($secret) >= 8) {
+      $s = str_replace($secret, '[REDACTED]', $s);
+    }
+    foreach ($deployEnv as $k => $v) {
+      if (!is_string($v) || $v === '') continue;
+      if (preg_match('/(SECRET|TOKEN|PASSWORD|PASS|KEY|CREDENTIAL|HMAC)/i', (string) $k)) {
+        $s = str_replace($v, '[REDACTED]', $s);
+      }
+    }
+    foreach ($usersForSan as $u) {
+      if ($u === '' || $u === 'root' || strlen($u) < 3) continue;
+      $s = preg_replace('/\b' . preg_quote($u, '/') . '\b/', '[user]', $s) ?? $s;
+    }
+    foreach ($homesForSan as $h) {
+      if ($h === '' || $h === '/' || $h === DIRECTORY_SEPARATOR) continue;
+      $s = str_replace(rtrim($h, DIRECTORY_SEPARATOR), '~', $s);
+    }
+    return $s;
+  };
+
+  $tailBytes = 50000;
+  $stderrTail = is_string($stderr) ? $sanitize((string) substr($stderr, -$tailBytes)) : '';
+  $stdoutTail = is_string($stdout) ? $sanitize((string) substr($stdout, -$tailBytes)) : '';
+  $stderrTail = $stderrTail === '' ? '(empty)' : $stderrTail;
+  $stdoutTail = $stdoutTail === '' ? '(empty)' : $stdoutTail;
+
   $body = <<<TXT
 Deploy failed (exit code {$code}).
 
 GitHub delivery: {$deliveryLine}
 Server log: {$logStatus}
+
+Output below: \$HOME paths collapsed to ~, secrets redacted.
+
+--- script stderr (last {$tailBytes} bytes) ---
+{$stderrTail}
+
+--- script stdout (last {$tailBytes} bytes) ---
+{$stdoutTail}
 TXT;
   exit($body);
 }
