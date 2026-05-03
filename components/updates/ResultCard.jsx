@@ -456,7 +456,7 @@ function OsEol({ product, release, onReset }) {
 /* ────────── Public component ────────── */
 
 export default function ResultCard({ snapshot, product, release, onReset }) {
-  const classification = classifyResult({ product, release });
+  const classification = classifyResult({ product, release }, { snapshot });
 
   const Variant = {
     'device-supported': DeviceSupported,

@@ -118,45 +118,24 @@ describe('searchIndex', () => {
     expect(searchIndex(rows, fuse, 'a', null).length).toBeLessThanOrEqual(8);
   });
 
-  it('priority context puts matching products first, dims non-priority matches', () => {
-    const rows = buildSearchIndex(SNAP, { now: NOW });
-    const fuse = buildFuse(rows);
-    // Priority = iPhone, search "Pixel" — pixel matches but is non-priority,
-    // so it should appear dimmed (no priority head, only dimmed tail).
-    const results = searchIndex(rows, fuse, 'Pixel', ['iphone']);
-    expect(results.length).toBeGreaterThan(0);
-    expect(results[0].productId).toBe('pixel');
-    expect(results[0].dimmed).toBe(true);
-  });
-
-  it('priority context surfaces priority products even with no exact match', () => {
+  it('priority context puts matching products first; non-priority matches still appear', () => {
     const rows = buildSearchIndex(SNAP, { now: NOW });
     const fuse = buildFuse(rows);
     // Priority = iPhone, search "Pro" — both iPhone Pros and MacBook Pros match.
-    // iPhone results should rank ahead and not be dimmed.
+    // The first result must be an iPhone (priority bubbles up); non-priority items
+    // still appear afterward at full opacity.
     const results = searchIndex(rows, fuse, 'Pro', ['iphone']);
-    const firstIphone = results.find((r) => r.productId === 'iphone');
-    expect(firstIphone).toBeDefined();
-    expect(firstIphone.dimmed).toBeFalsy();
-  });
-
-  it('exact-name match in non-priority set is NOT dimmed (user typed it explicitly)', () => {
-    const rows = buildSearchIndex(SNAP, { now: NOW });
-    const fuse = buildFuse(rows);
-    // Priority = iPhone, search the literal Pixel display label.
-    const results = searchIndex(rows, fuse, 'Pixel Pixel 10', ['iphone']);
-    const pixel = results.find((r) => r.productId === 'pixel' && r.releaseId === '10');
-    if (pixel) expect(pixel.dimmed).toBeFalsy();
-  });
-
-  it('empty query + priority → priority rows by recency, no dimmed tail when there are enough priority items', () => {
-    const rows = buildSearchIndex(SNAP, { now: NOW });
-    const fuse = buildFuse(rows);
-    // Priority = iPhone (3 releases) — small set, so we expect 3 priority + dimmed tail.
-    const results = searchIndex(rows, fuse, '', ['iphone']);
-    expect(results.length).toBeGreaterThan(0);
-    // First items must all be the priority product.
     expect(results[0].productId).toBe('iphone');
-    expect(results[0].dimmed).toBeFalsy();
+    expect(results.some((r) => r.productId === 'macbook-pro')).toBe(true);
+  });
+
+  it('non-priority results without query still surface', () => {
+    const rows = buildSearchIndex(SNAP, { now: NOW });
+    const fuse = buildFuse(rows);
+    // Priority = iPhone (3 releases) → first 3 are iPhones, then the rest by recency.
+    const results = searchIndex(rows, fuse, '', ['iphone']);
+    expect(results.length).toBeGreaterThan(3);
+    expect(results.slice(0, 3).every((r) => r.productId === 'iphone')).toBe(true);
+    expect(results.slice(3).some((r) => r.productId !== 'iphone')).toBe(true);
   });
 });

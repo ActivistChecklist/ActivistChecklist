@@ -134,6 +134,85 @@ describe('classifyResult — device decision tree', () => {
   });
 });
 
+describe('classifyResult — supportedOsRange cross-reference', () => {
+  // Snapshot mirroring the real iOS / iPhone shape so the cross-reference rule
+  // can navigate from device → osProduct → latestSupportedOsRelease.
+  function makeSnapshot() {
+    return normalizeSnapshot({
+      schemaVersion: 1, generatedAt: '2026-05-03T00:00:00Z', source: 'x',
+      products: [
+        {
+          id: 'iphone', label: 'Apple iPhone', kind: 'device', family: 'apple', formFactor: 'phone',
+          endoflifeUrl: 'https://x', releases: [
+            { id: '13', label: '13', releaseDate: '2021-09-24', supportedOsRange: '15 - 26' },
+            { id: '11', label: '11', releaseDate: '2019-09-20', supportedOsRange: '13 - 26' },
+            { id: '8', label: '8', releaseDate: '2017-09-22', supportedOsRange: '11 - 16' },
+          ],
+        },
+        {
+          id: 'ios', label: 'Apple iOS', kind: 'os', family: 'apple', formFactor: 'os',
+          endoflifeUrl: 'https://x', releases: [
+            { id: '26', label: '26', releaseDate: '2025-09-15' },
+            { id: '18', label: '18', releaseDate: '2024-09-16', isEol: true, eolFrom: '2026-04-22' },
+            { id: '16', label: '16', releaseDate: '2022-09-12', isEol: true, eolFrom: '2025-09-15' },
+          ],
+        },
+      ],
+    });
+  }
+
+  it('iPhone 13 (4.6 yrs old, max iOS 26 = current) → device-supported via os-current rule', () => {
+    // Without the snapshot rule, this would fall to age-heuristic-mid (yellow). Regression
+    // test for the bug where endoflife shows "Yes still supported" but our app said "uncertain".
+    const snap = makeSnapshot();
+    const product = snap.products.find((p) => p.id === 'iphone');
+    const r = product.releases.find((x) => x.id === '13');
+    const c = classifyResult({ product, release: r }, { now: NOW, snapshot: snap });
+    expect(c.variant).toBe('device-supported');
+    expect(c.reason).toBe('os-current');
+  });
+
+  it('iPhone 11 (6.6 yrs old, max iOS 26 = current) → device-supported (overrides age heuristic)', () => {
+    const snap = makeSnapshot();
+    const product = snap.products.find((p) => p.id === 'iphone');
+    const r = product.releases.find((x) => x.id === '11');
+    const c = classifyResult({ product, release: r }, { now: NOW, snapshot: snap });
+    // 11 is over 6 years old — without supportedOsRange it would be age-heuristic-old (red).
+    expect(c.variant).toBe('device-supported');
+    expect(c.reason).toBe('os-current');
+  });
+
+  it('iPhone 8 (max iOS 16 < current 26) → does NOT trigger os-current; falls through', () => {
+    const snap = makeSnapshot();
+    const product = snap.products.find((p) => p.id === 'iphone');
+    // Strip the explicit eolFrom so we test the cross-reference path specifically.
+    const r = { ...product.releases.find((x) => x.id === '8'), isEol: false, eolFrom: null, isMaintained: true };
+    const c = classifyResult({ product, release: r }, { now: NOW, snapshot: snap });
+    // With max=16 < latest=26, the os-current rule does NOT fire. Age 8.6y → age-heuristic-old.
+    expect(c.variant).toBe('device-eol');
+    expect(c.reason).toBe('age-heuristic-old');
+  });
+
+  it('without snapshot, the rule is silently skipped', () => {
+    const snap = makeSnapshot();
+    const product = snap.products.find((p) => p.id === 'iphone');
+    const r = product.releases.find((x) => x.id === '13');
+    // No snapshot → falls through to age-heuristic-mid for a 4.6-year-old device.
+    const c = classifyResult({ product, release: r }, { now: NOW });
+    expect(c.variant).toBe('device-uncertain');
+  });
+
+  it('explicit eolFrom-past beats os-current (red wins over green)', () => {
+    const snap = makeSnapshot();
+    const product = snap.products.find((p) => p.id === 'iphone');
+    // Hypothetical: iPhone 13 with a past eolFrom should still be red.
+    const r = { ...product.releases.find((x) => x.id === '13'), eolFrom: '2025-01-01' };
+    const c = classifyResult({ product, release: r }, { now: NOW, snapshot: snap });
+    expect(c.variant).toBe('device-eol');
+    expect(c.reason).toBe('eolFrom-past');
+  });
+});
+
 describe('buildLatestOsReminder', () => {
   // Build a snapshot mirroring the real shape so the helper has full context to navigate.
   function makeSnapshot() {

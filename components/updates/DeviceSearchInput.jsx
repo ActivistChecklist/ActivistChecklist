@@ -161,8 +161,7 @@ export default function DeviceSearchInput({
                       onSelect={() => handleSelect(item)}
                       className={cn(
                         'flex cursor-pointer items-center justify-between gap-3 px-4 py-3 text-sm',
-                        'aria-selected:bg-muted aria-selected:text-foreground',
-                        item.dimmed && 'opacity-50'
+                        'aria-selected:bg-muted aria-selected:text-foreground'
                       )}
                     >
                       <span className="flex min-w-0 items-center gap-2">
