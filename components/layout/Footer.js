@@ -32,7 +32,7 @@ export function Footer() {
   }));
 
   return (
-    <footer className="print:hidden bg-muted text-muted-foreground py-12">
+    <footer className="not-annotatable print:hidden bg-muted text-muted-foreground py-12">
       <div className="container max-w-6xl mx-auto px-4 md:px-8">
 
         {/* Main columns */}

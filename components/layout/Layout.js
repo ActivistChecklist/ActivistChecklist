@@ -52,9 +52,9 @@ const LayoutContent = ({
                 <div className={`${maxWidth} mx-auto px-4`}>
                   <div className={`flex gap-4 py-6 print:py-1 ${!sidebarType ? 'justify-center' : ''}`}>
                    {sidebarType === 'toc' && (
-                      <aside 
-                        className={`w-60 hidden md:block`}
-                        role="complementary" 
+                      <aside
+                        className={`not-annotatable w-60 hidden md:block`}
+                        role="complementary"
                         aria-label="Sidebar navigation"
                       >
                         {/* {sidebarType === 'navigation' && <NavigationSidebar />} */}

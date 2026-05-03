@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button"
 import { Menu } from "lucide-react"
 import Search from "@/components/Search"
 import LanguageSwitcher from "@/components/LanguageSwitcher"
-import { DarkModeToggle } from "@/components/layout/DarkModeToggle"
 import { navigationConfig, isNavItemActive, isSubItemActive } from "@/config/navigation"
 import {
   NavigationMenu,
@@ -73,6 +72,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
         />
       </div>
       <header className={cn(
+        "not-annotatable",
         "sticky top-0 w-full border-b bg-background text-foreground z-50",
         hideOnScroll ? 'transition-transform duration-300' : '',
         visible ? 'translate-y-0' : '-translate-y-full',
@@ -96,15 +96,31 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                     <Menu className="h-6 w-6" aria-hidden="true" />
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="left">
-                  <nav className="flex flex-col mt-6">
+                <SheetContent side="left" className="overflow-y-auto">
+                  <div className="flex items-center gap-2 pr-10 mb-6">
+                    {navigationConfig.socialLinks?.map((social) => (
+                      <a
+                        key={social.key}
+                        href={social.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={social.ariaLabel}
+                        className="inline-flex items-center justify-center h-9 w-9 rounded-md text-foreground/70 hover:text-foreground hover:bg-muted transition-colors"
+                      >
+                        <social.icon className="h-5 w-5" aria-hidden="true" />
+                      </a>
+                    ))}
+                    <Search variant="button" />
+                    <LanguageSwitcher />
+                  </div>
+                  <nav className="flex flex-col">
                     {translatedMainNav.map((item) => (
                       item.type === "link" ? (
-                        <Link 
-                          key={item.key} 
-                          href={item.href} 
+                        <Link
+                          key={item.key}
+                          href={item.href}
                           className={cn(
-                            "text-lg font-semibold border-l-2 border-l-transparent hover:border-l-foreground/20 pl-2",
+                            "text-lg font-semibold border-l-2 border-l-transparent hover:border-l-foreground/20 pl-2 py-2",
                             isNavItemActive(item, pathname) && "border-primary"
                           )}
                         >
@@ -112,10 +128,10 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                         </Link>
                       ) : (
                         <div key={item.key} className="space-y-2">
-                          <Link 
-                            href={item.href || '#'} 
+                          <Link
+                            href={item.href || '#'}
                             className={cn(
-                              "block text-lg font-semibold pl-2 border-l-2 border-l-transparent hover:border-l-foreground/20",
+                              "block text-lg font-semibold pl-2 py-2 border-l-2 border-l-transparent hover:border-l-foreground/20",
                               isNavItemActive(item, pathname) && "border-link text-link"
                             )}
                           >
@@ -152,10 +168,6 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                       )
                     ))}
                   </nav>
-                  <div className="pt-4 border-t mt-4 flex items-center gap-2">
-                    <Search variant="searchbar" />
-                    <DarkModeToggle />
-                  </div>
                 </SheetContent>
               </Sheet>
               <Link 
@@ -163,8 +175,8 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                 className="flex items-center space-x-2 ml-0 font-bold text-xl" 
                 aria-label={navigationConfig.logo.ariaLabel}
               >
-                <Image src={navigationConfig.logo.image} alt={navigationConfig.logo.ariaLabel} width={250} height={20} className="dark:hidden" />
-                <Image src="/images/logo-bg-white-transparent.png" alt={navigationConfig.logo.ariaLabel} width={250} height={20} className="hidden dark:block" />
+                <Image src={navigationConfig.logo.image} alt={navigationConfig.logo.ariaLabel} width={250} height={30} className="dark:hidden" />
+                <Image src="/images/logo-bg-white-transparent.png" alt={navigationConfig.logo.ariaLabel} width={250} height={30} className="hidden dark:block" />
               </Link>
             </div>
             <div className="flex items-center gap-4">
@@ -260,7 +272,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={social.ariaLabel}
-                    className="text-foreground/70 hover:text-foreground transition-colors"
+                    className="inline-flex items-center justify-center h-9 w-9 rounded-md text-foreground/70 hover:text-foreground hover:bg-muted transition-colors"
                   >
                     <social.icon className="h-5 w-5" aria-hidden="true" />
                   </a>
