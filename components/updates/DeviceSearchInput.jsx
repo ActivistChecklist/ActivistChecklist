@@ -25,31 +25,88 @@ function CategoryPill({ formFactor, kind }) {
   );
 }
 
+function NoMatchesPanel() {
+  const t = useTranslations();
+  return (
+    <div className="absolute left-0 right-0 top-full z-20 mt-2 space-y-2 overflow-hidden rounded-lg border border-border bg-popover px-4 py-5 text-sm shadow-lg">
+      <p className="font-medium text-foreground">{t('updates.noMatches')}</p>
+      <p className="text-muted-foreground">
+        {t.rich('updates.noMatchesHelp', {
+          link: (chunks) => (
+            <a
+              href="https://endoflife.date"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary underline"
+            >
+              {chunks}
+            </a>
+          ),
+        })}
+      </p>
+      <p className="text-xs text-muted-foreground">
+        {t('updates.noMatchesSupported')}
+      </p>
+    </div>
+  );
+}
+
+/**
+ * Combobox that surfaces the chosen device's display label inside the input
+ * (so the user sees "iPhone 13 Mini" written out after they pick it). The clear (×)
+ * button blanks the query AND fires `onClear`, letting the parent reset the result
+ * area below.
+ */
 export default function DeviceSearchInput({
   snapshot,
   priorityProductIds,
+  selectedLabel,
   onSelect,
+  onClear,
   autoFocus = false,
 }) {
   const t = useTranslations();
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(selectedLabel || '');
   const [open, setOpen] = useState(false);
+  const [hasSelection, setHasSelection] = useState(Boolean(selectedLabel));
   const inputRef = useRef(null);
   const containerRef = useRef(null);
+
+  // When the parent's selection changes (e.g., after restoring from URL), sync the input.
+  useEffect(() => {
+    if (selectedLabel) {
+      setQuery(selectedLabel);
+      setHasSelection(true);
+    } else if (hasSelection) {
+      // Parent cleared the selection externally — clear the input too.
+      setQuery('');
+      setHasSelection(false);
+    }
+  }, [selectedLabel]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const rows = useMemo(() => buildSearchIndex(snapshot), [snapshot]);
   const fuse = useMemo(() => buildFuse(rows), [rows]);
 
+  // Don't search while the input still shows the selected label — otherwise typing-as-
+  // navigation gets weird. The user must clear or edit before we re-search.
+  const searchQuery = hasSelection && query === selectedLabel ? '' : query;
+
   const results = useMemo(
-    () => searchIndex(rows, fuse, query, priorityProductIds),
-    [rows, fuse, query, priorityProductIds]
+    () => searchIndex(rows, fuse, searchQuery, priorityProductIds),
+    [rows, fuse, searchQuery, priorityProductIds]
   );
 
-  // Open the dropdown when there's a query OR a priority context (browse-mode).
   const hasPriority = Array.isArray(priorityProductIds) && priorityProductIds.length > 0;
-  const showResults = open && (query.trim().length > 0 || (hasPriority && results.length > 0));
+  const trimmed = searchQuery.trim();
 
-  // Close on outside click.
+  // Show dropdown when the user is actively searching (query non-empty OR priority + results)
+  // and we don't currently have a finalized selection.
+  const showResults =
+    open && !hasSelection && (trimmed.length > 0 || (hasPriority && results.length > 0));
+
+  // "No matches" is only useful when the user typed something AND there are zero hits.
+  const showNoMatches = open && !hasSelection && trimmed.length > 0 && results.length === 0;
+
   useEffect(() => {
     function onDown(e) {
       if (!containerRef.current?.contains(e.target)) {
@@ -61,27 +118,35 @@ export default function DeviceSearchInput({
   }, []);
 
   function handleSelect(item) {
-    setQuery('');
+    setQuery(item.displayLabel);
+    setHasSelection(true);
     setOpen(false);
     onSelect?.(item);
   }
 
   function handleClear() {
     setQuery('');
+    setHasSelection(false);
+    onClear?.();
     inputRef.current?.focus();
+  }
+
+  function handleChange(value) {
+    setQuery(value);
+    if (hasSelection && value !== selectedLabel) {
+      // User started editing — drop the locked-in selection state.
+      setHasSelection(false);
+      onClear?.();
+    }
   }
 
   function handleKey(e) {
     if (e.key === 'Escape') {
-      if (query.trim()) {
-        setQuery('');
-      } else {
-        setOpen(false);
-      }
+      if (query) handleClear();
+      else setOpen(false);
     }
   }
 
-  // Auto-focus when requested (e.g., page mount).
   useEffect(() => {
     if (autoFocus) inputRef.current?.focus();
   }, [autoFocus]);
@@ -107,7 +172,7 @@ export default function DeviceSearchInput({
             <CommandPrimitive.Input
               ref={inputRef}
               value={query}
-              onValueChange={setQuery}
+              onValueChange={handleChange}
               onFocus={() => setOpen(true)}
               placeholder={t('updates.searchPlaceholder')}
               aria-label={t('updates.searchAriaLabel')}
@@ -126,54 +191,29 @@ export default function DeviceSearchInput({
           </div>
 
           {showResults ? (
-            <div
-              className={cn(
-                'absolute left-0 right-0 top-full z-20 mt-2 overflow-hidden rounded-lg border border-border bg-popover shadow-lg'
-              )}
-            >
+            <div className="absolute left-0 right-0 top-full z-20 mt-2 overflow-hidden rounded-lg border border-border bg-popover shadow-lg">
               <CommandPrimitive.List className="max-h-80 overflow-y-auto">
-                {results.length === 0 ? (
-                  <div className="space-y-2 px-4 py-5 text-sm">
-                    <p className="font-medium text-foreground">{t('updates.noMatches')}</p>
-                    <p className="text-muted-foreground">
-                      {t.rich('updates.noMatchesHelp', {
-                        link: (chunks) => (
-                          <a
-                            href="https://endoflife.date"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-primary underline"
-                          >
-                            {chunks}
-                          </a>
-                        ),
-                      })}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {t('updates.noMatchesSupported')}
-                    </p>
-                  </div>
-                ) : (
-                  results.map((item) => (
-                    <CommandPrimitive.Item
-                      key={`${item.productId}/${item.releaseId}`}
-                      value={`${item.productId}/${item.releaseId}`}
-                      onSelect={() => handleSelect(item)}
-                      className={cn(
-                        'flex cursor-pointer items-center justify-between gap-3 px-4 py-3 text-sm',
-                        'aria-selected:bg-muted aria-selected:text-foreground'
-                      )}
-                    >
-                      <span className="flex min-w-0 items-center gap-2">
-                        <RowIcon family={item.family} />
-                        <span className="truncate font-medium">{item.displayLabel}</span>
-                      </span>
-                      <CategoryPill formFactor={item.formFactor} kind={item.kind} />
-                    </CommandPrimitive.Item>
-                  ))
-                )}
+                {results.map((item) => (
+                  <CommandPrimitive.Item
+                    key={`${item.productId}/${item.releaseId}`}
+                    value={`${item.productId}/${item.releaseId}`}
+                    onSelect={() => handleSelect(item)}
+                    className={cn(
+                      'flex cursor-pointer items-center justify-between gap-3 px-4 py-3 text-sm',
+                      'aria-selected:bg-muted aria-selected:text-foreground'
+                    )}
+                  >
+                    <span className="flex min-w-0 items-center gap-2">
+                      <RowIcon family={item.family} />
+                      <span className="truncate font-medium">{item.displayLabel}</span>
+                    </span>
+                    <CategoryPill formFactor={item.formFactor} kind={item.kind} />
+                  </CommandPrimitive.Item>
+                ))}
               </CommandPrimitive.List>
             </div>
+          ) : showNoMatches ? (
+            <NoMatchesPanel />
           ) : null}
         </div>
       </CommandPrimitive>

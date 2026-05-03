@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 
 import { useEolSnapshot } from '@/hooks/use-eol-snapshot';
 import { findRelease } from '@/lib/updates/snapshot';
+import { buildDisplayLabel } from '@/lib/updates/search';
 import { useAnalytics } from '@/hooks/use-analytics';
 
 import DeviceSearchInput from './DeviceSearchInput';
@@ -36,7 +37,7 @@ export default function UpdatesPage() {
   // Drill-down state: { platform, subCategory } | null
   const [category, setCategory] = useState(null);
   const [selection, setSelection] = useState(null); // { productId, releaseId } | null
-  const resultRef = useRef(null);
+  const searchBoxRef = useRef(null);
 
   const priorityProductIds = category?.subCategory?.productIds || null;
 
@@ -88,10 +89,11 @@ export default function UpdatesPage() {
     return () => window.removeEventListener('popstate', onPop);
   }, []);
 
-  // Scroll the result into view after it appears.
+  // After a selection, scroll the search box to the top so the user keeps the
+  // breadcrumb / search context visible while seeing the result below.
   useEffect(() => {
-    if (selection && resultRef.current) {
-      resultRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (selection && searchBoxRef.current) {
+      searchBoxRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }, [selection]);
 
@@ -163,6 +165,7 @@ export default function UpdatesPage() {
   }
 
   const found = selection ? findRelease(snapshot, selection.productId, selection.releaseId) : null;
+  const selectedLabel = found ? buildDisplayLabel(found.product, found.release) : '';
 
   return (
     <div className="space-y-6">
@@ -170,15 +173,19 @@ export default function UpdatesPage() {
 
       <FamilyCategorySelector value={category} onChange={handleCategoryChange} />
 
-      <DeviceSearchInput
-        snapshot={snapshot}
-        priorityProductIds={priorityProductIds}
-        onSelect={handleSelect}
-        autoFocus
-      />
+      <div ref={searchBoxRef}>
+        <DeviceSearchInput
+          snapshot={snapshot}
+          priorityProductIds={priorityProductIds}
+          selectedLabel={selectedLabel}
+          onSelect={handleSelect}
+          onClear={handleReset}
+          autoFocus
+        />
+      </div>
 
       {found ? (
-        <div ref={resultRef} className="animate-in fade-in slide-in-from-bottom-2 duration-200">
+        <div className="animate-in fade-in slide-in-from-bottom-2 duration-200">
           <ResultCard
             snapshot={snapshot}
             product={found.product}
