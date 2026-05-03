@@ -147,6 +147,7 @@ function transformRelease(release, { kind }) {
       if (latest.date) out.latestVersionDate = latest.date;
       if (latest.link) out.latestVersionLink = latest.link;
     }
+    if (release.codename) out.codename = release.codename;
   } else {
     const range = pickSupportedOsRange(release.custom);
     if (range) out.supportedOsRange = range;

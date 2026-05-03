@@ -206,7 +206,7 @@ export default function UpdatesPage() {
         </div>
       ) : null}
 
-      <FooterCredit />
+      <FooterCredit snapshot={snapshot} />
     </div>
   );
 }
@@ -267,12 +267,14 @@ function PageHero() {
   );
 }
 
-function FooterCredit() {
+function FooterCredit({ snapshot }) {
   const t = useTranslations();
+  const date = formatStaleDate(snapshot?.generatedAt) || '—';
   return (
     <p className="pt-4 text-center text-xs text-muted-foreground">
       {t.rich('updates.footer', {
-        endoflife: (chunks) => (
+        date,
+        link: (chunks) => (
           <a
             href="https://endoflife.date"
             target="_blank"

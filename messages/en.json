@@ -492,6 +492,6 @@
       },
       "windowsUpdateHelp": "Open Settings → Windows Update and click 'Check for updates'."
     },
-    "footer": "Powered by <endoflife>endoflife.date</endoflife> · Updated daily."
+    "footer": "Powered by <link>endoflife.date</link> · Updated {date}."
   }
 }
