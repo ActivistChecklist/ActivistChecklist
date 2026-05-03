@@ -12,21 +12,19 @@ export function useEolSnapshot() {
 
   useEffect(() => {
     let cancelled = false;
-    const controller = new AbortController();
 
-    loadSnapshot({ signal: controller.signal })
+    loadSnapshot()
       .then((snapshot) => {
         if (!cancelled) setState({ status: 'ready', snapshot, error: null });
       })
       .catch((err) => {
-        if (!cancelled && err.name !== 'AbortError') {
+        if (!cancelled) {
           setState({ status: 'error', snapshot: null, error: err });
         }
       });
 
     return () => {
       cancelled = true;
-      controller.abort();
     };
   }, []);
 

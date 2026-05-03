@@ -425,7 +425,8 @@
         "macos": "Apple menu → System Settings → General → Software Update",
         "android": "Settings → System → Software update",
         "windows": "Settings → Windows Update",
-        "watchos": "Watch app on your iPhone → My Watch → General → Software Update"
+        "watchos": "Watch app on your iPhone → My Watch → General → Software Update",
+        "oneplus": "Settings → System → System updates"
       },
       "deviceSupportedTitle": "{label} is still receiving security updates.",
       "deviceSupportedSubtitleUntil": "Updates expected through {date}.",
@@ -434,6 +435,7 @@
       "deviceUnsupportedSubtitleEnded": "Security support ended {date}.",
       "deviceUnsupportedSubtitleUnmaintained": "The manufacturer has stopped issuing security updates.",
       "deviceUnsupportedSubtitleAge": "Released {age}. No published end-of-support date and the manufacturer doesn't appear to be issuing updates.",
+      "ageYearsAgo": "{years, plural, =0 {this year} =1 {1 year ago} other {# years ago}}",
       "deviceUncertainTitle": "We can't confirm whether {label} is still receiving updates.",
       "deviceUncertainSubtitle": "Released {age}. The manufacturer hasn't published an end-of-support date, and devices this old may or may not still be patched.",
       "deviceUncertainCheck": "Check the manufacturer's support page: {link}.",

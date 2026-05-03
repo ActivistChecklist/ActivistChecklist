@@ -24,10 +24,8 @@ function formatMonthYear(iso, locale = 'en-US') {
 
 function formatYearsAgo(years, t) {
   if (years == null) return '';
-  const rounded = Math.round(years);
-  if (rounded <= 0) return 'this year';
-  if (rounded === 1) return '1 year ago';
-  return `${rounded} years ago`;
+  const rounded = Math.max(0, Math.round(years));
+  return t('updates.result.ageYearsAgo', { years: rounded });
 }
 
 function ResultHeader({ tone, title, onReset }) {
@@ -95,9 +93,7 @@ function LatestOsReminder({ snapshot, product, release }) {
         <p className="mt-1 text-sm text-foreground/90">
           {t('updates.result.latestOsReminderGeneric')}
         </p>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Settings → System → System updates.
-        </p>
+        <SettingsPath osId="oneplus" />
       </div>
     );
   }
@@ -345,7 +341,7 @@ function DeviceEol({ snapshot, product, release, classification, onReset }) {
   const displayLabel = `${product.label.replace(/^Apple |^Google |^Samsung |^Microsoft |^Motorola |^OnePlus |^Nokia /, '')} ${release.label}`;
 
   let subtitle = null;
-  if (release.eolFrom) {
+  if (classification.reason === 'eolFrom-past' && release.eolFrom) {
     subtitle = t('updates.result.deviceUnsupportedSubtitleEnded', { date: formatMonthYear(release.eolFrom) });
   } else if (classification.reason === 'unmaintained') {
     subtitle = t('updates.result.deviceUnsupportedSubtitleUnmaintained');
@@ -355,6 +351,9 @@ function DeviceEol({ snapshot, product, release, classification, onReset }) {
     });
   } else if (classification.reason === 'eoas-past' && release.eoasFrom) {
     subtitle = t('updates.result.deviceUnsupportedSubtitleEnded', { date: formatMonthYear(release.eoasFrom) });
+  } else if (release.eolFrom) {
+    // eolFrom is in the future (not yet past); fall back to generic unmaintained message
+    subtitle = t('updates.result.deviceUnsupportedSubtitleUnmaintained');
   }
 
   return (
