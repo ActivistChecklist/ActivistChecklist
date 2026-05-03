@@ -189,24 +189,25 @@ function L3({ platform, subCategory, onClickPlatform, onClear }) {
       key={`l3-${platform}-${subCategory?.id || ''}`}
       className="animate-in fade-in slide-in-from-right-2 duration-200 space-y-3"
     >
+      {/* Bigger breadcrumb so this row carries some weight in place of the L1/L2 cards. */}
       <div
         role="group"
         aria-label={t('updates.breadcrumb.ariaLabel')}
-        className="inline-flex items-center gap-1 rounded-lg border border-border bg-muted/40 p-1 pl-2"
+        className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-muted/40 p-1.5 pl-3"
       >
-        {Icon ? <Icon className="h-4 w-4 shrink-0 text-foreground/70" aria-hidden="true" /> : null}
+        {Icon ? <Icon className="h-5 w-5 shrink-0 text-foreground/70" aria-hidden="true" /> : null}
         <button
           type="button"
           onClick={onClear}
-          className="rounded-md px-2 py-1 text-sm font-medium text-foreground hover:bg-foreground/10"
+          className="rounded-md px-2 py-1 text-base font-medium text-foreground hover:bg-foreground/10"
         >
           {platformLabel}
         </button>
-        <ChevronRight className="h-3 w-3 shrink-0 text-muted-foreground" aria-hidden="true" />
+        <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
         <button
           type="button"
           onClick={onClickPlatform}
-          className="rounded-md px-2 py-1 text-sm font-medium text-foreground hover:bg-foreground/10"
+          className="rounded-md px-2 py-1 text-base font-medium text-foreground hover:bg-foreground/10"
         >
           {subLabel}
         </button>
@@ -214,20 +215,22 @@ function L3({ platform, subCategory, onClickPlatform, onClear }) {
           type="button"
           onClick={onClear}
           aria-label={t('updates.breadcrumb.clear')}
-          className="ml-1 rounded-md p-1 text-muted-foreground hover:bg-foreground/10 hover:text-foreground"
+          className="ml-0.5 rounded-md p-1.5 text-muted-foreground hover:bg-foreground/10 hover:text-foreground"
         >
-          <X className="h-3.5 w-3.5" />
+          <X className="h-4 w-4" />
         </button>
       </div>
 
       {findHint ? (
-        <p className="flex items-start gap-1.5 text-xs text-muted-foreground">
-          <Info className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-          <span>
-            <span className="font-medium text-foreground/80">{t('updates.findYourModel.label')}</span>{' '}
-            <span>{findHint}</span>
-          </span>
-        </p>
+        <div className="rounded-lg border border-border bg-muted/30 p-4 sm:p-5">
+          <div className="flex items-center gap-2 text-sm font-semibold text-foreground/80">
+            <Info className="h-4 w-4 shrink-0" aria-hidden="true" />
+            {t('updates.findYourModel.label')}
+          </div>
+          <p className="mt-2 text-base font-medium text-foreground sm:text-lg">
+            {findHint}
+          </p>
+        </div>
       ) : null}
     </div>
   );
