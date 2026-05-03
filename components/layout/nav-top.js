@@ -5,11 +5,12 @@ import Link from "@/components/Link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { useTranslations } from "next-intl"
-import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet"
+import { Sheet, SheetTrigger, SheetContent, SheetTitle } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { Menu } from "lucide-react"
 import Search from "@/components/Search"
 import LanguageSwitcher from "@/components/LanguageSwitcher"
+import { DarkModeToggle } from "@/components/layout/DarkModeToggle"
 import { navigationConfig, isNavItemActive, isSubItemActive } from "@/config/navigation"
 import {
   NavigationMenu,
@@ -97,6 +98,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="left" className="overflow-y-auto">
+                  <SheetTitle className="sr-only">Navigation</SheetTitle>
                   <div className="flex items-center gap-2 pr-10 mb-6">
                     {navigationConfig.socialLinks?.map((social) => (
                       <a
@@ -112,6 +114,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                     ))}
                     <Search variant="button" />
                     <LanguageSwitcher />
+                    <DarkModeToggle className="h-9 w-9 hover:bg-muted" />
                   </div>
                   <nav className="flex flex-col">
                     {translatedMainNav.map((item) => (
@@ -265,18 +268,6 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                 </NavigationMenu>
               </div>
               <div className="flex items-center gap-2">
-                {navigationConfig.socialLinks?.map((social) => (
-                  <a
-                    key={social.key}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={social.ariaLabel}
-                    className="inline-flex items-center justify-center h-9 w-9 rounded-md text-foreground/70 hover:text-foreground hover:bg-muted transition-colors"
-                  >
-                    <social.icon className="h-5 w-5" aria-hidden="true" />
-                  </a>
-                ))}
                 <Search variant="button" />
                 <LanguageSwitcher />
               </div>
