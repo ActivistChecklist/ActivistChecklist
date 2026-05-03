@@ -120,7 +120,7 @@
   },
   "pageNotices": {
     "translationUnreviewedTitle": "Traducido automáticamente",
-    "translationUnreviewed": "Esta página fue traducida automáticamente. Solo el {approvalPercent}% de esta página ha sido revisada por personas hasta ahora. Otros textos pueden tener errores. <link>Ayúdanos a revisar esta traducción</link>."
+    "translationUnreviewed": "Esta página fue traducida automáticamente. Solo el {approvalPercent}% de esta página ha sido revisado por personas hasta ahora. Otros textos pueden contener errores. <link>Ayúdanos a revisar esta traducción</link>."
   },
   "languageDetection": {
     "message": "Este sitio está disponible en {language}.",
@@ -152,6 +152,10 @@
       "blueskyAriaLabel": "Síguenos en Bluesky",
       "githubAriaLabel": "Ver nuestro repositorio en GitHub",
       "mastodonAriaLabel": "Síguenos en Mastodon"
+    },
+    "onion": {
+      "label": "Tor",
+      "ariaLabel": "Visitar nuestro servicio onion de Tor"
     }
   },
   "newsletter": {
@@ -170,7 +174,7 @@
   },
   "search": {
     "placeholder": "Buscar...",
-    "dialogTitle": "Buscar en el sitio",
+    "dialogTitle": "Buscar contenido del sitio",
     "dialogDescription": "Busca en todas las páginas y guías de este sitio",
     "popularHeading": "Búsquedas populares",
     "topGuidesHeading": "Guías principales",
@@ -178,10 +182,10 @@
     "searching": "Buscando...",
     "noResults": "No se encontraron resultados para \"{query}\"",
     "untitled": "Sin título",
-    "suggestion0": "seguridad del teléfono en protestas",
-    "suggestion1": "mensajería segura con Signal",
+    "suggestion0": "seguridad del teléfono protesta",
+    "suggestion1": "signal mensajería segura",
     "suggestion2": "rastreo de ubicación",
-    "suggestion3": "seguridad con contraseña",
+    "suggestion3": "seguridad del código de acceso",
     "suggestion4": "protección de alto riesgo"
   },
   "notFound": {
@@ -315,7 +319,7 @@
     "title": "Listas",
     "featured": "Listas destacadas",
     "more": "Más listas",
-    "documentTitle": "Listas de verificación | Activist Checklist"
+    "documentTitle": "Listas | Activist Checklist"
   },
   "news": {
     "title": "Noticias de vigilancia",
