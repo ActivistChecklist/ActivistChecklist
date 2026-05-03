@@ -171,7 +171,9 @@ export default function UpdatesPage() {
     <div className="space-y-6">
       <PageHero />
 
-      <FamilyCategorySelector value={category} onChange={handleCategoryChange} />
+      {found ? null : (
+        <FamilyCategorySelector value={category} onChange={handleCategoryChange} />
+      )}
 
       <div ref={searchBoxRef}>
         <DeviceSearchInput
