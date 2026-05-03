@@ -7,10 +7,13 @@ import { useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
 import { buildFuse, buildSearchIndex, searchIndex } from '@/lib/updates/search';
+import { iconForFamily } from '@/lib/updates/family-icons';
 
-/**
- * Small visual category pill.
- */
+function RowIcon({ family }) {
+  const Icon = iconForFamily(family);
+  return <Icon className="h-4 w-4 shrink-0 text-foreground/70" aria-hidden="true" />;
+}
+
 function CategoryPill({ formFactor, kind }) {
   const t = useTranslations();
   const key = kind === 'os' ? 'os' : formFactor;
@@ -24,8 +27,7 @@ function CategoryPill({ formFactor, kind }) {
 
 export default function DeviceSearchInput({
   snapshot,
-  platformFilter,
-  onPlatformFilterClear,
+  priorityProductIds,
   onSelect,
   autoFocus = false,
 }) {
@@ -39,12 +41,13 @@ export default function DeviceSearchInput({
   const fuse = useMemo(() => buildFuse(rows), [rows]);
 
   const results = useMemo(
-    () => searchIndex(rows, fuse, query, platformFilter),
-    [rows, fuse, query, platformFilter]
+    () => searchIndex(rows, fuse, query, priorityProductIds),
+    [rows, fuse, query, priorityProductIds]
   );
 
-  // Open the popover whenever there's a query OR a platform filter shows starter results.
-  const showResults = open && (query.trim().length > 0 || (platformFilter && results.length > 0));
+  // Open the dropdown when there's a query OR a priority context (browse-mode).
+  const hasPriority = Array.isArray(priorityProductIds) && priorityProductIds.length > 0;
+  const showResults = open && (query.trim().length > 0 || (hasPriority && results.length > 0));
 
   // Close on outside click.
   useEffect(() => {
@@ -65,7 +68,6 @@ export default function DeviceSearchInput({
 
   function handleClear() {
     setQuery('');
-    if (platformFilter) onPlatformFilterClear?.();
     inputRef.current?.focus();
   }
 
@@ -73,8 +75,6 @@ export default function DeviceSearchInput({
     if (e.key === 'Escape') {
       if (query.trim()) {
         setQuery('');
-      } else if (platformFilter) {
-        onPlatformFilterClear?.();
       } else {
         setOpen(false);
       }
@@ -86,7 +86,7 @@ export default function DeviceSearchInput({
     if (autoFocus) inputRef.current?.focus();
   }, [autoFocus]);
 
-  const showClearButton = query.length > 0 || Boolean(platformFilter);
+  const showClearButton = query.length > 0;
 
   return (
     <div ref={containerRef} className="relative w-full">
@@ -133,16 +133,25 @@ export default function DeviceSearchInput({
             >
               <CommandPrimitive.List className="max-h-80 overflow-y-auto">
                 {results.length === 0 ? (
-                  <div className="px-4 py-6 text-center text-sm text-muted-foreground">
-                    {t('updates.noMatches')}{' '}
-                    <a
-                      href="https://endoflife.date"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-primary underline"
-                    >
-                      {t('updates.endoflifeLinkText')}
-                    </a>
+                  <div className="space-y-2 px-4 py-5 text-sm">
+                    <p className="font-medium text-foreground">{t('updates.noMatches')}</p>
+                    <p className="text-muted-foreground">
+                      {t.rich('updates.noMatchesHelp', {
+                        link: (chunks) => (
+                          <a
+                            href="https://endoflife.date"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-primary underline"
+                          >
+                            {chunks}
+                          </a>
+                        ),
+                      })}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {t('updates.noMatchesSupported')}
+                    </p>
                   </div>
                 ) : (
                   results.map((item) => (
@@ -152,10 +161,14 @@ export default function DeviceSearchInput({
                       onSelect={() => handleSelect(item)}
                       className={cn(
                         'flex cursor-pointer items-center justify-between gap-3 px-4 py-3 text-sm',
-                        'aria-selected:bg-muted aria-selected:text-foreground'
+                        'aria-selected:bg-muted aria-selected:text-foreground',
+                        item.dimmed && 'opacity-50'
                       )}
                     >
-                      <span className="font-medium">{item.displayLabel}</span>
+                      <span className="flex min-w-0 items-center gap-2">
+                        <RowIcon family={item.family} />
+                        <span className="truncate font-medium">{item.displayLabel}</span>
+                      </span>
                       <CategoryPill formFactor={item.formFactor} kind={item.kind} />
                     </CommandPrimitive.Item>
                   ))

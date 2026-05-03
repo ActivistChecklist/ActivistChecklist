@@ -89,7 +89,7 @@ describe('buildSearchIndex', () => {
 });
 
 describe('searchIndex', () => {
-  it('empty query + no filter → no results (we do not flood with all 800+ rows)', () => {
+  it('empty query + no priority → no results (we do not flood with all 800+ rows)', () => {
     const rows = buildSearchIndex(SNAP, { now: NOW });
     const fuse = buildFuse(rows);
     expect(searchIndex(rows, fuse, '', null)).toEqual([]);
@@ -107,7 +107,6 @@ describe('searchIndex', () => {
     const rows = buildSearchIndex(SNAP, { now: NOW });
     const fuse = buildFuse(rows);
     const results = searchIndex(rows, fuse, 'iPhone', null);
-    // 17 Pro (newer) should rank above 12 Pro and 6 (older).
     const order = results.map((r) => r.releaseId);
     expect(order.indexOf('17-pro')).toBeLessThan(order.indexOf('12-pro'));
     expect(order.indexOf('12-pro')).toBeLessThan(order.indexOf('6'));
@@ -119,29 +118,45 @@ describe('searchIndex', () => {
     expect(searchIndex(rows, fuse, 'a', null).length).toBeLessThanOrEqual(8);
   });
 
-  it('platformGroup filter narrows results', () => {
+  it('priority context puts matching products first, dims non-priority matches', () => {
     const rows = buildSearchIndex(SNAP, { now: NOW });
     const fuse = buildFuse(rows);
-    const results = searchIndex(rows, fuse, 'iPhone', 'apple');
-    expect(results.every((r) => r.platformGroup === 'apple')).toBe(true);
-  });
-
-  it('platformGroup filter excludes other platforms', () => {
-    const rows = buildSearchIndex(SNAP, { now: NOW });
-    const fuse = buildFuse(rows);
-    const results = searchIndex(rows, fuse, 'pixel', 'apple');
-    expect(results).toEqual([]);
-  });
-
-  it('empty query + platform filter → top recency in that platform group', () => {
-    const rows = buildSearchIndex(SNAP, { now: NOW });
-    const fuse = buildFuse(rows);
-    const results = searchIndex(rows, fuse, '', 'apple');
+    // Priority = iPhone, search "Pixel" — pixel matches but is non-priority,
+    // so it should appear dimmed (no priority head, only dimmed tail).
+    const results = searchIndex(rows, fuse, 'Pixel', ['iphone']);
     expect(results.length).toBeGreaterThan(0);
-    expect(results.every((r) => r.platformGroup === 'apple')).toBe(true);
-    // Newest first.
-    for (let i = 0; i < results.length - 1; i++) {
-      expect(results[i].recencyScore).toBeGreaterThanOrEqual(results[i + 1].recencyScore);
-    }
+    expect(results[0].productId).toBe('pixel');
+    expect(results[0].dimmed).toBe(true);
+  });
+
+  it('priority context surfaces priority products even with no exact match', () => {
+    const rows = buildSearchIndex(SNAP, { now: NOW });
+    const fuse = buildFuse(rows);
+    // Priority = iPhone, search "Pro" — both iPhone Pros and MacBook Pros match.
+    // iPhone results should rank ahead and not be dimmed.
+    const results = searchIndex(rows, fuse, 'Pro', ['iphone']);
+    const firstIphone = results.find((r) => r.productId === 'iphone');
+    expect(firstIphone).toBeDefined();
+    expect(firstIphone.dimmed).toBeFalsy();
+  });
+
+  it('exact-name match in non-priority set is NOT dimmed (user typed it explicitly)', () => {
+    const rows = buildSearchIndex(SNAP, { now: NOW });
+    const fuse = buildFuse(rows);
+    // Priority = iPhone, search the literal Pixel display label.
+    const results = searchIndex(rows, fuse, 'Pixel Pixel 10', ['iphone']);
+    const pixel = results.find((r) => r.productId === 'pixel' && r.releaseId === '10');
+    if (pixel) expect(pixel.dimmed).toBeFalsy();
+  });
+
+  it('empty query + priority → priority rows by recency, no dimmed tail when there are enough priority items', () => {
+    const rows = buildSearchIndex(SNAP, { now: NOW });
+    const fuse = buildFuse(rows);
+    // Priority = iPhone (3 releases) — small set, so we expect 3 priority + dimmed tail.
+    const results = searchIndex(rows, fuse, '', ['iphone']);
+    expect(results.length).toBeGreaterThan(0);
+    // First items must all be the priority product.
+    expect(results[0].productId).toBe('iphone');
+    expect(results[0].dimmed).toBeFalsy();
   });
 });

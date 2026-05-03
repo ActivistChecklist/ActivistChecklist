@@ -1,16 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { X } from 'lucide-react';
 
 import { useEolSnapshot } from '@/hooks/use-eol-snapshot';
 import { findRelease } from '@/lib/updates/snapshot';
 import { useAnalytics } from '@/hooks/use-analytics';
 
 import DeviceSearchInput from './DeviceSearchInput';
-import FamilyButtons from './FamilyButtons';
-import FamilyModal from './FamilyModal';
+import FamilyCategorySelector from './FamilyCategorySelector';
 import ResultCard from './ResultCard';
 
 const STALE_THRESHOLD_DAYS = 14;
@@ -33,11 +31,14 @@ function formatStaleDate(iso) {
 export default function UpdatesPage() {
   const t = useTranslations();
   const { trackEvent } = useAnalytics();
-  const { status, snapshot, error } = useEolSnapshot();
+  const { status, snapshot } = useEolSnapshot();
 
-  const [platformFilter, setPlatformFilter] = useState(null); // 'apple' | 'android' | 'windows' | 'other' | null
-  const [modalGroup, setModalGroup] = useState(null);
+  // Drill-down state: { platform, subCategory } | null
+  const [category, setCategory] = useState(null);
   const [selection, setSelection] = useState(null); // { productId, releaseId } | null
+  const resultRef = useRef(null);
+
+  const priorityProductIds = category?.subCategory?.productIds || null;
 
   // Restore selection from URL on mount + when snapshot loads.
   useEffect(() => {
@@ -87,10 +88,22 @@ export default function UpdatesPage() {
     return () => window.removeEventListener('popstate', onPop);
   }, []);
 
-  function handleFamilySelect(group) {
-    setPlatformFilter(group);
-    setModalGroup(group);
-    trackEvent({ name: 'updates_family_button', family: group });
+  // Scroll the result into view after it appears.
+  useEffect(() => {
+    if (selection && resultRef.current) {
+      resultRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [selection]);
+
+  function handleCategoryChange(next) {
+    setCategory(next);
+    if (next?.subCategory) {
+      trackEvent({
+        name: 'updates_category_pick',
+        platform: next.platform,
+        subCategory: next.subCategory.id,
+      });
+    }
   }
 
   function handleSelect(item) {
@@ -104,7 +117,6 @@ export default function UpdatesPage() {
 
   function handleReset() {
     setSelection(null);
-    setPlatformFilter(null);
     trackEvent({ name: 'updates_reset' });
   }
 
@@ -152,57 +164,31 @@ export default function UpdatesPage() {
     );
   }
 
-  // Result state ──────────────────────────────────────
-  if (selection) {
-    const found = findRelease(snapshot, selection.productId, selection.releaseId);
-    if (!found) {
-      // Effect above will clear the stale selection; render the search shell in the meantime.
-      return null;
-    }
-    return (
-      <ResultCard
-        snapshot={snapshot}
-        product={found.product}
-        release={found.release}
-        onReset={handleReset}
-      />
-    );
-  }
+  const found = selection ? findRelease(snapshot, selection.productId, selection.releaseId) : null;
 
-  // Initial / search state ────────────────────────────
   return (
     <div className="space-y-6">
       <PageHero />
 
-      <FamilyButtons onSelect={handleFamilySelect} />
+      <FamilyCategorySelector value={category} onChange={handleCategoryChange} />
 
-      <div className="space-y-2">
-        {platformFilter ? (
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted px-3 py-1 text-xs">
-              {t('updates.filterChip.active', {
-                family: t(`updates.family.${platformFilter}.buttonTitle`),
-              })}
-              <button
-                type="button"
-                onClick={() => setPlatformFilter(null)}
-                aria-label={t('updates.filterChip.remove')}
-                className="rounded-full p-0.5 hover:bg-foreground/10"
-              >
-                <X className="h-3 w-3" />
-              </button>
-            </span>
-          </div>
-        ) : null}
+      <DeviceSearchInput
+        snapshot={snapshot}
+        priorityProductIds={priorityProductIds}
+        onSelect={handleSelect}
+        autoFocus
+      />
 
-        <DeviceSearchInput
-          snapshot={snapshot}
-          platformFilter={platformFilter}
-          onPlatformFilterClear={() => setPlatformFilter(null)}
-          onSelect={handleSelect}
-          autoFocus
-        />
-      </div>
+      {found ? (
+        <div ref={resultRef} className="animate-in fade-in slide-in-from-bottom-2 duration-200">
+          <ResultCard
+            snapshot={snapshot}
+            product={found.product}
+            release={found.release}
+            onReset={handleReset}
+          />
+        </div>
+      ) : null}
 
       {isSnapshotStale(snapshot) ? (
         <div className="rounded-md border border-warning/30 bg-warning/5 p-3 text-xs text-foreground/90">
@@ -223,14 +209,6 @@ export default function UpdatesPage() {
       ) : null}
 
       <FooterCredit />
-
-      <FamilyModal
-        group={modalGroup}
-        open={Boolean(modalGroup)}
-        onOpenChange={(o) => {
-          if (!o) setModalGroup(null);
-        }}
-      />
     </div>
   );
 }

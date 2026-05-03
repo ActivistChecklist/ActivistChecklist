@@ -351,8 +351,9 @@
     "searchPlaceholder": "e.g. iPhone 12 Pro, Pixel 7, Windows 10",
     "searchAriaLabel": "Search for your device or operating system",
     "clearAriaLabel": "Clear search",
-    "noMatches": "No matches.",
-    "noMatchesHelp": "Don't see your device? Check {link} directly.",
+    "noMatches": "No matches in our list.",
+    "noMatchesHelp": "Try the manufacturer name (e.g. \"Galaxy A14\" instead of just \"A14\"), or check {link} for devices we don't track.",
+    "noMatchesSupported": "We currently track Apple, Google, Samsung, Motorola, OnePlus, Nokia, plus iOS, iPadOS, macOS, Android, and Windows.",
     "endoflifeLinkText": "endoflife.date",
     "loading": "Loading device list...",
     "loadError": "We couldn't load the device list. {retryLink} or check {link} directly.",
@@ -367,52 +368,35 @@
       "desktop": "Desktop",
       "os": "OS"
     },
-    "family": {
-      "apple": {
-        "buttonTitle": "Apple",
-        "buttonSubtitle": "How to find your model",
-        "modalTitle": "Find your Apple device",
-        "modalSteps": [
-          "On iPhone or iPad: open Settings → General → About. Your model name (e.g. iPhone 12 Pro) is at the top.",
-          "On Mac: click the Apple menu → About This Mac. Your model and year are listed there.",
-          "On Apple Watch: open the Watch app on your iPhone, then My Watch → General → About."
-        ],
-        "modalNote": "Then come back here and search for it."
-      },
-      "android": {
-        "buttonTitle": "Android",
-        "buttonSubtitle": "How to find your model",
-        "modalTitle": "Find your Android device",
-        "modalSteps": [
-          "Open Settings → About phone (or Settings → System → About phone on some devices).",
-          "Your model name appears near the top.",
-          "To check your Android version: same screen, scroll to Android version."
-        ],
-        "modalNote": "Manufacturers we support: Google Pixel, Samsung Galaxy, Motorola, OnePlus, and Nokia."
-      },
-      "windows": {
-        "buttonTitle": "Windows",
-        "buttonSubtitle": "How to find your version",
-        "modalTitle": "Find your Windows version",
-        "modalSteps": [
-          "Press Windows key + R to open the Run dialog.",
-          "Type winver and press Enter.",
-          "The dialog shows your Windows version (e.g. Windows 11 24H2)."
-        ],
-        "modalNote": "We can't check Windows laptops by model — only Windows itself."
-      },
-      "other": {
-        "buttonTitle": "Other",
-        "buttonSubtitle": "Unsupported devices",
-        "modalTitle": "Other devices",
-        "modalBody": "We currently support Apple, Google, Samsung, Motorola, OnePlus, and Nokia devices, plus iOS, iPadOS, macOS, Android, and Windows operating systems. For other devices (Linux laptops, niche Android brands, BlackBerry, etc.), check the manufacturer's support page or {link} directly.",
-        "modalLink": "endoflife.date"
-      }
+    "platform": {
+      "prompt": "Or pick where to start:",
+      "apple": "Apple",
+      "android": "Android",
+      "windows": "Windows",
+      "other": "Other"
     },
-    "modalClose": "Close",
-    "filterChip": {
-      "active": "Showing {family} only",
-      "remove": "Remove filter"
+    "subCategory": {
+      "prompt": "What kind of {platform} device?",
+      "back": "Back",
+      "iphone": "iPhone",
+      "ipad": "iPad",
+      "appleWatch": "Apple Watch",
+      "mac": "Mac",
+      "samsung": "Samsung Galaxy",
+      "pixel": "Google Pixel",
+      "motorola": "Motorola",
+      "oneplus": "OnePlus",
+      "nokia": "Nokia",
+      "androidOs": "Android (OS only)",
+      "windows": "Windows"
+    },
+    "breadcrumb": {
+      "ariaLabel": "Picked category, click to change",
+      "clear": "Clear category"
+    },
+    "otherInfo": {
+      "title": "Other devices",
+      "body": "We currently track Apple, Google, Samsung, Motorola, OnePlus, and Nokia devices, plus iOS, iPadOS, macOS, Android, and Windows. For anything else, check {link} directly."
     },
     "result": {
       "checkAnother": "Check another device",
