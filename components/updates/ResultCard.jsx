@@ -8,7 +8,6 @@ import {
   AlertTriangle,
   Check,
   ArrowRight,
-  ExternalLink,
 } from 'lucide-react';
 
 import Link from '@/components/Link';
@@ -108,28 +107,6 @@ function ThreatModelBlock({ soft = false }) {
         {soft ? t('updates.result.threatModelSoft') : t('updates.result.threatModel')}
       </p>
     </div>
-  );
-}
-
-function SourceLink({ product }) {
-  const t = useTranslations();
-  if (!product.endoflifeUrl) return null;
-  return (
-    <p className="text-xs text-muted-foreground">
-      {t.rich('updates.result.source', {
-        link: (chunks) => (
-          <a
-            href={product.endoflifeUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-0.5 underline hover:text-foreground"
-          >
-            {chunks}
-            <ExternalLink className="h-3 w-3" aria-hidden="true" />
-          </a>
-        ),
-      })}
-    </p>
   );
 }
 
@@ -246,24 +223,30 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
                 label={
                   opt.codename
                     ? t('updates.result.osCheckStep.optionOlderCodename', {
+                        os: osLabel || '',
                         version: opt.latestVersion,
                         codename: opt.codename,
                       })
-                    : t('updates.result.osCheckStep.optionOlder', { version: opt.latestVersion })
+                    : t('updates.result.osCheckStep.optionOlder', {
+                        os: osLabel || '',
+                        version: opt.latestVersion,
+                      })
                 }
-                tone="secondary"
               />
               <PickerButton
                 onClick={() => onPickLatest(opt)}
                 label={
                   opt.codename
                     ? t('updates.result.osCheckStep.optionLatestCodename', {
+                        os: osLabel || '',
                         version: opt.latestVersion,
                         codename: opt.codename,
                       })
-                    : t('updates.result.osCheckStep.optionLatest', { version: opt.latestVersion })
+                    : t('updates.result.osCheckStep.optionLatest', {
+                        os: osLabel || '',
+                        version: opt.latestVersion,
+                      })
                 }
-                tone="primary"
               />
             </div>
           ))
@@ -271,15 +254,14 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
           // No OS data — single confirmation button (e.g., OnePlus, watches without OS lookup).
           <PickerButton
             onClick={() => onPickLatest(null)}
-            label={t('updates.result.osCheckStep.optionLatest', { version: '' }).trim() || 'Done'}
-            tone="primary"
+            label={t('updates.result.osNeedsUpdate.didUpdateButton')}
           />
         )}
         {options.length > 0 ? (
           <button
             type="button"
             onClick={() => onPickOlder(null)}
-            className="text-sm text-muted-foreground hover:text-foreground"
+            className="pt-1 text-sm text-muted-foreground hover:text-foreground"
           >
             {t('updates.result.osCheckStep.optionUnknown')}
           </button>
@@ -289,16 +271,15 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
   );
 }
 
-function PickerButton({ onClick, label, tone }) {
-  const cls =
-    tone === 'primary'
-      ? 'bg-primary text-primary-foreground hover:bg-primary/90'
-      : 'border border-border bg-background text-foreground hover:bg-muted';
+function PickerButton({ onClick, label }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className={cn('rounded-md px-4 py-2 text-sm font-medium', cls)}
+      className={cn(
+        'inline-flex items-center justify-center rounded-md border-2 border-primary px-4 py-2 text-sm font-medium text-primary',
+        'transition-colors hover:bg-primary hover:text-primary-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/40'
+      )}
     >
       {label}
     </button>
@@ -362,30 +343,34 @@ function FinalSuccessBox({ snapshot, product, release, displayLabel, pickedOptio
   );
 }
 
-function OsNeedsUpdateBox({ pickedOption, onDidUpdate }) {
+function OsNeedsUpdateBox({ snapshot, product, onDidUpdate }) {
   const t = useTranslations();
+  const osProduct = osProductForDevice(snapshot, product);
+  const osId = osProduct?.id || null;
+
   return (
     <div className="rounded-lg border-2 border-warning/30 bg-warning/5 p-6">
       <div className="flex items-start gap-4">
         <AlertTriangle className="h-12 w-12 shrink-0 text-warning" aria-hidden="true" />
-        <div className="min-w-0 flex-1 space-y-2">
+        <div className="min-w-0 flex-1 space-y-3">
           <h2 className="text-2xl font-semibold leading-tight text-foreground sm:text-3xl">
             {t('updates.result.osNeedsUpdate.heading')}
           </h2>
           <p className="text-base text-foreground/80">
-            {t('updates.result.osNeedsUpdate.body', {
-              version: pickedOption?.latestVersion || 'the latest version',
-            })}
+            {t('updates.result.osNeedsUpdate.body')}
           </p>
+
+          {osId ? (
+            <div className="space-y-2 pt-1">
+              <p className="text-sm font-semibold text-foreground/80">
+                {t('updates.result.osNeedsUpdate.howToHeading')}
+              </p>
+              <PromMenuPath osId={osId} />
+            </div>
+          ) : null}
+
           <div className="pt-2">
-            <button
-              type="button"
-              onClick={onDidUpdate}
-              className="inline-flex items-center gap-1.5 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
-            >
-              <Check className="h-4 w-4" />
-              {t('updates.result.osNeedsUpdate.didUpdateButton')}
-            </button>
+            <PickerButton onClick={onDidUpdate} label={t('updates.result.osNeedsUpdate.didUpdateButton')} />
           </div>
         </div>
       </div>
@@ -424,7 +409,7 @@ function DeviceSupported({ snapshot, product, release }) {
           onPickOlder={pickOlder}
         />
       ) : step === 'needs-update' ? (
-        <OsNeedsUpdateBox pickedOption={pickedOption} onDidUpdate={didUpdate} />
+        <OsNeedsUpdateBox snapshot={snapshot} product={product} onDidUpdate={didUpdate} />
       ) : (
         <FinalSuccessBox
           snapshot={snapshot}
@@ -436,7 +421,6 @@ function DeviceSupported({ snapshot, product, release }) {
       )}
 
       <DeviceMaxOsWarning snapshot={snapshot} product={product} release={release} />
-      <SourceLink product={product} />
     </div>
   );
 }
@@ -544,7 +528,6 @@ function DeviceUncertain({ snapshot, product, release, classification }) {
         <CtaList items={[{ href: ESSENTIALS_HREF, label: t('updates.result.ctaEssentials') }]} />
       </ResultBox>
       <ThreatModelBlock soft />
-      <SourceLink product={product} />
     </div>
   );
 }
@@ -584,7 +567,6 @@ function DeviceEol({ product, release, classification }) {
         />
       </ResultBox>
       <ThreatModelBlock />
-      <SourceLink product={product} />
     </div>
   );
 }
@@ -614,7 +596,6 @@ function OsSupported({ product, release }) {
         ) : null}
         <CtaList items={[{ href: ESSENTIALS_HREF, label: t('updates.result.ctaEssentials') }]} />
       </ResultBox>
-      <SourceLink product={product} />
     </div>
   );
 }
@@ -652,7 +633,6 @@ function OsEol({ product, release }) {
         />
       </ResultBox>
       <ThreatModelBlock />
-      <SourceLink product={product} />
     </div>
   );
 }

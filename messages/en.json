@@ -347,7 +347,7 @@
     "metaTitle": "Is your device still receiving security updates? | Activist Checklist",
     "metaDescription": "Check whether your phone, tablet, watch, or laptop is still getting security updates. Out-of-date devices accumulate publicly known vulnerabilities and are easier to compromise if seized or targeted.",
     "title": "Is your device still receiving security updates?",
-    "intro": "Type your device or operating system below. We'll tell you whether it's still getting patches, what version you should be on, and what to do if it isn't.",
+    "intro": "Type your device or operating system below. We'll tell you whether it's still getting security updates. Why? Because out-of-date software makes it much easier for the cops to access your data.",
     "searchPlaceholder": "e.g. iPhone 12 Pro, Pixel 7, Windows 10",
     "searchAriaLabel": "Search for your device or operating system",
     "clearAriaLabel": "Clear search",
@@ -431,15 +431,33 @@
       "deviceUnsupportedSubtitleAge": "Released {age}. No published end-of-support date and the manufacturer doesn't appear to be issuing updates.",
       "ageYearsAgo": "{years, plural, =0 {this year} =1 {1 year ago} other {# years ago}}",
       "deviceUncertainTitle": "We can't confirm whether {label} is still receiving updates.",
-      "deviceUncertainSubtitle": "Released {age}. The manufacturer hasn't published an end-of-support date, and devices this old may or may not still be patched.",
+      "deviceUncertainSubtitle": "Released {age}. The manufacturer hasn't published an end-of-support date, and devices this old may or may not still be receiving updates.",
       "deviceUncertainCheck": "Check the manufacturer's support page: <link></link>.",
       "manufacturerSupport": {
-        "apple": { "label": "Apple Support", "url": "https://support.apple.com/" },
-        "google": { "label": "Google Pixel support", "url": "https://support.google.com/pixelphone/answer/4457705" },
-        "samsung": { "label": "Samsung Mobile Security", "url": "https://security.samsungmobile.com/workScope.smsb" },
-        "motorola": { "label": "Motorola software updates", "url": "https://en-us.support.motorola.com/app/software-security-update" },
-        "oneplus": { "label": "OnePlus community", "url": "https://www.oneplus.com/support" },
-        "nokia": { "label": "Nokia security updates", "url": "https://www.nokia.com/phones/en_int/security-updates" }
+        "apple": {
+          "label": "Apple Support",
+          "url": "https://support.apple.com/"
+        },
+        "google": {
+          "label": "Google Pixel support",
+          "url": "https://support.google.com/pixelphone/answer/4457705"
+        },
+        "samsung": {
+          "label": "Samsung Mobile Security",
+          "url": "https://security.samsungmobile.com/workScope.smsb"
+        },
+        "motorola": {
+          "label": "Motorola software updates",
+          "url": "https://en-us.support.motorola.com/app/software-security-update"
+        },
+        "oneplus": {
+          "label": "OnePlus community",
+          "url": "https://www.oneplus.com/support"
+        },
+        "nokia": {
+          "label": "Nokia security updates",
+          "url": "https://www.nokia.com/phones/en_int/security-updates"
+        }
       },
       "osSupportedTitle": "{label} is still receiving security updates.",
       "osLatestVersion": "Latest version: {version}.",
@@ -464,9 +482,9 @@
         "android": "Android"
       },
       "deviceMaxOsWarningTitle": "A note about your device's OS",
-      "deviceMaxOsWarning": "Your {label} only supports up to {os} {maxVersion}. {os} {maxVersion} will lose security updates before {os} {latestVersion} does. Newer devices will keep getting patches longer.",
-      "deviceMaxOsWarningWithDate": "Your {label} only supports up to {os} {maxVersion}, which is expected to lose security updates around {eolDate}. Newer devices that can run {os} {latestVersion} will keep getting patches longer.",
-      "deviceMaxOsEolWarning": "Your {label} tops out at {os} {maxVersion}, which has officially ended support. You may still receive occasional security patches, but treat this device as low-trust for sensitive work and plan to replace it.",
+      "deviceMaxOsWarning": "Your {label} only supports up to {os} {maxVersion}. {os} {maxVersion} will lose security updates before {os} {latestVersion} does. Newer devices will keep receiving updates longer.",
+      "deviceMaxOsWarningWithDate": "Your {label} only supports up to {os} {maxVersion}, which is expected to lose security updates around {eolDate}. Newer devices that can run {os} {latestVersion} will keep receiving updates longer.",
+      "deviceMaxOsEolWarning": "Your {label} tops out at {os} {maxVersion}, which has officially ended support. You may still receive occasional updates, but treat this device as low-trust for sensitive work and plan to replace it.",
       "deviceUpgradePlan": "If long-term security matters for your work, plan a hardware upgrade.",
       "threatModelHeader": "Why this matters",
       "threatModel": "Phones that no longer receive security updates accumulate publicly known vulnerabilities. That raises the risk if your device is seized at a border, taken by police, or targeted with spyware.",
@@ -479,15 +497,16 @@
         "headingForOs": "Which version of {os} are you running?",
         "headingGeneric": "Which version is your device running?",
         "subheadingHelp": "Open it on your device to check:",
-        "optionLatest": "{version}",
-        "optionLatestCodename": "{version} ({codename})",
-        "optionOlder": "Older than {version}",
-        "optionOlderCodename": "Older than {version} ({codename})",
+        "optionLatest": "{os} {version}",
+        "optionLatestCodename": "{os} {version} ({codename})",
+        "optionOlder": "Older than {os} {version}",
+        "optionOlderCodename": "Older than {os} {version} ({codename})",
         "optionUnknown": "Older than that, or I'm not sure"
       },
       "osNeedsUpdate": {
         "heading": "Your operating system needs an update",
-        "body": "Update to {version} via your device's software update settings to get the latest security patches.",
+        "body": "Update to the latest version to get the most recent security updates.",
+        "howToHeading": "How to update:",
         "didUpdateButton": "Done — I've updated"
       },
       "finalSuccess": {
