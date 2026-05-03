@@ -10,6 +10,14 @@ ErrorDocument 404 /404/index.html
   # below. The "-" target is a no-op pass-through; only the [E=...] flag has effect.
   RewriteRule ^ - [E=ONION_URI:%{REQUEST_URI}]
 
+  # Tor Browser's Onion-Location should mirror the public path, not Apache's
+  # directory-index form (.../dir/index.html). Canonicalize to .../dir/
+  RewriteCond %{REQUEST_URI} ^/(.+)/index\.html$ [NC]
+  RewriteRule ^ - [E=ONION_URI:/%1/]
+
+  RewriteCond %{REQUEST_URI} ^/index\.html$ [NC]
+  RewriteRule ^ - [E=ONION_URI:/]
+
   # Skip if the file/directory already exists at the bare path
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
