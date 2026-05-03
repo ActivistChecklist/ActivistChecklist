@@ -394,6 +394,20 @@
       "ariaLabel": "Picked category, click to change",
       "clear": "Clear category"
     },
+    "findYourModel": {
+      "label": "How to find this:",
+      "iphone": "Settings → General → About",
+      "ipad": "Settings → General → About",
+      "appleWatch": "Watch app on iPhone → My Watch → General → About",
+      "mac": "Apple menu → About This Mac",
+      "samsung": "Settings → About phone (or About device)",
+      "pixel": "Settings → About phone",
+      "motorola": "Settings → About phone",
+      "oneplus": "Settings → About device",
+      "nokia": "Settings → About phone",
+      "androidOs": "Settings → About phone → Android version",
+      "windows": "Press Windows key + R, type winver, then Enter"
+    },
     "otherInfo": {
       "title": "Other devices",
       "body": "We currently track Apple, Google, Samsung, Motorola, OnePlus, and Nokia devices, plus iOS, iPadOS, macOS, Android, and Windows. For anything else, check {link} directly."

@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, Info } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { SUB_CATEGORIES_BY_PLATFORM, leafForPlatform } from '@/lib/updates/categories';
@@ -173,10 +173,21 @@ function L3({ platform, subCategory, onClickPlatform, onClear }) {
     : '';
   const Icon = BRAND_ICON[subCategory?.family];
 
+  // "How to find this" hint is keyed by sub-category labelKey when we have copy for it.
+  let findHint = null;
+  if (subCategory?.labelKey) {
+    try {
+      const path = t(`updates.findYourModel.${subCategory.labelKey}`);
+      if (path && !path.startsWith('updates.findYourModel.')) findHint = path;
+    } catch {
+      findHint = null;
+    }
+  }
+
   return (
     <div
       key={`l3-${platform}-${subCategory?.id || ''}`}
-      className="animate-in fade-in slide-in-from-right-2 duration-200"
+      className="animate-in fade-in slide-in-from-right-2 duration-200 space-y-3"
     >
       <div
         role="group"
@@ -208,6 +219,16 @@ function L3({ platform, subCategory, onClickPlatform, onClear }) {
           <X className="h-3.5 w-3.5" />
         </button>
       </div>
+
+      {findHint ? (
+        <p className="flex items-start gap-1.5 text-xs text-muted-foreground">
+          <Info className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+          <span>
+            <span className="font-medium text-foreground/80">{t('updates.findYourModel.label')}</span>{' '}
+            <span>{findHint}</span>
+          </span>
+        </p>
+      ) : null}
     </div>
   );
 }
