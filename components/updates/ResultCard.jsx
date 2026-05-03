@@ -14,6 +14,28 @@ import {
 const ESSENTIALS_HREF = '/guides/essentials';
 const SECURITY_ESSENTIALS_HREF = '/checklists/items/security-essentials';
 
+const MANUFACTURER_PREFIX = /^(Apple|Google|Samsung|Microsoft|Motorola|OnePlus|Nokia) /;
+
+const MAC_LABEL_PREFIX = /^(MacBook|iMac|Mac mini|Mac Pro|Mac Studio)/;
+
+/**
+ * Build the display label shown in result headings.
+ * - Mac devices: release.label already includes the model name, use it as-is.
+ * - OS products: strip manufacturer prefix, append release.label, strip Windows (W)/(E) suffixes.
+ * - Other devices: strip manufacturer prefix from product.label, append release.label.
+ */
+function buildDisplayLabel(product, release) {
+  const isOs = product.type === 'os';
+  if (!isOs && MAC_LABEL_PREFIX.test(release.label)) {
+    return release.label;
+  }
+  const base = `${product.label.replace(MANUFACTURER_PREFIX, '')} ${release.label}`;
+  if (isOs) {
+    return base.replace(/\s*\((W|E)\)\s*/g, '').trim();
+  }
+  return base;
+}
+
 /** Format an ISO date string as "Month YYYY" (e.g. "March 2031"). */
 function formatMonthYear(iso, locale = 'en-US') {
   if (!iso) return '';
@@ -32,14 +54,14 @@ function ResultHeader({ tone, title, onReset }) {
   const t = useTranslations();
   const Icon = tone === 'green' ? CheckCircle2 : tone === 'red' ? XCircle : AlertTriangle;
   const toneClass = {
-    green: 'text-green-600 dark:text-green-400',
-    red: 'text-red-600 dark:text-red-400',
-    amber: 'text-amber-600 dark:text-amber-500',
+    green: 'text-success',
+    red: 'text-destructive',
+    amber: 'text-warning',
   }[tone];
   const ringClass = {
-    green: 'border-green-500/30 bg-green-500/5',
-    red: 'border-red-500/30 bg-red-500/5',
-    amber: 'border-amber-500/30 bg-amber-500/5',
+    green: 'border-success/30 bg-success/5',
+    red: 'border-destructive/30 bg-destructive/5',
+    amber: 'border-warning/30 bg-warning/5',
   }[tone];
 
   return (
@@ -137,7 +159,7 @@ function DeviceMaxOsWarning({ snapshot, product, release }) {
 
   if (warning.kind === 'older-os-eol') {
     return (
-      <div className="rounded-md border border-amber-500/40 bg-amber-500/5 p-4">
+      <div className="rounded-md border border-warning/40 bg-warning/5 p-4">
         <p className="text-sm font-medium text-foreground">
           {t('updates.result.deviceMaxOsWarningTitle')}
         </p>
@@ -168,7 +190,7 @@ function DeviceMaxOsWarning({ snapshot, product, release }) {
       });
 
   return (
-    <div className="rounded-md border border-amber-500/40 bg-amber-500/5 p-4">
+    <div className="rounded-md border border-warning/40 bg-warning/5 p-4">
       <p className="text-sm font-medium text-foreground">
         {t('updates.result.deviceMaxOsWarningTitle')}
       </p>
@@ -254,9 +276,7 @@ function SourceLink({ product }) {
 
 function DeviceSupported({ snapshot, product, release, classification, onReset }) {
   const t = useTranslations();
-  const displayLabel = release.label.startsWith(product.label)
-    ? release.label
-    : `${product.label.replace(/^Apple |^Google |^Samsung |^Microsoft |^Motorola |^OnePlus |^Nokia /, '')} ${release.label}`;
+  const displayLabel = buildDisplayLabel(product, release);
 
   let subtitle = null;
   if (release.eolFrom) {
@@ -287,7 +307,7 @@ function DeviceSupported({ snapshot, product, release, classification, onReset }
 
 function DeviceUncertain({ snapshot, product, release, classification, onReset }) {
   const t = useTranslations();
-  const displayLabel = `${product.label.replace(/^Apple |^Google |^Samsung |^Microsoft |^Motorola |^OnePlus |^Nokia /, '')} ${release.label}`;
+  const displayLabel = buildDisplayLabel(product, release);
   const ageText = formatYearsAgo(classification.ageYears, t);
 
   // Manufacturer support link (when we have one)
@@ -338,7 +358,7 @@ function DeviceUncertain({ snapshot, product, release, classification, onReset }
 
 function DeviceEol({ snapshot, product, release, classification, onReset }) {
   const t = useTranslations();
-  const displayLabel = `${product.label.replace(/^Apple |^Google |^Samsung |^Microsoft |^Motorola |^OnePlus |^Nokia /, '')} ${release.label}`;
+  const displayLabel = buildDisplayLabel(product, release);
 
   let subtitle = null;
   if (classification.reason === 'eolFrom-past' && release.eolFrom) {
@@ -373,7 +393,7 @@ function DeviceEol({ snapshot, product, release, classification, onReset }) {
 
 function OsSupported({ product, release, onReset }) {
   const t = useTranslations();
-  const displayLabel = `${product.label.replace(/^Apple |^Microsoft |^Google /, '')} ${release.label}`.replace(/\s*\((W|E)\)\s*/g, '').trim();
+  const displayLabel = buildDisplayLabel(product, release);
 
   return (
     <div className="space-y-4">
@@ -402,7 +422,7 @@ function OsSupported({ product, release, onReset }) {
 
 function OsEol({ product, release, onReset }) {
   const t = useTranslations();
-  const displayLabel = `${product.label.replace(/^Apple |^Microsoft |^Google /, '')} ${release.label}`.replace(/\s*\((W|E)\)\s*/g, '').trim();
+  const displayLabel = buildDisplayLabel(product, release);
 
   let advice = null;
   try {

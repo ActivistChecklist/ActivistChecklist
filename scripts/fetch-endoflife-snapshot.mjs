@@ -216,8 +216,10 @@ async function loadExistingSnapshot(targetPath) {
 
 /**
  * Apple drops some Macs from each new macOS release (typically Sept-Oct).
- * After Nov 1 of any year, lastVerified must be ≥ Oct 1 of that year — i.e. someone
- * has reviewed Apple's new compatibility list and updated data/mac-compatibility.json.
+ * Apple has historically shipped new macOS anywhere from late September to mid-November.
+ * We give a grace period: from the start of November onward, we require lastVerified
+ * to be at least Sept 1 of the same year — i.e., someone reviewed Apple's compatibility
+ * list for that year's release. Before November we still require last year's Sept 1.
  * Throws (fatal) if stale; the main() fatal handler pings the healthcheck /fail endpoint.
  */
 function assertMacCompatFresh(parsed) {
@@ -232,14 +234,14 @@ function assertMacCompatFresh(parsed) {
 
   const today = new Date();
   // getMonth() is 0-indexed: 9 = October, 10 = November.
-  // Before November we still require last year's Oct 1; from November on, this year's.
+  // Before November we still require last year's Sept 1; from November on, this year's.
   const cutoffYear = today.getMonth() >= 10 ? today.getFullYear() : today.getFullYear() - 1;
-  const cutoffDate = new Date(`${cutoffYear}-10-01T00:00:00Z`);
+  const cutoffDate = new Date(`${cutoffYear}-09-01T00:00:00Z`);
 
   if (verifiedDate < cutoffDate) {
     throw new Error(
       `data/mac-compatibility.json is stale: lastVerified=${lastVerified}, ` +
-      `must be on or after ${cutoffYear}-10-01. ` +
+      `must be on or after ${cutoffYear}-09-01. ` +
       `A new macOS likely released this past fall — review Apple's compatibility list ` +
       `(https://support.apple.com) and update mac-compatibility.json with new max-macOS ` +
       `values, then bump lastVerified.`

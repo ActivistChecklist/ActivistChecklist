@@ -63,6 +63,14 @@ export default function UpdatesPage() {
     window.history.replaceState({}, '', url.toString());
   }, [selection, snapshot]);
 
+  // Clear stale selection if the URL points at a product/release no longer in the snapshot.
+  useEffect(() => {
+    if (!snapshot || !selection) return;
+    if (!findRelease(snapshot, selection.productId, selection.releaseId)) {
+      setSelection(null);
+    }
+  }, [snapshot, selection]);
+
   // Browser back/forward — keep state in sync if the user navigates.
   useEffect(() => {
     function onPop() {
@@ -148,8 +156,7 @@ export default function UpdatesPage() {
   if (selection) {
     const found = findRelease(snapshot, selection.productId, selection.releaseId);
     if (!found) {
-      // URL pointed at something we don't have anymore (snapshot updated). Clear.
-      setSelection(null);
+      // Effect above will clear the stale selection; render the search shell in the meantime.
       return null;
     }
     return (
@@ -198,7 +205,7 @@ export default function UpdatesPage() {
       </div>
 
       {isSnapshotStale(snapshot) ? (
-        <div className="rounded-md border border-amber-500/30 bg-amber-500/5 p-3 text-xs text-foreground/90">
+        <div className="rounded-md border border-warning/30 bg-warning/5 p-3 text-xs text-foreground/90">
           {t.rich('updates.snapshotStaleBanner', {
             date: formatStaleDate(snapshot.generatedAt),
             link: (chunks) => (
