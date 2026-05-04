@@ -526,6 +526,7 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
                 <div key={opt.major} className="flex flex-wrap gap-2">
                   <PickerButton
                     icon={History}
+                    iconTone="destructive"
                     onClick={() => handlePickOlder(opt)}
                     label={
                       opt.codename
@@ -542,6 +543,7 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
                   />
                   <PickerButton
                     icon={CheckCircle2}
+                    iconTone="success"
                     onClick={() => handlePickLatest(opt)}
                     label={
                       opt.codename
@@ -565,6 +567,7 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
               <div key={opt.major} className="flex flex-wrap gap-2">
                 <PickerButton
                   icon={CheckCircle2}
+                  iconTone="success"
                   onClick={() => handlePickLatest(opt)}
                   label={
                     opt.codename
@@ -588,6 +591,7 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
           // No OS data — single confirmation button (e.g., OnePlus, watches without OS lookup).
           <PickerButton
             icon={CheckCircle2}
+            iconTone="success"
             onClick={() => handlePickLatest(null)}
             label={t('updates.result.osNeedsUpdate.didUpdateButton')}
           />
@@ -609,16 +613,27 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
 /**
  * Outline-style action button for the OS picker / needs-update flow. All buttons
  * share the same primary outline; OS version buttons differentiate "older" from
- * "up to date" via icon, not colour, so the button row reads as a flat set of
- * choices rather than an implied recommendation.
+ * "up to date" via icon colour (destructive vs success) so the button row reads
+ * as a flat set of choices with semantic accents on the icons.
  *
  * `tone="destructive"` is still available for non-version buttons that need a
- * stronger visual cue (kept for future use; not currently wired in).
+ * stronger visual cue across the whole button (kept for future use; not currently
+ * wired in). `iconTone` ('success' | 'destructive') colours just the icon.
  */
-function PickerButton({ onClick, label, tone = 'primary', icon: IconProp }) {
+function PickerButton({ onClick, label, tone = 'primary', icon: IconProp, iconTone }) {
   const toneClasses = tone === 'destructive'
     ? 'border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground focus-visible:ring-destructive/40'
     : 'border-primary text-primary hover:bg-primary hover:text-primary-foreground focus-visible:ring-primary/40';
+  // Icon colour overrides — applied to the icon only, leaving the button's text
+  // colour (current foreground when not hovered) intact. On hover the button
+  // fills primary; the icon's explicit colour stays put against that fill,
+  // which still reads since success/destructive are high-contrast against the
+  // primary fill.
+  const iconToneClass = iconTone === 'success'
+    ? 'text-success'
+    : iconTone === 'destructive'
+      ? 'text-destructive'
+      : null;
   return (
     <button
       type="button"
@@ -629,7 +644,9 @@ function PickerButton({ onClick, label, tone = 'primary', icon: IconProp }) {
         toneClasses
       )}
     >
-      {IconProp ? <IconProp className="h-4 w-4 shrink-0" aria-hidden="true" /> : null}
+      {IconProp ? (
+        <IconProp className={cn('h-4 w-4 shrink-0', iconToneClass)} aria-hidden="true" />
+      ) : null}
       <span>{label}</span>
     </button>
   );
@@ -816,12 +833,14 @@ function OsNeedsUpdateBox({
           <div className="flex flex-wrap gap-2 pt-2">
             <PickerButton
               icon={CheckCircle2}
+              iconTone="success"
               onClick={onDidUpdate}
               label={t('updates.result.osNeedsUpdate.didUpdateButton')}
             />
             {noUpdatesLabel && onNoUpdatesAvailable ? (
               <PickerButton
                 icon={History}
+                iconTone="destructive"
                 onClick={onNoUpdatesAvailable}
                 label={noUpdatesLabel}
               />
