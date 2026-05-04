@@ -701,6 +701,15 @@ function DeviceMaxOsWarning({ snapshot, product, release }) {
     osLabel = warning.osProduct.label;
   }
 
+  // Render major + codename together for OSes that publish a codename ("13 Ventura",
+  // "16 (Baklava)") so the user can match what they see in their device's About screen.
+  const maxLabel = warning.maxCodename
+    ? `${warning.maxMajor} (${warning.maxCodename})`
+    : String(warning.maxMajor);
+  const latestLabel = warning.latestCodename
+    ? `${warning.latestMajor} (${warning.latestCodename})`
+    : String(warning.latestMajor);
+
   if (warning.kind === 'older-os-eol') {
     return (
       <div className="rounded-md border border-warning/40 bg-warning/5 p-4">
@@ -711,7 +720,7 @@ function DeviceMaxOsWarning({ snapshot, product, release }) {
           {t('updates.result.deviceMaxOsEolWarning', {
             label: product.label,
             os: osLabel,
-            maxVersion: warning.maxMajor,
+            maxVersion: maxLabel,
           })}
         </p>
       </div>
@@ -722,15 +731,15 @@ function DeviceMaxOsWarning({ snapshot, product, release }) {
     ? t('updates.result.deviceMaxOsWarningWithDate', {
         label: product.label,
         os: osLabel,
-        maxVersion: warning.maxMajor,
+        maxVersion: maxLabel,
         eolDate: formatMonthYear(warning.maxEolDate),
-        latestVersion: warning.latestMajor,
+        latestVersion: latestLabel,
       })
     : t('updates.result.deviceMaxOsWarning', {
         label: product.label,
         os: osLabel,
-        maxVersion: warning.maxMajor,
-        latestVersion: warning.latestMajor,
+        maxVersion: maxLabel,
+        latestVersion: latestLabel,
       });
 
   return (

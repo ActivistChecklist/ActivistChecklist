@@ -558,6 +558,35 @@ describe('buildDeviceMaxOsWarning', () => {
     const r = product.releases.find((x) => x.id === '12-pro');
     expect(buildDeviceMaxOsWarning(snap, product, r, null)).toBeNull();
   });
+
+  it('surfaces codenames on the warning so consumers can render "13 (Ventura)"', () => {
+    // macOS-shaped snapshot: device caps at macOS 14 Sonoma; family latest is macOS 26 Tahoe.
+    const snap = normalizeSnapshot({
+      schemaVersion: 1, generatedAt: '2026-05-03T00:00:00Z', source: 'x',
+      products: [
+        {
+          id: 'macbook-pro', label: 'Apple MacBook Pro', kind: 'device', family: 'apple', formFactor: 'laptop',
+          endoflifeUrl: 'https://x', releases: [
+            { id: 'mbp-2018', label: 'MacBook Pro (2018)', releaseDate: '2018-07-12', supportedOsRange: '10.13 - 14' },
+          ],
+        },
+        {
+          id: 'macos', label: 'Apple macOS', kind: 'os', family: 'apple', formFactor: 'os',
+          endoflifeUrl: 'https://x', releases: [
+            { id: '26', label: 'macOS 26 (Tahoe)', releaseDate: '2025-09-15', latestVersion: '26.4.1', codename: 'Tahoe' },
+            { id: '14', label: 'macOS 14 (Sonoma)', releaseDate: '2023-09-26', latestVersion: '14.8.5', codename: 'Sonoma', eolFrom: '2026-09-01' },
+          ],
+        },
+      ],
+    });
+    const product = snap.products.find((p) => p.id === 'macbook-pro');
+    const r = product.releases[0];
+    const reminder = buildLatestOsReminder(snap, product, r);
+    const warn = buildDeviceMaxOsWarning(snap, product, r, reminder);
+    expect(warn.kind).toBe('older-os');
+    expect(warn.maxCodename).toBe('Sonoma');
+    expect(warn.latestCodename).toBe('Tahoe');
+  });
 });
 
 describe('buildOsCheckOptions', () => {

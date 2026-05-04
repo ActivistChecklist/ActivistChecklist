@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 
 import { normalizeSnapshot } from '../lib/updates/snapshot';
-import { buildSearchIndex, buildFuse, searchIndex } from '../lib/updates/search';
+import { buildSearchIndex, buildFuse, searchIndex, tidyReleaseLabel } from '../lib/updates/search';
 
 const NOW = new Date('2026-05-03T00:00:00Z');
 
@@ -150,5 +150,33 @@ describe('searchIndex', () => {
     const idx2024 = labels.findIndex((l) => l.includes('2024'));
     expect(idx2018).toBeGreaterThanOrEqual(0);
     expect(idx2018).toBeLessThan(idx2024);
+  });
+});
+
+describe('tidyReleaseLabel', () => {
+  it('strips Windows edition suffixes (W/E)', () => {
+    expect(tidyReleaseLabel('windows', '11 24H2 (W)')).toBe('11 24H2');
+    expect(tidyReleaseLabel('windows', '10 22H2 (E)')).toBe('10 22H2');
+    expect(tidyReleaseLabel('windows', '11 24H2')).toBe('11 24H2');
+  });
+
+  it("converts Android single-quoted codenames to parens", () => {
+    expect(tidyReleaseLabel('android', "16 'Baklava'")).toBe('16 (Baklava)');
+    expect(tidyReleaseLabel('android', "15 'Vanilla Ice Cream'")).toBe('15 (Vanilla Ice Cream)');
+    expect(tidyReleaseLabel('android', "13 'Tiramisu'")).toBe('13 (Tiramisu)');
+  });
+
+  it('leaves Android labels without codename quotes alone', () => {
+    expect(tidyReleaseLabel('android', '15')).toBe('15');
+  });
+
+  it('passes other product labels through untouched', () => {
+    expect(tidyReleaseLabel('macos', 'macOS 14 (Sonoma)')).toBe('macOS 14 (Sonoma)');
+    expect(tidyReleaseLabel('ios', '17')).toBe('17');
+  });
+
+  it('returns the input unchanged for non-string labels', () => {
+    expect(tidyReleaseLabel('android', null)).toBeNull();
+    expect(tidyReleaseLabel('android', undefined)).toBeUndefined();
   });
 });
