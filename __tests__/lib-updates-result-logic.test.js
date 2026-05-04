@@ -186,15 +186,17 @@ describe('classifyResult — supportedOsRange cross-reference', () => {
     expect(c.reason).toBe('os-current');
   });
 
-  it('iPhone 8 (max iOS 16 < current 26) → does NOT trigger os-current; falls through', () => {
+  it('iPhone 8 (max iOS 16, iOS 16 is EOL) → device-eol via device-max-os-eol', () => {
     const snap = makeSnapshot();
     const product = snap.products.find((p) => p.id === 'iphone');
     // Strip the explicit eolFrom so we test the cross-reference path specifically.
     const r = { ...product.releases.find((x) => x.id === '8'), isEol: false, eolFrom: null, isMaintained: true };
     const c = classifyResult({ product, release: r }, { now: NOW, snapshot: snap });
-    // With max=16 < latest=26, the os-current rule does NOT fire. Age 8.6y → age-heuristic-old.
+    // Max iOS 16 is itself EOL → device is definitively EOL via the OS chain,
+    // no need to fall through to the age heuristic.
     expect(c.variant).toBe('device-eol');
-    expect(c.reason).toBe('age-heuristic-old');
+    expect(c.reason).toBe('device-max-os-eol');
+    expect(c.effectiveEolFrom).toBe('2025-09-15'); // iOS 16's eolFrom
   });
 
   it('without snapshot, the rule is silently skipped', () => {
@@ -214,6 +216,64 @@ describe('classifyResult — supportedOsRange cross-reference', () => {
     const c = classifyResult({ product, release: r }, { now: NOW, snapshot: snap });
     expect(c.variant).toBe('device-eol');
     expect(c.reason).toBe('eolFrom-past');
+  });
+
+  it('older Mac whose max OS is still maintained → device-supported via device-max-os-supported', () => {
+    // 2018 MacBook Pro analogue: max macOS 15 (current = 26 in this snapshot, but
+    // 15 still has updates). Without this rule, the age heuristic would have
+    // misclassified it as device-eol just for being old.
+    const snap = normalizeSnapshot({
+      schemaVersion: 1, generatedAt: '2026-05-03T00:00:00Z', source: 'x',
+      products: [
+        {
+          id: 'macbook-pro', label: 'Apple MacBook Pro', kind: 'device', family: 'apple', formFactor: 'laptop',
+          endoflifeUrl: 'https://x',
+          releases: [{ id: '13in-2018', label: '13-inch 2018', releaseDate: '2018-07-12', supportedOsRange: '15' }],
+        },
+        {
+          id: 'macos', label: 'Apple macOS', kind: 'os', family: 'apple', formFactor: 'os',
+          endoflifeUrl: 'https://x',
+          releases: [
+            { id: '26', label: '26', releaseDate: '2025-09-15' },
+            { id: '15', label: '15', releaseDate: '2024-09-15', eolFrom: '2027-09-15' },
+          ],
+        },
+      ],
+    });
+    const product = snap.products.find((p) => p.id === 'macbook-pro');
+    const r = product.releases[0];
+    const c = classifyResult({ product, release: r }, { now: NOW, snapshot: snap });
+    expect(c.variant).toBe('device-supported');
+    expect(c.reason).toBe('device-max-os-supported');
+    expect(c.effectiveEolFrom).toBe('2027-09-15');
+  });
+
+  it('older Mac whose max OS is approaching EOL → device-eol-soon via device-max-os-soon', () => {
+    // Hypothetical 2018 MacBook Pro pinned to macOS 13, eolFrom 6 months out.
+    const snap = normalizeSnapshot({
+      schemaVersion: 1, generatedAt: '2026-05-03T00:00:00Z', source: 'x',
+      products: [
+        {
+          id: 'macbook-pro', label: 'Apple MacBook Pro', kind: 'device', family: 'apple', formFactor: 'laptop',
+          endoflifeUrl: 'https://x',
+          releases: [{ id: '13in-2017', label: '13-inch 2017', releaseDate: '2017-06-05', supportedOsRange: '13' }],
+        },
+        {
+          id: 'macos', label: 'Apple macOS', kind: 'os', family: 'apple', formFactor: 'os',
+          endoflifeUrl: 'https://x',
+          releases: [
+            { id: '26', label: '26', releaseDate: '2025-09-15' },
+            { id: '13', label: '13', releaseDate: '2022-10-24', eolFrom: '2026-11-01' },
+          ],
+        },
+      ],
+    });
+    const product = snap.products.find((p) => p.id === 'macbook-pro');
+    const r = product.releases[0];
+    const c = classifyResult({ product, release: r }, { now: NOW, snapshot: snap });
+    expect(c.variant).toBe('device-eol-soon');
+    expect(c.reason).toBe('device-max-os-soon');
+    expect(c.effectiveEolFrom).toBe('2026-11-01');
   });
 });
 
