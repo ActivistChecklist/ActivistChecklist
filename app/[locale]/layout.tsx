@@ -30,6 +30,29 @@ export default async function LocaleLayout({ children, params }) {
 
   return (
     <html lang={locale} suppressHydrationWarning>
+      <head>
+        {/* Preload the two font weights every page renders heavily — Source Sans 3
+            400 for body copy, Libre Franklin 700 for headings. Without preload the
+            browser doesn't request these woff2 files until CSS parsing surfaces
+            them, which means cross-breakpoint resizes (desktop nav → mobile nav)
+            sometimes need to load a not-yet-rendered weight mid-resize, and
+            briefly substitute the system fallback. Preloading + font-display:
+            optional on these weights stops that mid-life swap. */}
+        <link
+          rel="preload"
+          as="font"
+          type="font/woff2"
+          href="/fonts/source-sans-3-v19-latin-regular.woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          as="font"
+          type="font/woff2"
+          href="/fonts/libre-franklin-v20-latin-700.woff2"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body className="min-h-screen bg-background font-body antialiased">
         <AnnouncementProvider value={announcement}>
           <NextIntlClientProvider locale={locale} messages={messages}>

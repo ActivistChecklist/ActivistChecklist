@@ -45,7 +45,12 @@
     src: url('/fonts/libre-franklin-v20-latin-600.woff2') format('woff2');
   }
   @font-face {
-    font-display: swap;
+    /* 'optional' (vs 'swap') prevents mid-life font substitutions during heavy
+       reflow operations like cross-breakpoint viewport resizes. Once the font
+       is chosen at first paint, the browser sticks with it. Paired with the
+       <link rel="preload"> in app/[locale]/layout.tsx so cold-load users still
+       get the custom font on first paint. */
+    font-display: optional;
     font-family: 'Libre Franklin';
     font-style: normal;
     font-weight: 700;
@@ -61,7 +66,8 @@
 
   /* Source Sans 3 - Body Text */
   @font-face {
-    font-display: swap;
+    /* See Libre Franklin 700 above — same rationale for 'optional'. */
+    font-display: optional;
     font-family: 'Source Sans 3';
     font-style: normal;
     font-weight: 400;
