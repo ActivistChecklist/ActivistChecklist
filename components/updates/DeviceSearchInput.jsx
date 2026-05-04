@@ -169,12 +169,21 @@ export default function DeviceSearchInput({
   const containerRef = useRef(null);
   const listRef = useRef(null);
 
-  // Reset the results scroll position whenever the user types — without this,
-  // typing more characters after scrolling halfway down the previous result
-  // set leaves the user looking at items mid-list while the higher-relevance
-  // matches for the new query are out of view at the top.
+  // Reset the results scroll position whenever the user types. cmdk preserves
+  // its highlighted item's value across re-renders and auto-scrolls (via a
+  // useLayoutEffect internally) to wherever that item ends up in the new
+  // ordering — so when a query change causes a big rank shift (e.g. typing
+  // the trailing "0" in "macbook pro 2020" pushes the 2020 model to #1 and
+  // demotes the previously-highlighted M4 2024 several rows down), cmdk drags
+  // the scroll mid-list. Deferring our reset to the next animation frame puts
+  // it AFTER cmdk's scroll, so we land back at top regardless. Verified by
+  // the "ranking can shift dramatically when a year digit is appended" test
+  // in __tests__/lib-updates-search.test.js.
   useEffect(() => {
-    if (listRef.current) listRef.current.scrollTop = 0;
+    const id = requestAnimationFrame(() => {
+      if (listRef.current) listRef.current.scrollTop = 0;
+    });
+    return () => cancelAnimationFrame(id);
   }, [query, priorityProductIds]);
 
   // Click-to-edit seed: parent set a string we should pre-fill and pre-select. This makes

@@ -151,6 +151,49 @@ describe('searchIndex', () => {
     expect(idx2018).toBeGreaterThanOrEqual(0);
     expect(idx2018).toBeLessThan(idx2024);
   });
+
+  it('ranking can shift dramatically when a year digit is appended (cmdk scroll-jump scenario)', () => {
+    // Repro the user-reported "scroll stuck halfway down" bug: typing
+    // "macbook pro 202" matches all 2020s MacBook Pros equally, then typing
+    // the trailing "0" pushes a 2020-specific model to the top via the
+    // year-proximity boost. The previous top result drops several rows. cmdk's
+    // value-tracking auto-scroll then drags the dropdown scroll position down
+    // to wherever the previously-highlighted item ended up.
+    //
+    // This test confirms the ranking shift exists; the UI fix in
+    // DeviceSearchInput overrides cmdk's auto-scroll by resetting scrollTop
+    // in a rAF-deferred effect after each query change.
+    const richSnap = normalizeSnapshot({
+      schemaVersion: 1, generatedAt: '2026-05-03T00:00:00Z', source: 'x',
+      products: [
+        {
+          id: 'macbook-pro', label: 'Apple MacBook Pro', kind: 'device', family: 'apple', formFactor: 'laptop',
+          endoflifeUrl: 'https://x', releases: [
+            { id: 'mbp-m1-2020', label: 'MacBook Pro (13-inch, M1, 2020)', releaseDate: '2020-11-17' },
+            { id: 'mbp-m4-2024', label: 'MacBook Pro (14-inch, M4, Nov 2024)', releaseDate: '2024-11-08' },
+            { id: 'mbp-m3-2023', label: 'MacBook Pro (14-inch, M3, Nov 2023)', releaseDate: '2023-11-07' },
+            { id: 'mbp-m2-2022', label: 'MacBook Pro (13-inch, M2, 2022)', releaseDate: '2022-06-24' },
+            { id: 'mbp-m1pro-2021', label: 'MacBook Pro (14-inch, M1 Pro, 2021)', releaseDate: '2021-10-26' },
+          ],
+        },
+      ],
+    });
+    const rows = buildSearchIndex(richSnap, { now: NOW });
+    const fuse = buildFuse(rows);
+
+    const partial = searchIndex(rows, fuse, 'macbook pro 202', null);
+    const full = searchIndex(rows, fuse, 'macbook pro 2020', null);
+    const partialTop = partial[0]?.releaseId;
+    const fullTop = full[0]?.releaseId;
+
+    // The full query targets 2020 specifically; partial matches all 2020s.
+    expect(fullTop).toBe('mbp-m1-2020');
+    expect(partialTop).not.toBe('mbp-m1-2020'); // a different model leads "macbook pro 202"
+    // And the partial-query top falls several rows in the full-query result —
+    // exactly the rank shift that triggers cmdk's mid-list auto-scroll.
+    const fullIdxOfPartialTop = full.findIndex((r) => r.releaseId === partialTop);
+    expect(fullIdxOfPartialTop).toBeGreaterThan(0);
+  });
 });
 
 describe('tidyReleaseLabel', () => {
