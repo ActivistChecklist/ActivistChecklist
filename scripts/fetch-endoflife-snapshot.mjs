@@ -17,10 +17,17 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { deriveMacProductsFromSofa } from '../lib/updates/sofa-macos.js';
+import {
+  diffSofaWatchlist,
+  mergeLegacyAndSofa,
+  stripDocKeys,
+} from '../lib/updates/mac-data.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(__dirname, '..');
 const DEFAULT_OUTPUT = path.join(REPO_ROOT, 'public', 'data', 'eol-snapshot.json');
+const LEGACY_MAC_PATH = path.join(REPO_ROOT, 'data', 'legacy-mac-models.json');
+const SOFA_WATCHLIST_PATH = path.join(REPO_ROOT, 'data', 'sofa-watchlist.json');
 
 const API_BASE = 'https://endoflife.date/api/v1/products';
 const SOFA_URL = 'https://sofafeed.macadmins.io/v2/macos_data_feed.json';
@@ -217,6 +224,42 @@ async function loadExistingSnapshot(targetPath) {
   }
 }
 
+/**
+ * Read the hand-curated legacy Mac models file. Returns the raw map (still
+ * containing `_README` and other doc pseudo-keys); callers run it through
+ * stripDocKeys() before consuming. Throws on parse errors so a malformed
+ * file fails the build immediately rather than silently dropping coverage.
+ */
+async function readLegacyMacModels() {
+  try {
+    const raw = await fs.readFile(LEGACY_MAC_PATH, 'utf8');
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+      throw new Error('legacy-mac-models.json must be a JSON object');
+    }
+    return parsed;
+  } catch (err) {
+    if (err.code === 'ENOENT') return {};
+    throw err;
+  }
+}
+
+/**
+ * Read the SOFA watchlist (sofa-watchlist.json). Returns the array of expected
+ * identifiers; missing file or missing `expected` array yields an empty list
+ * (no drop detection until the file is populated).
+ */
+async function readSofaWatchlist() {
+  try {
+    const raw = await fs.readFile(SOFA_WATCHLIST_PATH, 'utf8');
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed?.expected) ? parsed.expected : [];
+  } catch (err) {
+    if (err.code === 'ENOENT') return [];
+    throw err;
+  }
+}
+
 // Product IDs that the SOFA-derived Mac data covers. Used to pull Mac products
 // out of the previous snapshot when SOFA is unreachable so we don't ship a
 // snapshot with no Macs in it.
@@ -292,17 +335,59 @@ async function main() {
   // identifier macOS knows about, so we use that as the primary source and fall
   // back to whatever Mac products were in the previous snapshot if the feed is
   // unreachable — better stale than empty.
+  //
+  // Legacy file (data/legacy-mac-models.json) supplies Macs that are no longer
+  // in SOFA but still in users' hands (2013-era devices, etc). SOFA wins on
+  // overlap so the moment a model returns to SOFA the legacy entry is shadowed.
+  //
+  // Watchlist file (data/sofa-watchlist.json) is the set of SOFA identifiers we
+  // expect to see; any expected entry missing from SOFA fires a drop alert
+  // (move it to the legacy file). Any SOFA entry not in the watchlist is logged
+  // as informational (add it to the watchlist when you want drop-detection).
+  const legacyModels = await readLegacyMacModels();
+  const watchlist = await readSofaWatchlist();
   let macProducts = [];
   let macSource = '';
   try {
     const sofaModels = await fetchSofaModels();
-    macProducts = deriveMacProductsFromSofa(sofaModels);
+    const sofaIds = Object.keys(stripDocKeys(sofaModels));
+    const { dropped, novel } = diffSofaWatchlist(sofaIds, watchlist);
+    if (dropped.length > 0) {
+      // Don't throw — we still want to ship a build. Log loudly and let the
+      // weekly GH Action open a tracking issue with resolution steps.
+      console.error(
+        `⚠️  SOFA dropped ${dropped.length} watched model(s): ${dropped.join(', ')}.\n` +
+        `   Move each one to data/legacy-mac-models.json (with an Apple support\n` +
+        `   page citation) and remove from data/sofa-watchlist.json.`
+      );
+    }
+    if (novel.length > 0) {
+      console.log(
+        `ℹ️  ${novel.length} SOFA model(s) not in watchlist: ${novel.join(', ')}.\n` +
+        `   Add to data/sofa-watchlist.json if you want drop-detection on them.`
+      );
+    }
+    const merged = mergeLegacyAndSofa(legacyModels, sofaModels);
+    macProducts = deriveMacProductsFromSofa(merged);
+    const legacyOnly = sofaIds.length === 0
+      ? Object.keys(stripDocKeys(legacyModels)).length
+      : Object.keys(stripDocKeys(legacyModels)).filter((id) => !sofaIds.includes(id)).length;
     macSource = 'SOFA';
-    console.log(`Fetched SOFA Mac data: ${Object.keys(sofaModels).length} model identifiers, ${macProducts.length} product lines`);
+    console.log(
+      `Fetched SOFA Mac data: ${sofaIds.length} SOFA identifiers + ${legacyOnly} legacy-only ` +
+      `→ ${macProducts.length} product lines`
+    );
   } catch (err) {
-    console.error(`SOFA fetch failed: ${err.message}; reusing Mac products from previous snapshot`);
-    macProducts = MAC_PRODUCT_IDS.map((id) => previousById.get(id)).filter(Boolean);
-    macSource = 'previous-snapshot';
+    console.error(`SOFA fetch failed: ${err.message}; using legacy-only data + previous snapshot`);
+    // Even when SOFA is unreachable the legacy file still gives us 2013-era
+    // coverage, which is better than the empty set.
+    macProducts = deriveMacProductsFromSofa(stripDocKeys(legacyModels));
+    const fromPrevious = MAC_PRODUCT_IDS.map((id) => previousById.get(id)).filter(Boolean);
+    const legacyIds = new Set(macProducts.map((p) => p.id));
+    for (const stale of fromPrevious) {
+      if (!legacyIds.has(stale.id)) macProducts.push(stale);
+    }
+    macSource = 'legacy + previous-snapshot';
   }
   for (const product of macProducts) {
     products.push(product);
