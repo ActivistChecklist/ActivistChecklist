@@ -511,7 +511,7 @@ function DeviceConfirmedSummary({ product, release, displayLabel, classification
 
   return (
     <div className="flex items-start gap-3 rounded-lg border-2 border-success/50 bg-success/5 p-4">
-      <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0 text-success" aria-hidden="true" />
+      <CheckCircle2 className="h-7 w-7 shrink-0 text-success" aria-hidden="true" />
       <div className="min-w-0 flex-1 space-y-1">
         <p className="text-base font-medium text-foreground sm:text-lg">
           {titleNode}
