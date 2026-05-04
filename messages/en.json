@@ -519,7 +519,7 @@
       "deviceMaxOsEolWarning": "Your {label} tops out at {os} {maxVersion}, which has officially ended support. You may still receive occasional updates, but treat this device as low-trust for sensitive work and plan to replace it.",
       "deviceUpgradePlan": "If long-term security matters for your work, plan a hardware upgrade.",
       "threatModelHeader": "Why this matters",
-      "threatModel": "Every week without an update, more ways to break into your device become public knowledge. If the cops seize your phone at a protest or a border crossing (or if someone targets you with <spywareLink>spyware</spywareLink>) those known weaknesses are what they'll use to get inside and read everything on it.  ",
+      "threatModel": "Every week without an update, more ways to break into your device become public knowledge. If the cops seize your phone at a <protestLink>protest</protestLink> or a <borderLink>border crossing</borderLink> (or if someone targets you with <spywareLink>spyware</spywareLink>) those known weaknesses are what they'll use to get inside and read everything on it.  ",
       "threatModelSoft": "Until you confirm, treat this device as potentially out-of-date for sensitive work.",
       "viewEssentialsCta": "View our digital security essentials →",
       "essentialsNextSteps": {

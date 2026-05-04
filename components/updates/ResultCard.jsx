@@ -350,6 +350,16 @@ function ThreatModelBlock({ soft = false }) {
         {soft
           ? t('updates.result.threatModelSoft')
           : t.rich('updates.result.threatModel', {
+              protestLink: (chunks) => (
+                <Link href="/protest/" className="text-primary underline">
+                  {chunks}
+                </Link>
+              ),
+              borderLink: (chunks) => (
+                <Link href="/travel/" className="text-primary underline">
+                  {chunks}
+                </Link>
+              ),
               spywareLink: (chunks) => (
                 <Link href="/spyware/" className="text-primary underline">
                   {chunks}
