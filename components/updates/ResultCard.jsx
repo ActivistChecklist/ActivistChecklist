@@ -56,8 +56,10 @@ const STAGGER_THIRD_MS = STAGGER_SECOND_MS + STAGGER_NEXT_OFFSET;
 const ESSENTIALS_DELAY_MS = 1000;
 
 // Final-success animation classes — applied to ResultBox's icon and title in
-// FinalSuccessBox / OsFinalSuccessBox. Both keyframes (successIconPop,
-// successTitleShimmer) live in styles/globals.css.
+// FinalSuccessBox / OsFinalSuccessBox. The keyframes + timings live in
+// tailwind.config.js theme.extend.{keyframes,animation} alongside the other
+// project-specific animations (accordion-down, rainbow-shift) so they don't
+// pollute globals.css with component-specific rules.
 //
 // motion-safe: gates the animations behind prefers-reduced-motion so users
 // who've opted out of motion don't see the bounce. The 200ms delay on the
@@ -67,10 +69,8 @@ const ESSENTIALS_DELAY_MS = 1000;
 // Confetti was on the table; opted for these two beats instead since the
 // audience is people running a security check, not blowing out birthday
 // candles. Reads as "yes, that confirmed correctly" not "🎉 PARTY 🎉".
-const SUCCESS_ICON_POP_CLASS =
-  'motion-safe:animate-[successIconPop_700ms_ease-out_200ms_both]';
-const SUCCESS_TITLE_SHIMMER_CLASS =
-  'motion-safe:animate-[successTitleShimmer_500ms_ease-out_350ms_both]';
+const SUCCESS_ICON_POP_CLASS = 'motion-safe:animate-success-icon-pop';
+const SUCCESS_TITLE_SHIMMER_CLASS = 'motion-safe:animate-success-title-shimmer';
 
 /**
  * Render handler for the `<b>` rich tag we wrap the date in across subtitle messages
