@@ -16,12 +16,14 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { deriveMacProductsFromSofa } from '../lib/updates/sofa-macos.js';
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(__dirname, '..');
 const DEFAULT_OUTPUT = path.join(REPO_ROOT, 'public', 'data', 'eol-snapshot.json');
-const MAC_COMPAT_PATH = path.join(REPO_ROOT, 'data', 'mac-compatibility.json');
 
 const API_BASE = 'https://endoflife.date/api/v1/products';
+const SOFA_URL = 'https://sofafeed.macadmins.io/v2/macos_data_feed.json';
 const USER_AGENT = 'ActivistChecklist/1.0 (+https://activistchecklist.org)';
 const REQUEST_TIMEOUT_MS = 30_000;
 
@@ -215,47 +217,45 @@ async function loadExistingSnapshot(targetPath) {
   }
 }
 
+// Product IDs that the SOFA-derived Mac data covers. Used to pull Mac products
+// out of the previous snapshot when SOFA is unreachable so we don't ship a
+// snapshot with no Macs in it.
+const MAC_PRODUCT_IDS = [
+  'macbook-pro',
+  'macbook-air',
+  'macbook',
+  'mac-mini',
+  'imac',
+  'imac-pro',
+  'mac-pro',
+  'mac-studio',
+];
+
 /**
- * Apple drops some Macs from each new macOS release (typically Sept-Oct).
- * Apple has historically shipped new macOS anywhere from late September to mid-November.
- * We give a grace period: from the start of November onward, we require lastVerified
- * to be at least Sept 1 of the same year — i.e., someone reviewed Apple's compatibility
- * list for that year's release. Before November we still require last year's Sept 1.
- * Throws (fatal) if stale; the main() fatal handler pings the healthcheck /fail endpoint.
+ * Fetches the SOFA macOS data feed (https://sofafeed.macadmins.io). We only
+ * keep the `Models` map — the rest (CVE history, XProtect payloads,
+ * SecurityReleases) is huge and we don't use it. Returned shape is the raw
+ * Models object; deriveMacProductsFromSofa turns it into our product structure.
  */
-function assertMacCompatFresh(parsed) {
-  const lastVerified = parsed?.lastVerified;
-  if (!lastVerified) {
-    throw new Error('data/mac-compatibility.json is missing lastVerified field');
+async function fetchSofaModels() {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  try {
+    const res = await fetch(SOFA_URL, {
+      headers: { 'User-Agent': USER_AGENT, Accept: 'application/json' },
+      signal: controller.signal,
+    });
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status} for SOFA feed`);
+    }
+    const json = await res.json();
+    if (!json?.Models || typeof json.Models !== 'object') {
+      throw new Error('SOFA feed missing Models map');
+    }
+    return json.Models;
+  } finally {
+    clearTimeout(timeout);
   }
-  const verifiedDate = new Date(lastVerified);
-  if (Number.isNaN(verifiedDate.getTime())) {
-    throw new Error(`data/mac-compatibility.json has invalid lastVerified: ${lastVerified}`);
-  }
-
-  const today = new Date();
-  // getMonth() is 0-indexed: 9 = October, 10 = November.
-  // Before November we still require last year's Sept 1; from November on, this year's.
-  const cutoffYear = today.getMonth() >= 10 ? today.getFullYear() : today.getFullYear() - 1;
-  const cutoffDate = new Date(`${cutoffYear}-09-01T00:00:00Z`);
-
-  if (verifiedDate < cutoffDate) {
-    throw new Error(
-      `data/mac-compatibility.json is stale: lastVerified=${lastVerified}, ` +
-      `must be on or after ${cutoffYear}-09-01. ` +
-      `A new macOS likely released this past fall — review Apple's compatibility list ` +
-      `(https://support.apple.com) and update mac-compatibility.json with new max-macOS ` +
-      `values, then bump lastVerified.`
-    );
-  }
-}
-
-async function loadMacCompatibility() {
-  const raw = await fs.readFile(MAC_COMPAT_PATH, 'utf8');
-  const parsed = JSON.parse(raw);
-  assertMacCompatFresh(parsed);
-  if (!Array.isArray(parsed?.products)) return [];
-  return parsed.products;
 }
 
 async function main() {
@@ -287,11 +287,26 @@ async function main() {
     }
   }
 
-  // Merge in hand-curated Mac products. endoflife.date does not track per-Mac EOL.
-  const macProducts = await loadMacCompatibility();
+  // Merge in per-Mac compatibility data. endoflife.date does not track per-model
+  // EOL (Apple silently drops Macs each macOS release). SOFA tracks every Mac
+  // identifier macOS knows about, so we use that as the primary source and fall
+  // back to whatever Mac products were in the previous snapshot if the feed is
+  // unreachable — better stale than empty.
+  let macProducts = [];
+  let macSource = '';
+  try {
+    const sofaModels = await fetchSofaModels();
+    macProducts = deriveMacProductsFromSofa(sofaModels);
+    macSource = 'SOFA';
+    console.log(`Fetched SOFA Mac data: ${Object.keys(sofaModels).length} model identifiers, ${macProducts.length} product lines`);
+  } catch (err) {
+    console.error(`SOFA fetch failed: ${err.message}; reusing Mac products from previous snapshot`);
+    macProducts = MAC_PRODUCT_IDS.map((id) => previousById.get(id)).filter(Boolean);
+    macSource = 'previous-snapshot';
+  }
   for (const product of macProducts) {
     products.push(product);
-    console.log(`  + ${product.id} (${product.releases.length} models, hand-curated)`);
+    console.log(`  + ${product.id} (${product.releases.length} models, ${macSource})`);
   }
 
   if (failures.length >= 3) {
