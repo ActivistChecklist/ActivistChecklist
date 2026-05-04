@@ -164,12 +164,27 @@ module.exports = {
   					color: '#fb923c', // orange-400
   				},
   			},
+  			// FinalSuccessBox / OsFinalSuccessBox polish — see ResultCard.jsx
+  			// (SUCCESS_ICON_POP_CLASS / SUCCESS_TITLE_SHIMMER_CLASS).
+  			'success-icon-pop': {
+  				'0%': { transform: 'scale(1)' },
+  				'40%': { transform: 'scale(1.2)' },
+  				'100%': { transform: 'scale(1)' },
+  			},
+  			'success-title-shimmer': {
+  				'0%': { opacity: '0.55', transform: 'translateY(2px)' },
+  				'100%': { opacity: '1', transform: 'translateY(0)' },
+  			},
   		},
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
   			'accordion-up': 'accordion-up 0.2s ease-out',
   			'spin': 'spin 0.6s linear infinite',
   			'rainbow-shift': 'rainbow-shift 3s linear infinite',
+  			// One-shot reveal beats applied to the success icon and title via
+  			// motion-safe:animate-success-icon-pop / motion-safe:animate-success-title-shimmer.
+  			'success-icon-pop': 'success-icon-pop 700ms ease-out 200ms both',
+  			'success-title-shimmer': 'success-title-shimmer 500ms ease-out 350ms both',
   		}
   	}
   },
