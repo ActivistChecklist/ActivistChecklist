@@ -526,7 +526,7 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
                 <div key={opt.major} className="flex flex-wrap gap-2">
                   <PickerButton
                     icon={History}
-                    tone="destructive"
+                    tone="warning"
                     onClick={() => handlePickOlder(opt)}
                     label={
                       opt.codename
@@ -614,14 +614,16 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
  * Outline-style action button for the OS picker / needs-update flow. The whole
  * button takes on the tone — outline + text in tone colour, hover fills it in.
  *
- *   primary     — neutral affirmative (Done, etc when no semantic is implied)
+ *   primary     — neutral affirmative
  *   success     — "I'm on the latest" path
- *   destructive — "Older than X" / "No updates available" paths
+ *   warning     — "Older than X" path (you're behind but maybe not EOL yet)
+ *   destructive — "No updates available" / I'm definitively stuck
  */
 function PickerButton({ onClick, label, tone = 'primary', icon: IconProp }) {
   const toneClasses = {
     primary: 'border-primary text-primary hover:bg-primary hover:text-primary-foreground focus-visible:ring-primary/40',
     success: 'border-success text-success hover:bg-success hover:text-success-foreground focus-visible:ring-success/40',
+    warning: 'border-warning text-warning hover:bg-warning hover:text-warning-foreground focus-visible:ring-warning/40',
     destructive: 'border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground focus-visible:ring-destructive/40',
   }[tone] || '';
   return (
