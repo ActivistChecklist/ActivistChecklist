@@ -446,8 +446,8 @@
       "deviceSupportedSubtitleUntil": "Updates expected through <b>{date}</b>.",
       "deviceSupportedSubtitleRecent": "End-of-support date not yet announced.",
       "deviceUnsupportedTitle": "{label} is no longer receiving security updates.",
-      "deviceUnsupportedTitleAgoMonths": "{label} stopped receiving security updates <mark>{months, plural, one {1 month} other {# months}} ago</mark>.",
-      "deviceUnsupportedTitleAgoYears": "{label} stopped receiving security updates <mark>{years, plural, one {1 year} other {# years}} ago</mark>.",
+      "deviceUnsupportedTitleAgoMonths": "{label} stopped receiving security updates <mark>{months, plural, one {1 month} other {# months}} ago</mark>.",
+      "deviceUnsupportedTitleAgoYears": "{label} stopped receiving security updates <mark>{years, plural, one {1 year} other {# years}} ago</mark>.",
       "deviceUnsupportedSubtitleEnded": "Security support ended <b>{date}</b>.",
       "deviceUnsupportedSubtitleUnmaintained": "{manufacturer} has stopped issuing security updates.",
       "deviceUnsupportedSubtitleAge": "Released {age}. No published end-of-support date and {manufacturer} doesn't appear to be issuing updates.",
@@ -484,12 +484,12 @@
         }
       },
       "osConfirmedShort": "{label} is still receiving security updates.",
-      "osConfirmedShortYears": "{label} is still receiving security updates for <mark>{years, plural, one {1 more year} other {# more years}}</mark>.",
-      "osConfirmedShortMonths": "{label} is still receiving security updates for <mark>{months, plural, one {1 more month} other {# more months}}</mark>.",
+      "osConfirmedShortYears": "{label} is still receiving security updates for <mark>{years, plural, one {1 more year} other {# more years}}</mark>.",
+      "osConfirmedShortMonths": "{label} is still receiving security updates for <mark>{months, plural, one {1 more month} other {# more months}}</mark>.",
       "osConfirmedSubtitleUntil": "Updates expected through <b>{date}</b>.",
       "osEolSoon": {
-        "titleMonths": "{label} will lose security updates <mark>in about {months, plural, =1 {1 month} other {# months}}</mark>.",
-        "titleSoon": "{label} will lose security updates <mark>soon</mark>.",
+        "titleMonths": "{label} will lose security updates <mark>in about {months, plural, =1 {1 month} other {# months}}</mark>.",
+        "titleSoon": "{label} will lose security updates <mark>soon</mark>.",
         "subtitleDate": "Updates expected to end <b>{date}</b>."
       },
       "osEoasNote": "The vendor has moved this version to security-only updates. Plan an upgrade when convenient.",
@@ -541,8 +541,8 @@
         }
       },
       "eolSoon": {
-        "titleMonths": "{label} will lose security updates <mark>in about {months, plural, =1 {1 month} other {# months}}</mark>.",
-        "titleSoon": "{label} will lose security updates <mark>soon</mark>.",
+        "titleMonths": "{label} will lose security updates <mark>in about {months, plural, =1 {1 month} other {# months}}</mark>.",
+        "titleSoon": "{label} will lose security updates <mark>soon</mark>.",
         "subtitleDate": "Updates expected to end <b>{date}</b>.",
         "actionHeading": "What to do",
         "action": "Start planning a replacement now. Once updates stop, your device begins accumulating publicly known vulnerabilities."
@@ -575,10 +575,10 @@
         "generic": "Start planning your next device."
       },
       "deviceConfirmedShort": "{label} is still receiving security updates.",
-      "deviceConfirmedShortYears": "{label} is still receiving security updates for <mark>{years, plural, one {1 more year} other {# more years}}</mark>.",
-      "deviceConfirmedShortMonths": "{label} is still receiving security updates for <mark>{months, plural, one {1 more month} other {# more months}}</mark>.",
-      "deviceConfirmedShortApproxYears": "{label} is still receiving security updates for <mark>about {years, plural, one {1 more year} other {# more years}}</mark>.",
-      "deviceConfirmedShortApproxMonths": "{label} is still receiving security updates for <mark>about {months, plural, one {1 more month} other {# more months}}</mark>.",
+      "deviceConfirmedShortYears": "{label} is still receiving security updates for <mark>{years, plural, one {1 more year} other {# more years}}</mark>.",
+      "deviceConfirmedShortMonths": "{label} is still receiving security updates for <mark>{months, plural, one {1 more month} other {# more months}}</mark>.",
+      "deviceConfirmedShortApproxYears": "{label} is still receiving security updates for <mark>about {years, plural, one {1 more year} other {# more years}}</mark>.",
+      "deviceConfirmedShortApproxMonths": "{label} is still receiving security updates for <mark>about {months, plural, one {1 more month} other {# more months}}</mark>.",
       "appleEstimate": {
         "intro": "Apple doesn't publish end-of-support dates, but {deviceLabel} usually receive {min} to {max} years of security updates from launch."
       },
