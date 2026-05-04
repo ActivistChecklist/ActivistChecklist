@@ -44,6 +44,14 @@ const STAGGER_FIRST_MS = STAGGER_FIRST_OFFSET;                       // 300ms
 const STAGGER_SECOND_MS = STAGGER_FIRST_MS + STAGGER_NEXT_OFFSET;    // 1300ms
 const STAGGER_THIRD_MS = STAGGER_SECOND_MS + STAGGER_NEXT_OFFSET;    // 2300ms
 
+// Wherever the EssentialsPanel ("More easy-to-follow steps…") becomes visible —
+// either on initial render below an EOL/uncertain box, or after a step
+// transition in the DeviceSupported / OsResultFlow flows — it slides in this
+// long after the trigger so the eye lands on the just-revealed result first
+// and the panel reads as a deliberate next step rather than appearing in
+// lockstep.
+const ESSENTIALS_DELAY_MS = 500;
+
 /**
  * Render handler for the `<b>` rich tag we wrap the date in across subtitle messages
  * like "Security support ended <b>May 2023</b>". Slightly heavier weight + full
@@ -1165,11 +1173,9 @@ function DeviceSupported({ snapshot, product, release, classification, onReset }
       ) : null}
 
       {showFirst && showEssentials ? (
-        <SlideInBox>
-          <ConnectedBox tone={essentialsTone}>
-            <EssentialsPanel />
-          </ConnectedBox>
-        </SlideInBox>
+        <DelayedSlideInBox delayMs={ESSENTIALS_DELAY_MS} connectorTone={essentialsTone}>
+          <EssentialsPanel />
+        </DelayedSlideInBox>
       ) : null}
     </div>
   );
@@ -1293,7 +1299,7 @@ function DeviceUncertain({ snapshot, product, release, classification, onReset }
         <ResultActions product={product} onReset={onReset} />
       </ResultBox>
     </DelayedSlideInBox>
-    <DelayedSlideInBox delayMs={STAGGER_SECOND_MS} connectorTone="warning">
+    <DelayedSlideInBox delayMs={ESSENTIALS_DELAY_MS} connectorTone="warning">
       <EssentialsPanel />
     </DelayedSlideInBox>
     </>
@@ -1349,7 +1355,7 @@ function DeviceEolSoon({ snapshot, product, release, classification, onReset }) 
         <ResultActions product={product} onReset={onReset} />
       </ResultBox>
     </DelayedSlideInBox>
-    <DelayedSlideInBox delayMs={STAGGER_SECOND_MS} connectorTone="warning">
+    <DelayedSlideInBox delayMs={ESSENTIALS_DELAY_MS} connectorTone="warning">
       <EssentialsPanel />
     </DelayedSlideInBox>
     </>
@@ -1460,7 +1466,7 @@ function DeviceEol(props) {
       <DelayedSlideInBox delayMs={STAGGER_FIRST_MS}>
         <DeviceEolBox {...props} />
       </DelayedSlideInBox>
-      <DelayedSlideInBox delayMs={STAGGER_SECOND_MS} connectorTone="destructive">
+      <DelayedSlideInBox delayMs={ESSENTIALS_DELAY_MS} connectorTone="destructive">
         <EssentialsPanel />
       </DelayedSlideInBox>
     </>
@@ -1765,11 +1771,9 @@ function OsResultFlow({ snapshot, product, release, classification, onReset }) {
       ) : null}
 
       {showFirst && showEssentials ? (
-        <SlideInBox>
-          <ConnectedBox tone={essentialsTone}>
-            <EssentialsPanel />
-          </ConnectedBox>
-        </SlideInBox>
+        <DelayedSlideInBox delayMs={ESSENTIALS_DELAY_MS} connectorTone={essentialsTone}>
+          <EssentialsPanel />
+        </DelayedSlideInBox>
       ) : null}
     </div>
   );
@@ -1817,7 +1821,7 @@ function OsEol({ product, release, onReset }) {
         <ResultActions product={product} onReset={onReset} />
       </ResultBox>
     </DelayedSlideInBox>
-    <DelayedSlideInBox delayMs={STAGGER_SECOND_MS} connectorTone="destructive">
+    <DelayedSlideInBox delayMs={ESSENTIALS_DELAY_MS} connectorTone="destructive">
       <EssentialsPanel />
     </DelayedSlideInBox>
     </>
