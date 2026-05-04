@@ -58,9 +58,9 @@ export default function FamilyCategorySelector({ value, onChange }) {
 
   return (
     // Stable height across L1 → L2 → L3 transitions so the page doesn't jump.
-    // 14rem fits the 3-row mobile grid (Android has 6 sub-cards in 2 cols);
-    // 10rem is enough for desktop (4-card L1 row, 3-col L2 grid).
-    <div className="min-h-[14rem] sm:min-h-[10rem]">
+    // 12rem fits the 3-row mobile grid (Android has 6 sub-cards in 2 cols);
+    // 9rem is enough for desktop (4-card L1 row, 3-col L2 grid).
+    <div className="min-h-[12rem] sm:min-h-[9rem]">
       {step === 'l1' ? <L1 onPick={pickPlatform} /> : null}
       {step === 'l2' ? (
         <L2
@@ -241,12 +241,12 @@ function L3({ platform, subCategory, onClickPlatform, onClear }) {
       </div>
 
       {findHint ? (
-        <div className="rounded-lg border border-border bg-muted/30 p-4 sm:p-5">
-          <div className="flex items-center gap-2 text-sm font-semibold text-foreground/80">
-            <Info className="h-4 w-4 shrink-0" aria-hidden="true" />
+        <div className="rounded-lg border border-border bg-muted/30 px-3 py-2.5 sm:px-4 sm:py-3">
+          <div className="flex items-center gap-1.5 text-xs font-semibold text-foreground/70">
+            <Info className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
             {t('updates.findYourModel.label')}
           </div>
-          <p className="mt-2 text-base font-medium text-foreground sm:text-lg">
+          <p className="mt-1 text-sm font-medium text-foreground sm:text-base">
             {findHint}
           </p>
         </div>
