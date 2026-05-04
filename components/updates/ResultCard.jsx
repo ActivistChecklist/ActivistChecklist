@@ -1107,9 +1107,21 @@ function DeviceEolSoon({ snapshot, product, release, classification, onReset }) 
     ? Math.max(0, Math.round((new Date(eolDate) - new Date()) / (30.44 * 24 * 60 * 60 * 1000)))
     : null;
 
+  // Underline the time-to-EOL phrase so the urgency reads at a glance even
+  // before the user processes the rest of the sentence.
+  const underlineChunks = (chunks) => (
+    <u className="underline decoration-2 underline-offset-4">{chunks}</u>
+  );
   const title = months != null && months > 0
-    ? t('updates.result.eolSoon.titleMonths', { label: displayLabel, months })
-    : t('updates.result.eolSoon.titleSoon', { label: displayLabel });
+    ? t.rich('updates.result.eolSoon.titleMonths', {
+        label: displayLabel,
+        months,
+        u: underlineChunks,
+      })
+    : t.rich('updates.result.eolSoon.titleSoon', {
+        label: displayLabel,
+        u: underlineChunks,
+      });
 
   const subtitle = eolDate
     ? t.rich('updates.result.eolSoon.subtitleDate', {

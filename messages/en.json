@@ -526,8 +526,8 @@
         }
       },
       "eolSoon": {
-        "titleMonths": "{label} will lose security updates in about {months, plural, =1 {1 month} other {# months}}.",
-        "titleSoon": "{label} will lose security updates soon.",
+        "titleMonths": "{label} will lose security updates <u>in about {months, plural, =1 {1 month} other {# months}}</u>.",
+        "titleSoon": "{label} will lose security updates <u>soon</u>.",
         "subtitleDate": "Updates expected to end <b>{date}</b>.",
         "actionHeading": "What to do",
         "action": "Start planning a replacement now. Once updates stop, your device begins accumulating publicly known vulnerabilities."
