@@ -700,21 +700,23 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
           // Android-style: ask the patch-level question directly. options[0] is
           // still passed through to the handlers so OsNeedsUpdateBox can compute
           // its 'No updates available and I'm older than {os} {major}' button
-          // and the device-EOL escalation works the same way.
+          // and the device-EOL escalation works the same way. Warning button
+          // ('I see updates available') leads, since that's the case that
+          // demands action — the success path requires no follow-up.
           const latestOpt = options[0];
           return (
             <div className="flex flex-wrap gap-2">
-              <PickerButton
-                icon={CheckCircle2}
-                tone="success"
-                onClick={() => handlePickLatest(latestOpt)}
-                label={t('updates.result.osCheckStep.optionNoUpdatesAvailable')}
-              />
               <PickerButton
                 icon={History}
                 tone="warning"
                 onClick={() => handlePickOlder(latestOpt)}
                 label={t('updates.result.osCheckStep.optionUpdatesAvailable')}
+              />
+              <PickerButton
+                icon={CheckCircle2}
+                tone="success"
+                onClick={() => handlePickLatest(latestOpt)}
+                label={t('updates.result.osCheckStep.optionNoUpdatesAvailable')}
               />
             </div>
           );
