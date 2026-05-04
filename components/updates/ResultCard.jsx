@@ -9,9 +9,11 @@ import {
   Check,
   Clock,
   History,
+  Settings,
   ShieldAlert,
   ShoppingCart,
 } from 'lucide-react';
+import { SiApple, SiWindows11 } from 'react-icons/si';
 import { IoLockClosedThick } from '@/config/icons';
 
 import Link from '@/components/Link';
@@ -40,9 +42,9 @@ const ESSENTIALS_HREF = '/essentials/';
 // device card immediately (no entry); subsequent boxes slide in on this beat.
 const STAGGER_FIRST_OFFSET = 300;   // first result box appears this long after selection
 const STAGGER_NEXT_OFFSET = 1000;   // each subsequent box waits this long after the previous
-const STAGGER_FIRST_MS = STAGGER_FIRST_OFFSET;                       // 300ms
-const STAGGER_SECOND_MS = STAGGER_FIRST_MS + STAGGER_NEXT_OFFSET;    // 1300ms
-const STAGGER_THIRD_MS = STAGGER_SECOND_MS + STAGGER_NEXT_OFFSET;    // 2300ms
+const STAGGER_FIRST_MS = STAGGER_FIRST_OFFSET;
+const STAGGER_SECOND_MS = STAGGER_FIRST_MS + STAGGER_NEXT_OFFSET;
+const STAGGER_THIRD_MS = STAGGER_SECOND_MS + STAGGER_NEXT_OFFSET;
 
 // Wherever the EssentialsPanel ("More easy-to-follow steps…") becomes visible —
 // either on initial render below an EOL/uncertain box, or after a step
@@ -50,7 +52,7 @@ const STAGGER_THIRD_MS = STAGGER_SECOND_MS + STAGGER_NEXT_OFFSET;    // 2300ms
 // long after the trigger so the eye lands on the just-revealed result first
 // and the panel reads as a deliberate next step rather than appearing in
 // lockstep.
-const ESSENTIALS_DELAY_MS = 500;
+const ESSENTIALS_DELAY_MS = 1000;
 
 /**
  * Render handler for the `<b>` rich tag we wrap the date in across subtitle messages
@@ -414,6 +416,15 @@ function BuyingGuidance({ family, formFactor }) {
  * tag handler isn't supplied. Existence is checked via t.has so missing keys
  * return null instead of formatting-the-key-as-string.
  */
+// Tag handlers for the rich-text menu paths. Each one renders an inline icon
+// followed by the wrapped text so settings/Apple-menu/Windows references are
+// visually skimmable in the path string. inline-flex + items-center keeps the
+// icon vertically centred on the cap line; whitespace-nowrap keeps the icon
+// glued to its label even when the path wraps. h-[1em] sizes the icon to the
+// surrounding text so the path looks the same at every breakpoint.
+const iconChunkClassName = 'inline-flex items-center gap-1 whitespace-nowrap';
+const iconClassName = 'h-[1em] w-[1em] shrink-0';
+
 function pathFromKey(t, key) {
   if (!t.has(key)) return null;
   return t.rich(key, {
@@ -421,6 +432,24 @@ function pathFromKey(t, key) {
       <code className="rounded bg-muted px-1 py-0.5 font-mono text-foreground">
         {chunks}
       </code>
+    ),
+    apple: (chunks) => (
+      <span className={iconChunkClassName}>
+        <SiApple className={iconClassName} aria-hidden="true" />
+        {chunks}
+      </span>
+    ),
+    settings: (chunks) => (
+      <span className={iconChunkClassName}>
+        <Settings className={iconClassName} aria-hidden="true" />
+        {chunks}
+      </span>
+    ),
+    windows: (chunks) => (
+      <span className={iconChunkClassName}>
+        <SiWindows11 className={iconClassName} aria-hidden="true" />
+        {chunks}
+      </span>
     ),
   });
 }

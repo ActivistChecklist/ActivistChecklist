@@ -347,7 +347,7 @@
     "metaTitle": "Is your device still receiving security updates? | Activist Checklist",
     "metaDescription": "Check whether your phone, tablet, watch, or laptop is still getting security updates. Out-of-date devices accumulate publicly known vulnerabilities and are easier to hack if it is seized or targeted.",
     "title": "Is your device still receiving security updates?",
-    "intro": "If your device isn't able to receive security updates, it makes it easier for the cops (and hackers) to get into it and access all your data.",
+    "intro": "If your device isn't using the latest operating system, hackers and law enforcement can break into it and access all your data.",
     "searchLabel": "Type your device model",
     "searchHelpAriaLabel": "Help finding your device model",
     "searchHelp": "Need help finding it? Select your operating system above for guidance.",
@@ -426,19 +426,19 @@
       "checkAnother": "Check another device",
       "source": "Source: <link>endoflife.date</link>",
       "settingsPath": {
-        "ios": "Settings → General → Software Update → Update Now",
-        "ipados": "Settings → General → Software Update → Update Now",
-        "macos": "Apple menu → System Settings → General → Software Update → Update Now",
-        "android": "Settings → System → Software update → Check for updates",
-        "windows": "Start menu → Settings → Windows Update → Check for updates",
+        "ios": "<settings>Settings app</settings> on your home screen → General → Software Update → Update Now",
+        "ipados": "<settings>Settings app</settings> on your home screen → General → Software Update → Update Now",
+        "macos": "<apple>Apple menu</apple> in the top menu bar → System Settings → General → Software Update → Update Now",
+        "android": "<settings>Settings app</settings> on your phone → System → Software update → Check for updates",
+        "windows": "<windows>Start menu</windows> → <settings>Settings</settings> → Windows Update → Check for updates",
         "watchos": "Watch app on your iPhone → My Watch → General → Software Update → Install",
-        "oneplus": "Settings → System → System updates → Check for updates"
+        "oneplus": "<settings>Settings app</settings> on your phone → System → System updates → Check for updates"
       },
       "osVersionPath": {
-        "ios": "Settings → General → About → Software Version",
-        "ipados": "Settings → General → About → Software Version",
-        "macos": "Apple menu → About This Mac",
-        "android": "Settings → About phone → Android version",
+        "ios": "<settings>Settings app</settings> on your home screen → General → About → Software Version",
+        "ipados": "<settings>Settings app</settings> on your home screen → General → About → Software Version",
+        "macos": "<apple>Apple menu</apple> in the top menu bar → About This Mac",
+        "android": "<settings>Settings app</settings> on your phone → About phone → Android version",
         "windows": "Press Windows key + R → type <code>winver</code> → Enter",
         "watchos": "Watch app on your iPhone → My Watch → General → About → Version"
       },
