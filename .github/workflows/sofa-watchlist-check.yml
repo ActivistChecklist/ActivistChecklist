@@ -1,0 +1,162 @@
+# Weekly check that the SOFA macOS feed still publishes every Mac model in our
+# watchlist, and that any new identifiers SOFA has added get proposed to us.
+#
+# Two outputs:
+#   - dropped models → opens a tracking issue with resolution steps
+#   - new models     → opens a PR adding the identifiers to data/sofa-watchlist.json
+#
+# Runs Sundays at 14:00 UTC. Manual `workflow_dispatch` trigger included so you
+# can run it on demand.
+
+name: SOFA watchlist check
+
+on:
+  schedule:
+    - cron: '0 14 * * 0'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+
+      - name: Run watchlist diff
+        id: diff
+        run: |
+          node scripts/sofa-watchlist-diff.mjs > diff.json
+          echo "dropped_count=$(jq '.dropped | length' diff.json)" >> "$GITHUB_OUTPUT"
+          echo "novel_count=$(jq '.novel | length' diff.json)" >> "$GITHUB_OUTPUT"
+          {
+            echo 'dropped_list<<EOF'
+            jq -r '.dropped[]' diff.json
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+          {
+            echo 'novel_list<<EOF'
+            jq -r '.novel[]' diff.json
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+          echo '----- diff.json -----'
+          cat diff.json
+
+      # ── Drops: open a tracking issue ──────────────────────────────────────
+      - name: Open issue when SOFA dropped a watched model
+        if: steps.diff.outputs.dropped_count != '0'
+        uses: actions/github-script@v8
+        env:
+          DROPPED_LIST: ${{ steps.diff.outputs.dropped_list }}
+          DROPPED_COUNT: ${{ steps.diff.outputs.dropped_count }}
+        with:
+          script: |
+            const dropped = process.env.DROPPED_LIST.split('\n').filter(Boolean);
+            const count = process.env.DROPPED_COUNT;
+            const title = `SOFA dropped ${count} watched Mac model(s)`;
+            const droppedLines = dropped.map((id) => `- \`${id}\``).join('\n');
+
+            // Don't open a duplicate if an open issue already exists for the same drop set.
+            const { data: existing } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'sofa-watchlist',
+              per_page: 50,
+            });
+            const dup = existing.find((i) => i.title === title);
+            if (dup) {
+              core.info(`Open issue already exists: #${dup.number}`);
+              return;
+            }
+
+            const body = [
+              `The weekly SOFA watchlist check found that ${count} model(s) we expect to be in the SOFA macOS feed are no longer present:`,
+              '',
+              droppedLines,
+              '',
+              '## What this means',
+              '',
+              'When SOFA drops a Mac, the model normally falls out of the `/updates` autocomplete on the next snapshot rebuild. Our `data/legacy-mac-models.json` is the durable backstop for those Macs.',
+              '',
+              '## How to resolve',
+              '',
+              'For each dropped identifier:',
+              '',
+              '1. Open `data/legacy-mac-models.json` and add a new entry. Use the model identifier as the key:',
+              '   ```jsonc',
+              '   "MacBookPro15,1": {',
+              '     "MarketingName": "MacBook Pro (15-inch, 2018)",',
+              '     "OSVersions": [15],',
+              '     "Source": "https://support.apple.com/en-us/HT201300"',
+              '   }',
+              '   ```',
+              '   - `MarketingName` is what users see in autocomplete. Match the exact string the previous SOFA feed published (check the last successful build log, or look up the identifier on Apple\'s "Identify your Mac" pages linked in the `Source` field).',
+              '   - `OSVersions` is the highest-supported macOS major as a single-element array (the merger reads `Math.max(versions)`).',
+              '   - `Source` is informational; the pipeline ignores it. Use the relevant Apple support URL for human review.',
+              '',
+              '2. Open `data/sofa-watchlist.json` and remove the identifier from the `expected` array.',
+              '',
+              '3. Commit and push. The next snapshot rebuild will use the legacy entry; this issue can be closed.',
+              '',
+              '## Why this isn\'t auto-resolved',
+              '',
+              'Auto-promoting drops would lose two things: the human-verified `Source` URL and the chance to spot-check the marketing name and max-macOS major. Both matter when the entry is going to live in the repo as a long-term backstop.',
+              '',
+              '---',
+              '',
+              '*Opened automatically by `.github/workflows/sofa-watchlist-check.yml`. Closes via the next weekly run when the drop set is empty.*',
+            ].join('\n');
+
+            const { data: created } = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              body,
+              labels: ['sofa-watchlist'],
+            });
+            core.info(`Opened issue #${created.number}`);
+
+      # ── New models: open a PR adding them to the watchlist ───────────────
+      - name: Update watchlist with new SOFA models
+        if: steps.diff.outputs.novel_count != '0'
+        run: |
+          node -e "
+            const fs = require('fs');
+            const diff = JSON.parse(fs.readFileSync('diff.json', 'utf8'));
+            const wl = JSON.parse(fs.readFileSync('data/sofa-watchlist.json', 'utf8'));
+            const merged = [...new Set([...wl.expected, ...diff.novel])].sort();
+            wl.expected = merged;
+            fs.writeFileSync('data/sofa-watchlist.json', JSON.stringify(wl, null, 2) + '\n');
+          "
+
+      - name: Open PR for new SOFA models
+        if: steps.diff.outputs.novel_count != '0'
+        uses: peter-evans/create-pull-request@v8
+        with:
+          commit-message: 'Watchlist: add ${{ steps.diff.outputs.novel_count }} new SOFA model(s)'
+          title: 'Watchlist: add ${{ steps.diff.outputs.novel_count }} new SOFA model(s)'
+          body: |
+            The weekly SOFA watchlist check found ${{ steps.diff.outputs.novel_count }} model identifier(s) in the SOFA macOS feed that aren't yet in `data/sofa-watchlist.json`:
+
+            ```
+            ${{ steps.diff.outputs.novel_list }}
+            ```
+
+            Adding them to the watchlist enables drop-detection on these models in future runs (so we'll know if/when SOFA stops publishing them and we need to move them to `data/legacy-mac-models.json`).
+
+            *Opened automatically by `.github/workflows/sofa-watchlist-check.yml`.*
+          branch: sofa-watchlist/auto-update
+          delete-branch: true
+          labels: sofa-watchlist
