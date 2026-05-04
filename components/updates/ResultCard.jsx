@@ -155,7 +155,9 @@ function DelayedSlideInBox({ delayMs, connectorTone = 'input', children }) {
  * outer space-y so the arrow IS the visual gap between boxes.
  */
 const CONNECTOR_TONE_COLOR = {
-  input: 'text-input',
+  // 'input' tone matches the device-card border (muted-foreground at /50) so
+  // the arrow reads at roughly the same weight as the tone arrows below.
+  input: 'text-muted-foreground/50',
   primary: 'text-primary/50',
   success: 'text-success/50',
   warning: 'text-warning/50',
@@ -164,17 +166,16 @@ const CONNECTOR_TONE_COLOR = {
 
 function BoxConnector({ tone = 'input' }) {
   const colorClass = CONNECTOR_TONE_COLOR[tone] ?? CONNECTOR_TONE_COLOR.input;
-  // The connector IS the gap between boxes (no extra margin needed), so callers
-  // place it directly between siblings with no surrounding space-y. The stem
-  // sits flush against the box above; the arrowhead at the bottom sits flush
-  // against the box below. SVG dimensions chosen so the visible arrow is
-  // generous without overwhelming the narrow result-card column.
+  // Stem ends exactly where the V's wing tips begin, so the two shapes meet but
+  // never share pixels — important because the strokes are drawn at /50 alpha
+  // and any overlap would render at ~/75 alpha, leaving a darker blob at the
+  // join. Round caps + line joins keep the meeting point visually smooth.
   return (
     <div className="flex justify-center" aria-hidden="true">
       <svg
         width="20"
-        height="28"
-        viewBox="0 0 20 28"
+        height="26"
+        viewBox="0 0 20 26"
         fill="none"
         className={colorClass}
         stroke="currentColor"
@@ -183,8 +184,8 @@ function BoxConnector({ tone = 'input' }) {
         strokeLinejoin="round"
         aria-hidden="true"
       >
-        <line x1="10" y1="0" x2="10" y2="22" />
-        <polyline points="4,18 10,26 16,18" />
+        <line x1="10" y1="0" x2="10" y2="16" />
+        <polyline points="4,16 10,24 16,16" />
       </svg>
     </div>
   );
@@ -447,13 +448,17 @@ function DeviceConfirmedSummary({ product, release, displayLabel }) {
                     min: appleEstimate.remainingMinYears,
                     max: appleEstimate.remainingMaxYears,
                   })
-                : appleEstimate.case === 'years-up-to'
-                  ? t('updates.result.appleEstimate.remainingYearsUpTo', {
-                      max: appleEstimate.remainingMaxYears,
+                : appleEstimate.case === 'years-about'
+                  ? t('updates.result.appleEstimate.remainingYearsAbout', {
+                      years: appleEstimate.remainingMaxYears,
                     })
-                  : t('updates.result.appleEstimate.remainingMonthsUpTo', {
-                      max: appleEstimate.remainingMaxMonths,
-                    })}
+                  : appleEstimate.case === 'years-up-to'
+                    ? t('updates.result.appleEstimate.remainingYearsUpTo', {
+                        max: appleEstimate.remainingMaxYears,
+                      })
+                    : t('updates.result.appleEstimate.remainingMonthsUpTo', {
+                        max: appleEstimate.remainingMaxMonths,
+                      })}
             </p>
           </div>
         ) : null}
@@ -679,7 +684,23 @@ function CrossResetButton({ product, onReset }) {
   } else {
     label = t('updates.result.finalSuccess.checkAnotherDevice');
   }
-  return <PickerButton onClick={onReset} label={label} />;
+  // Filled-primary styling so this CTA reads as the recommended next step,
+  // distinct from the outline picker buttons above. Hover lightens via opacity
+  // so the call-to-action stays solid without depending on a primary-hover
+  // token that's only defined in dark mode.
+  return (
+    <button
+      type="button"
+      onClick={onReset}
+      className={cn(
+        'inline-flex cursor-pointer items-center justify-center gap-2 rounded-md border-2 border-primary bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-opacity',
+        'hover:opacity-90',
+        'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/40'
+      )}
+    >
+      {label}
+    </button>
+  );
 }
 
 function FinalSuccessBox({ snapshot, product, release, displayLabel, pickedOption, onReset }) {

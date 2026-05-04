@@ -873,14 +873,27 @@ describe('buildAppleSupportEstimate', () => {
     expect(buildAppleSupportEstimate(appleProduct('os'), r, now)).toBeNull();
   });
 
-  it('iPhone released 8 months ago → years-range case (about 7 to 7 years left, 7.5–8 window)', () => {
+  it("iPhone released 8 months ago → years-about (7.5–8 window collapses when rounded)", () => {
+    // Apple's narrow 7.5-8 phone window almost always rounds min and max to the
+    // same integer, so the renderer needs the years-about case rather than
+    // 'X to X' which reads awkwardly.
     const r = release({ releaseDate: '2025-09-01' });
     const est = buildAppleSupportEstimate(appleProduct('phone'), r, now);
-    expect(est.case).toBe('years-range');
+    expect(est.case).toBe('years-about');
     expect(est.minYears).toBe(7.5);
     expect(est.maxYears).toBe(8);
-    expect(est.remainingMinYears).toBeGreaterThanOrEqual(6);
-    expect(est.remainingMaxYears).toBeGreaterThanOrEqual(7);
+    expect(est.remainingMinYears).toBe(est.remainingMaxYears);
+  });
+
+  it('cross-vendor 5-7 window keeps years-range when rounded bounds differ', () => {
+    // Pixel-style 5-7 window; for buildAppleSupportEstimate we still need an
+    // Apple product, so we override the family map indirectly via formFactor =
+    // laptop (Apple laptops use the cross-vendor 7-10 window which can yield a
+    // multi-year range). 2024 MBP gets ~6-9 remaining → years-range.
+    const r = release({ releaseDate: '2024-11-01' });
+    const est = buildAppleSupportEstimate(appleProduct('laptop'), r, now);
+    expect(est.case).toBe('years-range');
+    expect(est.remainingMinYears).not.toBe(est.remainingMaxYears);
   });
 
   it('iPhone released ~7.5 yrs ago → years-up-to (past min, max still positive)', () => {

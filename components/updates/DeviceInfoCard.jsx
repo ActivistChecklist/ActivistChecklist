@@ -66,7 +66,10 @@ export default function DeviceInfoCard({ product, release, onReset, onEdit }) {
       onClick={onEdit ? triggerEdit : undefined}
       onKeyDown={onEdit ? handleKeyDown : undefined}
       className={cn(
-        'group flex items-center gap-3 rounded-lg border-2 border-input bg-background px-4 py-4 shadow-sm transition-colors sm:py-5',
+        // border-muted-foreground/50 reads at roughly the same weight as the
+        // /50 tone borders on the result boxes below, so the device card no
+        // longer looks dim relative to the colored boxes.
+        'group flex items-center gap-3 rounded-lg border-2 border-muted-foreground/50 bg-background px-4 py-4 shadow-sm transition-colors sm:py-5',
         onEdit ? 'cursor-pointer hover:border-primary focus:outline-hidden focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20' : null
       )}
     >
