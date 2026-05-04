@@ -576,11 +576,7 @@
       "deviceConfirmedShortApproxYears": "{label} is still receiving security updates for <mark>about {years, plural, one {1 more year} other {# more years}}</mark>.",
       "deviceConfirmedShortApproxMonths": "{label} is still receiving security updates for <mark>about {months, plural, one {1 more month} other {# more months}}</mark>.",
       "appleEstimate": {
-        "intro": "Apple doesn't publish end-of-support dates, but {deviceLabel} usually receive {min} to {max} years of security updates from launch.",
-        "remainingYearsRange": "Yours probably has <b>about {min} to {max} years left</b>.",
-        "remainingYearsAbout": "Yours probably has <b>about {years, plural, one {1 year} other {# years}} left</b>.",
-        "remainingYearsUpTo": "Yours probably has <b>up to {max, plural, one {1 year} other {# years}} left</b>.",
-        "remainingMonthsUpTo": "Yours probably has <b>up to {max, plural, one {1 month} other {# months}} of updates left</b>."
+        "intro": "Apple doesn't publish end-of-support dates, but {deviceLabel} usually receive {min} to {max} years of security updates from launch."
       },
       "osCheckStep": {
         "headingForOs": "Which version of {os} are you running?",
@@ -590,16 +586,12 @@
         "headingUpdatesAvailableForRelease": "Are there any updates available for {label}?",
         "subheadingHelp": "Open it on your device to check:",
         "subheadingUpdatesHelp": "Check for updates on your device:",
-        "optionLatest": "My {device} is running {os} {version}",
-        "optionLatestCodename": "My {device} is running {os} {version} ({codename})",
+        "optionLatestShort": "I'm on {version}",
         "optionLatestVersion": "I'm on {version} (latest)",
-        "optionOlder": "Older than {os} {version}",
-        "optionOlderCodename": "Older than {os} {version} ({codename})",
+        "optionOlderShort": "Older than {version}",
         "optionOlderVersion": "Older than {version}",
-        "optionBetween": "Between {os} {major}.0.0 and {previousVersion}",
-        "optionBetweenCodename": "Between {os} {major}.0.0 and {previousVersion} ({codename})",
-        "optionMajor": "My {device} is running {os} {major}",
-        "optionMajorCodename": "My {device} is running {os} {major} ({codename})",
+        "optionBetweenShort": "Between {major}.0.0 and {previousVersion}",
+        "optionThisVersion": "I'm on this version",
         "optionNoUpdatesAvailable": "I don't see any updates available",
         "optionNoUpdatesAvailableByOs": {
           "windows": "It says \"You're up to date\"",

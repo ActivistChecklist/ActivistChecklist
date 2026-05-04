@@ -459,9 +459,9 @@ function DeviceConfirmedSummary({ product, release, displayLabel, classification
   //   1. classification.effectiveEolFrom — device's own eolFrom (Pixel/Samsung
   //      where the manufacturer publishes it) or, for Macs we classified via
   //      device-max-os-supported, the OS major's eolFrom. This is "exact" so
-  //      the chip says "another X" with no hedge.
+  //      the chip reads "X more years" with no hedge.
   //   2. buildAppleSupportEstimate — Apple has no published date, so use the
-  //      typical-window estimate. Chip prefixes "approximately another X".
+  //      typical-window estimate. Chip prefixes "about X more years".
   //   3. Neither: render the plain "still receiving security updates" title.
   const exactRemaining = formatTimeUntil(classification?.effectiveEolFrom);
   const approxRemaining = !exactRemaining && appleEstimate
@@ -607,7 +607,7 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
         </div>
       ) : null}
 
-      <div className="mt-5 space-y-2">
+      <div className="mt-5 space-y-4">
         {options.length > 0 ? (() => {
           // OSes with point versions (iOS / macOS / Windows) get a pair PER major
           // — "Older than X.Y.Z" + "X.Y.Z" — so users can flag a stale patch
@@ -621,6 +621,25 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
           const hasPointVersions = options.some((o) => o.latestVersion);
           if (hasPointVersions) {
             return options.map((opt, idx, arr) => {
+              // Each major gets a small heading so the buttons inside can stay
+              // short — long labels like "Between macOS 26.0.0 and 26.4.0 (Tahoe)"
+              // wrapped two lines on phones; the heading carries the OS + codename
+              // context once and the buttons just carry the version delta.
+              //
+              // Suppressed when there's only one major to pick from (e.g. an
+              // iPhone 12 Pro that can only run iOS 26): the picker heading
+              // ("Which version of iOS are you running?") already names the
+              // OS, so a sub-heading "iOS 26" above the only row is redundant.
+              const showHeader = arr.length > 1;
+              const headerLabel = opt.codename
+                ? `${osLabel || ''} ${opt.major} (${opt.codename})`
+                : `${osLabel || ''} ${opt.major}`;
+              const header = showHeader ? (
+                <p className="text-sm font-medium text-foreground/70">
+                  {headerLabel.trim()}
+                </p>
+              ) : null;
+
               if (opt.latestVersion) {
                 // Non-bottom rows can be specific: 'Between {major}.0.0 and the
                 // previous patch'. The bottom row uses 'Older than {latest}'
@@ -630,85 +649,50 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
                 const isLastRow = idx === arr.length - 1;
                 const previousVersion = decrementPatchVersion(opt.latestVersion);
                 const useBetween = !isLastRow && previousVersion !== null;
-                let warningLabel;
-                if (useBetween) {
-                  warningLabel = opt.codename
-                    ? t('updates.result.osCheckStep.optionBetweenCodename', {
-                        os: osLabel || '',
-                        major: opt.major,
-                        previousVersion,
-                        codename: opt.codename,
-                      })
-                    : t('updates.result.osCheckStep.optionBetween', {
-                        os: osLabel || '',
-                        major: opt.major,
-                        previousVersion,
-                      });
-                } else {
-                  warningLabel = opt.codename
-                    ? t('updates.result.osCheckStep.optionOlderCodename', {
-                        os: osLabel || '',
-                        version: opt.latestVersion,
-                        codename: opt.codename,
-                      })
-                    : t('updates.result.osCheckStep.optionOlder', {
-                        os: osLabel || '',
-                        version: opt.latestVersion,
-                      });
-                }
+                const warningLabel = useBetween
+                  ? t('updates.result.osCheckStep.optionBetweenShort', {
+                      major: opt.major,
+                      previousVersion,
+                    })
+                  : t('updates.result.osCheckStep.optionOlderShort', {
+                      version: opt.latestVersion,
+                    });
                 return (
-                  <div key={opt.major} className="flex flex-wrap gap-2">
-                    <PickerButton
-                      icon={History}
-                      tone="warning"
-                      onClick={() => handlePickOlder(opt)}
-                      label={warningLabel}
-                    />
+                  <div key={opt.major} className="space-y-1.5">
+                    {header}
+                    <div className="flex flex-wrap gap-2">
+                      <PickerButton
+                        icon={History}
+                        tone="warning"
+                        onClick={() => handlePickOlder(opt)}
+                        label={warningLabel}
+                      />
+                      <PickerButton
+                        icon={CheckCircle2}
+                        tone="success"
+                        onClick={() => handlePickLatest(opt)}
+                        label={t('updates.result.osCheckStep.optionLatestShort', {
+                          version: opt.latestVersion,
+                        })}
+                      />
+                    </div>
+                  </div>
+                );
+              }
+              // Mixed case (some majors lack latestVersion) — single confirmation
+              // button. The heading carries the version label, so the button just
+              // affirms "I'm on this version".
+              return (
+                <div key={opt.major} className="space-y-1.5">
+                  {header}
+                  <div className="flex flex-wrap gap-2">
                     <PickerButton
                       icon={CheckCircle2}
                       tone="success"
                       onClick={() => handlePickLatest(opt)}
-                      label={
-                        opt.codename
-                          ? t('updates.result.osCheckStep.optionLatestCodename', {
-                              device: deviceNoun,
-                              os: osLabel || '',
-                              version: opt.latestVersion,
-                              codename: opt.codename,
-                            })
-                          : t('updates.result.osCheckStep.optionLatest', {
-                              device: deviceNoun,
-                              os: osLabel || '',
-                              version: opt.latestVersion,
-                            })
-                      }
+                      label={t('updates.result.osCheckStep.optionThisVersion')}
                     />
                   </div>
-                );
-              }
-              // Mixed case (some majors lack latestVersion) — preserve the prior
-              // single-button-per-major rendering for those rows.
-              return (
-                <div key={opt.major} className="flex flex-wrap gap-2">
-                  <PickerButton
-                    icon={CheckCircle2}
-                    tone="success"
-                    onClick={() => handlePickLatest(opt)}
-                    label={
-                      opt.codename
-                        ? t('updates.result.osCheckStep.optionMajorCodename', {
-                            device: deviceNoun,
-                            os: osLabel || '',
-                            major: opt.major,
-                            codename: opt.codename,
-                          })
-                        : t('updates.result.osCheckStep.optionMajor', {
-                            device: deviceNoun,
-                            os: osLabel || '',
-                            major: opt.major,
-                          })
-                    }
-                  />
                 </div>
               );
             });

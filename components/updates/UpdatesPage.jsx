@@ -57,7 +57,11 @@ export default function UpdatesPage() {
     }
   }, [snapshot]);
 
-  // Sync selection back to URL.
+  // Sync selection back to URL. We pushState so each user-driven selection
+  // change creates a history entry — pressing Back returns to the blank form
+  // (or to the previous selection). The compare-before-push guard suppresses
+  // duplicate entries on initial mount/restore and on popstate-driven syncs,
+  // where the URL already matches the new selection.
   useEffect(() => {
     if (!snapshot) return;
     const url = new URL(window.location.href);
@@ -66,7 +70,9 @@ export default function UpdatesPage() {
     } else {
       url.searchParams.delete('q');
     }
-    window.history.replaceState({}, '', url.toString());
+    const next = url.toString();
+    if (next === window.location.href) return;
+    window.history.pushState({}, '', next);
   }, [selection, snapshot]);
 
   // Clear stale selection if the URL points at a product/release no longer in the snapshot.
