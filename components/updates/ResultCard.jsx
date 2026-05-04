@@ -840,6 +840,12 @@ function DeviceSupported({ snapshot, product, release, onReset }) {
   const [pickedOption, setPickedOption] = useState(null);
   const options = buildOsCheckOptions(snapshot, product, release);
   const latestOption = latestPickerMajor(options);
+  // Only render the max-OS warning slot when there's actually a warning to show —
+  // otherwise the slot contains just a connector arrow with nothing below it,
+  // which reads as a trailing arrow off the last visible box.
+  const maxOsReminder = buildLatestOsReminder(snapshot, product, release);
+  const maxOsWarning = buildDeviceMaxOsWarning(snapshot, product, release, maxOsReminder);
+  const showMaxOsWarning = Boolean(maxOsWarning);
 
   // Initial-render stagger so the result reveals in beat with the device card.
   // Step transitions reuse these flags (which are already true) and animate via
@@ -931,7 +937,7 @@ function DeviceSupported({ snapshot, product, release, onReset }) {
         </SlideInBox>
       ) : null}
 
-      {showThird && step !== 'stuck-on-old-os' ? (
+      {showThird && step !== 'stuck-on-old-os' && showMaxOsWarning ? (
         <SlideInBox>
           <ConnectedBox tone={stepTone}>
             <DeviceMaxOsWarning snapshot={snapshot} product={product} release={release} />
