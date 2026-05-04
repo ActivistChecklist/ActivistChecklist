@@ -3,7 +3,7 @@
 ## General rules
 
 * Use pnpm to manage packages
-* When creating a new worktree, symlink the necessary env files and `node_modules` from the main repo so the worktree is immediately usable without re-installing or recreating local secrets. At minimum: `.env`, `.env.production.local`, `.env.production.railway.local`, and `node_modules`. Use absolute symlinks (`ln -s /abs/path/to/main/.env ./.env`, etc.) so they keep resolving regardless of where the worktree lives.
+* When creating a new worktree, run `./scripts/setup-worktree.sh` from inside the worktree before doing anything else. It symlinks env files and `node_modules` from the main repo so the worktree is immediately usable without re-installing or recreating local secrets. The script is idempotent and refuses to run from the main repo. If you add new env files or top-level state that worktrees should mirror, update the `TARGETS` array in that script.
 
 ## Testing rules
 
