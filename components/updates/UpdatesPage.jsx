@@ -12,8 +12,12 @@ import DeviceInfoCard from './DeviceInfoCard';
 import DeviceSearchInput from './DeviceSearchInput';
 import FamilyCategorySelector from './FamilyCategorySelector';
 import ResultCard from './ResultCard';
+import PageNotices from '@/components/layout/PageNotices';
 
-const STALE_THRESHOLD_DAYS = 14;
+// Snapshot is regenerated daily by the cron prebuild. Anything older than this
+// has missed at least a few cron windows — surface a warning so users know the
+// EOL data they're seeing might be behind. 31 days = "more than a month".
+const STALE_THRESHOLD_DAYS = 31;
 
 function isSnapshotStale(snapshot) {
   if (!snapshot?.generatedAt) return false;
@@ -42,6 +46,11 @@ export default function UpdatesPage() {
   // user can edit or replace the previously chosen device without re-typing it from scratch.
   // Cleared by the input as soon as it consumes the seed.
   const [seedQuery, setSeedQuery] = useState(null);
+  // Bumped on every Start Over so the DeviceSearchInput remounts with a clean
+  // initial state. Belt-and-suspenders: the input also responds to seedQuery
+  // and selectedLabel transitions, but using this as a key guarantees stale
+  // internal state (query, hasSelection, focus) can't leak across resets.
+  const [resetKey, setResetKey] = useState(0);
 
   const priorityProductIds = category?.subCategory?.productIds || null;
 
@@ -126,9 +135,12 @@ export default function UpdatesPage() {
   function handleReset() {
     // Centralised reset: clear both the result selection and the category so the
     // page returns to its initial state regardless of which control fired this.
+    // resetKey++ forces DeviceSearchInput to remount fresh so its internal
+    // input state can't carry the previous label across.
     setSelection(null);
     setCategory(null);
     setSeedQuery(null);
+    setResetKey((k) => k + 1);
     trackEvent({ name: 'updates_reset' });
   }
 
@@ -186,8 +198,33 @@ export default function UpdatesPage() {
   const found = selection ? findRelease(snapshot, selection.productId, selection.releaseId) : null;
   const selectedLabel = found ? buildDisplayLabel(found.product, found.release) : '';
 
+  // Stale-snapshot notice routed through the standard PageNotices system so it
+  // looks and behaves like a page-level alert (same chrome as the i18n
+  // unreviewed notice and other site-wide warnings) rather than a one-off
+  // banner stuck at the bottom.
+  const pageNotices = isSnapshotStale(snapshot)
+    ? [{
+        id: 'updates-snapshot-stale',
+        type: 'warning',
+        message: t.rich('updates.snapshotStaleBanner', {
+          date: formatStaleDate(snapshot.generatedAt),
+          link: (chunks) => (
+            <a
+              href="https://endoflife.date"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary underline"
+            >
+              {chunks}
+            </a>
+          ),
+        }),
+      }]
+    : [];
+
   return (
     <div className="space-y-6">
+      <PageNotices initialNotices={pageNotices} />
       <PageHero />
 
       {found ? null : (
@@ -216,6 +253,7 @@ export default function UpdatesPage() {
         </div>
       ) : (
         <DeviceSearchInput
+          key={resetKey}
           snapshot={snapshot}
           priorityProductIds={priorityProductIds}
           selectedLabel={selectedLabel}
@@ -226,24 +264,6 @@ export default function UpdatesPage() {
           autoFocus
         />
       )}
-
-      {isSnapshotStale(snapshot) ? (
-        <div className="rounded-md border border-warning/30 bg-warning/5 p-3 text-xs text-foreground/90">
-          {t.rich('updates.snapshotStaleBanner', {
-            date: formatStaleDate(snapshot.generatedAt),
-            link: (chunks) => (
-              <a
-                href="https://endoflife.date"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary underline"
-              >
-                {chunks}
-              </a>
-            ),
-          })}
-        </div>
-      ) : null}
 
       <FooterCredit snapshot={snapshot} />
     </div>
