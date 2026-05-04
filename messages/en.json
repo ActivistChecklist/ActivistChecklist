@@ -374,6 +374,7 @@
     },
     "platform": {
       "prompt": "Or pick where to start:",
+      "helpPrompt": "Need help finding your device model?",
       "apple": "Apple",
       "android": "Android",
       "windows": "Windows",

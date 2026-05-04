@@ -95,8 +95,11 @@ function L1({ onPick }) {
   return (
     <div
       key="l1"
-      className="animate-in fade-in slide-in-from-left-2 duration-500"
+      className="animate-in fade-in slide-in-from-left-2 duration-500 space-y-3"
     >
+      <p className="text-sm text-muted-foreground">
+        {t('updates.platform.helpPrompt')}
+      </p>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {PLATFORMS.map((p) => {
           const Icon = PLATFORM_GROUP_ICON[p];
