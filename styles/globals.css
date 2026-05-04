@@ -304,6 +304,18 @@
     @apply bg-background text-foreground;
   }
 
+  /* Site-wide text selection: brand-primary background with its foreground colour
+     so highlighted text reads clearly in both themes. The default browser highlight
+     is barely visible against our dark-mode background. */
+  ::selection {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+  ::-moz-selection {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+
   /* Standard link styling */
   .link {
     @apply font-medium underline underline-offset-4 decoration-1 hover:decoration-2 transition-colors;

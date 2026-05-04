@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { useEolSnapshot } from '@/hooks/use-eol-snapshot';
@@ -8,6 +8,7 @@ import { findRelease } from '@/lib/updates/snapshot';
 import { buildDisplayLabel } from '@/lib/updates/search';
 import { useAnalytics } from '@/hooks/use-analytics';
 
+import DeviceInfoCard from './DeviceInfoCard';
 import DeviceSearchInput from './DeviceSearchInput';
 import FamilyCategorySelector from './FamilyCategorySelector';
 import ResultCard from './ResultCard';
@@ -37,7 +38,10 @@ export default function UpdatesPage() {
   // Drill-down state: { platform, subCategory } | null
   const [category, setCategory] = useState(null);
   const [selection, setSelection] = useState(null); // { productId, releaseId } | null
-  const searchBoxRef = useRef(null);
+  // When set, the search box mounts with this string pre-filled and pre-selected so the
+  // user can edit or replace the previously chosen device without re-typing it from scratch.
+  // Cleared by the input as soon as it consumes the seed.
+  const [seedQuery, setSeedQuery] = useState(null);
 
   const priorityProductIds = category?.subCategory?.productIds || null;
 
@@ -89,14 +93,6 @@ export default function UpdatesPage() {
     return () => window.removeEventListener('popstate', onPop);
   }, []);
 
-  // After a selection, scroll the search box to the top so the user keeps the
-  // breadcrumb / search context visible while seeing the result below.
-  useEffect(() => {
-    if (selection && searchBoxRef.current) {
-      searchBoxRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }, [selection]);
-
   function handleCategoryChange(next) {
     setCategory(next);
     if (next?.subCategory) {
@@ -126,7 +122,17 @@ export default function UpdatesPage() {
     // page returns to its initial state regardless of which control fired this.
     setSelection(null);
     setCategory(null);
+    setSeedQuery(null);
     trackEvent({ name: 'updates_reset' });
+  }
+
+  // Click-to-edit: clear the result and seed the search input with the previously chosen
+  // label, focused and pre-selected. This makes the device summary feel like a <select>
+  // that re-opens the picker without losing the user's place.
+  function handleEdit(label) {
+    setSelection(null);
+    if (label) setSeedQuery(label);
+    trackEvent({ name: 'updates_edit_selection' });
   }
 
   // Loading state ─────────────────────────────────────
@@ -182,26 +188,34 @@ export default function UpdatesPage() {
         <FamilyCategorySelector value={category} onChange={handleCategoryChange} />
       )}
 
-      {/* Hide the search input once a device is selected — the DeviceInfoCard
-          + Start over button serve as the visible state, and the search box
-          comes back when the user resets. */}
-      {found ? null : (
-        <div ref={searchBoxRef}>
-          <DeviceSearchInput
-            snapshot={snapshot}
-            priorityProductIds={priorityProductIds}
-            selectedLabel={selectedLabel}
-            onSelect={handleSelect}
-            onClear={handleReset}
-            autoFocus
-          />
-        </div>
+      {/* DeviceInfoCard sits in the same slot as the search input so picking a device
+          feels like the input itself transforming into a "selected" pill — no slide-in,
+          no scroll. When the user clears or clicks the card, the input takes its place
+          back. */}
+      {found ? (
+        <DeviceInfoCard
+          product={found.product}
+          release={found.release}
+          onReset={handleReset}
+          onEdit={handleEdit}
+        />
+      ) : (
+        <DeviceSearchInput
+          snapshot={snapshot}
+          priorityProductIds={priorityProductIds}
+          selectedLabel={selectedLabel}
+          seedQuery={seedQuery}
+          onSeedConsumed={() => setSeedQuery(null)}
+          onSelect={handleSelect}
+          onClear={handleReset}
+          autoFocus
+        />
       )}
 
       {found ? (
         <div
           key={`${found.product.id}/${found.release.id}`}
-          className="animate-in fade-in slide-in-from-bottom-2 duration-200"
+          className="animate-in fade-in slide-in-from-bottom-2 duration-500"
         >
           <ResultCard
             snapshot={snapshot}
@@ -281,10 +295,10 @@ function PageHero() {
   const t = useTranslations();
   return (
     <header className="space-y-3 text-center">
-      <h1 className="text-3xl font-bold leading-tight text-foreground sm:text-4xl">
+      <h1 className="text-balance text-3xl font-bold leading-tight text-foreground sm:text-4xl">
         {t('updates.title')}
       </h1>
-      <p className="mx-auto max-w-2xl text-base text-muted-foreground">
+      <p className="mx-auto max-w-2xl text-pretty text-base text-muted-foreground">
         {t('updates.intro')}
       </p>
     </header>

@@ -7,7 +7,7 @@ import {
   XCircle,
   AlertTriangle,
   Check,
-  ArrowRight,
+  Clock,
   ShieldAlert,
   ShoppingCart,
 } from 'lucide-react';
@@ -22,7 +22,6 @@ import {
 } from '@/lib/updates/result-logic';
 import { osProductForDevice } from '@/lib/updates/snapshot';
 import { buildDisplayLabel } from '@/lib/updates/search';
-import { iconForFamily } from '@/lib/updates/family-icons';
 
 const ESSENTIALS_HREF = '/guides/essentials';
 
@@ -39,70 +38,17 @@ function formatYearsAgo(years, t) {
   return t('updates.result.ageYearsAgo', { years: rounded });
 }
 
-/**
- * Compact info card showing the picked device/OS with its brand icon, display name,
- * and a "Manufacturer · Released Month YYYY" subtitle. Sits above the result so the
- * user can confirm at a glance which item their search resolved to.
- */
-function DeviceInfoCard({ product, release, onReset }) {
-  const t = useTranslations();
-  const Icon = iconForFamily(product.family);
-  const label = buildDisplayLabel(product, release);
-
-  let manufacturer = '';
-  try {
-    const m = t(`updates.result.deviceInfo.manufacturer.${product.family}`);
-    if (m && !m.startsWith('updates.result.deviceInfo.')) manufacturer = m;
-  } catch {
-    /* fall through */
-  }
-
-  const dateText = release.releaseDate ? formatMonthYear(release.releaseDate) : null;
-  const subtitle = dateText
-    ? t('updates.result.deviceInfo.manufacturerLine', { manufacturer, date: dateText })
-    : manufacturer
-      ? t('updates.result.deviceInfo.manufacturerLineNoDate', { manufacturer })
-      : null;
-
-  return (
-    // `group` so the Start over button picks up a hover state from anywhere on the panel,
-    // making the reset path discoverable when the user mouses over the device summary.
-    <div className="group flex items-center gap-3 rounded-md border border-border bg-background p-3">
-      <Icon className="h-7 w-7 shrink-0 text-foreground/80" aria-hidden="true" />
-      <div className="min-w-0 flex-1">
-        <p className="truncate text-base font-semibold text-foreground sm:text-lg">{label}</p>
-        {subtitle ? (
-          <p className="truncate text-xs text-muted-foreground">{subtitle}</p>
-        ) : null}
-      </div>
-      {onReset ? (
-        <button
-          type="button"
-          onClick={onReset}
-          className={cn(
-            'shrink-0 rounded-md border-2 border-primary px-3 py-1.5 text-xs font-medium text-primary transition-colors',
-            'group-hover:bg-primary group-hover:text-primary-foreground',
-            'focus-visible:bg-primary focus-visible:text-primary-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/40'
-          )}
-        >
-          {t('updates.result.startOver')}
-        </button>
-      ) : null}
-    </div>
-  );
-}
-
 /* ────────── Shared building blocks ────────── */
 
 /**
- * Wraps a result block in a snappy slide-up + fade-in. Pair with a `key` prop on the
+ * Wraps a result block in a slide-up + fade-in. Pair with a `key` prop on the
  * caller to replay the animation when contents swap (e.g. picker → success).
  */
 function SlideInBox({ children, className }) {
   return (
     <div
       className={cn(
-        'animate-in fade-in slide-in-from-bottom-2 duration-200',
+        'animate-in fade-in slide-in-from-bottom-2 duration-500',
         className
       )}
     >
@@ -153,7 +99,7 @@ function ResultActions({ product, onReset }) {
   const t = useTranslations();
   return (
     <div className="mt-5 flex flex-wrap items-center gap-2">
-      <ResultActions product={product} onReset={onReset} />
+      <CrossResetButton product={product} onReset={onReset} />
       <Link
         href={ESSENTIALS_HREF}
         className={cn(
@@ -212,7 +158,15 @@ function ThreatModelBlock({ soft = false }) {
         {t('updates.result.threatModelHeader')}
       </BlockHeading>
       <p className="text-sm leading-relaxed text-foreground/90">
-        {soft ? t('updates.result.threatModelSoft') : t('updates.result.threatModel')}
+        {soft
+          ? t('updates.result.threatModelSoft')
+          : t.rich('updates.result.threatModel', {
+              spywareLink: (chunks) => (
+                <Link href="/spyware/" className="text-primary underline">
+                  {chunks}
+                </Link>
+              ),
+            })}
       </p>
     </div>
   );
@@ -261,12 +215,15 @@ function BuyingGuidance({ formFactor }) {
 /**
  * Resolve a path string from messages with graceful null when missing.
  * Supports rich content (e.g. <code>winver</code> for Windows) by routing the
- * lookup through t.rich with a code-tag handler.
+ * lookup through t.rich with a code-tag handler. For plain strings we use t()
+ * directly — t.rich on a string with no tags can return non-string content that
+ * doesn't always render the way callers expect inside truthy/falsy checks.
  */
 function pathFromKey(t, key) {
   try {
     const raw = t(key);
     if (!raw || raw.startsWith('updates.result.')) return null;
+    if (!raw.includes('<')) return raw;
     return t.rich(key, {
       code: (chunks) => (
         <code className="rounded bg-muted px-1 py-0.5 font-mono text-base text-foreground">
@@ -560,6 +517,10 @@ function OsNeedsUpdateBox({ snapshot, product, onDidUpdate }) {
   const t = useTranslations();
   const osProduct = osProductForDevice(snapshot, product);
   const osId = osProduct?.id || null;
+  // Prefer the dedicated update-path copy; fall back to the version-finding path so
+  // we never end up with a "How to update:" heading sitting above empty space when a
+  // settingsPath translation is missing for the resolved OS id.
+  const updatePath = osId ? (osUpdatePath(t, osId) || osVersionPath(t, osId)) : null;
 
   return (
     <div className="rounded-lg border-2 border-warning/30 bg-warning/5 p-6">
@@ -573,13 +534,13 @@ function OsNeedsUpdateBox({ snapshot, product, onDidUpdate }) {
             {t('updates.result.osNeedsUpdate.body')}
           </p>
 
-          {osId ? (
+          {updatePath ? (
             <div className="space-y-2 pt-1">
               <p className="text-sm font-semibold text-foreground/80">
                 {t('updates.result.osNeedsUpdate.howToHeading')}
               </p>
               {/* OsNeedsUpdateBox is asking the user to UPDATE → settingsPath (final action) */}
-              <PromMenuPath>{osUpdatePath(t, osId)}</PromMenuPath>
+              <PromMenuPath>{updatePath}</PromMenuPath>
             </div>
           ) : null}
 
@@ -778,7 +739,7 @@ function DeviceEolSoon({ snapshot, product, release, classification, onReset }) 
 
   return (
     <SlideInBox>
-      <ResultBox tone="amber" icon={AlertTriangle} title={title} subtitle={subtitle}>
+      <ResultBox tone="amber" icon={Clock} title={title} subtitle={subtitle}>
         <PrescriptionLine formFactor={product.formFactor} urgency="plan" />
         <ThreatModelBlock />
         <BuyingGuidance formFactor={product.formFactor} />
@@ -914,18 +875,16 @@ export default function ResultCard({ snapshot, product, release, onReset }) {
 
   if (!Variant) return null;
 
+  // The DeviceInfoCard used to live here; it's now rendered by UpdatesPage in the
+  // search-input slot so picking a device feels like the input transforming in place
+  // rather than the result block growing in below an empty input.
   return (
-    <div className="space-y-4">
-      <SlideInBox>
-        <DeviceInfoCard product={product} release={release} onReset={onReset} />
-      </SlideInBox>
-      <Variant
-        snapshot={snapshot}
-        product={product}
-        release={release}
-        onReset={onReset}
-        classification={classification}
-      />
-    </div>
+    <Variant
+      snapshot={snapshot}
+      product={product}
+      release={release}
+      onReset={onReset}
+      classification={classification}
+    />
   );
 }

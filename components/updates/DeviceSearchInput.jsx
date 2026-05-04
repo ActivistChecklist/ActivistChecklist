@@ -2,12 +2,14 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Command as CommandPrimitive } from 'cmdk';
-import { Search, X } from 'lucide-react';
+import { HelpCircle, Search, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { buildFuse, buildSearchIndex, searchIndex } from '@/lib/updates/search';
 import { iconForFamily } from '@/lib/updates/family-icons';
+import { looksLikeWindowsLaptopQuery } from '@/lib/updates/no-match-hints';
 
 function RowIcon({ family }) {
   const Icon = iconForFamily(family);
@@ -25,8 +27,34 @@ function CategoryPill({ formFactor, kind }) {
   );
 }
 
-function NoMatchesContent() {
+function NoMatchesContent({ query }) {
   const t = useTranslations();
+  const isWindowsBrand = looksLikeWindowsLaptopQuery(query);
+
+  if (isWindowsBrand) {
+    // Wider/taller padding matched to the generic empty state so the dropdown shell
+    // reads consistently regardless of which message landed.
+    return (
+      <div className="space-y-3 px-6 py-8 text-sm sm:px-8 sm:py-10">
+        <p className="font-medium text-foreground">{t('updates.noMatchesWindowsLaptop')}</p>
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            {t('updates.noMatchesWindowsPathLabel')}
+          </p>
+          <p className="mt-1 text-base font-medium text-foreground">
+            {t.rich('updates.findYourModel.windows', {
+              code: (chunks) => (
+                <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-base text-foreground">
+                  {chunks}
+                </code>
+              ),
+            })}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   // Wide breathing room so this reads as an empty-state message centered inside the
   // dropdown shell, not as a tight panel pushed up against the search input edges.
   return (
@@ -63,6 +91,8 @@ export default function DeviceSearchInput({
   snapshot,
   priorityProductIds,
   selectedLabel,
+  seedQuery,
+  onSeedConsumed,
   onSelect,
   onClear,
   autoFocus = false,
@@ -73,6 +103,23 @@ export default function DeviceSearchInput({
   const [hasSelection, setHasSelection] = useState(Boolean(selectedLabel));
   const inputRef = useRef(null);
   const containerRef = useRef(null);
+
+  // Click-to-edit seed: parent set a string we should pre-fill and pre-select. This makes
+  // the input behave like a "select" the user reopened — the previous value is there,
+  // already highlighted, so they can type to replace or just walk it back.
+  useEffect(() => {
+    if (!seedQuery) return;
+    setQuery(seedQuery);
+    setHasSelection(false);
+    setOpen(true);
+    // requestAnimationFrame so focus/select happen after the input renders the new value;
+    // calling them synchronously can race with React's commit and lose the selection.
+    requestAnimationFrame(() => {
+      inputRef.current?.focus();
+      inputRef.current?.select();
+    });
+    onSeedConsumed?.();
+  }, [seedQuery]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // When the parent's selection changes (e.g., after restoring from URL), sync the input.
   useEffect(() => {
@@ -160,6 +207,31 @@ export default function DeviceSearchInput({
 
   return (
     <div ref={containerRef} className="relative w-full">
+      <div className="mb-1.5 flex items-center gap-1.5">
+        <label
+          htmlFor="updates-device-search"
+          className="block text-sm font-medium text-foreground"
+        >
+          {t('updates.searchLabel')}
+        </label>
+        <Popover>
+          <PopoverTrigger asChild>
+            <button
+              type="button"
+              aria-label={t('updates.searchHelpAriaLabel')}
+              className={cn(
+                'inline-flex h-5 w-5 items-center justify-center rounded-full text-muted-foreground transition-colors',
+                'hover:bg-muted hover:text-foreground focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/40'
+              )}
+            >
+              <HelpCircle className="h-4 w-4" aria-hidden="true" />
+            </button>
+          </PopoverTrigger>
+          <PopoverContent side="top" align="start" className="w-72 text-sm leading-relaxed text-foreground">
+            {t('updates.searchHelp')}
+          </PopoverContent>
+        </Popover>
+      </div>
       <CommandPrimitive
         shouldFilter={false}
         loop
@@ -176,6 +248,7 @@ export default function DeviceSearchInput({
             <Search className="h-6 w-6 shrink-0 text-muted-foreground" aria-hidden="true" />
             <CommandPrimitive.Input
               ref={inputRef}
+              id="updates-device-search"
               value={query}
               onValueChange={handleChange}
               onFocus={() => setOpen(true)}
@@ -218,7 +291,7 @@ export default function DeviceSearchInput({
                   ))}
                 </CommandPrimitive.List>
               ) : (
-                <NoMatchesContent />
+                <NoMatchesContent query={trimmed} />
               )}
             </div>
           ) : null}
