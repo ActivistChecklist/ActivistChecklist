@@ -97,7 +97,7 @@ function L1({ onPick }) {
       key="l1"
       className="animate-in fade-in slide-in-from-left-2 duration-500 space-y-3"
     >
-      <p className="text-sm text-muted-foreground">
+      <p className="block text-sm font-medium text-foreground">
         {t('updates.platform.helpPrompt')}
       </p>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
