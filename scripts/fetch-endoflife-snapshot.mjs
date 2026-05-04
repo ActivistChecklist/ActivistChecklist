@@ -409,9 +409,10 @@ async function main() {
 
   if (failures.length >= 3) {
     const summary = failures.map((f) => `${f.id}: ${f.error.message}`).join('; ');
-    const fatal = new Error(`Too many endoflife failures (${failures.length}): ${summary}`);
-    await pingHealthcheck(false, fatal);
-    throw fatal;
+    // Throw without an inline pingHealthcheck — main().catch below sends the
+    // failure ping. Pinging twice (once here, once in the central catch)
+    // would fire two healthcheck-failure alerts for the same incident.
+    throw new Error(`Too many endoflife failures (${failures.length}): ${summary}`);
   }
 
   const snapshot = {

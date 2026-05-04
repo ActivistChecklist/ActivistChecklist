@@ -229,8 +229,23 @@ export default function DeviceSearchInput({
         setOpen(false);
       }
     }
+    // Mirror the click-outside behaviour for keyboard users: when focus
+    // leaves the search container (Tab from the input or one of the result
+    // rows to something further down the page), close the dropdown. capture
+    // phase + relatedTarget avoids false-closes during in-widget focus moves
+    // (input → result row).
+    function onFocusOut(e) {
+      const next = e.relatedTarget;
+      if (next && containerRef.current?.contains(next)) return;
+      setOpen(false);
+    }
     document.addEventListener('mousedown', onDown);
-    return () => document.removeEventListener('mousedown', onDown);
+    containerRef.current?.addEventListener('focusout', onFocusOut);
+    const container = containerRef.current;
+    return () => {
+      document.removeEventListener('mousedown', onDown);
+      container?.removeEventListener('focusout', onFocusOut);
+    };
   }, []);
 
   function handleSelect(item) {

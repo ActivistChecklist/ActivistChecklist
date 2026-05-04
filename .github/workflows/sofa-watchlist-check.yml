@@ -67,7 +67,12 @@ jobs:
             const title = `SOFA dropped ${count} watched Mac model(s)`;
             const droppedLines = dropped.map((id) => `- \`${id}\``).join('\n');
 
-            // Don't open a duplicate if an open issue already exists for the same drop set.
+            // Fingerprint the actual dropped set so two different drop sets with
+            // the same count don't collide via identical titles. Embed it in the
+            // body as an HTML comment and match against that.
+            const sortedIds = [...dropped].sort();
+            const fingerprint = `<!-- sofa-drop-fingerprint: ${sortedIds.join(',')} -->`;
+
             const { data: existing } = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -75,9 +80,9 @@ jobs:
               labels: 'sofa-watchlist',
               per_page: 50,
             });
-            const dup = existing.find((i) => i.title === title);
+            const dup = existing.find((i) => (i.body || '').includes(fingerprint));
             if (dup) {
-              core.info(`Open issue already exists: #${dup.number}`);
+              core.info(`Open issue with same drop fingerprint already exists: #${dup.number}`);
               return;
             }
 
@@ -117,6 +122,8 @@ jobs:
               '---',
               '',
               '*Opened automatically by `.github/workflows/sofa-watchlist-check.yml`. Closes via the next weekly run when the drop set is empty.*',
+              '',
+              fingerprint,
             ].join('\n');
 
             const { data: created } = await github.rest.issues.create({

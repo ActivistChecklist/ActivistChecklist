@@ -56,7 +56,16 @@ async function fetchSofaIds() {
 async function readWatchlist() {
   const raw = await fs.readFile(SOFA_WATCHLIST_PATH, 'utf8');
   const parsed = JSON.parse(raw);
-  return Array.isArray(parsed?.expected) ? parsed.expected : [];
+  // Fail fast on malformed schema: a silent [] fallback would mark every
+  // SOFA model as 'novel' and have the GH Action open a PR adding all 95
+  // identifiers as if they were brand new. Loud-failing is far safer.
+  if (!parsed || !Array.isArray(parsed.expected)) {
+    throw new Error(
+      `Invalid sofa-watchlist schema at ${SOFA_WATCHLIST_PATH}: ` +
+      `'expected' must be an array (got ${typeof parsed?.expected}).`
+    );
+  }
+  return parsed.expected;
 }
 
 async function main() {

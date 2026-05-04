@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import {
   CheckCircle2,
   XCircle,
@@ -115,7 +115,10 @@ function patchStateFor(classification) {
   }
 }
 
-function formatMonthYear(iso, locale = 'en-US') {
+// Locale-aware "October 2026" formatter. Caller passes the page locale via
+// useLocale() — toLocaleDateString translates the month name accordingly so
+// /es/ users see "octubre 2026" instead of always-English "October 2026".
+function formatMonthYear(iso, locale) {
   if (!iso) return '';
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return iso;
@@ -319,6 +322,7 @@ function ResultActions({ product, onReset }) {
  */
 function EssentialsPanel() {
   const t = useTranslations();
+  const locale = useLocale();
   return (
     <div className="flex items-start gap-3 rounded-lg border-2 border-muted-foreground/50 bg-background px-4 py-4 shadow-sm sm:py-5">
       <IoLockClosedThick className="h-7 w-7 shrink-0 text-primary" aria-hidden="true" />
@@ -362,6 +366,7 @@ function BlockHeading({ icon: IconProp, children }) {
  */
 function PrescriptionLine({ formFactor, urgency }) {
   const t = useTranslations();
+  const locale = useLocale();
   const namespace = urgency === 'plan' ? 'ctaPlan' : 'ctaReplace';
   const key = ['phone', 'tablet', 'laptop', 'desktop', 'watch'].includes(formFactor)
     ? formFactor
@@ -380,6 +385,7 @@ function PrescriptionLine({ formFactor, urgency }) {
  */
 function ThreatModelBlock({ soft = false }) {
   const t = useTranslations();
+  const locale = useLocale();
   return (
     <div className="rounded-md border border-border bg-background/60 p-3">
       <BlockHeading icon={ShieldAlert}>
@@ -418,6 +424,7 @@ function ThreatModelBlock({ soft = false }) {
  */
 function BuyingGuidance({ family, formFactor }) {
   const t = useTranslations();
+  const locale = useLocale();
   const spec = updateYearsFor(family, formFactor);
   if (!spec) return null;
   return (
@@ -559,6 +566,7 @@ function PromMenuPath({ children }) {
  */
 function DeviceConfirmedSummary({ product, release, displayLabel, classification }) {
   const t = useTranslations();
+  const locale = useLocale();
   const appleEstimate = buildAppleSupportEstimate(product, release);
   const deviceLabel = appleEstimate
     ? t(`updates.result.buyingGuidance.deviceLabel.${appleEstimate.deviceLabelKey}`)
@@ -630,7 +638,7 @@ function DeviceConfirmedSummary({ product, release, displayLabel, classification
         {release.eolFrom ? (
           <p className="text-xs text-muted-foreground">
             {t.rich('updates.result.deviceSupportedSubtitleUntil', {
-              date: formatMonthYear(release.eolFrom),
+              date: formatMonthYear(release.eolFrom, locale),
               b: boldDateChunks,
             })}
           </p>
@@ -657,6 +665,7 @@ function DeviceConfirmedSummary({ product, release, displayLabel, classification
  */
 function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder }) {
   const t = useTranslations();
+  const locale = useLocale();
   const { trackEvent } = useAnalytics();
   const options = buildOsCheckOptions(snapshot, product, release);
 
@@ -932,6 +941,7 @@ function deviceNounFor(t, formFactor) {
  */
 function CrossResetButton({ product, onReset }) {
   const t = useTranslations();
+  const locale = useLocale();
   if (!onReset) return null;
   let label;
   if (product.formFactor === 'phone') {
@@ -951,13 +961,14 @@ function CrossResetButton({ product, onReset }) {
 
 function FinalSuccessBox({ snapshot, product, release, displayLabel, pickedOption, onReset }) {
   const t = useTranslations();
+  const locale = useLocale();
   const osProduct = product.kind === 'os' ? product : osProductForDevice(snapshot, product);
   const osLabel = shortOsLabel(t, osProduct);
 
   const deviceLine = release.eolFrom
     ? t('updates.result.finalSuccess.deviceCheckUntil', {
         label: displayLabel,
-        date: formatMonthYear(release.eolFrom),
+        date: formatMonthYear(release.eolFrom, locale),
       })
     : t('updates.result.finalSuccess.deviceCheck', { label: displayLabel });
 
@@ -1026,6 +1037,7 @@ function OsNeedsUpdateBox({
   onNoUpdatesAvailable,
 }) {
   const t = useTranslations();
+  const locale = useLocale();
   const osProduct = product.kind === 'os' ? product : osProductForDevice(snapshot, product);
   const osId = osProduct?.id || null;
   // Prefer the dedicated update-path copy; fall back to the version-finding path so
@@ -1269,6 +1281,7 @@ function DeviceSupported({ snapshot, product, release, classification, onReset }
 
 function DeviceMaxOsWarning({ snapshot, product, release }) {
   const t = useTranslations();
+  const locale = useLocale();
   const reminder = buildLatestOsReminder(snapshot, product, release);
   const warning = buildDeviceMaxOsWarning(snapshot, product, release, reminder);
   if (!warning) return null;
@@ -1306,7 +1319,7 @@ function DeviceMaxOsWarning({ snapshot, product, release }) {
         label: product.label,
         os: osLabel,
         maxVersion: maxLabel,
-        eolDate: formatMonthYear(warning.maxEolDate),
+        eolDate: formatMonthYear(warning.maxEolDate, locale),
         latestVersion: latestLabel,
       })
     : t('updates.result.deviceMaxOsWarning', {
@@ -1333,6 +1346,7 @@ function DeviceMaxOsWarning({ snapshot, product, release }) {
 
 function DeviceUncertain({ snapshot, product, release, classification, onReset }) {
   const t = useTranslations();
+  const locale = useLocale();
   const displayLabel = buildDisplayLabel(product, release);
   const ageText = formatYearsAgo(classification.ageYears, t);
 
@@ -1397,6 +1411,7 @@ function DeviceUncertain({ snapshot, product, release, classification, onReset }
  */
 function DeviceEolSoonHeader({ product, release, classification }) {
   const t = useTranslations();
+  const locale = useLocale();
   const displayLabel = buildDisplayLabel(product, release);
   const eolDate = classification.effectiveEolFrom;
   const months = eolDate
@@ -1426,7 +1441,7 @@ function DeviceEolSoonHeader({ product, release, classification }) {
 
   const subtitle = eolDate
     ? t.rich('updates.result.eolSoon.subtitleDate', {
-        date: formatMonthYear(eolDate),
+        date: formatMonthYear(eolDate, locale),
         b: boldDateChunks,
       })
     : null;
@@ -1448,12 +1463,13 @@ function DeviceEolSoonHeader({ product, release, classification }) {
  */
 function DeviceEolBox({ product, release, classification, onReset }) {
   const t = useTranslations();
+  const locale = useLocale();
   const displayLabel = buildDisplayLabel(product, release);
 
   let subtitle = null;
   if (classification.reason === 'eolFrom-past' && release.eolFrom) {
     subtitle = t.rich('updates.result.deviceUnsupportedSubtitleEnded', {
-      date: formatMonthYear(release.eolFrom),
+      date: formatMonthYear(release.eolFrom, locale),
       b: boldDateChunks,
     });
   } else if (classification.reason === 'unmaintained') {
@@ -1467,7 +1483,7 @@ function DeviceEolBox({ product, release, classification, onReset }) {
     });
   } else if (classification.reason === 'eoas-past' && release.eoasFrom) {
     subtitle = t.rich('updates.result.deviceUnsupportedSubtitleEnded', {
-      date: formatMonthYear(release.eoasFrom),
+      date: formatMonthYear(release.eoasFrom, locale),
       b: boldDateChunks,
     });
   } else if (classification.reason === 'user-stuck-on-old-os') {
@@ -1566,6 +1582,7 @@ function DeviceEol(props) {
  */
 function OsConfirmedSummary({ product, release, displayLabel, classification }) {
   const t = useTranslations();
+  const locale = useLocale();
   const isEolSoon = classification?.variant === 'os-eol-soon';
   const eolDate = classification?.effectiveEolFrom || release.eolFrom || null;
   const months = eolDate
@@ -1617,12 +1634,12 @@ function OsConfirmedSummary({ product, release, displayLabel, classification }) 
 
   const subtitle = isEolSoon && eolDate
     ? t.rich('updates.result.osEolSoon.subtitleDate', {
-        date: formatMonthYear(eolDate),
+        date: formatMonthYear(eolDate, locale),
         b: boldDateChunks,
       })
     : (release.eolFrom && !isEolSoon
         ? t.rich('updates.result.osConfirmedSubtitleUntil', {
-            date: formatMonthYear(release.eolFrom),
+            date: formatMonthYear(release.eolFrom, locale),
             b: boldDateChunks,
           })
         : null);
@@ -1658,6 +1675,7 @@ function OsConfirmedSummary({ product, release, displayLabel, classification }) 
  */
 function OsPatchPickerStep({ product, release, displayLabel, onPickLatest, onPickOlder, onPickUnknown }) {
   const t = useTranslations();
+  const locale = useLocale();
   const { trackEvent } = useAnalytics();
 
   // Windows publishes a build family (e.g. 10.0.28000) but winver / Settings
@@ -1760,6 +1778,7 @@ function OsPatchPickerStep({ product, release, displayLabel, onPickLatest, onPic
  */
 function OsFinalSuccessBox({ product, release, displayLabel, onReset }) {
   const t = useTranslations();
+  const locale = useLocale();
   const showVersion = !!release.latestVersion && product.id !== 'windows';
   // For the version path the parenthetical reads "(iOS 17.5.1)" — short OS
   // family name (from supportedOsLabel) + the latestVersion which already
@@ -1879,6 +1898,7 @@ function OsResultFlow({ snapshot, product, release, classification, onReset }) {
 
 function OsEol({ product, release, onReset }) {
   const t = useTranslations();
+  const locale = useLocale();
   const displayLabel = buildDisplayLabel(product, release);
 
   let advice = null;
@@ -1899,7 +1919,7 @@ function OsEol({ product, release, onReset }) {
         subtitle={
           release.eolFrom
             ? t.rich('updates.result.osUnsupportedSubtitleEnded', {
-                date: formatMonthYear(release.eolFrom),
+                date: formatMonthYear(release.eolFrom, locale),
                 b: boldDateChunks,
               })
             : null
