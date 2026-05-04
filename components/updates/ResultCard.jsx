@@ -8,6 +8,7 @@ import {
   AlertTriangle,
   Check,
   Clock,
+  History,
   ShieldAlert,
   ShoppingCart,
 } from 'lucide-react';
@@ -445,7 +446,7 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
               return (
                 <div key={opt.major} className="flex flex-wrap gap-2">
                   <PickerButton
-                    tone="destructive"
+                    icon={History}
                     onClick={() => handlePickOlder(opt)}
                     label={
                       opt.codename
@@ -461,6 +462,7 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
                     }
                   />
                   <PickerButton
+                    icon={CheckCircle2}
                     onClick={() => handlePickLatest(opt)}
                     label={
                       opt.codename
@@ -483,6 +485,7 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
             return (
               <div key={opt.major} className="flex flex-wrap gap-2">
                 <PickerButton
+                  icon={CheckCircle2}
                   onClick={() => handlePickLatest(opt)}
                   label={
                     opt.codename
@@ -505,6 +508,7 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
         ) : (
           // No OS data — single confirmation button (e.g., OnePlus, watches without OS lookup).
           <PickerButton
+            icon={CheckCircle2}
             onClick={() => handlePickLatest(null)}
             label={t('updates.result.osNeedsUpdate.didUpdateButton')}
           />
@@ -524,14 +528,15 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
 }
 
 /**
- * Outline-style action button for the OS picker / needs-update flow. Two tones:
+ * Outline-style action button for the OS picker / needs-update flow. All buttons
+ * share the same primary outline; OS version buttons differentiate "older" from
+ * "up to date" via icon, not colour, so the button row reads as a flat set of
+ * choices rather than an implied recommendation.
  *
- *   `primary` (default) — affirmative paths ("I'm on the latest", "Done, I've updated").
- *   `destructive` — out-of-date paths ("Older than X"). Outline reads as a warning
- *      cue, fills red on hover so the click feels like an explicit "yes, that's me"
- *      acknowledgement.
+ * `tone="destructive"` is still available for non-version buttons that need a
+ * stronger visual cue (kept for future use; not currently wired in).
  */
-function PickerButton({ onClick, label, tone = 'primary' }) {
+function PickerButton({ onClick, label, tone = 'primary', icon: IconProp }) {
   const toneClasses = tone === 'destructive'
     ? 'border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground focus-visible:ring-destructive/40'
     : 'border-primary text-primary hover:bg-primary hover:text-primary-foreground focus-visible:ring-primary/40';
@@ -540,12 +545,13 @@ function PickerButton({ onClick, label, tone = 'primary' }) {
       type="button"
       onClick={onClick}
       className={cn(
-        'inline-flex cursor-pointer items-center justify-center rounded-md border-2 px-4 py-2 text-sm font-medium transition-colors',
+        'inline-flex cursor-pointer items-center justify-center gap-2 rounded-md border-2 px-4 py-2 text-sm font-medium transition-colors',
         'focus-visible:outline-hidden focus-visible:ring-2',
         toneClasses
       )}
     >
-      {label}
+      {IconProp ? <IconProp className="h-4 w-4 shrink-0" aria-hidden="true" /> : null}
+      <span>{label}</span>
     </button>
   );
 }
@@ -729,10 +735,14 @@ function OsNeedsUpdateBox({
           ) : null}
 
           <div className="flex flex-wrap gap-2 pt-2">
-            <PickerButton onClick={onDidUpdate} label={t('updates.result.osNeedsUpdate.didUpdateButton')} />
+            <PickerButton
+              icon={CheckCircle2}
+              onClick={onDidUpdate}
+              label={t('updates.result.osNeedsUpdate.didUpdateButton')}
+            />
             {noUpdatesLabel && onNoUpdatesAvailable ? (
               <PickerButton
-                tone="destructive"
+                icon={History}
                 onClick={onNoUpdatesAvailable}
                 label={noUpdatesLabel}
               />
