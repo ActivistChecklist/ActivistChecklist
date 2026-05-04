@@ -180,6 +180,7 @@ function L3({ platform, subCategory, onClickPlatform, onClear }) {
     : '';
   const Icon = BRAND_ICON[subCategory?.family];
   const isWindows = platform === 'windows';
+  const isAndroid = platform === 'android';
 
   // "How to find this" hint is keyed by sub-category labelKey when we have copy for it.
   // We use t.rich so messages can include <code>winver</code> for monospace tokens.
@@ -204,7 +205,9 @@ function L3({ platform, subCategory, onClickPlatform, onClear }) {
 
   const hintLabel = isWindows
     ? t('updates.findYourModel.labelWindows')
-    : t('updates.findYourModel.label');
+    : isAndroid
+      ? t('updates.findYourModel.labelAndroid')
+      : t('updates.findYourModel.label');
 
   return (
     <div

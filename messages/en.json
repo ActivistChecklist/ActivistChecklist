@@ -390,6 +390,7 @@
       "motorola": "Motorola",
       "oneplus": "OnePlus",
       "nokia": "Nokia",
+      "android": "Android",
       "androidOs": "Android (OS only)",
       "windows": "Windows"
     },
@@ -400,6 +401,7 @@
     "findYourModel": {
       "label": "How to find your device model:",
       "labelWindows": "How to check your Windows version:",
+      "labelAndroid": "How to check your Android version:",
       "iphone": "Settings → General → About → Model Name",
       "ipad": "Settings → General → About → Model Name",
       "appleWatch": "Watch app on iPhone → My Watch → General → About → Model",
@@ -409,6 +411,7 @@
       "motorola": "Settings → About phone → Model number",
       "oneplus": "Settings → About device → Model number",
       "nokia": "Settings → About phone → Model",
+      "android": "Settings → About phone → Android version",
       "androidOs": "Settings → About phone → Android version",
       "windows": "Press Windows key + R, type <code>winver</code>, then Enter",
       "windowsCaveat": "Windows laptop manufacturers don't announce when they stop offering security updates, so checking the laptop model won't tell you. Check your Windows version instead. That's what determines whether you're still receiving updates."
