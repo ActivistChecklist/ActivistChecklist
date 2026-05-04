@@ -444,7 +444,7 @@
         "windows": "Press Windows key + R → type <code>winver</code> → Enter",
         "watchos": "Watch app on your iPhone → My Watch → General → About → Version"
       },
-      "deviceSupportedTitle": "{label} is still receiving security updates.",
+      "deviceSupportedTitle": "{label} will still receive security updates.",
       "deviceSupportedSubtitleUntil": "Updates expected through <b>{date}</b>.",
       "deviceSupportedSubtitleRecent": "End-of-support date not yet announced.",
       "deviceUnsupportedTitle": "{label} is no longer receiving security updates.",
@@ -456,7 +456,7 @@
       "manufacturerFallback": "The manufacturer",
       "manufacturerFallbackLower": "the manufacturer",
       "ageYearsAgo": "{years, plural, =0 {this year} =1 {1 year ago} other {# years ago}}",
-      "deviceUncertainTitle": "We can't confirm whether {label} is still receiving updates.",
+      "deviceUncertainTitle": "We can't confirm whether {label} will still receive updates.",
       "deviceUncertainSubtitle": "Released {age}. {manufacturer} hasn't published an end-of-support date, and devices this old may or may not still be receiving updates.",
       "deviceUncertainCheck": "Check the manufacturer's support page: <link></link>.",
       "manufacturerSupport": {
@@ -485,9 +485,9 @@
           "url": "https://www.nokia.com/phones/en_int/security-updates"
         }
       },
-      "osConfirmedShort": "{label} is still receiving security updates.",
-      "osConfirmedShortYears": "{label} is still receiving security updates <nowrap>for <mark>{years, plural, one {1 more year} other {# more years}}</mark></nowrap>.",
-      "osConfirmedShortMonths": "{label} is still receiving security updates <nowrap>for <mark>{months, plural, one {1 more month} other {# more months}}</mark></nowrap>.",
+      "osConfirmedShort": "{label} will still receive security updates.",
+      "osConfirmedShortYears": "{label} will still receive security updates <nowrap>for <mark>{years, plural, one {1 more year} other {# more years}}</mark></nowrap>.",
+      "osConfirmedShortMonths": "{label} will still receive security updates <nowrap>for <mark>{months, plural, one {1 more month} other {# more months}}</mark></nowrap>.",
       "osConfirmedSubtitleUntil": "Updates expected through <b>{date}</b>.",
       "osEolSoon": {
         "titleMonths": "{label} will lose security <nowrap>updates <mark>in about {months, plural, =1 {1 month} other {# months}}</mark></nowrap>.",
@@ -576,11 +576,11 @@
         "watch": "Start planning your next watch.",
         "generic": "Start planning your next device."
       },
-      "deviceConfirmedShort": "{label} is still receiving security updates.",
-      "deviceConfirmedShortYears": "{label} is still receiving security updates <nowrap>for <mark>{years, plural, one {1 more year} other {# more years}}</mark></nowrap>.",
-      "deviceConfirmedShortMonths": "{label} is still receiving security updates <nowrap>for <mark>{months, plural, one {1 more month} other {# more months}}</mark></nowrap>.",
-      "deviceConfirmedShortApproxYears": "{label} is still receiving security updates <nowrap>for <mark>about {years, plural, one {1 more year} other {# more years}}</mark></nowrap>.",
-      "deviceConfirmedShortApproxMonths": "{label} is still receiving security updates <nowrap>for <mark>about {months, plural, one {1 more month} other {# more months}}</mark></nowrap>.",
+      "deviceConfirmedShort": "{label} will still receive security updates.",
+      "deviceConfirmedShortYears": "{label} will still receive security updates <nowrap>for <mark>{years, plural, one {1 more year} other {# more years}}</mark></nowrap>.",
+      "deviceConfirmedShortMonths": "{label} will still receive security updates <nowrap>for <mark>{months, plural, one {1 more month} other {# more months}}</mark></nowrap>.",
+      "deviceConfirmedShortApproxYears": "{label} will still receive security updates <nowrap>for <mark>about {years, plural, one {1 more year} other {# more years}}</mark></nowrap>.",
+      "deviceConfirmedShortApproxMonths": "{label} will still receive security updates <nowrap>for <mark>about {months, plural, one {1 more month} other {# more months}}</mark></nowrap>.",
       "appleEstimate": {
         "intro": "Apple doesn't publish end-of-support dates, but {deviceLabel} usually receive {min} to {max} years of security updates from launch."
       },
@@ -626,7 +626,7 @@
       "deviceUnsupportedSubtitleStuckOnOs": "You can't get newer security updates on this device, so it has stopped receiving the patches that protect your data.",
       "finalSuccess": {
         "heading": "You're up to date.",
-        "deviceCheck": "{label} is still receiving security updates.",
+        "deviceCheck": "{label} will still receive security updates.",
         "deviceCheckUntil": "{label} is receiving security updates through {date}.",
         "osCheck": "{os} is on the latest version ({version}).",
         "osCheckCodename": "{os} {version} ({codename}) is the latest version.",
