@@ -153,7 +153,7 @@ function ResultActions({ product, onReset }) {
   const t = useTranslations();
   return (
     <div className="mt-5 flex flex-wrap items-center gap-2">
-      <CrossResetButton product={product} onReset={onReset} />
+      <ResultActions product={product} onReset={onReset} />
       <Link
         href={ESSENTIALS_HREF}
         className={cn(
@@ -551,7 +551,7 @@ function FinalSuccessBox({ snapshot, product, release, displayLabel, pickedOptio
           <span>{osLine}</span>
         </li>
       </ul>
-      <CrossResetButton product={product} onReset={onReset} />
+      <ResultActions product={product} onReset={onReset} />
     </ResultBox>
   );
 }
@@ -578,7 +578,8 @@ function OsNeedsUpdateBox({ snapshot, product, onDidUpdate }) {
               <p className="text-sm font-semibold text-foreground/80">
                 {t('updates.result.osNeedsUpdate.howToHeading')}
               </p>
-              <PromMenuPath osId={osId} />
+              {/* OsNeedsUpdateBox is asking the user to UPDATE → settingsPath (final action) */}
+              <PromMenuPath>{osUpdatePath(t, osId)}</PromMenuPath>
             </div>
           ) : null}
 
@@ -748,8 +749,7 @@ function DeviceUncertain({ snapshot, product, release, classification, onReset }
           </p>
         ) : null}
         <ThreatModelBlock soft />
-        <CtaList items={[{ href: ESSENTIALS_HREF, label: t('updates.result.ctaEssentials') }]} />
-        <CrossResetButton product={product} onReset={onReset} />
+        <ResultActions product={product} onReset={onReset} />
       </ResultBox>
     </SlideInBox>
   );
@@ -782,7 +782,7 @@ function DeviceEolSoon({ snapshot, product, release, classification, onReset }) 
         <PrescriptionLine formFactor={product.formFactor} urgency="plan" />
         <ThreatModelBlock />
         <BuyingGuidance formFactor={product.formFactor} />
-        <CrossResetButton product={product} onReset={onReset} />
+        <ResultActions product={product} onReset={onReset} />
       </ResultBox>
     </SlideInBox>
   );
@@ -818,13 +818,13 @@ function DeviceEol({ product, release, classification, onReset }) {
         <PrescriptionLine formFactor={product.formFactor} urgency="replace" />
         <ThreatModelBlock />
         <BuyingGuidance formFactor={product.formFactor} />
-        <CrossResetButton product={product} onReset={onReset} />
+        <ResultActions product={product} onReset={onReset} />
       </ResultBox>
     </SlideInBox>
   );
 }
 
-function OsSupported({ product, release }) {
+function OsSupported({ product, release, onReset }) {
   const t = useTranslations();
   const displayLabel = buildDisplayLabel(product, release);
 
@@ -847,7 +847,7 @@ function OsSupported({ product, release }) {
         {release.isEoas && !release.isEol ? (
           <p className="text-sm text-muted-foreground">{t('updates.result.osEoasNote')}</p>
         ) : null}
-        <CtaList items={[{ href: ESSENTIALS_HREF, label: t('updates.result.ctaEssentials') }]} />
+        <ResultActions product={product} onReset={onReset} />
       </ResultBox>
     </div>
   );
@@ -878,15 +878,17 @@ function OsEol({ product, release, onReset }) {
         }
       >
         {advice ? (
-          <p className="text-xl font-bold leading-snug text-foreground sm:text-2xl">
-            {advice}
-          </p>
+          <div className="space-y-2">
+            <p className="text-xl font-bold leading-snug text-foreground sm:text-2xl">
+              {advice}
+            </p>
+            <p className="text-sm text-foreground/90">
+              {t('updates.result.osCheckDeviceHint')}
+            </p>
+          </div>
         ) : null}
         <ThreatModelBlock />
-        <CtaList
-          items={[{ href: ESSENTIALS_HREF, label: t('updates.result.ctaEssentials') }]}
-        />
-        <CrossResetButton product={product} onReset={onReset} />
+        <ResultActions product={product} onReset={onReset} />
       </ResultBox>
     </SlideInBox>
   );

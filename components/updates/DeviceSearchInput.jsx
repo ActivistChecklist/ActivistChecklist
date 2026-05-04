@@ -27,8 +27,10 @@ function CategoryPill({ formFactor, kind }) {
 
 function NoMatchesContent() {
   const t = useTranslations();
+  // Wide breathing room so this reads as an empty-state message centered inside the
+  // dropdown shell, not as a tight panel pushed up against the search input edges.
   return (
-    <div className="space-y-2 px-4 py-5 text-sm">
+    <div className="space-y-2 px-6 py-10 text-center text-sm sm:px-8 sm:py-12">
       <p className="font-medium text-foreground">{t('updates.noMatches')}</p>
       <p className="text-muted-foreground">
         {t.rich('updates.noMatchesHelp', {

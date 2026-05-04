@@ -407,7 +407,7 @@
     },
     "otherInfo": {
       "title": "Other devices",
-      "body": "We currently track Apple, Google, Samsung, Motorola, OnePlus, and Nokia devices, plus iOS, iPadOS, macOS, Android, and Windows. For anything else, <link>Search Brave</link> for \"is [DEVICE MODEL] still receiving security updates.\""
+      "body": "We currently track Apple, Google, Samsung, Motorola, OnePlus, and Nokia devices, plus iOS, iPadOS, macOS, Android, and Windows. For anything else, <link>search online</link> for \"is [DEVICE MODEL] still receiving security updates.\""
     },
     "result": {
       "checkAnother": "Check another device",
