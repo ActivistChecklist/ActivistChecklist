@@ -9,7 +9,6 @@ import {
   Check,
   Clock,
   History,
-  MoveDown,
   ShieldAlert,
   ShoppingCart,
 } from 'lucide-react';
@@ -168,17 +167,27 @@ const CONNECTOR_TONE_COLOR = {
 
 function BoxConnector({ tone = 'input' }) {
   const colorClass = CONNECTOR_TONE_COLOR[tone] ?? CONNECTOR_TONE_COLOR.input;
-  // lucide's MoveDown is a stem-and-arrowhead in one stroke (no overlapping
-  // sub-paths), so /50 alpha doesn't darken at the join. strokeWidth bumped to
-  // 2.5 to read at the small icon size; h-7 gives the arrow visible presence
-  // without overwhelming the narrow column.
+  // Custom stem-and-arrowhead SVG: longer stem and deeper V than any lucide
+  // icon ships, sized for this exact connector role. The slight visual overlap
+  // at the join (stem ends y=22, V wing tips at y=18) is preferred to the
+  // small-but-visibly-floaty lucide MoveDown swap we tried earlier.
   return (
     <div className="flex justify-center" aria-hidden="true">
-      <MoveDown
-        className={cn('h-7 w-7', colorClass)}
-        strokeWidth={2.5}
+      <svg
+        width="20"
+        height="28"
+        viewBox="0 0 20 28"
+        fill="none"
+        className={colorClass}
+        stroke="currentColor"
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
         aria-hidden="true"
-      />
+      >
+        <line x1="10" y1="0" x2="10" y2="22" />
+        <polyline points="4,18 10,26 16,18" />
+      </svg>
     </div>
   );
 }
