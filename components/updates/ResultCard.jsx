@@ -226,10 +226,13 @@ const TONE_ICON_COLOR = {
 
 function ResultBox({ tone, icon: IconProp, iconSize = 'lg', title, subtitle, children }) {
   // 'lg' (h-12) carries the result's emotional weight for top-level variants
-  // (DeviceEol, OsSupported, etc.). 'sm' (h-6) is used by FinalSuccessBox so
-  // its success checkmark matches the size of the DeviceConfirmedSummary
-  // checkmark above it within the DeviceSupported flow.
-  const iconSizeClass = iconSize === 'sm' ? 'h-6 w-6 mt-1' : 'h-12 w-12';
+  // (DeviceEol, OsSupported, etc.). 'md' (h-10) is used by FinalSuccessBox —
+  // smaller than 'lg' so the icon doesn't dwarf the smaller checkmark on the
+  // DeviceConfirmedSummary panel above it, but still scaled to the box's
+  // text-2xl/3xl heading. mt-1 keeps the icon's TOP edge anchored at the
+  // same position as the smaller h-6 variant would have used, so the icon
+  // grows downward from a consistent flow line through the box stack.
+  const iconSizeClass = iconSize === 'md' ? 'h-10 w-10 mt-1' : 'h-12 w-12';
   return (
     <div className={cn('rounded-lg border-2 p-6', TONE_RING[tone])}>
       <div className="flex items-start gap-4">
@@ -875,7 +878,7 @@ function FinalSuccessBox({ snapshot, product, release, displayLabel, pickedOptio
     <ResultBox
       tone="green"
       icon={CheckCircle2}
-      iconSize="sm"
+      iconSize="md"
       title={t('updates.result.finalSuccess.heading')}
     >
       <ul className="mt-2 space-y-2">
