@@ -188,17 +188,26 @@ export default function UpdatesPage() {
         <FamilyCategorySelector value={category} onChange={handleCategoryChange} />
       )}
 
-      {/* DeviceInfoCard sits in the same slot as the search input so picking a device
-          feels like the input itself transforming into a "selected" pill — no slide-in,
-          no scroll. When the user clears or clicks the card, the input takes its place
-          back. */}
+      {/* When a device is selected, group the device card and result block in a
+          single space-y-0 stack so the connector arrows inside ResultCard can sit
+          flush against the device card above. The page-level space-y-6 still
+          separates this group from PageHero / FamilyCategorySelector. */}
       {found ? (
-        <DeviceInfoCard
-          product={found.product}
-          release={found.release}
-          onReset={handleReset}
-          onEdit={handleEdit}
-        />
+        <div className="space-y-0">
+          <DeviceInfoCard
+            product={found.product}
+            release={found.release}
+            onReset={handleReset}
+            onEdit={handleEdit}
+          />
+          <ResultCard
+            key={`${found.product.id}/${found.release.id}`}
+            snapshot={snapshot}
+            product={found.product}
+            release={found.release}
+            onReset={handleReset}
+          />
+        </div>
       ) : (
         <DeviceSearchInput
           snapshot={snapshot}
@@ -211,18 +220,6 @@ export default function UpdatesPage() {
           autoFocus
         />
       )}
-
-      {found ? (
-        // No outer animation wrapper — ResultCard staggers its own boxes so the device
-        // card stays put and each result box slides up on its own beat.
-        <ResultCard
-          key={`${found.product.id}/${found.release.id}`}
-          snapshot={snapshot}
-          product={found.product}
-          release={found.release}
-          onReset={handleReset}
-        />
-      ) : null}
 
       {isSnapshotStale(snapshot) ? (
         <div className="rounded-md border border-warning/30 bg-warning/5 p-3 text-xs text-foreground/90">

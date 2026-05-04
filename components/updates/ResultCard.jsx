@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import {
-  ArrowDown,
   CheckCircle2,
   XCircle,
   AlertTriangle,
@@ -146,52 +145,73 @@ function DelayedSlideInBox({ delayMs, connectorTone = 'input', children }) {
 }
 
 /**
- * Down-arrow connector that visually links one result box to the next. The colour
- * matches the border tone of the box ABOVE it (so a green-bordered confirmed-summary
- * connects to the picker via a green arrow, etc). Stroke is a couple of weights heavier
- * than the box border so the arrow reads as a continuation, not a hairline.
+ * Stem-and-arrowhead connector that physically bridges one result box and the next.
+ * Drawn as a small custom SVG so the stem and arrowhead are sized for this exact
+ * use (a generic 24×24 lucide icon read as a floating decoration rather than a
+ * connector). Colour matches the border tone of the box ABOVE.
  *
- * Tones map to the same opacity used on the box borders (`/30`) except 'input' which
- * matches the device card's full-opacity neutral border.
+ * Tone opacity is /50 to mirror the box border opacity, with `input` mapping to
+ * the neutral input colour at full opacity. Used inside a sibling stack with no
+ * outer space-y so the arrow IS the visual gap between boxes.
  */
 const CONNECTOR_TONE_COLOR = {
   input: 'text-input',
-  primary: 'text-primary/30',
-  success: 'text-success/30',
-  warning: 'text-warning/30',
-  destructive: 'text-destructive/30',
+  primary: 'text-primary/50',
+  success: 'text-success/50',
+  warning: 'text-warning/50',
+  destructive: 'text-destructive/50',
 };
 
 function BoxConnector({ tone = 'input' }) {
+  const colorClass = CONNECTOR_TONE_COLOR[tone] ?? CONNECTOR_TONE_COLOR.input;
+  // The connector IS the gap between boxes (no extra margin needed), so callers
+  // place it directly between siblings with no surrounding space-y. The stem
+  // sits flush against the box above; the arrowhead at the bottom sits flush
+  // against the box below. SVG dimensions chosen so the visible arrow is
+  // generous without overwhelming the narrow result-card column.
   return (
     <div className="flex justify-center" aria-hidden="true">
-      <ArrowDown
-        className={cn('h-7 w-7', CONNECTOR_TONE_COLOR[tone] ?? CONNECTOR_TONE_COLOR.input)}
-        strokeWidth={3}
-      />
+      <svg
+        width="20"
+        height="28"
+        viewBox="0 0 20 28"
+        fill="none"
+        className={colorClass}
+        stroke="currentColor"
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <line x1="10" y1="0" x2="10" y2="22" />
+        <polyline points="4,18 10,26 16,18" />
+      </svg>
     </div>
   );
 }
 
 /**
  * Internal layout for a result block that sits below another box: a tone-coloured
- * down-arrow connector + the actual box content, stacked with gap-3. Use inside a
- * SlideInBox so connector and content slide in together.
+ * connector + the actual box content. Uses no internal spacing because the
+ * connector already manages its own bridging via negative margins.
  */
 function ConnectedBox({ tone, children }) {
   return (
-    <div className="space-y-3">
+    <>
       <BoxConnector tone={tone} />
       {children}
-    </div>
+    </>
   );
 }
 
+// /50 opacity gives the tone borders the same visual weight as the device card's
+// full-opacity neutral border-input, so the stack of boxes reads as a uniform
+// stroke weight rather than the headline box looking dimmer than the others.
 const TONE_RING = {
-  green: 'border-success/30 bg-success/5',
-  red: 'border-destructive/30 bg-destructive/5',
-  amber: 'border-warning/30 bg-warning/5',
-  primary: 'border-primary/30 bg-primary/5',
+  green: 'border-success/50 bg-success/5',
+  red: 'border-destructive/50 bg-destructive/5',
+  amber: 'border-warning/50 bg-warning/5',
+  primary: 'border-primary/50 bg-primary/5',
 };
 const TONE_ICON_COLOR = {
   green: 'text-success',
@@ -399,7 +419,7 @@ function DeviceConfirmedSummary({ product, release, displayLabel }) {
     : null;
 
   return (
-    <div className="flex items-start gap-3 rounded-md border border-success/30 bg-success/5 p-4">
+    <div className="flex items-start gap-3 rounded-lg border-2 border-success/50 bg-success/5 p-4">
       <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0 text-success" aria-hidden="true" />
       <div className="min-w-0 flex-1 space-y-1">
         <p className="text-base font-medium text-foreground sm:text-lg">
@@ -481,7 +501,7 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
     : t('updates.result.osCheckStep.headingGeneric');
 
   return (
-    <div className="rounded-lg border-2 border-primary/30 bg-primary/5 p-6">
+    <div className="rounded-lg border-2 border-primary/50 bg-primary/5 p-6">
       <h3 className="text-xl font-semibold leading-tight text-foreground sm:text-2xl">
         {heading}
       </h3>
@@ -772,7 +792,7 @@ function OsNeedsUpdateBox({
   })();
 
   return (
-    <div className="rounded-lg border-2 border-warning/30 bg-warning/5 p-6">
+    <div className="rounded-lg border-2 border-warning/50 bg-warning/5 p-6">
       <div className="flex items-start gap-4">
         <AlertTriangle className="h-12 w-12 shrink-0 text-warning" aria-hidden="true" />
         <div className="min-w-0 flex-1 space-y-3">
@@ -856,7 +876,10 @@ function DeviceSupported({ snapshot, product, release, onReset }) {
       : 'success';
 
   return (
-    <div className="space-y-6">
+    // No outer space-y — the BoxConnector inside each ConnectedBox IS the gap
+    // between siblings. Keeping anything > 0 here would push the boxes apart
+    // and break the "arrow touches both" look.
+    <div className="space-y-0">
       {showFirst ? (
         <SlideInBox>
           <ConnectedBox tone="input">
@@ -945,7 +968,7 @@ function DeviceMaxOsWarning({ snapshot, product, release }) {
 
   if (warning.kind === 'older-os-eol') {
     return (
-      <div className="rounded-md border border-warning/40 bg-warning/5 p-4">
+      <div className="rounded-md border-2 border-warning/50 bg-warning/5 p-4">
         <p className="text-sm font-medium text-foreground">
           {t('updates.result.deviceMaxOsWarningTitle')}
         </p>
@@ -976,7 +999,7 @@ function DeviceMaxOsWarning({ snapshot, product, release }) {
       });
 
   return (
-    <div className="rounded-md border border-warning/40 bg-warning/5 p-4">
+    <div className="rounded-md border-2 border-warning/50 bg-warning/5 p-4">
       <p className="text-sm font-medium text-foreground">
         {t('updates.result.deviceMaxOsWarningTitle')}
       </p>
