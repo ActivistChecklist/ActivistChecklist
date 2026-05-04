@@ -457,16 +457,72 @@ foreach ($prefix as $part) {
   }
 }
 
+// Resolve log file path BEFORE running the deploy so the script can stream its
+// output directly there. This makes `tail -f` work during a build (instead of
+// only seeing output after the full script exits) and ensures partial output
+// is captured even when nginx 504s on us before PHP can return.
+$logRaw = $config['log_file'] ?? null;
+$logFallback = $repoRoot . DIRECTORY_SEPARATOR . '.deploy-webhook.log';
+$logFile = null;
+$loggingDisabled = false;
+$tempLogPath = null;
+if ($logRaw === false) {
+  // Logging explicitly disabled; still need a sink so we can include partial
+  // output in the failure response. Use a temp file we'll unlink at the end.
+  $loggingDisabled = true;
+  $tmp = @tempnam(sys_get_temp_dir(), 'deploy-webhook-');
+  if (is_string($tmp) && $tmp !== '') {
+    $logFile = $tmp;
+    $tempLogPath = $tmp;
+  }
+} elseif (is_string($logRaw) && $logRaw !== '') {
+  $logFile = $logRaw;
+} elseif ($logRaw === null || $logRaw === '') {
+  $logFile = $logFallback;
+} else {
+  error_log('deploy-webhook: log_file must be false, a non-empty string, or omitted');
+  http_response_code(500);
+  exit('Configuration error');
+}
+
+// Track this run's slice of the log so we can include only its output in the
+// failure response (not whatever was appended by previous runs).
+$runStartOffset = is_string($logFile) && file_exists($logFile)
+  ? (int) @filesize($logFile)
+  : 0;
+$delivery = $_SERVER['HTTP_X_GITHUB_DELIVERY'] ?? '';
+
+if (is_string($logFile)) {
+  $startLine = sprintf(
+    "\n[%s] START delivery=%s\n",
+    gmdate('c'),
+    is_string($delivery) ? $delivery : ''
+  );
+  if (@file_put_contents($logFile, $startLine, FILE_APPEND | LOCK_EX) === false) {
+    error_log('deploy-webhook: could not write to log_file; falling back to ' . $logFallback);
+    if ($logFile !== $logFallback) {
+      $logFile = $logFallback;
+      $runStartOffset = (int) @filesize($logFile);
+      @file_put_contents($logFile, $startLine, FILE_APPEND | LOCK_EX);
+    }
+  }
+}
+
 $bash = ['/bin/bash', '--noprofile', '--norc', $realScript];
 $resolvedCmd = array_merge($prefix, $bash);
 
+// Stream stdout+stderr directly into the log file via OS-level descriptors so
+// output is visible as the build runs (not buffered in PHP until proc_close).
+// Combining the two streams into one file gives chronological ordering, which
+// is what you want for debugging.
 $descriptorspec = [
   0 => ['pipe', 'r'],
-  1 => ['pipe', 'w'],
-  2 => ['pipe', 'w'],
+  1 => is_string($logFile) ? ['file', $logFile, 'a'] : ['pipe', 'w'],
+  2 => is_string($logFile) ? ['file', $logFile, 'a'] : ['pipe', 'w'],
 ];
 
 $cwd = $realParent;
+$startTime = microtime(true);
 $process = proc_open($resolvedCmd, $descriptorspec, $pipes, $cwd, $env);
 if (!is_resource($process)) {
   error_log('deploy-webhook: proc_open failed');
@@ -474,70 +530,64 @@ if (!is_resource($process)) {
   exit('Deploy failed');
 }
 
-fclose($pipes[0]);
-$stdout = stream_get_contents($pipes[1]);
-$stderr = stream_get_contents($pipes[2]);
-fclose($pipes[1]);
-fclose($pipes[2]);
-$code = proc_close($process);
-
-$logRaw = $config['log_file'] ?? null;
-if ($logRaw === false) {
-  $logFile = null;
-} elseif (is_string($logRaw) && $logRaw !== '') {
-  $logFile = $logRaw;
-} elseif ($logRaw === null || $logRaw === '') {
-  $logFile = $repoRoot . DIRECTORY_SEPARATOR . '.deploy-webhook.log';
-} else {
-  error_log('deploy-webhook: log_file must be false, a non-empty string, or omitted');
-  http_response_code(500);
-  exit('Configuration error');
+if (isset($pipes[0])) fclose($pipes[0]);
+// Only drain pipes if we couldn't open the log file (rare fallback).
+$pipeStdout = '';
+$pipeStderr = '';
+if (!is_string($logFile) && isset($pipes[1])) {
+  $pipeStdout = (string) stream_get_contents($pipes[1]);
+  fclose($pipes[1]);
 }
+if (!is_string($logFile) && isset($pipes[2])) {
+  $pipeStderr = (string) stream_get_contents($pipes[2]);
+  fclose($pipes[2]);
+}
+$code = proc_close($process);
+$durationMs = (int) round((microtime(true) - $startTime) * 1000);
 
-$line = sprintf(
-  "[%s] exit=%d delivery=%s\n--- stdout ---\n%s\n--- stderr ---\n%s\n",
-  gmdate('c'),
-  $code,
-  $_SERVER['HTTP_X_GITHUB_DELIVERY'] ?? '',
-  is_string($stdout) ? $stdout : '',
-  is_string($stderr) ? $stderr : ''
-);
-
-// Try the configured log path first, then a known-writable repo-root fallback so we
-// never silently lose the deploy output. If user explicitly set log_file => false
-// ($logFile === null), respect that and skip logging entirely.
-$logFallback = $repoRoot . DIRECTORY_SEPARATOR . '.deploy-webhook.log';
-$logged = false;
-$loggingDisabled = ($logFile === null);
-if (!$loggingDisabled) {
-  if (@file_put_contents($logFile, $line, FILE_APPEND | LOCK_EX) === false) {
-    error_log('deploy-webhook: could not write log_file (configured); falling back');
-    if ($logFile !== $logFallback
-        && @file_put_contents($logFallback, $line, FILE_APPEND | LOCK_EX) !== false) {
-      $logged = true;
-    } else {
-      error_log('deploy-webhook: could not write fallback log at repo root either');
-    }
-  } else {
-    $logged = true;
-  }
+if (is_string($logFile)) {
+  $endLine = sprintf(
+    "[%s] END exit=%d duration=%dms\n",
+    gmdate('c'),
+    $code,
+    $durationMs
+  );
+  @file_put_contents($logFile, $endLine, FILE_APPEND | LOCK_EX);
 }
 
 if ($code !== 0) {
   error_log('deploy-webhook: deploy script exited ' . $code);
   http_response_code(500);
   header('Content-Type: text/plain; charset=UTF-8');
-  $delivery = $_SERVER['HTTP_X_GITHUB_DELIVERY'] ?? '';
   $deliveryLine = is_string($delivery) && $delivery !== '' ? $delivery : '(unknown)';
   $logStatus = $loggingDisabled
-    ? 'disabled'
-    : ($logged ? 'written' : 'WRITE FAILED - check PHP error log');
+    ? 'disabled (output captured for response only)'
+    : (is_string($logFile) ? "written to $logFile" : 'WRITE FAILED - check PHP error log');
+
+  // Read just this run's slice of the log file for the response.
+  $tailBytes = 50000;
+  $combined = '';
+  if (is_string($logFile) && file_exists($logFile)) {
+    $endOffset = (int) @filesize($logFile);
+    $sliceLen = max(0, $endOffset - $runStartOffset);
+    $readFrom = $sliceLen > $tailBytes ? $endOffset - $tailBytes : $runStartOffset;
+    $fh = @fopen($logFile, 'rb');
+    if (is_resource($fh)) {
+      @fseek($fh, $readFrom);
+      $combined = (string) stream_get_contents($fh);
+      @fclose($fh);
+    }
+  } else {
+    $combined = $pipeStdout . "\n" . $pipeStderr;
+    if (strlen($combined) > $tailBytes) {
+      $combined = substr($combined, -$tailBytes);
+    }
+  }
 
   // Sanitize before embedding in the HTTP response (which surfaces in the GitHub
   // Actions log and could be public). Collect every plausible username and home
   // directory from PHP-side detection AND from the script's own output (in case
   // PHP-FPM runs as a different user than the deploy command, or POSIX is disabled).
-  $combinedOutput = (is_string($stderr) ? $stderr : '') . "\n" . (is_string($stdout) ? $stdout : '');
   $homesForSan = [];
   $usersForSan = [];
   if (isset($env['HOME']) && is_string($env['HOME']) && $env['HOME'] !== '') {
@@ -553,10 +603,10 @@ if ($code !== 0) {
       if (isset($info['dir']) && is_string($info['dir'])) $homesForSan[] = $info['dir'];
     }
   }
-  if (preg_match_all('/\b(?:user|whoami|USER|LOGNAME)=(\S+)/', $combinedOutput, $matches)) {
+  if (preg_match_all('/\b(?:user|whoami|USER|LOGNAME)=(\S+)/', $combined, $matches)) {
     foreach ($matches[1] as $u) $usersForSan[] = $u;
   }
-  if (preg_match_all('/\bHOME=(\S+)/', $combinedOutput, $matches)) {
+  if (preg_match_all('/\bHOME=(\S+)/', $combined, $matches)) {
     foreach ($matches[1] as $h) {
       // Skip already-sanitized values from prior log lines if any.
       if ($h !== '~' && $h !== '') $homesForSan[] = $h;
@@ -588,27 +638,28 @@ if ($code !== 0) {
     return $s;
   };
 
-  $tailBytes = 50000;
-  $stderrTail = is_string($stderr) ? $sanitize((string) substr($stderr, -$tailBytes)) : '';
-  $stdoutTail = is_string($stdout) ? $sanitize((string) substr($stdout, -$tailBytes)) : '';
-  $stderrTail = $stderrTail === '' ? '(empty)' : $stderrTail;
-  $stdoutTail = $stdoutTail === '' ? '(empty)' : $stdoutTail;
+  $combinedTail = $combined === '' ? '(empty)' : $sanitize($combined);
 
   $body = <<<TXT
 Deploy failed (exit code {$code}).
 
 GitHub delivery: {$deliveryLine}
 Server log: {$logStatus}
+Duration: {$durationMs}ms
 
 Output below: \$HOME paths collapsed to ~, secrets redacted.
 
---- script stderr (last {$tailBytes} bytes) ---
-{$stderrTail}
-
---- script stdout (last {$tailBytes} bytes) ---
-{$stdoutTail}
+--- script output (last {$tailBytes} bytes, stdout+stderr combined) ---
+{$combinedTail}
 TXT;
+  if (is_string($tempLogPath)) {
+    @unlink($tempLogPath);
+  }
   exit($body);
+}
+
+if (is_string($tempLogPath)) {
+  @unlink($tempLogPath);
 }
 
 http_response_code(200);
