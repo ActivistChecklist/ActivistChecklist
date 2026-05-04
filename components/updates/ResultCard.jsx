@@ -17,7 +17,6 @@ import {
 import Link from '@/components/Link';
 import { cn } from '@/lib/utils';
 import {
-  FORM_FACTOR_UPDATE_YEARS,
   buildAppleSupportEstimate,
   classifyResult,
   buildLatestOsReminder,
@@ -25,6 +24,7 @@ import {
   buildOsCheckOptions,
   buildStuckOnOldOsClassification,
   latestPickerMajor,
+  updateYearsFor,
 } from '@/lib/updates/result-logic';
 import { osProductForDevice } from '@/lib/updates/snapshot';
 import { buildDisplayLabel } from '@/lib/updates/search';
@@ -304,11 +304,13 @@ function ThreatModelBlock({ soft = false }) {
 
 /**
  * Guidance shown alongside the EOL action: typical update windows + a nudge to
- * pre-check used purchases through this same tool.
+ * pre-check used purchases through this same tool. `family` lets the window
+ * pick up Apple-specific overrides (Apple phones/tablets get 7.5-8 years,
+ * tighter than the cross-vendor 5-7).
  */
-function BuyingGuidance({ formFactor }) {
+function BuyingGuidance({ family, formFactor }) {
   const t = useTranslations();
-  const spec = FORM_FACTOR_UPDATE_YEARS[formFactor];
+  const spec = updateYearsFor(family, formFactor);
   if (!spec) return null;
   return (
     <div className="rounded-md border border-border bg-background/60 p-3">
@@ -1062,7 +1064,7 @@ function DeviceEolSoon({ snapshot, product, release, classification, onReset }) 
       <ResultBox tone="amber" icon={Clock} title={title} subtitle={subtitle}>
         <PrescriptionLine formFactor={product.formFactor} urgency="plan" />
         <ThreatModelBlock />
-        <BuyingGuidance formFactor={product.formFactor} />
+        <BuyingGuidance family={product.family} formFactor={product.formFactor} />
         <ResultActions product={product} onReset={onReset} />
       </ResultBox>
     </DelayedSlideInBox>
@@ -1113,7 +1115,7 @@ function DeviceEolBox({ product, release, classification, onReset }) {
     >
       <PrescriptionLine formFactor={product.formFactor} urgency="replace" />
       <ThreatModelBlock />
-      <BuyingGuidance formFactor={product.formFactor} />
+      <BuyingGuidance family={product.family} formFactor={product.formFactor} />
       <ResultActions product={product} onReset={onReset} />
     </ResultBox>
   );

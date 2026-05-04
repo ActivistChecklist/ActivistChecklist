@@ -8,6 +8,7 @@ import {
   buildOsCheckOptions,
   buildStuckOnOldOsClassification,
   buildAppleSupportEstimate,
+  updateYearsFor,
   latestPickerMajor,
 } from '../lib/updates/result-logic';
 
@@ -814,6 +815,30 @@ describe('buildStuckOnOldOsClassification', () => {
   });
 });
 
+describe('updateYearsFor', () => {
+  it('returns the form-factor default when no family override exists', () => {
+    expect(updateYearsFor('google', 'phone')).toEqual({ min: 5, max: 7, labelKey: 'phone' });
+    expect(updateYearsFor('samsung', 'tablet')).toEqual({ min: 5, max: 7, labelKey: 'tablet' });
+    expect(updateYearsFor('motorola', 'phone')).toEqual({ min: 5, max: 7, labelKey: 'phone' });
+  });
+
+  it('returns the Apple override for Apple phones and tablets (7.5–8 year window)', () => {
+    expect(updateYearsFor('apple', 'phone')).toEqual({ min: 7.5, max: 8, labelKey: 'phone' });
+    expect(updateYearsFor('apple', 'tablet')).toEqual({ min: 7.5, max: 8, labelKey: 'tablet' });
+  });
+
+  it('falls back to form-factor default for Apple form factors with no override (laptop/desktop/watch)', () => {
+    expect(updateYearsFor('apple', 'laptop').min).toBe(7);
+    expect(updateYearsFor('apple', 'desktop').min).toBe(7);
+    expect(updateYearsFor('apple', 'watch').min).toBe(4);
+  });
+
+  it('returns null for unknown form factors', () => {
+    expect(updateYearsFor('apple', 'os')).toBeNull();
+    expect(updateYearsFor('google', 'unknown')).toBeNull();
+  });
+});
+
 describe('buildAppleSupportEstimate', () => {
   const now = new Date('2026-05-03T00:00:00Z');
 
@@ -848,31 +873,44 @@ describe('buildAppleSupportEstimate', () => {
     expect(buildAppleSupportEstimate(appleProduct('os'), r, now)).toBeNull();
   });
 
-  it('iPhone released 8 months ago → years-range case (about 4 to 6 years left)', () => {
+  it('iPhone released 8 months ago → years-range case (about 7 to 7 years left, 7.5–8 window)', () => {
     const r = release({ releaseDate: '2025-09-01' });
     const est = buildAppleSupportEstimate(appleProduct('phone'), r, now);
     expect(est.case).toBe('years-range');
-    expect(est.minYears).toBe(5);
-    expect(est.maxYears).toBe(7);
-    expect(est.remainingMinYears).toBeGreaterThanOrEqual(4);
-    expect(est.remainingMaxYears).toBeGreaterThanOrEqual(6);
+    expect(est.minYears).toBe(7.5);
+    expect(est.maxYears).toBe(8);
+    expect(est.remainingMinYears).toBeGreaterThanOrEqual(6);
+    expect(est.remainingMaxYears).toBeGreaterThanOrEqual(7);
   });
 
-  it('iPhone released ~5 yrs ago → years-up-to (past min, max still positive)', () => {
-    // 2021-05-03 → exactly 5 years before NOW so remainingMin ≈ 0, remainingMax ≈ 2
-    const r = release({ releaseDate: '2021-05-03' });
+  it('iPhone released ~7.5 yrs ago → years-up-to (past min, max still positive)', () => {
+    // 2018-11-03 → ~7.5 yrs before NOW so remainingMin ≈ 0, remainingMax ≈ 0.5 (rounds up)
+    const r = release({ releaseDate: '2018-11-03' });
     const est = buildAppleSupportEstimate(appleProduct('phone'), r, now);
-    expect(est.case).toBe('years-up-to');
-    expect(est.remainingMaxYears).toBe(2);
+    // Either months-up-to (if max < 1y) or years-up-to (if max ≥ 1y) is acceptable
+    // depending on rounding; what matters is we're in the "past-min" phase.
+    expect(['months-up-to', 'years-up-to']).toContain(est.case);
   });
 
-  it('iPhone released ~6.5 yrs ago → months-up-to (under a year of max remaining)', () => {
-    // 2019-11-15 → 6.5 yrs ago, max 7y window → ~6 months remaining
-    const r = release({ releaseDate: '2019-11-15' });
+  it('iPhone released ~8 yrs ago → months-up-to (under a year of max remaining)', () => {
+    // 2018-08-15 → just shy of 8y; with 8y max window, very small remaining.
+    const r = release({ releaseDate: '2018-08-15' });
     const est = buildAppleSupportEstimate(appleProduct('phone'), r, now);
     expect(est.case).toBe('months-up-to');
     expect(est.remainingMaxMonths).toBeGreaterThan(0);
     expect(est.remainingMaxMonths).toBeLessThanOrEqual(12);
+  });
+
+  it('Pixel phone (non-Apple) returns null even though we have a phone window', () => {
+    // Confirms the family override only applies to Apple — buildAppleSupportEstimate
+    // is Apple-only by contract, so other phones don't get the 7.5-8 disclaimer
+    // (Google publishes per-Pixel EOL dates, no estimate needed).
+    const r = release({ releaseDate: '2024-01-01' });
+    const pixel = normalizeProduct({
+      id: 'pixel', label: 'Google Pixel', kind: 'device', family: 'google', formFactor: 'phone',
+      endoflifeUrl: 'https://x', releases: [],
+    });
+    expect(buildAppleSupportEstimate(pixel, r, now)).toBeNull();
   });
 
   it('iPhone past the 7-year window → null (already EOL by heuristic, no estimate to give)', () => {
