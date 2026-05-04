@@ -9,6 +9,7 @@ import {
   Check,
   Clock,
   History,
+  Lock,
   ShieldAlert,
   ShoppingCart,
 } from 'lucide-react';
@@ -276,20 +277,23 @@ function ResultActions({ product, onReset }) {
 function EssentialsPanel() {
   const t = useTranslations();
   return (
-    <div className="rounded-lg border-2 border-muted-foreground/50 bg-background px-4 py-4 shadow-sm sm:py-5">
-      <h3 className="text-base font-semibold text-foreground sm:text-lg">
-        {t('updates.result.essentialsNextSteps.title')}
-      </h3>
-      <Link
-        href={ESSENTIALS_HREF}
-        className={cn(
-          'mt-3 inline-flex cursor-pointer items-center justify-center gap-2 rounded-md border-2 border-primary bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-opacity',
-          'hover:opacity-90',
-          'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/40'
-        )}
-      >
-        {t('updates.result.viewEssentialsCta')}
-      </Link>
+    <div className="flex items-start gap-3 rounded-lg border-2 border-muted-foreground/50 bg-background px-4 py-4 shadow-sm sm:py-5">
+      <Lock className="mt-1 h-6 w-6 shrink-0 text-primary" aria-hidden="true" />
+      <div className="min-w-0 flex-1">
+        <h3 className="text-base font-semibold text-foreground sm:text-lg">
+          {t('updates.result.essentialsNextSteps.title')}
+        </h3>
+        <Link
+          href={ESSENTIALS_HREF}
+          className={cn(
+            'mt-3 inline-flex cursor-pointer items-center justify-center gap-2 rounded-md border-2 border-primary bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-opacity',
+            'hover:opacity-90',
+            'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/40'
+          )}
+        >
+          {t('updates.result.viewEssentialsCta')}
+        </Link>
+      </div>
     </div>
   );
 }
