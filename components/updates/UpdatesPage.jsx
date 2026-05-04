@@ -223,7 +223,14 @@ export default function UpdatesPage() {
     : [];
 
   return (
-    <div className="space-y-6">
+    // min-h-screen reserves vertical space so the autocomplete dropdown
+    // (absolute-positioned, max-h-80 / 320px below the search input) doesn't
+    // grow the document when it opens. The result is a stable page height: no
+    // surprise scrollbar appearance, no layout shift, and the empty space at
+    // the bottom fills in naturally when the user picks a device and the
+    // result + EssentialsPanel stack expands. Works for mobile and desktop —
+    // the viewport-height baseline is always at least dropdown-height + chrome.
+    <div className="min-h-screen space-y-6">
       <PageNotices initialNotices={pageNotices} />
       <PageHero />
 

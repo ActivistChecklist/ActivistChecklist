@@ -221,9 +221,22 @@ export default function DeviceSearchInput({
   const rows = useMemo(() => buildSearchIndex(snapshot), [snapshot]);
   const fuse = useMemo(() => buildFuse(rows), [rows]);
 
+  // Debounce the query that the search runs against. fuse.search over 800+
+  // rows + ranking + rendering up to 200 result rows on every keystroke is
+  // perceptibly laggy on mid-range hardware; 120ms is short enough that a
+  // pause feels instant and long enough to skip the in-flight characters
+  // while the user is mid-word.
+  const [debouncedQuery, setDebouncedQuery] = useState(query);
+  useEffect(() => {
+    const id = setTimeout(() => setDebouncedQuery(query), 120);
+    return () => clearTimeout(id);
+  }, [query]);
+
   // Don't search while the input still shows the selected label — otherwise typing-as-
   // navigation gets weird. The user must clear or edit before we re-search.
-  const searchQuery = hasSelection && query === selectedLabel ? '' : query;
+  // Suppression check uses the LIVE query so it kicks in immediately when a
+  // selection is made (don't wait 120ms to clear the result list).
+  const searchQuery = hasSelection && query === selectedLabel ? '' : debouncedQuery;
 
   const results = useMemo(
     () => searchIndex(rows, fuse, searchQuery, priorityProductIds),
