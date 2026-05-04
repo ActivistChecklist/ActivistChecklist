@@ -41,6 +41,15 @@ const STAGGER_SECOND_MS = STAGGER_FIRST_MS + STAGGER_NEXT_OFFSET;    // 1300ms
 const STAGGER_THIRD_MS = STAGGER_SECOND_MS + STAGGER_NEXT_OFFSET;    // 2300ms
 
 /**
+ * Render handler for the `<b>` rich tag we wrap the date in across subtitle messages
+ * like "Security support ended <b>May 2023</b>". Slightly heavier weight + full
+ * foreground colour so the date pops out of the muted subtitle text.
+ */
+const boldDateChunks = (chunks) => (
+  <strong className="font-semibold text-foreground">{chunks}</strong>
+);
+
+/**
  * Map a classifyResult variant to the analytics patch-state value. Kept narrow on
  * purpose — we send only this category, never the device label or ID, so the
  * counter remains aggregate-only and free of personal context.
@@ -349,8 +358,9 @@ function DeviceConfirmedSummary({ product, release, displayLabel }) {
         </p>
         {release.eolFrom ? (
           <p className="text-xs text-muted-foreground">
-            {t('updates.result.deviceSupportedSubtitleUntil', {
+            {t.rich('updates.result.deviceSupportedSubtitleUntil', {
               date: formatMonthYear(release.eolFrom),
+              b: boldDateChunks,
             })}
           </p>
         ) : appleEstimate ? (
@@ -979,7 +989,10 @@ function DeviceEolSoon({ snapshot, product, release, classification, onReset }) 
     : t('updates.result.eolSoon.titleSoon', { label: displayLabel });
 
   const subtitle = eolDate
-    ? t('updates.result.eolSoon.subtitleDate', { date: formatMonthYear(eolDate) })
+    ? t.rich('updates.result.eolSoon.subtitleDate', {
+        date: formatMonthYear(eolDate),
+        b: boldDateChunks,
+      })
     : null;
 
   return (
@@ -1006,7 +1019,10 @@ function DeviceEolBox({ product, release, classification, onReset }) {
 
   let subtitle = null;
   if (classification.reason === 'eolFrom-past' && release.eolFrom) {
-    subtitle = t('updates.result.deviceUnsupportedSubtitleEnded', { date: formatMonthYear(release.eolFrom) });
+    subtitle = t.rich('updates.result.deviceUnsupportedSubtitleEnded', {
+      date: formatMonthYear(release.eolFrom),
+      b: boldDateChunks,
+    });
   } else if (classification.reason === 'unmaintained') {
     subtitle = t('updates.result.deviceUnsupportedSubtitleUnmaintained');
   } else if (classification.reason === 'age-heuristic-old') {
@@ -1014,7 +1030,10 @@ function DeviceEolBox({ product, release, classification, onReset }) {
       age: formatYearsAgo(classification.ageYears, t),
     });
   } else if (classification.reason === 'eoas-past' && release.eoasFrom) {
-    subtitle = t('updates.result.deviceUnsupportedSubtitleEnded', { date: formatMonthYear(release.eoasFrom) });
+    subtitle = t.rich('updates.result.deviceUnsupportedSubtitleEnded', {
+      date: formatMonthYear(release.eoasFrom),
+      b: boldDateChunks,
+    });
   } else if (classification.reason === 'user-stuck-on-old-os') {
     // User just told us "no updates available, I'm older than the latest" — this is a
     // direct attestation that the device can't reach a supported OS.
@@ -1095,7 +1114,10 @@ function OsEol({ product, release, onReset }) {
         title={t('updates.result.osUnsupportedTitle', { label: displayLabel })}
         subtitle={
           release.eolFrom
-            ? t('updates.result.osUnsupportedSubtitleEnded', { date: formatMonthYear(release.eolFrom) })
+            ? t.rich('updates.result.osUnsupportedSubtitleEnded', {
+                date: formatMonthYear(release.eolFrom),
+                b: boldDateChunks,
+              })
             : null
         }
       >

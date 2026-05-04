@@ -442,10 +442,10 @@
         "watchos": "Watch app on your iPhone → My Watch → General → About → Version"
       },
       "deviceSupportedTitle": "{label} is still receiving security updates.",
-      "deviceSupportedSubtitleUntil": "Updates expected through {date}.",
+      "deviceSupportedSubtitleUntil": "Updates expected through <b>{date}</b>.",
       "deviceSupportedSubtitleRecent": "End-of-support date not yet announced.",
       "deviceUnsupportedTitle": "{label} is no longer receiving security updates.",
-      "deviceUnsupportedSubtitleEnded": "Security support ended {date}.",
+      "deviceUnsupportedSubtitleEnded": "Security support ended <b>{date}</b>.",
       "deviceUnsupportedSubtitleUnmaintained": "The manufacturer has stopped issuing security updates.",
       "deviceUnsupportedSubtitleAge": "Released {age}. No published end-of-support date and the manufacturer doesn't appear to be issuing updates.",
       "ageYearsAgo": "{years, plural, =0 {this year} =1 {1 year ago} other {# years ago}}",
@@ -482,7 +482,7 @@
       "osLatestVersion": "Latest version: {version}.",
       "osEoasNote": "The vendor has moved this version to security-only updates. Plan an upgrade when convenient.",
       "osUnsupportedTitle": "{label} is no longer receiving security updates.",
-      "osUnsupportedSubtitleEnded": "Support ended {date}.",
+      "osUnsupportedSubtitleEnded": "Support ended <b>{date}</b>.",
       "osUpgradeAdvice": {
         "ios": "Update to the latest iOS.",
         "ipados": "Update to the latest iPadOS.",
@@ -527,7 +527,7 @@
       "eolSoon": {
         "titleMonths": "{label} will lose security updates in about {months, plural, =1 {1 month} other {# months}}.",
         "titleSoon": "{label} will lose security updates soon.",
-        "subtitleDate": "Updates expected to end {date}.",
+        "subtitleDate": "Updates expected to end <b>{date}</b>.",
         "actionHeading": "What to do",
         "action": "Start planning a replacement now. Once updates stop, your device begins accumulating publicly known vulnerabilities."
       },
