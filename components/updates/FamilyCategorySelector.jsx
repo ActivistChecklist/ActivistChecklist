@@ -264,7 +264,7 @@ function OtherInfoPanel() {
         {t.rich('updates.otherInfo.body', {
           link: (chunks) => (
             <a
-              href="https://endoflife.date"
+              href="https://search.brave.com/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary underline"

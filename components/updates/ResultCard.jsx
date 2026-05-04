@@ -44,7 +44,7 @@ function formatYearsAgo(years, t) {
  * and a "Manufacturer · Released Month YYYY" subtitle. Sits above the result so the
  * user can confirm at a glance which item their search resolved to.
  */
-function DeviceInfoCard({ product, release }) {
+function DeviceInfoCard({ product, release, onReset }) {
   const t = useTranslations();
   const Icon = iconForFamily(product.family);
   const label = buildDisplayLabel(product, release);
@@ -65,7 +65,9 @@ function DeviceInfoCard({ product, release }) {
       : null;
 
   return (
-    <div className="flex items-center gap-3 rounded-md border border-border bg-background p-3">
+    // `group` so the Start over button picks up a hover state from anywhere on the panel,
+    // making the reset path discoverable when the user mouses over the device summary.
+    <div className="group flex items-center gap-3 rounded-md border border-border bg-background p-3">
       <Icon className="h-7 w-7 shrink-0 text-foreground/80" aria-hidden="true" />
       <div className="min-w-0 flex-1">
         <p className="truncate text-base font-semibold text-foreground sm:text-lg">{label}</p>
@@ -73,6 +75,19 @@ function DeviceInfoCard({ product, release }) {
           <p className="truncate text-xs text-muted-foreground">{subtitle}</p>
         ) : null}
       </div>
+      {onReset ? (
+        <button
+          type="button"
+          onClick={onReset}
+          className={cn(
+            'shrink-0 rounded-md border-2 border-primary px-3 py-1.5 text-xs font-medium text-primary transition-colors',
+            'group-hover:bg-primary group-hover:text-primary-foreground',
+            'focus-visible:bg-primary focus-visible:text-primary-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/40'
+          )}
+        >
+          {t('updates.result.startOver')}
+        </button>
+      ) : null}
     </div>
   );
 }
@@ -129,26 +144,25 @@ function ResultBox({ tone, icon: IconProp, title, subtitle, children }) {
   );
 }
 
-function CtaList({ items }) {
+/**
+ * Action row at the bottom of every result: the cross-reset button on the left, the
+ * essentials-link button on the right. Same outline-primary styling on both so they
+ * read as paired actions. Wraps on narrow screens.
+ */
+function ResultActions({ product, onReset }) {
   const t = useTranslations();
   return (
-    <div className="mt-4 space-y-2">
-      <p className="text-xs font-semibold uppercase tracking-wide text-foreground/70">
-        {t('updates.result.whatToDo')}
-      </p>
-      <ul className="space-y-1.5">
-        {items.map((item) => (
-          <li key={item.href}>
-            <Link
-              href={item.href}
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
-            >
-              {item.label}
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-          </li>
-        ))}
-      </ul>
+    <div className="mt-5 flex flex-wrap items-center gap-2">
+      <CrossResetButton product={product} onReset={onReset} />
+      <Link
+        href={ESSENTIALS_HREF}
+        className={cn(
+          'inline-flex items-center justify-center rounded-md border-2 border-primary px-4 py-2 text-sm font-medium text-primary',
+          'transition-colors hover:bg-primary hover:text-primary-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/40'
+        )}
+      >
+        {t('updates.result.viewEssentialsCta')}
+      </Link>
     </div>
   );
 }
@@ -245,37 +259,50 @@ function BuyingGuidance({ formFactor }) {
 
 
 /**
- * The settings-path callout shown inside the OS-check step. Big and bold —
- * this is the actionable instruction.
+ * Resolve a path string from messages with graceful null when missing.
+ * Supports rich content (e.g. <code>winver</code> for Windows) by routing the
+ * lookup through t.rich with a code-tag handler.
  */
-function PromMenuPath({ osId }) {
-  const t = useTranslations();
-  let path;
+function pathFromKey(t, key) {
   try {
-    path = t(`updates.result.settingsPath.${osId}`);
+    const raw = t(key);
+    if (!raw || raw.startsWith('updates.result.')) return null;
+    return t.rich(key, {
+      code: (chunks) => (
+        <code className="rounded bg-muted px-1 py-0.5 font-mono text-base text-foreground">
+          {chunks}
+        </code>
+      ),
+    });
   } catch {
-    path = null;
+    return null;
   }
-  if (!path || path.startsWith('updates.result.settingsPath.')) return null;
+}
+
+function osVersionPath(t, osId) { return pathFromKey(t, `updates.result.osVersionPath.${osId}`); }
+function osUpdatePath(t, osId) { return pathFromKey(t, `updates.result.settingsPath.${osId}`); }
+
+/**
+ * The big bold callout used inside OS-related step boxes (picker, needs-update).
+ * Pass the resolved path content; this component just styles it.
+ */
+function PromMenuPath({ children }) {
+  if (!children) return null;
   return (
     <p className="rounded-md bg-background/60 px-4 py-3 text-base font-semibold text-foreground sm:text-lg">
-      {path}
+      {children}
     </p>
   );
 }
 
 /**
- * Inline settings-path used inside coloured boxes (smaller).
+ * Inline path used inside coloured result boxes. Smaller, prefixed with
+ * "Check yours at" so the user knows it's where they verify their version.
  */
 function SettingsPathInline({ osId }) {
   const t = useTranslations();
-  let path;
-  try {
-    path = t(`updates.result.settingsPath.${osId}`);
-  } catch {
-    path = null;
-  }
-  if (!path || path.startsWith('updates.result.settingsPath.')) return null;
+  const path = osVersionPath(t, osId);
+  if (!path) return null;
   return (
     <p className="text-sm text-muted-foreground">
       {t('updates.result.settingsPathPrefix')}{' '}
@@ -344,7 +371,8 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
       {osId ? (
         <div className="mt-3 space-y-2">
           <p className="text-sm text-muted-foreground">{t('updates.result.osCheckStep.subheadingHelp')}</p>
-          <PromMenuPath osId={osId} />
+          {/* OsPickerStep is asking the user to FIND their version → osVersionPath */}
+          <PromMenuPath>{osVersionPath(t, osId)}</PromMenuPath>
         </div>
       ) : null}
 
@@ -466,11 +494,7 @@ function CrossResetButton({ product, onReset }) {
   } else {
     label = t('updates.result.finalSuccess.checkAnotherDevice');
   }
-  return (
-    <div className="mt-5">
-      <PickerButton onClick={onReset} label={label} />
-    </div>
-  );
+  return <PickerButton onClick={onReset} label={label} />;
 }
 
 function FinalSuccessBox({ snapshot, product, release, displayLabel, pickedOption, onReset }) {
@@ -891,7 +915,7 @@ export default function ResultCard({ snapshot, product, release, onReset }) {
   return (
     <div className="space-y-4">
       <SlideInBox>
-        <DeviceInfoCard product={product} release={release} />
+        <DeviceInfoCard product={product} release={release} onReset={onReset} />
       </SlideInBox>
       <Variant
         snapshot={snapshot}

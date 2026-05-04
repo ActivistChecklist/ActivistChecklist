@@ -18,7 +18,7 @@ export default async function Page({ params }) {
 
   return (
     <Layout>
-      <div className="mx-auto w-full max-w-2xl py-8 sm:py-12">
+      <div className="mx-auto w-full max-w-xl py-8 sm:py-12">
         <UpdatesPage />
       </div>
     </Layout>

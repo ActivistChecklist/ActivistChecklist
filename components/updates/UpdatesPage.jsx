@@ -110,6 +110,10 @@ export default function UpdatesPage() {
 
   function handleSelect(item) {
     setSelection({ productId: item.productId, releaseId: item.releaseId });
+    // Selecting a device is a clean slate for the category drill-down: even though
+    // the selector isn't visible while a result is showing, we want it back at L1
+    // when the user starts over.
+    setCategory(null);
     trackEvent({
       name: 'updates_search_select',
       productId: item.productId,
@@ -118,7 +122,10 @@ export default function UpdatesPage() {
   }
 
   function handleReset() {
+    // Centralised reset: clear both the result selection and the category so the
+    // page returns to its initial state regardless of which control fired this.
     setSelection(null);
+    setCategory(null);
     trackEvent({ name: 'updates_reset' });
   }
 
@@ -175,16 +182,21 @@ export default function UpdatesPage() {
         <FamilyCategorySelector value={category} onChange={handleCategoryChange} />
       )}
 
-      <div ref={searchBoxRef} className="mx-auto w-full max-w-md">
-        <DeviceSearchInput
-          snapshot={snapshot}
-          priorityProductIds={priorityProductIds}
-          selectedLabel={selectedLabel}
-          onSelect={handleSelect}
-          onClear={handleReset}
-          autoFocus
-        />
-      </div>
+      {/* Hide the search input once a device is selected — the DeviceInfoCard
+          + Start over button serve as the visible state, and the search box
+          comes back when the user resets. */}
+      {found ? null : (
+        <div ref={searchBoxRef}>
+          <DeviceSearchInput
+            snapshot={snapshot}
+            priorityProductIds={priorityProductIds}
+            selectedLabel={selectedLabel}
+            onSelect={handleSelect}
+            onClear={handleReset}
+            autoFocus
+          />
+        </div>
+      )}
 
       {found ? (
         <div
