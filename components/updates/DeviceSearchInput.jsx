@@ -6,7 +6,12 @@ import { HelpCircle, Search, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { buildFuse, buildSearchIndex, searchIndex } from '@/lib/updates/search';
 import { iconForFamily } from '@/lib/updates/family-icons';
 import { looksLikeWindowsLaptopQuery } from '@/lib/updates/no-match-hints';
@@ -214,23 +219,32 @@ export default function DeviceSearchInput({
         >
           {t('updates.searchLabel')}
         </label>
-        <Popover>
-          <PopoverTrigger asChild>
-            <button
-              type="button"
-              aria-label={t('updates.searchHelpAriaLabel')}
-              className={cn(
-                'inline-flex h-5 w-5 items-center justify-center rounded-full text-muted-foreground transition-colors',
-                'hover:bg-muted hover:text-foreground focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/40'
-              )}
+        <TooltipProvider delayDuration={150}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                type="button"
+                aria-label={t('updates.searchHelpAriaLabel')}
+                className={cn(
+                  'inline-flex h-5 w-5 cursor-pointer items-center justify-center rounded-full text-muted-foreground transition-colors',
+                  'hover:bg-muted hover:text-foreground focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/40'
+                )}
+              >
+                <HelpCircle className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </TooltipTrigger>
+            {/* Inverse colour so the tooltip pops against either theme: dark-on-light
+                in dark mode, light-on-dark in light mode. Wider than default since the
+                copy is a sentence, and centered above the trigger. */}
+            <TooltipContent
+              side="top"
+              align="center"
+              className="max-w-xs whitespace-normal border-foreground bg-foreground text-sm leading-relaxed text-background"
             >
-              <HelpCircle className="h-4 w-4" aria-hidden="true" />
-            </button>
-          </PopoverTrigger>
-          <PopoverContent side="top" align="start" className="w-72 text-sm leading-relaxed text-foreground">
-            {t('updates.searchHelp')}
-          </PopoverContent>
-        </Popover>
+              {t('updates.searchHelp')}
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
       <CommandPrimitive
         shouldFilter={false}

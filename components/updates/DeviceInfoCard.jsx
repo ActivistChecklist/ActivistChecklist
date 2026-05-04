@@ -87,7 +87,7 @@ export default function DeviceInfoCard({ product, release, onReset, onEdit }) {
             onReset();
           }}
           className={cn(
-            'shrink-0 rounded-md border-2 border-primary px-3 py-1.5 text-xs font-medium text-primary transition-colors',
+            'shrink-0 cursor-pointer rounded-md border-2 border-primary px-3 py-1.5 text-xs font-medium text-primary transition-colors',
             // Fill primary as soon as the user moves the mouse over the parent panel,
             // so the destructive action surfaces even before the cursor reaches the button.
             'group-hover:bg-primary group-hover:text-primary-foreground',

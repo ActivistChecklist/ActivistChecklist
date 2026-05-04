@@ -23,7 +23,7 @@ import {
 import { osProductForDevice } from '@/lib/updates/snapshot';
 import { buildDisplayLabel } from '@/lib/updates/search';
 
-const ESSENTIALS_HREF = '/guides/essentials';
+const ESSENTIALS_HREF = '/essentials/';
 
 function formatMonthYear(iso, locale = 'en-US') {
   if (!iso) return '';
