@@ -8,6 +8,7 @@ import {
   buildOsCheckOptions,
   buildStuckOnOldOsClassification,
   buildAppleSupportEstimate,
+  formatTimeSince,
   updateYearsFor,
   latestPickerMajor,
 } from '../lib/updates/result-logic';
@@ -948,5 +949,40 @@ describe('buildAppleSupportEstimate', () => {
     expect(est.minYears).toBe(4);
     expect(est.maxYears).toBe(6);
     expect(est.deviceLabelKey).toBe('watch');
+  });
+});
+
+describe('formatTimeSince', () => {
+  const now = new Date('2026-05-03T00:00:00Z');
+
+  it('returns null for missing / invalid / future / sub-month dates', () => {
+    expect(formatTimeSince(null, now)).toBeNull();
+    expect(formatTimeSince(undefined, now)).toBeNull();
+    expect(formatTimeSince('not a date', now)).toBeNull();
+    expect(formatTimeSince('2026-12-01', now)).toBeNull(); // future
+    expect(formatTimeSince('2026-04-25', now)).toBeNull(); // 8 days ago, < 1 month
+  });
+
+  it('returns months when the date is between 1 and 12 months ago', () => {
+    expect(formatTimeSince('2026-04-01', now)).toEqual({ months: 1 });
+    expect(formatTimeSince('2025-11-01', now)).toEqual({ months: 6 });
+    expect(formatTimeSince('2025-06-01', now)).toEqual({ months: 11 });
+  });
+
+  it('returns years (floored) when the date is 12 months or more ago', () => {
+    expect(formatTimeSince('2025-05-01', now)).toEqual({ years: 1 });
+    expect(formatTimeSince('2024-11-01', now)).toEqual({ years: 1 }); // ~18m → 1.5y → 1
+    expect(formatTimeSince('2023-05-01', now)).toEqual({ years: 3 });
+    expect(formatTimeSince('2018-01-01', now)).toEqual({ years: 8 });
+  });
+
+  it('floors rather than rounds (8 months ago is "8 months", not "9")', () => {
+    // ~8.1 months. Rounding would give 8 either way; pick a fractional case.
+    // From now (2026-05-03) back ~10.5 months = 2025-06-15.
+    expect(formatTimeSince('2025-06-15', now)).toEqual({ months: 10 });
+  });
+
+  it('handles same-day input as null (zero ms ago)', () => {
+    expect(formatTimeSince('2026-05-03', now)).toBeNull();
   });
 });

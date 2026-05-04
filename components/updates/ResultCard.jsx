@@ -22,6 +22,7 @@ import {
   buildDeviceMaxOsWarning,
   buildOsCheckOptions,
   buildStuckOnOldOsClassification,
+  formatTimeSince,
   latestPickerMajor,
   updateYearsFor,
 } from '@/lib/updates/result-logic';
@@ -442,22 +443,26 @@ function DeviceConfirmedSummary({ product, release, displayLabel }) {
                 max: appleEstimate.maxYears,
               })}
             </p>
-            <p className="font-medium text-foreground/80">
+            <p className="text-foreground/80">
               {appleEstimate.case === 'years-range'
-                ? t('updates.result.appleEstimate.remainingYearsRange', {
+                ? t.rich('updates.result.appleEstimate.remainingYearsRange', {
                     min: appleEstimate.remainingMinYears,
                     max: appleEstimate.remainingMaxYears,
+                    b: boldDateChunks,
                   })
                 : appleEstimate.case === 'years-about'
-                  ? t('updates.result.appleEstimate.remainingYearsAbout', {
+                  ? t.rich('updates.result.appleEstimate.remainingYearsAbout', {
                       years: appleEstimate.remainingMaxYears,
+                      b: boldDateChunks,
                     })
                   : appleEstimate.case === 'years-up-to'
-                    ? t('updates.result.appleEstimate.remainingYearsUpTo', {
+                    ? t.rich('updates.result.appleEstimate.remainingYearsUpTo', {
                         max: appleEstimate.remainingMaxYears,
+                        b: boldDateChunks,
                       })
-                    : t('updates.result.appleEstimate.remainingMonthsUpTo', {
+                    : t.rich('updates.result.appleEstimate.remainingMonthsUpTo', {
                         max: appleEstimate.remainingMaxMonths,
+                        b: boldDateChunks,
                       })}
             </p>
           </div>
@@ -628,7 +633,11 @@ function PickerButton({ onClick, label, tone = 'primary', icon: IconProp }) {
   const toneClasses = {
     primary: 'border-primary text-primary hover:bg-primary hover:text-primary-foreground focus-visible:ring-primary/40',
     success: 'border-success text-success hover:bg-success hover:text-success-foreground focus-visible:ring-success/40',
-    warning: 'border-warning text-warning hover:bg-warning hover:text-warning-foreground focus-visible:ring-warning/40',
+    // text-warning at the default --warning shade is poor contrast on white in
+    // light mode, and warning-foreground (light yellow) is poor contrast on the
+    // yellow fill in either mode. Use the darker --text-warning token at rest
+    // and black on hover so the button reads in both themes.
+    warning: 'border-warning text-[hsl(var(--text-warning))] hover:bg-warning hover:text-black focus-visible:ring-warning/40',
     destructive: 'border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground focus-visible:ring-destructive/40',
   }[tone] || '';
   return (
@@ -870,6 +879,13 @@ function DeviceSupported({ snapshot, product, release, onReset }) {
   const [pickedOption, setPickedOption] = useState(null);
   const options = buildOsCheckOptions(snapshot, product, release);
   const latestOption = latestPickerMajor(options);
+  // The OS picker only makes sense when we can enumerate version options —
+  // i.e. when the snapshot has the device's OS product mapped (Apple iPhone →
+  // iOS, Pixel → Android, etc). For Apple Watch we don't ship watchOS data, so
+  // there's nothing to pick from; we'd otherwise render a hollow 'Which version
+  // is your device running?' panel with only a 'Done' button, which reads as
+  // broken UI. Skip the slot when there's no OS to pick from.
+  const canPickOsVersion = options.length > 0;
   // Only render the max-OS warning slot when there's actually a warning to show —
   // otherwise the slot contains just a connector arrow with nothing below it,
   // which reads as a trailing arrow off the last visible box.
@@ -924,7 +940,7 @@ function DeviceSupported({ snapshot, product, release, onReset }) {
         </SlideInBox>
       ) : null}
 
-      {showSecond ? (
+      {showSecond && canPickOsVersion ? (
         // keyed by `step` so each transition between picker / needs-update / success
         // re-mounts the inner box and replays the slide-up + fade-in.
         <SlideInBox key={step}>
@@ -1180,11 +1196,54 @@ function DeviceEolBox({ product, release, classification, onReset }) {
     subtitle = t('updates.result.deviceUnsupportedSubtitleUnmaintained');
   }
 
+  // Pick the most accurate "stopped getting updates on" date for the title chip.
+  // Different EOL paths have the date in different places: eolFrom-past uses the
+  // device's own eolFrom; eoas-past uses eoasFrom; device-max-os-eol stores the
+  // OS major's eolFrom in classification.effectiveEolFrom. The other reasons
+  // (unmaintained / age-heuristic / user-stuck-on-old-os / isEol-true with no
+  // date) leave us without a date and fall back to the date-less title.
+  let agoDate = null;
+  if (classification.reason === 'eolFrom-past' && release.eolFrom) {
+    agoDate = release.eolFrom;
+  } else if (classification.reason === 'eoas-past' && release.eoasFrom) {
+    agoDate = release.eoasFrom;
+  } else if (classification.reason === 'device-max-os-eol' && classification.effectiveEolFrom) {
+    agoDate = classification.effectiveEolFrom;
+  } else if (classification.reason === 'isEol-true' && release.eolFrom) {
+    agoDate = release.eolFrom;
+  }
+  const since = formatTimeSince(agoDate);
+
+  // Highlight the time-ago phrase as a destructive-toned chip — same hue as
+  // the XCircle icon, with text inverted to the page background colour so the
+  // chip pops out of the title.
+  const markChunks = (chunks) => (
+    <mark className="rounded-md bg-destructive px-1.5 py-0.5 text-background">
+      {chunks}
+    </mark>
+  );
+  let title;
+  if (since?.years) {
+    title = t.rich('updates.result.deviceUnsupportedTitleAgoYears', {
+      label: displayLabel,
+      years: since.years,
+      mark: markChunks,
+    });
+  } else if (since?.months) {
+    title = t.rich('updates.result.deviceUnsupportedTitleAgoMonths', {
+      label: displayLabel,
+      months: since.months,
+      mark: markChunks,
+    });
+  } else {
+    title = t('updates.result.deviceUnsupportedTitle', { label: displayLabel });
+  }
+
   return (
     <ResultBox
       tone="red"
       icon={XCircle}
-      title={t('updates.result.deviceUnsupportedTitle', { label: displayLabel })}
+      title={title}
       subtitle={subtitle}
     >
       <PrescriptionLine formFactor={product.formFactor} urgency="replace" />

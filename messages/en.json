@@ -446,6 +446,8 @@
       "deviceSupportedSubtitleUntil": "Updates expected through <b>{date}</b>.",
       "deviceSupportedSubtitleRecent": "End-of-support date not yet announced.",
       "deviceUnsupportedTitle": "{label} is no longer receiving security updates.",
+      "deviceUnsupportedTitleAgoMonths": "{label} stopped receiving security updates <mark>{months, plural, one {1 month} other {# months}} ago</mark>.",
+      "deviceUnsupportedTitleAgoYears": "{label} stopped receiving security updates <mark>{years, plural, one {1 year} other {# years}} ago</mark>.",
       "deviceUnsupportedSubtitleEnded": "Security support ended <b>{date}</b>.",
       "deviceUnsupportedSubtitleUnmaintained": "The manufacturer has stopped issuing security updates.",
       "deviceUnsupportedSubtitleAge": "Released {age}. No published end-of-support date and the manufacturer doesn't appear to be issuing updates.",
@@ -562,10 +564,10 @@
       "deviceConfirmedShort": "{label} is still receiving security updates.",
       "appleEstimate": {
         "intro": "Apple doesn't publish end-of-support dates, but {deviceLabel} usually receive {min} to {max} years of security updates from launch.",
-        "remainingYearsRange": "Yours probably has about {min} to {max} years left.",
-        "remainingYearsAbout": "Yours probably has about {years, plural, one {1 year} other {# years}} left.",
-        "remainingYearsUpTo": "Yours probably has up to {max, plural, one {1 year} other {# years}} left.",
-        "remainingMonthsUpTo": "Yours probably has up to {max, plural, one {1 month} other {# months}} of updates left."
+        "remainingYearsRange": "Yours probably has <b>about {min} to {max} years left</b>.",
+        "remainingYearsAbout": "Yours probably has <b>about {years, plural, one {1 year} other {# years}} left</b>.",
+        "remainingYearsUpTo": "Yours probably has <b>up to {max, plural, one {1 year} other {# years}} left</b>.",
+        "remainingMonthsUpTo": "Yours probably has <b>up to {max, plural, one {1 month} other {# months}} of updates left</b>."
       },
       "osCheckStep": {
         "headingForOs": "Which version of {os} are you running?",
@@ -577,7 +579,7 @@
         "optionOlderCodename": "Older than {os} {version} ({codename})",
         "optionMajor": "My {device} is running {os} {major}",
         "optionMajorCodename": "My {device} is running {os} {major} ({codename})",
-        "optionUnknown": "Not sure"
+        "optionUnknown": "I'm not sure which version I'm running"
       },
       "deviceNoun": {
         "phone": "phone",
