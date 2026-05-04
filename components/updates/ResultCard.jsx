@@ -65,6 +65,17 @@ const boldDateChunks = (chunks) => (
 );
 
 /**
+ * Render handler for the `<nowrap>` rich tag — wraps the chip and a leading
+ * connector word ("for", "updates") so the pair travels together on line wrap.
+ * Without this, the inline-block <mark> chip can break onto its own line and
+ * read as a free-floating badge instead of part of the sentence. NBSP alone
+ * doesn't fix it because inline-block boundaries override nbsp's break-prevent.
+ */
+const nowrapChunks = (chunks) => (
+  <span className="whitespace-nowrap">{chunks}</span>
+);
+
+/**
  * Map a classifyResult variant to the analytics patch-state value. Kept narrow on
  * purpose — we send only this category, never the device label or ID, so the
  * counter remains aggregate-only and free of personal context.
@@ -564,24 +575,28 @@ function DeviceConfirmedSummary({ product, release, displayLabel, classification
     titleNode = t.rich('updates.result.deviceConfirmedShortYears', {
       label: displayLabel,
       years: exactRemaining.years,
+      nowrap: nowrapChunks,
       mark: successChipChunks,
     });
   } else if (exactRemaining?.months) {
     titleNode = t.rich('updates.result.deviceConfirmedShortMonths', {
       label: displayLabel,
       months: exactRemaining.months,
+      nowrap: nowrapChunks,
       mark: successChipChunks,
     });
   } else if (approxRemaining?.years) {
     titleNode = t.rich('updates.result.deviceConfirmedShortApproxYears', {
       label: displayLabel,
       years: approxRemaining.years,
+      nowrap: nowrapChunks,
       mark: successChipChunks,
     });
   } else if (approxRemaining?.months) {
     titleNode = t.rich('updates.result.deviceConfirmedShortApproxMonths', {
       label: displayLabel,
       months: approxRemaining.months,
+      nowrap: nowrapChunks,
       mark: successChipChunks,
     });
   } else {
@@ -1356,10 +1371,12 @@ function DeviceEolSoon({ snapshot, product, release, classification, onReset }) 
     ? t.rich('updates.result.eolSoon.titleMonths', {
         label: displayLabel,
         months,
+        nowrap: nowrapChunks,
         mark: markChunks,
       })
     : t.rich('updates.result.eolSoon.titleSoon', {
         label: displayLabel,
+        nowrap: nowrapChunks,
         mark: markChunks,
       });
 
@@ -1458,12 +1475,14 @@ function DeviceEolBox({ product, release, classification, onReset }) {
     title = t.rich('updates.result.deviceUnsupportedTitleAgoYears', {
       label: displayLabel,
       years: since.years,
+      nowrap: nowrapChunks,
       mark: markChunks,
     });
   } else if (since?.months) {
     title = t.rich('updates.result.deviceUnsupportedTitleAgoMonths', {
       label: displayLabel,
       months: since.months,
+      nowrap: nowrapChunks,
       mark: markChunks,
     });
   } else {
@@ -1540,18 +1559,20 @@ function OsConfirmedSummary({ product, release, displayLabel, classification }) 
   let titleNode;
   if (isEolSoon) {
     titleNode = months != null && months > 0
-      ? t.rich('updates.result.osEolSoon.titleMonths', { label: displayLabel, months, mark: warningChipChunks })
-      : t.rich('updates.result.osEolSoon.titleSoon', { label: displayLabel, mark: warningChipChunks });
+      ? t.rich('updates.result.osEolSoon.titleMonths', { label: displayLabel, months, nowrap: nowrapChunks, mark: warningChipChunks })
+      : t.rich('updates.result.osEolSoon.titleSoon', { label: displayLabel, nowrap: nowrapChunks, mark: warningChipChunks });
   } else if (exactRemaining?.years) {
     titleNode = t.rich('updates.result.osConfirmedShortYears', {
       label: displayLabel,
       years: exactRemaining.years,
+      nowrap: nowrapChunks,
       mark: successChipChunks,
     });
   } else if (exactRemaining?.months) {
     titleNode = t.rich('updates.result.osConfirmedShortMonths', {
       label: displayLabel,
       months: exactRemaining.months,
+      nowrap: nowrapChunks,
       mark: successChipChunks,
     });
   } else {
