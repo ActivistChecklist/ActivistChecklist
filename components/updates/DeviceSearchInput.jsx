@@ -78,9 +78,12 @@ export default function DeviceSearchInput({
       setQuery(selectedLabel);
       setHasSelection(true);
     } else if (hasSelection) {
-      // Parent cleared the selection externally — clear the input too.
+      // Parent cleared the selection externally (e.g., via "Check your phone next" or
+      // any other reset path) — clear the input AND refocus so the user can keep
+      // typing without grabbing the mouse.
       setQuery('');
       setHasSelection(false);
+      inputRef.current?.focus();
     }
   }, [selectedLabel]); // eslint-disable-line react-hooks/exhaustive-deps
 

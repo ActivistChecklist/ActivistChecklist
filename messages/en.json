@@ -491,7 +491,19 @@
       "threatModelSoft": "Until you confirm, treat this device as potentially out-of-date for sensitive work.",
       "whatToDo": "What to do",
       "ctaEssentials": "Read our digital security essentials",
-      "ctaSecurityChecklist": "See the security essentials checklist",
+      "deviceInfo": {
+        "manufacturerLine": "{manufacturer} · Released {date}",
+        "manufacturerLineNoDate": "{manufacturer}",
+        "manufacturer": {
+          "apple": "Apple",
+          "google": "Google",
+          "samsung": "Samsung",
+          "microsoft": "Microsoft",
+          "motorola": "Motorola",
+          "oneplus": "OnePlus",
+          "nokia": "Nokia"
+        }
+      },
       "eolSoon": {
         "titleMonths": "{label} will lose security updates in about {months, plural, =1 {1 month} other {# months}}.",
         "titleSoon": "{label} will lose security updates soon.",

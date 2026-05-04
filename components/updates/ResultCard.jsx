@@ -22,9 +22,9 @@ import {
 } from '@/lib/updates/result-logic';
 import { osProductForDevice } from '@/lib/updates/snapshot';
 import { buildDisplayLabel } from '@/lib/updates/search';
+import { iconForFamily } from '@/lib/updates/family-icons';
 
 const ESSENTIALS_HREF = '/guides/essentials';
-const SECURITY_ESSENTIALS_HREF = '/checklists/items/security-essentials';
 
 function formatMonthYear(iso, locale = 'en-US') {
   if (!iso) return '';
@@ -37,6 +37,44 @@ function formatYearsAgo(years, t) {
   if (years == null) return '';
   const rounded = Math.max(0, Math.round(years));
   return t('updates.result.ageYearsAgo', { years: rounded });
+}
+
+/**
+ * Compact info card showing the picked device/OS with its brand icon, display name,
+ * and a "Manufacturer · Released Month YYYY" subtitle. Sits above the result so the
+ * user can confirm at a glance which item their search resolved to.
+ */
+function DeviceInfoCard({ product, release }) {
+  const t = useTranslations();
+  const Icon = iconForFamily(product.family);
+  const label = buildDisplayLabel(product, release);
+
+  let manufacturer = '';
+  try {
+    const m = t(`updates.result.deviceInfo.manufacturer.${product.family}`);
+    if (m && !m.startsWith('updates.result.deviceInfo.')) manufacturer = m;
+  } catch {
+    /* fall through */
+  }
+
+  const dateText = release.releaseDate ? formatMonthYear(release.releaseDate) : null;
+  const subtitle = dateText
+    ? t('updates.result.deviceInfo.manufacturerLine', { manufacturer, date: dateText })
+    : manufacturer
+      ? t('updates.result.deviceInfo.manufacturerLineNoDate', { manufacturer })
+      : null;
+
+  return (
+    <div className="flex items-center gap-3 rounded-md border border-border bg-background p-3">
+      <Icon className="h-7 w-7 shrink-0 text-foreground/80" aria-hidden="true" />
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-base font-semibold text-foreground sm:text-lg">{label}</p>
+        {subtitle ? (
+          <p className="truncate text-xs text-muted-foreground">{subtitle}</p>
+        ) : null}
+      </div>
+    </div>
+  );
 }
 
 /* ────────── Shared building blocks ────────── */
@@ -410,20 +448,24 @@ function PickerButton({ onClick, label }) {
 }
 
 /**
- * Cross-form-factor reset prompt: after checking a phone, suggest checking a laptop next
- * (and vice-versa). Returns null for form factors that don't have a clean opposite (tablet,
- * watch, OS) — the search input + clear button is the reset path for those.
+ * Cross-form-factor reset prompt at the bottom of every result. After checking a phone
+ * we suggest a laptop and vice-versa; tablets/watches fall back to "check your phone"
+ * (closest related thing); OS results and anything we can't categorise get a generic
+ * "Check another device" so there's always a way out via this button.
  */
 function CrossResetButton({ product, onReset }) {
   const t = useTranslations();
   if (!onReset) return null;
-  let label = null;
+  let label;
   if (product.formFactor === 'phone') {
     label = t('updates.result.finalSuccess.checkLaptopNext');
   } else if (product.formFactor === 'laptop' || product.formFactor === 'desktop') {
     label = t('updates.result.finalSuccess.checkPhoneNext');
+  } else if (product.formFactor === 'tablet' || product.formFactor === 'watch') {
+    label = t('updates.result.finalSuccess.checkPhoneNext');
+  } else {
+    label = t('updates.result.finalSuccess.checkAnotherDevice');
   }
-  if (!label) return null;
   return (
     <div className="mt-5">
       <PickerButton onClick={onReset} label={label} />
@@ -811,13 +853,14 @@ function OsEol({ product, release, onReset }) {
             : null
         }
       >
-        {advice ? <p className="text-sm text-foreground/90">{advice}</p> : null}
+        {advice ? (
+          <p className="text-xl font-bold leading-snug text-foreground sm:text-2xl">
+            {advice}
+          </p>
+        ) : null}
         <ThreatModelBlock />
         <CtaList
-          items={[
-            { href: ESSENTIALS_HREF, label: t('updates.result.ctaEssentials') },
-            { href: SECURITY_ESSENTIALS_HREF, label: t('updates.result.ctaSecurityChecklist') },
-          ]}
+          items={[{ href: ESSENTIALS_HREF, label: t('updates.result.ctaEssentials') }]}
         />
         <CrossResetButton product={product} onReset={onReset} />
       </ResultBox>
@@ -846,12 +889,17 @@ export default function ResultCard({ snapshot, product, release, onReset }) {
   if (!Variant) return null;
 
   return (
-    <Variant
-      snapshot={snapshot}
-      product={product}
-      release={release}
-      onReset={onReset}
-      classification={classification}
-    />
+    <div className="space-y-4">
+      <SlideInBox>
+        <DeviceInfoCard product={product} release={release} />
+      </SlideInBox>
+      <Variant
+        snapshot={snapshot}
+        product={product}
+        release={release}
+        onReset={onReset}
+        classification={classification}
+      />
+    </div>
   );
 }
