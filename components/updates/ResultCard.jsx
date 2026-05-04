@@ -407,6 +407,24 @@ function pathFromKey(t, key) {
   });
 }
 
+/**
+ * Resolve the brand name for a product family ("Apple", "Google", "Samsung", …)
+ * for use as the subject of subtitle copy. Falls back to a generic phrase when
+ * the family isn't one we have a name for. Pass `lower` for mid-sentence
+ * positions (e.g. "and {manufacturer} doesn't appear to be issuing updates")
+ * so the unknown-fallback gets the lowercase article.
+ */
+function manufacturerSubject(t, family, { lower = false } = {}) {
+  const key = `updates.result.deviceInfo.manufacturer.${family}`;
+  if (t.has(key)) {
+    const m = t(key);
+    if (m && !m.startsWith('updates.result.deviceInfo.')) return m;
+  }
+  return t(lower
+    ? 'updates.result.manufacturerFallbackLower'
+    : 'updates.result.manufacturerFallback');
+}
+
 function osVersionPath(t, osId) { return pathFromKey(t, `updates.result.osVersionPath.${osId}`); }
 function osUpdatePath(t, osId) { return pathFromKey(t, `updates.result.settingsPath.${osId}`); }
 
@@ -1239,7 +1257,11 @@ function DeviceUncertain({ snapshot, product, release, classification, onReset }
         tone="amber"
         icon={AlertTriangle}
         title={t('updates.result.deviceUncertainTitle', { label: displayLabel })}
-        subtitle={t('updates.result.deviceUncertainSubtitle', { label: displayLabel, age: ageText })}
+        subtitle={t('updates.result.deviceUncertainSubtitle', {
+          label: displayLabel,
+          age: ageText,
+          manufacturer: manufacturerSubject(t, product.family),
+        })}
       >
         {supportInfo ? (
           <p className="text-sm text-foreground/90">
@@ -1341,10 +1363,13 @@ function DeviceEolBox({ product, release, classification, onReset }) {
       b: boldDateChunks,
     });
   } else if (classification.reason === 'unmaintained') {
-    subtitle = t('updates.result.deviceUnsupportedSubtitleUnmaintained');
+    subtitle = t('updates.result.deviceUnsupportedSubtitleUnmaintained', {
+      manufacturer: manufacturerSubject(t, product.family),
+    });
   } else if (classification.reason === 'age-heuristic-old') {
     subtitle = t('updates.result.deviceUnsupportedSubtitleAge', {
       age: formatYearsAgo(classification.ageYears, t),
+      manufacturer: manufacturerSubject(t, product.family, { lower: true }),
     });
   } else if (classification.reason === 'eoas-past' && release.eoasFrom) {
     subtitle = t.rich('updates.result.deviceUnsupportedSubtitleEnded', {
@@ -1356,7 +1381,9 @@ function DeviceEolBox({ product, release, classification, onReset }) {
     // direct attestation that the device can't reach a supported OS.
     subtitle = t('updates.result.deviceUnsupportedSubtitleStuckOnOs');
   } else {
-    subtitle = t('updates.result.deviceUnsupportedSubtitleUnmaintained');
+    subtitle = t('updates.result.deviceUnsupportedSubtitleUnmaintained', {
+      manufacturer: manufacturerSubject(t, product.family),
+    });
   }
 
   // Pick the most accurate "stopped getting updates on" date for the title chip.

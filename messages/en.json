@@ -449,11 +449,13 @@
       "deviceUnsupportedTitleAgoMonths": "{label} stopped receiving security updates <mark>{months, plural, one {1 month} other {# months}} ago</mark>.",
       "deviceUnsupportedTitleAgoYears": "{label} stopped receiving security updates <mark>{years, plural, one {1 year} other {# years}} ago</mark>.",
       "deviceUnsupportedSubtitleEnded": "Security support ended <b>{date}</b>.",
-      "deviceUnsupportedSubtitleUnmaintained": "The manufacturer has stopped issuing security updates.",
-      "deviceUnsupportedSubtitleAge": "Released {age}. No published end-of-support date and the manufacturer doesn't appear to be issuing updates.",
+      "deviceUnsupportedSubtitleUnmaintained": "{manufacturer} has stopped issuing security updates.",
+      "deviceUnsupportedSubtitleAge": "Released {age}. No published end-of-support date and {manufacturer} doesn't appear to be issuing updates.",
+      "manufacturerFallback": "The manufacturer",
+      "manufacturerFallbackLower": "the manufacturer",
       "ageYearsAgo": "{years, plural, =0 {this year} =1 {1 year ago} other {# years ago}}",
       "deviceUncertainTitle": "We can't confirm whether {label} is still receiving updates.",
-      "deviceUncertainSubtitle": "Released {age}. The manufacturer hasn't published an end-of-support date, and devices this old may or may not still be receiving updates.",
+      "deviceUncertainSubtitle": "Released {age}. {manufacturer} hasn't published an end-of-support date, and devices this old may or may not still be receiving updates.",
       "deviceUncertainCheck": "Check the manufacturer's support page: <link></link>.",
       "manufacturerSupport": {
         "apple": {
