@@ -50,8 +50,8 @@ public/pagefind
 **/playground/***
 .image-cache.json
 
-# URL scanner
-.approved-urls.json
+# Server-side deploy state
+.deploy-lock.sha256
 
 # Backups
 buildbackups/

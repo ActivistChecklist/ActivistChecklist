@@ -105,7 +105,6 @@ jobs:
 
       - name: Static export build (production path)
         env:
-          CHECKBUILD_URL_APPROVAL: allow
           BUILD_MODE: static
           NEXT_TELEMETRY_DISABLED: 1
         run: yarn buildstatic
