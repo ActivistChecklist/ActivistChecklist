@@ -32,37 +32,74 @@ function CategoryPill({ formFactor, kind }) {
   );
 }
 
-function NoMatchesContent({ query }) {
+/**
+ * Windows-FYI block: explains that checking a Windows laptop's model won't tell
+ * you anything useful, and points at `winver` instead. Used in two places:
+ * a) full-panel inside the dropdown when there are NO autocomplete results, and
+ * b) compact banner above the autocomplete results when the query LOOKS like a
+ *    Windows-laptop brand and we still got hits (could be a fuzzy match against
+ *    something unrelated — better to surface the FYI alongside the hits than
+ *    risk hiding the more accurate guidance).
+ *
+ * `compact` switches to the banner padding/typography. The compact variant is
+ * topped with a divider underneath so it visually separates from the result
+ * list below.
+ */
+function WindowsLaptopFyi({ compact = false }) {
   const t = useTranslations();
-  const isWindowsBrand = looksLikeWindowsLaptopQuery(query);
-
-  if (isWindowsBrand) {
-    // Wider/taller padding matched to the generic empty state so the dropdown shell
-    // reads consistently regardless of which message landed.
+  if (compact) {
     return (
-      <div className="space-y-3 px-6 py-8 text-sm sm:px-8 sm:py-10">
-        <p className="font-medium text-foreground">
+      <div className="space-y-2 border-b border-border bg-warning/5 px-4 py-3 text-sm">
+        <p className="text-foreground">
           {t.rich('updates.noMatchesWindowsLaptop', {
-            b: (chunks) => <strong className="font-bold">{chunks}</strong>,
+            b: (chunks) => <strong className="font-semibold">{chunks}</strong>,
           })}
         </p>
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+        <p className="text-muted-foreground">
+          <span className="font-semibold uppercase tracking-wide text-xs">
             {t('updates.noMatchesWindowsPathLabel')}
-          </p>
-          <p className="mt-1 text-base font-medium text-foreground">
+          </span>{' '}
+          <span className="text-foreground">
             {t.rich('updates.findYourModel.windows', {
               code: (chunks) => (
-                <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-base text-foreground">
+                <code className="rounded bg-muted px-1 py-0.5 font-mono text-foreground">
                   {chunks}
                 </code>
               ),
             })}
-          </p>
-        </div>
+          </span>
+        </p>
       </div>
     );
   }
+  return (
+    <div className="space-y-3 px-6 py-8 text-sm sm:px-8 sm:py-10">
+      <p className="font-medium text-foreground">
+        {t.rich('updates.noMatchesWindowsLaptop', {
+          b: (chunks) => <strong className="font-bold">{chunks}</strong>,
+        })}
+      </p>
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          {t('updates.noMatchesWindowsPathLabel')}
+        </p>
+        <p className="mt-1 text-base font-medium text-foreground">
+          {t.rich('updates.findYourModel.windows', {
+            code: (chunks) => (
+              <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-base text-foreground">
+                {chunks}
+              </code>
+            ),
+          })}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function NoMatchesContent({ query }) {
+  const t = useTranslations();
+  if (looksLikeWindowsLaptopQuery(query)) return <WindowsLaptopFyi />;
 
   // Wide breathing room so this reads as an empty-state message centered inside the
   // dropdown shell, not as a tight panel pushed up against the search input edges.
@@ -289,25 +326,32 @@ export default function DeviceSearchInput({
           {(showResults || showNoMatches) ? (
             <div className="absolute left-0 right-0 top-full z-20 mt-2 overflow-hidden rounded-lg border border-border bg-popover shadow-lg">
               {showResults ? (
-                <CommandPrimitive.List className="max-h-80 overflow-y-auto">
-                  {results.map((item) => (
-                    <CommandPrimitive.Item
-                      key={`${item.productId}/${item.releaseId}`}
-                      value={`${item.productId}/${item.releaseId}`}
-                      onSelect={() => handleSelect(item)}
-                      className={cn(
-                        'flex cursor-pointer items-center justify-between gap-3 px-4 py-3 text-sm',
-                        'aria-selected:bg-muted aria-selected:text-foreground'
-                      )}
-                    >
-                      <span className="flex min-w-0 items-center gap-2">
-                        <RowIcon family={item.family} />
-                        <span className="truncate font-medium">{item.displayLabel}</span>
-                      </span>
-                      <CategoryPill formFactor={item.formFactor} kind={item.kind} />
-                    </CommandPrimitive.Item>
-                  ))}
-                </CommandPrimitive.List>
+                <>
+                  {/* If the query looks like a Windows-laptop brand we may have
+                      fuzzy-matched something irrelevant. Surface the Windows FYI
+                      above the results so the user sees both — the banner doesn't
+                      block them from picking a real match below. */}
+                  {looksLikeWindowsLaptopQuery(trimmed) ? <WindowsLaptopFyi compact /> : null}
+                  <CommandPrimitive.List className="max-h-80 overflow-y-auto">
+                    {results.map((item) => (
+                      <CommandPrimitive.Item
+                        key={`${item.productId}/${item.releaseId}`}
+                        value={`${item.productId}/${item.releaseId}`}
+                        onSelect={() => handleSelect(item)}
+                        className={cn(
+                          'flex cursor-pointer items-center justify-between gap-3 px-4 py-3 text-sm',
+                          'aria-selected:bg-muted aria-selected:text-foreground'
+                        )}
+                      >
+                        <span className="flex min-w-0 items-center gap-2">
+                          <RowIcon family={item.family} />
+                          <span className="truncate font-medium">{item.displayLabel}</span>
+                        </span>
+                        <CategoryPill formFactor={item.formFactor} kind={item.kind} />
+                      </CommandPrimitive.Item>
+                    ))}
+                  </CommandPrimitive.List>
+                </>
               ) : (
                 <NoMatchesContent query={trimmed} />
               )}
