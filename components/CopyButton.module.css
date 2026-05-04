@@ -49,6 +49,18 @@ blockquote:has(.button) {
   position: relative;
 }
 
+/* MDX wraps `<CopyButton />` on its own line in a `<p>` (markdown's default
+   inline-content handling). The absolute-positioned button doesn't take up
+   flow height, but that empty `<p>` still carries the prose paragraph
+   margin / line-height — leaving an unexplained gap above the quote text.
+   `display: contents` collapses the paragraph's box so its children flow
+   as if the wrapper weren't there. The button stays absolute against the
+   blockquote (its nearest positioned ancestor), and the real text sits at
+   the natural top of the quote. */
+blockquote p:has(> .button) {
+  display: contents;
+}
+
 blockquote .button {
   position: absolute;
   top: 0.5rem;
