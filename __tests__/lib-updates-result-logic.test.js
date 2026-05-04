@@ -9,6 +9,7 @@ import {
   buildStuckOnOldOsClassification,
   buildAppleSupportEstimate,
   decrementPatchVersion,
+  effectiveOsDropDate,
   formatTimeSince,
   formatTimeUntil,
   updateYearsFor,
@@ -252,6 +253,75 @@ describe('classifyResult — supportedOsRange cross-reference', () => {
     expect(c.effectiveEolFrom).toBe('2027-09-15');
   });
 
+  it('device-max-os-eol uses Apple-cadence date when endoflife.date eolFrom is later (back-patched OS)', () => {
+    // Real-world scenario: 2013 MacBook Air pinned to macOS 11 (Big Sur).
+    // endoflife.date marks Big Sur eolFrom as 2026-02-02 because Apple
+    // shipped a surprise back-patch in early 2026 — but Big Sur fell out
+    // of Apple's regular "current + 2 prior" cadence when macOS 14 (Sonoma)
+    // shipped in Sep 2023, two-and-a-half years earlier. Honest date wins.
+    const snap = normalizeSnapshot({
+      schemaVersion: 1, generatedAt: '2026-05-03T00:00:00Z', source: 'x',
+      products: [
+        {
+          id: 'macbook-air', label: 'Apple MacBook Air', kind: 'device', family: 'apple', formFactor: 'laptop',
+          endoflifeUrl: 'https://x',
+          releases: [{ id: 'mba-2013', label: '13-inch Mid 2013', releaseDate: '2013-06-01', supportedOsRange: '11' }],
+        },
+        {
+          id: 'macos', label: 'Apple macOS', kind: 'os', family: 'apple', formFactor: 'os',
+          endoflifeUrl: 'https://x',
+          releases: [
+            { id: '26', label: '26', releaseDate: '2025-09-15' },
+            { id: '15', label: '15', releaseDate: '2024-09-15' },
+            { id: '14', label: '14', releaseDate: '2023-09-26' }, // bumped Big Sur to N-3
+            { id: '13', label: '13', releaseDate: '2022-10-24', isEol: true, eolFrom: '2025-09-15' },
+            { id: '12', label: '12', releaseDate: '2021-10-25', isEol: true, eolFrom: '2024-09-16' },
+            { id: '11', label: '11', releaseDate: '2020-11-12', isEol: true, eolFrom: '2026-02-02' },
+          ],
+        },
+      ],
+    });
+    const product = snap.products.find((p) => p.id === 'macbook-air');
+    const r = product.releases[0];
+    const c = classifyResult({ product, release: r }, { now: NOW, snapshot: snap });
+    expect(c.variant).toBe('device-eol');
+    expect(c.reason).toBe('device-max-os-eol');
+    // macOS 14 release date (when Big Sur fell out of cadence), NOT 2026-02-02.
+    expect(c.effectiveEolFrom).toBe('2023-09-26');
+  });
+
+  it('device-max-os-eol uses endoflife.date eolFrom when cadence date is unavailable (chain too short)', () => {
+    // Hypothetical: an OS major's eolFrom is past, but the snapshot lacks
+    // a +3 successor (e.g., a freshly-EOL'd major before two more shipped).
+    // In that case the cadence heuristic returns null and we keep using the
+    // published eolFrom — the existing behaviour.
+    const snap = normalizeSnapshot({
+      schemaVersion: 1, generatedAt: '2026-05-03T00:00:00Z', source: 'x',
+      products: [
+        {
+          id: 'macbook-pro', label: 'Apple MacBook Pro', kind: 'device', family: 'apple', formFactor: 'laptop',
+          endoflifeUrl: 'https://x',
+          releases: [{ id: 'mbp', label: 'MBP', releaseDate: '2018-07-12', supportedOsRange: '13' }],
+        },
+        {
+          id: 'macos', label: 'Apple macOS', kind: 'os', family: 'apple', formFactor: 'os',
+          endoflifeUrl: 'https://x',
+          releases: [
+            { id: '14', label: '14', releaseDate: '2023-09-26' },
+            { id: '13', label: '13', releaseDate: '2022-10-24', isEol: true, eolFrom: '2025-09-15' },
+          ],
+        },
+      ],
+    });
+    const product = snap.products.find((p) => p.id === 'macbook-pro');
+    const r = product.releases[0];
+    const c = classifyResult({ product, release: r }, { now: NOW, snapshot: snap });
+    expect(c.variant).toBe('device-eol');
+    expect(c.reason).toBe('device-max-os-eol');
+    // No cadence date (+3 = macOS 16, not in snapshot) → falls back to eolFrom.
+    expect(c.effectiveEolFrom).toBe('2025-09-15');
+  });
+
   it('older Mac whose max OS is approaching EOL → device-eol-soon via device-max-os-soon', () => {
     // Hypothetical 2018 MacBook Pro pinned to macOS 13, eolFrom 6 months out.
     const snap = normalizeSnapshot({
@@ -403,6 +473,60 @@ describe('classifyResult — eol-soon warning state', () => {
       id: 'p', label: 'P', releaseDate: '2022-01-01', eolFrom: '2026-09-01', isEol: true,
     });
     expect(classifyResult({ product, release: r }, { now: NOW }).variant).toBe('device-eol');
+  });
+});
+
+describe('effectiveOsDropDate', () => {
+  function macosProduct(releases) {
+    return normalizeProduct({
+      id: 'macos', label: 'Apple macOS', kind: 'os', family: 'apple', formFactor: 'os',
+      endoflifeUrl: 'https://x', releases,
+    });
+  }
+
+  it("returns the release date of the macOS three majors newer than the device's max", () => {
+    // Big Sur (11) → bumped to N-3 when macOS 14 (Sonoma) shipped 2023-09-26.
+    const macos = macosProduct([
+      { id: '26', label: '26', releaseDate: '2025-09-15' },
+      { id: '15', label: '15', releaseDate: '2024-09-15' },
+      { id: '14', label: '14', releaseDate: '2023-09-26' },
+      { id: '13', label: '13', releaseDate: '2022-10-24' },
+      { id: '12', label: '12', releaseDate: '2021-10-25' },
+      { id: '11', label: '11', releaseDate: '2020-11-12' },
+    ]);
+    expect(effectiveOsDropDate(macos, 11)).toBe('2023-09-26');
+    expect(effectiveOsDropDate(macos, 12)).toBe('2024-09-15');
+    expect(effectiveOsDropDate(macos, 13)).toBe('2025-09-15');
+  });
+
+  it('handles the 10.x → 11 transition by walking the date-sorted list (not integer math)', () => {
+    // Catalina (10.15) → bumped to N-3 when Ventura (13) shipped 2022-10-24.
+    // Naive arithmetic 10.15 + 3 = 10.18 doesn't exist; the date-sorted walk works.
+    const macos = macosProduct([
+      { id: '13', label: '13', releaseDate: '2022-10-24' },
+      { id: '12', label: '12', releaseDate: '2021-10-25' },
+      { id: '11', label: '11', releaseDate: '2020-11-12' },
+      { id: '10.15', label: 'Catalina', releaseDate: '2019-10-07' },
+      { id: '10.14', label: 'Mojave', releaseDate: '2018-09-24' },
+    ]);
+    expect(effectiveOsDropDate(macos, 10.15)).toBe('2022-10-24');
+  });
+
+  it('returns null when no +3 successor exists yet (OS still in the support window)', () => {
+    // macOS 15 → would need macOS 18 to drop it; only 26 has shipped past it.
+    const macos = macosProduct([
+      { id: '26', label: '26', releaseDate: '2025-09-15' },
+      { id: '15', label: '15', releaseDate: '2024-09-15' },
+      { id: '14', label: '14', releaseDate: '2023-09-26' },
+    ]);
+    expect(effectiveOsDropDate(macos, 15)).toBeNull();
+  });
+
+  it('returns null for unknown majors and missing inputs', () => {
+    const macos = macosProduct([{ id: '14', label: '14', releaseDate: '2023-09-26' }]);
+    expect(effectiveOsDropDate(macos, 99)).toBeNull();
+    expect(effectiveOsDropDate(null, 11)).toBeNull();
+    expect(effectiveOsDropDate(macos, NaN)).toBeNull();
   });
 });
 
