@@ -233,7 +233,7 @@ function ResultBox({ tone, icon: IconProp, iconSize = 'lg', title, subtitle, chi
   // text-2xl/3xl heading. mt-1 keeps the icon's TOP edge anchored at the
   // same position as the smaller h-6 variant would have used, so the icon
   // grows downward from a consistent flow line through the box stack.
-  const iconSizeClass = iconSize === 'md' ? 'h-10 w-10 mt-1' : 'h-12 w-12';
+  const iconSizeClass = iconSize === 'md' ? 'h-10 w-10' : 'h-12 w-12';
   // Asymmetric padding (pl-4 instead of p-6) plus gap-3 (instead of gap-4) so
   // the heading inside a big-icon ResultBox doesn't sit visibly further right
   // than the smaller-panel headings (DeviceConfirmedSummary etc) sharing the
