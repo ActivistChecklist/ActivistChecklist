@@ -1704,9 +1704,13 @@ function OsPatchPickerStep({ product, release, displayLabel, onPickLatest, onPic
 function OsFinalSuccessBox({ product, release, displayLabel, onReset }) {
   const t = useTranslations();
   const showVersion = !!release.latestVersion && product.id !== 'windows';
+  // For the version path the parenthetical reads "(iOS 17.5.1)" — short OS
+  // family name (from supportedOsLabel) + the latestVersion which already
+  // embeds the major (iOS 26 → "26.4.2", macOS 14 → "14.6"). Don't pass the
+  // displayLabel here; it duplicates the major and reads as "iOS 26 26.4.2".
   const versionLine = showVersion
     ? t('updates.result.finalSuccess.osLatestUpdatesWithVersion', {
-        label: displayLabel,
+        os: shortOsLabel(t, product),
         version: release.latestVersion,
       })
     : t('updates.result.finalSuccess.osLatestUpdates', { label: displayLabel });
