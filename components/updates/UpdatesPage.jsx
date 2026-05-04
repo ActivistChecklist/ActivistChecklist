@@ -213,17 +213,15 @@ export default function UpdatesPage() {
       )}
 
       {found ? (
-        <div
+        // No outer animation wrapper — ResultCard staggers its own boxes so the device
+        // card stays put and each result box slides up on its own beat.
+        <ResultCard
           key={`${found.product.id}/${found.release.id}`}
-          className="animate-in fade-in slide-in-from-bottom-2 duration-500"
-        >
-          <ResultCard
-            snapshot={snapshot}
-            product={found.product}
-            release={found.release}
-            onReset={handleReset}
-          />
-        </div>
+          snapshot={snapshot}
+          product={found.product}
+          release={found.release}
+          onReset={handleReset}
+        />
       ) : null}
 
       {isSnapshotStale(snapshot) ? (

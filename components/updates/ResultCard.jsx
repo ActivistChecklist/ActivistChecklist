@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import {
   CheckCircle2,
@@ -45,6 +45,25 @@ function formatYearsAgo(years, t) {
 /* ────────── Shared building blocks ────────── */
 
 /**
+ * True after `ms` has elapsed since the component mounted. Used to stagger result-box
+ * appearance: the device summary card swaps in immediately, then the first result
+ * box slides up at 750ms, then any follow-up boxes at 1500ms / 2250ms.
+ *
+ * Step transitions (e.g. picker → needs-update) inside DeviceSupported don't reset
+ * these timers since the hook is owned by the surrounding component, not the
+ * step-keyed children.
+ */
+function useDelayedMount(ms) {
+  const [mounted, setMounted] = useState(ms === 0);
+  useEffect(() => {
+    if (ms === 0) return undefined;
+    const id = setTimeout(() => setMounted(true), ms);
+    return () => clearTimeout(id);
+  }, [ms]);
+  return mounted;
+}
+
+/**
  * Wraps a result block in a slide-up + fade-in. Pair with a `key` prop on the
  * caller to replay the animation when contents swap (e.g. picker → success).
  */
@@ -59,6 +78,17 @@ function SlideInBox({ children, className }) {
       {children}
     </div>
   );
+}
+
+/**
+ * Convenience wrapper: render `children` only after `delayMs` has elapsed, then
+ * animate them in via SlideInBox. Used by every result variant so the cards land
+ * in beat: 750ms after selection, then 1500ms, then 2250ms.
+ */
+function DelayedSlideInBox({ delayMs, children }) {
+  const ready = useDelayedMount(delayMs);
+  if (!ready) return null;
+  return <SlideInBox>{children}</SlideInBox>;
 }
 
 const TONE_RING = {
@@ -636,6 +666,13 @@ function DeviceSupported({ snapshot, product, release, onReset }) {
   const options = buildOsCheckOptions(snapshot, product, release);
   const latestOption = latestPickerMajor(options);
 
+  // Initial-render stagger so the result reveals in beat with the device card.
+  // Step transitions reuse these flags (which are already true) and animate via
+  // the keyed inner SlideInBox — they shouldn't pay the entry cost again.
+  const showFirst = useDelayedMount(750);
+  const showSecond = useDelayedMount(1500);
+  const showThird = useDelayedMount(2250);
+
   function pickLatest(opt) {
     setPickedOption(opt);
     setStep('success');
@@ -655,51 +692,55 @@ function DeviceSupported({ snapshot, product, release, onReset }) {
   }
 
   return (
-    <div className="space-y-4">
-      <SlideInBox>
-        <DeviceConfirmedSummary product={product} release={release} displayLabel={displayLabel} />
-      </SlideInBox>
+    <div className="space-y-6">
+      {showFirst ? (
+        <SlideInBox>
+          <DeviceConfirmedSummary product={product} release={release} displayLabel={displayLabel} />
+        </SlideInBox>
+      ) : null}
 
-      {/* keyed by `step` so each transition between picker / needs-update / success
-          re-mounts the inner box and replays the slide-up + fade-in. */}
-      <SlideInBox key={step}>
-        {step === 'pick' ? (
-          <OsPickerStep
-            snapshot={snapshot}
-            product={product}
-            release={release}
-            onPickLatest={pickLatest}
-            onPickOlder={pickOlder}
-          />
-        ) : step === 'needs-update' || step === 'needs-update-uncertain' ? (
-          <OsNeedsUpdateBox
-            snapshot={snapshot}
-            product={product}
-            uncertain={step === 'needs-update-uncertain'}
-            latestOption={latestOption}
-            onDidUpdate={didUpdate}
-            onNoUpdatesAvailable={declareNoUpdatesAvailable}
-          />
-        ) : step === 'stuck-on-old-os' ? (
-          <DeviceEol
-            product={product}
-            release={release}
-            classification={buildStuckOnOldOsClassification(release)}
-            onReset={onReset}
-          />
-        ) : (
-          <FinalSuccessBox
-            snapshot={snapshot}
-            product={product}
-            release={release}
-            displayLabel={displayLabel}
-            pickedOption={pickedOption}
-            onReset={onReset}
-          />
-        )}
-      </SlideInBox>
+      {showSecond ? (
+        // keyed by `step` so each transition between picker / needs-update / success
+        // re-mounts the inner box and replays the slide-up + fade-in.
+        <SlideInBox key={step}>
+          {step === 'pick' ? (
+            <OsPickerStep
+              snapshot={snapshot}
+              product={product}
+              release={release}
+              onPickLatest={pickLatest}
+              onPickOlder={pickOlder}
+            />
+          ) : step === 'needs-update' || step === 'needs-update-uncertain' ? (
+            <OsNeedsUpdateBox
+              snapshot={snapshot}
+              product={product}
+              uncertain={step === 'needs-update-uncertain'}
+              latestOption={latestOption}
+              onDidUpdate={didUpdate}
+              onNoUpdatesAvailable={declareNoUpdatesAvailable}
+            />
+          ) : step === 'stuck-on-old-os' ? (
+            <DeviceEolBox
+              product={product}
+              release={release}
+              classification={buildStuckOnOldOsClassification(release)}
+              onReset={onReset}
+            />
+          ) : (
+            <FinalSuccessBox
+              snapshot={snapshot}
+              product={product}
+              release={release}
+              displayLabel={displayLabel}
+              pickedOption={pickedOption}
+              onReset={onReset}
+            />
+          )}
+        </SlideInBox>
+      ) : null}
 
-      {step !== 'stuck-on-old-os' ? (
+      {showThird && step !== 'stuck-on-old-os' ? (
         <SlideInBox>
           <DeviceMaxOsWarning snapshot={snapshot} product={product} release={release} />
         </SlideInBox>
@@ -794,7 +835,7 @@ function DeviceUncertain({ snapshot, product, release, classification, onReset }
   }
 
   return (
-    <SlideInBox>
+    <DelayedSlideInBox delayMs={750}>
       <ResultBox
         tone="amber"
         icon={AlertTriangle}
@@ -820,7 +861,7 @@ function DeviceUncertain({ snapshot, product, release, classification, onReset }
         <ThreatModelBlock soft />
         <ResultActions product={product} onReset={onReset} />
       </ResultBox>
-    </SlideInBox>
+    </DelayedSlideInBox>
   );
 }
 
@@ -846,18 +887,24 @@ function DeviceEolSoon({ snapshot, product, release, classification, onReset }) 
     : null;
 
   return (
-    <SlideInBox>
+    <DelayedSlideInBox delayMs={750}>
       <ResultBox tone="amber" icon={Clock} title={title} subtitle={subtitle}>
         <PrescriptionLine formFactor={product.formFactor} urgency="plan" />
         <ThreatModelBlock />
         <BuyingGuidance formFactor={product.formFactor} />
         <ResultActions product={product} onReset={onReset} />
       </ResultBox>
-    </SlideInBox>
+    </DelayedSlideInBox>
   );
 }
 
-function DeviceEol({ product, release, classification, onReset }) {
+/**
+ * The red EOL box itself, without an animation wrapper. Split out so the
+ * DeviceSupported "stuck on old OS" branch can drop it inside its keyed step
+ * SlideInBox without doubling up wrappers (which would also re-trigger the
+ * initial-mount stagger when the user's actually mid-flow).
+ */
+function DeviceEolBox({ product, release, classification, onReset }) {
   const t = useTranslations();
   const displayLabel = buildDisplayLabel(product, release);
 
@@ -881,19 +928,25 @@ function DeviceEol({ product, release, classification, onReset }) {
   }
 
   return (
-    <SlideInBox>
-      <ResultBox
-        tone="red"
-        icon={XCircle}
-        title={t('updates.result.deviceUnsupportedTitle', { label: displayLabel })}
-        subtitle={subtitle}
-      >
-        <PrescriptionLine formFactor={product.formFactor} urgency="replace" />
-        <ThreatModelBlock />
-        <BuyingGuidance formFactor={product.formFactor} />
-        <ResultActions product={product} onReset={onReset} />
-      </ResultBox>
-    </SlideInBox>
+    <ResultBox
+      tone="red"
+      icon={XCircle}
+      title={t('updates.result.deviceUnsupportedTitle', { label: displayLabel })}
+      subtitle={subtitle}
+    >
+      <PrescriptionLine formFactor={product.formFactor} urgency="replace" />
+      <ThreatModelBlock />
+      <BuyingGuidance formFactor={product.formFactor} />
+      <ResultActions product={product} onReset={onReset} />
+    </ResultBox>
+  );
+}
+
+function DeviceEol(props) {
+  return (
+    <DelayedSlideInBox delayMs={750}>
+      <DeviceEolBox {...props} />
+    </DelayedSlideInBox>
   );
 }
 
@@ -902,7 +955,7 @@ function OsSupported({ product, release, onReset }) {
   const displayLabel = buildDisplayLabel(product, release);
 
   return (
-    <div className="space-y-4">
+    <DelayedSlideInBox delayMs={750}>
       <ResultBox
         tone="green"
         icon={CheckCircle2}
@@ -922,7 +975,7 @@ function OsSupported({ product, release, onReset }) {
         ) : null}
         <ResultActions product={product} onReset={onReset} />
       </ResultBox>
-    </div>
+    </DelayedSlideInBox>
   );
 }
 
@@ -939,7 +992,7 @@ function OsEol({ product, release, onReset }) {
   }
 
   return (
-    <SlideInBox>
+    <DelayedSlideInBox delayMs={750}>
       <ResultBox
         tone="red"
         icon={XCircle}
@@ -963,7 +1016,7 @@ function OsEol({ product, release, onReset }) {
         <ThreatModelBlock />
         <ResultActions product={product} onReset={onReset} />
       </ResultBox>
-    </SlideInBox>
+    </DelayedSlideInBox>
   );
 }
 
