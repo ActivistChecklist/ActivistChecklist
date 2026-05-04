@@ -167,6 +167,15 @@ export default function DeviceSearchInput({
   const [hasSelection, setHasSelection] = useState(Boolean(selectedLabel));
   const inputRef = useRef(null);
   const containerRef = useRef(null);
+  const listRef = useRef(null);
+
+  // Reset the results scroll position whenever the user types — without this,
+  // typing more characters after scrolling halfway down the previous result
+  // set leaves the user looking at items mid-list while the higher-relevance
+  // matches for the new query are out of view at the top.
+  useEffect(() => {
+    if (listRef.current) listRef.current.scrollTop = 0;
+  }, [query, priorityProductIds]);
 
   // Click-to-edit seed: parent set a string we should pre-fill and pre-select. This makes
   // the input behave like a "select" the user reopened — the previous value is there,
@@ -365,7 +374,7 @@ export default function DeviceSearchInput({
                       above the results so the user sees both — the banner doesn't
                       block them from picking a real match below. */}
                   {looksLikeWindowsLaptopQuery(trimmed) ? <WindowsLaptopFyi compact /> : null}
-                  <CommandPrimitive.List className="max-h-80 overflow-y-auto">
+                  <CommandPrimitive.List ref={listRef} className="max-h-80 overflow-y-auto">
                     {results.map((item) => (
                       <CommandPrimitive.Item
                         key={`${item.productId}/${item.releaseId}`}
