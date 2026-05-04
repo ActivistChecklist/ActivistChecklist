@@ -1107,20 +1107,23 @@ function DeviceEolSoon({ snapshot, product, release, classification, onReset }) 
     ? Math.max(0, Math.round((new Date(eolDate) - new Date()) / (30.44 * 24 * 60 * 60 * 1000)))
     : null;
 
-  // Underline the time-to-EOL phrase so the urgency reads at a glance even
-  // before the user processes the rest of the sentence.
-  const underlineChunks = (chunks) => (
-    <u className="underline decoration-2 underline-offset-4">{chunks}</u>
+  // Time-to-EOL phrase rendered as a warning-coloured highlight chip so the
+  // urgency reads at a glance — same hue as the Clock icon, with the text
+  // inverted to the page background colour so it pops against the chip.
+  const markChunks = (chunks) => (
+    <mark className="rounded-md bg-warning px-1.5 py-0.5 text-background">
+      {chunks}
+    </mark>
   );
   const title = months != null && months > 0
     ? t.rich('updates.result.eolSoon.titleMonths', {
         label: displayLabel,
         months,
-        u: underlineChunks,
+        mark: markChunks,
       })
     : t.rich('updates.result.eolSoon.titleSoon', {
         label: displayLabel,
-        u: underlineChunks,
+        mark: markChunks,
       });
 
   const subtitle = eolDate
