@@ -41,7 +41,11 @@ function NoMatchesContent({ query }) {
     // reads consistently regardless of which message landed.
     return (
       <div className="space-y-3 px-6 py-8 text-sm sm:px-8 sm:py-10">
-        <p className="font-medium text-foreground">{t('updates.noMatchesWindowsLaptop')}</p>
+        <p className="font-medium text-foreground">
+          {t.rich('updates.noMatchesWindowsLaptop', {
+            b: (chunks) => <strong className="font-bold">{chunks}</strong>,
+          })}
+        </p>
         <div>
           <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             {t('updates.noMatchesWindowsPathLabel')}

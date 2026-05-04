@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { ChevronLeft, ChevronRight, X, Info, AlertTriangle } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, Info } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { SUB_CATEGORIES_BY_PLATFORM, leafForPlatform } from '@/lib/updates/categories';
@@ -257,10 +257,11 @@ function L3({ platform, subCategory, onClickPlatform, onClear }) {
             {findHint}
           </p>
           {isWindows ? (
-            <div className="mt-2 flex items-start gap-1.5 border-t border-border/60 pt-2 text-xs leading-relaxed text-muted-foreground">
-              <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-warning" aria-hidden="true" />
-              <span>{t('updates.findYourModel.windowsCaveat')}</span>
-            </div>
+            <p className="mt-2 border-t border-border/60 pt-2 text-xs leading-relaxed text-muted-foreground">
+              {t.rich('updates.findYourModel.windowsCaveat', {
+                b: (chunks) => <strong className="font-semibold text-foreground">{chunks}</strong>,
+              })}
+            </p>
           ) : null}
         </div>
       ) : null}

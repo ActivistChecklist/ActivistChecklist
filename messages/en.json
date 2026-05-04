@@ -358,7 +358,7 @@
     "noMatches": "No matches in our list.",
     "noMatchesHelp": "Try the manufacturer name (e.g. \"Galaxy A14\" instead of just \"A14\").",
     "noMatchesSupported": "We currently track Apple, Google, Samsung, Motorola, OnePlus, Nokia, plus iOS, iPadOS, macOS, Android, and Windows.",
-    "noMatchesWindowsLaptop": "Windows laptop manufacturers don't announce when they stop offering security updates, so checking the laptop model won't tell you. Check your Windows version instead. That's what determines whether you're still receiving updates.",
+    "noMatchesWindowsLaptop": "Windows laptop manufacturers don't announce when they stop offering security updates, so checking the laptop <b>model</b> won't tell you. Check your Windows <b>version</b> instead. That's what determines whether you're still receiving updates.",
     "noMatchesWindowsPathLabel": "How to check your Windows version:",
     "loading": "Loading device list...",
     "loadError": "We couldn't load the device list. <retryLink>Try again</retryLink> or check <link>endoflife.date</link> directly.",
@@ -415,7 +415,7 @@
       "android": "Settings → About phone → Model number",
       "androidOs": "Settings → About phone → Android version",
       "windows": "Press Windows key + R, type <code>winver</code>, then Enter",
-      "windowsCaveat": "Windows laptop manufacturers don't announce when they stop offering security updates, so checking the laptop model won't tell you. Check your Windows version instead. That's what determines whether you're still receiving updates."
+      "windowsCaveat": "Windows laptop manufacturers don't announce when they stop offering security updates, so checking the laptop <b>model</b> won't tell you. Check your Windows <b>version</b> instead. That's what determines whether you're still receiving updates."
     },
     "otherInfo": {
       "title": "Other devices",
