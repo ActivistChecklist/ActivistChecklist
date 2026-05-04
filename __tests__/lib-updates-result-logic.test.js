@@ -6,6 +6,8 @@ import {
   buildLatestOsReminder,
   buildDeviceMaxOsWarning,
   buildOsCheckOptions,
+  buildStuckOnOldOsClassification,
+  latestPickerMajor,
 } from '../lib/updates/result-logic';
 
 const NOW = new Date('2026-05-03T00:00:00Z');
@@ -652,5 +654,72 @@ describe('buildOsCheckOptions', () => {
     const opts = buildOsCheckOptions(snap, product, r);
     // No range scoping — both Android 15 and 16 are returned, sorted desc.
     expect(opts.map((o) => o.major)).toEqual([16, 15]);
+  });
+});
+
+describe('latestPickerMajor', () => {
+  it('returns null for null/empty/non-array input', () => {
+    expect(latestPickerMajor(null)).toBeNull();
+    expect(latestPickerMajor(undefined)).toBeNull();
+    expect(latestPickerMajor([])).toBeNull();
+    expect(latestPickerMajor('not an array')).toBeNull();
+  });
+
+  it('returns the first option (buildOsCheckOptions sorts highest-major first)', () => {
+    const opts = [
+      { major: 16, latestVersion: '16.1', codename: null },
+      { major: 15, latestVersion: '15.4', codename: null },
+      { major: 14, latestVersion: '14.7', codename: null },
+    ];
+    expect(latestPickerMajor(opts)).toBe(opts[0]);
+  });
+
+  it('returns the single option when only one major is available', () => {
+    const opts = [{ major: 11, latestVersion: '11.0', codename: null }];
+    expect(latestPickerMajor(opts)).toBe(opts[0]);
+  });
+
+  it('preserves codename + latestVersion fields on the returned option', () => {
+    const opts = [
+      { major: 26, latestVersion: '26.1', codename: 'Tahoe', eolFrom: null },
+      { major: 25, latestVersion: '25.5', codename: null, eolFrom: '2026-01-01' },
+    ];
+    const latest = latestPickerMajor(opts);
+    expect(latest.codename).toBe('Tahoe');
+    expect(latest.latestVersion).toBe('26.1');
+  });
+});
+
+describe('buildStuckOnOldOsClassification', () => {
+  const now = new Date('2026-05-03T00:00:00Z');
+
+  it('returns a device-eol classification with the user-stuck reason', () => {
+    const r = release({ releaseDate: '2020-01-01' });
+    const c = buildStuckOnOldOsClassification(r, now);
+    expect(c.variant).toBe('device-eol');
+    expect(c.reason).toBe('user-stuck-on-old-os');
+    expect(c.effectiveEolFrom).toBeNull();
+  });
+
+  it('computes ageYears from releaseDate', () => {
+    const r = release({ releaseDate: '2020-05-03' });
+    const c = buildStuckOnOldOsClassification(r, now);
+    // 6 years ago.
+    expect(c.ageYears).toBeGreaterThan(5.9);
+    expect(c.ageYears).toBeLessThan(6.1);
+  });
+
+  it('returns null ageYears when releaseDate is missing or invalid', () => {
+    expect(buildStuckOnOldOsClassification({}, now).ageYears).toBeNull();
+    expect(buildStuckOnOldOsClassification(null, now).ageYears).toBeNull();
+    expect(buildStuckOnOldOsClassification({ releaseDate: 'not a date' }, now).ageYears).toBeNull();
+  });
+
+  it('matches the shape classifyResult emits so DeviceEol can render it directly', () => {
+    const r = release({ releaseDate: '2019-01-01', isEol: true });
+    const real = classifyResult({ product: deviceProduct(), release: r }, { now });
+    const synth = buildStuckOnOldOsClassification(r, now);
+    // Same set of keys → no consumer needs special-casing.
+    expect(Object.keys(synth).sort()).toEqual(Object.keys(real).sort());
   });
 });

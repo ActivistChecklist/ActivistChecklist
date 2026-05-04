@@ -566,14 +566,18 @@
         "optionOlderCodename": "Older than {os} {version} ({codename})",
         "optionMajor": "{os} {major}",
         "optionMajorCodename": "{os} {major} ({codename})",
-        "optionUnknown": "Older than that, or I'm not sure"
+        "optionUnknown": "Not sure"
       },
       "osNeedsUpdate": {
         "heading": "Your operating system needs an update",
+        "headingMaybe": "Your operating system might need an update",
         "body": "Update to the latest version to get the most recent security updates.",
         "howToHeading": "How to update:",
-        "didUpdateButton": "Done — I've updated"
+        "didUpdateButton": "Done, I've updated",
+        "noUpdatesAvailableButton": "No updates available and I'm on a version older than {os} {major}",
+        "noUpdatesAvailableButtonCodename": "No updates available and I'm on a version older than {os} {major} ({codename})"
       },
+      "deviceUnsupportedSubtitleStuckOnOs": "You can't get newer security updates on this device, so it has stopped receiving the patches that protect your data.",
       "finalSuccess": {
         "heading": "You're up to date.",
         "deviceCheck": "{label} is still receiving security updates.",

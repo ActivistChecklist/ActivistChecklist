@@ -19,6 +19,8 @@ import {
   buildLatestOsReminder,
   buildDeviceMaxOsWarning,
   buildOsCheckOptions,
+  buildStuckOnOldOsClassification,
+  latestPickerMajor,
 } from '@/lib/updates/result-logic';
 import { osProductForDevice } from '@/lib/updates/snapshot';
 import { buildDisplayLabel } from '@/lib/updates/search';
@@ -513,7 +515,28 @@ function FinalSuccessBox({ snapshot, product, release, displayLabel, pickedOptio
   );
 }
 
-function OsNeedsUpdateBox({ snapshot, product, onDidUpdate }) {
+/**
+ * Warning box shown after the OS picker. Two flavours:
+ *
+ *   `uncertain=false` (user clicked an explicit "Older than X" button) → the existing
+ *   "needs an update" copy with a single "Done, I've updated" CTA.
+ *
+ *   `uncertain=true` (user clicked "Not sure") → softened to "might need an update"
+ *   plus a second CTA: "No updates available and I'm on a version older than {latest}".
+ *   That second CTA escalates the result to the device-EOL red screen because if the
+ *   device can't pick up newer majors, the user is effectively stranded on EOL software.
+ *
+ * `latestOption` is the highest still-supported major in the picker (null when the
+ * picker had no enumerable majors — e.g. OnePlus, watches without OS lookup).
+ */
+function OsNeedsUpdateBox({
+  snapshot,
+  product,
+  uncertain = false,
+  latestOption = null,
+  onDidUpdate,
+  onNoUpdatesAvailable,
+}) {
   const t = useTranslations();
   const osProduct = osProductForDevice(snapshot, product);
   const osId = osProduct?.id || null;
@@ -522,13 +545,40 @@ function OsNeedsUpdateBox({ snapshot, product, onDidUpdate }) {
   // settingsPath translation is missing for the resolved OS id.
   const updatePath = osId ? (osUpdatePath(t, osId) || osVersionPath(t, osId)) : null;
 
+  let osLabel = null;
+  if (osId) {
+    try {
+      osLabel = t(`updates.result.supportedOsLabel.${osId}`);
+    } catch {
+      osLabel = osProduct?.label || null;
+    }
+  }
+
+  const heading = uncertain
+    ? t('updates.result.osNeedsUpdate.headingMaybe')
+    : t('updates.result.osNeedsUpdate.heading');
+
+  const noUpdatesLabel = (() => {
+    if (!uncertain || !latestOption || !osLabel) return null;
+    return latestOption.codename
+      ? t('updates.result.osNeedsUpdate.noUpdatesAvailableButtonCodename', {
+          os: osLabel,
+          major: latestOption.major,
+          codename: latestOption.codename,
+        })
+      : t('updates.result.osNeedsUpdate.noUpdatesAvailableButton', {
+          os: osLabel,
+          major: latestOption.major,
+        });
+  })();
+
   return (
     <div className="rounded-lg border-2 border-warning/30 bg-warning/5 p-6">
       <div className="flex items-start gap-4">
         <AlertTriangle className="h-12 w-12 shrink-0 text-warning" aria-hidden="true" />
         <div className="min-w-0 flex-1 space-y-3">
           <h2 className="text-2xl font-semibold leading-tight text-foreground sm:text-3xl">
-            {t('updates.result.osNeedsUpdate.heading')}
+            {heading}
           </h2>
           <p className="text-base text-foreground/80">
             {t('updates.result.osNeedsUpdate.body')}
@@ -544,8 +594,11 @@ function OsNeedsUpdateBox({ snapshot, product, onDidUpdate }) {
             </div>
           ) : null}
 
-          <div className="pt-2">
+          <div className="flex flex-wrap gap-2 pt-2">
             <PickerButton onClick={onDidUpdate} label={t('updates.result.osNeedsUpdate.didUpdateButton')} />
+            {noUpdatesLabel && onNoUpdatesAvailable ? (
+              <PickerButton onClick={onNoUpdatesAvailable} label={noUpdatesLabel} />
+            ) : null}
           </div>
         </div>
       </div>
@@ -555,20 +608,28 @@ function OsNeedsUpdateBox({ snapshot, product, onDidUpdate }) {
 
 function DeviceSupported({ snapshot, product, release, onReset }) {
   const displayLabel = buildDisplayLabel(product, release);
-  // step: 'pick' | 'success' | 'needs-update'
+  // step: 'pick' | 'success' | 'needs-update' | 'needs-update-uncertain' | 'stuck-on-old-os'
   const [step, setStep] = useState('pick');
   const [pickedOption, setPickedOption] = useState(null);
+  const options = buildOsCheckOptions(snapshot, product, release);
+  const latestOption = latestPickerMajor(options);
 
   function pickLatest(opt) {
     setPickedOption(opt);
     setStep('success');
   }
+  // `uncertain` distinguishes "I clicked Older than X.Y.Z" (we know roughly where they
+  // sit) from "I clicked Not sure" (we don't, so the box softens its language and adds
+  // an exit hatch to the device-EOL screen).
   function pickOlder(opt) {
     setPickedOption(opt);
-    setStep('needs-update');
+    setStep(opt ? 'needs-update' : 'needs-update-uncertain');
   }
   function didUpdate() {
     setStep('success');
+  }
+  function declareNoUpdatesAvailable() {
+    setStep('stuck-on-old-os');
   }
 
   return (
@@ -588,8 +649,22 @@ function DeviceSupported({ snapshot, product, release, onReset }) {
             onPickLatest={pickLatest}
             onPickOlder={pickOlder}
           />
-        ) : step === 'needs-update' ? (
-          <OsNeedsUpdateBox snapshot={snapshot} product={product} onDidUpdate={didUpdate} />
+        ) : step === 'needs-update' || step === 'needs-update-uncertain' ? (
+          <OsNeedsUpdateBox
+            snapshot={snapshot}
+            product={product}
+            uncertain={step === 'needs-update-uncertain'}
+            latestOption={latestOption}
+            onDidUpdate={didUpdate}
+            onNoUpdatesAvailable={declareNoUpdatesAvailable}
+          />
+        ) : step === 'stuck-on-old-os' ? (
+          <DeviceEol
+            product={product}
+            release={release}
+            classification={buildStuckOnOldOsClassification(release)}
+            onReset={onReset}
+          />
         ) : (
           <FinalSuccessBox
             snapshot={snapshot}
@@ -602,9 +677,11 @@ function DeviceSupported({ snapshot, product, release, onReset }) {
         )}
       </SlideInBox>
 
-      <SlideInBox>
-        <DeviceMaxOsWarning snapshot={snapshot} product={product} release={release} />
-      </SlideInBox>
+      {step !== 'stuck-on-old-os' ? (
+        <SlideInBox>
+          <DeviceMaxOsWarning snapshot={snapshot} product={product} release={release} />
+        </SlideInBox>
+      ) : null}
     </div>
   );
 }
@@ -764,6 +841,10 @@ function DeviceEol({ product, release, classification, onReset }) {
     });
   } else if (classification.reason === 'eoas-past' && release.eoasFrom) {
     subtitle = t('updates.result.deviceUnsupportedSubtitleEnded', { date: formatMonthYear(release.eoasFrom) });
+  } else if (classification.reason === 'user-stuck-on-old-os') {
+    // User just told us "no updates available, I'm older than the latest" — this is a
+    // direct attestation that the device can't reach a supported OS.
+    subtitle = t('updates.result.deviceUnsupportedSubtitleStuckOnOs');
   } else {
     subtitle = t('updates.result.deviceUnsupportedSubtitleUnmaintained');
   }
