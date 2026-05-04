@@ -9,10 +9,10 @@ import {
   Check,
   Clock,
   History,
-  Lock,
   ShieldAlert,
   ShoppingCart,
 } from 'lucide-react';
+import { IoLockClosedThick } from '@/config/icons';
 
 import Link from '@/components/Link';
 import { cn } from '@/lib/utils';
@@ -234,9 +234,13 @@ function ResultBox({ tone, icon: IconProp, iconSize = 'lg', title, subtitle, chi
   // same position as the smaller h-6 variant would have used, so the icon
   // grows downward from a consistent flow line through the box stack.
   const iconSizeClass = iconSize === 'md' ? 'h-10 w-10 mt-1' : 'h-12 w-12';
+  // Asymmetric padding (pl-4 instead of p-6) plus gap-3 (instead of gap-4) so
+  // the heading inside a big-icon ResultBox doesn't sit visibly further right
+  // than the smaller-panel headings (DeviceConfirmedSummary etc) sharing the
+  // same column. Saves ~12px of left offset without shrinking the icon.
   return (
-    <div className={cn('rounded-lg border-2 p-6', TONE_RING[tone])}>
-      <div className="flex items-start gap-4">
+    <div className={cn('rounded-lg border-2 py-6 pl-4 pr-6', TONE_RING[tone])}>
+      <div className="flex items-start gap-3">
         <IconProp
           className={cn(iconSizeClass, 'shrink-0', TONE_ICON_COLOR[tone])}
           aria-hidden="true"
@@ -278,7 +282,7 @@ function EssentialsPanel() {
   const t = useTranslations();
   return (
     <div className="flex items-start gap-3 rounded-lg border-2 border-muted-foreground/50 bg-background px-4 py-4 shadow-sm sm:py-5">
-      <Lock className="mt-1 h-6 w-6 shrink-0 text-primary" aria-hidden="true" />
+      <IoLockClosedThick className="mt-1 h-6 w-6 shrink-0 text-primary" aria-hidden="true" />
       <div className="min-w-0 flex-1">
         <h3 className="text-base font-semibold text-foreground sm:text-lg">
           {t('updates.result.essentialsNextSteps.title')}
