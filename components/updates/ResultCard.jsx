@@ -243,20 +243,39 @@ function ResultBox({ tone, icon: IconProp, title, subtitle, children }) {
 }
 
 /**
- * Action row at the bottom of every result: the cross-reset button on the left, the
- * essentials-link button on the right. Same outline-primary styling on both so they
- * read as paired actions. Wraps on narrow screens.
+ * Action row at the bottom of every result. Now hosts only the cross-reset button
+ * (outline primary) — the essentials CTA moved out of this row into its own
+ * EssentialsNextSteps panel below the result, where it gets the filled-primary
+ * weight that signals the recommended next step.
  */
 function ResultActions({ product, onReset }) {
-  const t = useTranslations();
   return (
     <div className="mt-5 flex flex-wrap items-center gap-2">
       <CrossResetButton product={product} onReset={onReset} />
+    </div>
+  );
+}
+
+/**
+ * Standalone panel that appears below every result (success or failure) with
+ * a connector arrow to the box above. Gray outline shell mirrors the device
+ * card so the panel reads as 'related to but separate from' the colored
+ * result. Filled-primary CTA so the essentials link is visually heavier than
+ * the outline cross-reset button above.
+ */
+function EssentialsPanel() {
+  const t = useTranslations();
+  return (
+    <div className="rounded-lg border-2 border-muted-foreground/50 bg-background px-4 py-4 shadow-sm sm:py-5">
+      <h3 className="text-base font-semibold text-foreground sm:text-lg">
+        {t('updates.result.essentialsNextSteps.title')}
+      </h3>
       <Link
         href={ESSENTIALS_HREF}
         className={cn(
-          'inline-flex items-center justify-center rounded-md border-2 border-primary px-4 py-2 text-sm font-medium text-primary',
-          'transition-colors hover:bg-primary hover:text-primary-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/40'
+          'mt-3 inline-flex cursor-pointer items-center justify-center gap-2 rounded-md border-2 border-primary bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-opacity',
+          'hover:opacity-90',
+          'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/40'
         )}
       >
         {t('updates.result.viewEssentialsCta')}
@@ -742,23 +761,10 @@ function CrossResetButton({ product, onReset }) {
   } else {
     label = t('updates.result.finalSuccess.checkAnotherDevice');
   }
-  // Filled-primary styling so this CTA reads as the recommended next step,
-  // distinct from the outline picker buttons above. Hover lightens via opacity
-  // so the call-to-action stays solid without depending on a primary-hover
-  // token that's only defined in dark mode.
-  return (
-    <button
-      type="button"
-      onClick={onReset}
-      className={cn(
-        'inline-flex cursor-pointer items-center justify-center gap-2 rounded-md border-2 border-primary bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-opacity',
-        'hover:opacity-90',
-        'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/40'
-      )}
-    >
-      {label}
-    </button>
-  );
+  // Outline-primary styling. The recommended next step (the essentials CTA)
+  // moved out of this row into the EssentialsPanel below as a filled button,
+  // so this cross-form-factor reset button steps down to outline.
+  return <PickerButton onClick={onReset} label={label} />;
 }
 
 function FinalSuccessBox({ snapshot, product, release, displayLabel, pickedOption, onReset }) {
@@ -969,12 +975,31 @@ function DeviceSupported({ snapshot, product, release, onReset }) {
 
   // Tone of the step block, used to colour the connector between the step block and
   // the max-OS warning below. 'pick' is the primary picker box; needs-update is the
-  // amber warning; success is the green final box.
+  // amber warning; success is the green final box; stuck-on-old-os is destructive.
   const stepTone = step === 'pick'
     ? 'primary'
     : step === 'needs-update' || step === 'needs-update-uncertain'
       ? 'warning'
-      : 'success';
+      : step === 'stuck-on-old-os'
+        ? 'destructive'
+        : 'success';
+
+  // Show the EssentialsPanel once the user has reached a final state. For
+  // devices we can't enumerate OS versions for (Apple Watch / OnePlus /
+  // watches without OS lookup) the device card IS the final state — no
+  // picker step ever runs — so we show it immediately. Otherwise wait for
+  // step in success / stuck-on-old-os.
+  const isFinalStep = step === 'success' || step === 'stuck-on-old-os';
+  const showEssentials = !canPickOsVersion || isFinalStep;
+  // Tone of the connector ABOVE the EssentialsPanel matches the LAST visible
+  // box. With max-OS warning shown that's warning (yellow); with stuck-on-old-os
+  // step that's destructive; with no picker (Apple Watch) that's the
+  // confirmed-summary success; otherwise it's the step block's tone.
+  const essentialsTone = !canPickOsVersion
+    ? 'success'
+    : showMaxOsWarning && step !== 'stuck-on-old-os'
+      ? 'warning'
+      : stepTone;
 
   return (
     // No outer space-y — the BoxConnector inside each ConnectedBox IS the gap
@@ -1036,6 +1061,14 @@ function DeviceSupported({ snapshot, product, release, onReset }) {
         <SlideInBox>
           <ConnectedBox tone={stepTone}>
             <DeviceMaxOsWarning snapshot={snapshot} product={product} release={release} />
+          </ConnectedBox>
+        </SlideInBox>
+      ) : null}
+
+      {showFirst && showEssentials ? (
+        <SlideInBox>
+          <ConnectedBox tone={essentialsTone}>
+            <EssentialsPanel />
           </ConnectedBox>
         </SlideInBox>
       ) : null}
@@ -1129,6 +1162,7 @@ function DeviceUncertain({ snapshot, product, release, classification, onReset }
   }
 
   return (
+    <>
     <DelayedSlideInBox delayMs={STAGGER_FIRST_MS}>
       <ResultBox
         tone="amber"
@@ -1156,6 +1190,10 @@ function DeviceUncertain({ snapshot, product, release, classification, onReset }
         <ResultActions product={product} onReset={onReset} />
       </ResultBox>
     </DelayedSlideInBox>
+    <DelayedSlideInBox delayMs={STAGGER_SECOND_MS} connectorTone="warning">
+      <EssentialsPanel />
+    </DelayedSlideInBox>
+    </>
   );
 }
 
@@ -1199,6 +1237,7 @@ function DeviceEolSoon({ snapshot, product, release, classification, onReset }) 
     : null;
 
   return (
+    <>
     <DelayedSlideInBox delayMs={STAGGER_FIRST_MS}>
       <ResultBox tone="amber" icon={Clock} title={title} subtitle={subtitle}>
         <PrescriptionLine formFactor={product.formFactor} urgency="plan" />
@@ -1207,6 +1246,10 @@ function DeviceEolSoon({ snapshot, product, release, classification, onReset }) 
         <ResultActions product={product} onReset={onReset} />
       </ResultBox>
     </DelayedSlideInBox>
+    <DelayedSlideInBox delayMs={STAGGER_SECOND_MS} connectorTone="warning">
+      <EssentialsPanel />
+    </DelayedSlideInBox>
+    </>
   );
 }
 
@@ -1305,9 +1348,14 @@ function DeviceEolBox({ product, release, classification, onReset }) {
 
 function DeviceEol(props) {
   return (
-    <DelayedSlideInBox delayMs={STAGGER_FIRST_MS}>
-      <DeviceEolBox {...props} />
-    </DelayedSlideInBox>
+    <>
+      <DelayedSlideInBox delayMs={STAGGER_FIRST_MS}>
+        <DeviceEolBox {...props} />
+      </DelayedSlideInBox>
+      <DelayedSlideInBox delayMs={STAGGER_SECOND_MS} connectorTone="destructive">
+        <EssentialsPanel />
+      </DelayedSlideInBox>
+    </>
   );
 }
 
@@ -1316,6 +1364,7 @@ function OsSupported({ product, release, onReset }) {
   const displayLabel = buildDisplayLabel(product, release);
 
   return (
+    <>
     <DelayedSlideInBox delayMs={STAGGER_FIRST_MS}>
       <ResultBox
         tone="green"
@@ -1337,6 +1386,10 @@ function OsSupported({ product, release, onReset }) {
         <ResultActions product={product} onReset={onReset} />
       </ResultBox>
     </DelayedSlideInBox>
+    <DelayedSlideInBox delayMs={STAGGER_SECOND_MS} connectorTone="success">
+      <EssentialsPanel />
+    </DelayedSlideInBox>
+    </>
   );
 }
 
@@ -1353,6 +1406,7 @@ function OsEol({ product, release, onReset }) {
   }
 
   return (
+    <>
     <DelayedSlideInBox delayMs={STAGGER_FIRST_MS}>
       <ResultBox
         tone="red"
@@ -1381,6 +1435,10 @@ function OsEol({ product, release, onReset }) {
         <ResultActions product={product} onReset={onReset} />
       </ResultBox>
     </DelayedSlideInBox>
+    <DelayedSlideInBox delayMs={STAGGER_SECOND_MS} connectorTone="destructive">
+      <EssentialsPanel />
+    </DelayedSlideInBox>
+    </>
   );
 }
 

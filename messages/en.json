@@ -513,6 +513,9 @@
       "threatModel": "Every week without an update, more ways to break into your device become public knowledge. If the cops seize your phone at a protest or a border crossing (or if someone targets you with <spywareLink>spyware</spywareLink>) those known weaknesses are what they'll use to get inside and read everything on it (even your undeleted Signal messages.",
       "threatModelSoft": "Until you confirm, treat this device as potentially out-of-date for sensitive work.",
       "viewEssentialsCta": "View our digital security essentials →",
+      "essentialsNextSteps": {
+        "title": "Take some next steps to improve your digital security"
+      },
       "startOver": "Start over",
       "deviceInfo": {
         "manufacturerLine": "{manufacturer} · Released {date}",
