@@ -12,6 +12,7 @@
  *   HEALTHCHECK_EOL_PING_URL Optional ping URL on success/failure (skipped if unset)
  */
 
+import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -225,6 +226,18 @@ async function loadExistingSnapshot(targetPath) {
 }
 
 /**
+ * SHA-256 of the snapshot's content excluding `generatedAt`. We update that
+ * field on every cron run by design — including it in the hash would make
+ * every run look like a content change and defeat the skip-write optimisation.
+ * Stable JSON.stringify is sufficient here because we always serialise from
+ * the same Node process with the same key insertion order.
+ */
+function stableSnapshotHash(snapshot) {
+  const { generatedAt: _omit, ...rest } = snapshot;
+  return createHash('sha256').update(JSON.stringify(rest)).digest('hex');
+}
+
+/**
  * Read the hand-curated legacy Mac models file. Returns the raw map (still
  * containing `_README` and other doc pseudo-keys); callers run it through
  * stripDocKeys() before consuming. Throws on parse errors so a malformed
@@ -415,8 +428,21 @@ async function main() {
     return;
   }
 
+  // Skip-write when content is unchanged. Compare hashes computed over the
+  // snapshot WITHOUT generatedAt — that field updates every cron run by design,
+  // so including it would defeat the comparison. Leaving the file alone keeps
+  // mtime + ETag stable, so browsers revalidate via 304 and reuse their cached
+  // copy until a real upstream change comes through.
+  const newHash = stableSnapshotHash(snapshot);
+  const oldHash = previous ? stableSnapshotHash(previous) : null;
+  if (oldHash && newHash === oldHash) {
+    console.log(`Snapshot content unchanged (hash ${newHash.slice(0, 12)}); skipping write`);
+    await pingHealthcheck(true);
+    return;
+  }
+
   await writeAtomic(outputPath, json);
-  console.log(`Wrote ${json.length} bytes to ${outputPath}`);
+  console.log(`Wrote ${json.length} bytes to ${outputPath} (hash ${newHash.slice(0, 12)})`);
   await pingHealthcheck(true);
 }
 
