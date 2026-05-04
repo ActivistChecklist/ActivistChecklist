@@ -282,7 +282,7 @@ function EssentialsPanel() {
   const t = useTranslations();
   return (
     <div className="flex items-start gap-3 rounded-lg border-2 border-muted-foreground/50 bg-background px-4 py-4 shadow-sm sm:py-5">
-      <IoLockClosedThick className="mt-1 h-6 w-6 shrink-0 text-primary" aria-hidden="true" />
+      <IoLockClosedThick className="h-7 w-7 shrink-0 text-primary" aria-hidden="true" />
       <div className="min-w-0 flex-1">
         <h3 className="text-base font-semibold text-foreground sm:text-lg">
           {t('updates.result.essentialsNextSteps.title')}
