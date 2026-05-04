@@ -30,7 +30,7 @@ export default async function LocaleLayout({ children, params }) {
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body className="min-h-screen bg-background font-body antialiased">
+      <body className="min-h-screen bg-background font-body antialiased selection:bg-primary selection:text-primary-foreground">
         <AnnouncementProvider value={announcement}>
           <NextIntlClientProvider locale={locale} messages={messages}>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>

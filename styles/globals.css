@@ -296,23 +296,17 @@
   }
 }
 
-/* Site-wide text selection. Lives outside @layer base so it isn't reordered into a
-   lower cascade tier than the browser's default selection styling on inputs (where
-   the dark-mode default reads as near-invisible navy on near-black). Applied to both
-   ::selection and the Firefox-specific ::-moz-selection, plus an explicit selector
-   for input/textarea since some browsers scope ::selection differently inside form
-   controls. */
-::selection,
-::-moz-selection,
-input::selection,
-textarea::selection {
-  background-color: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
-}
-
 @layer base {
   * {
     @apply border-border;
+  }
+  /* Site-wide text selection — applied via Tailwind's `selection:` variant on
+     html so the rule lands in @layer utilities (highest of the Tailwind layers)
+     and beats both the browser default and any input-specific styling. The
+     descendant selectors `selection:**:bg-primary` ensure inputs/textarea
+     pick it up too, since some engines scope ::selection per-element. */
+  html {
+    @apply selection:bg-primary selection:text-primary-foreground;
   }
   body {
     @apply bg-background text-foreground;
