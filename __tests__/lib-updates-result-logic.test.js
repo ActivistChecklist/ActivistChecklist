@@ -830,9 +830,12 @@ describe('updateYearsFor', () => {
     expect(updateYearsFor('apple', 'tablet')).toEqual({ min: 7.5, max: 8, labelKey: 'tablet' });
   });
 
-  it('falls back to form-factor default for Apple form factors with no override (laptop/desktop/watch)', () => {
-    expect(updateYearsFor('apple', 'laptop').min).toBe(7);
-    expect(updateYearsFor('apple', 'desktop').min).toBe(7);
+  it('returns the Apple Mac override (8-10 yr from completed-window analysis)', () => {
+    expect(updateYearsFor('apple', 'laptop')).toEqual({ min: 8, max: 10, labelKey: 'laptop' });
+    expect(updateYearsFor('apple', 'desktop')).toEqual({ min: 8, max: 10, labelKey: 'laptop' });
+  });
+
+  it('falls back to form-factor default for Apple form factors with no override (watch)', () => {
     expect(updateYearsFor('apple', 'watch').min).toBe(4);
   });
 
@@ -934,13 +937,13 @@ describe('buildAppleSupportEstimate', () => {
     expect(buildAppleSupportEstimate(appleProduct('phone'), r, now)).toBeNull();
   });
 
-  it('uses laptop window (7-10 yr) for both laptop and desktop form factors', () => {
+  it('uses Apple Mac window (8-10 yr) for both laptop and desktop form factors', () => {
     const r = release({ releaseDate: '2024-01-01' });
     const laptop = buildAppleSupportEstimate(appleProduct('laptop'), r, now);
     const desktop = buildAppleSupportEstimate(appleProduct('desktop'), r, now);
-    expect(laptop.minYears).toBe(7);
+    expect(laptop.minYears).toBe(8);
     expect(laptop.maxYears).toBe(10);
-    expect(desktop.minYears).toBe(7);
+    expect(desktop.minYears).toBe(8);
     expect(desktop.maxYears).toBe(10);
     expect(desktop.deviceLabelKey).toBe('laptop');
   });
