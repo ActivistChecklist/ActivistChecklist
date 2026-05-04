@@ -300,14 +300,6 @@
   * {
     @apply border-border;
   }
-  /* Site-wide text selection — applied via Tailwind's `selection:` variant on
-     html so the rule lands in @layer utilities (highest of the Tailwind layers)
-     and beats both the browser default and any input-specific styling. The
-     descendant selectors `selection:**:bg-primary` ensure inputs/textarea
-     pick it up too, since some engines scope ::selection per-element. */
-  html {
-    @apply selection:bg-primary selection:text-primary-foreground;
-  }
   body {
     @apply bg-background text-foreground;
   }
@@ -644,4 +636,23 @@
   :not(.checklist-item *) > .how-to-container {
     @apply bg-muted p-4 md:p-8 md:pl-12 block rounded-lg mt-4;
   }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Text selection. Lives at the bottom of the file, OUTSIDE any @layer block, so
+   it sits in the implicit "no-layer" group (highest priority in the CSS Cascade
+   Layers spec). The `*::selection` selector is the only thing Chrome / Safari
+   reliably honour for text *inside* form controls — `body::selection` does NOT
+   propagate into <input> / <textarea>, which is why prior attempts using the
+   Tailwind `selection:` variant on body or html had no visible effect. The
+   !important is belt-and-suspenders against any user-agent or future utility
+   that might try to win on specificity.
+   ───────────────────────────────────────────────────────────────────────────── */
+*::selection {
+  background-color: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
+}
+*::-moz-selection {
+  background-color: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
 }
