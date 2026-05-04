@@ -54,15 +54,15 @@ blockquote .button {
   top: 0.5rem;
   right: 0.5rem;
   padding: 0.375rem;
-  background: transparent;
-  border-color: transparent;
+  background: hsl(var(--background));
+  border-color: hsl(var(--border));
   color: hsl(var(--muted-foreground));
 }
 
 blockquote .button:hover {
-  background: hsl(var(--background));
-  border-color: hsl(var(--border));
-  color: hsl(var(--foreground));
+  background: hsl(var(--accent));
+  border-color: hsl(var(--muted-foreground) / 0.4);
+  color: hsl(var(--accent-foreground));
 }
 
 blockquote .label {
