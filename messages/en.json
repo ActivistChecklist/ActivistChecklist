@@ -501,20 +501,30 @@
       },
       "buyingGuidance": {
         "heading": "When you replace it",
-        "phoneYears": "Most phones get security updates for {min}-{max} years from their release date.",
-        "laptopYears": "Most laptops get security updates for {min}-{max} years from their release date.",
-        "tabletYears": "Most tablets get security updates for {min}-{max} years from their release date.",
-        "watchYears": "Most smartwatches get security updates for {min}-{max} years from their release date.",
+        "yearsPattern": "Most {deviceLabel} get security updates for {min}-{max} years from their release date.",
+        "deviceLabel": {
+          "phone": "phones",
+          "laptop": "laptops",
+          "tablet": "tablets",
+          "watch": "smartwatches"
+        },
         "checkBeforeBuying": "If you're buying used, search for the model here first to see how long it'll keep getting updates."
       },
-      "eolGuidance": {
-        "heading": "What to do",
-        "actionPhone": "Plan to replace this phone. The longer you stay on an unsupported device, the more known vulnerabilities accumulate against it.",
-        "actionLaptop": "Plan to replace this laptop. The longer you stay on an unsupported device, the more known vulnerabilities accumulate against it.",
-        "actionDesktop": "Plan to replace this Mac. The longer you stay on an unsupported device, the more known vulnerabilities accumulate against it.",
-        "actionTablet": "Plan to replace this tablet. The longer you stay on an unsupported device, the more known vulnerabilities accumulate against it.",
-        "actionWatch": "This watch is no longer receiving security updates. Consider replacing it.",
-        "actionGeneric": "Plan to replace this device."
+      "ctaReplace": {
+        "phone": "We suggest getting a new phone.",
+        "tablet": "We suggest getting a new tablet.",
+        "laptop": "We suggest getting a new laptop.",
+        "desktop": "We suggest getting a new Mac.",
+        "watch": "We suggest getting a new watch.",
+        "generic": "We suggest getting a new device."
+      },
+      "ctaPlan": {
+        "phone": "Start planning your next phone.",
+        "tablet": "Start planning your next tablet.",
+        "laptop": "Start planning your next laptop.",
+        "desktop": "Start planning your next Mac.",
+        "watch": "Start planning your next watch.",
+        "generic": "Start planning your next device."
       },
       "deviceConfirmedShort": "{label} is still receiving security updates.",
       "osCheckStep": {

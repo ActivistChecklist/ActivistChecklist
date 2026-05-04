@@ -8,6 +8,8 @@ import {
   AlertTriangle,
   Check,
   ArrowRight,
+  ShieldAlert,
+  ShoppingCart,
 } from 'lucide-react';
 
 import Link from '@/components/Link';
@@ -114,6 +116,38 @@ function CtaList({ items }) {
 }
 
 /**
+ * Block heading with an inline icon — used by the in-box context panels
+ * (Why this matters, When you replace it) so the eye can pick them out
+ * faster than a wall of body text.
+ */
+function BlockHeading({ icon: IconProp, children }) {
+  return (
+    <p className="mb-1 flex items-center gap-1.5 text-sm font-semibold text-foreground">
+      <IconProp className="h-4 w-4 shrink-0 text-foreground/70" aria-hidden="true" />
+      {children}
+    </p>
+  );
+}
+
+/**
+ * The prominent, big, bold action line — appears under the title/subtitle in
+ * the failure (red) and warning (yellow) variants. The whole point of the
+ * page is to land on this sentence.
+ */
+function PrescriptionLine({ formFactor, urgency }) {
+  const t = useTranslations();
+  const namespace = urgency === 'plan' ? 'ctaPlan' : 'ctaReplace';
+  const key = ['phone', 'tablet', 'laptop', 'desktop', 'watch'].includes(formFactor)
+    ? formFactor
+    : 'generic';
+  return (
+    <p className="text-xl font-bold leading-snug text-foreground sm:text-2xl">
+      {t(`updates.result.${namespace}.${key}`)}
+    </p>
+  );
+}
+
+/**
  * "Why this matters" block. Lives INSIDE the colored result box for failure/warning
  * states so the threat-model context is part of the result, not a sibling. Slightly
  * lighter background tone so it sits visually separate from the heading.
@@ -122,9 +156,9 @@ function ThreatModelBlock({ soft = false }) {
   const t = useTranslations();
   return (
     <div className="rounded-md border border-border bg-background/60 p-3">
-      <p className="mb-1 text-sm font-medium text-foreground">
+      <BlockHeading icon={ShieldAlert}>
         {t('updates.result.threatModelHeader')}
-      </p>
+      </BlockHeading>
       <p className="text-sm leading-relaxed text-foreground/90">
         {soft ? t('updates.result.threatModelSoft') : t('updates.result.threatModel')}
       </p>
@@ -132,13 +166,18 @@ function ThreatModelBlock({ soft = false }) {
   );
 }
 
-/** Form-factor → realistic security-update window for buying guidance. */
+/**
+ * Form-factor → realistic security-update window for buying guidance.
+ * `labelKey` indexes updates.result.buyingGuidance.deviceLabel for the noun
+ * that gets interpolated into the shared yearsPattern string ("phones",
+ * "laptops" etc.) — so translators only see one sentence template.
+ */
 const FORM_FACTOR_UPDATE_YEARS = {
-  phone: { min: 5, max: 7, key: 'phoneYears' },
-  tablet: { min: 5, max: 7, key: 'tabletYears' },
-  laptop: { min: 7, max: 10, key: 'laptopYears' },
-  desktop: { min: 7, max: 10, key: 'laptopYears' },
-  watch: { min: 4, max: 6, key: 'watchYears' },
+  phone: { min: 5, max: 7, labelKey: 'phone' },
+  tablet: { min: 5, max: 7, labelKey: 'tablet' },
+  laptop: { min: 7, max: 10, labelKey: 'laptop' },
+  desktop: { min: 7, max: 10, labelKey: 'laptop' }, // iMac/Mac mini etc. read as "laptops"
+  watch: { min: 4, max: 6, labelKey: 'watch' },
 };
 
 /**
@@ -151,43 +190,21 @@ function BuyingGuidance({ formFactor }) {
   if (!spec) return null;
   return (
     <div className="rounded-md border border-border bg-background/60 p-3">
-      <p className="mb-1 text-sm font-medium text-foreground">
+      <BlockHeading icon={ShoppingCart}>
         {t('updates.result.buyingGuidance.heading')}
-      </p>
+      </BlockHeading>
       <p className="text-sm leading-relaxed text-foreground/90">
-        {t(`updates.result.buyingGuidance.${spec.key}`, { min: spec.min, max: spec.max })}{' '}
+        {t('updates.result.buyingGuidance.yearsPattern', {
+          deviceLabel: t(`updates.result.buyingGuidance.deviceLabel.${spec.labelKey}`),
+          min: spec.min,
+          max: spec.max,
+        })}{' '}
         {t('updates.result.buyingGuidance.checkBeforeBuying')}
       </p>
     </div>
   );
 }
 
-/**
- * Action paragraph for an out-of-date device — phrased per form factor (phone /
- * laptop / desktop / tablet / watch / generic).
- */
-function EolGuidance({ formFactor }) {
-  const t = useTranslations();
-  const key = (
-    {
-      phone: 'actionPhone',
-      laptop: 'actionLaptop',
-      desktop: 'actionDesktop',
-      tablet: 'actionTablet',
-      watch: 'actionWatch',
-    }
-  )[formFactor] || 'actionGeneric';
-  return (
-    <div className="space-y-1">
-      <p className="text-xs font-semibold uppercase tracking-wide text-foreground/70">
-        {t('updates.result.eolGuidance.heading')}
-      </p>
-      <p className="text-sm leading-relaxed text-foreground/90">
-        {t(`updates.result.eolGuidance.${key}`)}
-      </p>
-    </div>
-  );
-}
 
 /**
  * The settings-path callout shown inside the OS-check step. Big and bold —
@@ -696,9 +713,7 @@ function DeviceEolSoon({ snapshot, product, release, classification, onReset }) 
   return (
     <SlideInBox>
       <ResultBox tone="amber" icon={AlertTriangle} title={title} subtitle={subtitle}>
-        <p className="text-sm text-foreground/90">
-          {t('updates.result.eolSoon.action')}
-        </p>
+        <PrescriptionLine formFactor={product.formFactor} urgency="plan" />
         <ThreatModelBlock />
         <BuyingGuidance formFactor={product.formFactor} />
         <CrossResetButton product={product} onReset={onReset} />
@@ -734,8 +749,8 @@ function DeviceEol({ product, release, classification, onReset }) {
         title={t('updates.result.deviceUnsupportedTitle', { label: displayLabel })}
         subtitle={subtitle}
       >
+        <PrescriptionLine formFactor={product.formFactor} urgency="replace" />
         <ThreatModelBlock />
-        <EolGuidance formFactor={product.formFactor} />
         <BuyingGuidance formFactor={product.formFactor} />
         <CrossResetButton product={product} onReset={onReset} />
       </ResultBox>
