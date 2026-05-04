@@ -19,7 +19,7 @@ reviews:
     drafts: false
   path_filters:
     - "!**/*.lock"
-    - "!**/yarn.lock"
+    - "!**/pnpm-lock.yaml"
     - "!**/package-lock.json"
     - "!out/**"
   path_instructions:

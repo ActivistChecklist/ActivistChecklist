@@ -1,12 +1,12 @@
 # https://docs.railway.app/guides/config-as-code
 # Builder: Railpack + ./railpack.json (Node 22). Husky is skipped on Railway via scripts/prepare.js.
-# Optional service variable: RAILPACK_INSTALL_CMD=yarn run install:ci (frozen lockfile, prefer-offline).
+# Optional service variable: RAILPACK_INSTALL_CMD=pnpm run install:ci (frozen lockfile, prefer-offline).
 # If the platform sets NODE_ENV=development during build, `next build` can fail (Html/document on /404);
 # package.json build forces NODE_ENV=production for the Next compile.
 
 [build]
 builder = "RAILPACK"
-buildCommand = "NODE_ENV=production yarn build"
+buildCommand = "NODE_ENV=production pnpm build"
 
 [deploy]
-startCommand = "yarn start"
+startCommand = "pnpm start"
