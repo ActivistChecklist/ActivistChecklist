@@ -507,37 +507,16 @@ function DeviceConfirmedSummary({ product, release, displayLabel, classification
             })}
           </p>
         ) : appleEstimate ? (
-          <div className="space-y-1 pt-0.5 text-xs leading-relaxed text-muted-foreground">
-            <p>
-              {t('updates.result.appleEstimate.intro', {
-                deviceLabel,
-                min: appleEstimate.minYears,
-                max: appleEstimate.maxYears,
-              })}
-            </p>
-            <p className="text-foreground/80">
-              {appleEstimate.case === 'years-range'
-                ? t.rich('updates.result.appleEstimate.remainingYearsRange', {
-                    min: appleEstimate.remainingMinYears,
-                    max: appleEstimate.remainingMaxYears,
-                    b: boldDateChunks,
-                  })
-                : appleEstimate.case === 'years-about'
-                  ? t.rich('updates.result.appleEstimate.remainingYearsAbout', {
-                      years: appleEstimate.remainingMaxYears,
-                      b: boldDateChunks,
-                    })
-                  : appleEstimate.case === 'years-up-to'
-                    ? t.rich('updates.result.appleEstimate.remainingYearsUpTo', {
-                        max: appleEstimate.remainingMaxYears,
-                        b: boldDateChunks,
-                      })
-                    : t.rich('updates.result.appleEstimate.remainingMonthsUpTo', {
-                        max: appleEstimate.remainingMaxMonths,
-                        b: boldDateChunks,
-                      })}
-            </p>
-          </div>
+          // Just the disclaimer — the remaining-time figure now lives in the
+          // title chip above, so repeating it here ('Yours probably has up to
+          // 2 years left') was redundant.
+          <p className="pt-0.5 text-xs leading-relaxed text-muted-foreground">
+            {t('updates.result.appleEstimate.intro', {
+              deviceLabel,
+              min: appleEstimate.minYears,
+              max: appleEstimate.maxYears,
+            })}
+          </p>
         ) : null}
       </div>
     </div>
