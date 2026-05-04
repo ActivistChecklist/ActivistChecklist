@@ -1118,7 +1118,7 @@ function DeviceEolSoon({ snapshot, product, release, classification, onReset }) 
   // urgency reads at a glance — same hue as the Clock icon, with the text
   // inverted to the page background colour so it pops against the chip.
   const markChunks = (chunks) => (
-    <mark className="rounded-md bg-warning px-1.5 py-0.5 text-background">
+    <mark className="inline-block whitespace-nowrap rounded-md bg-warning px-1.5 py-0.5 text-background">
       {chunks}
     </mark>
   );
@@ -1209,7 +1209,7 @@ function DeviceEolBox({ product, release, classification, onReset }) {
   // the XCircle icon, with text inverted to the page background colour so the
   // chip pops out of the title.
   const markChunks = (chunks) => (
-    <mark className="rounded-md bg-destructive px-1.5 py-0.5 text-background">
+    <mark className="inline-block whitespace-nowrap rounded-md bg-destructive px-1.5 py-0.5 text-background">
       {chunks}
     </mark>
   );
