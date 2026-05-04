@@ -363,6 +363,7 @@
     "loading": "Loading device list...",
     "loadError": "We couldn't load the device list. <retryLink>Try again</retryLink> or check <link>endoflife.date</link> directly.",
     "snapshotStaleBanner": "Our device list may be out of date. Last updated {date}. <link>Check endoflife.date directly</link>",
+    "releasedYearHint": "released {year}",
     "categoryPill": {
       "phone": "Phone",
       "tablet": "Tablet",

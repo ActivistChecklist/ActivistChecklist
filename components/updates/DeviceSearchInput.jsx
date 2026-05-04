@@ -21,6 +21,25 @@ function RowIcon({ family }) {
   return <Icon className="h-4 w-4 shrink-0 text-foreground/70" aria-hidden="true" />;
 }
 
+// Inline year hint — shown after the displayLabel in the autocomplete row
+// when the label doesn't already contain a four-digit year (so we don't
+// double-print "MacBook Pro 14-inch (2024) released 2024"). Lighter colour
+// and small left margin so it reads as supporting metadata, not part of the
+// main label.
+const YEAR_TOKEN_RE = /\b(19|20)\d{2}\b/;
+function ReleaseYearHint({ displayLabel, releaseDate }) {
+  const t = useTranslations();
+  if (!releaseDate) return null;
+  if (YEAR_TOKEN_RE.test(displayLabel)) return null;
+  const year = new Date(releaseDate).getUTCFullYear();
+  if (!Number.isFinite(year)) return null;
+  return (
+    <span className="ml-2 shrink-0 text-xs text-muted-foreground">
+      {t('updates.releasedYearHint', { year })}
+    </span>
+  );
+}
+
 function CategoryPill({ formFactor, kind }) {
   const t = useTranslations();
   const key = kind === 'os' ? 'os' : formFactor;
@@ -346,6 +365,10 @@ export default function DeviceSearchInput({
                         <span className="flex min-w-0 items-center gap-2">
                           <RowIcon family={item.family} />
                           <span className="truncate font-medium">{item.displayLabel}</span>
+                          <ReleaseYearHint
+                            displayLabel={item.displayLabel}
+                            releaseDate={item.releaseDate}
+                          />
                         </span>
                         <CategoryPill formFactor={item.formFactor} kind={item.kind} />
                       </CommandPrimitive.Item>
