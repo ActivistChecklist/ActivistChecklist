@@ -1690,14 +1690,26 @@ function OsPatchPickerStep({ product, release, displayLabel, onPickLatest, onPic
 
 /**
  * Final-success box for OS-only flow — replaces the picker once the user
- * confirms they're on the latest patch. Single checkmark (the device/OS split
- * doesn't apply when the OS IS the picked thing).
+ * confirms they're up to date. Single checkmark (the device/OS split doesn't
+ * apply when the OS IS the picked thing).
+ *
+ * Version is included in the message for OSes whose published latestVersion
+ * matches what users actually see (iOS / iPadOS / macOS show "17.5.1" etc.
+ * in About). Windows publishes a "10.0.28000" build family that NOTHING
+ * surfaces in the user's UI — winver and Settings both display
+ * "OS Build 28000.xxxx" with a monthly cumulative-update suffix we don't
+ * track — so showing that bare version would be more confusing than
+ * helpful. Same exclusion rule as OsPatchPickerStep above.
  */
 function OsFinalSuccessBox({ product, release, displayLabel, onReset }) {
   const t = useTranslations();
-  const versionLine = release.latestVersion
-    ? t('updates.result.finalSuccess.osPatchLatest', { label: displayLabel, version: release.latestVersion })
-    : t('updates.result.finalSuccess.osCheckNoVersion');
+  const showVersion = !!release.latestVersion && product.id !== 'windows';
+  const versionLine = showVersion
+    ? t('updates.result.finalSuccess.osLatestUpdatesWithVersion', {
+        label: displayLabel,
+        version: release.latestVersion,
+      })
+    : t('updates.result.finalSuccess.osLatestUpdates', { label: displayLabel });
 
   return (
     <ResultBox

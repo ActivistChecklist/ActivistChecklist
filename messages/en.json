@@ -629,7 +629,8 @@
         "osCheck": "{os} is on the latest version ({version}).",
         "osCheckCodename": "{os} {version} ({codename}) is the latest version.",
         "osCheckNoVersion": "Operating system is up to date.",
-        "osPatchLatest": "{label} is on the latest patch ({version}).",
+        "osLatestUpdates": "{label} has the latest security updates.",
+        "osLatestUpdatesWithVersion": "{label} has the latest security updates (version {version}).",
         "checkPhoneNext": "Check your phone next",
         "checkLaptopNext": "Check your laptop next",
         "checkAnotherDevice": "Check another device"
