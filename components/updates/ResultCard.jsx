@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import {
+  ArrowDown,
   CheckCircle2,
   XCircle,
   AlertTriangle,
@@ -125,13 +126,65 @@ function SlideInBox({ children, className }) {
 
 /**
  * Convenience wrapper: render `children` only after `delayMs` has elapsed, then
- * animate them in via SlideInBox. Used by every result variant so the cards land
- * on the STAGGER_*_MS beats.
+ * animate them in via SlideInBox with a tone-coloured down-arrow connector on top.
+ * `connectorTone` defaults to 'input' since the most common case is the first box
+ * after the device card; pass null to skip the connector for boxes that shouldn't
+ * have one.
  */
-function DelayedSlideInBox({ delayMs, children }) {
+function DelayedSlideInBox({ delayMs, connectorTone = 'input', children }) {
   const ready = useDelayedMount(delayMs);
   if (!ready) return null;
-  return <SlideInBox>{children}</SlideInBox>;
+  return (
+    <SlideInBox>
+      {connectorTone ? (
+        <ConnectedBox tone={connectorTone}>{children}</ConnectedBox>
+      ) : (
+        children
+      )}
+    </SlideInBox>
+  );
+}
+
+/**
+ * Down-arrow connector that visually links one result box to the next. The colour
+ * matches the border tone of the box ABOVE it (so a green-bordered confirmed-summary
+ * connects to the picker via a green arrow, etc). Stroke is a couple of weights heavier
+ * than the box border so the arrow reads as a continuation, not a hairline.
+ *
+ * Tones map to the same opacity used on the box borders (`/30`) except 'input' which
+ * matches the device card's full-opacity neutral border.
+ */
+const CONNECTOR_TONE_COLOR = {
+  input: 'text-input',
+  primary: 'text-primary/30',
+  success: 'text-success/30',
+  warning: 'text-warning/30',
+  destructive: 'text-destructive/30',
+};
+
+function BoxConnector({ tone = 'input' }) {
+  return (
+    <div className="flex justify-center" aria-hidden="true">
+      <ArrowDown
+        className={cn('h-7 w-7', CONNECTOR_TONE_COLOR[tone] ?? CONNECTOR_TONE_COLOR.input)}
+        strokeWidth={3}
+      />
+    </div>
+  );
+}
+
+/**
+ * Internal layout for a result block that sits below another box: a tone-coloured
+ * down-arrow connector + the actual box content, stacked with gap-3. Use inside a
+ * SlideInBox so connector and content slide in together.
+ */
+function ConnectedBox({ tone, children }) {
+  return (
+    <div className="space-y-3">
+      <BoxConnector tone={tone} />
+      {children}
+    </div>
+  );
 }
 
 const TONE_RING = {
@@ -791,11 +844,22 @@ function DeviceSupported({ snapshot, product, release, onReset }) {
     setStep('stuck-on-old-os');
   }
 
+  // Tone of the step block, used to colour the connector between the step block and
+  // the max-OS warning below. 'pick' is the primary picker box; needs-update is the
+  // amber warning; success is the green final box.
+  const stepTone = step === 'pick'
+    ? 'primary'
+    : step === 'needs-update' || step === 'needs-update-uncertain'
+      ? 'warning'
+      : 'success';
+
   return (
     <div className="space-y-6">
       {showFirst ? (
         <SlideInBox>
-          <DeviceConfirmedSummary product={product} release={release} displayLabel={displayLabel} />
+          <ConnectedBox tone="input">
+            <DeviceConfirmedSummary product={product} release={release} displayLabel={displayLabel} />
+          </ConnectedBox>
         </SlideInBox>
       ) : null}
 
@@ -803,46 +867,50 @@ function DeviceSupported({ snapshot, product, release, onReset }) {
         // keyed by `step` so each transition between picker / needs-update / success
         // re-mounts the inner box and replays the slide-up + fade-in.
         <SlideInBox key={step}>
-          {step === 'pick' ? (
-            <OsPickerStep
-              snapshot={snapshot}
-              product={product}
-              release={release}
-              onPickLatest={pickLatest}
-              onPickOlder={pickOlder}
-            />
-          ) : step === 'needs-update' || step === 'needs-update-uncertain' ? (
-            <OsNeedsUpdateBox
-              snapshot={snapshot}
-              product={product}
-              uncertain={step === 'needs-update-uncertain'}
-              latestOption={latestOption}
-              onDidUpdate={didUpdate}
-              onNoUpdatesAvailable={declareNoUpdatesAvailable}
-            />
-          ) : step === 'stuck-on-old-os' ? (
-            <DeviceEolBox
-              product={product}
-              release={release}
-              classification={buildStuckOnOldOsClassification(release)}
-              onReset={onReset}
-            />
-          ) : (
-            <FinalSuccessBox
-              snapshot={snapshot}
-              product={product}
-              release={release}
-              displayLabel={displayLabel}
-              pickedOption={pickedOption}
-              onReset={onReset}
-            />
-          )}
+          <ConnectedBox tone="success">
+            {step === 'pick' ? (
+              <OsPickerStep
+                snapshot={snapshot}
+                product={product}
+                release={release}
+                onPickLatest={pickLatest}
+                onPickOlder={pickOlder}
+              />
+            ) : step === 'needs-update' || step === 'needs-update-uncertain' ? (
+              <OsNeedsUpdateBox
+                snapshot={snapshot}
+                product={product}
+                uncertain={step === 'needs-update-uncertain'}
+                latestOption={latestOption}
+                onDidUpdate={didUpdate}
+                onNoUpdatesAvailable={declareNoUpdatesAvailable}
+              />
+            ) : step === 'stuck-on-old-os' ? (
+              <DeviceEolBox
+                product={product}
+                release={release}
+                classification={buildStuckOnOldOsClassification(release)}
+                onReset={onReset}
+              />
+            ) : (
+              <FinalSuccessBox
+                snapshot={snapshot}
+                product={product}
+                release={release}
+                displayLabel={displayLabel}
+                pickedOption={pickedOption}
+                onReset={onReset}
+              />
+            )}
+          </ConnectedBox>
         </SlideInBox>
       ) : null}
 
       {showThird && step !== 'stuck-on-old-os' ? (
         <SlideInBox>
-          <DeviceMaxOsWarning snapshot={snapshot} product={product} release={release} />
+          <ConnectedBox tone={stepTone}>
+            <DeviceMaxOsWarning snapshot={snapshot} product={product} release={release} />
+          </ConnectedBox>
         </SlideInBox>
       ) : null}
     </div>
