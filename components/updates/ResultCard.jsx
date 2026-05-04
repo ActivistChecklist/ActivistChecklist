@@ -1098,8 +1098,22 @@ function OsNeedsUpdateBox({
   );
 }
 
+/**
+ * Stepped flow for devices that ARE currently receiving security updates —
+ * both the green 'device-supported' case and the amber 'device-eol-soon' case
+ * (in support window, < 9 months left). The two share every step below the
+ * top box; only the top box differs:
+ *   - device-supported  → slim DeviceConfirmedSummary (green, "X more years")
+ *   - device-eol-soon   → DeviceEolSoonHeader (amber, threat model + planning)
+ *
+ * eol-soon devices used to dead-end on the amber summary alone; routing them
+ * through this orchestrator means a Pixel 6 with 5 months left now also sees
+ * the OS picker and can confirm they're up to date today (or get steered into
+ * the needs-update / stuck-on-old-os branches).
+ */
 function DeviceSupported({ snapshot, product, release, classification, onReset }) {
   const displayLabel = buildDisplayLabel(product, release);
+  const isEolSoon = classification.variant === 'device-eol-soon';
   // step: 'pick' | 'success' | 'needs-update' | 'needs-update-uncertain' | 'stuck-on-old-os'
   const [step, setStep] = useState('pick');
   const [pickedOption, setPickedOption] = useState(null);
@@ -1180,7 +1194,11 @@ function DeviceSupported({ snapshot, product, release, classification, onReset }
       {showFirst ? (
         <SlideInBox>
           <ConnectedBox tone="input">
-            <DeviceConfirmedSummary product={product} release={release} displayLabel={displayLabel} classification={classification} />
+            {isEolSoon ? (
+              <DeviceEolSoonHeader product={product} release={release} classification={classification} />
+            ) : (
+              <DeviceConfirmedSummary product={product} release={release} displayLabel={displayLabel} classification={classification} />
+            )}
           </ConnectedBox>
         </SlideInBox>
       ) : null}
@@ -1188,8 +1206,10 @@ function DeviceSupported({ snapshot, product, release, classification, onReset }
       {showSecond && canPickOsVersion ? (
         // keyed by `step` so each transition between picker / needs-update / success
         // re-mounts the inner box and replays the slide-up + fade-in.
+        // Connector tone matches the top box: 'warning' arrow when the eol-soon
+        // amber header is above, 'success' arrow when the green summary is above.
         <SlideInBox key={step}>
-          <ConnectedBox tone="success">
+          <ConnectedBox tone={isEolSoon ? 'warning' : 'success'}>
             {step === 'pick' ? (
               <OsPickerStep
                 snapshot={snapshot}
@@ -1366,11 +1386,16 @@ function DeviceUncertain({ snapshot, product, release, classification, onReset }
 }
 
 /**
- * Yellow warning shown when the device IS still supported today, but its end-of-support
- * date is within EOL_WARNING_MONTHS. Emphasises the runway and re-states the threat
- * model, and gives the user a head-start on planning a replacement.
+ * Persistent top box for eol-soon devices: amber Clock icon, time-to-EOL chip
+ * title, planning copy (PrescriptionLine, ThreatModelBlock, BuyingGuidance).
+ * Identical content to the old DeviceEolSoon screen but rendered as the FIRST
+ * block of the multi-step DeviceSupported flow rather than as a terminal
+ * dead-end — the OS-version picker now follows below so users can also confirm
+ * they're patched today, even though support runs out soon. The cross-reset
+ * action moves out of this box and into FinalSuccessBox / DeviceEolBox at the
+ * end of the flow, matching how DeviceSupported (green) already routes it.
  */
-function DeviceEolSoon({ snapshot, product, release, classification, onReset }) {
+function DeviceEolSoonHeader({ product, release, classification }) {
   const t = useTranslations();
   const displayLabel = buildDisplayLabel(product, release);
   const eolDate = classification.effectiveEolFrom;
@@ -1407,19 +1432,11 @@ function DeviceEolSoon({ snapshot, product, release, classification, onReset }) 
     : null;
 
   return (
-    <>
-    <DelayedSlideInBox delayMs={STAGGER_FIRST_MS}>
-      <ResultBox tone="amber" icon={Clock} title={title} subtitle={subtitle}>
-        <PrescriptionLine formFactor={product.formFactor} urgency="plan" />
-        <ThreatModelBlock />
-        <BuyingGuidance family={product.family} formFactor={product.formFactor} />
-        <ResultActions product={product} onReset={onReset} />
-      </ResultBox>
-    </DelayedSlideInBox>
-    <DelayedSlideInBox delayMs={ESSENTIALS_DELAY_MS} connectorTone="warning">
-      <EssentialsPanel />
-    </DelayedSlideInBox>
-    </>
+    <ResultBox tone="amber" icon={Clock} title={title} subtitle={subtitle}>
+      <PrescriptionLine formFactor={product.formFactor} urgency="plan" />
+      <ThreatModelBlock />
+      <BuyingGuidance family={product.family} formFactor={product.formFactor} />
+    </ResultBox>
   );
 }
 
@@ -1924,13 +1941,17 @@ export default function ResultCard({ snapshot, product, release, onReset }) {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const Variant = {
+    // Both still-supported and EOL-approaching DEVICE results share the
+    // multi-step DeviceSupported flow; the top box swaps from green
+    // DeviceConfirmedSummary to amber DeviceEolSoonHeader based on
+    // classification.variant. eol-soon devices used to dead-end on the
+    // amber summary alone; routing them through here surfaces the OS
+    // picker so they can confirm they're up to date today.
     'device-supported': DeviceSupported,
-    'device-eol-soon': DeviceEolSoon,
+    'device-eol-soon': DeviceSupported,
     'device-uncertain': DeviceUncertain,
     'device-eol': DeviceEol,
-    // Both still-supported and EOL-approaching OS results share the slim
-    // confirmation + patch-version picker flow; OsResultFlow tones the
-    // summary box (green vs amber) based on classification.variant.
+    // Same pattern on the OS side.
     'os-supported': OsResultFlow,
     'os-eol-soon': OsResultFlow,
     'os-eol': OsEol,
