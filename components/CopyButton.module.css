@@ -61,6 +61,16 @@ blockquote p:has(> .button) {
   display: contents;
 }
 
+/* Even when the button is a direct child of the blockquote (no MDX <p>
+   wrapper), the absolute button is still :first-child in the DOM — so any
+   prose "first-child has no top margin" reset on the FOLLOWING <p> doesn't
+   match (it's the second child). Zero the top margin of the button's next
+   sibling so the actual content sits flush against the blockquote's top
+   padding instead of pushed down by an inherited paragraph margin. */
+blockquote .button + * {
+  margin-top: 0;
+}
+
 blockquote .button {
   position: absolute;
   top: 0.5rem;
