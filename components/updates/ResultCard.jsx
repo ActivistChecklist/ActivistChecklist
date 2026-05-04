@@ -13,7 +13,8 @@ import {
   ShieldAlert,
   ShoppingCart,
 } from 'lucide-react';
-import { SiApple, SiWindows11 } from 'react-icons/si';
+import { SiApple } from 'react-icons/si';
+import { FaWindows } from 'react-icons/fa';
 import { IoLockClosedThick } from '@/config/icons';
 
 import Link from '@/components/Link';
@@ -416,14 +417,17 @@ function BuyingGuidance({ family, formFactor }) {
  * tag handler isn't supplied. Existence is checked via t.has so missing keys
  * return null instead of formatting-the-key-as-string.
  */
-// Tag handlers for the rich-text menu paths. Each one renders an inline icon
-// followed by the wrapped text so settings/Apple-menu/Windows references are
-// visually skimmable in the path string. inline-flex + items-center keeps the
-// icon vertically centred on the cap line; whitespace-nowrap keeps the icon
-// glued to its label even when the path wraps. h-[1em] sizes the icon to the
-// surrounding text so the path looks the same at every breakpoint.
-const iconChunkClassName = 'inline-flex items-center gap-1 whitespace-nowrap';
-const iconClassName = 'h-[1em] w-[1em] shrink-0';
+// Tag handlers for the rich-text menu paths. Each one renders an inline SVG
+// icon followed by the wrapped text. The icon is `inline-block` (not flex) so
+// the wrapped text stays on the same baseline as the surrounding sentence —
+// inline-flex collapses the line-box and shifts the wrapped text visibly off
+// the surrounding cap line. vertical-align: -0.15em drops the icon slightly
+// below baseline so it visually centres on the lowercase x-height. h-[1em]
+// scales the icon with the surrounding font size; mr-1 is the icon-to-label
+// gap. The whole label stays in `whitespace-nowrap` so it doesn't break
+// between the icon and its first word when the path wraps.
+const iconClassName =
+  'inline-block h-[1em] w-[1em] align-[-0.15em] mr-1 shrink-0';
 
 function pathFromKey(t, key) {
   if (!t.has(key)) return null;
@@ -434,20 +438,20 @@ function pathFromKey(t, key) {
       </code>
     ),
     apple: (chunks) => (
-      <span className={iconChunkClassName}>
+      <span className="whitespace-nowrap">
         <SiApple className={iconClassName} aria-hidden="true" />
         {chunks}
       </span>
     ),
     settings: (chunks) => (
-      <span className={iconChunkClassName}>
+      <span className="whitespace-nowrap">
         <Settings className={iconClassName} aria-hidden="true" />
         {chunks}
       </span>
     ),
     windows: (chunks) => (
-      <span className={iconChunkClassName}>
-        <SiWindows11 className={iconClassName} aria-hidden="true" />
+      <span className="whitespace-nowrap">
+        <FaWindows className={iconClassName} aria-hidden="true" />
         {chunks}
       </span>
     ),
