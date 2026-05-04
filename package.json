@@ -4,18 +4,15 @@
   "description": "ActivistChecklist.org",
   "license": "GPL-3.0",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
   "engines": {
     "node": ">=22 <23"
   },
   "scripts": {
     "prepare": "node scripts/prepare.js",
-    "install:ci": "yarn install --frozen-lockfile --production=false --prefer-offline --network-timeout 100000",
+    "install:ci": "pnpm install --frozen-lockfile --prefer-offline --fetch-timeout 100000",
     "start": "next start",
-    "clean": "rm -rf .next build node_modules out && yarn cache clean && yarn install",
-    "dev": "concurrently -n \"API,NEXT\" -c \"blue,green\" \"NODE_NO_WARNINGS=1 yarn api:dev\" \"yarn next:dev\"",
+    "clean": "rm -rf .next build node_modules out && pnpm store prune && pnpm install",
+    "dev": "concurrently -n \"API,NEXT\" -c \"blue,green\" \"NODE_NO_WARNINGS=1 pnpm api:dev\" \"pnpm next:dev\"",
     "next:dev": "next dev --turbopack",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -30,9 +27,9 @@
     "crowdin:hide-strings:apply": "node scripts/crowdin-hide-strings.mjs --apply",
     "crowdin:pre-translate": "node scripts/crowdin-pre-translate.mjs",
     "crowdin:translation-status": "node scripts/crowdin-translation-status.mjs",
-    "prebuild": "(yarn audit --level high || true) && (yarn fetch:eol || true)",
+    "prebuild": "(pnpm audit --audit-level high || true) && (pnpm fetch:eol || true)",
     "build": "NEXT_TELEMETRY_DISABLED=1 next build",
-    "buildstatic": "BUILD_MODE=static yarn build && yarn check-build && yarn check-links && yarn validate-build",
+    "buildstatic": "BUILD_MODE=static pnpm build && pnpm check-build && pnpm check-links && pnpm validate-build",
     "postbuild": "bash scripts/postbuild.sh",
     "og-images": "node scripts/generate-og-images.mjs",
     "og-images:clean": "node scripts/generate-og-images.mjs --clean",
@@ -57,12 +54,12 @@
     "annotations:cleanup": "tsx scripts/annotations-cleanup.mjs",
     "annotations:init": "tsx scripts/annotations-init.mjs",
     "api:dev": "source .env && fastify start --options --watch --ignore-watch '.git node_modules out .next content public scripts utils styles pages config compontents' --log-level info --pretty-logs --port ${API_PORT:-4321} api/server.js",
-    "api:start": "yarn run pm2 start ecosystem.config.js",
-    "api:stop": "yarn run pm2 stop ac-api",
-    "api:restart": "yarn run pm2 restart ac-api",
-    "api:status": "yarn run pm2 status ac-api",
-    "api:delete": "yarn run pm2 delete ac-api",
-    "api:logs": "yarn run pm2 logs ac-api",
+    "api:start": "pnpm exec pm2 start ecosystem.config.js",
+    "api:stop": "pnpm exec pm2 stop ac-api",
+    "api:restart": "pnpm exec pm2 restart ac-api",
+    "api:status": "pnpm exec pm2 status ac-api",
+    "api:delete": "pnpm exec pm2 delete ac-api",
+    "api:logs": "pnpm exec pm2 logs ac-api",
     "mongo:start": "sh -c 'docker start ac-mongo >/dev/null 2>&1 || docker run -d --name ac-mongo -p 27017:27017 -v ac-mongo-data:/data/db mongo:7'"
   },
   "dependencies": {
@@ -155,20 +152,27 @@
     "tailwindcss": "^4.2.2",
     "tsx": "^4.21.0",
     "typescript": "6.0.3",
-    "vitest": "^4.1.5",
-    "yarn": "^1.22.22"
+    "vitest": "^4.1.5"
   },
-  "resolutions": {
-    "picomatch": ">=4.0.4",
-    "systeminformation": ">=5.31.0",
-    "brace-expansion": "^2.0.3",
-    "lodash": ">=4.18.0",
-    "markdown-it": ">=14.1.1",
-    "ajv": ">=8.18.0",
-    "rollup": ">=4.59.0",
-    "basic-ftp": ">=5.2.2",
-    "undici": "^7.24.5",
-    "yauzl": ">=3.2.1"
+  "pnpm": {
+    "overrides": {
+      "picomatch": ">=4.0.4",
+      "systeminformation": ">=5.31.0",
+      "brace-expansion": "^2.0.3",
+      "lodash": ">=4.18.0",
+      "markdown-it": ">=14.1.1",
+      "ajv": ">=8.18.0",
+      "rollup": ">=4.59.0",
+      "basic-ftp": ">=5.2.2",
+      "undici": "^7.24.5",
+      "yauzl": ">=3.2.1"
+    },
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "@swc/core",
+      "esbuild",
+      "sharp"
+    ]
   },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+  "packageManager": "pnpm@10.33.2"
 }
