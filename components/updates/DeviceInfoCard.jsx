@@ -44,14 +44,24 @@ export default function DeviceInfoCard({ product, release, onReset, onEdit }) {
       ? t('updates.result.deviceInfo.manufacturerLineNoDate', { manufacturer })
       : null;
 
-  function triggerEdit() {
+  function triggerEdit(e) {
+    // Bail out if the click originated on a child interactive element (e.g. the
+    // Start over button). Belt-and-suspenders alongside the inner button's
+    // stopPropagation — without this guard, browsers that fire wrapper handlers
+    // before child stopPropagation kicks in can leak the click into the edit
+    // path, which then seeds the search input with the previous label and makes
+    // Start over feel like Edit.
+    if (e?.target?.closest?.('button, a, input, textarea')) return;
     onEdit?.(label);
   }
 
   function handleKeyDown(e) {
     if (e.key === 'Enter' || e.key === ' ') {
+      // Same guard for keyboard activation: Enter/Space on a focused inner
+      // button shouldn't also trigger the wrapper's edit handler.
+      if (e.target?.closest?.('button, a, input, textarea')) return;
       e.preventDefault();
-      triggerEdit();
+      onEdit?.(label);
     }
   }
 
