@@ -29,6 +29,15 @@ import { buildDisplayLabel } from '@/lib/updates/search';
 
 const ESSENTIALS_HREF = '/essentials/';
 
+// Result-card stagger. Each delay is expressed as the previous step plus an offset so
+// the cumulative timing is obvious and easy to retune. Selecting a device shows the
+// device card immediately (no entry); subsequent boxes slide in on this beat.
+const STAGGER_FIRST_OFFSET = 750;   // first result box appears this long after selection
+const STAGGER_NEXT_OFFSET = 1500;   // each subsequent box waits this long after the previous
+const STAGGER_FIRST_MS = STAGGER_FIRST_OFFSET;                       // 750ms
+const STAGGER_SECOND_MS = STAGGER_FIRST_MS + STAGGER_NEXT_OFFSET;    // 2250ms
+const STAGGER_THIRD_MS = STAGGER_SECOND_MS + STAGGER_NEXT_OFFSET;    // 3750ms
+
 function formatMonthYear(iso, locale = 'en-US') {
   if (!iso) return '';
   const d = new Date(iso);
@@ -46,12 +55,10 @@ function formatYearsAgo(years, t) {
 
 /**
  * True after `ms` has elapsed since the component mounted. Used to stagger result-box
- * appearance: the device summary card swaps in immediately, then the first result
- * box slides up at 750ms, then any follow-up boxes at 1500ms / 2250ms.
- *
- * Step transitions (e.g. picker → needs-update) inside DeviceSupported don't reset
- * these timers since the hook is owned by the surrounding component, not the
- * step-keyed children.
+ * appearance — see STAGGER_FIRST_MS / STAGGER_SECOND_MS / STAGGER_THIRD_MS for the
+ * actual values. Step transitions (e.g. picker → needs-update) inside DeviceSupported
+ * don't reset these timers since the hook is owned by the surrounding component, not
+ * the step-keyed children.
  */
 function useDelayedMount(ms) {
   const [mounted, setMounted] = useState(ms === 0);
@@ -71,7 +78,9 @@ function SlideInBox({ children, className }) {
   return (
     <div
       className={cn(
-        'animate-in fade-in slide-in-from-bottom-2 duration-500',
+        // 700ms feels deliberate — fast enough to not stall the user, slow enough that
+        // the slide reads as a separate beat instead of a flash.
+        'animate-in fade-in slide-in-from-bottom-2 duration-700',
         className
       )}
     >
@@ -83,7 +92,7 @@ function SlideInBox({ children, className }) {
 /**
  * Convenience wrapper: render `children` only after `delayMs` has elapsed, then
  * animate them in via SlideInBox. Used by every result variant so the cards land
- * in beat: 750ms after selection, then 1500ms, then 2250ms.
+ * on the STAGGER_*_MS beats.
  */
 function DelayedSlideInBox({ delayMs, children }) {
   const ready = useDelayedMount(delayMs);
@@ -669,9 +678,9 @@ function DeviceSupported({ snapshot, product, release, onReset }) {
   // Initial-render stagger so the result reveals in beat with the device card.
   // Step transitions reuse these flags (which are already true) and animate via
   // the keyed inner SlideInBox — they shouldn't pay the entry cost again.
-  const showFirst = useDelayedMount(750);
-  const showSecond = useDelayedMount(1500);
-  const showThird = useDelayedMount(2250);
+  const showFirst = useDelayedMount(STAGGER_FIRST_MS);
+  const showSecond = useDelayedMount(STAGGER_SECOND_MS);
+  const showThird = useDelayedMount(STAGGER_THIRD_MS);
 
   function pickLatest(opt) {
     setPickedOption(opt);
@@ -835,7 +844,7 @@ function DeviceUncertain({ snapshot, product, release, classification, onReset }
   }
 
   return (
-    <DelayedSlideInBox delayMs={750}>
+    <DelayedSlideInBox delayMs={STAGGER_FIRST_MS}>
       <ResultBox
         tone="amber"
         icon={AlertTriangle}
@@ -887,7 +896,7 @@ function DeviceEolSoon({ snapshot, product, release, classification, onReset }) 
     : null;
 
   return (
-    <DelayedSlideInBox delayMs={750}>
+    <DelayedSlideInBox delayMs={STAGGER_FIRST_MS}>
       <ResultBox tone="amber" icon={Clock} title={title} subtitle={subtitle}>
         <PrescriptionLine formFactor={product.formFactor} urgency="plan" />
         <ThreatModelBlock />
@@ -944,7 +953,7 @@ function DeviceEolBox({ product, release, classification, onReset }) {
 
 function DeviceEol(props) {
   return (
-    <DelayedSlideInBox delayMs={750}>
+    <DelayedSlideInBox delayMs={STAGGER_FIRST_MS}>
       <DeviceEolBox {...props} />
     </DelayedSlideInBox>
   );
@@ -955,7 +964,7 @@ function OsSupported({ product, release, onReset }) {
   const displayLabel = buildDisplayLabel(product, release);
 
   return (
-    <DelayedSlideInBox delayMs={750}>
+    <DelayedSlideInBox delayMs={STAGGER_FIRST_MS}>
       <ResultBox
         tone="green"
         icon={CheckCircle2}
@@ -992,7 +1001,7 @@ function OsEol({ product, release, onReset }) {
   }
 
   return (
-    <DelayedSlideInBox delayMs={750}>
+    <DelayedSlideInBox delayMs={STAGGER_FIRST_MS}>
       <ResultBox
         tone="red"
         icon={XCircle}
