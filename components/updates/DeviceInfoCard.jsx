@@ -80,7 +80,9 @@ export default function DeviceInfoCard({ product, release, onReset, onEdit }) {
         // /50 tone borders on the result boxes below, so the device card no
         // longer looks dim relative to the colored boxes.
         'group flex items-center gap-3 rounded-lg border-2 border-muted-foreground/50 bg-background px-4 py-4 shadow-sm transition-colors sm:py-5',
-        onEdit ? 'cursor-pointer hover:border-primary focus:outline-hidden focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20' : null
+        // hover gets a subtle primary-tinted bg in addition to the primary
+        // border, mirroring the L1 platform-card hover state for consistency.
+        onEdit ? 'cursor-pointer hover:border-primary hover:bg-primary/5 focus:outline-hidden focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20' : null
       )}
     >
       <Icon className="h-7 w-7 shrink-0 text-foreground/80" aria-hidden="true" />
