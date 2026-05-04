@@ -261,6 +261,7 @@
   },
   "copyButton": {
     "copy": "Copy",
+    "copyText": "Copy text",
     "copied": "Copied",
     "ariaLabel": "Copy to clipboard"
   },
