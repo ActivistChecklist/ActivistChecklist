@@ -609,6 +609,6 @@
       },
       "windowsUpdateHelp": "Open Settings → Windows Update and click 'Check for updates'."
     },
-    "footer": "Powered by <link>endoflife.date</link> · Updated {date}."
+    "footer": "Powered by <eolLink>endoflife.date</eolLink> and <sofaLink>SOFA</sofaLink> · Updated {date}."
   }
 }

@@ -306,16 +306,30 @@ function PageHero() {
 function FooterCredit({ snapshot }) {
   const t = useTranslations();
   const date = formatStaleDate(snapshot?.generatedAt) || '—';
+  // Two distinct rich tags so each link points at its own source. Same styling
+  // for both (subtle underline, foreground on hover) so neither reads as more
+  // prominent than the other in the credit line.
+  const linkClass = 'underline hover:text-foreground';
   return (
     <p className="pt-4 text-center text-xs text-muted-foreground">
       {t.rich('updates.footer', {
         date,
-        link: (chunks) => (
+        eolLink: (chunks) => (
           <a
             href="https://endoflife.date"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline hover:text-foreground"
+            className={linkClass}
+          >
+            {chunks}
+          </a>
+        ),
+        sofaLink: (chunks) => (
+          <a
+            href="https://sofa.macadmins.io"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={linkClass}
           >
             {chunks}
           </a>
