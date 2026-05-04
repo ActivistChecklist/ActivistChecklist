@@ -1,11 +1,20 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { ChevronLeft, ChevronRight, X, Info } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, Info, Settings } from 'lucide-react';
+import { SiApple } from 'react-icons/si';
+import { FaWindows } from 'react-icons/fa';
 
 import { cn } from '@/lib/utils';
 import { SUB_CATEGORIES_BY_PLATFORM, leafForPlatform } from '@/lib/updates/categories';
 import { PLATFORM_GROUP_ICON, BRAND_ICON } from '@/lib/updates/family-icons';
+
+// Inline icon for menu-path text: inline-block + align below baseline so it
+// centres on x-height; h-[1em] scales with surrounding font size; mr-1 is the
+// icon-to-label gap. Mirrored in components/updates/ResultCard.jsx — keep them
+// in sync if you tweak one.
+const inlineIconClassName =
+  'inline-block h-[1em] w-[1em] align-[-0.15em] mr-1 shrink-0';
 
 const PLATFORMS = ['apple', 'android', 'windows', 'other'];
 
@@ -195,6 +204,24 @@ function L3({ platform, subCategory, onClickPlatform, onClear }) {
           <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-foreground">
             {chunks}
           </code>
+        ),
+        apple: (chunks) => (
+          <span className="whitespace-nowrap">
+            <SiApple className={inlineIconClassName} aria-hidden="true" />
+            {chunks}
+          </span>
+        ),
+        settings: (chunks) => (
+          <span className="whitespace-nowrap">
+            <Settings className={inlineIconClassName} aria-hidden="true" />
+            {chunks}
+          </span>
+        ),
+        windows: (chunks) => (
+          <span className="whitespace-nowrap">
+            <FaWindows className={inlineIconClassName} aria-hidden="true" />
+            {chunks}
+          </span>
         ),
       });
     }

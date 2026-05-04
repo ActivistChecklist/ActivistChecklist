@@ -480,6 +480,19 @@ function osVersionPath(t, osId) { return pathFromKey(t, `updates.result.osVersio
 function osUpdatePath(t, osId) { return pathFromKey(t, `updates.result.settingsPath.${osId}`); }
 
 /**
+ * Look up a short OS label ("iOS", "macOS", "Windows") for an OS product.
+ * Falls back to the product's own label when the OS isn't in our short-label
+ * table — t.has() guards the lookup so missing keys don't trigger next-intl's
+ * MISSING_MESSAGE console error (try/catch around t() doesn't help; t() emits
+ * the error without throwing in some configurations).
+ */
+function shortOsLabel(t, osProduct) {
+  if (!osProduct) return null;
+  const key = `updates.result.supportedOsLabel.${osProduct.id}`;
+  return t.has(key) ? t(key) : osProduct.label;
+}
+
+/**
  * Quote the literal "up-to-date" text Windows / Android show on their update
  * screen when nothing is pending — `It says "You're up to date"` for Windows,
  * `It says "Your software is up to date"` for Android. Falls back to the
@@ -631,14 +644,7 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
     onPickOlder(opt);
   }
 
-  let osLabel = null;
-  if (osId) {
-    try {
-      osLabel = t(`updates.result.supportedOsLabel.${osId}`);
-    } catch {
-      osLabel = osProduct.label;
-    }
-  }
+  const osLabel = shortOsLabel(t, osProduct);
 
   // OSes with point versions (iOS / macOS / Windows) let us ask 'which patch
   // version are you on?' directly via the per-major Older/Latest pair. OSes
@@ -914,15 +920,7 @@ function CrossResetButton({ product, onReset }) {
 function FinalSuccessBox({ snapshot, product, release, displayLabel, pickedOption, onReset }) {
   const t = useTranslations();
   const osProduct = product.kind === 'os' ? product : osProductForDevice(snapshot, product);
-
-  let osLabel = null;
-  if (osProduct) {
-    try {
-      osLabel = t(`updates.result.supportedOsLabel.${osProduct.id}`);
-    } catch {
-      osLabel = osProduct.label;
-    }
-  }
+  const osLabel = shortOsLabel(t, osProduct);
 
   const deviceLine = release.eolFrom
     ? t('updates.result.finalSuccess.deviceCheckUntil', {
@@ -1001,14 +999,7 @@ function OsNeedsUpdateBox({
   // settingsPath translation is missing for the resolved OS id.
   const updatePath = osId ? (osUpdatePath(t, osId) || osVersionPath(t, osId)) : null;
 
-  let osLabel = null;
-  if (osId) {
-    try {
-      osLabel = t(`updates.result.supportedOsLabel.${osId}`);
-    } catch {
-      osLabel = osProduct?.label || null;
-    }
-  }
+  const osLabel = shortOsLabel(t, osProduct);
 
   const heading = uncertain
     ? t('updates.result.osNeedsUpdate.headingMaybe')
@@ -1228,12 +1219,7 @@ function DeviceMaxOsWarning({ snapshot, product, release }) {
   const warning = buildDeviceMaxOsWarning(snapshot, product, release, reminder);
   if (!warning) return null;
 
-  let osLabel;
-  try {
-    osLabel = t(`updates.result.supportedOsLabel.${warning.osProduct.id}`);
-  } catch {
-    osLabel = warning.osProduct.label;
-  }
+  const osLabel = shortOsLabel(t, warning.osProduct);
 
   // Render major + codename together for OSes that publish a codename ("13 Ventura",
   // "16 (Baklava)") so the user can match what they see in their device's About screen.
