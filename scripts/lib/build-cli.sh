@@ -1,4 +1,4 @@
-# Shared terminal styling for bash steps in the yarn buildstatic chain.
+# Shared terminal styling for bash steps in the pnpm buildstatic chain.
 # shellcheck shell=bash
 # Usage: source "$(dirname "$0")/lib/build-cli.sh"  (from scripts/*.sh)
 

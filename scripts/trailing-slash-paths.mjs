@@ -151,7 +151,7 @@ function main() {
 
   if (check && changedCount > 0) {
     console.error(
-      `Trailing-slash check failed: ${changedCount} file(s) need fixing. Run: yarn fix:paths`
+      `Trailing-slash check failed: ${changedCount} file(s) need fixing. Run: pnpm fix:paths`
     );
     for (const c of changed) console.error(`  ${c}`);
     process.exit(1);

@@ -175,7 +175,7 @@ function main() {
   if (!fs.existsSync(OUT_DIR)) {
     sectionStart('🔗', 'Check internal links & local assets');
     detail(`No out/ at ${OUT_DIR}`);
-    detail('Skipping (run yarn buildstatic to produce out/)');
+    detail('Skipping (run pnpm buildstatic to produce out/)');
     sectionEnd(true, ['Skipped — no output directory']);
     process.exit(0);
   }

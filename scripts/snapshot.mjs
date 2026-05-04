@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /**
- * yarn snapshot [commit-ish]
+ * pnpm snapshot [commit-ish]
  *
  * Builds in a detached git worktree under buildbackups/.worktrees/ (never checks out
  * another ref in your main clone — no stash, no branch switching).
  *
  * Default commit-ish is HEAD. Symlinks the main clone’s node_modules into the worktree,
- * runs yarn buildstatic, then copies from buildbackups/.cache/static-<sha>/ into
+ * runs pnpm buildstatic, then copies from buildbackups/.cache/static-<sha>/ into
  * buildbackups/snapshot-DATETIME-SHORTHASH (cache is filled on first build per commit).
  *
  * SNAPSHOT_CACHE=0 disables reuse of .cache.
@@ -73,11 +73,11 @@ try {
     wtPath = wt.path;
     const builtShort = wt.short;
 
-    console.log('📎 Symlink node_modules ← main clone (skip yarn install)…');
+    console.log('📎 Symlink node_modules ← main clone (skip pnpm install)…');
     linkNodeModulesFromMain(ROOT, wtPath);
 
-    console.log('🔨 yarn buildstatic…');
-    execSync('yarn buildstatic', { cwd: wtPath, stdio: 'inherit', env });
+    console.log('🔨 pnpm buildstatic…');
+    execSync('pnpm buildstatic', { cwd: wtPath, stdio: 'inherit', env });
 
     const wtBackups = path.join(wtPath, 'buildbackups');
     const newest = listOutBackups(wtBackups)[0];
