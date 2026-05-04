@@ -799,13 +799,11 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
           />
         )}
         {options.length > 0 ? (
-          <button
-            type="button"
+          <PickerButton
+            tone="ghost"
             onClick={() => handlePickOlder(null)}
-            className="pt-1 text-sm text-muted-foreground hover:text-foreground"
-          >
-            {t('updates.result.osCheckStep.optionUnknown')}
-          </button>
+            label={t('updates.result.osCheckStep.optionUnknown')}
+          />
         ) : null}
       </div>
     </div>
@@ -834,6 +832,14 @@ function PickerButton({ onClick, label, tone = 'primary', icon: IconProp, filled
     // hard-coded black text — works in both themes.
     warning: 'border-warning font-semibold text-amber-700 dark:text-amber-300 hover:bg-warning hover:text-black focus-visible:ring-warning/40',
     destructive: 'border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground focus-visible:ring-destructive/40',
+    // 'ghost' is the deliberately-quiet sibling: invisible border and muted
+    // text by default, only hinting at click-ability on hover/focus where the
+    // outline appears. Used for fallback choices ("I'm not sure") that should
+    // sit visually below the primary picker pair without competing for the
+    // user's eye. border-2 border-transparent keeps the layout box the same
+    // size as the toned buttons so the "ghost → outline" reveal doesn't shift
+    // anything else on the row.
+    ghost: 'border-transparent text-muted-foreground hover:border-muted-foreground/40 hover:text-foreground focus-visible:border-muted-foreground/40 focus-visible:text-foreground focus-visible:ring-muted-foreground/20',
   };
   // `filled` upgrades the button from outline-only to filled-tone with foreground text —
   // used when the button stands alone in its row (e.g. "Done, I've updated" with no
@@ -1686,13 +1692,11 @@ function OsPatchPickerStep({ product, release, displayLabel, onPickLatest, onPic
             </>
           )}
         </div>
-        <button
-          type="button"
+        <PickerButton
+          tone="ghost"
           onClick={() => onPickUnknown()}
-          className="pt-1 text-sm text-muted-foreground hover:text-foreground"
-        >
-          {t('updates.result.osCheckStep.optionUnknown')}
-        </button>
+          label={t('updates.result.osCheckStep.optionUnknown')}
+        />
       </div>
     </div>
   );
