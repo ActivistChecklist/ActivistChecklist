@@ -72,7 +72,7 @@ export default function DeviceInfoCard({ product, release, onReset, onEdit }) {
     <div
       role={onEdit ? 'button' : undefined}
       tabIndex={onEdit ? 0 : undefined}
-      aria-label={onEdit ? t('updates.editSelectionAriaLabel') : undefined}
+      aria-label={onEdit ? `${label}, ${t('updates.editSelectionAriaLabel')}` : undefined}
       onClick={onEdit ? triggerEdit : undefined}
       onKeyDown={onEdit ? handleKeyDown : undefined}
       className={cn(

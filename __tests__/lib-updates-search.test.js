@@ -112,10 +112,10 @@ describe('searchIndex', () => {
     expect(order.indexOf('12-pro')).toBeLessThan(order.indexOf('6'));
   });
 
-  it('limits results (default 8)', () => {
+  it('respects an explicit limit option', () => {
     const rows = buildSearchIndex(SNAP, { now: NOW });
     const fuse = buildFuse(rows);
-    expect(searchIndex(rows, fuse, 'a', null).length).toBeLessThanOrEqual(8);
+    expect(searchIndex(rows, fuse, 'a', null, { limit: 3 }).length).toBeLessThanOrEqual(3);
   });
 
   it('priority context puts matching products first; non-priority matches still appear', () => {

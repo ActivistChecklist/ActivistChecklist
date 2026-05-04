@@ -327,11 +327,11 @@ async function main() {
 
   if (dryRun) {
     console.log(`(dry run) ${json.length} bytes; ${products.length} products; would write to ${outputPath}`);
-  } else {
-    await writeAtomic(outputPath, json);
-    console.log(`Wrote ${json.length} bytes to ${outputPath}`);
+    return;
   }
 
+  await writeAtomic(outputPath, json);
+  console.log(`Wrote ${json.length} bytes to ${outputPath}`);
   await pingHealthcheck(true);
 }
 

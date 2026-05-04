@@ -424,13 +424,12 @@
     "result": {
       "checkAnother": "Check another device",
       "source": "Source: <link>endoflife.date</link>",
-      "settingsPathPrefix": "Check yours at",
       "settingsPath": {
         "ios": "Settings → General → Software Update → Update Now",
         "ipados": "Settings → General → Software Update → Update Now",
         "macos": "Apple menu → System Settings → General → Software Update → Update Now",
         "android": "Settings → System → Software update → Check for updates",
-        "windows": "Settings → Windows Update → Check for updates",
+        "windows": "Start menu → Settings → Windows Update → Check for updates",
         "watchos": "Watch app on your iPhone → My Watch → General → Software Update → Install",
         "oneplus": "Settings → System → System updates → Check for updates"
       },
@@ -481,8 +480,15 @@
           "url": "https://www.nokia.com/phones/en_int/security-updates"
         }
       },
-      "osSupportedTitle": "{label} is still receiving security updates.",
-      "osLatestVersion": "Latest version: {version}.",
+      "osConfirmedShort": "{label} is still receiving security updates.",
+      "osConfirmedShortYears": "{label} is still receiving security updates for <mark>{years, plural, one {1 more year} other {# more years}}</mark>.",
+      "osConfirmedShortMonths": "{label} is still receiving security updates for <mark>{months, plural, one {1 more month} other {# more months}}</mark>.",
+      "osConfirmedSubtitleUntil": "Updates expected through <b>{date}</b>.",
+      "osEolSoon": {
+        "titleMonths": "{label} will lose security updates <mark>in about {months, plural, =1 {1 month} other {# months}}</mark>.",
+        "titleSoon": "{label} will lose security updates <mark>soon</mark>.",
+        "subtitleDate": "Updates expected to end <b>{date}</b>."
+      },
       "osEoasNote": "The vendor has moved this version to security-only updates. Plan an upgrade when convenient.",
       "osUnsupportedTitle": "{label} is no longer receiving security updates.",
       "osUnsupportedSubtitleEnded": "Support ended <b>{date}</b>.",
@@ -514,7 +520,7 @@
       "threatModelSoft": "Until you confirm, treat this device as potentially out-of-date for sensitive work.",
       "viewEssentialsCta": "View our digital security essentials →",
       "essentialsNextSteps": {
-        "title": "More easy-to-folllow steps to protect your data and devices"
+        "title": "More easy-to-follow steps to protect your data and devices"
       },
       "startOver": "Start over",
       "deviceInfo": {
@@ -565,10 +571,10 @@
         "generic": "Start planning your next device."
       },
       "deviceConfirmedShort": "{label} is still receiving security updates.",
-      "deviceConfirmedShortYears": "{label} is still receiving security updates for <mark>another {years, plural, one {1 year} other {# years}}</mark>.",
-      "deviceConfirmedShortMonths": "{label} is still receiving security updates for <mark>another {months, plural, one {1 month} other {# months}}</mark>.",
-      "deviceConfirmedShortApproxYears": "{label} is still receiving security updates for <mark>approximately another {years, plural, one {1 year} other {# years}}</mark>.",
-      "deviceConfirmedShortApproxMonths": "{label} is still receiving security updates for <mark>approximately another {months, plural, one {1 month} other {# months}}</mark>.",
+      "deviceConfirmedShortYears": "{label} is still receiving security updates for <mark>{years, plural, one {1 more year} other {# more years}}</mark>.",
+      "deviceConfirmedShortMonths": "{label} is still receiving security updates for <mark>{months, plural, one {1 more month} other {# more months}}</mark>.",
+      "deviceConfirmedShortApproxYears": "{label} is still receiving security updates for <mark>about {years, plural, one {1 more year} other {# more years}}</mark>.",
+      "deviceConfirmedShortApproxMonths": "{label} is still receiving security updates for <mark>about {months, plural, one {1 more month} other {# more months}}</mark>.",
       "appleEstimate": {
         "intro": "Apple doesn't publish end-of-support dates, but {deviceLabel} usually receive {min} to {max} years of security updates from launch.",
         "remainingYearsRange": "Yours probably has <b>about {min} to {max} years left</b>.",
@@ -578,19 +584,27 @@
       },
       "osCheckStep": {
         "headingForOs": "Which version of {os} are you running?",
+        "headingForOsRelease": "Which version of {label} are you running?",
         "headingGeneric": "Which version is your device running?",
         "headingUpdatesAvailable": "Are there any updates available for your {device}?",
+        "headingUpdatesAvailableForRelease": "Are there any updates available for {label}?",
         "subheadingHelp": "Open it on your device to check:",
         "subheadingUpdatesHelp": "Check for updates on your device:",
         "optionLatest": "My {device} is running {os} {version}",
         "optionLatestCodename": "My {device} is running {os} {version} ({codename})",
+        "optionLatestVersion": "I'm on {version} (latest)",
         "optionOlder": "Older than {os} {version}",
         "optionOlderCodename": "Older than {os} {version} ({codename})",
+        "optionOlderVersion": "Older than {version}",
         "optionBetween": "Between {os} {major}.0.0 and {previousVersion}",
         "optionBetweenCodename": "Between {os} {major}.0.0 and {previousVersion} ({codename})",
         "optionMajor": "My {device} is running {os} {major}",
         "optionMajorCodename": "My {device} is running {os} {major} ({codename})",
         "optionNoUpdatesAvailable": "I don't see any updates available",
+        "optionNoUpdatesAvailableByOs": {
+          "windows": "It says \"You're up to date\"",
+          "android": "It says \"Your software is up to date\""
+        },
         "optionUpdatesAvailable": "I see updates available",
         "optionUnknown": "I'm not sure"
       },
@@ -619,11 +633,11 @@
         "osCheck": "{os} is on the latest version ({version}).",
         "osCheckCodename": "{os} {version} ({codename}) is the latest version.",
         "osCheckNoVersion": "Operating system is up to date.",
+        "osPatchLatest": "{label} is on the latest patch ({version}).",
         "checkPhoneNext": "Check your phone next",
         "checkLaptopNext": "Check your laptop next",
         "checkAnotherDevice": "Check another device"
-      },
-      "windowsUpdateHelp": "Open Settings → Windows Update and click 'Check for updates'."
+      }
     },
     "footer": "Powered by <eolLink>endoflife.date</eolLink> and <sofaLink>SOFA</sofaLink> · Updated {date}."
   }

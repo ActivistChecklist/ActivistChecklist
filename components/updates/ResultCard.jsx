@@ -172,24 +172,24 @@ function BoxConnector({ tone = 'input' }) {
   const colorClass = CONNECTOR_TONE_COLOR[tone] ?? CONNECTOR_TONE_COLOR.input;
   // Custom stem-and-arrowhead SVG: longer stem and deeper V than any lucide
   // icon ships, sized for this exact connector role. The slight visual overlap
-  // at the join (stem ends y=22, V wing tips at y=18) is preferred to the
+  // at the join (stem ends y=24, V wing tips at y=20) is preferred to the
   // small-but-visibly-floaty lucide MoveDown swap we tried earlier.
   return (
     <div className="flex justify-center" aria-hidden="true">
       <svg
-        width="20"
-        height="28"
-        viewBox="0 0 20 28"
+        width="28"
+        height="36"
+        viewBox="0 0 28 36"
         fill="none"
         className={colorClass}
         stroke="currentColor"
-        strokeWidth="3"
+        strokeWidth="4.5"
         strokeLinecap="round"
         strokeLinejoin="round"
         aria-hidden="true"
       >
-        <line x1="10" y1="0" x2="10" y2="22" />
-        <polyline points="4,18 10,26 16,18" />
+        <line x1="14" y1="0" x2="14" y2="28" />
+        <polyline points="5,22 14,33 23,22" />
       </svg>
     </div>
   );
@@ -411,6 +411,19 @@ function osVersionPath(t, osId) { return pathFromKey(t, `updates.result.osVersio
 function osUpdatePath(t, osId) { return pathFromKey(t, `updates.result.settingsPath.${osId}`); }
 
 /**
+ * Quote the literal "up-to-date" text Windows / Android show on their update
+ * screen when nothing is pending — `It says "You're up to date"` for Windows,
+ * `It says "Your software is up to date"` for Android. Falls back to the
+ * generic "I don't see any updates available" for OSes we don't have a quoted
+ * string for, or when osId isn't known (e.g. OnePlus / watches without OS data).
+ */
+function noUpdatesAvailableLabel(t, osId) {
+  const key = `updates.result.osCheckStep.optionNoUpdatesAvailableByOs.${osId}`;
+  if (osId && t.has(key)) return t(key);
+  return t('updates.result.osCheckStep.optionNoUpdatesAvailable');
+}
+
+/**
  * The big bold callout used inside OS-related step boxes (picker, needs-update).
  * Pass the resolved path content; this component just styles it.
  */
@@ -419,22 +432,6 @@ function PromMenuPath({ children }) {
   return (
     <p className="rounded-md bg-background/60 px-4 py-3 text-base font-semibold text-foreground sm:text-lg">
       {children}
-    </p>
-  );
-}
-
-/**
- * Inline path used inside coloured result boxes. Smaller, prefixed with
- * "Check yours at" so the user knows it's where they verify their version.
- */
-function SettingsPathInline({ osId }) {
-  const t = useTranslations();
-  const path = osVersionPath(t, osId);
-  if (!path) return null;
-  return (
-    <p className="text-sm text-muted-foreground">
-      {t('updates.result.settingsPathPrefix')}{' '}
-      <span className="font-medium text-foreground">{path}</span>.
     </p>
   );
 }
@@ -735,7 +732,7 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
                 icon={CheckCircle2}
                 tone="success"
                 onClick={() => handlePickLatest(latestOpt)}
-                label={t('updates.result.osCheckStep.optionNoUpdatesAvailable')}
+                label={noUpdatesAvailableLabel(t, osId)}
               />
             </div>
           );
@@ -771,8 +768,8 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
  *   warning     — "Older than X" path (you're behind but maybe not EOL yet)
  *   destructive — "No updates available" / I'm definitively stuck
  */
-function PickerButton({ onClick, label, tone = 'primary', icon: IconProp }) {
-  const toneClasses = {
+function PickerButton({ onClick, label, tone = 'primary', icon: IconProp, filled = false }) {
+  const outlineToneClasses = {
     primary: 'border-primary text-primary hover:bg-primary hover:text-primary-foreground focus-visible:ring-primary/40',
     success: 'border-success text-success hover:bg-success hover:text-success-foreground focus-visible:ring-success/40',
     // text-warning at the default --warning shade was barely readable on white
@@ -784,7 +781,18 @@ function PickerButton({ onClick, label, tone = 'primary', icon: IconProp }) {
     // hard-coded black text — works in both themes.
     warning: 'border-warning font-semibold text-amber-700 dark:text-amber-300 hover:bg-warning hover:text-black focus-visible:ring-warning/40',
     destructive: 'border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground focus-visible:ring-destructive/40',
-  }[tone] || '';
+  };
+  // `filled` upgrades the button from outline-only to filled-tone with foreground text —
+  // used when the button stands alone in its row (e.g. "Done, I've updated" with no
+  // sibling) so it carries the recommended-action weight rather than reading as one of
+  // several equal-weight choices.
+  const filledToneClasses = {
+    primary: 'border-primary bg-primary text-primary-foreground hover:opacity-90 focus-visible:ring-primary/40',
+    success: 'border-success bg-success text-success-foreground hover:opacity-90 focus-visible:ring-success/40',
+    warning: 'border-warning bg-warning font-semibold text-black hover:opacity-90 focus-visible:ring-warning/40',
+    destructive: 'border-destructive bg-destructive text-destructive-foreground hover:opacity-90 focus-visible:ring-destructive/40',
+  };
+  const toneClasses = (filled ? filledToneClasses : outlineToneClasses)[tone] || '';
   return (
     <button
       type="button"
@@ -846,7 +854,7 @@ function CrossResetButton({ product, onReset }) {
 
 function FinalSuccessBox({ snapshot, product, release, displayLabel, pickedOption, onReset }) {
   const t = useTranslations();
-  const osProduct = osProductForDevice(snapshot, product);
+  const osProduct = product.kind === 'os' ? product : osProductForDevice(snapshot, product);
 
   let osLabel = null;
   if (osProduct) {
@@ -927,7 +935,7 @@ function OsNeedsUpdateBox({
   onNoUpdatesAvailable,
 }) {
   const t = useTranslations();
-  const osProduct = osProductForDevice(snapshot, product);
+  const osProduct = product.kind === 'os' ? product : osProductForDevice(snapshot, product);
   const osId = osProduct?.id || null;
   // Prefer the dedicated update-path copy; fall back to the version-finding path so
   // we never end up with a "How to update:" heading sitting above empty space when a
@@ -987,6 +995,7 @@ function OsNeedsUpdateBox({
             <PickerButton
               icon={CheckCircle2}
               tone="success"
+              filled={!(noUpdatesLabel && onNoUpdatesAvailable)}
               onClick={onDidUpdate}
               label={t('updates.result.osNeedsUpdate.didUpdateButton')}
             />
@@ -1437,37 +1446,311 @@ function DeviceEol(props) {
   );
 }
 
-function OsSupported({ product, release, onReset }) {
+/* ────────── OS-supported / OS-eol-soon flow (slim summary + picker) ────────── */
+
+/**
+ * Slim top box for OS results — confirms what the user picked is still receiving
+ * (or about to lose) security updates. Mirrors DeviceConfirmedSummary's compact
+ * shape so OS-only flows visually parallel the device flow.
+ *
+ * Tone:
+ *   'os-supported'  → green CheckCircle2 + "still receiving security updates"
+ *   'os-eol-soon'   → amber Clock + "will lose security updates in X months"
+ */
+function OsConfirmedSummary({ product, release, displayLabel, classification }) {
   const t = useTranslations();
-  const displayLabel = buildDisplayLabel(product, release);
+  const isEolSoon = classification?.variant === 'os-eol-soon';
+  const eolDate = classification?.effectiveEolFrom || release.eolFrom || null;
+  const months = eolDate
+    ? Math.max(0, Math.round((new Date(eolDate) - new Date()) / (30.44 * 24 * 60 * 60 * 1000)))
+    : null;
+  const exactRemaining = !isEolSoon ? formatTimeUntil(eolDate) : null;
+
+  const Icon = isEolSoon ? Clock : CheckCircle2;
+  const ringClass = isEolSoon ? 'border-warning/50 bg-warning/5' : 'border-success/50 bg-success/5';
+  const iconColorClass = isEolSoon ? 'text-warning' : 'text-success';
+
+  // Eol-soon title gets a warning-coloured chip; the supported title gets a
+  // success-coloured chip when we know exactly how long is left ("for another
+  // X years"). text-background inverts to the page background colour so the
+  // chip pops in both light and dark mode — same pattern as DeviceConfirmedSummary.
+  const warningChipChunks = (chunks) => (
+    <mark className="inline-block whitespace-nowrap rounded-md bg-warning px-1.5 py-0.5 text-background">
+      {chunks}
+    </mark>
+  );
+  const successChipChunks = (chunks) => (
+    <mark className="inline-block whitespace-nowrap rounded-md bg-success px-1.5 py-0.5 text-background">
+      {chunks}
+    </mark>
+  );
+
+  let titleNode;
+  if (isEolSoon) {
+    titleNode = months != null && months > 0
+      ? t.rich('updates.result.osEolSoon.titleMonths', { label: displayLabel, months, mark: warningChipChunks })
+      : t.rich('updates.result.osEolSoon.titleSoon', { label: displayLabel, mark: warningChipChunks });
+  } else if (exactRemaining?.years) {
+    titleNode = t.rich('updates.result.osConfirmedShortYears', {
+      label: displayLabel,
+      years: exactRemaining.years,
+      mark: successChipChunks,
+    });
+  } else if (exactRemaining?.months) {
+    titleNode = t.rich('updates.result.osConfirmedShortMonths', {
+      label: displayLabel,
+      months: exactRemaining.months,
+      mark: successChipChunks,
+    });
+  } else {
+    titleNode = t('updates.result.osConfirmedShort', { label: displayLabel });
+  }
+
+  const subtitle = isEolSoon && eolDate
+    ? t.rich('updates.result.osEolSoon.subtitleDate', {
+        date: formatMonthYear(eolDate),
+        b: boldDateChunks,
+      })
+    : (release.eolFrom && !isEolSoon
+        ? t.rich('updates.result.osConfirmedSubtitleUntil', {
+            date: formatMonthYear(release.eolFrom),
+            b: boldDateChunks,
+          })
+        : null);
 
   return (
-    <>
-    <DelayedSlideInBox delayMs={STAGGER_FIRST_MS}>
-      <ResultBox
-        tone="green"
-        icon={CheckCircle2}
-        title={t('updates.result.osSupportedTitle', { label: displayLabel })}
-        subtitle={
-          release.latestVersion
-            ? t('updates.result.osLatestVersion', { version: release.latestVersion })
-            : null
-        }
-      >
-        <SettingsPathInline osId={product.id} />
-        {product.id === 'windows' ? (
-          <p className="text-sm text-foreground/90">{t('updates.result.windowsUpdateHelp')}</p>
-        ) : null}
+    <div className={cn('flex items-start gap-3 rounded-lg border-2 p-4', ringClass)}>
+      <Icon className={cn('h-7 w-7 shrink-0', iconColorClass)} aria-hidden="true" />
+      <div className="min-w-0 flex-1 space-y-1">
+        <p className="text-base font-medium text-foreground sm:text-lg">{titleNode}</p>
+        {subtitle ? <p className="text-xs text-muted-foreground">{subtitle}</p> : null}
         {release.isEoas && !release.isEol ? (
-          <p className="text-sm text-muted-foreground">{t('updates.result.osEoasNote')}</p>
+          <p className="pt-0.5 text-xs text-muted-foreground">
+            {t('updates.result.osEoasNote')}
+          </p>
         ) : null}
-        <ResultActions product={product} onReset={onReset} />
-      </ResultBox>
-    </DelayedSlideInBox>
-    <DelayedSlideInBox delayMs={STAGGER_SECOND_MS} connectorTone="success">
-      <EssentialsPanel />
-    </DelayedSlideInBox>
-    </>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Primary (purple) picker box for OS-only flows. The user already chose the OS
+ * major (e.g. Windows 11 24H2); this step asks them to confirm the patch version
+ * on top of it. Three shapes:
+ *
+ *   release.latestVersion present (Windows/iOS/macOS) →
+ *     [Older than 10.0.26100] [I'm on 10.0.26100 (latest)]  + winver-style menu path
+ *
+ *   No latestVersion (Android-style) →
+ *     [I see updates available] [I don't see any updates]   + Settings → System → ...
+ *
+ *   Plus an "I'm not sure" muted link beneath either.
+ */
+function OsPatchPickerStep({ product, release, displayLabel, onPickLatest, onPickOlder, onPickUnknown }) {
+  const t = useTranslations();
+  const { trackEvent } = useAnalytics();
+
+  // Windows publishes a build family (e.g. 10.0.28000) but winver / Settings
+  // show "OS Build 28000.4946" with a monthly cumulative-update suffix we don't
+  // track. Asking "Older than 10.0.28000?" is unanswerable — and the user never
+  // sees that "10.0." prefix anyway. Fall through to the updates-available
+  // question, which points them at Settings → Windows Update where they can
+  // actually see whether anything is pending.
+  const hasPatchVersion = !!release.latestVersion && product.id !== 'windows';
+  const menuPath = hasPatchVersion
+    ? osVersionPath(t, product.id)
+    : osUpdatePath(t, product.id);
+
+  function handlePickLatest() {
+    trackEvent({ name: 'update_os_version_clicked', value: 'version_latest' });
+    onPickLatest();
+  }
+  function handlePickOlder() {
+    trackEvent({ name: 'update_os_version_clicked', value: 'version_old' });
+    onPickOlder();
+  }
+
+  const heading = hasPatchVersion
+    ? t('updates.result.osCheckStep.headingForOsRelease', { label: displayLabel })
+    : t('updates.result.osCheckStep.headingUpdatesAvailableForRelease', { label: displayLabel });
+
+  const subheading = hasPatchVersion
+    ? t('updates.result.osCheckStep.subheadingHelp')
+    : t('updates.result.osCheckStep.subheadingUpdatesHelp');
+
+  return (
+    <div className="rounded-lg border-2 border-primary/50 bg-primary/5 p-6">
+      <h3 className="text-xl font-semibold leading-tight text-foreground sm:text-2xl">
+        {heading}
+      </h3>
+
+      {menuPath ? (
+        <div className="mt-3 space-y-2">
+          <p className="text-sm text-muted-foreground">{subheading}</p>
+          <PromMenuPath>{menuPath}</PromMenuPath>
+        </div>
+      ) : null}
+
+      <div className="mt-5 space-y-2">
+        <div className="flex flex-wrap gap-2">
+          {hasPatchVersion ? (
+            <>
+              <PickerButton
+                icon={History}
+                tone="warning"
+                onClick={handlePickOlder}
+                label={t('updates.result.osCheckStep.optionOlderVersion', { version: release.latestVersion })}
+              />
+              <PickerButton
+                icon={CheckCircle2}
+                tone="success"
+                onClick={handlePickLatest}
+                label={t('updates.result.osCheckStep.optionLatestVersion', { version: release.latestVersion })}
+              />
+            </>
+          ) : (
+            <>
+              <PickerButton
+                icon={History}
+                tone="warning"
+                onClick={handlePickOlder}
+                label={t('updates.result.osCheckStep.optionUpdatesAvailable')}
+              />
+              <PickerButton
+                icon={CheckCircle2}
+                tone="success"
+                onClick={handlePickLatest}
+                label={noUpdatesAvailableLabel(t, product.id)}
+              />
+            </>
+          )}
+        </div>
+        <button
+          type="button"
+          onClick={() => onPickUnknown()}
+          className="pt-1 text-sm text-muted-foreground hover:text-foreground"
+        >
+          {t('updates.result.osCheckStep.optionUnknown')}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Final-success box for OS-only flow — replaces the picker once the user
+ * confirms they're on the latest patch. Single checkmark (the device/OS split
+ * doesn't apply when the OS IS the picked thing).
+ */
+function OsFinalSuccessBox({ product, release, displayLabel, onReset }) {
+  const t = useTranslations();
+  const versionLine = release.latestVersion
+    ? t('updates.result.finalSuccess.osPatchLatest', { label: displayLabel, version: release.latestVersion })
+    : t('updates.result.finalSuccess.osCheckNoVersion');
+
+  return (
+    <ResultBox
+      tone="green"
+      icon={CheckCircle2}
+      iconSize="md"
+      title={t('updates.result.finalSuccess.heading')}
+    >
+      <ul className="mt-2 space-y-2">
+        <li className="flex items-start gap-2 text-sm text-foreground sm:text-base">
+          <Check className="mt-0.5 h-4 w-4 shrink-0 text-success" aria-hidden="true" />
+          <span>{versionLine}</span>
+        </li>
+      </ul>
+      <ResultActions product={product} onReset={onReset} />
+    </ResultBox>
+  );
+}
+
+/**
+ * Orchestrator for os-supported and os-eol-soon variants. Mirrors the cumulative
+ * stepped pattern of DeviceSupported: a slim summary at top stays mounted while
+ * the picker box below transitions through pick → needs-update / final-success.
+ */
+function OsResultFlow({ snapshot, product, release, classification, onReset }) {
+  const displayLabel = buildDisplayLabel(product, release);
+  const [step, setStep] = useState('pick');
+
+  const showFirst = useDelayedMount(STAGGER_FIRST_MS);
+  const showSecond = useDelayedMount(STAGGER_SECOND_MS);
+
+  function pickLatest() { setStep('success'); }
+  function pickOlder() { setStep('needs-update'); }
+  function pickUnknown() { setStep('needs-update-uncertain'); }
+  function didUpdate() { setStep('success'); }
+
+  const stepTone = step === 'pick'
+    ? 'primary'
+    : step === 'needs-update' || step === 'needs-update-uncertain'
+      ? 'warning'
+      : 'success';
+
+  const isFinalStep = step === 'success';
+  const showEssentials = isFinalStep;
+  const summaryTone = classification?.variant === 'os-eol-soon' ? 'warning' : 'success';
+  const essentialsTone = stepTone;
+
+  return (
+    <div className="space-y-0">
+      {showFirst ? (
+        <SlideInBox>
+          <ConnectedBox tone="input">
+            <OsConfirmedSummary
+              product={product}
+              release={release}
+              displayLabel={displayLabel}
+              classification={classification}
+            />
+          </ConnectedBox>
+        </SlideInBox>
+      ) : null}
+
+      {showSecond ? (
+        <SlideInBox key={step}>
+          <ConnectedBox tone={summaryTone}>
+            {step === 'pick' ? (
+              <OsPatchPickerStep
+                product={product}
+                release={release}
+                displayLabel={displayLabel}
+                onPickLatest={pickLatest}
+                onPickOlder={pickOlder}
+                onPickUnknown={pickUnknown}
+              />
+            ) : step === 'needs-update' || step === 'needs-update-uncertain' ? (
+              <OsNeedsUpdateBox
+                snapshot={snapshot}
+                product={product}
+                uncertain={step === 'needs-update-uncertain'}
+                latestOption={null}
+                onDidUpdate={didUpdate}
+                onNoUpdatesAvailable={null}
+              />
+            ) : (
+              <OsFinalSuccessBox
+                product={product}
+                release={release}
+                displayLabel={displayLabel}
+                onReset={onReset}
+              />
+            )}
+          </ConnectedBox>
+        </SlideInBox>
+      ) : null}
+
+      {showFirst && showEssentials ? (
+        <SlideInBox>
+          <ConnectedBox tone={essentialsTone}>
+            <EssentialsPanel />
+          </ConnectedBox>
+        </SlideInBox>
+      ) : null}
+    </div>
   );
 }
 
@@ -1539,11 +1822,11 @@ export default function ResultCard({ snapshot, product, release, onReset }) {
     'device-eol-soon': DeviceEolSoon,
     'device-uncertain': DeviceUncertain,
     'device-eol': DeviceEol,
-    'os-supported': OsSupported,
-    // OS approaching EOL reuses the OsSupported component for now (still receiving
-    // updates today) — the only behavioural diff is the warning copy lands via the
-    // existing osEoasNote / latestVersion subtitle. We can split this later if needed.
-    'os-eol-soon': OsSupported,
+    // Both still-supported and EOL-approaching OS results share the slim
+    // confirmation + patch-version picker flow; OsResultFlow tones the
+    // summary box (green vs amber) based on classification.variant.
+    'os-supported': OsResultFlow,
+    'os-eol-soon': OsResultFlow,
     'os-eol': OsEol,
   }[classification.variant];
 
