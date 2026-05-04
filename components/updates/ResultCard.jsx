@@ -26,6 +26,7 @@ import {
 } from '@/lib/updates/result-logic';
 import { osProductForDevice } from '@/lib/updates/snapshot';
 import { buildDisplayLabel } from '@/lib/updates/search';
+import { useAnalytics } from '@/hooks/use-analytics';
 
 const ESSENTIALS_HREF = '/essentials/';
 
@@ -37,6 +38,29 @@ const STAGGER_NEXT_OFFSET = 1000;   // each subsequent box waits this long after
 const STAGGER_FIRST_MS = STAGGER_FIRST_OFFSET;                       // 300ms
 const STAGGER_SECOND_MS = STAGGER_FIRST_MS + STAGGER_NEXT_OFFSET;    // 1300ms
 const STAGGER_THIRD_MS = STAGGER_SECOND_MS + STAGGER_NEXT_OFFSET;    // 2300ms
+
+/**
+ * Map a classifyResult variant to the analytics patch-state value. Kept narrow on
+ * purpose — we send only this category, never the device label or ID, so the
+ * counter remains aggregate-only and free of personal context.
+ */
+function patchStateFor(classification) {
+  switch (classification?.variant) {
+    case 'device-supported':
+    case 'os-supported':
+      return 'patches_receiving';
+    case 'device-eol-soon':
+    case 'os-eol-soon':
+      return 'patches_eol_soon';
+    case 'device-eol':
+    case 'os-eol':
+      return 'patches_eol';
+    case 'device-uncertain':
+      return 'patches_unknown';
+    default:
+      return 'patches_unknown';
+  }
+}
 
 function formatMonthYear(iso, locale = 'en-US') {
   if (!iso) return '';
@@ -364,11 +388,24 @@ function DeviceConfirmedSummary({ product, release, displayLabel }) {
  */
 function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder }) {
   const t = useTranslations();
+  const { trackEvent } = useAnalytics();
   const options = buildOsCheckOptions(snapshot, product, release);
 
   const osProduct = osProductForDevice(snapshot, product);
   const osId = osProduct?.id || null;
   const deviceNoun = deviceNounFor(t, product.formFactor);
+
+  // Wrap the parent's pick handlers so every picker click logs whether the user
+  // declared they're on the latest version or on something older. The outer
+  // handler still owns step transitions.
+  function handlePickLatest(opt) {
+    trackEvent({ name: 'update_os_version_clicked', value: 'version_latest' });
+    onPickLatest(opt);
+  }
+  function handlePickOlder(opt) {
+    trackEvent({ name: 'update_os_version_clicked', value: 'version_old' });
+    onPickOlder(opt);
+  }
 
   let osLabel = null;
   if (osId) {
@@ -409,7 +446,7 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
                 <div key={opt.major} className="flex flex-wrap gap-2">
                   <PickerButton
                     tone="destructive"
-                    onClick={() => onPickOlder(opt)}
+                    onClick={() => handlePickOlder(opt)}
                     label={
                       opt.codename
                         ? t('updates.result.osCheckStep.optionOlderCodename', {
@@ -424,7 +461,7 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
                     }
                   />
                   <PickerButton
-                    onClick={() => onPickLatest(opt)}
+                    onClick={() => handlePickLatest(opt)}
                     label={
                       opt.codename
                         ? t('updates.result.osCheckStep.optionLatestCodename', {
@@ -446,7 +483,7 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
             return (
               <div key={opt.major} className="flex flex-wrap gap-2">
                 <PickerButton
-                  onClick={() => onPickLatest(opt)}
+                  onClick={() => handlePickLatest(opt)}
                   label={
                     opt.codename
                       ? t('updates.result.osCheckStep.optionMajorCodename', {
@@ -468,14 +505,14 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
         ) : (
           // No OS data — single confirmation button (e.g., OnePlus, watches without OS lookup).
           <PickerButton
-            onClick={() => onPickLatest(null)}
+            onClick={() => handlePickLatest(null)}
             label={t('updates.result.osNeedsUpdate.didUpdateButton')}
           />
         )}
         {options.length > 0 ? (
           <button
             type="button"
-            onClick={() => onPickOlder(null)}
+            onClick={() => handlePickOlder(null)}
             className="pt-1 text-sm text-muted-foreground hover:text-foreground"
           >
             {t('updates.result.osCheckStep.optionUnknown')}
@@ -1073,6 +1110,15 @@ function OsEol({ product, release, onReset }) {
 
 export default function ResultCard({ snapshot, product, release, onReset }) {
   const classification = classifyResult({ product, release }, { snapshot });
+  const { trackEvent } = useAnalytics();
+  // Fire once per ResultCard mount. UpdatesPage keys this component by product/release,
+  // so a new selection re-mounts and re-fires; reset/edit unmounts so we don't double-log.
+  useEffect(() => {
+    trackEvent({
+      name: 'update_device_selected',
+      value: patchStateFor(classification),
+    });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const Variant = {
     'device-supported': DeviceSupported,
