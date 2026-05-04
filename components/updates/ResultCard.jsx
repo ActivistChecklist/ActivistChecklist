@@ -277,26 +277,20 @@ function BuyingGuidance({ formFactor }) {
 
 /**
  * Resolve a path string from messages with graceful null when missing.
- * Supports rich content (e.g. <code>winver</code> for Windows) by routing the
- * lookup through t.rich with a code-tag handler. For plain strings we use t()
- * directly — t.rich on a string with no tags can return non-string content that
- * doesn't always render the way callers expect inside truthy/falsy checks.
+ * Always routes through t.rich (with a <code> handler) so messages containing
+ * rich tags like <code>winver</code> don't trip a FORMATTING_ERROR when the
+ * tag handler isn't supplied. Existence is checked via t.has so missing keys
+ * return null instead of formatting-the-key-as-string.
  */
 function pathFromKey(t, key) {
-  try {
-    const raw = t(key);
-    if (!raw || raw.startsWith('updates.result.')) return null;
-    if (!raw.includes('<')) return raw;
-    return t.rich(key, {
-      code: (chunks) => (
-        <code className="rounded bg-muted px-1 py-0.5 font-mono text-base text-foreground">
-          {chunks}
-        </code>
-      ),
-    });
-  } catch {
-    return null;
-  }
+  if (!t.has(key)) return null;
+  return t.rich(key, {
+    code: (chunks) => (
+      <code className="rounded bg-muted px-1 py-0.5 font-mono text-base text-foreground">
+        {chunks}
+      </code>
+    ),
+  });
 }
 
 function osVersionPath(t, osId) { return pathFromKey(t, `updates.result.osVersionPath.${osId}`); }

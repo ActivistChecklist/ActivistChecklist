@@ -182,23 +182,21 @@ function L3({ platform, subCategory, onClickPlatform, onClear }) {
   const isWindows = platform === 'windows';
 
   // "How to find this" hint is keyed by sub-category labelKey when we have copy for it.
-  // We use t.rich so messages can include <code>winver</code> for monospace tokens.
+  // Use t.has() first so we don't try to format a missing key, and ALWAYS go through
+  // t.rich so messages with rich tags (e.g. <code>winver</code> on Windows) don't
+  // throw a FORMATTING_ERROR for the missing tag handler — the previous t(key) probe
+  // was tripping that for any message containing rich tags.
   let findHint = null;
   if (subCategory?.labelKey) {
-    try {
-      const key = `updates.findYourModel.${subCategory.labelKey}`;
-      const raw = t(key);
-      if (raw && !raw.startsWith('updates.findYourModel.')) {
-        findHint = t.rich(key, {
-          code: (chunks) => (
-            <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-base text-foreground">
-              {chunks}
-            </code>
-          ),
-        });
-      }
-    } catch {
-      findHint = null;
+    const key = `updates.findYourModel.${subCategory.labelKey}`;
+    if (t.has(key)) {
+      findHint = t.rich(key, {
+        code: (chunks) => (
+          <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-base text-foreground">
+            {chunks}
+          </code>
+        ),
+      });
     }
   }
 
