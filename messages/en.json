@@ -510,11 +510,11 @@
       "deviceMaxOsEolWarning": "Your {label} tops out at {os} {maxVersion}, which has officially ended support. You may still receive occasional updates, but treat this device as low-trust for sensitive work and plan to replace it.",
       "deviceUpgradePlan": "If long-term security matters for your work, plan a hardware upgrade.",
       "threatModelHeader": "Why this matters",
-      "threatModel": "Every week without an update, more ways to break into your device become public knowledge. If the cops seize your phone at a protest or a border crossing (or if someone targets you with <spywareLink>spyware</spywareLink>) those known weaknesses are what they'll use to get inside and read everything on it (even your undeleted Signal messages.",
+      "threatModel": "Every week without an update, more ways to break into your device become public knowledge. If the cops seize your phone at a protest or a border crossing (or if someone targets you with <spywareLink>spyware</spywareLink>) those known weaknesses are what they'll use to get inside and read everything on it.  ",
       "threatModelSoft": "Until you confirm, treat this device as potentially out-of-date for sensitive work.",
       "viewEssentialsCta": "View our digital security essentials →",
       "essentialsNextSteps": {
-        "title": "Take some next steps to improve your digital security"
+        "title": "More easy-to-folllow steps to protect your data and devices"
       },
       "startOver": "Start over",
       "deviceInfo": {
@@ -586,6 +586,8 @@
         "optionLatestCodename": "My {device} is running {os} {version} ({codename})",
         "optionOlder": "Older than {os} {version}",
         "optionOlderCodename": "Older than {os} {version} ({codename})",
+        "optionBetween": "Between {os} {major}.0.0 and {previousVersion}",
+        "optionBetweenCodename": "Between {os} {major}.0.0 and {previousVersion} ({codename})",
         "optionMajor": "My {device} is running {os} {major}",
         "optionMajorCodename": "My {device} is running {os} {major} ({codename})",
         "optionNoUpdatesAvailable": "I don't see any updates available",

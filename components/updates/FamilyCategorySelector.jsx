@@ -192,7 +192,7 @@ function L3({ platform, subCategory, onClickPlatform, onClear }) {
     if (t.has(key)) {
       findHint = t.rich(key, {
         code: (chunks) => (
-          <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-base text-foreground">
+          <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-foreground">
             {chunks}
           </code>
         ),

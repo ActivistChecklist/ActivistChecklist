@@ -86,7 +86,7 @@ function WindowsLaptopFyi({ compact = false }) {
         <p className="mt-1 text-base font-medium text-foreground">
           {t.rich('updates.findYourModel.windows', {
             code: (chunks) => (
-              <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-base text-foreground">
+              <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-foreground">
                 {chunks}
               </code>
             ),

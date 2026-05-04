@@ -22,6 +22,7 @@ import {
   buildDeviceMaxOsWarning,
   buildOsCheckOptions,
   buildStuckOnOldOsClassification,
+  decrementPatchVersion,
   formatTimeSince,
   formatTimeUntil,
   latestPickerMajor,
@@ -223,12 +224,17 @@ const TONE_ICON_COLOR = {
   primary: 'text-primary',
 };
 
-function ResultBox({ tone, icon: IconProp, title, subtitle, children }) {
+function ResultBox({ tone, icon: IconProp, iconSize = 'lg', title, subtitle, children }) {
+  // 'lg' (h-12) carries the result's emotional weight for top-level variants
+  // (DeviceEol, OsSupported, etc.). 'sm' (h-6) is used by FinalSuccessBox so
+  // its success checkmark matches the size of the DeviceConfirmedSummary
+  // checkmark above it within the DeviceSupported flow.
+  const iconSizeClass = iconSize === 'sm' ? 'h-6 w-6 mt-1' : 'h-12 w-12';
   return (
     <div className={cn('rounded-lg border-2 p-6', TONE_RING[tone])}>
       <div className="flex items-start gap-4">
         <IconProp
-          className={cn('h-12 w-12 shrink-0', TONE_ICON_COLOR[tone])}
+          className={cn(iconSizeClass, 'shrink-0', TONE_ICON_COLOR[tone])}
           aria-hidden="true"
         />
         <div className="min-w-0 flex-1 space-y-2">
@@ -383,7 +389,7 @@ function pathFromKey(t, key) {
   if (!t.has(key)) return null;
   return t.rich(key, {
     code: (chunks) => (
-      <code className="rounded bg-muted px-1 py-0.5 font-mono text-base text-foreground">
+      <code className="rounded bg-muted px-1 py-0.5 font-mono text-foreground">
         {chunks}
       </code>
     ),
@@ -606,26 +612,49 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
           // Android 14 fully patched alongside the latest.
           const hasPointVersions = options.some((o) => o.latestVersion);
           if (hasPointVersions) {
-            return options.map((opt) => {
+            return options.map((opt, idx, arr) => {
               if (opt.latestVersion) {
+                // Non-bottom rows can be specific: 'Between {major}.0.0 and the
+                // previous patch'. The bottom row uses 'Older than {latest}'
+                // because anything older than its latest patch is also older
+                // than every supported major below — same catch-all behaviour
+                // as a single-row picker.
+                const isLastRow = idx === arr.length - 1;
+                const previousVersion = decrementPatchVersion(opt.latestVersion);
+                const useBetween = !isLastRow && previousVersion !== null;
+                let warningLabel;
+                if (useBetween) {
+                  warningLabel = opt.codename
+                    ? t('updates.result.osCheckStep.optionBetweenCodename', {
+                        os: osLabel || '',
+                        major: opt.major,
+                        previousVersion,
+                        codename: opt.codename,
+                      })
+                    : t('updates.result.osCheckStep.optionBetween', {
+                        os: osLabel || '',
+                        major: opt.major,
+                        previousVersion,
+                      });
+                } else {
+                  warningLabel = opt.codename
+                    ? t('updates.result.osCheckStep.optionOlderCodename', {
+                        os: osLabel || '',
+                        version: opt.latestVersion,
+                        codename: opt.codename,
+                      })
+                    : t('updates.result.osCheckStep.optionOlder', {
+                        os: osLabel || '',
+                        version: opt.latestVersion,
+                      });
+                }
                 return (
                   <div key={opt.major} className="flex flex-wrap gap-2">
                     <PickerButton
                       icon={History}
                       tone="warning"
                       onClick={() => handlePickOlder(opt)}
-                      label={
-                        opt.codename
-                          ? t('updates.result.osCheckStep.optionOlderCodename', {
-                              os: osLabel || '',
-                              version: opt.latestVersion,
-                              codename: opt.codename,
-                            })
-                          : t('updates.result.osCheckStep.optionOlder', {
-                              os: osLabel || '',
-                              version: opt.latestVersion,
-                            })
-                      }
+                      label={warningLabel}
                     />
                     <PickerButton
                       icon={CheckCircle2}
@@ -735,11 +764,14 @@ function PickerButton({ onClick, label, tone = 'primary', icon: IconProp }) {
   const toneClasses = {
     primary: 'border-primary text-primary hover:bg-primary hover:text-primary-foreground focus-visible:ring-primary/40',
     success: 'border-success text-success hover:bg-success hover:text-success-foreground focus-visible:ring-success/40',
-    // text-warning at the default --warning shade is poor contrast on white in
-    // light mode, and warning-foreground (light yellow) is poor contrast on the
-    // yellow fill in either mode. Use the darker --text-warning token at rest
-    // and black on hover so the button reads in both themes.
-    warning: 'border-warning text-[hsl(var(--text-warning))] hover:bg-warning hover:text-black focus-visible:ring-warning/40',
+    // text-warning at the default --warning shade was barely readable on white
+    // in light mode, and warning-foreground (light yellow) is poor contrast on
+    // the yellow fill in either mode. Use Tailwind's amber palette directly so
+    // we can hand-pick a dark-enough shade for light mode (amber-700) and a
+    // light-enough one for dark mode (amber-300). font-semibold gives an extra
+    // bit of weight at the small button size. Hover fills warning yellow with
+    // hard-coded black text — works in both themes.
+    warning: 'border-warning font-semibold text-amber-700 dark:text-amber-300 hover:bg-warning hover:text-black focus-visible:ring-warning/40',
     destructive: 'border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground focus-visible:ring-destructive/40',
   }[tone] || '';
   return (
@@ -843,6 +875,7 @@ function FinalSuccessBox({ snapshot, product, release, displayLabel, pickedOptio
     <ResultBox
       tone="green"
       icon={CheckCircle2}
+      iconSize="sm"
       title={t('updates.result.finalSuccess.heading')}
     >
       <ul className="mt-2 space-y-2">

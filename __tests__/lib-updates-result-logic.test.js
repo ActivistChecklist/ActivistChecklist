@@ -8,6 +8,7 @@ import {
   buildOsCheckOptions,
   buildStuckOnOldOsClassification,
   buildAppleSupportEstimate,
+  decrementPatchVersion,
   formatTimeSince,
   formatTimeUntil,
   updateYearsFor,
@@ -1013,5 +1014,31 @@ describe('formatTimeUntil', () => {
 
   it('handles same-day input as null (zero ms ahead)', () => {
     expect(formatTimeUntil('2026-05-03', now)).toBeNull();
+  });
+});
+
+describe('decrementPatchVersion', () => {
+  it('decrements the trailing numeric segment', () => {
+    expect(decrementPatchVersion('15.7.5')).toBe('15.7.4');
+    expect(decrementPatchVersion('18.1.1')).toBe('18.1.0');
+    expect(decrementPatchVersion('14.0.1')).toBe('14.0.0');
+  });
+
+  it('decrements two-segment versions', () => {
+    expect(decrementPatchVersion('15.7')).toBe('15.6');
+  });
+
+  it('returns null when the trailing segment is zero', () => {
+    expect(decrementPatchVersion('15.7.0')).toBeNull();
+    expect(decrementPatchVersion('15.0')).toBeNull();
+  });
+
+  it('returns null for single-segment / non-numeric / empty / non-string input', () => {
+    expect(decrementPatchVersion('15')).toBeNull();
+    expect(decrementPatchVersion('15.abc')).toBeNull();
+    expect(decrementPatchVersion('')).toBeNull();
+    expect(decrementPatchVersion(null)).toBeNull();
+    expect(decrementPatchVersion(undefined)).toBeNull();
+    expect(decrementPatchVersion(15.75)).toBeNull();
   });
 });
