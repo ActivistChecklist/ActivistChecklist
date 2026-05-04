@@ -572,16 +572,18 @@
       "osCheckStep": {
         "headingForOs": "Which version of {os} are you running?",
         "headingGeneric": "Which version is your device running?",
+        "headingUpdatesAvailable": "Are there any updates available for your {device}?",
         "subheadingHelp": "Open it on your device to check:",
+        "subheadingUpdatesHelp": "Check for updates on your device:",
         "optionLatest": "My {device} is running {os} {version}",
         "optionLatestCodename": "My {device} is running {os} {version} ({codename})",
         "optionOlder": "Older than {os} {version}",
         "optionOlderCodename": "Older than {os} {version} ({codename})",
         "optionMajor": "My {device} is running {os} {major}",
         "optionMajorCodename": "My {device} is running {os} {major} ({codename})",
-        "optionOlderMajor": "Older than {os} {major}",
-        "optionOlderMajorCodename": "Older than {os} {major} ({codename})",
-        "optionUnknown": "I'm not sure which version I'm running"
+        "optionNoUpdatesAvailable": "I don't see any updates available",
+        "optionUpdatesAvailable": "I see updates available",
+        "optionUnknown": "I'm not sure"
       },
       "deviceNoun": {
         "phone": "phone",

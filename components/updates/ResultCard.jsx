@@ -506,9 +506,28 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
     }
   }
 
-  const heading = osLabel
-    ? t('updates.result.osCheckStep.headingForOs', { os: osLabel })
-    : t('updates.result.osCheckStep.headingGeneric');
+  // OSes with point versions (iOS / macOS / Windows) let us ask 'which patch
+  // version are you on?' directly via the per-major Older/Latest pair. OSes
+  // without point versions (Android — patch level is per-device-month, no
+  // global version string) can't be confirmed that way, so we ask the simpler
+  // and more direct 'are there any updates available?' question. Heading +
+  // menu path swap to match: version-find for iOS-style, update-check for
+  // Android-style.
+  const hasPointVersions = options.some((o) => o.latestVersion);
+
+  const heading = hasPointVersions
+    ? (osLabel
+        ? t('updates.result.osCheckStep.headingForOs', { os: osLabel })
+        : t('updates.result.osCheckStep.headingGeneric'))
+    : t('updates.result.osCheckStep.headingUpdatesAvailable', { device: deviceNoun });
+
+  const subheading = hasPointVersions
+    ? t('updates.result.osCheckStep.subheadingHelp')
+    : t('updates.result.osCheckStep.subheadingUpdatesHelp');
+
+  const menuPath = osId
+    ? (hasPointVersions ? osVersionPath(t, osId) : osUpdatePath(t, osId))
+    : null;
 
   return (
     <div className="rounded-lg border-2 border-primary/50 bg-primary/5 p-6">
@@ -516,11 +535,10 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
         {heading}
       </h3>
 
-      {osId ? (
+      {osId && menuPath ? (
         <div className="mt-3 space-y-2">
-          <p className="text-sm text-muted-foreground">{t('updates.result.osCheckStep.subheadingHelp')}</p>
-          {/* OsPickerStep is asking the user to FIND their version → osVersionPath */}
-          <PromMenuPath>{osVersionPath(t, osId)}</PromMenuPath>
+          <p className="text-sm text-muted-foreground">{subheading}</p>
+          <PromMenuPath>{menuPath}</PromMenuPath>
         </div>
       ) : null}
 
@@ -607,7 +625,10 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
               );
             });
           }
-          // Android-style: binary latest/older pair anchored to options[0].major.
+          // Android-style: ask the patch-level question directly. options[0] is
+          // still passed through to the handlers so OsNeedsUpdateBox can compute
+          // its 'No updates available and I'm older than {os} {major}' button
+          // and the device-EOL escalation works the same way.
           const latestOpt = options[0];
           return (
             <div className="flex flex-wrap gap-2">
@@ -615,37 +636,13 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
                 icon={CheckCircle2}
                 tone="success"
                 onClick={() => handlePickLatest(latestOpt)}
-                label={
-                  latestOpt.codename
-                    ? t('updates.result.osCheckStep.optionMajorCodename', {
-                        device: deviceNoun,
-                        os: osLabel || '',
-                        major: latestOpt.major,
-                        codename: latestOpt.codename,
-                      })
-                    : t('updates.result.osCheckStep.optionMajor', {
-                        device: deviceNoun,
-                        os: osLabel || '',
-                        major: latestOpt.major,
-                      })
-                }
+                label={t('updates.result.osCheckStep.optionNoUpdatesAvailable')}
               />
               <PickerButton
                 icon={History}
                 tone="warning"
                 onClick={() => handlePickOlder(latestOpt)}
-                label={
-                  latestOpt.codename
-                    ? t('updates.result.osCheckStep.optionOlderMajorCodename', {
-                        os: osLabel || '',
-                        major: latestOpt.major,
-                        codename: latestOpt.codename,
-                      })
-                    : t('updates.result.osCheckStep.optionOlderMajor', {
-                        os: osLabel || '',
-                        major: latestOpt.major,
-                      })
-                }
+                label={t('updates.result.osCheckStep.optionUpdatesAvailable')}
               />
             </div>
           );
