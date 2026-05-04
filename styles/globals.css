@@ -138,6 +138,22 @@
     box-sizing: border-box;
   }
 
+  /* One-shot scale-up-and-back pulse used on the FinalSuccessBox checkmark
+     icon when the user reaches "you're up to date". Hits 1.2x scale at 40%
+     of the runtime then settles back to 1x — feels like a brief celebratory
+     beat without the overhead of a confetti library. Title shimmer keyframe
+     below pairs with it: the title fades in slightly later so the eye
+     follows icon → headline. Both gated by motion-safe: at the call site. */
+  @keyframes successIconPop {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+  @keyframes successTitleShimmer {
+    0% { opacity: 0.55; transform: translateY(2px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
   /* English violet 275 31% 29% */
   /* Avocado: 81 96% 29% */
   /* Sea green: 161 89% 28% */

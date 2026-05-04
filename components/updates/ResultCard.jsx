@@ -55,6 +55,23 @@ const STAGGER_THIRD_MS = STAGGER_SECOND_MS + STAGGER_NEXT_OFFSET;
 // lockstep.
 const ESSENTIALS_DELAY_MS = 1000;
 
+// Final-success animation classes — applied to ResultBox's icon and title in
+// FinalSuccessBox / OsFinalSuccessBox. Both keyframes (successIconPop,
+// successTitleShimmer) live in styles/globals.css.
+//
+// motion-safe: gates the animations behind prefers-reduced-motion so users
+// who've opted out of motion don't see the bounce. The 200ms delay on the
+// icon and 350ms on the title let the parent DelayedSlideInBox finish its
+// slide-in first, then the eye lands on icon → headline in sequence.
+//
+// Confetti was on the table; opted for these two beats instead since the
+// audience is people running a security check, not blowing out birthday
+// candles. Reads as "yes, that confirmed correctly" not "🎉 PARTY 🎉".
+const SUCCESS_ICON_POP_CLASS =
+  'motion-safe:animate-[successIconPop_700ms_ease-out_200ms_both]';
+const SUCCESS_TITLE_SHIMMER_CLASS =
+  'motion-safe:animate-[successTitleShimmer_500ms_ease-out_350ms_both]';
+
 /**
  * Render handler for the `<b>` rich tag we wrap the date in across subtitle messages
  * like "Security support ended <b>May 2023</b>". Slightly heavier weight + full
@@ -247,7 +264,7 @@ const TONE_ICON_COLOR = {
   primary: 'text-primary',
 };
 
-function ResultBox({ tone, icon: IconProp, iconSize = 'lg', title, subtitle, children }) {
+function ResultBox({ tone, icon: IconProp, iconSize = 'lg', iconClassName, titleClassName, title, subtitle, children }) {
   // 'lg' (h-12) carries the result's emotional weight for top-level variants
   // (DeviceEol, OsSupported, etc.). 'md' (h-10) is used by FinalSuccessBox —
   // smaller than 'lg' so the icon doesn't dwarf the smaller checkmark on the
@@ -264,11 +281,11 @@ function ResultBox({ tone, icon: IconProp, iconSize = 'lg', title, subtitle, chi
     <div className={cn('rounded-lg border-2 py-6 pl-4 pr-6', TONE_RING[tone])}>
       <div className="flex items-start gap-3">
         <IconProp
-          className={cn(iconSizeClass, 'shrink-0', TONE_ICON_COLOR[tone])}
+          className={cn(iconSizeClass, 'shrink-0', TONE_ICON_COLOR[tone], iconClassName)}
           aria-hidden="true"
         />
         <div className="min-w-0 flex-1 space-y-2">
-          <h2 className="text-2xl font-semibold leading-tight text-foreground sm:text-3xl">
+          <h2 className={cn('text-2xl font-semibold leading-tight text-foreground sm:text-3xl', titleClassName)}>
             {title}
           </h2>
           {subtitle ? <p className="text-base text-foreground/80">{subtitle}</p> : null}
@@ -967,6 +984,8 @@ function FinalSuccessBox({ snapshot, product, release, displayLabel, pickedOptio
       tone="green"
       icon={CheckCircle2}
       iconSize="md"
+      iconClassName={SUCCESS_ICON_POP_CLASS}
+      titleClassName={SUCCESS_TITLE_SHIMMER_CLASS}
       title={t('updates.result.finalSuccess.heading')}
     >
       <ul className="mt-2 space-y-2">
@@ -1741,6 +1760,8 @@ function OsFinalSuccessBox({ product, release, displayLabel, onReset }) {
       tone="green"
       icon={CheckCircle2}
       iconSize="md"
+      iconClassName={SUCCESS_ICON_POP_CLASS}
+      titleClassName={SUCCESS_TITLE_SHIMMER_CLASS}
       title={t('updates.result.finalSuccess.heading')}
     >
       <ul className="mt-2 space-y-2">
