@@ -7,6 +7,7 @@ import {
   buildDeviceMaxOsWarning,
   buildOsCheckOptions,
   buildStuckOnOldOsClassification,
+  buildAppleSupportEstimate,
   latestPickerMajor,
 } from '../lib/updates/result-logic';
 
@@ -750,5 +751,91 @@ describe('buildStuckOnOldOsClassification', () => {
     const synth = buildStuckOnOldOsClassification(r, now);
     // Same set of keys → no consumer needs special-casing.
     expect(Object.keys(synth).sort()).toEqual(Object.keys(real).sort());
+  });
+});
+
+describe('buildAppleSupportEstimate', () => {
+  const now = new Date('2026-05-03T00:00:00Z');
+
+  function appleProduct(formFactor) {
+    return normalizeProduct({
+      id: 'iphone', label: 'Apple iPhone', kind: 'device', family: 'apple', formFactor,
+      endoflifeUrl: 'https://x', releases: [],
+    });
+  }
+
+  it('returns null for non-Apple devices (Pixel, Samsung publish their own)', () => {
+    const r = release({ releaseDate: '2024-01-01' });
+    const pixel = normalizeProduct({
+      id: 'pixel', label: 'Google Pixel', kind: 'device', family: 'google', formFactor: 'phone',
+      endoflifeUrl: 'https://x', releases: [],
+    });
+    expect(buildAppleSupportEstimate(pixel, r, now)).toBeNull();
+  });
+
+  it('returns null when eolFrom is set (we have real data, no estimate needed)', () => {
+    const r = release({ releaseDate: '2024-01-01', eolFrom: '2030-01-01' });
+    expect(buildAppleSupportEstimate(appleProduct('phone'), r, now)).toBeNull();
+  });
+
+  it('returns null without a releaseDate', () => {
+    const r = release({ releaseDate: null });
+    expect(buildAppleSupportEstimate(appleProduct('phone'), r, now)).toBeNull();
+  });
+
+  it('returns null for unmapped form factors (e.g. os)', () => {
+    const r = release({ releaseDate: '2024-01-01' });
+    expect(buildAppleSupportEstimate(appleProduct('os'), r, now)).toBeNull();
+  });
+
+  it('iPhone released 8 months ago → years-range case (about 4 to 6 years left)', () => {
+    const r = release({ releaseDate: '2025-09-01' });
+    const est = buildAppleSupportEstimate(appleProduct('phone'), r, now);
+    expect(est.case).toBe('years-range');
+    expect(est.minYears).toBe(5);
+    expect(est.maxYears).toBe(7);
+    expect(est.remainingMinYears).toBeGreaterThanOrEqual(4);
+    expect(est.remainingMaxYears).toBeGreaterThanOrEqual(6);
+  });
+
+  it('iPhone released ~5 yrs ago → years-up-to (past min, max still positive)', () => {
+    // 2021-05-03 → exactly 5 years before NOW so remainingMin ≈ 0, remainingMax ≈ 2
+    const r = release({ releaseDate: '2021-05-03' });
+    const est = buildAppleSupportEstimate(appleProduct('phone'), r, now);
+    expect(est.case).toBe('years-up-to');
+    expect(est.remainingMaxYears).toBe(2);
+  });
+
+  it('iPhone released ~6.5 yrs ago → months-up-to (under a year of max remaining)', () => {
+    // 2019-11-15 → 6.5 yrs ago, max 7y window → ~6 months remaining
+    const r = release({ releaseDate: '2019-11-15' });
+    const est = buildAppleSupportEstimate(appleProduct('phone'), r, now);
+    expect(est.case).toBe('months-up-to');
+    expect(est.remainingMaxMonths).toBeGreaterThan(0);
+    expect(est.remainingMaxMonths).toBeLessThanOrEqual(12);
+  });
+
+  it('iPhone past the 7-year window → null (already EOL by heuristic, no estimate to give)', () => {
+    const r = release({ releaseDate: '2014-01-01' });
+    expect(buildAppleSupportEstimate(appleProduct('phone'), r, now)).toBeNull();
+  });
+
+  it('uses laptop window (7-10 yr) for both laptop and desktop form factors', () => {
+    const r = release({ releaseDate: '2024-01-01' });
+    const laptop = buildAppleSupportEstimate(appleProduct('laptop'), r, now);
+    const desktop = buildAppleSupportEstimate(appleProduct('desktop'), r, now);
+    expect(laptop.minYears).toBe(7);
+    expect(laptop.maxYears).toBe(10);
+    expect(desktop.minYears).toBe(7);
+    expect(desktop.maxYears).toBe(10);
+    expect(desktop.deviceLabelKey).toBe('laptop');
+  });
+
+  it('uses watch window (4-6 yr) for Apple Watch', () => {
+    const r = release({ releaseDate: '2024-01-01' });
+    const est = buildAppleSupportEstimate(appleProduct('watch'), r, now);
+    expect(est.minYears).toBe(4);
+    expect(est.maxYears).toBe(6);
+    expect(est.deviceLabelKey).toBe('watch');
   });
 });

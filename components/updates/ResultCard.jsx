@@ -15,6 +15,8 @@ import {
 import Link from '@/components/Link';
 import { cn } from '@/lib/utils';
 import {
+  FORM_FACTOR_UPDATE_YEARS,
+  buildAppleSupportEstimate,
   classifyResult,
   buildLatestOsReminder,
   buildDeviceMaxOsWarning,
@@ -175,20 +177,6 @@ function ThreatModelBlock({ soft = false }) {
 }
 
 /**
- * Form-factor → realistic security-update window for buying guidance.
- * `labelKey` indexes updates.result.buyingGuidance.deviceLabel for the noun
- * that gets interpolated into the shared yearsPattern string ("phones",
- * "laptops" etc.) — so translators only see one sentence template.
- */
-const FORM_FACTOR_UPDATE_YEARS = {
-  phone: { min: 5, max: 7, labelKey: 'phone' },
-  tablet: { min: 5, max: 7, labelKey: 'tablet' },
-  laptop: { min: 7, max: 10, labelKey: 'laptop' },
-  desktop: { min: 7, max: 10, labelKey: 'laptop' }, // iMac/Mac mini etc. read as "laptops"
-  watch: { min: 4, max: 6, labelKey: 'watch' },
-};
-
-/**
  * Guidance shown alongside the EOL action: typical update windows + a nudge to
  * pre-check used purchases through this same tool.
  */
@@ -275,13 +263,23 @@ function SettingsPathInline({ osId }) {
 /**
  * Step 1 (always shown for green device results): a small confirmation card.
  * Stays visible while the user works through Step 2 (OS check) and Step 3 (final success).
+ *
+ * When we have an explicit eolFrom we show "Updates expected through {date}".
+ * Apple devices don't get end-of-support dates published, so we fall back to a brief
+ * disclaimer + typical-update-window estimate so the user still has a sense of how
+ * much runway they're working with.
  */
-function DeviceConfirmedSummary({ release, displayLabel }) {
+function DeviceConfirmedSummary({ product, release, displayLabel }) {
   const t = useTranslations();
+  const appleEstimate = buildAppleSupportEstimate(product, release);
+  const deviceLabel = appleEstimate
+    ? t(`updates.result.buyingGuidance.deviceLabel.${appleEstimate.deviceLabelKey}`)
+    : null;
+
   return (
     <div className="flex items-start gap-3 rounded-md border border-success/30 bg-success/5 p-4">
       <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0 text-success" aria-hidden="true" />
-      <div className="min-w-0 flex-1 space-y-0.5">
+      <div className="min-w-0 flex-1 space-y-1">
         <p className="text-base font-medium text-foreground sm:text-lg">
           {t('updates.result.deviceConfirmedShort', { label: displayLabel })}
         </p>
@@ -291,6 +289,30 @@ function DeviceConfirmedSummary({ release, displayLabel }) {
               date: formatMonthYear(release.eolFrom),
             })}
           </p>
+        ) : appleEstimate ? (
+          <div className="space-y-1 pt-0.5 text-xs leading-relaxed text-muted-foreground">
+            <p>
+              {t('updates.result.appleEstimate.intro', {
+                deviceLabel,
+                min: appleEstimate.minYears,
+                max: appleEstimate.maxYears,
+              })}
+            </p>
+            <p className="font-medium text-foreground/80">
+              {appleEstimate.case === 'years-range'
+                ? t('updates.result.appleEstimate.remainingYearsRange', {
+                    min: appleEstimate.remainingMinYears,
+                    max: appleEstimate.remainingMaxYears,
+                  })
+                : appleEstimate.case === 'years-up-to'
+                  ? t('updates.result.appleEstimate.remainingYearsUpTo', {
+                      max: appleEstimate.remainingMaxYears,
+                    })
+                  : t('updates.result.appleEstimate.remainingMonthsUpTo', {
+                      max: appleEstimate.remainingMaxMonths,
+                    })}
+            </p>
+          </div>
         ) : null}
       </div>
     </div>
@@ -635,7 +657,7 @@ function DeviceSupported({ snapshot, product, release, onReset }) {
   return (
     <div className="space-y-4">
       <SlideInBox>
-        <DeviceConfirmedSummary release={release} displayLabel={displayLabel} />
+        <DeviceConfirmedSummary product={product} release={release} displayLabel={displayLabel} />
       </SlideInBox>
 
       {/* keyed by `step` so each transition between picker / needs-update / success

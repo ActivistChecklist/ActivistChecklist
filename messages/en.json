@@ -556,6 +556,12 @@
         "generic": "Start planning your next device."
       },
       "deviceConfirmedShort": "{label} is still receiving security updates.",
+      "appleEstimate": {
+        "intro": "Apple doesn't publish end-of-support dates, but {deviceLabel} usually receive {min} to {max} years of security updates from launch.",
+        "remainingYearsRange": "Yours probably has about {min} to {max} years left.",
+        "remainingYearsUpTo": "Yours probably has up to {max, plural, one {1 year} other {# years}} left.",
+        "remainingMonthsUpTo": "Yours probably has up to {max, plural, one {1 month} other {# months}} of updates left."
+      },
       "osCheckStep": {
         "headingForOs": "Which version of {os} are you running?",
         "headingGeneric": "Which version is your device running?",
