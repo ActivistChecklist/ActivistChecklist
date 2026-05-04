@@ -414,7 +414,7 @@
       "nokia": "Settings → About phone → Model",
       "android": "Settings → About phone → Model number",
       "androidOs": "Settings → About phone → Android version",
-      "windows": "Press Windows key + R, type <code>winver</code>, then Enter",
+      "windows": "Press Windows key + R → type <code>winver</code> → Enter",
       "windowsCaveat": "Windows laptop manufacturers don't announce when they stop offering security updates, so checking the laptop <b>model</b> won't tell you. Check your Windows <b>version</b> instead. That's what determines whether you're still receiving updates."
     },
     "otherInfo": {
@@ -439,7 +439,7 @@
         "ipados": "Settings → General → About → Software Version",
         "macos": "Apple menu → About This Mac",
         "android": "Settings → About phone → Android version",
-        "windows": "Press Windows key + R, type <code>winver</code>, then Enter",
+        "windows": "Press Windows key + R → type <code>winver</code> → Enter",
         "watchos": "Watch app on your iPhone → My Watch → General → About → Version"
       },
       "deviceSupportedTitle": "{label} is still receiving security updates.",
