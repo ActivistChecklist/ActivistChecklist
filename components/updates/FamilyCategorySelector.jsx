@@ -202,7 +202,9 @@ function L3({ platform, subCategory, onClickPlatform, onClear }) {
       key={`l3-${platform}-${subCategory?.id || ''}`}
       className="animate-in fade-in slide-in-from-right-2 duration-200 space-y-3"
     >
-      {/* Bigger breadcrumb so this row carries some weight in place of the L1/L2 cards. */}
+      {/* Bigger breadcrumb so this row carries some weight in place of the L1/L2 cards.
+          When the leaf label matches the platform (Windows → Windows), collapse the
+          chevron + duplicate so we don't show "Windows › Windows". */}
       <div
         role="group"
         aria-label={t('updates.breadcrumb.ariaLabel')}
@@ -216,14 +218,18 @@ function L3({ platform, subCategory, onClickPlatform, onClear }) {
         >
           {platformLabel}
         </button>
-        <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-        <button
-          type="button"
-          onClick={onClickPlatform}
-          className="rounded-md px-2 py-1 text-base font-medium text-foreground hover:bg-foreground/10"
-        >
-          {subLabel}
-        </button>
+        {subLabel && subLabel !== platformLabel ? (
+          <>
+            <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+            <button
+              type="button"
+              onClick={onClickPlatform}
+              className="rounded-md px-2 py-1 text-base font-medium text-foreground hover:bg-foreground/10"
+            >
+              {subLabel}
+            </button>
+          </>
+        ) : null}
         <button
           type="button"
           onClick={onClear}

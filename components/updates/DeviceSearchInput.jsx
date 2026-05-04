@@ -25,10 +25,10 @@ function CategoryPill({ formFactor, kind }) {
   );
 }
 
-function NoMatchesPanel() {
+function NoMatchesContent() {
   const t = useTranslations();
   return (
-    <div className="absolute left-0 right-0 top-full z-20 mt-2 space-y-2 overflow-hidden rounded-lg border border-border bg-popover px-4 py-5 text-sm shadow-lg">
+    <div className="space-y-2 px-4 py-5 text-sm">
       <p className="font-medium text-foreground">{t('updates.noMatches')}</p>
       <p className="text-muted-foreground">
         {t.rich('updates.noMatchesHelp', {
@@ -190,30 +190,32 @@ export default function DeviceSearchInput({
             ) : null}
           </div>
 
-          {showResults ? (
+          {(showResults || showNoMatches) ? (
             <div className="absolute left-0 right-0 top-full z-20 mt-2 overflow-hidden rounded-lg border border-border bg-popover shadow-lg">
-              <CommandPrimitive.List className="max-h-80 overflow-y-auto">
-                {results.map((item) => (
-                  <CommandPrimitive.Item
-                    key={`${item.productId}/${item.releaseId}`}
-                    value={`${item.productId}/${item.releaseId}`}
-                    onSelect={() => handleSelect(item)}
-                    className={cn(
-                      'flex cursor-pointer items-center justify-between gap-3 px-4 py-3 text-sm',
-                      'aria-selected:bg-muted aria-selected:text-foreground'
-                    )}
-                  >
-                    <span className="flex min-w-0 items-center gap-2">
-                      <RowIcon family={item.family} />
-                      <span className="truncate font-medium">{item.displayLabel}</span>
-                    </span>
-                    <CategoryPill formFactor={item.formFactor} kind={item.kind} />
-                  </CommandPrimitive.Item>
-                ))}
-              </CommandPrimitive.List>
+              {showResults ? (
+                <CommandPrimitive.List className="max-h-80 overflow-y-auto">
+                  {results.map((item) => (
+                    <CommandPrimitive.Item
+                      key={`${item.productId}/${item.releaseId}`}
+                      value={`${item.productId}/${item.releaseId}`}
+                      onSelect={() => handleSelect(item)}
+                      className={cn(
+                        'flex cursor-pointer items-center justify-between gap-3 px-4 py-3 text-sm',
+                        'aria-selected:bg-muted aria-selected:text-foreground'
+                      )}
+                    >
+                      <span className="flex min-w-0 items-center gap-2">
+                        <RowIcon family={item.family} />
+                        <span className="truncate font-medium">{item.displayLabel}</span>
+                      </span>
+                      <CategoryPill formFactor={item.formFactor} kind={item.kind} />
+                    </CommandPrimitive.Item>
+                  ))}
+                </CommandPrimitive.List>
+              ) : (
+                <NoMatchesContent />
+              )}
             </div>
-          ) : showNoMatches ? (
-            <NoMatchesPanel />
           ) : null}
         </div>
       </CommandPrimitive>

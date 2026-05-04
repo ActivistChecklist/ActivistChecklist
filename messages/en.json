@@ -352,7 +352,7 @@
     "searchAriaLabel": "Search for your device or operating system",
     "clearAriaLabel": "Clear search",
     "noMatches": "No matches in our list.",
-    "noMatchesHelp": "Try the manufacturer name (e.g. \"Galaxy A14\" instead of just \"A14\"), or check <link>endoflife.date</link> for devices we don't track.",
+    "noMatchesHelp": "Try the manufacturer name (e.g. \"Galaxy A14\" instead of just \"A14\").",
     "noMatchesSupported": "We currently track Apple, Google, Samsung, Motorola, OnePlus, Nokia, plus iOS, iPadOS, macOS, Android, and Windows.",
     "loading": "Loading device list...",
     "loadError": "We couldn't load the device list. <retryLink>Try again</retryLink> or check <link>endoflife.date</link> directly.",
