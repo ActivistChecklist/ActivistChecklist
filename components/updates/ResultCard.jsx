@@ -32,11 +32,11 @@ const ESSENTIALS_HREF = '/essentials/';
 // Result-card stagger. Each delay is expressed as the previous step plus an offset so
 // the cumulative timing is obvious and easy to retune. Selecting a device shows the
 // device card immediately (no entry); subsequent boxes slide in on this beat.
-const STAGGER_FIRST_OFFSET = 750;   // first result box appears this long after selection
+const STAGGER_FIRST_OFFSET = 500;   // first result box appears this long after selection
 const STAGGER_NEXT_OFFSET = 1500;   // each subsequent box waits this long after the previous
-const STAGGER_FIRST_MS = STAGGER_FIRST_OFFSET;                       // 750ms
-const STAGGER_SECOND_MS = STAGGER_FIRST_MS + STAGGER_NEXT_OFFSET;    // 2250ms
-const STAGGER_THIRD_MS = STAGGER_SECOND_MS + STAGGER_NEXT_OFFSET;    // 3750ms
+const STAGGER_FIRST_MS = STAGGER_FIRST_OFFSET;                       // 500ms
+const STAGGER_SECOND_MS = STAGGER_FIRST_MS + STAGGER_NEXT_OFFSET;    // 2000ms
+const STAGGER_THIRD_MS = STAGGER_SECOND_MS + STAGGER_NEXT_OFFSET;    // 3500ms
 
 function formatMonthYear(iso, locale = 'en-US') {
   if (!iso) return '';
