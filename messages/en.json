@@ -566,13 +566,21 @@
         "headingForOs": "Which version of {os} are you running?",
         "headingGeneric": "Which version is your device running?",
         "subheadingHelp": "Open it on your device to check:",
-        "optionLatest": "{os} {version}",
-        "optionLatestCodename": "{os} {version} ({codename})",
+        "optionLatest": "My {device} is running {os} {version}",
+        "optionLatestCodename": "My {device} is running {os} {version} ({codename})",
         "optionOlder": "Older than {os} {version}",
         "optionOlderCodename": "Older than {os} {version} ({codename})",
-        "optionMajor": "{os} {major}",
-        "optionMajorCodename": "{os} {major} ({codename})",
+        "optionMajor": "My {device} is running {os} {major}",
+        "optionMajorCodename": "My {device} is running {os} {major} ({codename})",
         "optionUnknown": "Not sure"
+      },
+      "deviceNoun": {
+        "phone": "phone",
+        "tablet": "tablet",
+        "laptop": "laptop",
+        "desktop": "computer",
+        "watch": "watch",
+        "generic": "device"
       },
       "osNeedsUpdate": {
         "heading": "Your operating system needs an update",
