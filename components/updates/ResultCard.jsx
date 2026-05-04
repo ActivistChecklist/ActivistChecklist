@@ -525,79 +525,131 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
       ) : null}
 
       <div className="mt-5 space-y-2">
-        {options.length > 0 ? (
-          options.map((opt) => {
-            // OSes with point versions (iOS/macOS/Windows) get a pair of buttons —
-            // "Older than X.Y.Z" + "X.Y.Z" — so users can flag a stale patch within the
-            // current major. OSes without point versions (Android — Google doesn't
-            // expose a single "current version" string) get one button per major.
-            if (opt.latestVersion) {
+        {options.length > 0 ? (() => {
+          // OSes with point versions (iOS / macOS / Windows) get a pair PER major
+          // — "Older than X.Y.Z" + "X.Y.Z" — so users can flag a stale patch
+          // within their current major. OSes without point versions (Android,
+          // where there's no global "latest patch" string) get a single binary
+          // pair anchored to the device's latest available major: "I'm on Android
+          // 16" → success, "Older than Android 16" → warning. This keeps the
+          // pick meaningful — picking an older major signals "you should update"
+          // rather than the previous one-button-per-major flow that called
+          // Android 14 fully patched alongside the latest.
+          const hasPointVersions = options.some((o) => o.latestVersion);
+          if (hasPointVersions) {
+            return options.map((opt) => {
+              if (opt.latestVersion) {
+                return (
+                  <div key={opt.major} className="flex flex-wrap gap-2">
+                    <PickerButton
+                      icon={History}
+                      tone="warning"
+                      onClick={() => handlePickOlder(opt)}
+                      label={
+                        opt.codename
+                          ? t('updates.result.osCheckStep.optionOlderCodename', {
+                              os: osLabel || '',
+                              version: opt.latestVersion,
+                              codename: opt.codename,
+                            })
+                          : t('updates.result.osCheckStep.optionOlder', {
+                              os: osLabel || '',
+                              version: opt.latestVersion,
+                            })
+                      }
+                    />
+                    <PickerButton
+                      icon={CheckCircle2}
+                      tone="success"
+                      onClick={() => handlePickLatest(opt)}
+                      label={
+                        opt.codename
+                          ? t('updates.result.osCheckStep.optionLatestCodename', {
+                              device: deviceNoun,
+                              os: osLabel || '',
+                              version: opt.latestVersion,
+                              codename: opt.codename,
+                            })
+                          : t('updates.result.osCheckStep.optionLatest', {
+                              device: deviceNoun,
+                              os: osLabel || '',
+                              version: opt.latestVersion,
+                            })
+                      }
+                    />
+                  </div>
+                );
+              }
+              // Mixed case (some majors lack latestVersion) — preserve the prior
+              // single-button-per-major rendering for those rows.
               return (
                 <div key={opt.major} className="flex flex-wrap gap-2">
-                  <PickerButton
-                    icon={History}
-                    tone="warning"
-                    onClick={() => handlePickOlder(opt)}
-                    label={
-                      opt.codename
-                        ? t('updates.result.osCheckStep.optionOlderCodename', {
-                            os: osLabel || '',
-                            version: opt.latestVersion,
-                            codename: opt.codename,
-                          })
-                        : t('updates.result.osCheckStep.optionOlder', {
-                            os: osLabel || '',
-                            version: opt.latestVersion,
-                          })
-                    }
-                  />
                   <PickerButton
                     icon={CheckCircle2}
                     tone="success"
                     onClick={() => handlePickLatest(opt)}
                     label={
                       opt.codename
-                        ? t('updates.result.osCheckStep.optionLatestCodename', {
+                        ? t('updates.result.osCheckStep.optionMajorCodename', {
                             device: deviceNoun,
                             os: osLabel || '',
-                            version: opt.latestVersion,
+                            major: opt.major,
                             codename: opt.codename,
                           })
-                        : t('updates.result.osCheckStep.optionLatest', {
+                        : t('updates.result.osCheckStep.optionMajor', {
                             device: deviceNoun,
                             os: osLabel || '',
-                            version: opt.latestVersion,
+                            major: opt.major,
                           })
                     }
                   />
                 </div>
               );
-            }
-            return (
-              <div key={opt.major} className="flex flex-wrap gap-2">
-                <PickerButton
-                  icon={CheckCircle2}
-                  tone="success"
-                  onClick={() => handlePickLatest(opt)}
-                  label={
-                    opt.codename
-                      ? t('updates.result.osCheckStep.optionMajorCodename', {
-                          device: deviceNoun,
-                          os: osLabel || '',
-                          major: opt.major,
-                          codename: opt.codename,
-                        })
-                      : t('updates.result.osCheckStep.optionMajor', {
-                          device: deviceNoun,
-                          os: osLabel || '',
-                          major: opt.major,
-                        })
-                  }
-                />
-              </div>
-            );
-          })
-        ) : (
+            });
+          }
+          // Android-style: binary latest/older pair anchored to options[0].major.
+          const latestOpt = options[0];
+          return (
+            <div className="flex flex-wrap gap-2">
+              <PickerButton
+                icon={CheckCircle2}
+                tone="success"
+                onClick={() => handlePickLatest(latestOpt)}
+                label={
+                  latestOpt.codename
+                    ? t('updates.result.osCheckStep.optionMajorCodename', {
+                        device: deviceNoun,
+                        os: osLabel || '',
+                        major: latestOpt.major,
+                        codename: latestOpt.codename,
+                      })
+                    : t('updates.result.osCheckStep.optionMajor', {
+                        device: deviceNoun,
+                        os: osLabel || '',
+                        major: latestOpt.major,
+                      })
+                }
+              />
+              <PickerButton
+                icon={History}
+                tone="warning"
+                onClick={() => handlePickOlder(latestOpt)}
+                label={
+                  latestOpt.codename
+                    ? t('updates.result.osCheckStep.optionOlderMajorCodename', {
+                        os: osLabel || '',
+                        major: latestOpt.major,
+                        codename: latestOpt.codename,
+                      })
+                    : t('updates.result.osCheckStep.optionOlderMajor', {
+                        os: osLabel || '',
+                        major: latestOpt.major,
+                      })
+                }
+              />
+            </div>
+          );
+        })() : (
           // No OS data — single confirmation button (e.g., OnePlus, watches without OS lookup).
           <PickerButton
             icon={CheckCircle2}
