@@ -9,6 +9,7 @@ import {
   buildStuckOnOldOsClassification,
   buildAppleSupportEstimate,
   formatTimeSince,
+  formatTimeUntil,
   updateYearsFor,
   latestPickerMajor,
 } from '../lib/updates/result-logic';
@@ -984,5 +985,33 @@ describe('formatTimeSince', () => {
 
   it('handles same-day input as null (zero ms ago)', () => {
     expect(formatTimeSince('2026-05-03', now)).toBeNull();
+  });
+});
+
+describe('formatTimeUntil', () => {
+  const now = new Date('2026-05-03T00:00:00Z');
+
+  it('returns null for missing / invalid / past / sub-month dates', () => {
+    expect(formatTimeUntil(null, now)).toBeNull();
+    expect(formatTimeUntil(undefined, now)).toBeNull();
+    expect(formatTimeUntil('not a date', now)).toBeNull();
+    expect(formatTimeUntil('2025-05-01', now)).toBeNull(); // past
+    expect(formatTimeUntil('2026-05-25', now)).toBeNull(); // 22 days ahead, < 1 month
+  });
+
+  it('returns months when the date is between 1 and 12 months away', () => {
+    expect(formatTimeUntil('2026-06-15', now)).toEqual({ months: 1 });
+    expect(formatTimeUntil('2026-11-01', now)).toEqual({ months: 5 });
+    expect(formatTimeUntil('2027-04-01', now)).toEqual({ months: 10 });
+  });
+
+  it('returns years (floored) when the date is 12 months or more away', () => {
+    expect(formatTimeUntil('2027-06-01', now)).toEqual({ years: 1 }); // ~13 months out
+    expect(formatTimeUntil('2031-05-01', now)).toEqual({ years: 4 });
+    expect(formatTimeUntil('2033-09-01', now)).toEqual({ years: 7 });
+  });
+
+  it('handles same-day input as null (zero ms ahead)', () => {
+    expect(formatTimeUntil('2026-05-03', now)).toBeNull();
   });
 });

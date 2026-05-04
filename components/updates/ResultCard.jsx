@@ -23,6 +23,7 @@ import {
   buildOsCheckOptions,
   buildStuckOnOldOsClassification,
   formatTimeSince,
+  formatTimeUntil,
   latestPickerMajor,
   updateYearsFor,
 } from '@/lib/updates/result-logic';
@@ -432,19 +433,71 @@ function SettingsPathInline({ osId }) {
  * disclaimer + typical-update-window estimate so the user still has a sense of how
  * much runway they're working with.
  */
-function DeviceConfirmedSummary({ product, release, displayLabel }) {
+function DeviceConfirmedSummary({ product, release, displayLabel, classification }) {
   const t = useTranslations();
   const appleEstimate = buildAppleSupportEstimate(product, release);
   const deviceLabel = appleEstimate
     ? t(`updates.result.buyingGuidance.deviceLabel.${appleEstimate.deviceLabelKey}`)
     : null;
 
+  // Build the title with a time-remaining chip when we know how long the device
+  // will keep getting updates. Three sources, in priority order:
+  //   1. classification.effectiveEolFrom — device's own eolFrom (Pixel/Samsung
+  //      where the manufacturer publishes it) or, for Macs we classified via
+  //      device-max-os-supported, the OS major's eolFrom. This is "exact" so
+  //      the chip says "another X" with no hedge.
+  //   2. buildAppleSupportEstimate — Apple has no published date, so use the
+  //      typical-window estimate. Chip prefixes "approximately another X".
+  //   3. Neither: render the plain "still receiving security updates" title.
+  const exactRemaining = formatTimeUntil(classification?.effectiveEolFrom);
+  const approxRemaining = !exactRemaining && appleEstimate
+    ? (appleEstimate.case === 'months-up-to'
+        ? { months: appleEstimate.remainingMaxMonths }
+        : { years: appleEstimate.remainingMaxYears })
+    : null;
+  // Highlight chip styled to match the green confirmed-summary panel: bg-success
+  // matches the icon, text-background inverts to the page colour to read well in
+  // both themes. inline-block whitespace-nowrap keeps the phrase atomic.
+  const successChipChunks = (chunks) => (
+    <mark className="inline-block whitespace-nowrap rounded-md bg-success px-1.5 py-0.5 text-background">
+      {chunks}
+    </mark>
+  );
+  let titleNode;
+  if (exactRemaining?.years) {
+    titleNode = t.rich('updates.result.deviceConfirmedShortYears', {
+      label: displayLabel,
+      years: exactRemaining.years,
+      mark: successChipChunks,
+    });
+  } else if (exactRemaining?.months) {
+    titleNode = t.rich('updates.result.deviceConfirmedShortMonths', {
+      label: displayLabel,
+      months: exactRemaining.months,
+      mark: successChipChunks,
+    });
+  } else if (approxRemaining?.years) {
+    titleNode = t.rich('updates.result.deviceConfirmedShortApproxYears', {
+      label: displayLabel,
+      years: approxRemaining.years,
+      mark: successChipChunks,
+    });
+  } else if (approxRemaining?.months) {
+    titleNode = t.rich('updates.result.deviceConfirmedShortApproxMonths', {
+      label: displayLabel,
+      months: approxRemaining.months,
+      mark: successChipChunks,
+    });
+  } else {
+    titleNode = t('updates.result.deviceConfirmedShort', { label: displayLabel });
+  }
+
   return (
     <div className="flex items-start gap-3 rounded-lg border-2 border-success/50 bg-success/5 p-4">
       <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0 text-success" aria-hidden="true" />
       <div className="min-w-0 flex-1 space-y-1">
         <p className="text-base font-medium text-foreground sm:text-lg">
-          {t('updates.result.deviceConfirmedShort', { label: displayLabel })}
+          {titleNode}
         </p>
         {release.eolFrom ? (
           <p className="text-xs text-muted-foreground">
@@ -927,7 +980,7 @@ function OsNeedsUpdateBox({
   );
 }
 
-function DeviceSupported({ snapshot, product, release, onReset }) {
+function DeviceSupported({ snapshot, product, release, classification, onReset }) {
   const displayLabel = buildDisplayLabel(product, release);
   // step: 'pick' | 'success' | 'needs-update' | 'needs-update-uncertain' | 'stuck-on-old-os'
   const [step, setStep] = useState('pick');
@@ -1009,7 +1062,7 @@ function DeviceSupported({ snapshot, product, release, onReset }) {
       {showFirst ? (
         <SlideInBox>
           <ConnectedBox tone="input">
-            <DeviceConfirmedSummary product={product} release={release} displayLabel={displayLabel} />
+            <DeviceConfirmedSummary product={product} release={release} displayLabel={displayLabel} classification={classification} />
           </ConnectedBox>
         </SlideInBox>
       ) : null}
