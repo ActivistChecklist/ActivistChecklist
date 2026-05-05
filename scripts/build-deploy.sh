@@ -77,9 +77,9 @@ git fetch origin --prune
 git checkout "$GIT_BRANCH"
 git pull --ff-only "origin" "$GIT_BRANCH"
 
-# Install must include devDependencies because `pnpm buildstatic` runs Next build,
-# which needs build-time tools like postcss and other dev deps. pnpm installs all
-# deps by default, but we set NODE_ENV explicitly later, so install before flipping.
+# pnpm's strict, content-addressable store + --frozen-lockfile guarantee node_modules
+# matches pnpm-lock.yaml exactly (no stale nested folders shadowing top-level versions,
+# unlike yarn v1). So no hash-based clean-install dance is needed here.
 nvm_pnpm install --frozen-lockfile --prefer-offline --fetch-timeout 100000
 export NODE_ENV=production
 

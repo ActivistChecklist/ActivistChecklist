@@ -111,7 +111,7 @@
     "openpgp": "^6.3.0",
     "openseadragon": "^6.0.2",
     "pdf-lib": "^1.17.1",
-    "pm2": "^6.0.14",
+    "pm2": "^7.0.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "react-hook-form": "^7.74.0",
@@ -156,6 +156,7 @@
   },
   "pnpm": {
     "overrides": {
+      "@radix-ui/react-slot": "1.2.4",
       "picomatch": ">=4.0.4",
       "systeminformation": ">=5.31.0",
       "brace-expansion": "^2.0.3",

@@ -517,8 +517,8 @@
         "windows": "Windows"
       },
       "deviceMaxOsWarningTitle": "A note about your device's OS",
-      "deviceMaxOsWarning": "Your {label} only supports up to {os} {maxVersion}. {os} {maxVersion} will lose security updates before {os} {latestVersion} does. Newer devices will keep receiving updates longer.",
-      "deviceMaxOsWarningWithDate": "Your {label} only supports up to {os} {maxVersion}, which is expected to lose security updates around {eolDate}. Newer devices that can run {os} {latestVersion} will keep receiving updates longer.",
+      "deviceMaxOsWarning": "Your {label} only supports up to {os} {maxVersion}. {os} {maxVersion} will stop receiving security updates before {os} {latestVersion} does. Newer devices will keep receiving updates longer.",
+      "deviceMaxOsWarningWithDate": "Your {label} only supports up to {os} {maxVersion}, which is expected to stop receiving security updates around {eolDate}. Newer devices that can run {os} {latestVersion} will keep receiving updates longer.",
       "deviceMaxOsEolWarning": "Your {label} tops out at {os} {maxVersion}, which has officially ended support. You may still receive occasional updates, but treat this device as low-trust for sensitive work and plan to replace it.",
       "deviceUpgradePlan": "If long-term security matters for your work, plan a hardware upgrade.",
       "threatModelHeader": "Why this matters",
