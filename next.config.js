@@ -31,8 +31,8 @@ const baseConfig = {
     }));
   },
   // Pin the workspace root so Next.js doesn't auto-detect a stray
-  // package-lock.json or yarn.lock in a parent directory and start resolving
-  // node_modules from there. The deploy server had an unrelated
+  // package-lock.json, pnpm-lock.yaml, or yarn.lock in a parent directory and
+  // start resolving node_modules from there. The deploy server had an unrelated
   // package-lock.json one level above the project; Next.js picked that as
   // the workspace root and resolved deps from a parallel node_modules tree
   // with stale @radix-ui/react-slot, breaking the build with "createSlot is

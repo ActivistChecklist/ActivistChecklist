@@ -33,7 +33,7 @@
  *   - Each run is appended to repo root .deploy-webhook.log by default (override or disable in config).
  *   - Failed auth (403) may append to repo root .deploy-webhook-auth.log and include/logs/deploy-webhook.error.log.
  *   - Deploy script defaults to repo scripts/build-deploy.sh; must stay under repo root.
- *   - If www-data cannot run your deploy (git/yarn in $HOME), either:
+ *   - If www-data cannot run your deploy (git/pnpm in $HOME), either:
  *       a) Run this pool as your deploy user (PHP-FPM user = you), or
  *       b) sudoers: www-data ALL=(deployuser) NOPASSWD: /bin/bash /full/path/to/repo/scripts/build-deploy.sh
  *          and set 'deploy_command_prefix' => ['sudo', '-n', '-u', 'deployuser'] in webhook-secrets.local.php

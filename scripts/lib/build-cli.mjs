@@ -1,5 +1,5 @@
 /**
- * Shared terminal styling for build / postbuild scripts (yarn buildstatic chain).
+ * Shared terminal styling for build / postbuild scripts (pnpm buildstatic chain).
  * Use sectionStart → … work … → sectionEnd for a consistent flow.
  */
 import chalk from 'chalk';

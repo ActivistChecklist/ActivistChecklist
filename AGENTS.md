@@ -2,7 +2,8 @@
 
 ## General rules
 
-* Use yarn to manage packages
+* Use pnpm to manage packages
+* When creating a new worktree, run `./scripts/setup-worktree.sh` from inside the worktree before doing anything else. It symlinks env files and `node_modules` from the main repo so the worktree is immediately usable without re-installing or recreating local secrets. The script is idempotent and refuses to run from the main repo. If you add new env files or top-level state that worktrees should mirror, update the `TARGETS` array in that script.
 
 ## Testing rules
 

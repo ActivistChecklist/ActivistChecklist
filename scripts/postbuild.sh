@@ -9,9 +9,9 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "${SCRIPT_DIR}/lib/build-cli.sh"
 
 build_section "🗺️" "Post-build — sitemap & RSS"
-build_detail "next-sitemap + yarn rss"
+build_detail "next-sitemap + pnpm rss"
 next-sitemap
-yarn rss
+pnpm rss
 build_section_done 0 \
   "Sitemap generated (next-sitemap)" \
   "RSS feeds written under out/rss/"
@@ -19,7 +19,7 @@ build_section_done 0 \
 if [ "$BUILD_MODE" = "static" ]; then
   build_section "📦" "Post-build — static export"
   build_detail "Search index, Apache rules, English root mirror"
-  yarn index
+  pnpm index
 
   cp public/.htaccess out/.htaccess
   node scripts/inject-htaccess-redirects.cjs out/.htaccess
@@ -46,5 +46,5 @@ if [ -n "$CI" ]; then
   build_detail "CI detected — skipping local out/ backup"
   build_section_done 0 "Backup skipped (CI environment)"
 else
-  yarn buildbackup
+  pnpm buildbackup
 fi

@@ -11,7 +11,7 @@
  * Optional: CROWDIN_TARGET_LANGUAGE_ID=es-ES — Crowdin language id for progress API (defaults: match
  *   CROWDIN_TARGET_LOCALE against GET /projects/{id} → targetLanguageIds, e.g. es → es-ES)
  *
- * yarn crowdin:translation-status
+ * pnpm crowdin:translation-status
  */
 
 try {

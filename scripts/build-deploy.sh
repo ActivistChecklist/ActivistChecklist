@@ -23,8 +23,8 @@ log() {
 }
 
 # shellcheck disable=SC1091
-source "$SCRIPT_DIR/lib/nvm-yarn.sh"
-nvm_yarn_err() {
+source "$SCRIPT_DIR/lib/nvm-pnpm.sh"
+nvm_pnpm_err() {
   log "$1"
 }
 
@@ -54,22 +54,22 @@ fi
 
 cd "$REPO_DIR"
 
-export NVM_YARN_PROJECT_DIR="$REPO_DIR"
-export NVM_YARN_USE_NVM="${BUILD_DEPLOY_USE_NVM:-${NVM_YARN_USE_NVM:-0}}"
-export NVM_YARN_NVM_DIR="${BUILD_DEPLOY_NVM_DIR:-${NVM_YARN_NVM_DIR:-$HOME/.nvm}}"
-export NVM_YARN_NODE_VERSION="${BUILD_DEPLOY_NODE_VERSION:-${NVM_YARN_NODE_VERSION:-}}"
-export NVM_YARN_PATH_EXTRA="${BUILD_DEPLOY_PATH_EXTRA:-${NVM_YARN_PATH_EXTRA:-}}"
+export NVM_PNPM_PROJECT_DIR="$REPO_DIR"
+export NVM_PNPM_USE_NVM="${BUILD_DEPLOY_USE_NVM:-${NVM_PNPM_USE_NVM:-0}}"
+export NVM_PNPM_NVM_DIR="${BUILD_DEPLOY_NVM_DIR:-${NVM_PNPM_NVM_DIR:-$HOME/.nvm}}"
+export NVM_PNPM_NODE_VERSION="${BUILD_DEPLOY_NODE_VERSION:-${NVM_PNPM_NODE_VERSION:-}}"
+export NVM_PNPM_PATH_EXTRA="${BUILD_DEPLOY_PATH_EXTRA:-${NVM_PNPM_PATH_EXTRA:-}}"
 
-if ! nvm_yarn_init; then
-  log "ERROR: nvm_yarn_init failed. whoami=$(whoami) HOME=$HOME PATH=$PATH"
+if ! nvm_pnpm_init; then
+  log "ERROR: nvm_pnpm_init failed. whoami=$(whoami) HOME=$HOME PATH=$PATH"
   exit 127
 fi
 
 log "Deploy user=$(whoami) HOME=$HOME"
-if [[ -n "${NVM_YARN_RESOLVED_VERSION:-}" ]]; then
-  log "Node=$(nvm exec "$NVM_YARN_RESOLVED_VERSION" node -v) Yarn=$(nvm exec "$NVM_YARN_RESOLVED_VERSION" command -v yarn)"
+if [[ -n "${NVM_PNPM_RESOLVED_VERSION:-}" ]]; then
+  log "Node=$(nvm exec "$NVM_PNPM_RESOLVED_VERSION" node -v) pnpm=$(nvm exec "$NVM_PNPM_RESOLVED_VERSION" command -v pnpm)"
 else
-  log "Node=$(command -v node || echo missing) Yarn=$(command -v yarn || echo missing)"
+  log "Node=$(command -v node || echo missing) pnpm=$(command -v pnpm || echo missing)"
 fi
 
 GIT_BRANCH="${GIT_BRANCH:-main}"
@@ -77,36 +77,14 @@ git fetch origin --prune
 git checkout "$GIT_BRANCH"
 git pull --ff-only "origin" "$GIT_BRANCH"
 
-# Yarn v1's --frozen-lockfile installs new entries but does NOT prune extraneous
-# nested folders left behind from previous installs. When a resolution change
-# collapses duplicate sub-versions (e.g. @radix-ui/react-slot 1.2.3 → 1.2.4),
-# stale nested copies in node_modules/<pkg>/node_modules/ can shadow the new
-# top-level version and break the build. Detect lockfile drift and reinstall
-# from scratch when it changes.
-LOCK_HASH_FILE="$REPO_DIR/.deploy-lock.sha256"
-if command -v sha256sum >/dev/null 2>&1; then
-  CURRENT_LOCK_HASH="$(sha256sum yarn.lock | cut -d' ' -f1)"
-else
-  CURRENT_LOCK_HASH="$(shasum -a 256 yarn.lock | cut -d' ' -f1)"
-fi
-PREVIOUS_LOCK_HASH="$(cat "$LOCK_HASH_FILE" 2>/dev/null || echo "")"
-if [[ "$CURRENT_LOCK_HASH" != "$PREVIOUS_LOCK_HASH" ]]; then
-  log "yarn.lock changed since last deploy; removing node_modules for clean install"
-  rm -rf node_modules
-fi
-
-# Install must include devDependencies because `yarn buildstatic` runs Next build,
-# which needs build-time tools like postcss/autoprefixer and other dev deps.
-# Yarn v1 will skip devDependencies when NODE_ENV=production, so force them on.
-YARN_PRODUCTION=false nvm_yarn install --frozen-lockfile --production=false
-
-# Record the lockfile hash AFTER a successful install so a failed install
-# doesn't get falsely marked as in-sync.
-echo "$CURRENT_LOCK_HASH" > "$LOCK_HASH_FILE"
-
+# pnpm's strict, content-addressable store + --frozen-lockfile guarantee node_modules
+# matches pnpm-lock.yaml exactly (no stale nested folders shadowing top-level versions,
+# unlike yarn v1). So no hash-based clean-install dance is needed here.
+nvm_pnpm install --frozen-lockfile --prefer-offline --fetch-timeout 100000
 export NODE_ENV=production
 
-BUILD_MODE=static nvm_yarn buildstatic
+# Non-interactive: no URL approval prompt; does not write .approved-urls.json
+CHECKBUILD_URL_APPROVAL=allow BUILD_MODE=static nvm_pnpm buildstatic
 
 if [[ ! -d "$REPO_DIR/out" ]]; then
   log "Build did not produce out/: $REPO_DIR/out"

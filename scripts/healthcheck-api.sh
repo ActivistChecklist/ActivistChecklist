@@ -15,7 +15,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-# Optional: keep compatibility with environments that rely on ~/.bashrc for nvm/yarn.
+# Optional: keep compatibility with environments that rely on ~/.bashrc for nvm/pnpm.
 if [[ "${API_HEALTH_SOURCE_BASHRC:-0}" == "1" ]] && [[ -f "${HOME}/.bashrc" ]]; then
   # shellcheck disable=SC1090
   source "${HOME}/.bashrc"
@@ -33,16 +33,16 @@ API_HEALTHCHECK_PING_URL="${API_HEALTHCHECK_PING_URL:-}"
 PM2_HOME="${API_HEALTH_PM2_HOME:-$PROJECT_DIR/.pm2}"
 export PM2_HOME
 
-# Shared nvm-yarn lib (scripts/lib/nvm-yarn.sh): prefer NVM_YARN_* from .env;
+# Shared nvm-pnpm lib (scripts/lib/nvm-pnpm.sh): prefer NVM_PNPM_* from .env;
 # API_HEALTH_* nvm vars are legacy aliases only.
-export NVM_YARN_PROJECT_DIR="$PROJECT_DIR"
-export NVM_YARN_USE_NVM="${NVM_YARN_USE_NVM:-${API_HEALTH_USE_NVM:-0}}"
-export NVM_YARN_NVM_DIR="${NVM_YARN_NVM_DIR:-${API_HEALTH_NVM_DIR:-$HOME/.nvm}}"
-export NVM_YARN_NODE_VERSION="${NVM_YARN_NODE_VERSION:-${API_HEALTH_NODE_VERSION:-}}"
-export NVM_YARN_PATH_EXTRA="${NVM_YARN_PATH_EXTRA:-${API_HEALTH_PATH_EXTRA:-}}"
+export NVM_PNPM_PROJECT_DIR="$PROJECT_DIR"
+export NVM_PNPM_USE_NVM="${NVM_PNPM_USE_NVM:-${API_HEALTH_USE_NVM:-0}}"
+export NVM_PNPM_NVM_DIR="${NVM_PNPM_NVM_DIR:-${API_HEALTH_NVM_DIR:-$HOME/.nvm}}"
+export NVM_PNPM_NODE_VERSION="${NVM_PNPM_NODE_VERSION:-${API_HEALTH_NODE_VERSION:-}}"
+export NVM_PNPM_PATH_EXTRA="${NVM_PNPM_PATH_EXTRA:-${API_HEALTH_PATH_EXTRA:-}}"
 # shellcheck disable=SC1091
-source "$SCRIPT_DIR/lib/nvm-yarn.sh"
-nvm_yarn_err() {
+source "$SCRIPT_DIR/lib/nvm-pnpm.sh"
+nvm_pnpm_err() {
   log_echo "$1"
 }
 
@@ -85,25 +85,25 @@ fi
 
 cd "$PROJECT_DIR"
 
-if ! nvm_yarn_init; then
+if ! nvm_pnpm_init; then
   msg=$(
     printf "api-health failed (%s)\n" "$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
-    printf "reason=yarn_not_found\n"
+    printf "reason=pnpm_not_found\n"
     printf "project_dir=%s\npm2_home=%s\npath=%s\n" "$PROJECT_DIR" "$PM2_HOME" "$PATH"
   )
-  log_echo "ERROR: yarn not found. PATH=$PATH"
+  log_echo "ERROR: pnpm not found. PATH=$PATH"
   hc_fail "$msg"
   exit 1
 fi
 
-if [[ -n "${NVM_YARN_RESOLVED_VERSION:-}" ]]; then
-  log_echo "Node: $(nvm exec "$NVM_YARN_RESOLVED_VERSION" node -v) (nvm exec $NVM_YARN_RESOLVED_VERSION)"
-  log_echo "Yarn: $(nvm exec "$NVM_YARN_RESOLVED_VERSION" command -v yarn)"
+if [[ -n "${NVM_PNPM_RESOLVED_VERSION:-}" ]]; then
+  log_echo "Node: $(nvm exec "$NVM_PNPM_RESOLVED_VERSION" node -v) (nvm exec $NVM_PNPM_RESOLVED_VERSION)"
+  log_echo "pnpm: $(nvm exec "$NVM_PNPM_RESOLVED_VERSION" command -v pnpm)"
 else
-  log_echo "Yarn: $(command -v yarn)"
+  log_echo "pnpm: $(command -v pnpm)"
 fi
 
-PM2_OUTPUT="$(nvm_yarn run pm2 status "$APP_NAME" --no-color 2>&1 || true)"
+PM2_OUTPUT="$(nvm_pnpm exec pm2 status "$APP_NAME" --no-color 2>&1 || true)"
 echo "$PM2_OUTPUT" >> "$LOG_FILE"
 
 if echo "$PM2_OUTPUT" | grep -q "online"; then
@@ -111,10 +111,10 @@ if echo "$PM2_OUTPUT" | grep -q "online"; then
   SERVICE_ONLINE=1
 else
   log_echo "WARN: $APP_NAME is not online; attempting start/restart"
-  START_OUTPUT="$(nvm_yarn api:start 2>&1 || true)"
+  START_OUTPUT="$(nvm_pnpm api:start 2>&1 || true)"
   echo "$START_OUTPUT" >> "$LOG_FILE"
   sleep 5
-  RECHECK_OUTPUT="$(nvm_yarn run pm2 status "$APP_NAME" --no-color 2>&1 || true)"
+  RECHECK_OUTPUT="$(nvm_pnpm exec pm2 status "$APP_NAME" --no-color 2>&1 || true)"
   echo "$RECHECK_OUTPUT" >> "$LOG_FILE"
 
   if echo "$RECHECK_OUTPUT" | grep -q "online"; then
