@@ -518,17 +518,27 @@ $durationMs = (int) round((microtime(true) - $startTime) * 1000);
 
 // Archive this run to the persistent log atomically. file_put_contents with
 // LOCK_EX serializes appends from concurrent webhook deliveries.
+$archived = false;
 if (is_string($persistentLog)) {
   $startLine = sprintf("\n[%s] START delivery=%s\n", gmdate('c'), $delivery);
   $endLine = sprintf("[%s] END exit=%d duration=%dms\n", gmdate('c'), $code, $durationMs);
   $runOutput = (string) @file_get_contents($runLog);
   $block = $startLine . $runOutput . $endLine;
-  if (@file_put_contents($persistentLog, $block, FILE_APPEND | LOCK_EX) === false) {
+  if (@file_put_contents($persistentLog, $block, FILE_APPEND | LOCK_EX) !== false) {
+    $archived = true;
+  } else {
     error_log('deploy-webhook: could not write to log_file; falling back to ' . $logFallback);
-    if ($persistentLog !== $logFallback) {
-      @file_put_contents($logFallback, $block, FILE_APPEND | LOCK_EX);
+    if ($persistentLog !== $logFallback
+        && @file_put_contents($logFallback, $block, FILE_APPEND | LOCK_EX) !== false) {
+      $archived = true;
     }
   }
+}
+// If we never managed to archive this run's output, KEEP the temp file so it
+// can be recovered manually. Log the path via PHP's error_log so it's findable.
+$preserveRunLog = is_string($persistentLog) && !$archived;
+if ($preserveRunLog) {
+  error_log('deploy-webhook: archive failed; per-run log preserved at ' . $runLog);
 }
 
 if ($code !== 0) {
@@ -623,11 +633,15 @@ Output below: \$HOME paths collapsed to ~, secrets redacted.
 --- script output (last {$tailBytes} bytes, stdout+stderr combined) ---
 {$combinedTail}
 TXT;
-  @unlink($runLog);
+  if (!$preserveRunLog) {
+    @unlink($runLog);
+  }
   exit($body);
 }
 
-@unlink($runLog);
+if (!$preserveRunLog) {
+  @unlink($runLog);
+}
 
 http_response_code(200);
 header('Content-Type: text/plain; charset=UTF-8');
