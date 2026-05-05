@@ -6,7 +6,6 @@ import { useTranslations } from 'next-intl';
 import { useEolSnapshot } from '@/hooks/use-eol-snapshot';
 import { findRelease } from '@/lib/updates/snapshot';
 import { buildDisplayLabel } from '@/lib/updates/search';
-import { useAnalytics } from '@/hooks/use-analytics';
 
 import DeviceInfoCard from './DeviceInfoCard';
 import DeviceSearchInput from './DeviceSearchInput';
@@ -36,7 +35,6 @@ function formatStaleDate(iso) {
 
 export default function UpdatesPage() {
   const t = useTranslations();
-  const { trackEvent } = useAnalytics();
   const { status, snapshot } = useEolSnapshot();
 
   // Drill-down state: { platform, subCategory } | null
@@ -110,13 +108,6 @@ export default function UpdatesPage() {
 
   function handleCategoryChange(next) {
     setCategory(next);
-    if (next?.subCategory) {
-      trackEvent({
-        name: 'updates_category_pick',
-        platform: next.platform,
-        subCategory: next.subCategory.id,
-      });
-    }
   }
 
   function handleSelect(item) {
@@ -125,11 +116,6 @@ export default function UpdatesPage() {
     // the selector isn't visible while a result is showing, we want it back at L1
     // when the user starts over.
     setCategory(null);
-    trackEvent({
-      name: 'updates_search_select',
-      productId: item.productId,
-      releaseId: item.releaseId,
-    });
   }
 
   function handleReset() {
@@ -141,7 +127,6 @@ export default function UpdatesPage() {
     setCategory(null);
     setSeedQuery(null);
     setResetKey((k) => k + 1);
-    trackEvent({ name: 'updates_reset' });
   }
 
   // Click-to-edit: clear the result and seed the search input with the previously chosen
@@ -150,7 +135,6 @@ export default function UpdatesPage() {
   function handleEdit(label) {
     setSelection(null);
     if (label) setSeedQuery(label);
-    trackEvent({ name: 'updates_edit_selection' });
   }
 
   // Loading state ─────────────────────────────────────
