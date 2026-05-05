@@ -25,7 +25,7 @@ ErrorDocument 404 /404/index.html
   # the bare→/en/ rewrite below. The trailing (/|\?|\s) ensures `en` is a full
   # path segment, so /english/* and similar are not affected.
   RewriteCond %{THE_REQUEST} ^[A-Z]+\s/+en(/|\?|\s) [NC]
-  RewriteRule ^en(/.*)?$ /$1 [R=301,L,QSA]
+  RewriteRule ^en/?(.*)$ /$1 [R=301,L,QSA]
 
   # Skip if the file/directory already exists at the bare path
   RewriteCond %{REQUEST_FILENAME} !-f
