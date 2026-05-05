@@ -3,7 +3,7 @@
 ## General rules
 
 * Use pnpm to manage packages
-* When creating a new worktree, run `./scripts/setup-worktree.sh` from inside the worktree before doing anything else. It symlinks env files and `node_modules` from the main repo so the worktree is immediately usable without re-installing or recreating local secrets. The script is idempotent and refuses to run from the main repo. If you add new env files or top-level state that worktrees should mirror, update the `TARGETS` array in that script.
+* Worktree setup is automatic: Claude Code reads `.worktreeinclude` at the repo root and symlinks the listed gitignored paths (env files, `node_modules`) from the main checkout into each new worktree. If you add new gitignored top-level state that worktrees should mirror, add a pattern to `.worktreeinclude`.
 
 ## Testing rules
 

@@ -139,6 +139,22 @@ module.exports = {
   					height: '0'
   				}
   			},
+  			'collapsible-down': {
+  				from: {
+  					height: '0'
+  				},
+  				to: {
+  					height: 'var(--radix-collapsible-content-height)'
+  				}
+  			},
+  			'collapsible-up': {
+  				from: {
+  					height: 'var(--radix-collapsible-content-height)'
+  				},
+  				to: {
+  					height: '0'
+  				}
+  			},
   			'spin': {
   				to: {
   					transform: 'rotate(360deg)'
@@ -179,6 +195,8 @@ module.exports = {
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
   			'accordion-up': 'accordion-up 0.2s ease-out',
+  			'collapsible-down': 'collapsible-down 0.2s ease-out',
+  			'collapsible-up': 'collapsible-up 0.2s ease-out',
   			'spin': 'spin 0.6s linear infinite',
   			'rainbow-shift': 'rainbow-shift 3s linear infinite',
   			// One-shot reveal beats applied to the success icon and title via
