@@ -50,7 +50,7 @@ jobs:
       # (generic Autobuild often misses pnpm/Node version from .nvmrc).
       - name: Setup pnpm
         if: matrix.codeql-language == 'javascript'
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
 
       - name: Setup Node
         if: matrix.codeql-language == 'javascript'
