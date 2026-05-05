@@ -56,7 +56,7 @@ jobs:
       # ── Drops: open a tracking issue ──────────────────────────────────────
       - name: Open issue when SOFA dropped a watched model
         if: steps.diff.outputs.dropped_count != '0'
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           DROPPED_LIST: ${{ steps.diff.outputs.dropped_list }}
           DROPPED_COUNT: ${{ steps.diff.outputs.dropped_count }}
