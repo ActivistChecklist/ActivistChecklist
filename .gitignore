@@ -50,14 +50,17 @@ public/pagefind
 **/playground/***
 .image-cache.json
 
-# URL scanner
-.approved-urls.json
+# Server-side deploy state
+.deploy-lock.sha256
 
 # Backups
 buildbackups/
 
 # Generated OG share images
 public/images/og/
+
+# Auto-generated endoflife.date snapshot (regenerated daily by scripts/fetch-endoflife-snapshot.mjs)
+public/data/eol-snapshot.json
 
 # Metadata cleaner folder
 metadata-cleaner/

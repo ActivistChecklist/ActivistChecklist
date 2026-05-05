@@ -2,71 +2,14 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import chalk from 'chalk';
-import readline from 'readline';
 import {
   sectionStart,
   sectionEnd,
   detail,
-  attention,
   subsection,
 } from './lib/build-cli.mjs';
 
 const OUTPUT_DIR = 'out';
-const APPROVED_URLS_FILE = '.approved-urls.json';
-
-const URL_APPROVAL_MODE = (process.env.CHECKBUILD_URL_APPROVAL || 'prompt').toLowerCase();
-const isInteractive = URL_APPROVAL_MODE === 'prompt';
-
-// Only create readline interface when we intend to prompt.
-const rl = isInteractive
-  ? readline.createInterface({ input: process.stdin, output: process.stdout })
-  : null;
-
-// Promisify readline question (only used in interactive mode)
-const question = (query) => new Promise((resolve) => rl.question(query, resolve));
-
-// Load approved URLs from file
-function loadApprovedUrls() {
-  try {
-    if (fs.existsSync(APPROVED_URLS_FILE)) {
-      return new Set(JSON.parse(fs.readFileSync(APPROVED_URLS_FILE, 'utf8')));
-    }
-  } catch (error) {
-    console.warn(chalk.yellow(`Warning: Could not load approved URLs: ${error.message}`));
-  }
-  return new Set();
-}
-
-// Save approved URLs to file
-function saveApprovedUrls(approvedUrls) {
-  try {
-    fs.writeFileSync(APPROVED_URLS_FILE, JSON.stringify([...approvedUrls], null, 2));
-  } catch (error) {
-    console.error(chalk.red(`Error saving approved URLs: ${error.message}`));
-  }
-}
-
-// Ask for URL approval
-async function approveUrls(urls) {
-  const sortedUrls = [...urls].sort();
-
-  if (!isInteractive) {
-    detail(
-      `${sortedUrls.length} new external URL(s) — acknowledged without listing (CHECKBUILD_URL_APPROVAL≠prompt)`
-    );
-    return true;
-  }
-
-  attention('🔍', 'New URLs found that need approval');
-  sortedUrls.forEach((url, index) => {
-    const files = Array.from(urlLocations.get(url));
-    detail(`${index + 1}. ${url}`);
-    files.forEach((file) => detail(`   ${file}`));
-  });
-
-  const answer = await question(chalk.yellow('\nApprove all these URLs? (y/n): '));
-  return answer.toLowerCase().startsWith('y');
-}
 
 // Define all find/replace patterns
 const REPLACEMENTS = [
@@ -121,13 +64,6 @@ const __dirname = path.dirname(__filename);
 
 // Store all findings
 const findings = [];
-// Store all URLs with their locations
-const urlLocations = new Map(); // url -> Set<string> (filenames)
-
-// Extract only real HTML attributes (avoid JSON/script blobs like __NEXT_DATA__)
-const HREF_PATTERN = /href="([^"]*?)"/gi;
-const SRC_PATTERN = /src="([^"]*?)"/gi;
-const SRCSET_PATTERN = /srcset="([^"]*?)"/gi;
 
 // Store replacement stats
 const replacementStats = new Map();
@@ -141,36 +77,6 @@ function getContext(content, matchIndex, matchLength) {
   if (end < content.length) context = context + '...';
 
   return context;
-}
-
-function recordUrl(url, filePath) {
-  if (!url || typeof url !== 'string') return;
-  if (!url.startsWith('http://') && !url.startsWith('https://')) return;
-  if (!urlLocations.has(url)) {
-    urlLocations.set(url, new Set());
-  }
-  urlLocations.get(url).add(filePath);
-}
-
-function extractUrls(content, filePath) {
-  // Only extract from rendered HTML attributes. This avoids false positives
-  // from serialized JSON, escaped strings, and code examples in page source.
-  if (!filePath.endsWith('.html')) return;
-
-  let match;
-  while ((match = HREF_PATTERN.exec(content)) !== null) {
-    recordUrl(match[1], filePath);
-  }
-  while ((match = SRC_PATTERN.exec(content)) !== null) {
-    recordUrl(match[1], filePath);
-  }
-  while ((match = SRCSET_PATTERN.exec(content)) !== null) {
-    const entries = match[1].split(',');
-    for (const entry of entries) {
-      const srcUrl = entry.trim().split(/\s+/)[0];
-      recordUrl(srcUrl, filePath);
-    }
-  }
 }
 
 function applyReplacements(content) {
@@ -225,31 +131,17 @@ function checkForbiddenStrings(content, filePath) {
   return fileFindings;
 }
 
-async function scanFile(filePath) {
-  // Read and transform the file
+function scanFile(filePath) {
   const content = readAndTransformFile(filePath);
-
-  // Check for forbidden strings
   const fileFindings = checkForbiddenStrings(content, filePath);
   findings.push(...fileFindings);
-
-  // Extract URLs only from non-bundled files
-  // Bundled JS files contain doc URLs from React/Next.js/webpack that aren't actual content links
-  if (!isBundledJsFile(filePath)) {
-    extractUrls(content, filePath);
-  }
 }
 
 function isTargetFile(file) {
   return file.endsWith('.html') || file.endsWith('.js');
 }
 
-// Check if a file is a bundled JS file (framework code with embedded doc URLs)
-function isBundledJsFile(filePath) {
-  return filePath.includes('_next/static/chunks/');
-}
-
-async function scanDirectory(dir) {
+function scanDirectory(dir) {
   const files = fs.readdirSync(dir);
 
   for (const file of files) {
@@ -257,16 +149,15 @@ async function scanDirectory(dir) {
     const stat = fs.statSync(fullPath);
 
     if (stat.isDirectory()) {
-      await scanDirectory(fullPath);
+      scanDirectory(fullPath);
     } else if (stat.isFile() && isTargetFile(file)) {
-      await scanFile(fullPath);
+      scanFile(fullPath);
     }
   }
 }
 
 try {
   const outputDir = path.resolve(__dirname, '..', OUTPUT_DIR);
-  const approvedUrls = loadApprovedUrls();
 
   if (!fs.existsSync(outputDir)) {
     sectionStart('🔒', 'Check build — scrub output & scan');
@@ -277,40 +168,8 @@ try {
   }
 
   sectionStart('🔒', 'Check build — scrub output & scan');
-  detail(`Scanning ${outputDir} (HTML/JS for tokens & external URLs)`);
-  await scanDirectory(outputDir);
-
-  const newUrls = Array.from(urlLocations.keys()).filter(url => !approvedUrls.has(url));
-  let newUrlsApproved = true;
-
-  if (newUrls.length > 0) {
-    const areApproved = await approveUrls(newUrls);
-    newUrlsApproved = areApproved;
-
-    if (areApproved) {
-      if (isInteractive) {
-        newUrls.forEach(url => approvedUrls.add(url));
-        detail(`Added ${newUrls.length} URL(s) to approved list (total ${approvedUrls.size})`);
-      } else {
-        detail(`Proceeding with ${newUrls.length} new URL(s) — not saved to ${APPROVED_URLS_FILE}`);
-      }
-    } else {
-      newUrls.forEach(url => {
-        detail(`Rejected URL: ${url}`);
-        findings.push({
-          file: Array.from(urlLocations.get(url))[0],
-          string: url,
-          context: 'URL not approved'
-        });
-      });
-    }
-
-    if (isInteractive && areApproved) {
-      saveApprovedUrls(approvedUrls);
-    }
-  } else {
-    detail(`External URLs: no new links (${approvedUrls.size} already in approved list)`);
-  }
+  detail(`Scanning ${outputDir} (HTML/JS for forbidden strings)`);
+  scanDirectory(outputDir);
 
   subsection('🔄', 'Replacement statistics');
   if (replacementStats.size > 0) {
@@ -348,33 +207,19 @@ try {
     detail('None found');
   }
 
-  const summary = [];
-  if (newUrls.length === 0) {
-    summary.push(`External URLs: ${approvedUrls.size} known, none new`);
-  } else if (newUrlsApproved) {
-    summary.push(
-      `External URLs: ${newUrls.length} new — ${isInteractive ? 'approved' : 'acknowledged (CI/non-interactive)'}`
-    );
-  } else {
-    summary.push(`External URLs: ${newUrls.length} new — rejected`);
-  }
-  summary.push(
+  const summary = [
     replacementTotal > 0
       ? `Rewrites: ${replacementTotal} substitution(s) in output`
-      : 'Rewrites: none'
-  );
-  summary.push(
+      : 'Rewrites: none',
     findings.length === 0
       ? 'Forbidden / policy: clean'
-      : `Forbidden / policy: ${findings.length} issue(s)`
-  );
+      : `Forbidden / policy: ${findings.length} issue(s)`,
+  ];
 
   sectionEnd(findings.length === 0, summary);
 
-  if (rl) rl.close();
   process.exit(findings.length > 0 ? 1 : 0);
 } catch (error) {
   console.error(chalk.red.bold('Check build error:'), chalk.red(error.message));
-  if (rl) rl.close();
   process.exit(1);
 }

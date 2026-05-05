@@ -202,41 +202,20 @@ const ChecklistItem = ({
 
     // Auto expand items if they've been linked to directly with an anchor in the URL
     // and scroll to them AFTER all items have restored their expanded states
-    const checkUrlHash = (shouldScroll = false) => {
+    const checkUrlHash = () => {
       const hash = window.location.hash.slice(1); // Remove the # symbol
       if (hash === itemSlug && !isChecked) {
         setExpandedWithStorage(true);
-        
-        // Scroll to this item after a delay to allow all other items to restore their states
-        // This fixes the issue where other items expanding pushes the target down
-        if (shouldScroll && cardRef.current) {
-          // Use requestAnimationFrame + setTimeout to ensure DOM has updated
-          requestAnimationFrame(() => {
-            setTimeout(() => {
-              if (cardRef.current) {
-                const headerHeight = 80; // Approximate header/nav height buffer
-                const cardTop = cardRef.current.getBoundingClientRect().top + window.scrollY;
-                const targetScrollPosition = cardTop - headerHeight;
-                
-                window.scrollTo({
-                  top: Math.max(0, targetScrollPosition),
-                  behavior: 'smooth'
-                });
-              }
-            }, 100); // Small delay to let layout stabilize (transitions are disabled on initial load)
-          });
-        }
       }
     };
 
-    // Initial check - with scroll since this is page load
-    checkUrlHash(true);
+    // Deep link: expand this row (Guide scrolls to hash after effects + paint)
+    checkUrlHash();
 
     // Add hash change listener - also scroll on hash change
-    const handleHashChange = () => checkUrlHash(true);
+    const handleHashChange = () => checkUrlHash();
     window.addEventListener('hashchange', handleHashChange);
 
-    // Cleanup listener
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, [storageKey, expandedStorageKey, itemSlug, isChecked]);
 

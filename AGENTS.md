@@ -1,0 +1,50 @@
+# AI Agent rules
+
+## General rules
+
+* Use yarn to manage packages
+
+## Testing rules
+
+* IMPORTANT: when adding new pure-logic modules (decision trees, parsers, normalizers, search ranking, transforms, etc.), add vitest tests under `__tests__/` covering the meaningful branches. The repo runs vitest as a pre-commit hook, so tests must pass before any commit.
+* Tests should be behavior-focused: cover the public API, the decision-tree branches, and edge cases that would silently produce wrong answers (e.g. an EOL date in the past vs. the future). Don't write tests for internal helpers that are already exercised through the public surface.
+* Skip tests for: trivial glue code, presentational components without logic, one-line wrappers, and things that are exclusively tested by integration (build-time scripts where running the script IS the test).
+* When adding a non-trivial feature, mention test coverage in your final summary so the user knows what's covered and what's not.
+
+## Content writing ruels
+
+* IMPORTANT: Do NOT use em-dashes when writing content or text in .mdx files or static strings.
+
+## Git commit rules
+
+* IMPORTANT: Do not do any automatic commits for this project unless explicitly instructed.
+* Do not use stash unless you have to
+* Do not commit directly to main
+* Always commit in this way: check if we're already on a dev/NAME feature branch. If not, open one. Commit changes. DO NOT include claude's name in the commit message. Do not merge into main. I will do that later on GH. If you need to use one branch for multiple different changes, thats fine. Doesnt matter if the branch name isn't perfect for the tasks at hand.
+* Never include Claude or Cursor or the current AI agent in the name of the commit or as a co-author (e.g., "Co-authored-by: Cursor <...>")
+
+## CSS rules
+
+* **Tailwind utility classes** (inline on elements) are the default for layout, spacing, and color. Use semantic color tokens (`bg-background`, `text-foreground`, `text-muted-foreground`, `text-primary`, etc.) — never raw scale values like `bg-gray-100` or `text-zinc-600` in components.
+* **`dark:` variants** are for one-off dark mode adjustments that can't be expressed through the CSS variable system alone. The variable system handles most cases automatically.
+* **CSS Modules** (`.module.css`) are for scoped component styles with multiple named variants or complex selectors (Alert and RiskLevel are the right use cases). Don't use them for single-element components.
+* **`globals.css`** is for: design tokens (CSS variables in `:root`/`.dark`), base element resets, cross-cutting utility classes (`.link`, `.prose`, print styles). No component-specific rules.
+* **`style={}`** only for truly dynamic runtime values (e.g., calculated pixel offsets). Never for static styles.
+
+## Internationalization (i18n) rules
+
+* All user-facing strings in the public site must go into `messages/en.json`. Never hardcode English text directly in components or pages.
+* Crowdin handles translation of new strings, so you only need to add to `messages/en.json`.
+* Use `useTranslations()` in client components and `await getTranslations()` in server components (from `next-intl` and `next-intl/server` respectively).
+* The convention in this project is `const t = useTranslations()` without a namespace, using full dot-notation paths (e.g., `t('contact.title')`).
+* This does not apply to admin/Keystatic interfaces, scripts, or internal tooling.
+* IMPORTANT: Do not manually edit or add non-English mdx files while editing/adding English files
+* **Internal links:** use `import Link from '@/components/Link'`, not `next/link`, so paths get the right locale prefix (`/es/…`, etc.). Exception: root-only URLs that must not be prefixed (e.g. `/rss/*.xml`) — note why in a comment if you use `next/link`.
+
+## Coding security principles
+
+* Always make sure to write code with security as a core principle. Don't be excessive (ex: lots of try/catch loops), but do use thinking time to consider how an attacker could mount a meaningful attack.
+* Never hardcode secrets — use environment variables.
+* Use parameterized queries — never interpolate into SQL.
+* Use constant-time comparison for tokens and hashes.
+* Never log secrets, tokens, or PII.

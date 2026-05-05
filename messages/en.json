@@ -60,6 +60,10 @@
       "title": "Movies, books, & podcasts",
       "label": "Movies, books, & podcasts"
     },
+    "updates": {
+      "title": "Security update checker",
+      "label": "Security update checker"
+    },
     "resources": {
       "title": "Resources",
       "label": "Resources"
@@ -85,7 +89,7 @@
     "title": "Digital Security Checklists for Activists",
     "description": "Plain language steps for digital security. Because protecting yourself helps keep your whole community safer.",
     "primaryCta": "Digital Security Essentials",
-    "secondaryCta": "See all checklists"
+    "secondaryCta": "Host a security party"
   },
   "trustPoints": {
     "experienceTitle": "Built from experience",
@@ -152,6 +156,10 @@
       "blueskyAriaLabel": "Follow us on Bluesky",
       "githubAriaLabel": "View our GitHub repository",
       "mastodonAriaLabel": "Follow us on Mastodon"
+    },
+    "onion": {
+      "label": "Tor",
+      "ariaLabel": "Visit our Tor onion service"
     }
   },
   "newsletter": {
@@ -253,6 +261,7 @@
   },
   "copyButton": {
     "copy": "Copy",
+    "copyText": "Copy text",
     "copied": "Copied",
     "ariaLabel": "Copy to clipboard"
   },
@@ -332,6 +341,303 @@
     "description": "A history of changes to checklists, pages, and resources on the site.",
     "last30Days": "Last 30 days",
     "previousChanges": "Previous changes",
-    "noEntries": "No changelog entries found."
+    "noEntries": "No changelog entries found.",
+    "majorUpdate": "Major update"
+  },
+  "updates": {
+    "metaTitle": "Is your device still receiving security updates? | Activist Checklist",
+    "metaDescription": "Check whether your phone, tablet, watch, or laptop is still getting security updates. Out-of-date devices accumulate publicly known vulnerabilities and are easier to hack if it is seized or targeted.",
+    "title": "Is your device still receiving security updates?",
+    "intro": "If your device isn't using the latest operating system, hackers and law enforcement can break into it and access all your data.",
+    "searchLabel": "Type your device model",
+    "searchHelpAriaLabel": "Help finding your device model",
+    "searchHelp": "Need help finding it? Select your operating system above for guidance.",
+    "searchPlaceholder": "e.g. iPhone 12 Pro, Pixel 7, Windows 10",
+    "searchAriaLabel": "Search for your device or operating system",
+    "clearAriaLabel": "Clear search",
+    "editSelectionAriaLabel": "Change device, return to search",
+    "noMatches": "No matches in our list.",
+    "noMatchesHelp": "Try the manufacturer name (e.g. \"Galaxy A14\" instead of just \"A14\").",
+    "noMatchesSupported": "We currently track Apple, Google, Samsung, Motorola, OnePlus, Nokia, plus iOS, iPadOS, macOS, Android, and Windows.",
+    "noMatchesWindowsLaptop": "Windows laptop manufacturers don't announce when they stop offering security updates, so checking the laptop <b>model</b> won't tell you. Check your Windows <b>version</b> instead. That's what determines whether you're still receiving updates.",
+    "noMatchesWindowsPathLabel": "How to check your Windows version:",
+    "loading": "Loading device list...",
+    "loadError": "We couldn't load the device list. <retryLink>Try again</retryLink> or check <link>endoflife.date</link> directly.",
+    "snapshotStaleBanner": "Our device list may be out of date. Last updated {date}. <link>Check endoflife.date directly</link>",
+    "releasedYearHint": "released {year}",
+    "categoryPill": {
+      "phone": "Phone",
+      "tablet": "Tablet",
+      "watch": "Watch",
+      "laptop": "Laptop",
+      "desktop": "Desktop",
+      "os": "OS"
+    },
+    "platform": {
+      "prompt": "Or pick where to start:",
+      "helpPrompt": "Need help finding your device model?",
+      "apple": "Apple",
+      "android": "Android",
+      "windows": "Windows",
+      "other": "Other"
+    },
+    "subCategory": {
+      "prompt": "What kind of {platform} device?",
+      "back": "Back",
+      "iphone": "iPhone",
+      "ipad": "iPad",
+      "iphoneIpad": "iPhone / iPad",
+      "appleWatch": "Apple Watch",
+      "mac": "Mac / MacBook",
+      "samsung": "Samsung Galaxy",
+      "pixel": "Google Pixel",
+      "motorola": "Motorola",
+      "oneplus": "OnePlus",
+      "nokia": "Nokia",
+      "android": "Android",
+      "androidOs": "Android (OS only)",
+      "windows": "Windows"
+    },
+    "breadcrumb": {
+      "ariaLabel": "Picked category, click to change",
+      "clear": "Clear category"
+    },
+    "findYourModel": {
+      "label": "How to find your device model:",
+      "labelWindows": "How to check your Windows version:",
+      "iphone": "<settings>Settings app</settings> on your home screen → General → About → Model Name",
+      "ipad": "<settings>Settings app</settings> on your home screen → General → About → Model Name",
+      "iphoneIpad": "<settings>Settings app</settings> on your home screen → General → About → Model Name",
+      "appleWatch": "Watch app on iPhone → My Watch → General → About → Model",
+      "mac": "<apple>Apple menu</apple> in the top menu bar → About This Mac → Overview",
+      "samsung": "<settings>Settings app</settings> on your phone → About phone → Model number",
+      "pixel": "<settings>Settings app</settings> on your phone → About phone → Model",
+      "motorola": "<settings>Settings app</settings> on your phone → About phone → Model number",
+      "oneplus": "<settings>Settings app</settings> on your phone → About device → Model number",
+      "nokia": "<settings>Settings app</settings> on your phone → About phone → Model",
+      "android": "<settings>Settings app</settings> on your phone → About phone → Model number",
+      "androidOs": "<settings>Settings app</settings> on your phone → About phone → Android version",
+      "windows": "Press Windows key + R → type <code>winver</code> → Enter",
+      "windowsCaveat": "Windows laptop manufacturers don't announce when they stop offering security updates, so checking the laptop <b>model</b> won't tell you. Check your Windows <b>version</b> instead. That's what determines whether you're still receiving updates."
+    },
+    "otherInfo": {
+      "title": "Other devices",
+      "body": "We currently track Apple, Google, Samsung, Motorola, OnePlus, and Nokia devices, plus iOS, iPadOS, macOS, Android, and Windows. For anything else, <link>search online</link> for \"is [DEVICE MODEL] still receiving security updates.\""
+    },
+    "result": {
+      "checkAnother": "Check another device",
+      "source": "Source: <link>endoflife.date</link>",
+      "settingsPath": {
+        "ios": "<settings>Settings app</settings> on your home screen → General → Software Update → Update Now",
+        "ipados": "<settings>Settings app</settings> on your home screen → General → Software Update → Update Now",
+        "macos": "<apple>Apple menu</apple> in the top menu bar → System Settings → General → Software Update → Update Now",
+        "android": "<settings>Settings app</settings> on your phone → System → Software update → Check for updates",
+        "windows": "<windows>Start menu</windows> → <settings>Settings</settings> → Windows Update → Check for updates",
+        "watchos": "Watch app on your iPhone → My Watch → General → Software Update → Install",
+        "oneplus": "<settings>Settings app</settings> on your phone → System → System updates → Check for updates"
+      },
+      "osVersionPath": {
+        "ios": "<settings>Settings app</settings> on your home screen → General → About → Software Version",
+        "ipados": "<settings>Settings app</settings> on your home screen → General → About → Software Version",
+        "macos": "<apple>Apple menu</apple> in the top menu bar → About This Mac",
+        "android": "<settings>Settings app</settings> on your phone → About phone → Android version",
+        "windows": "Press Windows key + R → type <code>winver</code> → Enter",
+        "watchos": "Watch app on your iPhone → My Watch → General → About → Version"
+      },
+      "deviceSupportedTitle": "{label} will still receive security updates.",
+      "deviceSupportedSubtitleUntil": "Updates expected through <b>{date}</b>.",
+      "deviceSupportedSubtitleRecent": "End-of-support date not yet announced.",
+      "deviceUnsupportedTitle": "{label} is no longer receiving security updates.",
+      "deviceUnsupportedTitleAgoMonths": "{label} stopped receiving security <nowrap>updates <mark>{months, plural, one {1 month} other {# months}} ago</mark></nowrap>.",
+      "deviceUnsupportedTitleAgoYears": "{label} stopped receiving security <nowrap>updates <mark>{years, plural, one {1 year} other {# years}} ago</mark></nowrap>.",
+      "deviceUnsupportedSubtitleEnded": "Security support ended <b>{date}</b>.",
+      "deviceUnsupportedSubtitleUnmaintained": "{manufacturer} has stopped issuing security updates.",
+      "deviceUnsupportedSubtitleAge": "Released {age}. No published end-of-support date and {manufacturer} doesn't appear to be issuing updates.",
+      "manufacturerFallback": "The manufacturer",
+      "manufacturerFallbackLower": "the manufacturer",
+      "ageYearsAgo": "{years, plural, =0 {this year} =1 {1 year ago} other {# years ago}}",
+      "deviceUncertainTitle": "We can't confirm whether {label} will still receive updates.",
+      "deviceUncertainSubtitle": "Released {age}. {manufacturer} hasn't published an end-of-support date, and devices this old may or may not still be receiving updates.",
+      "deviceUncertainCheck": "Check the manufacturer's support page: <link></link>.",
+      "manufacturerSupport": {
+        "apple": {
+          "label": "Apple Support",
+          "url": "https://support.apple.com/"
+        },
+        "google": {
+          "label": "Google Pixel support",
+          "url": "https://support.google.com/pixelphone/answer/4457705"
+        },
+        "samsung": {
+          "label": "Samsung Mobile Security",
+          "url": "https://security.samsungmobile.com/workScope.smsb"
+        },
+        "motorola": {
+          "label": "Motorola software updates",
+          "url": "https://en-us.support.motorola.com/app/software-security-update"
+        },
+        "oneplus": {
+          "label": "OnePlus community",
+          "url": "https://www.oneplus.com/support"
+        },
+        "nokia": {
+          "label": "Nokia security updates",
+          "url": "https://www.nokia.com/phones/en_int/security-updates"
+        }
+      },
+      "osConfirmedShort": "{label} will still receive security updates.",
+      "osConfirmedShortYears": "{label} will still receive security updates <nowrap>for <mark>{years, plural, one {1 more year} other {# more years}}</mark></nowrap>.",
+      "osConfirmedShortMonths": "{label} will still receive security updates <nowrap>for <mark>{months, plural, one {1 more month} other {# more months}}</mark></nowrap>.",
+      "osConfirmedSubtitleUntil": "Updates expected through <b>{date}</b>.",
+      "osEolSoon": {
+        "titleMonths": "{label} will lose security <nowrap>updates <mark>in about {months, plural, =1 {1 month} other {# months}}</mark></nowrap>.",
+        "titleSoon": "{label} will lose security <nowrap>updates <mark>soon</mark></nowrap>.",
+        "subtitleDate": "Updates expected to end <b>{date}</b>."
+      },
+      "osEoasNote": "The vendor has moved this version to security-only updates. Plan an upgrade when convenient.",
+      "osUnsupportedTitle": "{label} is no longer receiving security updates.",
+      "osUnsupportedSubtitleEnded": "Support ended <b>{date}</b>.",
+      "osUpgradeAdvice": {
+        "ios": "Update to the latest iOS.",
+        "ipados": "Update to the latest iPadOS.",
+        "macos": "Update to a newer macOS.",
+        "android": "Update to a newer Android.",
+        "windows": "Upgrade to Windows 11."
+      },
+      "osCheckDeviceHint": "Or enter your device model in the box above to see if it is still able to receive security updates.",
+      "latestOsReminderTitle": "Make sure you're up to date",
+      "latestOsReminderWithVersion": "Make sure you're running {os} {version}.",
+      "latestOsReminderFamilyLatest": "Make sure you're running the latest {os} (currently {version}).",
+      "latestOsReminderGeneric": "Make sure your device is fully updated.",
+      "supportedOsLabel": {
+        "ios": "iOS",
+        "ipados": "iPadOS",
+        "macos": "macOS",
+        "android": "Android",
+        "windows": "Windows"
+      },
+      "deviceMaxOsWarningTitle": "A note about your device's OS",
+      "deviceMaxOsWarning": "Your {label} only supports up to {os} {maxVersion}. {os} {maxVersion} will stop receiving security updates before {os} {latestVersion} does. Newer devices will keep receiving updates longer.",
+      "deviceMaxOsWarningWithDate": "Your {label} only supports up to {os} {maxVersion}, which is expected to stop receiving security updates around {eolDate}. Newer devices that can run {os} {latestVersion} will keep receiving updates longer.",
+      "deviceMaxOsEolWarning": "Your {label} tops out at {os} {maxVersion}, which has officially ended support. You may still receive occasional updates, but treat this device as low-trust for sensitive work and plan to replace it.",
+      "deviceUpgradePlan": "If long-term security matters for your work, plan a hardware upgrade.",
+      "threatModelHeader": "Why this matters",
+      "threatModel": "Every week without an update, more ways to break into your device become public knowledge. If the cops seize your phone at a <protestLink>protest</protestLink> or a <borderLink>border crossing</borderLink> (or if someone targets you with <spywareLink>spyware</spywareLink>) those known weaknesses are what they'll use to get inside and read everything on it.  ",
+      "threatModelSoft": "Until you confirm, treat this device as potentially out-of-date for sensitive work.",
+      "viewEssentialsCta": "View our digital security essentials →",
+      "essentialsNextSteps": {
+        "title": "More easy-to-follow steps to protect your data and devices"
+      },
+      "startOver": "Start over",
+      "deviceInfo": {
+        "manufacturerLine": "{manufacturer} · Released {date}",
+        "manufacturerLineNoDate": "{manufacturer}",
+        "manufacturer": {
+          "apple": "Apple",
+          "google": "Google",
+          "samsung": "Samsung",
+          "microsoft": "Microsoft",
+          "motorola": "Motorola",
+          "oneplus": "OnePlus",
+          "nokia": "Nokia"
+        }
+      },
+      "eolSoon": {
+        "titleMonths": "{label} will lose security <nowrap>updates <mark>in about {months, plural, =1 {1 month} other {# months}}</mark></nowrap>.",
+        "titleSoon": "{label} will lose security <nowrap>updates <mark>soon</mark></nowrap>.",
+        "subtitleDate": "Updates expected to end <b>{date}</b>.",
+        "actionHeading": "What to do",
+        "action": "Start planning a replacement now. Once updates stop, your device begins accumulating publicly known vulnerabilities."
+      },
+      "buyingGuidance": {
+        "heading": "When you replace it",
+        "yearsPattern": "Most {deviceLabel} get security updates for {min}-{max} years from their release date.",
+        "deviceLabel": {
+          "phone": "phones",
+          "laptop": "laptops",
+          "tablet": "tablets",
+          "watch": "smartwatches"
+        },
+        "checkBeforeBuying": "If you're buying used, search for the model here first to see how long it'll keep getting updates."
+      },
+      "ctaReplace": {
+        "phone": "We suggest getting a new phone.",
+        "tablet": "We suggest getting a new tablet.",
+        "laptop": "We suggest getting a new laptop.",
+        "desktop": "We suggest getting a new Mac.",
+        "watch": "We suggest getting a new watch.",
+        "generic": "We suggest getting a new device."
+      },
+      "ctaPlan": {
+        "phone": "Start planning your next phone.",
+        "tablet": "Start planning your next tablet.",
+        "laptop": "Start planning your next laptop.",
+        "desktop": "Start planning your next Mac.",
+        "watch": "Start planning your next watch.",
+        "generic": "Start planning your next device."
+      },
+      "deviceConfirmedShort": "{label} will still receive security updates.",
+      "deviceConfirmedShortYears": "{label} will still receive security updates <nowrap>for <mark>{years, plural, one {1 more year} other {# more years}}</mark></nowrap>.",
+      "deviceConfirmedShortMonths": "{label} will still receive security updates <nowrap>for <mark>{months, plural, one {1 more month} other {# more months}}</mark></nowrap>.",
+      "deviceConfirmedShortApproxYears": "{label} will still receive security updates <nowrap>for <mark>about {years, plural, one {1 more year} other {# more years}}</mark></nowrap>.",
+      "deviceConfirmedShortApproxMonths": "{label} will still receive security updates <nowrap>for <mark>about {months, plural, one {1 more month} other {# more months}}</mark></nowrap>.",
+      "appleEstimate": {
+        "intro": "Apple doesn't publish end-of-support dates, but {deviceLabel} usually receive {min} to {max} years of security updates from launch."
+      },
+      "osCheckStep": {
+        "headingForOs": "Which version of {os} are you running?",
+        "headingForOsRelease": "Which version of {label} are you running?",
+        "headingGeneric": "Which version is your device running?",
+        "headingUpdatesAvailable": "Are there any updates available for your {device}?",
+        "headingUpdatesAvailableForRelease": "Are there any updates available for {label}?",
+        "subheadingHelp": "Open it on your device to check:",
+        "subheadingUpdatesHelp": "Check for updates on your device:",
+        "optionLatestShort": "I'm on {version}",
+        "optionLatestVersion": "I'm on {version} (latest)",
+        "optionOlderShort": "Older than {version}",
+        "optionOlderVersion": "Older than {version}",
+        "optionBetweenShort": "Between {major}.0.0 and {previousVersion}",
+        "optionThisVersion": "I'm on this version",
+        "optionNoUpdatesAvailable": "I don't see any updates available",
+        "optionNoUpdatesAvailableByOs": {
+          "windows": "It says \"You're up to date\"",
+          "android": "It says \"Your software is up to date\""
+        },
+        "optionUpdatesAvailable": "I see updates available",
+        "optionUnknown": "I'm not sure"
+      },
+      "deviceNoun": {
+        "phone": "phone",
+        "tablet": "tablet",
+        "laptop": "laptop",
+        "desktop": "computer",
+        "watch": "watch",
+        "generic": "device"
+      },
+      "osNeedsUpdate": {
+        "heading": "Your operating system needs an update",
+        "headingMaybe": "Your operating system might need an update",
+        "body": "Update to the latest version to get the most recent security updates.",
+        "howToHeading": "How to update:",
+        "didUpdateButton": "Done, I've updated",
+        "noUpdatesAvailableButton": "No updates available and I'm on a version older than {os} {major}",
+        "noUpdatesAvailableButtonCodename": "No updates available and I'm on a version older than {os} {major} ({codename})"
+      },
+      "deviceUnsupportedSubtitleStuckOnOs": "You can't get newer security updates on this device, so it has stopped receiving the patches that protect your data.",
+      "finalSuccess": {
+        "heading": "You're up to date.",
+        "deviceCheck": "{label} will still receive security updates.",
+        "deviceCheckUntil": "{label} is receiving security updates through {date}.",
+        "osCheck": "{os} is on the latest version ({version}).",
+        "osCheckCodename": "{os} {version} ({codename}) is the latest version.",
+        "osCheckNoVersion": "Operating system is up to date.",
+        "osLatestUpdates": "You have the latest security updates installed for {label}.",
+        "osLatestUpdatesWithVersion": "You have the latest security updates installed ({os} {version}).",
+        "checkPhoneNext": "Check your phone next",
+        "checkLaptopNext": "Check your laptop next",
+        "checkAnotherDevice": "Check another device"
+      }
+    },
+    "footer": "Powered by <eolLink>endoflife.date</eolLink> and <sofaLink>SOFA</sofaLink> · Updated {date}."
   }
 }

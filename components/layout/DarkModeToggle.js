@@ -17,7 +17,7 @@ const THEMES = [
   { value: "system", label: "System", Icon: Laptop },
 ]
 
-export function DarkModeToggle() {
+export function DarkModeToggle({ className } = {}) {
   const { theme, resolvedTheme, setTheme } = useTheme()
   const [mounted, setMounted] = React.useState(false)
 
@@ -27,7 +27,7 @@ export function DarkModeToggle() {
 
   if (!mounted) {
     return (
-      <Button variant="ghost" size="icon" aria-label="Toggle theme" disabled>
+      <Button variant="ghost" size="icon" className={className} aria-label="Toggle theme" disabled>
         <Sun className="h-[1.2rem] w-[1.2rem]" aria-hidden="true" />
       </Button>
     )
@@ -41,6 +41,7 @@ export function DarkModeToggle() {
         <Button
           variant="ghost"
           size="icon"
+          className={className}
           aria-label={`Theme: ${theme}. Change theme`}
           title="Change theme"
         >

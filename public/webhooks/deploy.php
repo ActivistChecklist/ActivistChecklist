@@ -457,73 +457,190 @@ foreach ($prefix as $part) {
   }
 }
 
-$bash = ['/bin/bash', '--noprofile', '--norc', $realScript];
-$resolvedCmd = array_merge($prefix, $bash);
-
-$descriptorspec = [
-  0 => ['pipe', 'r'],
-  1 => ['pipe', 'w'],
-  2 => ['pipe', 'w'],
-];
-
-$cwd = $realParent;
-$process = proc_open($resolvedCmd, $descriptorspec, $pipes, $cwd, $env);
-if (!is_resource($process)) {
-  error_log('deploy-webhook: proc_open failed');
-  http_response_code(500);
-  exit('Deploy failed');
-}
-
-fclose($pipes[0]);
-$stdout = stream_get_contents($pipes[1]);
-$stderr = stream_get_contents($pipes[2]);
-fclose($pipes[1]);
-fclose($pipes[2]);
-$code = proc_close($process);
-
+// Resolve where to archive each run's output (the persistent log). May be null
+// if logging is explicitly disabled in config.
 $logRaw = $config['log_file'] ?? null;
+$logFallback = $repoRoot . DIRECTORY_SEPARATOR . '.deploy-webhook.log';
+$persistentLog = null;
 if ($logRaw === false) {
-  $logFile = null;
+  // Logging explicitly disabled — keep $persistentLog null.
 } elseif (is_string($logRaw) && $logRaw !== '') {
-  $logFile = $logRaw;
+  $persistentLog = $logRaw;
 } elseif ($logRaw === null || $logRaw === '') {
-  $logFile = $repoRoot . DIRECTORY_SEPARATOR . '.deploy-webhook.log';
+  $persistentLog = $logFallback;
 } else {
   error_log('deploy-webhook: log_file must be false, a non-empty string, or omitted');
   http_response_code(500);
   exit('Configuration error');
 }
 
-if ($logFile !== null) {
-  $line = sprintf(
-    "[%s] exit=%d delivery=%s\n--- stdout ---\n%s\n--- stderr ---\n%s\n",
-    gmdate('c'),
-    $code,
-    $_SERVER['HTTP_X_GITHUB_DELIVERY'] ?? '',
-    is_string($stdout) ? $stdout : '',
-    is_string($stderr) ? $stderr : ''
-  );
-  if (file_put_contents($logFile, $line, FILE_APPEND | LOCK_EX) === false) {
-    error_log('deploy-webhook: could not write log file: ' . $logFile);
+// Always stream this run's output to its own per-run temp file. We append the
+// captured block to the persistent log atomically after the build finishes.
+// Why per-run instead of writing straight to the persistent log:
+//   1. Concurrent webhook deliveries can't interleave each other's output (no
+//      offset math to race against filesize() between runs).
+//   2. The failure response reads exactly this run's bytes, never another run's.
+$runLog = @tempnam(sys_get_temp_dir(), 'deploy-webhook-run-');
+if (!is_string($runLog) || $runLog === '') {
+  error_log('deploy-webhook: tempnam failed for per-run log');
+  http_response_code(500);
+  exit('Deploy failed');
+}
+
+$delivery = $_SERVER['HTTP_X_GITHUB_DELIVERY'] ?? '';
+
+$bash = ['/bin/bash', '--noprofile', '--norc', $realScript];
+$resolvedCmd = array_merge($prefix, $bash);
+
+// Stream stdout+stderr directly into the per-run temp file via OS-level
+// descriptors so output is visible as the build runs (not buffered in PHP
+// until proc_close). Combining streams into one file gives chronological
+// ordering, which is what you want for debugging.
+$descriptorspec = [
+  0 => ['pipe', 'r'],
+  1 => ['file', $runLog, 'a'],
+  2 => ['file', $runLog, 'a'],
+];
+
+$cwd = $realParent;
+$startTime = microtime(true);
+$process = proc_open($resolvedCmd, $descriptorspec, $pipes, $cwd, $env);
+if (!is_resource($process)) {
+  error_log('deploy-webhook: proc_open failed');
+  @unlink($runLog);
+  http_response_code(500);
+  exit('Deploy failed');
+}
+
+if (isset($pipes[0])) fclose($pipes[0]);
+$code = proc_close($process);
+$durationMs = (int) round((microtime(true) - $startTime) * 1000);
+
+// Archive this run to the persistent log atomically. file_put_contents with
+// LOCK_EX serializes appends from concurrent webhook deliveries.
+$archived = false;
+if (is_string($persistentLog)) {
+  $startLine = sprintf("\n[%s] START delivery=%s\n", gmdate('c'), $delivery);
+  $endLine = sprintf("[%s] END exit=%d duration=%dms\n", gmdate('c'), $code, $durationMs);
+  $runOutput = (string) @file_get_contents($runLog);
+  $block = $startLine . $runOutput . $endLine;
+  if (@file_put_contents($persistentLog, $block, FILE_APPEND | LOCK_EX) !== false) {
+    $archived = true;
+  } else {
+    error_log('deploy-webhook: could not write to log_file; falling back to ' . $logFallback);
+    if ($persistentLog !== $logFallback
+        && @file_put_contents($logFallback, $block, FILE_APPEND | LOCK_EX) !== false) {
+      $archived = true;
+    }
   }
+}
+// If we never managed to archive this run's output, KEEP the temp file so it
+// can be recovered manually. Log the path via PHP's error_log so it's findable.
+$preserveRunLog = is_string($persistentLog) && !$archived;
+if ($preserveRunLog) {
+  error_log('deploy-webhook: archive failed; per-run log preserved at ' . $runLog);
 }
 
 if ($code !== 0) {
   error_log('deploy-webhook: deploy script exited ' . $code);
   http_response_code(500);
   header('Content-Type: text/plain; charset=UTF-8');
-  $delivery = $_SERVER['HTTP_X_GITHUB_DELIVERY'] ?? '';
   $deliveryLine = is_string($delivery) && $delivery !== '' ? $delivery : '(unknown)';
+  // Don't include the path in the response — it surfaces in GitHub Actions
+  // logs and may be public. The log is at a known location on the server.
+  $logStatus = is_string($persistentLog) ? 'archived to server log' : 'disabled';
+
+  // Read this run's complete output (capped) for the failure response. No
+  // offset math: the temp file is exclusively this run's bytes.
+  $tailBytes = 50000;
+  $combined = '';
+  if (file_exists($runLog)) {
+    $size = (int) @filesize($runLog);
+    $readFrom = $size > $tailBytes ? $size - $tailBytes : 0;
+    $fh = @fopen($runLog, 'rb');
+    if (is_resource($fh)) {
+      @fseek($fh, $readFrom);
+      $combined = (string) stream_get_contents($fh);
+      @fclose($fh);
+    }
+  }
+
+  // Sanitize before embedding in the HTTP response (which surfaces in the GitHub
+  // Actions log and could be public). Collect every plausible username and home
+  // directory from PHP-side detection AND from the script's own output (in case
+  // PHP-FPM runs as a different user than the deploy command, or POSIX is disabled).
+  $homesForSan = [];
+  $usersForSan = [];
+  if (isset($env['HOME']) && is_string($env['HOME']) && $env['HOME'] !== '') {
+    $homesForSan[] = $env['HOME'];
+  }
+  if (isset($env['USER']) && is_string($env['USER']) && $env['USER'] !== '') {
+    $usersForSan[] = $env['USER'];
+  }
+  if (function_exists('posix_geteuid') && function_exists('posix_getpwuid')) {
+    $info = @posix_getpwuid(posix_geteuid());
+    if (is_array($info)) {
+      if (isset($info['name']) && is_string($info['name'])) $usersForSan[] = $info['name'];
+      if (isset($info['dir']) && is_string($info['dir'])) $homesForSan[] = $info['dir'];
+    }
+  }
+  if (preg_match_all('/\b(?:user|whoami|USER|LOGNAME)=(\S+)/', $combined, $matches)) {
+    foreach ($matches[1] as $u) $usersForSan[] = $u;
+  }
+  if (preg_match_all('/\bHOME=(\S+)/', $combined, $matches)) {
+    foreach ($matches[1] as $h) {
+      // Skip already-sanitized values from prior log lines if any.
+      if ($h !== '~' && $h !== '') $homesForSan[] = $h;
+    }
+  }
+  // Longest paths first so /home/x/y is replaced before /home/x.
+  $homesForSan = array_values(array_unique($homesForSan));
+  $usersForSan = array_values(array_unique($usersForSan));
+  usort($homesForSan, fn($a, $b) => strlen($b) - strlen($a));
+
+  $sanitize = function (string $s) use ($homesForSan, $usersForSan, $secret, $deployEnv): string {
+    if ($secret !== '' && strlen($secret) >= 8) {
+      $s = str_replace($secret, '[REDACTED]', $s);
+    }
+    foreach ($deployEnv as $k => $v) {
+      if (!is_string($v) || $v === '') continue;
+      if (preg_match('/(SECRET|TOKEN|PASSWORD|PASS|KEY|CREDENTIAL|HMAC)/i', (string) $k)) {
+        $s = str_replace($v, '[REDACTED]', $s);
+      }
+    }
+    foreach ($usersForSan as $u) {
+      if ($u === '' || $u === 'root' || strlen($u) < 3) continue;
+      $s = preg_replace('/\b' . preg_quote($u, '/') . '\b/', '[user]', $s) ?? $s;
+    }
+    foreach ($homesForSan as $h) {
+      if ($h === '' || $h === '/' || $h === DIRECTORY_SEPARATOR) continue;
+      $s = str_replace(rtrim($h, DIRECTORY_SEPARATOR), '~', $s);
+    }
+    return $s;
+  };
+
+  $combinedTail = $combined === '' ? '(empty)' : $sanitize($combined);
+
   $body = <<<TXT
 Deploy failed (exit code {$code}).
 
 GitHub delivery: {$deliveryLine}
+Server log: {$logStatus}
+Duration: {$durationMs}ms
 
-Check the deploy webhook log on the server for full stdout/stderr.
+Output below: \$HOME paths collapsed to ~, secrets redacted.
 
-If the log shows another run holding the lock, wait and re-dispatch the webhook or push again.
+--- script output (last {$tailBytes} bytes, stdout+stderr combined) ---
+{$combinedTail}
 TXT;
+  if (!$preserveRunLog) {
+    @unlink($runLog);
+  }
   exit($body);
+}
+
+if (!$preserveRunLog) {
+  @unlink($runLog);
 }
 
 http_response_code(200);

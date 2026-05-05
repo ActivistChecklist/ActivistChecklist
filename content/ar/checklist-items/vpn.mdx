@@ -1,0 +1,59 @@
+---
+title: Install a trusted VPN with ad-blocking to make it harder for cops to do warrantless surveillance
+preview: |
+  A VPN makes it harder for websites to track you and prevents your internet provider from logging your traffic.
+do: |
+  Install a trusted VPN and keep it on. We recommend [Mullvad VPN](https://mullvad.net/en) ($5/mo) or [IVPN](https://www.ivpn.net/) ($6/mo).
+dont: |
+  Use a random VPN you find online. Nord VPN, Surfshark, ExpressVPN, etc. are popular but not as trustworthy.
+titleBadges: []
+firstPublished: 2025-06-13
+lastUpdated: 2026-03-09
+---
+
+Anytime you connect to the internet (phone or computer), your internet provider is revealing your approximate location to every site/app you use.
+
+We know that [law enforcement agencies are using tools to track your location](https://www.404media.co/inside-ices-tool-to-monitor-phones-in-entire-neighborhoods/) using data gathered from apps you have and ads you see. Using a VPN with ad-blocking features enabled makes it much harder for them to track you. Also, police can get a subpoena for your internet traffic from your internet provider.
+
+A VPN (Virtual Private Network) helps mask your location and makes you slightly harder to identify.
+
+A VPN with ad-blocking enabled is especially important on your phone.
+
+<Alert type="warning">
+  **A VPN doesn't make you fully anonymous.** For sensitive browsing requiring higher anonymity, consider [Tor Browser](https://activistchecklist.org/research) as a second browser alongside your everyday one.
+</Alert>
+
+**Options:** All of these are very trustworthy options.
+
+* [**Mullvad VPN**](https://mullvad.net/en/vpn) **(top recommendation)**: Better privacy since payment info isn't stored, but you need to manually pay each cycle.
+* [**IVPN**](https://www.ivpn.net/en/) can be easier because it automatically renews.
+* [**Proton VPN**](https://protonvpn.com/) has a solid free plan, but it is only for 1 device. To get ad-blocking, you need a paid plan. (See our [note](/proton/) regarding concerns about the Proton CEO and why we still offer Proton options.)
+
+<HowTo title="How to set up Mullvad VPN">
+  ***Mobile app***
+
+  1. **Create an account number and write it down:** Create a [Mullvad account number](https://mullvad.net/en/account/create) (there is no password) and *<u>**write it down**</u>* somewhere safe like your password manager.
+  2. **Pay (aka "Add time"):** There is no automatic renewal, so all payments are manual. Paying yearly can make things easier so you don't have to remember.
+  3. **Install the Mullvad mobile app** ([iPhone](https://apps.apple.com/us/app/mullvad-vpn/id1488466513), [Android](https://mullvad.net/en/download/vpn/android)) and use your Account number to sign in.
+  4. **Enable ad-blocking:** Gear Icon ⚙️ > VPN Settings > DNS Settings > DNS content blockers > **Enable Ads, Trackers, and (optionally) Malware**
+
+  ***Desktop app***
+
+  1. **Install the Mullvad desktop app** ([Mac,](https://mullvad.net/en/download/vpn/macos) [Windows)](https://mullvad.net/en/download/vpn/windows). Get the Account Number from the phone app.
+  2. **Enable autoconnect:** Find Mullvad in your toolbar > Gear Icon ⚙️ > VPN Settings > Enable "Launch app on start-up" and "Auto-connect"
+  3. **Enabled ad-blocking:** Find Mullvad in your toolbar > Gear Icon ⚙️ > VPN Settings > DNS content blockers > **Enable Ads, Trackers, and (optionally) Malware**
+
+  We recommend keeping your VPN on at all times unless you're having trouble connecting to a site (see below).
+
+  *Note:* Instead of a credit card, you can also order a voucher card for [Mullvad](https://www.amazon.com/Mullvad-VPN-Devices-Protect-Security/dp/B092M55HJ2/) or [IVPN](https://www.amazon.com/IVPN-Privacy-Protection-Surveillance-Open-Source/dp/B0BL8FWDRL/) so that your identity is even more protected. (Yes, we hate Amazon too, but that's the only place online you can buy these cards.)
+</HowTo>
+
+**Downsides to using a VPN**
+
+* You will encounter more CAPTCHAs on websites
+* Some websites may block VPN access, and you'll have to disable it and remember to re-enable it later
+* Some streaming services might not work
+
+If you experience odd behavior on a website, try turning off the VPN temporarily to see if it will load. But, since it is easy to forget to turn the VPN back on, the best solution is to enable [split tunneling](https://mullvad.net/en/help/split-tunneling-with-the-mullvad-app) in Mullvad. You can configure it so a secondary browser skips the VPN. For example, if you use Brave as your main browser, you can configure Chrome or Safari to bypass the VPN and only use that browser when a website isn't working.
+
+*Note:* You must use a trusted VPN that doesn't keep logs of your internet traffic and will push back on government requests. We've vetted our top recommendations.

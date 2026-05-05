@@ -57,7 +57,7 @@ export default function LanguageDetectionBanner() {
   const languageName = LOCALES[detectedLocale]?.name || detectedLocale;
 
   return (
-    <div className="bg-blue-50 dark:bg-blue-950 border-b border-blue-200 dark:border-blue-800 px-4 py-3">
+    <div className="not-annotatable bg-blue-50 dark:bg-blue-950 border-b border-blue-200 dark:border-blue-800 px-4 py-3">
       <div className="max-w-5xl mx-auto flex items-center justify-between gap-4">
         <p className="text-sm text-blue-800 dark:text-blue-200">
           {t('message', { language: languageName })}
