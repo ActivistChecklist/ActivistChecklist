@@ -123,6 +123,10 @@
     "party": {
       "label": "Host a security party",
       "href": "/party/"
+    },
+    "updates": {
+      "label": "Security update checker",
+      "href": "/updates/"
     }
   },
   "menus": {
@@ -146,6 +150,7 @@
       "label": "Resources",
       "href": "/resources/",
       "items": [
+        "updates",
         "party",
         "links",
         "police-door-poster",

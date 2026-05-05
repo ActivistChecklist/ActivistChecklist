@@ -1,11 +1,10 @@
 active: true
-disableAfterDate: 2026-04-14
 dismissKey: contribute-page
 title: Want to help this project?
 message: >-
-  We're looking for contributors — writers, translators, designers, and
-  security researchers.
-buttonText: Learn more
+  We're looking for contributors: writers, translators, designers, and security
+  experts.
+buttonText: Help out
 buttonUrl: /contribute/
 allowDismiss: true
 colorScheme: primary

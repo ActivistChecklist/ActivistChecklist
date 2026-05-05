@@ -29,30 +29,42 @@
 /* Base resets belong in @layer base — if they sit in @layer utilities they override
    .prose a / .link rules from an earlier layer regardless of selector specificity. */
 @layer base {
+  /* Every weight uses font-display: optional. Once the browser chooses a font
+     at first paint it sticks with it for the lifetime of the document — no
+     mid-life substitutions during heavy reflow (the cross-breakpoint resize
+     flash). Cold-load tradeoff: a weight that doesn't arrive within the
+     ~100ms first-paint deadline shows the system fallback for that pageview;
+     the next visit (warm cache) picks up the custom font instantly. The two
+     most-used weights (Source Sans 3 400, Libre Franklin 700) are preloaded
+     in app/[locale]/layout.tsx so they reliably make the deadline. Other
+     weights aren't preloaded — they may briefly fall back on the very first
+     visit, which is the right tradeoff vs. the resize flash users see on
+     every visit with font-display: swap. */
+
   /* Libre Franklin - Headers */
   @font-face {
-    font-display: swap;
+    font-display: optional;
     font-family: 'Libre Franklin';
     font-style: normal;
     font-weight: 500;
     src: url('/fonts/libre-franklin-v20-latin-500.woff2') format('woff2');
   }
   @font-face {
-    font-display: swap;
+    font-display: optional;
     font-family: 'Libre Franklin';
     font-style: normal;
     font-weight: 600;
     src: url('/fonts/libre-franklin-v20-latin-600.woff2') format('woff2');
   }
   @font-face {
-    font-display: swap;
+    font-display: optional;
     font-family: 'Libre Franklin';
     font-style: normal;
     font-weight: 700;
     src: url('/fonts/libre-franklin-v20-latin-700.woff2') format('woff2');
   }
   @font-face {
-    font-display: swap;
+    font-display: optional;
     font-family: 'Libre Franklin';
     font-style: normal;
     font-weight: 800;
@@ -61,14 +73,14 @@
 
   /* Source Sans 3 - Body Text */
   @font-face {
-    font-display: swap;
+    font-display: optional;
     font-family: 'Source Sans 3';
     font-style: normal;
     font-weight: 400;
     src: url('/fonts/source-sans-3-v19-latin-regular.woff2') format('woff2');
   }
   @font-face {
-    font-display: swap;
+    font-display: optional;
     font-family: 'Source Sans 3';
     font-style: normal;
     font-weight: 500;
@@ -636,4 +648,23 @@
   :not(.checklist-item *) > .how-to-container {
     @apply bg-muted p-4 md:p-8 md:pl-12 block rounded-lg mt-4;
   }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Text selection. Lives at the bottom of the file, OUTSIDE any @layer block, so
+   it sits in the implicit "no-layer" group (highest priority in the CSS Cascade
+   Layers spec). The `*::selection` selector is the only thing Chrome / Safari
+   reliably honour for text *inside* form controls — `body::selection` does NOT
+   propagate into <input> / <textarea>, which is why prior attempts using the
+   Tailwind `selection:` variant on body or html had no visible effect. The
+   !important is belt-and-suspenders against any user-agent or future utility
+   that might try to win on specificity.
+   ───────────────────────────────────────────────────────────────────────────── */
+*::selection {
+  background-color: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
+}
+*::-moz-selection {
+  background-color: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
 }

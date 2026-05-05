@@ -1,5 +1,5 @@
 // @ts-nocheck
-import Link from 'next/link';
+import Link from '@/components/Link';
 import { unstable_noStore as noStore } from 'next/cache';
 import { draftMode } from 'next/headers';
 import { notFound } from 'next/navigation';
@@ -31,6 +31,13 @@ import { LOCALES, DEFAULT_LOCALE } from '@/lib/i18n-config';
 const DEFAULT_DESCRIPTION =
   'Plain language steps for digital security, because protecting yourself helps keep your whole community safer. Built by activists, for activists with field-tested, community-verified guides.';
 
+/** Frontmatter `tocDepth`: 2 = ## in the left TOC, 3 = ## and ###. Default 2. */
+function normalizeTocDepth(value) {
+  const n = Number(value);
+  if (n === 3) return 3;
+  return 2;
+}
+
 function buildContentNotices({ locale, isFallback, slug, t }) {
   const notices = [];
   if (isFallback) {
@@ -58,7 +65,7 @@ function buildContentNotices({ locale, isFallback, slug, t }) {
           {t.rich('pageNotices.translationUnreviewed', {
             approvalPercent,
             link: (chunks) => (
-              <Link href={`/${locale}/contribute/`} className="inline">
+              <Link href="/contribute/" className="inline">
                 {chunks}
               </Link>
             ),
@@ -207,10 +214,16 @@ export default async function SlugPage({ params }) {
 
     const guideNotices = buildContentNotices({ locale, isFallback, slug, t });
 
+    const guideFm = serializeFrontmatter(frontmatter);
+
     return (
-      <Layout sidebarType="toc">
+      <Layout
+        sidebarType="toc"
+        tocDepth={normalizeTocDepth(guideFm.tocDepth)}
+        tocPageTitle={guideFm.title}
+      >
         <Guide
-          frontmatter={serializeFrontmatter(frontmatter)}
+          frontmatter={guideFm}
           serializedIntro={serializedIntro}
           serializedBody={serializedBody}
           checklistItems={checklistItems}
@@ -239,10 +252,17 @@ export default async function SlugPage({ params }) {
 
     const pageNotices = buildContentNotices({ locale, isFallback, slug, t });
 
+    const fm = serializeFrontmatter(frontmatter);
+    const pageSidebarType = fm.showToc === true ? 'toc' : 'navigation';
+
     return (
-      <Layout sidebarType="navigation">
+      <Layout
+        sidebarType={pageSidebarType}
+        tocDepth={normalizeTocDepth(fm.tocDepth)}
+        tocPageTitle={fm.title}
+      >
         <ContentPage
-          frontmatter={serializeFrontmatter(frontmatter)}
+          frontmatter={fm}
           serializedBody={serializedBody}
           locale={locale}
           notices={pageNotices}

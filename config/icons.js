@@ -21,8 +21,10 @@ import React from "react"
 const svgProps = { stroke: "currentColor", fill: "currentColor", strokeWidth: "0", viewBox: "0 0 512 512", height: "1em", width: "1em", xmlns: "http://www.w3.org/2000/svg" }
 
 // IoLockClosed with a thicker shackle — original inner radius was 64 (thin walls),
-// expanded outward and inward for chunkier proportions.
-const IoLockClosedThick = (props) =>
+// expanded outward and inward for chunkier proportions. Exported so non-guide
+// surfaces (e.g. the /updates EssentialsPanel) can pull the same lock used on
+// the doxxing-defense card.
+export const IoLockClosedThick = (props) =>
   React.createElement('svg', { ...svgProps, ...props },
     React.createElement('path', { d: "M368 192h-8v-80a104 104 0 1 0-208 0v80h-8a64.07 64.07 0 0 0-64 64v176a64.07 64.07 0 0 0 64 64h224a64.07 64.07 0 0 0 64-64V256a64.07 64.07 0 0 0-64-64zm-60 0H204v-80a52 52 0 1 1 104 0z" })
   )

@@ -4,9 +4,16 @@
 
 * Use yarn to manage packages
 
+## Testing rules
+
+* IMPORTANT: when adding new pure-logic modules (decision trees, parsers, normalizers, search ranking, transforms, etc.), add vitest tests under `__tests__/` covering the meaningful branches. The repo runs vitest as a pre-commit hook, so tests must pass before any commit.
+* Tests should be behavior-focused: cover the public API, the decision-tree branches, and edge cases that would silently produce wrong answers (e.g. an EOL date in the past vs. the future). Don't write tests for internal helpers that are already exercised through the public surface.
+* Skip tests for: trivial glue code, presentational components without logic, one-line wrappers, and things that are exclusively tested by integration (build-time scripts where running the script IS the test).
+* When adding a non-trivial feature, mention test coverage in your final summary so the user knows what's covered and what's not.
+
 ## Content writing ruels
 
-* IMPORTANT: Do not use em-dashes.
+* IMPORTANT: Do NOT use em-dashes when writing content or text in .mdx files or static strings.
 
 ## Git commit rules
 
@@ -31,7 +38,8 @@
 * Use `useTranslations()` in client components and `await getTranslations()` in server components (from `next-intl` and `next-intl/server` respectively).
 * The convention in this project is `const t = useTranslations()` without a namespace, using full dot-notation paths (e.g., `t('contact.title')`).
 * This does not apply to admin/Keystatic interfaces, scripts, or internal tooling.
-* Do not manually edit non-English content
+* IMPORTANT: Do not manually edit or add non-English mdx files while editing/adding English files
+* **Internal links:** use `import Link from '@/components/Link'`, not `next/link`, so paths get the right locale prefix (`/es/…`, etc.). Exception: root-only URLs that must not be prefixed (e.g. `/rss/*.xml`) — note why in a comment if you use `next/link`.
 
 ## Coding security principles
 
