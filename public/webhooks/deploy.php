@@ -457,68 +457,49 @@ foreach ($prefix as $part) {
   }
 }
 
-// Resolve log file path BEFORE running the deploy so the script can stream its
-// output directly there. This makes `tail -f` work during a build (instead of
-// only seeing output after the full script exits) and ensures partial output
-// is captured even when nginx 504s on us before PHP can return.
+// Resolve where to archive each run's output (the persistent log). May be null
+// if logging is explicitly disabled in config.
 $logRaw = $config['log_file'] ?? null;
 $logFallback = $repoRoot . DIRECTORY_SEPARATOR . '.deploy-webhook.log';
-$logFile = null;
-$loggingDisabled = false;
-$tempLogPath = null;
+$persistentLog = null;
 if ($logRaw === false) {
-  // Logging explicitly disabled; still need a sink so we can include partial
-  // output in the failure response. Use a temp file we'll unlink at the end.
-  $loggingDisabled = true;
-  $tmp = @tempnam(sys_get_temp_dir(), 'deploy-webhook-');
-  if (is_string($tmp) && $tmp !== '') {
-    $logFile = $tmp;
-    $tempLogPath = $tmp;
-  }
+  // Logging explicitly disabled — keep $persistentLog null.
 } elseif (is_string($logRaw) && $logRaw !== '') {
-  $logFile = $logRaw;
+  $persistentLog = $logRaw;
 } elseif ($logRaw === null || $logRaw === '') {
-  $logFile = $logFallback;
+  $persistentLog = $logFallback;
 } else {
   error_log('deploy-webhook: log_file must be false, a non-empty string, or omitted');
   http_response_code(500);
   exit('Configuration error');
 }
 
-// Track this run's slice of the log so we can include only its output in the
-// failure response (not whatever was appended by previous runs).
-$runStartOffset = is_string($logFile) && file_exists($logFile)
-  ? (int) @filesize($logFile)
-  : 0;
-$delivery = $_SERVER['HTTP_X_GITHUB_DELIVERY'] ?? '';
-
-if (is_string($logFile)) {
-  $startLine = sprintf(
-    "\n[%s] START delivery=%s\n",
-    gmdate('c'),
-    is_string($delivery) ? $delivery : ''
-  );
-  if (@file_put_contents($logFile, $startLine, FILE_APPEND | LOCK_EX) === false) {
-    error_log('deploy-webhook: could not write to log_file; falling back to ' . $logFallback);
-    if ($logFile !== $logFallback) {
-      $logFile = $logFallback;
-      $runStartOffset = (int) @filesize($logFile);
-      @file_put_contents($logFile, $startLine, FILE_APPEND | LOCK_EX);
-    }
-  }
+// Always stream this run's output to its own per-run temp file. We append the
+// captured block to the persistent log atomically after the build finishes.
+// Why per-run instead of writing straight to the persistent log:
+//   1. Concurrent webhook deliveries can't interleave each other's output (no
+//      offset math to race against filesize() between runs).
+//   2. The failure response reads exactly this run's bytes, never another run's.
+$runLog = @tempnam(sys_get_temp_dir(), 'deploy-webhook-run-');
+if (!is_string($runLog) || $runLog === '') {
+  error_log('deploy-webhook: tempnam failed for per-run log');
+  http_response_code(500);
+  exit('Deploy failed');
 }
+
+$delivery = $_SERVER['HTTP_X_GITHUB_DELIVERY'] ?? '';
 
 $bash = ['/bin/bash', '--noprofile', '--norc', $realScript];
 $resolvedCmd = array_merge($prefix, $bash);
 
-// Stream stdout+stderr directly into the log file via OS-level descriptors so
-// output is visible as the build runs (not buffered in PHP until proc_close).
-// Combining the two streams into one file gives chronological ordering, which
-// is what you want for debugging.
+// Stream stdout+stderr directly into the per-run temp file via OS-level
+// descriptors so output is visible as the build runs (not buffered in PHP
+// until proc_close). Combining streams into one file gives chronological
+// ordering, which is what you want for debugging.
 $descriptorspec = [
   0 => ['pipe', 'r'],
-  1 => is_string($logFile) ? ['file', $logFile, 'a'] : ['pipe', 'w'],
-  2 => is_string($logFile) ? ['file', $logFile, 'a'] : ['pipe', 'w'],
+  1 => ['file', $runLog, 'a'],
+  2 => ['file', $runLog, 'a'],
 ];
 
 $cwd = $realParent;
@@ -526,33 +507,28 @@ $startTime = microtime(true);
 $process = proc_open($resolvedCmd, $descriptorspec, $pipes, $cwd, $env);
 if (!is_resource($process)) {
   error_log('deploy-webhook: proc_open failed');
+  @unlink($runLog);
   http_response_code(500);
   exit('Deploy failed');
 }
 
 if (isset($pipes[0])) fclose($pipes[0]);
-// Only drain pipes if we couldn't open the log file (rare fallback).
-$pipeStdout = '';
-$pipeStderr = '';
-if (!is_string($logFile) && isset($pipes[1])) {
-  $pipeStdout = (string) stream_get_contents($pipes[1]);
-  fclose($pipes[1]);
-}
-if (!is_string($logFile) && isset($pipes[2])) {
-  $pipeStderr = (string) stream_get_contents($pipes[2]);
-  fclose($pipes[2]);
-}
 $code = proc_close($process);
 $durationMs = (int) round((microtime(true) - $startTime) * 1000);
 
-if (is_string($logFile)) {
-  $endLine = sprintf(
-    "[%s] END exit=%d duration=%dms\n",
-    gmdate('c'),
-    $code,
-    $durationMs
-  );
-  @file_put_contents($logFile, $endLine, FILE_APPEND | LOCK_EX);
+// Archive this run to the persistent log atomically. file_put_contents with
+// LOCK_EX serializes appends from concurrent webhook deliveries.
+if (is_string($persistentLog)) {
+  $startLine = sprintf("\n[%s] START delivery=%s\n", gmdate('c'), $delivery);
+  $endLine = sprintf("[%s] END exit=%d duration=%dms\n", gmdate('c'), $code, $durationMs);
+  $runOutput = (string) @file_get_contents($runLog);
+  $block = $startLine . $runOutput . $endLine;
+  if (@file_put_contents($persistentLog, $block, FILE_APPEND | LOCK_EX) === false) {
+    error_log('deploy-webhook: could not write to log_file; falling back to ' . $logFallback);
+    if ($persistentLog !== $logFallback) {
+      @file_put_contents($logFallback, $block, FILE_APPEND | LOCK_EX);
+    }
+  }
 }
 
 if ($code !== 0) {
@@ -560,27 +536,22 @@ if ($code !== 0) {
   http_response_code(500);
   header('Content-Type: text/plain; charset=UTF-8');
   $deliveryLine = is_string($delivery) && $delivery !== '' ? $delivery : '(unknown)';
-  $logStatus = $loggingDisabled
-    ? 'disabled (output captured for response only)'
-    : (is_string($logFile) ? "written to $logFile" : 'WRITE FAILED - check PHP error log');
+  // Don't include the path in the response — it surfaces in GitHub Actions
+  // logs and may be public. The log is at a known location on the server.
+  $logStatus = is_string($persistentLog) ? 'archived to server log' : 'disabled';
 
-  // Read just this run's slice of the log file for the response.
+  // Read this run's complete output (capped) for the failure response. No
+  // offset math: the temp file is exclusively this run's bytes.
   $tailBytes = 50000;
   $combined = '';
-  if (is_string($logFile) && file_exists($logFile)) {
-    $endOffset = (int) @filesize($logFile);
-    $sliceLen = max(0, $endOffset - $runStartOffset);
-    $readFrom = $sliceLen > $tailBytes ? $endOffset - $tailBytes : $runStartOffset;
-    $fh = @fopen($logFile, 'rb');
+  if (file_exists($runLog)) {
+    $size = (int) @filesize($runLog);
+    $readFrom = $size > $tailBytes ? $size - $tailBytes : 0;
+    $fh = @fopen($runLog, 'rb');
     if (is_resource($fh)) {
       @fseek($fh, $readFrom);
       $combined = (string) stream_get_contents($fh);
       @fclose($fh);
-    }
-  } else {
-    $combined = $pipeStdout . "\n" . $pipeStderr;
-    if (strlen($combined) > $tailBytes) {
-      $combined = substr($combined, -$tailBytes);
     }
   }
 
@@ -652,15 +623,11 @@ Output below: \$HOME paths collapsed to ~, secrets redacted.
 --- script output (last {$tailBytes} bytes, stdout+stderr combined) ---
 {$combinedTail}
 TXT;
-  if (is_string($tempLogPath)) {
-    @unlink($tempLogPath);
-  }
+  @unlink($runLog);
   exit($body);
 }
 
-if (is_string($tempLogPath)) {
-  @unlink($tempLogPath);
-}
+@unlink($runLog);
 
 http_response_code(200);
 header('Content-Type: text/plain; charset=UTF-8');
