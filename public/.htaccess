@@ -5,6 +5,28 @@ ErrorDocument 404 /404/index.html
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
+  # Capture REQUEST_URI into an env var so mod_headers can reference it (it can't
+  # access REQUEST_URI directly, only env vars). Used by the Onion-Location header
+  # below. The "-" target is a no-op pass-through; only the [E=...] flag has effect.
+  RewriteRule ^ - [E=ONION_URI:%{REQUEST_URI}]
+
+  # Tor Browser's Onion-Location should mirror the public path, not Apache's
+  # directory-index form (.../dir/index.html). Canonicalize to .../dir/
+  RewriteCond %{REQUEST_URI} ^/(.+)/index\.html$ [NC]
+  RewriteRule ^ - [E=ONION_URI:/%1/]
+
+  RewriteCond %{REQUEST_URI} ^/index\.html$ [NC]
+  RewriteRule ^ - [E=ONION_URI:/]
+
+  # 301 /en/<path> → /<path>: default locale should not appear in the URL.
+  # postbuild.sh mirrors out/en/* to out/, so /en/<path> exists on disk and Apache
+  # would otherwise serve it directly. Match THE_REQUEST (the original request line)
+  # so this fires before any internal rewrite — using REQUEST_URI would loop with
+  # the bare→/en/ rewrite below. The trailing (/|\?|\s) ensures `en` is a full
+  # path segment, so /english/* and similar are not affected.
+  RewriteCond %{THE_REQUEST} ^[A-Z]+\s/+en(/|\?|\s) [NC]
+  RewriteRule ^en(/.*)?$ /$1 [R=301,L,QSA]
+
   # Skip if the file/directory already exists at the bare path
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
@@ -37,4 +59,10 @@ ErrorDocument 404 /404/index.html
   Header set Referrer-Policy "strict-origin-when-cross-origin"
   Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
   Header set X-XSS-Protection "0"
+
+  # Advertise the Tor onion mirror to Tor Browser. OnionSpray serves the onion
+  # from a separate host, so this header is only sent from the clearnet origin.
+  # Reads ONION_URI which is set by the RewriteRule above (mod_headers can't read
+  # REQUEST_URI directly, hence the env-var dance).
+  Header set Onion-Location "http://actchkqornmbfjlsiepfm57lqlqsbpflih6kzomq73gfsz4cesuhujad.onion%{ONION_URI}e"
 </IfModule>

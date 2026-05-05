@@ -22,4 +22,6 @@ export NVM_YARN_PATH_EXTRA="${NVM_YARN_PATH_EXTRA:-}"
 
 cd "$NVM_YARN_PROJECT_DIR"
 nvm_yarn_init || exit 127
-exec nvm_yarn "$@"
+# `exec` cannot replace the shell with a shell function — `nvm_yarn` is defined
+# in lib/nvm-yarn.sh, not on PATH. Call it normally; `set -e` propagates its exit code.
+nvm_yarn "$@"

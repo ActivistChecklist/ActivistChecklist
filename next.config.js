@@ -30,6 +30,15 @@ const baseConfig = {
       permanent,
     }));
   },
+  // Pin the workspace root so Next.js doesn't auto-detect a stray
+  // package-lock.json or yarn.lock in a parent directory and start resolving
+  // node_modules from there. The deploy server had an unrelated
+  // package-lock.json one level above the project; Next.js picked that as
+  // the workspace root and resolved deps from a parallel node_modules tree
+  // with stale @radix-ui/react-slot, breaking the build with "createSlot is
+  // not exported from @radix-ui/react-slot". Setting this anchors module
+  // resolution to THIS project's directory regardless of what's around it.
+  outputFileTracingRoot: __dirname,
   // Smaller server/client bundles and faster compiles for barrel-import icon packages.
   experimental: {
     optimizePackageImports: ['lucide-react', 'react-icons'],

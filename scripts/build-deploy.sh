@@ -28,9 +28,21 @@ nvm_yarn_err() {
   log "$1"
 }
 
-exec 9>"$LOCK_FILE"
+if ! exec 9>"$LOCK_FILE"; then
+  log "ERROR: cannot open lock file for writing: $LOCK_FILE (whoami=$(whoami))"
+  exit 1
+fi
 if ! flock -n 9; then
-  log "ERROR: Another deploy holds the lock; exiting without deploying."
+  # The lock is kernel-level via flock(2); the file persisting after a run is normal
+  # and does NOT itself block the next run. If we land here, a process is actively
+  # holding the lock — identify it.
+  holder=""
+  if command -v fuser >/dev/null 2>&1; then
+    holder="$(fuser "$LOCK_FILE" 2>&1 || true)"
+  elif command -v lsof >/dev/null 2>&1; then
+    holder="$(lsof "$LOCK_FILE" 2>&1 || true)"
+  fi
+  log "ERROR: Another deploy holds the lock; exiting without deploying. lock=$LOCK_FILE holder=${holder:-unknown}"
   # Non-zero so the webhook returns failure to GitHub (do not report success when no deploy ran).
   exit 1
 fi
@@ -65,14 +77,36 @@ git fetch origin --prune
 git checkout "$GIT_BRANCH"
 git pull --ff-only "origin" "$GIT_BRANCH"
 
+# Yarn v1's --frozen-lockfile installs new entries but does NOT prune extraneous
+# nested folders left behind from previous installs. When a resolution change
+# collapses duplicate sub-versions (e.g. @radix-ui/react-slot 1.2.3 → 1.2.4),
+# stale nested copies in node_modules/<pkg>/node_modules/ can shadow the new
+# top-level version and break the build. Detect lockfile drift and reinstall
+# from scratch when it changes.
+LOCK_HASH_FILE="$REPO_DIR/.deploy-lock.sha256"
+if command -v sha256sum >/dev/null 2>&1; then
+  CURRENT_LOCK_HASH="$(sha256sum yarn.lock | cut -d' ' -f1)"
+else
+  CURRENT_LOCK_HASH="$(shasum -a 256 yarn.lock | cut -d' ' -f1)"
+fi
+PREVIOUS_LOCK_HASH="$(cat "$LOCK_HASH_FILE" 2>/dev/null || echo "")"
+if [[ "$CURRENT_LOCK_HASH" != "$PREVIOUS_LOCK_HASH" ]]; then
+  log "yarn.lock changed since last deploy; removing node_modules for clean install"
+  rm -rf node_modules
+fi
+
 # Install must include devDependencies because `yarn buildstatic` runs Next build,
 # which needs build-time tools like postcss/autoprefixer and other dev deps.
 # Yarn v1 will skip devDependencies when NODE_ENV=production, so force them on.
 YARN_PRODUCTION=false nvm_yarn install --frozen-lockfile --production=false
+
+# Record the lockfile hash AFTER a successful install so a failed install
+# doesn't get falsely marked as in-sync.
+echo "$CURRENT_LOCK_HASH" > "$LOCK_HASH_FILE"
+
 export NODE_ENV=production
 
-# Non-interactive: no URL approval prompt; does not write .approved-urls.json
-CHECKBUILD_URL_APPROVAL=allow BUILD_MODE=static nvm_yarn buildstatic
+BUILD_MODE=static nvm_yarn buildstatic
 
 if [[ ! -d "$REPO_DIR/out" ]]; then
   log "Build did not produce out/: $REPO_DIR/out"

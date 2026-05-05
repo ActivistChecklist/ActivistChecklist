@@ -34,7 +34,7 @@ export default function LanguageSwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" aria-label={t('languageSwitcher.ariaLabel')}>
+        <Button variant="ghost" size="icon" className="h-9 w-9 hover:bg-muted" aria-label={t('languageSwitcher.ariaLabel')}>
           <Globe className="h-5 w-5" />
         </Button>
       </DropdownMenuTrigger>
