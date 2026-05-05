@@ -30,8 +30,8 @@
    .prose a / .link rules from an earlier layer regardless of selector specificity. */
 @layer base {
   /* font-display: optional is reserved for weights we <link rel="preload"> in
-     app/[locale]/layout.tsx (Source Sans 3 400, Libre Franklin 700). Those
-     reliably arrive within the ~100ms first-paint deadline, so optional
+     app/[locale]/layout.tsx (Source Sans 3 400, Libre Franklin 600 and 700).
+     Those reliably arrive within the ~100ms first-paint deadline, so optional
      gives us "no resize-time font flash" without a cold-load fallback cost.
      All other weights use 'swap': they may briefly show the system
      fallback before the custom font swaps in (and may re-swap during a
@@ -55,7 +55,7 @@
     src: url('/fonts/libre-franklin-v20-latin-500.woff2') format('woff2');
   }
   @font-face {
-    font-display: swap;
+    font-display: optional;
     font-family: 'Libre Franklin';
     font-style: normal;
     font-weight: 600;
