@@ -196,6 +196,8 @@ function transformProduct(raw, meta) {
 async function pingHealthcheck(success, error) {
   const url = process.env.HEALTHCHECK_EOL_PING_URL;
   if (!url) return;
+  const log_message = success ? "Pinging healthcheck. Success!" : "Pinging healthcheck. Error!");
+  console.log(log_message);
   try {
     const target = success ? url : `${url}/fail`;
     await fetch(target, {
