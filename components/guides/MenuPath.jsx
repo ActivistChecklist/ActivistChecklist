@@ -31,20 +31,25 @@ function getNodeText(node) {
   return '';
 }
 
-/** Replace " > " inside a top-level text node with arrow spans. */
+/**
+ * Replace " > " inside a top-level text node with arrow spans, surrounded by
+ * real whitespace so the browser has natural break opportunities at every step.
+ */
 function renderTextWithArrows(text, arrow, separatorLabel, keyPrefix) {
   const parts = splitOnChevron(text);
   if (parts.length === 1) return [text];
   const out = [];
   parts.forEach((part, i) => {
     if (i > 0) {
+      out.push(' ');
       out.push(
         <span key={`${keyPrefix}-a-${i}`} role="img" aria-label={separatorLabel}>
-          <span className="mx-1.5 text-muted-foreground" aria-hidden="true">
+          <span className="text-muted-foreground" aria-hidden="true">
             {arrow}
           </span>
         </span>
       );
+      out.push(' ');
     }
     if (part) out.push(part);
   });
@@ -82,7 +87,9 @@ function trimEdgeWhitespace(nodes) {
  */
 export default function MenuPath({ children, className, inline = false }) {
   const locale = useLocale();
+  const t = useTranslations();
   const arrow = getArrow(isRtlLocale(locale));
+  const separatorLabel = t('common.menuPathSeparator');
 
   let nodes = React.Children.toArray(children);
 
@@ -113,7 +120,7 @@ export default function MenuPath({ children, className, inline = false }) {
 
   const body = nodes.flatMap((node, i) => {
     if (typeof node === 'string') {
-      return renderTextWithArrows(node, arrow, `n${i}`);
+      return renderTextWithArrows(node, arrow, separatorLabel, `n${i}`);
     }
     if (React.isValidElement(node)) {
       return [React.cloneElement(node, { key: node.key ?? `n${i}` })];
