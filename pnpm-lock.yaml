@@ -24,6 +24,9 @@ importers:
       '@activistchecklist/react-review-comments':
         specifier: ^0.1.5
         version: 0.1.5(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(socks@2.8.7)
+      '@activistchecklist/umami-extra-privacy':
+        specifier: github:ActivistChecklist/umami-extra-privacy#7b624cbad4219666a48cdfbacf13a691ed3d170d
+        version: git+https://github.com/ActivistChecklist/umami-extra-privacy.git#7b624cbad4219666a48cdfbacf13a691ed3d170d(fastify@5.8.5)
       '@fastify/cors':
         specifier: ^11.2.0
         version: 11.2.0
@@ -302,6 +305,16 @@ packages:
     peerDependencies:
       react: ^18.2.0 || ^19.0.0
       react-dom: ^18.2.0 || ^19.0.0
+
+  '@activistchecklist/umami-extra-privacy@git+https://github.com/ActivistChecklist/umami-extra-privacy.git#7b624cbad4219666a48cdfbacf13a691ed3d170d':
+    resolution: {commit: 7b624cbad4219666a48cdfbacf13a691ed3d170d, repo: https://github.com/ActivistChecklist/umami-extra-privacy.git, type: git}
+    version: 0.1.0
+    engines: {node: '>=18'}
+    peerDependencies:
+      fastify: '>=4'
+    peerDependenciesMeta:
+      fastify:
+        optional: true
 
   '@alloc/quick-lru@5.2.0':
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
@@ -5698,6 +5711,10 @@ snapshots:
       - sass
       - snappy
       - socks
+
+  '@activistchecklist/umami-extra-privacy@git+https://github.com/ActivistChecklist/umami-extra-privacy.git#7b624cbad4219666a48cdfbacf13a691ed3d170d(fastify@5.8.5)':
+    optionalDependencies:
+      fastify: 5.8.5
 
   '@alloc/quick-lru@5.2.0': {}
 

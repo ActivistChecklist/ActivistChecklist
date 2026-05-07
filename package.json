@@ -64,6 +64,7 @@
   },
   "dependencies": {
     "@activistchecklist/react-review-comments": "^0.1.5",
+    "@activistchecklist/umami-extra-privacy": "github:ActivistChecklist/umami-extra-privacy#7b624cbad4219666a48cdfbacf13a691ed3d170d",
     "@fastify/cors": "^11.2.0",
     "@fastify/helmet": "^13.0.2",
     "@fastify/rate-limit": "^10.3.0",
@@ -169,6 +170,7 @@
       "yauzl": ">=3.2.1"
     },
     "onlyBuiltDependencies": [
+      "@activistchecklist/umami-extra-privacy",
       "@parcel/watcher",
       "@swc/core",
       "esbuild",
