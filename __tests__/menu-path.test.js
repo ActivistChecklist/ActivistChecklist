@@ -76,6 +76,18 @@ describe('splitOnChevron', () => {
     ]);
   });
 
+  it('splits on whitespace-flanked unicode arrows', () => {
+    expect(splitOnChevron('Settings → Privacy → Lock')).toEqual([
+      'Settings',
+      'Privacy',
+      'Lock',
+    ]);
+  });
+
+  it('splits on a mix of > and → in the same run', () => {
+    expect(splitOnChevron('A > B → C > D')).toEqual(['A', 'B', 'C', 'D']);
+  });
+
   it('returns single segment when no separator present', () => {
     expect(splitOnChevron('Just one')).toEqual(['Just one']);
   });
