@@ -16,6 +16,9 @@ import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import pkg from '@next/env';
+const { loadEnvConfig } = pkg;
+loadEnvConfig(process.cwd());
 
 import { deriveMacProductsFromSofa } from '../lib/updates/sofa-macos.js';
 import {
@@ -195,7 +198,12 @@ function transformProduct(raw, meta) {
 
 async function pingHealthcheck(success, error) {
   const url = process.env.HEALTHCHECK_EOL_PING_URL;
-  if (!url) return;
+  if (!url) {
+    console.log("Noe HEALTHCHECK_EOL_PING_URL found. Skipping healthcheck ping.")
+    return;
+  }
+  const log_message = success ? "Pinging healthcheck. Success!" : "Pinging healthcheck. Error!";
+  console.log(log_message);
   try {
     const target = success ? url : `${url}/fail`;
     await fetch(target, {
