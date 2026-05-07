@@ -174,7 +174,8 @@
   "common": {
     "loading": "Loading...",
     "error": "Something went wrong",
-    "viewChecklist": "View checklist"
+    "viewChecklist": "View checklist",
+    "menuPathSeparator": "then"
   },
   "search": {
     "placeholder": "Search...",
