@@ -128,9 +128,14 @@ export default function MenuPath({ children, className, inline = false }) {
     return [node];
   });
 
+  // Tone bold UI labels down to semi-bold inside the path so they don't shout.
+  const stepWeight = '[&_strong]:font-semibold [&_b]:font-semibold';
+
   if (inline) {
     return (
-      <span className={cn('menu-path-inline', className)}>{body}</span>
+      <span className={cn('menu-path-inline', stepWeight, className)}>
+        {body}
+      </span>
     );
   }
 
@@ -144,7 +149,9 @@ export default function MenuPath({ children, className, inline = false }) {
           <span>{header.label}</span>
         </div>
       )}
-      <div className="menu-path-steps text-foreground">{body}</div>
+      <div className={cn('menu-path-steps text-foreground', stepWeight)}>
+        {body}
+      </div>
     </div>
   );
 }
