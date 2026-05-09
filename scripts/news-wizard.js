@@ -4,10 +4,10 @@
  * Interactive wizard (with optional CLI args) to add a news MDX item and fetch its image.
  *
  * Usage:
- *   yarn news
- *   yarn news "https://example.com/article"
- *   yarn news "https://..." --source="The Intercept"   # optional; otherwise inferred from page metadata
- *   yarn news "https://..." --tags="ice, surveillance"
+ *   pnpm news
+ *   pnpm news "https://example.com/article"
+ *   pnpm news "https://..." --source="The Intercept"   # optional; otherwise inferred from page metadata
+ *   pnpm news "https://..." --tags="ice, surveillance"
  *
  * First positional argument is the article URL (no flag). Other options use --key=value.
  *
@@ -584,7 +584,7 @@ function transactionalCommitToContentBranch({ slug, mdxBody, articleTitle }) {
     worktreeAdded = true;
 
     // Ensure commit hooks run with the same dependencies as the main repo.
-    // Many hooks run "yarn test" and expect local node_modules to exist.
+    // Many hooks run "pnpm test" and expect local node_modules to exist.
     const repoNodeModules = path.join(repoRoot, 'node_modules');
     const wtNodeModules = path.join(worktreeDir, 'node_modules');
     if (fs.existsSync(repoNodeModules) && !fs.existsSync(wtNodeModules)) {

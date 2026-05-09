@@ -31,7 +31,8 @@ We are a small all-volunteer project. The biggest needs are writing and editing 
 
 | Language | Translated | Human-reviewed |
 |---|---|---|
-| Spanish | ![Spanish translation progress](https://progress-bar.xyz/dynamic/json/?width=200&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-17633866-883364.json&&query=progress.0.data.translationProgress) | ![Spanish human-reviewed progress](https://progress-bar.xyz/dynamic/json/?width=200&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-17633866-883364.json&&query=progress.0.data.approvalProgress) |
+| Spanish | ![Spanish translation progress](https://progress-bar.xyz/dynamic/json/?width=200&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-17633866-883364.json&query=%24.progress%5B%3F(%40.data.language.name%3D%3D%27Spanish%27)%5D.data.translationProgress) | ![Spanish human-reviewed progress](https://progress-bar.xyz/dynamic/json/?width=200&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-17633866-883364.json&query=%24.progress%5B%3F(%40.data.language.name%3D%3D%27Spanish%27)%5D.data.approvalProgress) |
+| Arabic | ![Arabic translation progress](https://progress-bar.xyz/dynamic/json/?width=200&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-17633866-883364.json&query=%24.progress%5B%3F(%40.data.language.name%3D%3D%27Arabic%27)%5D.data.translationProgress) | ![Arabic human-reviewed progress](https://progress-bar.xyz/dynamic/json/?width=200&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-17633866-883364.json&query=%24.progress%5B%3F(%40.data.language.name%3D%3D%27Arabic%27)%5D.data.approvalProgress) |
 
 Translations are automatic. Human reviewers edit and approve them on [Crowdin](https://crowdin.com/project/activistchecklist).
 

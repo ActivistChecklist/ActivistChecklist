@@ -36,7 +36,7 @@ try {
     console.warn('⚠️ Sharp not available on Vercel, image processing will be skipped:', error.message);
   } else {
     console.error('❌ Sharp is required but not available:', error.message);
-    console.error('💡 Run: yarn add sharp');
+    console.error('💡 Run: pnpm add sharp');
     throw new Error('Sharp is required');
   }
   sharp = null;

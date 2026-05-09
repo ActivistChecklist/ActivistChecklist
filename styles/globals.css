@@ -29,21 +29,26 @@
 /* Base resets belong in @layer base — if they sit in @layer utilities they override
    .prose a / .link rules from an earlier layer regardless of selector specificity. */
 @layer base {
-  /* Every weight uses font-display: optional. Once the browser chooses a font
-     at first paint it sticks with it for the lifetime of the document — no
-     mid-life substitutions during heavy reflow (the cross-breakpoint resize
-     flash). Cold-load tradeoff: a weight that doesn't arrive within the
-     ~100ms first-paint deadline shows the system fallback for that pageview;
-     the next visit (warm cache) picks up the custom font instantly. The two
-     most-used weights (Source Sans 3 400, Libre Franklin 700) are preloaded
-     in app/[locale]/layout.tsx so they reliably make the deadline. Other
-     weights aren't preloaded — they may briefly fall back on the very first
-     visit, which is the right tradeoff vs. the resize flash users see on
-     every visit with font-display: swap. */
+  /* font-display: optional is reserved for weights we <link rel="preload"> in
+     app/[locale]/layout.tsx (Source Sans 3 400, Libre Franklin 600 and 700).
+     Those reliably arrive within the ~100ms first-paint deadline, so optional
+     gives us "no resize-time font flash" without a cold-load fallback cost.
+     All other weights use 'swap': they may briefly show the system
+     fallback before the custom font swaps in (and may re-swap during a
+     resize-driven reflow), but they never get permanently stuck on the
+     fallback the way 'optional' would for an unpreloaded weight that
+     misses the deadline. */
 
-  /* Libre Franklin - Headers */
+  /* Libre Franklin - Headers (normal) */
   @font-face {
-    font-display: optional;
+    font-display: swap;
+    font-family: 'Libre Franklin';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/fonts/libre-franklin-v20-latin-regular.woff2') format('woff2');
+  }
+  @font-face {
+    font-display: swap;
     font-family: 'Libre Franklin';
     font-style: normal;
     font-weight: 500;
@@ -64,14 +69,51 @@
     src: url('/fonts/libre-franklin-v20-latin-700.woff2') format('woff2');
   }
   @font-face {
-    font-display: optional;
+    font-display: swap;
     font-family: 'Libre Franklin';
     font-style: normal;
     font-weight: 800;
     src: url('/fonts/libre-franklin-v20-latin-800.woff2') format('woff2');
   }
 
-  /* Source Sans 3 - Body Text */
+  /* Libre Franklin - Headers (italic) */
+  @font-face {
+    font-display: swap;
+    font-family: 'Libre Franklin';
+    font-style: italic;
+    font-weight: 400;
+    src: url('/fonts/libre-franklin-v20-latin-italic.woff2') format('woff2');
+  }
+  @font-face {
+    font-display: swap;
+    font-family: 'Libre Franklin';
+    font-style: italic;
+    font-weight: 500;
+    src: url('/fonts/libre-franklin-v20-latin-500italic.woff2') format('woff2');
+  }
+  @font-face {
+    font-display: swap;
+    font-family: 'Libre Franklin';
+    font-style: italic;
+    font-weight: 600;
+    src: url('/fonts/libre-franklin-v20-latin-600italic.woff2') format('woff2');
+  }
+  @font-face {
+    font-display: swap;
+    font-family: 'Libre Franklin';
+    font-style: italic;
+    font-weight: 700;
+    src: url('/fonts/libre-franklin-v20-latin-700italic.woff2') format('woff2');
+  }
+  @font-face {
+    font-display: swap;
+    font-family: 'Libre Franklin';
+    font-style: italic;
+    font-weight: 800;
+    src: url('/fonts/libre-franklin-v20-latin-800italic.woff2') format('woff2');
+  }
+
+  /* Source Sans 3 - Body Text (normal) */
   @font-face {
     font-display: optional;
     font-family: 'Source Sans 3';
@@ -80,19 +122,56 @@
     src: url('/fonts/source-sans-3-v19-latin-regular.woff2') format('woff2');
   }
   @font-face {
-    font-display: optional;
+    font-display: swap;
     font-family: 'Source Sans 3';
     font-style: normal;
     font-weight: 500;
     src: url('/fonts/source-sans-3-v19-latin-500.woff2') format('woff2');
   }
-  /* @font-face {
-  font-display: swap;
-  font-family: 'Source Sans 3';
-  font-style: normal;
-  font-weight: 600;
-  src: url('/fonts/source-sans-3-v19-latin-600.woff2') format('woff2');
-} */
+  @font-face {
+    font-display: swap;
+    font-family: 'Source Sans 3';
+    font-style: normal;
+    font-weight: 600;
+    src: url('/fonts/source-sans-3-v19-latin-600.woff2') format('woff2');
+  }
+  @font-face {
+    font-display: swap;
+    font-family: 'Source Sans 3';
+    font-style: normal;
+    font-weight: 700;
+    src: url('/fonts/source-sans-3-v19-latin-700.woff2') format('woff2');
+  }
+
+  /* Source Sans 3 - Body Text (italic) */
+  @font-face {
+    font-display: swap;
+    font-family: 'Source Sans 3';
+    font-style: italic;
+    font-weight: 400;
+    src: url('/fonts/source-sans-3-v19-latin-italic.woff2') format('woff2');
+  }
+  @font-face {
+    font-display: swap;
+    font-family: 'Source Sans 3';
+    font-style: italic;
+    font-weight: 500;
+    src: url('/fonts/source-sans-3-v19-latin-500italic.woff2') format('woff2');
+  }
+  @font-face {
+    font-display: swap;
+    font-family: 'Source Sans 3';
+    font-style: italic;
+    font-weight: 600;
+    src: url('/fonts/source-sans-3-v19-latin-600italic.woff2') format('woff2');
+  }
+  @font-face {
+    font-display: swap;
+    font-family: 'Source Sans 3';
+    font-style: italic;
+    font-weight: 700;
+    src: url('/fonts/source-sans-3-v19-latin-700italic.woff2') format('woff2');
+  }
 
   html,
   body {

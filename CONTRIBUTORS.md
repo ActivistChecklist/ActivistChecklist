@@ -21,19 +21,20 @@ If you prefer to contribute anonymously, [create an anonymous GitHub account](ht
 **Prerequisites (macOS):**
 
 ```bash
-brew install node yarn ffmpeg exiftool
+brew install node ffmpeg exiftool
+corepack enable   # activates the pnpm version pinned in package.json
 ```
 
-On Linux or Windows, install the same tools with your package manager.
+On Linux or Windows, install the same tools with your package manager. `corepack` ships with Node.js 16.10+.
 
 **Clone and run:**
 
 ```bash
 git clone https://github.com/ActivistChecklist/ActivistChecklist.git
 cd ActivistChecklist
-yarn install
+pnpm install
 cp .env.template .env   # defaults are fine for basic editing
-yarn dev
+pnpm dev
 ```
 
 - Site: [http://localhost:3000](http://localhost:3000)

@@ -14,5 +14,5 @@ source "$SCRIPT_DIR/load-env.sh"
 export NODE_ENV=production
 
 cd "$ROOT"
-yarn buildstatic
+pnpm buildstatic
 bash "$SCRIPT_DIR/deploy-remote.sh"

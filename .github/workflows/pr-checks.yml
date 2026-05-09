@@ -29,7 +29,7 @@ jobs:
         # This is what WILL be included
       - name: Detect runtime-impacting changes
         id: filter
-        uses: dorny/paths-filter@v3
+        uses: dorny/paths-filter@v4
         with:
           filters: |
             runtime:
@@ -43,7 +43,7 @@ jobs:
               - 'pages/**'
               - 'scripts/**'
               - 'package.json'
-              - 'yarn.lock'
+              - 'pnpm-lock.yaml'
               - 'next.config.*'
               - 'postcss.config.*'
               - 'tailwind.config.*'
@@ -57,20 +57,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
-          cache: yarn
+          cache: pnpm
 
-      - name: Yarn install
-        run: yarn run install:ci
+      - name: Install dependencies
+        run: pnpm run install:ci
 
       - name: Unit tests
-        run: yarn test
+        run: pnpm test
 
       - name: Internal paths (trailing slashes)
-        run: yarn lint:paths
+        run: pnpm lint:paths
 
   pr_build:
     if: ${{ !startsWith(github.head_ref, 'l10n_') && !startsWith(github.ref_name, 'l10n_') &&
@@ -83,28 +86,31 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
-          cache: yarn
+          cache: pnpm
 
       - name: Restore Next.js build cache
         uses: actions/cache@v5
         with:
           path: .next/cache
-          key: next-cache-${{ runner.os }}-${{ hashFiles('yarn.lock', 'package.json',
+          key: next-cache-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'package.json',
             'next.config.js', 'postcss.config.js', 'tailwind.config.js') }}-${{
             github.ref_name }}
           restore-keys: |
-            next-cache-${{ runner.os }}-${{ hashFiles('yarn.lock', 'package.json', 'next.config.js', 'postcss.config.js', 'tailwind.config.js') }}-
+            next-cache-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'package.json', 'next.config.js', 'postcss.config.js', 'tailwind.config.js') }}-
             next-cache-${{ runner.os }}-
 
-      - name: Yarn install
-        run: yarn run install:ci
+      - name: Install dependencies
+        run: pnpm run install:ci
 
       - name: Static export build (production path)
         env:
           BUILD_MODE: static
           NEXT_TELEMETRY_DISABLED: 1
-        run: yarn buildstatic
+        run: pnpm buildstatic

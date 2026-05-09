@@ -73,7 +73,7 @@ export function linkNodeModulesFromMain(repoRoot, worktreePath) {
   const dest = path.join(worktreePath, 'node_modules');
   if (!fs.existsSync(src)) {
     throw new Error(
-      'Repo root has no node_modules — run `yarn install` in the main clone first.'
+      'Repo root has no node_modules — run `pnpm install` in the main clone first.'
     );
   }
   if (fs.existsSync(dest)) {

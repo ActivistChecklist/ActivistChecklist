@@ -12,8 +12,8 @@
  *   - Frontmatter scalars: slug, type, date, firstPublished, lastUpdated, image, imageOverride, url, source, tags, showToc, tocDepth
  *
  * Usage:
- *   yarn crowdin:hide-strings           (dry run — reads CROWDIN_* from .env)
- *   yarn crowdin:hide-strings --apply   (hides strings and clears stray translations)
+ *   pnpm crowdin:hide-strings           (dry run — reads CROWDIN_* from .env)
+ *   pnpm crowdin:hide-strings --apply   (hides strings and clears stray translations)
  *
  * Only strings in Crowdin source files under content/en/** /*.mdx are affected (Crowdin paths may
  * include a branch prefix, e.g. /main/content/en/...). Same English text in messages/en.json

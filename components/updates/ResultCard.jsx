@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import {
   CheckCircle2,
@@ -677,11 +677,11 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
   // declared they're on the latest version or on something older. The outer
   // handler still owns step transitions.
   function handlePickLatest(opt) {
-    trackEvent({ name: 'update_os_version_clicked', value: 'version_latest' });
+    trackEvent({ name: 'update_os_version_clicked', data: { version_age: 'latest' } });
     onPickLatest(opt);
   }
   function handlePickOlder(opt) {
-    trackEvent({ name: 'update_os_version_clicked', value: 'version_old' });
+    trackEvent({ name: 'update_os_version_clicked', data: { version_age: 'old' } });
     onPickOlder(opt);
   }
 
@@ -1690,11 +1690,11 @@ function OsPatchPickerStep({ product, release, displayLabel, onPickLatest, onPic
     : osUpdatePath(t, product.id);
 
   function handlePickLatest() {
-    trackEvent({ name: 'update_os_version_clicked', value: 'version_latest' });
+    trackEvent({ name: 'update_os_version_clicked', data: { version_age: 'latest' } });
     onPickLatest();
   }
   function handlePickOlder() {
-    trackEvent({ name: 'update_os_version_clicked', value: 'version_old' });
+    trackEvent({ name: 'update_os_version_clicked', data: { version_age: 'old' } });
     onPickOlder();
   }
 
@@ -1953,10 +1953,16 @@ export default function ResultCard({ snapshot, product, release, onReset }) {
   const { trackEvent } = useAnalytics();
   // Fire once per ResultCard mount. UpdatesPage keys this component by product/release,
   // so a new selection re-mounts and re-fires; reset/edit unmounts so we don't double-log.
+  // The hasFiredRef guard prevents React 18 strict-mode dev double-fire (effect runs
+  // setup → cleanup → setup) without affecting prod, where mounting per key change
+  // creates a fresh ref instance and the event fires once per real selection.
+  const hasFiredRef = useRef(false);
   useEffect(() => {
+    if (hasFiredRef.current) return;
+    hasFiredRef.current = true;
     trackEvent({
       name: 'update_device_selected',
-      value: patchStateFor(classification),
+      data: { patch_state: patchStateFor(classification) },
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 

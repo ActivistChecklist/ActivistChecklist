@@ -320,7 +320,7 @@ const scanCommand = program
         console.log('🛠️  To fix these issues:')
         console.log('   • Run with --interactive flag to selectively strip metadata')
         console.log('   • Add --backup flag to create backups before processing')
-        console.log('   • Example: yarn scan-metadata . --interactive --backup')
+        console.log('   • Example: pnpm scan-metadata . --interactive --backup')
       }
 
       // Interactive mode

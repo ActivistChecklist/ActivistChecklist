@@ -310,7 +310,7 @@ function run() {
   if (!fs.existsSync(OUT_DIR)) {
     sectionStart('✅', 'Validate build — content, routes & HTML shape');
     detail(`Expected out/ at ${OUT_DIR}`);
-    sectionEnd(false, ['Missing out/ — run yarn buildstatic first']);
+    sectionEnd(false, ['Missing out/ — run pnpm buildstatic first']);
     process.exit(1);
   }
 

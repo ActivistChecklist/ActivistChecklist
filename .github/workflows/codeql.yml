@@ -47,17 +47,21 @@ jobs:
           languages: ${{ matrix.codeql-language }}
 
       # Next.js: explicit install + build matches CI and gives CodeQL a reliable trace
-      # (generic Autobuild often misses Yarn/Node version from .nvmrc).
+      # (generic Autobuild often misses pnpm/Node version from .nvmrc).
+      - name: Setup pnpm
+        if: matrix.codeql-language == 'javascript'
+        uses: pnpm/action-setup@v6
+
       - name: Setup Node
         if: matrix.codeql-language == 'javascript'
         uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
-          cache: yarn
+          cache: pnpm
 
       - name: Install dependencies
         if: matrix.codeql-language == 'javascript'
-        run: yarn run install:ci
+        run: pnpm run install:ci
 
       # Invoke Next directly so package.json `postbuild` (sitemap/RSS) does not run in this job.
       - name: Build application
