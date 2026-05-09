@@ -1,59 +1,59 @@
 ---
-title: Install a trusted VPN with ad-blocking to make it harder for cops to do warrantless surveillance
+title: ثبّت VPN موثوقًا مع ميزة حظر الإعلانات لتصعيب مهمة الشرطة في المراقبة دون إذن قضائي
 preview: |
-  A VPN makes it harder for websites to track you and prevents your internet provider from logging your traffic.
+  يُصعّب VPN على المواقع تتبعك ويمنع مزود الإنترنت من تسجيل حركة بياناتك.
 do: |
-  Install a trusted VPN and keep it on. We recommend [Mullvad VPN](https://mullvad.net/en) ($5/mo) or [IVPN](https://www.ivpn.net/) ($6/mo).
+  ثبّت VPN موثوقًا وأبقه مُشغّلًا. نوصي بـ [Mullvad VPN](https://mullvad.net/en) (5 دولارات/شهر) أو [IVPN](https://www.ivpn.net/) (6 دولارات/شهر).
 dont: |
-  Use a random VPN you find online. Nord VPN, Surfshark, ExpressVPN, etc. are popular but not as trustworthy.
+  استخدام أي VPN عشوائي تجده على الإنترنت. خدمات مثل Nord VPN وSurfshark وExpressVPN وغيرها شائعة لكنها أقل موثوقية.
 titleBadges: []
 firstPublished: 2025-06-13
 lastUpdated: 2026-03-09
 ---
 
-Anytime you connect to the internet (phone or computer), your internet provider is revealing your approximate location to every site/app you use.
+في كل مرة تتصل فيها بالإنترنت (من الهاتف أو الكمبيوتر)، يكشف مزود الإنترنت موقعك التقريبي لكل موقع أو تطبيق تستخدمه.
 
-We know that [law enforcement agencies are using tools to track your location](https://www.404media.co/inside-ices-tool-to-monitor-phones-in-entire-neighborhoods/) using data gathered from apps you have and ads you see. Using a VPN with ad-blocking features enabled makes it much harder for them to track you. Also, police can get a subpoena for your internet traffic from your internet provider.
+نعلم أن [أجهزة إنفاذ القانون تستخدم أدوات لتتبع موقعك](https://www.404media.co/inside-ices-tool-to-monitor-phones-in-entire-neighborhoods/) عبر بيانات تُجمع من التطبيقات الموجودة لديك والإعلانات التي تشاهدها. استخدام VPN مع تفعيل ميزة حظر الإعلانات يُصعّب عليهم تتبعك بشكل كبير. كذلك، يمكن للشرطة الحصول على أمر استدعاء لحركة بيانات الإنترنت الخاصة بك من مزود الإنترنت.
 
-A VPN (Virtual Private Network) helps mask your location and makes you slightly harder to identify.
+يساعد VPN (الشبكة الافتراضية الخاصة) في إخفاء موقعك ويجعل التعرف عليك أصعب قليلًا.
 
-A VPN with ad-blocking enabled is especially important on your phone.
+استخدام VPN مع تفعيل حظر الإعلانات مهم بشكل خاص على هاتفك.
 
 <Alert type="warning">
-  **A VPN doesn't make you fully anonymous.** For sensitive browsing requiring higher anonymity, consider [Tor Browser](https://activistchecklist.org/research) as a second browser alongside your everyday one.
+  **لا يجعلك VPN مجهول الهوية تمامًا.** للتصفح الحساس الذي يتطلب درجة أعلى من إخفاء الهوية، فكّر في استخدام [Tor Browser](https://activistchecklist.org/research) كمتصفح ثانٍ إلى جانب متصفحك اليومي.
 </Alert>
 
-**Options:** All of these are very trustworthy options.
+**الخيارات:** كل هذه خيارات موثوقة جدًا.
 
-* [**Mullvad VPN**](https://mullvad.net/en/vpn) **(top recommendation)**: Better privacy since payment info isn't stored, but you need to manually pay each cycle.
-* [**IVPN**](https://www.ivpn.net/en/) can be easier because it automatically renews.
-* [**Proton VPN**](https://protonvpn.com/) has a solid free plan, but it is only for 1 device. To get ad-blocking, you need a paid plan. (See our [note](/proton/) regarding concerns about the Proton CEO and why we still offer Proton options.)
+* [**Mullvad VPN**](https://mullvad.net/en/vpn) **(التوصية الأولى)**: خصوصية أفضل لأن معلومات الدفع لا تُحفظ، لكن عليك الدفع يدويًا في كل دورة.
+* [**IVPN**](https://www.ivpn.net/en/) قد يكون أسهل لأنه يُجدَّد تلقائيًا.
+* [**Proton VPN**](https://protonvpn.com/) لديه خطة مجانية جيدة، لكنها لجهاز 1 فقط. للحصول على ميزة حظر الإعلانات، تحتاج إلى خطة مدفوعة. (راجع [ملاحظتنا](/proton/) بشأن المخاوف المتعلقة بالرئيس التنفيذي لـ Proton ولماذا لا نزال نقترح خيارات Proton.)
 
-<HowTo title="How to set up Mullvad VPN">
-  ***Mobile app***
+<HowTo title="كيفية إعداد Mullvad VPN">
+  ***تطبيق الهاتف***
 
-  1. **Create an account number and write it down:** Create a [Mullvad account number](https://mullvad.net/en/account/create) (there is no password) and *<u>**write it down**</u>* somewhere safe like your password manager.
-  2. **Pay (aka "Add time"):** There is no automatic renewal, so all payments are manual. Paying yearly can make things easier so you don't have to remember.
-  3. **Install the Mullvad mobile app** ([iPhone](https://apps.apple.com/us/app/mullvad-vpn/id1488466513), [Android](https://mullvad.net/en/download/vpn/android)) and use your Account number to sign in.
-  4. **Enable ad-blocking:** Gear Icon ⚙️ > VPN Settings > DNS Settings > DNS content blockers > **Enable Ads, Trackers, and (optionally) Malware**
+  1. **أنشئ رقم حساب ودوّنه:** أنشئ [رقم حساب Mullvad](https://mullvad.net/en/account/create) (لا توجد كلمة مرور) و\*<u>**دوّنه**</u>\* في مكان آمن مثل مدير كلمات المرور.
+  2. **ادفع (أي "إضافة وقت"):** لا يوجد تجديد تلقائي، لذا فجميع المدفوعات يدوية. الدفع سنويًا قد يُسهّل الأمور كي لا تضطر إلى التذكر.
+  3. **ثبّت تطبيق Mullvad للهاتف** ([iPhone](https://apps.apple.com/us/app/mullvad-vpn/id1488466513)، [Android](https://mullvad.net/en/download/vpn/android)) واستخدم رقم حسابك لتسجيل الدخول.
+  4. **Enable ad-blocking:** <MenuPath inline>**Gear Icon** ⚙️ > **VPN Settings** > **DNS Settings** > **DNS content blockers** > Enable **Ads**, **Trackers**, and (optionally) **Malware**</MenuPath>
 
-  ***Desktop app***
+  ***تطبيق سطح المكتب***
 
-  1. **Install the Mullvad desktop app** ([Mac,](https://mullvad.net/en/download/vpn/macos) [Windows)](https://mullvad.net/en/download/vpn/windows). Get the Account Number from the phone app.
-  2. **Enable autoconnect:** Find Mullvad in your toolbar > Gear Icon ⚙️ > VPN Settings > Enable "Launch app on start-up" and "Auto-connect"
-  3. **Enabled ad-blocking:** Find Mullvad in your toolbar > Gear Icon ⚙️ > VPN Settings > DNS content blockers > **Enable Ads, Trackers, and (optionally) Malware**
+  1. **ثبّت تطبيق Mullvad لسطح المكتب** ([Mac،](https://mullvad.net/en/download/vpn/macos) [Windows)](https://mullvad.net/en/download/vpn/windows). احصل على رقم الحساب من تطبيق الهاتف.
+  2. **Enable autoconnect:** <MenuPath inline>Find Mullvad in your toolbar > **Gear Icon** ⚙️ > **VPN Settings** > Enable **Launch app on start-up** and **Auto-connect**</MenuPath>
+  3. **Enable ad-blocking:** <MenuPath inline>Find Mullvad in your toolbar > **Gear Icon** ⚙️ > **VPN Settings** > **DNS content blockers** > Enable **Ads**, **Trackers**, and (optionally) **Malware**</MenuPath>
 
-  We recommend keeping your VPN on at all times unless you're having trouble connecting to a site (see below).
+  نوصي بإبقاء VPN مُشغّلًا طوال الوقت إلا إذا كنت تواجه مشكلة في الاتصال بأحد المواقع (انظر أدناه).
 
-  *Note:* Instead of a credit card, you can also order a voucher card for [Mullvad](https://www.amazon.com/Mullvad-VPN-Devices-Protect-Security/dp/B092M55HJ2/) or [IVPN](https://www.amazon.com/IVPN-Privacy-Protection-Surveillance-Open-Source/dp/B0BL8FWDRL/) so that your identity is even more protected. (Yes, we hate Amazon too, but that's the only place online you can buy these cards.)
+  *ملاحظة:* بدلًا من بطاقة الائتمان، يمكنك أيضًا طلب بطاقة قسيمة لـ [Mullvad](https://www.amazon.com/Mullvad-VPN-Devices-Protect-Security/dp/B092M55HJ2/) أو [IVPN](https://www.amazon.com/IVPN-Privacy-Protection-Surveillance-Open-Source/dp/B0BL8FWDRL/) ليكون التعرف على هويتك أكثر صعوبة. (نعم، نحن أيضًا لا نحب Amazon، لكنه المكان الوحيد على الإنترنت الذي يمكنك شراء هذه البطاقات منه.)
 </HowTo>
 
-**Downsides to using a VPN**
+**سلبيات استخدام VPN**
 
-* You will encounter more CAPTCHAs on websites
-* Some websites may block VPN access, and you'll have to disable it and remember to re-enable it later
-* Some streaming services might not work
+* ستواجه المزيد من اختبارات CAPTCHA على المواقع
+* قد تحجب بعض المواقع الوصول عبر VPN، وستضطر إلى تعطيله ثم تذكّر إعادة تفعيله لاحقًا
+* قد لا تعمل بعض خدمات البث
 
-If you experience odd behavior on a website, try turning off the VPN temporarily to see if it will load. But, since it is easy to forget to turn the VPN back on, the best solution is to enable [split tunneling](https://mullvad.net/en/help/split-tunneling-with-the-mullvad-app) in Mullvad. You can configure it so a secondary browser skips the VPN. For example, if you use Brave as your main browser, you can configure Chrome or Safari to bypass the VPN and only use that browser when a website isn't working.
+إذا واجهت سلوكًا غريبًا على أحد المواقع، جرّب إيقاف VPN مؤقتًا لترى ما إذا كان الموقع سيُحمّل. لكن، بما أنه من السهل نسيان إعادة تشغيل VPN، فإن الحل الأفضل هو تفعيل [التقسيم النفقي split tunneling](https://mullvad.net/en/help/split-tunneling-with-the-mullvad-app) في Mullvad. يمكنك ضبطه بحيث يتجاوز متصفح ثانوي خدمة VPN. على سبيل المثال، إذا كنت تستخدم Brave كمتصفحك الرئيسي، يمكنك ضبط Chrome أو Safari لتجاوز VPN واستخدام ذلك المتصفح فقط حين لا يعمل أحد المواقع.
 
-*Note:* You must use a trusted VPN that doesn't keep logs of your internet traffic and will push back on government requests. We've vetted our top recommendations.
+*ملاحظة:* عليك استخدام VPN موثوق لا يحتفظ بسجلات لحركة بيانات الإنترنت الخاصة بك ويرفض طلبات الحكومة. لقد دقّقنا في توصياتنا الأولى.
