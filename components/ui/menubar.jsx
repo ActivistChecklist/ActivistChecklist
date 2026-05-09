@@ -18,7 +18,7 @@ const Menubar = React.forwardRef(({ className, ...props }, ref) => (
   <MenubarPrimitive.Root
     ref={ref}
     className={cn(
-      "flex h-10 items-center space-x-1 rounded-md border-border border bg-background p-1",
+      "flex h-10 items-center gap-1 rounded-md border-border border bg-background p-1",
       className
     )}
     {...props} />
@@ -41,12 +41,12 @@ const MenubarSubTrigger = React.forwardRef(({ className, inset, children, ...pro
     ref={ref}
     className={cn(
       "flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-hidden focus:bg-muted focus:text-primary data-[state=open]:bg-muted data-[state=open]:text-primary",
-      inset && "pl-8",
+      inset && "ps-8",
       className
     )}
     {...props}>
     {children}
-    <ChevronRight className="ml-auto h-4 w-4" />
+    <ChevronRight className="ms-auto h-4 w-4 [dir=rtl]:rotate-180" />
   </MenubarPrimitive.SubTrigger>
 ))
 MenubarSubTrigger.displayName = MenubarPrimitive.SubTrigger.displayName
@@ -86,7 +86,7 @@ const MenubarItem = React.forwardRef(({ className, inset, ...props }, ref) => (
     ref={ref}
     className={cn(
       "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-hidden focus:bg-muted focus:text-primary data-disabled:pointer-events-none data-disabled:opacity-50",
-      inset && "pl-8",
+      inset && "ps-8",
       className
     )}
     {...props} />
@@ -97,12 +97,12 @@ const MenubarCheckboxItem = React.forwardRef(({ className, children, checked, ..
   <MenubarPrimitive.CheckboxItem
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-hidden focus:bg-muted focus:text-primary data-disabled:pointer-events-none data-disabled:opacity-50",
+      "relative flex cursor-default select-none items-center rounded-sm py-1.5 ps-8 pe-2 text-sm outline-hidden focus:bg-muted focus:text-primary data-disabled:pointer-events-none data-disabled:opacity-50",
       className
     )}
     checked={checked}
     {...props}>
-    <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+    <span className="absolute inset-s-2 flex h-3.5 w-3.5 items-center justify-center">
       <MenubarPrimitive.ItemIndicator>
         <Check className="h-4 w-4" />
       </MenubarPrimitive.ItemIndicator>
@@ -116,11 +116,11 @@ const MenubarRadioItem = React.forwardRef(({ className, children, ...props }, re
   <MenubarPrimitive.RadioItem
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-hidden focus:bg-muted focus:text-primary data-disabled:pointer-events-none data-disabled:opacity-50",
+      "relative flex cursor-default select-none items-center rounded-sm py-1.5 ps-8 pe-2 text-sm outline-hidden focus:bg-muted focus:text-primary data-disabled:pointer-events-none data-disabled:opacity-50",
       className
     )}
     {...props}>
-    <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+    <span className="absolute inset-s-2 flex h-3.5 w-3.5 items-center justify-center">
       <MenubarPrimitive.ItemIndicator>
         <Circle className="h-2 w-2 fill-current" />
       </MenubarPrimitive.ItemIndicator>
@@ -133,7 +133,7 @@ MenubarRadioItem.displayName = MenubarPrimitive.RadioItem.displayName
 const MenubarLabel = React.forwardRef(({ className, inset, ...props }, ref) => (
   <MenubarPrimitive.Label
     ref={ref}
-    className={cn("px-2 py-1.5 text-sm font-semibold", inset && "pl-8", className)}
+    className={cn("px-2 py-1.5 text-sm font-semibold", inset && "ps-8", className)}
     {...props} />
 ))
 MenubarLabel.displayName = MenubarPrimitive.Label.displayName
@@ -152,7 +152,7 @@ const MenubarShortcut = ({
 }) => {
   return (
     (<span
-      className={cn("ml-auto text-xs tracking-widest text-muted-foreground", className)}
+      className={cn("ms-auto text-xs tracking-widest text-muted-foreground", className)}
       {...props} />)
   );
 }

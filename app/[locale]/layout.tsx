@@ -6,6 +6,7 @@ import { AnnouncementProvider } from '@/contexts/AnnouncementContext';
 import { getAnnouncement } from '@/lib/content';
 import { getReviewCommentsConfig } from '@/lib/review-comments/env';
 import { routing } from '@/i18n/routing';
+import { getLocaleDir } from '@/lib/rtl';
 import {
   ReviewCommentsProvider,
   type ReviewCommentsProviderProps,
@@ -19,6 +20,7 @@ export function generateStaticParams() {
 export default async function LocaleLayout({ children, params }) {
   const { locale } = await params;
   if (!routing.locales.includes(locale)) notFound();
+  const dir = getLocaleDir(locale);
 
   setRequestLocale(locale);
   const messages = (await import(`@/messages/${locale}.json`)).default;
@@ -29,7 +31,7 @@ export default async function LocaleLayout({ children, params }) {
   } satisfies Pick<ReviewCommentsProviderProps, 'enabled'>;
 
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang={locale} dir={dir} suppressHydrationWarning>
       <head>
         {/* Preload the font weights every page renders heavily — Source Sans 3
             400 for body copy, Libre Franklin 600 (font-semibold, e.g. HowTo

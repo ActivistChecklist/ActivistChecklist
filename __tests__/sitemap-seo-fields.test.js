@@ -25,15 +25,18 @@ describe('buildHreflangAlternateRefs', () => {
     vi.unstubAllEnvs();
   });
 
-  it('emits en, es, and x-default (including in production)', () => {
+  it('emits en, es, ar, and x-default (including in production)', () => {
     vi.stubEnv('NODE_ENV', 'production');
     const refs = buildHreflangAlternateRefs('/signal/');
-    expect(refs).toHaveLength(3);
+    expect(refs).toHaveLength(4);
     expect(refs.find((r) => r.hreflang === 'en').href).toBe(
       'https://activistchecklist.org/signal/',
     );
     expect(refs.find((r) => r.hreflang === 'es').href).toBe(
       'https://activistchecklist.org/es/signal/',
+    );
+    expect(refs.find((r) => r.hreflang === 'ar').href).toBe(
+      'https://activistchecklist.org/ar/signal/',
     );
     expect(refs.find((r) => r.hreflang === 'x-default').href).toBe(
       'https://activistchecklist.org/signal/',

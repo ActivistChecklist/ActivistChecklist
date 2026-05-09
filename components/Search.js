@@ -37,7 +37,7 @@ const GuideCard = ({ href, icon: Icon, title, description, onClose }) => (
   <Link 
     href={href}
     onClick={onClose}
-    className="flex items-center text-left space-x-4 hover:bg-muted p-3 rounded-md transition-colors group"
+    className="flex items-center text-start gap-4 hover:bg-muted p-3 rounded-md transition-colors group"
   >
     <div className="p-2 rounded-lg bg-primary/10 text-primary">
       <Icon className="h-5 w-5" />
@@ -46,7 +46,7 @@ const GuideCard = ({ href, icon: Icon, title, description, onClose }) => (
       <div className="text-sm font-medium group-hover:text-primary transition-colors">{title}</div>
       <div className="text-xs text-muted-foreground">{description}</div>
     </div>
-    <IoChevronForward className="h-4 w-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
+    <IoChevronForward className="h-4 w-4 text-muted-foreground transition-all group-hover:text-primary group-hover:translate-x-0.5 [dir=rtl]:rotate-180 [dir=rtl]:group-hover:-translate-x-0.5" />
   </Link>
 );
 
@@ -265,7 +265,7 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
       <DialogTrigger asChild>
         {variant === 'searchbar' ? (
           <div className={cn("relative w-full max-w-3xl mx-auto", className)}>
-            <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+            <div className="absolute inset-y-0 inset-s-3 flex items-center pointer-events-none">
               <IoSearch className="h-5 w-5 text-muted-foreground" />
             </div>
             <Input
@@ -273,7 +273,7 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
               readOnly
               placeholder={t('search.placeholder')}
               onClick={() => setOpen(true)}
-              className="pl-10 cursor-pointer"
+              className="ps-10 cursor-pointer"
             />
           </div>
         ) : (
@@ -289,13 +289,13 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
       </DialogTrigger>
 
       <DialogContent className={cn("sm:max-w-3xl h-[80vh] flex flex-col p-0 gap-0")} {...props}>
-        <div className="p-6 pb-4 border-b pr-14">
+        <div className="p-6 pb-4 border-b pe-14">
           <DialogTitle className="sr-only">{t('search.dialogTitle')}</DialogTitle>
           <DialogDescription className="sr-only">
             {t('search.dialogDescription')}
           </DialogDescription>
           <div className="relative">
-            <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+            <div className="absolute inset-y-0 inset-s-3 flex items-center pointer-events-none">
               <IoSearch className="h-5 w-5 text-muted-foreground" />
             </div>
             <Input
@@ -304,7 +304,7 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
               onChange={(e) => setQuery(e.target.value)}
               placeholder={t('search.placeholder')}
               autoFocus
-              className="pl-10"
+              className="ps-10"
             />
           </div>
         </div>
@@ -394,7 +394,7 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
                         <a 
                           key={subIndex} 
                           href={subResult.url}
-                          className="block text-sm pl-10 relative before:content-['\2937'] before:absolute before:left-4 before:top-2 before:text-primary before:text-lg hover:bg-muted rounded-md group transition-colors p-3 -mx-3"
+                          className="block text-sm ps-10 relative before:content-['\2937'] before:absolute before:inset-s-4 before:top-2 before:text-primary before:text-lg hover:bg-muted rounded-md group transition-colors p-3 -mx-3"
                           onClick={() => setOpen(false)}
                         >
                           <div 
