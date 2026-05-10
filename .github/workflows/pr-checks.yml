@@ -7,8 +7,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: pr-checks-${{ github.workflow }}-${{ github.event.pull_request.number ||
-    github.ref }}
+  group: pr-checks-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 permissions:
@@ -16,7 +15,7 @@ permissions:
 
 jobs:
   detect_changes:
-    if: ${{ !startsWith(github.head_ref, 'l10n_') && !startsWith(github.ref_name, 'l10n_') }}
+    if: ${{ !startsWith(github.head_ref, 'l10n_') }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
@@ -49,7 +48,7 @@ jobs:
               - 'tailwind.config.*'
 
   pr_quality:
-    if: ${{ !startsWith(github.head_ref, 'l10n_') && !startsWith(github.ref_name, 'l10n_') }}
+    if: ${{ !startsWith(github.head_ref, 'l10n_') }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -76,9 +75,8 @@ jobs:
         run: pnpm lint:paths
 
   pr_build:
-    if: ${{ !startsWith(github.head_ref, 'l10n_') && !startsWith(github.ref_name, 'l10n_') &&
-      needs.detect_changes.outputs.runtime_changed == 'true' }}
     needs: detect_changes
+    if: ${{ !startsWith(github.head_ref, 'l10n_') && needs.detect_changes.outputs.runtime_changed == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
@@ -114,3 +112,23 @@ jobs:
           BUILD_MODE: static
           NEXT_TELEMETRY_DISABLED: 1
         run: pnpm buildstatic
+
+
+  # The merge gate. ALWAYS runs. Reports a real success/failure.
+  merge_gate:
+    name: merge_gate
+    if: always()
+    needs: [detect_changes, pr_quality, pr_build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Decide
+        run: |
+          # Pass if every needed job ended in success or was skipped.
+          # Fail if any failed or was cancelled.
+          results='${{ toJSON(needs) }}'
+          echo "$results"
+          if echo "$results" | grep -E '"result": "(failure|cancelled)"' > /dev/null; then
+            echo "A required job failed or was cancelled."
+            exit 1
+          fi
+          echo "All clear."
