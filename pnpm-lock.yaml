@@ -6252,7 +6252,7 @@ snapshots:
     dependencies:
       '@swc/helpers': 0.5.21
       intl-messageformat: 10.7.18
-
+  
   '@internationalized/number@3.6.5':
     dependencies:
       '@swc/helpers': 0.5.21
