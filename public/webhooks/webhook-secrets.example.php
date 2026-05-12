@@ -44,7 +44,7 @@ return [
   // Server accepts requests within +/- this many seconds.
   'timestamp_window_sec' => 300,
 
-  'CI' => true,
+  'CI' => 'true',
 
   // Optional. How webhook updates the server checkout before running build-deploy.sh:
   // - 'hard-reset' (default if omitted): force repo to exactly origin/<branch>
