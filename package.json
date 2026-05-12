@@ -106,15 +106,15 @@
     "lucide-react": "^1.14.0",
     "mongodb": "^7.2.0",
     "next": "^15.5.18",
-    "next-intl": "^4.11.0",
+    "next-intl": "^4.11.2",
     "next-mdx-remote": "^6.0.0",
     "next-themes": "^0.4.6",
     "openpgp": "^6.3.0",
     "openseadragon": "^6.0.2",
     "pdf-lib": "^1.17.1",
     "pm2": "^7.0.0",
-    "react": "^19.2.5",
-    "react-dom": "^19.2.5",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
     "react-hook-form": "^7.75.0",
     "react-icons": "^5.6.0",
     "react-intersection-observer": "^10.0.3",
@@ -123,13 +123,13 @@
     "remark-gfm": "^4.0.1",
     "remark-html": "^16.0.1",
     "server-only": "^0.0.1",
-    "tailwind-merge": "^3.5.0",
+    "tailwind-merge": "^3.6.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.2.4",
-    "@types/node": "25.6.0",
+    "@tailwindcss/postcss": "^4.3.0",
+    "@types/node": "25.7.0",
     "@types/react": "19.2.14",
     "add": "^2.0.6",
     "chalk": "^5.6.2",
@@ -150,10 +150,10 @@
     "react-json-view": "^1.21.3",
     "satori": "^0.26.0",
     "sharp": "^0.34.5",
-    "tailwindcss": "^4.2.2",
+    "tailwindcss": "^4.3.0",
     "tsx": "^4.21.0",
     "typescript": "6.0.3",
-    "vitest": "^4.1.5"
+    "vitest": "^4.1.6"
   },
   "pnpm": {
     "overrides": {
