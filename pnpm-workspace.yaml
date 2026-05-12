@@ -10,3 +10,5 @@ onlyBuiltDependencies:
   - "@swc/core"
   - esbuild
   - sharp
+
+confirmModulesPurge: false
