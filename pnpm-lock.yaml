@@ -32,6 +32,9 @@ importers:
       '@keystatic/next':
         specifier: ^5.0.4
         version: 5.0.4(@keystatic/core@0.5.50(next@15.5.18(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(next@15.5.18(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+      '@next/env':
+        specifier: ^16.2.6
+        version: 16.2.6
       '@radix-ui/react-accordion':
         specifier: ^1.2.12
         version: 1.2.12(@types/react@19.2.14)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
@@ -985,6 +988,9 @@ packages:
 
   '@next/env@15.5.18':
     resolution: {integrity: sha512-hAV85Ckd9QR6RvH04MEKwsfLTksvFpO47j9xwtoIuvuPnlwecpSi+uZTtm8HirVbtlI2Fnz//xpcSTjFdyJk+g==}
+
+  '@next/env@16.2.6':
+    resolution: {integrity: sha512-gd8HoHN4ufj73WmR3JmVolrpJR47ILK6LouP5xElPglaVxir6e1a7VzvTvDWkOoPXT9rkkTzyCxBu4yeZfZwcw==}
 
   '@next/swc-darwin-arm64@15.5.18':
     resolution: {integrity: sha512-w0WvQf1n+txiwns/9pwIQteCJpZTbxzO2SE0FLcwuD4v0WEh1JPOjdyxWL21XwJsdpx8cFRjyzxzCS/siP7HcQ==}
@@ -6526,6 +6532,8 @@ snapshots:
   '@next/env@13.5.11': {}
 
   '@next/env@15.5.18': {}
+
+  '@next/env@16.2.6': {}
 
   '@next/swc-darwin-arm64@15.5.18':
     optional: true
