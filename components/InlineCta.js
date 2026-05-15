@@ -6,6 +6,7 @@ import { Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Alert } from '@/components/ui/alert';
+import Link from '@/components/Link';
 import { useNewsletterSubscribe } from '@/components/NewsletterSubscribe';
 
 /**
@@ -21,7 +22,7 @@ export default function InlineCta() {
   const t = useTranslations();
   const [email, setEmail] = useState('');
   const [showForm, setShowForm] = useState(true);
-  const { status, error, subscribe } = useNewsletterSubscribe();
+  const { status, error, subscribe } = useNewsletterSubscribe('inline');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,9 +38,9 @@ export default function InlineCta() {
       data-inline-cta
       className="not-prose my-8 rounded-lg bg-foreground text-background dark:bg-primary/15 dark:text-foreground px-5 py-5 sm:px-6 sm:py-5 print:hidden"
     >
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
         <div className="flex-1 min-w-0">
-          <p className="font-heading text-lg font-semibold leading-tight mb-1">
+          <p className="font-heading text-lg font-semibold leading-tight mb-1 text-balance">
             {t('inlineCta.heading')}
           </p>
           <p className="text-sm leading-snug opacity-90 dark:opacity-100 dark:text-muted-foreground">
@@ -47,7 +48,7 @@ export default function InlineCta() {
           </p>
         </div>
 
-        <div className="sm:max-w-xs sm:w-full sm:shrink-0">
+        <div className="lg:max-w-xs lg:w-full lg:shrink-0">
           {status === 'error' && (
             <Alert variant="error" className="mb-2 text-sm newsletter-alert">
               {error}
@@ -59,26 +60,33 @@ export default function InlineCta() {
             </Alert>
           )}
           {showForm && (
-            <form onSubmit={handleSubmit} className="flex gap-2">
-              <Input
-                type="email"
-                name="email"
-                aria-label={t('inlineCta.emailAriaLabel')}
-                placeholder={t('newsletter.placeholders.emailShort')}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                disabled={status === 'loading'}
-                className="flex-1 text-foreground"
-              />
-              <Button type="submit" disabled={status === 'loading'} variant="default">
-                {status === 'loading' ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  t('inlineCta.buttonText')
-                )}
-              </Button>
-            </form>
+            <>
+              <form onSubmit={handleSubmit} className="flex gap-2">
+                <Input
+                  type="email"
+                  name="email"
+                  aria-label={t('inlineCta.emailAriaLabel')}
+                  placeholder={t('newsletter.placeholders.emailShort')}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  disabled={status === 'loading'}
+                  className="flex-1 text-foreground"
+                />
+                <Button type="submit" disabled={status === 'loading'} variant="default">
+                  {status === 'loading' ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    t('inlineCta.buttonText')
+                  )}
+                </Button>
+              </form>
+              <p className="mt-1.5 text-xs text-right opacity-60 dark:opacity-100 dark:text-muted-foreground">
+                <Link href="/privacy/" className="hover:underline">
+                  {t('inlineCta.privacyLink')}
+                </Link>
+              </p>
+            </>
           )}
         </div>
       </div>

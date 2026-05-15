@@ -172,10 +172,11 @@
     }
   },
   "inlineCta": {
-    "heading": "Get new and updated guides by email",
-    "description": "Security advice changes as new surveillance tools emerge and as activists develop new defenses. Subscribe and we'll email you when we publish or update guides.",
+    "heading": "When their tactics change, our advice does too",
+    "description": "ICE, police, and corporate surveillance keep adding new tools. We update these guides to keep pace. Subscribe to hear when something important shifts.",
     "buttonText": "Subscribe",
-    "emailAriaLabel": "Email address"
+    "emailAriaLabel": "Email address",
+    "privacyLink": "Privacy policy"
   },
   "common": {
     "loading": "Loading...",
