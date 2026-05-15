@@ -7,7 +7,7 @@ import { Loader2 } from 'lucide-react';
 import { Alert } from '@/components/ui/alert';
 import { useTranslations } from 'next-intl';
 
-function useNewsletterSubscribe() {
+export function useNewsletterSubscribe() {
   const [status, setStatus] = useState('idle');
   const [error, setError] = useState('');
 

@@ -10,6 +10,10 @@ import Guide from '@/components/guides/Guide';
 import ContentPage from '@/components/pages/Page';
 import { mdxOptions } from '@/lib/mdx-options';
 import {
+  splitGuideBodyForCta,
+  splitPageContentForCta,
+} from '@/lib/inline-cta-split';
+import {
   getRouteTranslationStatus,
   shouldShowTranslationUnreviewedNotice,
 } from '@/lib/crowdin-translation-status';
@@ -179,7 +183,16 @@ export default async function SlugPage({ params }) {
       firstSectionIndex === -1 ? '' : content.slice(firstSectionIndex).trim();
 
     const serializedIntro = introContent ? await serialize(introContent, mdxOptions) : null;
-    const serializedBody = sectionContent ? await serialize(sectionContent, mdxOptions) : null;
+
+    // Split body around the auto-inserted inline CTA. Suppressed when the
+    // guide frontmatter opts out or the body already contains a manual <InlineCta />.
+    const hideInlineCta = frontmatter?.hideInlineCta === true;
+    const { beforeCta, afterCta, didSplit } = hideInlineCta
+      ? { beforeCta: sectionContent, afterCta: '', didSplit: false }
+      : splitGuideBodyForCta(sectionContent);
+    const serializedBodyBeforeCta = beforeCta ? await serialize(beforeCta, mdxOptions) : null;
+    const serializedBodyAfterCta = afterCta ? await serialize(afterCta, mdxOptions) : null;
+    const showInlineCta = didSplit && !hideInlineCta;
 
     // Resolve all referenced checklist items
     const itemSlugs = extractChecklistItems(content);
@@ -225,7 +238,9 @@ export default async function SlugPage({ params }) {
         <Guide
           frontmatter={guideFm}
           serializedIntro={serializedIntro}
-          serializedBody={serializedBody}
+          serializedBodyBeforeCta={serializedBodyBeforeCta}
+          serializedBodyAfterCta={serializedBodyAfterCta}
+          showInlineCta={showInlineCta}
           checklistItems={checklistItems}
           slug={slug}
           locale={locale}
@@ -240,7 +255,13 @@ export default async function SlugPage({ params }) {
   if (page) {
     const { frontmatter, content, isFallback } = page;
 
-    const serializedBody = await serialize(content, mdxOptions);
+    const hidePageInlineCta = frontmatter?.hideInlineCta === true;
+    const { beforeCta: pageBefore, afterCta: pageAfter, didSplit: pageDidSplit } = hidePageInlineCta
+      ? { beforeCta: content, afterCta: '', didSplit: false }
+      : splitPageContentForCta(content);
+    const serializedBodyBeforeCta = pageBefore ? await serialize(pageBefore, mdxOptions) : null;
+    const serializedBodyAfterCta = pageAfter ? await serialize(pageAfter, mdxOptions) : null;
+    const showInlineCta = pageDidSplit && !hidePageInlineCta;
 
     // Generate OG image at build time
     try {
@@ -263,7 +284,9 @@ export default async function SlugPage({ params }) {
       >
         <ContentPage
           frontmatter={fm}
-          serializedBody={serializedBody}
+          serializedBodyBeforeCta={serializedBodyBeforeCta}
+          serializedBodyAfterCta={serializedBodyAfterCta}
+          showInlineCta={showInlineCta}
           locale={locale}
           notices={pageNotices}
         />

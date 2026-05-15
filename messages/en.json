@@ -171,6 +171,12 @@
       "emailShort": "Email"
     }
   },
+  "inlineCta": {
+    "heading": "Get new and updated guides by email",
+    "description": "Security advice changes as new surveillance tools emerge and as activists develop new defenses. Subscribe and we'll email you when we publish or update guides.",
+    "buttonText": "Subscribe",
+    "emailAriaLabel": "Email address"
+  },
   "common": {
     "loading": "Loading...",
     "error": "Something went wrong",
