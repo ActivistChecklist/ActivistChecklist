@@ -559,6 +559,12 @@ export default config({
           ],
           defaultValue: '2',
         }),
+        hideInlineCta: fields.checkbox({
+          label: 'Hide inline newsletter CTA',
+          description:
+            'By default, a compact newsletter signup is inserted after the first section with checklist items. Check to suppress on this guide.',
+          defaultValue: false,
+        }),
         body: fields.mdx({
           label: 'Guide Content',
           options: mdxEditorOptionsContent,
@@ -671,6 +677,12 @@ export default config({
             { label: '3 — ## and ###', value: '3' },
           ],
           defaultValue: '2',
+        }),
+        hideInlineCta: fields.checkbox({
+          label: 'Hide inline newsletter CTA',
+          description:
+            'By default, a compact newsletter signup is inserted between the first and second H2 section. Check to suppress on this page.',
+          defaultValue: false,
         }),
         body: fields.mdx({
           label: 'Body',

@@ -6,10 +6,17 @@ import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { Alert } from '@/components/ui/alert';
 import { useTranslations } from 'next-intl';
+import { useAnalytics } from '@/hooks/use-analytics';
 
-function useNewsletterSubscribe() {
+/**
+ * @param {string} context - where the subscribe form is rendered (e.g. 'footer',
+ *   'inline'). Sent to Umami as event data so we can tell which placements
+ *   convert. NEVER pass the email address — analytics stays anonymous.
+ */
+export function useNewsletterSubscribe(context = 'unknown') {
   const [status, setStatus] = useState('idle');
   const [error, setError] = useState('');
+  const { trackEvent } = useAnalytics();
 
   const subscribe = async (email) => {
     setStatus('loading');
@@ -28,6 +35,10 @@ function useNewsletterSubscribe() {
 
       if (result.success) {
         setStatus('success');
+        trackEvent({
+          name: 'newsletter_subscribed',
+          data: { context },
+        });
         return true;
       } else {
         setStatus('error');
@@ -48,11 +59,11 @@ function useNewsletterSubscribe() {
   };
 }
 
-export function NewsletterSubscribeForm({ onSuccess }) {
+export function NewsletterSubscribeForm({ onSuccess, context = 'form' }) {
   const t = useTranslations();
   const [email, setEmail] = useState('');
   const [showForm, setShowForm] = useState(true);
-  const { status, error, subscribe } = useNewsletterSubscribe();
+  const { status, error, subscribe } = useNewsletterSubscribe(context);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -114,11 +125,11 @@ export function NewsletterSubscribeForm({ onSuccess }) {
   );
 }
 
-export function CompactNewsletterSubscribe() {
+export function CompactNewsletterSubscribe({ context = 'footer' } = {}) {
   const t = useTranslations();
   const [email, setEmail] = useState('');
   const [showForm, setShowForm] = useState(true);
-  const { status, error, subscribe } = useNewsletterSubscribe();
+  const { status, error, subscribe } = useNewsletterSubscribe(context);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

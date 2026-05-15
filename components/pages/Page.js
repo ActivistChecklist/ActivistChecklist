@@ -7,6 +7,7 @@ import { mdxComponents } from '@/lib/mdx-components';
 import { useLayout } from '@/contexts/LayoutContext';
 import { MetaBar, getDateMetaItem } from '@/components/ui/meta-bar';
 import RelatedGuides from '@/components/RelatedGuides';
+import InlineCta from '@/components/InlineCta';
 import { LOCALES } from "@/lib/i18n-config";
 import PageNotices from '@/components/layout/PageNotices';
 
@@ -27,7 +28,14 @@ function parseRelatedGuides(value) {
  *   - serializedBody: next-mdx-remote compiled MDX
  *   - locale: BCP 47 locale string for date formatting (provided by parent Server Component)
  */
-export default function Page({ frontmatter, serializedBody, locale, notices = [] }) {
+export default function Page({
+  frontmatter,
+  serializedBodyBeforeCta,
+  serializedBodyAfterCta,
+  showInlineCta = false,
+  locale,
+  notices = [],
+}) {
   const t = useTranslations();
   const intlLocale = useLocale() || locale || 'en';
   const dateLocale = LOCALES[intlLocale]?.intlLocale || 'en-US';
@@ -48,7 +56,13 @@ export default function Page({ frontmatter, serializedBody, locale, notices = []
       <PageNotices initialNotices={notices} />
       {metaBarItems.length > 0 && <MetaBar items={metaBarItems} />}
       <div className="prose prose-slate max-w-none">
-        <MDXRemote {...serializedBody} components={mdxComponents} />
+        {serializedBodyBeforeCta && (
+          <MDXRemote {...serializedBodyBeforeCta} components={mdxComponents} />
+        )}
+        {showInlineCta && <InlineCta />}
+        {serializedBodyAfterCta && (
+          <MDXRemote {...serializedBodyAfterCta} components={mdxComponents} />
+        )}
       </div>
       {relatedGuideSlugs.length > 0 && (
         <RelatedGuides isBlock guideSlugs={relatedGuideSlugs} />
