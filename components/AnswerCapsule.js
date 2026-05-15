@@ -10,11 +10,11 @@
 export default function AnswerCapsule({ text }) {
   if (!text || !String(text).trim()) return null;
   return (
-    <div
-      className="mb-6 border-l-4 border-primary/60 bg-primary/5 dark:bg-primary/15 px-4 py-3 rounded-r-md text-base leading-relaxed print:bg-transparent print:border-l-2"
+    <aside
+      className="mb-6 rounded-lg border border-border bg-card px-5 py-4 shadow-md text-base leading-relaxed text-foreground print:shadow-none print:border print:bg-transparent"
       data-testid="answer-capsule"
     >
-      <p className="m-0 text-foreground">{text}</p>
-    </div>
+      <p className="m-0">{text}</p>
+    </aside>
   );
 }
