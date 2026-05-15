@@ -15,6 +15,7 @@ import RelatedGuides from '@/components/RelatedGuides';
 import { LOCALES } from "@/lib/i18n-config";
 import { formatContentDate } from '@/lib/utils';
 import PageNotices from '@/components/layout/PageNotices';
+import AnswerCapsule from '@/components/AnswerCapsule';
 
 function parseRelatedGuides(value) {
   if (Array.isArray(value)) return value.filter(Boolean);
@@ -108,6 +109,7 @@ export default function Guide({
       {/* Body */}
       <div className="mx-auto">
         <div className="relative">
+          <AnswerCapsule text={frontmatter.answerCapsule} />
           {serializedIntro && (
             <div className="prose prose-slate max-w-none">
               <MDXRemote {...serializedIntro} components={mdxComponents} />

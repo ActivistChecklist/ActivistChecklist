@@ -60,6 +60,13 @@ export default async function LocaleLayout({ children, params }) {
           href="/fonts/libre-franklin-v20-latin-700.woff2"
           crossOrigin="anonymous"
         />
+        {/* llms.txt — curated index for LLM crawlers (llmstxt.org). */}
+        <link
+          rel="alternate"
+          type="text/plain"
+          title="llms.txt"
+          href={locale === 'en' ? '/llms.txt' : `/${locale}/llms.txt`}
+        />
       </head>
       <body className="min-h-screen bg-background font-body antialiased">
         <AnnouncementProvider value={announcement}>
