@@ -2,6 +2,275 @@
 
 Working doc for the single-pass SEO improvement implementation. Not meant to live in the repo long-term.
 
+---
+
+## Rewrite prompts (use these to redo meta descriptions + answer capsules)
+
+The first-pass meta descriptions and answer capsules were too shallow. Two reasons: (1) I drafted from the guide MDX alone, but the guide MDX is mostly scaffolding — `<ChecklistItem slug="…" />` references resolve to separate files in `content/en/checklist-items/`, so a guide can have 17 substantive items while its raw MDX has 30 lines of intro. Without reading the items, the descriptions over-index on intro text and the capsules under-represent the guide. (2) I wrote feature-list descriptions ("PIN, safety numbers, disappearing messages, notification previews") instead of answers to the implicit search query.
+
+Both prompts below are designed to be invoked verbatim per page. They include the reading workflow (so the next pass is grounded in the whole page), the project voice rules, and the failure modes I want to avoid.
+
+### Prompt: SEO meta description (140-160 chars, all guides + pages)
+
+```
+Write a meta description for [content/en/{guides|pages}/{slug}.mdx] on Activist
+Checklist, a free plain-language digital security resource for activists and
+organizers.
+
+BEFORE WRITING — read the whole page, not just the MDX shell.
+
+1. Read content/en/{guides|pages}/{slug}.mdx in full.
+2. Grep the body for every `<ChecklistItem slug="..." />`. For each one, read
+   content/en/checklist-items/{item}.mdx. The guide MDX is mostly intro +
+   scaffolding; the substantive content lives in the items. Skipping this step
+   produces a description that only reflects the intro.
+3. Note the audience stated at the top of the guide, the named threats, the
+   risk-level sections (everyone / medium / high), and any time estimates.
+4. Identify the implicit search query — the question someone would type into
+   Google or ask ChatGPT when this page is the right answer. Examples:
+   "how do I make Signal secure for activism", "can I bring my phone to a
+   protest", "what to do if I'm doxxed", "what does ICE see when they search
+   my phone".
+
+VOICE AND STYLE (project rules):
+- Plain language, 8th-grade reading level. US English.
+- Opinionated and concrete. Skip marketing words: discover, unlock, empower,
+  ultimate, complete, transform, "in today's world", "essential guide".
+- Lead with what the reader will do or learn, not who we are.
+- Honest about tradeoffs. No hype, fake urgency, or clickbait.
+- NO em-dashes. Use commas, periods, semicolons, or colons. This is a hard
+  project rule and applies even when the em-dash would be grammatically nicer.
+- No emojis, no surrounding quote marks, no trailing ellipsis.
+
+SPEAK TO THE READER'S VALUES (this is the meta-rule for click-through):
+
+The site is for activists, organizers, and people who already know the
+political stakes. The reader is not neutral and the threats are not abstract.
+The goal is to increase click-through, and the way to do that is to speak to
+the reader's beliefs and values, in addition to answering their question.
+A description that names the actual adversary signals "this is for you" and
+earns the click. A sanitized description ("protect yourself online") reads
+like advice from a privacy newsletter.
+
+Concrete moves (use when relevant to the page, not in every description):
+- Name the actual adversary when it's central: ICE, CBP, DHS, the federal
+  government, the administration, the Trump administration, the police, FBI
+  surveillance, Canary Mission, right-wing doxxing, the authoritarian turn,
+  DOGE, agency rollbacks, Palantir, Clearview, Cellebrite, GrayKey.
+- Use words the reader uses: "activists", "organizers", "the movement",
+  "comrades" when it fits naturally. Not "users".
+- Acknowledge concrete stakes: "if your phone is seized", "if you're targeted",
+  "if you're detained", "if ICE shows up". Concrete, not abstract.
+
+When to do this:
+- The page is explicitly about that adversary or threat.
+- The reader would use that word in their search query ("ICE search phone",
+  "doxxing defense activist", "what does DHS see on my phone").
+- Naming makes the description more honest and more specific.
+
+When NOT to do this:
+- The threat isn't central to the page (don't shoehorn ICE into a generic
+  Signal description; the threat there is broader phone-search surveillance).
+- It would feel performative, sloganistic, or shoehorned.
+- It would mislead about the actual scope of the guide.
+
+The aggregate effect across the site should be: SERPs and AI answers convey
+that this is a serious resource for people who already know what's at stake,
+not a neutral privacy guide.
+
+FORMAT:
+- 140-160 characters including spaces. Hard ceiling 160. Aim 150.
+- 1 to 2 sentences.
+- Include the primary keyword naturally, ideally in the first half.
+- Do not repeat the page title verbatim — the title already shows in SERP.
+- If the description contains a colon, wrap the YAML value in double quotes:
+    seoDescription: "Short answer: do this. Then the rest."
+  Otherwise YAML parses it as a mapping and the build breaks.
+
+CONTENT (this is where the first pass failed):
+- Answer the implicit search query in the first 8 to 10 words.
+- Name the specific threat or use case when it's central to the page: ICE
+  encounter, protest, phone seizure, doxxing, border crossing, federal worker,
+  Pegasus / Graphite spyware, Canary Mission, geofence warrant. Generic
+  "protect yourself online" earns nothing.
+- NO time estimates in descriptions ("in 45 minutes", "15 minutes"). The
+  reader doesn't care from a SERP; they care whether this answers them.
+- NO references to internal section structure ("baseline section", "enhanced
+  section", "higher-risk sections"). Reader doesn't know what those are.
+  Talk about audiences ("for organizers", "non-citizens") not page anatomy.
+- "Step-by-step" is fine as a scope signal; "8 steps" or "17 settings" is
+  not — feels overwhelming or SEO-stuffed.
+- Do not write a feature list. "PIN, safety numbers, disappearing messages,
+  notification previews" looks SEO-stuffed and answers nothing. A meta
+  description full of nouns is worse than one with a single clear sentence
+  that says what the reader gets.
+- The reader should finish the description and know whether this page solves
+  their problem.
+
+PROCESS PER PAGE:
+1. Draft 3 candidates with different angles (action-first, question-first,
+   threat-first). Count chars on each.
+2. Pick the strongest. If it's outside 140-160, revise it; do not pick a
+   weaker option to hit length.
+3. Return: the final description, the character count in brackets, and one
+   sentence on why this angle.
+
+ANTI-PATTERNS I have shipped before (do not repeat):
+- "Lock down Signal in about 15 minutes. Registration PIN, safety numbers,
+  disappearing messages, notification previews. Plain steps for activists."
+  → feature list, doesn't answer anything, three sentences.
+- "Digital security essentials for activists. Lock down your phone, messaging,
+  and accounts in about 45 minutes. Plain-language steps, no jargon."
+  → fine but generic; "essentials" / "lock down" are not what people search.
+- "Protect your phone and laptop from Pegasus, Graphite, and other commercial
+  spyware. Who is at risk, what works, and how to check for infection."
+  → this one is OK; use it as a model.
+```
+
+### Prompt: Answer capsule (40-80 words, top guides)
+
+```
+Write an `answerCapsule` for [content/en/guides/{slug}.mdx] on Activist
+Checklist. This is a 2-4 sentence paragraph rendered at the top of the guide
+in a tinted card. It serves two audiences: a human who wants a TL;DR before
+they commit, and an AI search engine (ChatGPT, Perplexity, Google AI Mode)
+extracting a direct answer to a question about this topic.
+
+BEFORE WRITING — read the whole page.
+
+1. Read content/en/guides/{slug}.mdx in full.
+2. Grep the body for every `<ChecklistItem slug="..." />`. For each one, read
+   content/en/checklist-items/{item}.mdx. THIS IS NON-OPTIONAL. The guide MDX
+   alone is the scaffold; the items are the substance. A capsule written from
+   only the MDX shell undersells what the guide actually covers. The first-pass
+   capsules were weak because I skipped this step.
+3. Note: the explicit audience ("Who this checklist is for"), the named threats
+   ("Phone seizure and searching", "Mapping activist networks", forensic
+   extraction tools, ICE facial recognition, Canary Mission doxxing),
+   the section structure (baseline / enhanced / high-profile), and the time
+   estimate.
+4. Identify the question the guide is answering. Not "what's in this guide"
+   but "what should I do about X" or "how do I X". One sentence.
+
+THE CAPSULE'S TWO JOBS:
+1. Reader: in one paragraph, tell them what this guide concludes, who it's
+   for, and roughly how it's structured, so they can decide whether to read on.
+2. LLM: give a clean, quotable answer that stands alone when extracted out of
+   context and shown as the answer to "should I bring my phone to a protest?"
+   / "how do I make Signal secure?" / "what do I do if I'm doxxed?"
+
+VOICE AND STYLE (project rules):
+- Same Activist Checklist voice: plain, opinionated, concrete, honest about
+  tradeoffs. 8th-grade reading level. US English.
+- No marketing words, no hype, no urgency theater.
+- NO em-dashes. Hard project rule.
+- Speak to the reader directly ("you") where natural.
+
+SPEAK TO THE READER'S VALUES (the meta-rule):
+
+The site is for activists, organizers, and people who already know the
+political stakes. The reader is not neutral and the threats are not abstract.
+The goal of a capsule is to increase engagement and AI citation, and the way
+to do that is to speak to the reader's beliefs and values, in addition to
+answering their question. A capsule that names the actual adversary signals
+"this is for you" to a reader and "this is a substantive answer about a real
+political situation" to an AI engine. A sanitized capsule that says "protect
+your communications" reads like generic privacy advice and gets quoted less.
+
+Concrete moves (use when relevant to the page, not in every capsule):
+- Name the actual adversary when central: ICE, CBP, DHS, the federal
+  government, the administration, the Trump administration, the police, FBI
+  surveillance, Canary Mission, right-wing doxxing, the authoritarian turn,
+  DOGE, agency rollbacks, Palantir, Clearview, Cellebrite, GrayKey.
+- Use words the reader uses: "activists", "organizers", "the movement",
+  "comrades" when natural. Not "users".
+- Acknowledge concrete stakes: "if your phone is seized at the border",
+  "if ICE shows up at your door", "after a doxxing campaign", "if you're
+  detained at a protest". Concrete, not abstract.
+
+When to do this:
+- The page is explicitly about that adversary or threat.
+- The capsule is more honest and more specific because of it.
+- The reader's implicit question already contains the adversary
+  ("how do I prepare my phone for ICE encounters").
+
+When NOT to do this:
+- The threat isn't central to the page.
+- It would feel performative or shoehorned.
+- It would mislead about the actual scope of the guide.
+
+Capsules that name the threat tend to be the strongest. Capsules that hedge
+into neutrality tend to undersell the guide.
+
+FORMAT:
+- 40 to 80 words. Most should land 50 to 70.
+- 2 to 4 sentences.
+- Standalone. Reads correctly when quoted out of context.
+- Do not start with "This guide..." or "In this checklist..." — start with the
+  answer or the audience.
+- YAML escaping: if the capsule contains a colon, either avoid the colon or
+  use the folded block scalar (`answerCapsule: >`) the existing files use.
+
+CONTENT (where the first pass failed):
+- Lead with the actual answer, not the setup. Bad: "Heading to a protest? Here's
+  what to do." Good: "Power your phone off before you go. Use a 6+ digit
+  passcode, not biometrics. Turn on Signal disappearing messages."
+- Reflect the WHOLE guide, not just one section. If the guide has baseline +
+  enhanced + high-profile tiers, the capsule should acknowledge the range,
+  but by AUDIENCE not by section name. Bad: "Baseline section is 15 minutes.
+  Enhanced section for organizers." Good: "Organizers and people more likely
+  to be targeted should go further."
+- NO time estimates ("Most people finish in 15 minutes", "Baseline section is
+  15-20 minutes"). Reader and AI engine both get more value from substance.
+- NO references to internal section structure ("Baseline section", "Enhanced
+  section", "higher-risk sections", "Sections below cover X"). Talk about
+  who the deeper guidance is FOR, not where it lives on the page.
+- "Step-by-step" is fine as a scope signal; specific step counts ("17
+  settings", "8 steps") feel overwhelming.
+- Name the audience: "for activists observing ICE", "before crossing the US
+  border", "for federal workers resisting agency rollbacks". Vague capsules
+  get pulled as vague AI answers.
+- Name specific threats where central: forensic phone extraction, ICE facial
+  recognition, Canary Mission, geofence warrants, Cellebrite, doxxing trucks.
+  Specific entities increase AI citation rates.
+- Name concrete tools where they belong: Signal, EasyOptOuts, Proton Mail,
+  GrapheneOS, Lockdown Mode. Don't load every capsule with brand names, but
+  one or two concrete tools beat a paragraph of abstractions.
+- Acknowledge a real tradeoff when there is one. "Most secure option is not
+  bringing the phone at all. If you must, here's what to do." That honesty
+  is what makes the site useful and what gets quoted.
+
+PROCESS PER GUIDE:
+1. Pull from the source files: the stated audience, the threats, the section
+   structure, the time estimate.
+2. Write the one-sentence thesis ("how do I make Signal secure for activist
+   use" → "Signal is secure if you do five things at the device level and one
+   thing inside the app.").
+3. Draft. Word count. Trim to 50-70.
+4. Sanity check: if an AI pulled this paragraph out as the answer to the
+   implicit question, would it stand alone and be true to the guide?
+
+ANTI-PATTERNS I have shipped before (do not repeat):
+- "To make Signal secure for activist use, set a registration PIN, turn on
+  disappearing messages, verify safety numbers with close contacts, hide
+  notification previews on the lock screen, and enable Always Relay Calls."
+  → enumerates 5 specific steps from a 17-item guide. Misrepresents the
+  breadth. Reads like a meta description that grew up.
+- "Three questions to answer before you need this plan: who would you call..."
+  → starts with a meta-frame ("three questions") instead of the answer.
+- Tactical bullet-list capsules. They should read like the lead paragraph of
+  a news article, not a checklist sub-item.
+```
+
+### Workflow when re-running these later
+
+1. For each `{slug}`, build a "page brief" by reading the guide MDX and all referenced checklist items. Use ripgrep on the guide body to extract item slugs.
+2. Draft `seoDescription` first (it's the easier shape), then the `answerCapsule` (it needs more synthesis).
+3. After every batch, run `pnpm seo:audit` — it catches missing fields, wrong lengths, and duplicate descriptions.
+4. Spot-check three pages: read each new description out loud, ask "does this answer the implicit search query?" If not, redraft.
+
+---
+
 ## Scope summary
 
 In scope this pass:
