@@ -11,7 +11,7 @@ export default function AnswerCapsule({ text }) {
   if (!text || !String(text).trim()) return null;
   return (
     <aside
-      className="mb-6 rounded-lg border border-border bg-muted/40 px-5 py-4 shadow-md text-base leading-relaxed text-foreground print:shadow-none print:border print:bg-transparent"
+      className="mb-6 rounded-lg border border-border bg-accent/50 px-6 py-5 text-base leading-relaxed text-foreground print:bg-transparent"
       data-testid="answer-capsule"
     >
       <p className="m-0">{text}</p>
