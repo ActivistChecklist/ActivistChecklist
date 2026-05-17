@@ -5,8 +5,26 @@ import { Settings } from "lucide-react";
 
 /**
  * HowTo — <HowTo title="...">markdown children</HowTo>
+ *
+ * `compact` drops the inner surface, the "How to" title, and the gear icon,
+ * leaving just the prose children. The parent card already provides the surface.
  */
-export const HowTo = ({ title, children }) => {
+export const HowTo = ({ title, children, compact = false }) => {
+
+  if (compact) {
+    return (
+      <div className="how-to-container how-to-container--compact mt-3 first:mt-0">
+        {title && (
+          <h4 className="text-sm! font-semibold! mb-2! uppercase tracking-tight text-muted-foreground">
+            {title}
+          </h4>
+        )}
+        <div className="prose prose-slate max-w-none">
+          {children}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={cn(
@@ -15,7 +33,7 @@ export const HowTo = ({ title, children }) => {
       "mt-4 first:mt-0",
     )}>
       <div
-       
+
         className={cn(
           "how-to mb-2 px-4 pb-4 md:px-6 relative",
           "bg-background",

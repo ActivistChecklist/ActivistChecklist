@@ -23,6 +23,7 @@ import {
   extractChecklistItems,
   serializeFrontmatter,
 } from '@/lib/content';
+import { extractHowToBlocks } from '@/lib/howto-extract';
 import {
   resolveChecklistItem,
   resolveGuide,
@@ -203,9 +204,15 @@ export default async function SlugPage({ params }) {
         if (item) {
           try {
             const serializedItemBody = await serialize(item.content, mdxOptions);
+            const howToSource = extractHowToBlocks(item.content);
+            const serializedHowTo = howToSource
+              ? await serialize(howToSource, mdxOptions)
+              : null;
             checklistItems[itemSlug] = {
               frontmatter: serializeFrontmatter(item.frontmatter),
               serializedBody: serializedItemBody,
+              serializedHowTo,
+              hasHowTo: Boolean(howToSource),
             };
           } catch (err) {
             console.warn(`Failed to serialize checklist item "${itemSlug}":`, err.message);
