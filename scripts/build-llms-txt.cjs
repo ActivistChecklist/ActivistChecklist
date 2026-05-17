@@ -25,26 +25,39 @@ const CONTENT_ROOT = path.join(process.cwd(), 'content');
 // ─── Pure helpers (exported for tests) ─────────────────────────
 
 /**
- * Strip MDX/JSX tags, markdown link syntax, and most punctuation noise.
+ * Strip everything between `<` and matching `>` by tracking bracket depth.
  *
- * Tag stripping is looped to stable so an input like `<scr<Alert />ipt>`
- * doesn't leave a residual `<script>` after a single pass. Input here is
- * our own MDX (trusted at build time) and the output is written to a plain
- * text llms.txt file (no HTML rendering), but the looped form is defense
- * in depth and satisfies CodeQL's "incomplete multi-character sanitization"
- * check.
+ * Correctly handles adversarial nested input like `<scr<Alert />ipt>` in a
+ * single pass: each `<` increments depth, each `>` decrements, characters
+ * outside any bracket pair survive. A single regex pass would leave a
+ * residual `<script>` for the above input; this avoids that class of bug
+ * entirely and satisfies CodeQL's "incomplete multi-character sanitization"
+ * check (no regex pattern for the analyzer to flag).
+ *
+ * Side effect: bare `<` and `>` in prose are also consumed. Acceptable for
+ * MDX-derived text where bare brackets wouldn't appear (they'd be `&lt;`).
+ */
+function stripBracketContent(s) {
+  if (!s) return '';
+  let out = '';
+  let depth = 0;
+  for (let i = 0; i < s.length; i++) {
+    const c = s[i];
+    if (c === '<') depth++;
+    else if (c === '>' && depth > 0) depth--;
+    else if (depth === 0) out += c;
+  }
+  return out;
+}
+
+/**
+ * Strip MDX/JSX tags, markdown link syntax, and most punctuation noise.
+ * Input is our own MDX (trusted at build time); output is plain text
+ * written to llms.txt.
  */
 function stripMdxToPlainText(s) {
   if (!s) return '';
-  let out = String(s);
-  let prev;
-  do {
-    prev = out;
-    out = out
-      .replace(/<[A-Za-z][^>]*\/>/g, '')   // self-closing JSX
-      .replace(/<\/?[A-Za-z][^>]*>/g, ''); // open/close JSX tags
-  } while (out !== prev);
-  return out
+  return stripBracketContent(String(s))
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // markdown links → text
     .replace(/`([^`]+)`/g, '$1')             // inline code
     .replace(/[*_]+/g, '')                   // emphasis markers
