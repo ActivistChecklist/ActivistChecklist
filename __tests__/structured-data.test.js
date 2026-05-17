@@ -120,6 +120,12 @@ describe('checklistItemStepText', () => {
     expect(checklistItemStepText('')).toBe('');
     expect(checklistItemStepText(null)).toBe('');
   });
+
+  it('strips nested/adversarial tag patterns to stable (no residual <script>)', () => {
+    // Defense-in-depth: a single regex pass would leave a residual <script>.
+    expect(checklistItemStepText('<scr<Alert />ipt>')).not.toMatch(/<script/i);
+    expect(checklistItemStepText('<scr<Alert />ipt>alert(1)</scr<Alert />ipt>')).not.toMatch(/<script/i);
+  });
 });
 
 describe('buildOrganization', () => {

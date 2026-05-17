@@ -68,6 +68,11 @@ describe('stripMdxToPlainText', () => {
   it('strips markdown links to text', () => {
     expect(stripMdxToPlainText('See [Signal](https://signal.org/) docs.')).toBe('See Signal docs.');
   });
+  it('strips nested/adversarial tag patterns to stable (no residual <script>)', () => {
+    // A single regex pass would leave a residual <script>. Loop must continue.
+    expect(stripMdxToPlainText('<scr<Alert />ipt>')).not.toMatch(/<script/i);
+    expect(stripMdxToPlainText('<scr<Alert />ipt>alert(1)</scr<Alert />ipt>')).not.toMatch(/<script/i);
+  });
 });
 
 describe('firstSentence', () => {

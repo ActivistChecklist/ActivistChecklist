@@ -24,12 +24,27 @@ const CONTENT_ROOT = path.join(process.cwd(), 'content');
 
 // ─── Pure helpers (exported for tests) ─────────────────────────
 
-/** Strip MDX/JSX tags, markdown link syntax, and most punctuation noise. */
+/**
+ * Strip MDX/JSX tags, markdown link syntax, and most punctuation noise.
+ *
+ * Tag stripping is looped to stable so an input like `<scr<Alert />ipt>`
+ * doesn't leave a residual `<script>` after a single pass. Input here is
+ * our own MDX (trusted at build time) and the output is written to a plain
+ * text llms.txt file (no HTML rendering), but the looped form is defense
+ * in depth and satisfies CodeQL's "incomplete multi-character sanitization"
+ * check.
+ */
 function stripMdxToPlainText(s) {
   if (!s) return '';
-  return String(s)
-    .replace(/<[A-Za-z][^>]*\/>/g, '')      // self-closing JSX
-    .replace(/<\/?[A-Za-z][^>]*>/g, '')     // open/close JSX tags
+  let out = String(s);
+  let prev;
+  do {
+    prev = out;
+    out = out
+      .replace(/<[A-Za-z][^>]*\/>/g, '')   // self-closing JSX
+      .replace(/<\/?[A-Za-z][^>]*>/g, ''); // open/close JSX tags
+  } while (out !== prev);
+  return out
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // markdown links → text
     .replace(/`([^`]+)`/g, '$1')             // inline code
     .replace(/[*_]+/g, '')                   // emphasis markers
