@@ -3,6 +3,9 @@
     "title": "Listas de seguridad digital para activistas",
     "description": "Pasos en lenguaje sencillo para la seguridad digital. Porque protegerte ayuda a mantener más segura a toda tu comunidad."
   },
+  "faq": {
+    "defaultTitle": "Frequently asked questions"
+  },
   "nav": {
     "home": "Inicio",
     "checklists": "Listas de seguridad",
