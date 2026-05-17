@@ -10,6 +10,7 @@ import RelatedGuides from '@/components/RelatedGuides';
 import InlineCta from '@/components/InlineCta';
 import { LOCALES } from "@/lib/i18n-config";
 import PageNotices from '@/components/layout/PageNotices';
+import AnswerCapsule from '@/components/AnswerCapsule';
 
 function parseRelatedGuides(value) {
   if (Array.isArray(value)) return value.filter(Boolean);
@@ -55,6 +56,7 @@ export default function Page({
       <h1 className="mb-6">{frontmatter.title}</h1>
       <PageNotices initialNotices={notices} />
       {metaBarItems.length > 0 && <MetaBar items={metaBarItems} />}
+      <AnswerCapsule text={frontmatter.answerCapsule} />
       <div className="prose prose-slate max-w-none">
         {serializedBodyBeforeCta && (
           <MDXRemote {...serializedBodyBeforeCta} components={mdxComponents} />

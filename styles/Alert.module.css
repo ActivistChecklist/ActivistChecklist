@@ -57,8 +57,12 @@
 }
 
 /* Variant styles */
+/* Default uses neutral gray (bg-accent at low opacity). bg-muted now resolves
+   to --brand-accent-light, which is a purple-tinted token used elsewhere; this
+   variant should stay neutral so the icon-only info alerts read as "note",
+   not "branded callout". */
 .default {
-  @apply bg-muted text-foreground border-muted-foreground;
+  @apply bg-accent/30 text-foreground border-border;
 }
 
 .default svg {
