@@ -1,6 +1,5 @@
 'use client';
 import { createContext, useContext, useEffect, useState, useCallback } from 'react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import {
   VIEW_MODES,
   isValidViewMode,
@@ -17,6 +16,10 @@ import {
  *
  * Resolution on mount: URL > localStorage > 'detailed'.
  * Toggling writes both.
+ *
+ * Reads/writes the URL via `window.location` + `history.replaceState` rather
+ * than next/navigation, so this provider doesn't trigger Next.js static-gen
+ * bailouts from `useSearchParams()`.
  */
 
 const ViewModeContext = createContext({
@@ -24,15 +27,30 @@ const ViewModeContext = createContext({
   setViewMode: () => {},
 });
 
-export function ViewModeProvider({ guideSlug, children }) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+function readUrlParam() {
+  if (typeof window === 'undefined') return null;
+  return new URLSearchParams(window.location.search).get('view');
+}
 
-  // Initial paint: use URL only (server can read it). localStorage hydrates post-mount.
-  const urlParam = searchParams.get('view');
-  const initial = isValidViewMode(urlParam) ? urlParam : VIEW_MODES.DETAILED;
-  const [viewMode, setViewModeState] = useState(initial);
+function writeUrlParam(value) {
+  if (typeof window === 'undefined') return;
+  const url = new URL(window.location.href);
+  if (value === VIEW_MODES.DETAILED) {
+    url.searchParams.delete('view');
+  } else {
+    url.searchParams.set('view', value);
+  }
+  // Drop a trailing `?` if there are no params.
+  const newUrl = url.searchParams.toString()
+    ? `${url.pathname}?${url.searchParams.toString()}${url.hash}`
+    : `${url.pathname}${url.hash}`;
+  window.history.replaceState(null, '', newUrl);
+}
+
+export function ViewModeProvider({ guideSlug, children }) {
+  // Server render and first client paint default to 'detailed'.
+  // After mount we resolve URL > localStorage > default.
+  const [viewMode, setViewModeState] = useState(VIEW_MODES.DETAILED);
 
   useEffect(() => {
     if (!guideSlug) return;
@@ -40,10 +58,8 @@ export function ViewModeProvider({ guideSlug, children }) {
     try {
       stored = localStorage.getItem(storageKeyForGuide(guideSlug));
     } catch {}
-    const resolved = resolveViewMode(urlParam, stored);
+    const resolved = resolveViewMode(readUrlParam(), stored);
     if (resolved !== viewMode) setViewModeState(resolved);
-    // Mount-only: react to guide changes. URL-driven changes from our own
-    // setViewMode call avoid a race where the URL hasn't repainted yet.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [guideSlug]);
 
@@ -56,14 +72,9 @@ export function ViewModeProvider({ guideSlug, children }) {
           localStorage.setItem(storageKeyForGuide(guideSlug), next);
         } catch {}
       }
-      const params = new URLSearchParams(searchParams.toString());
-      if (next === VIEW_MODES.DETAILED) params.delete('view');
-      else params.set('view', next);
-      const qs = params.toString();
-      const url = qs ? `${pathname}?${qs}` : pathname;
-      router.replace(url, { scroll: false });
+      writeUrlParam(next);
     },
-    [guideSlug, pathname, router, searchParams]
+    [guideSlug]
   );
 
   return (
