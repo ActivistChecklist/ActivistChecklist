@@ -10,43 +10,98 @@ Disallow: /api/
 Disallow: /preview
 
 # AI crawlers — explicitly allowed.
+# Each block repeats the admin-route Disallow rules because per robots.txt
+# spec, a specific User-agent block does not inherit from the * block.
+
 User-agent: GPTBot
 Allow: /
+Disallow: /files/
+Disallow: /keystatic
+Disallow: /api/
+Disallow: /preview
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /files/
+Disallow: /keystatic
+Disallow: /api/
+Disallow: /preview
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /files/
+Disallow: /keystatic
+Disallow: /api/
+Disallow: /preview
 
-User-agent: Claude-Web
+User-agent: Claude-User
 Allow: /
+Disallow: /files/
+Disallow: /keystatic
+Disallow: /api/
+Disallow: /preview
 
-User-agent: anthropic-ai
+User-agent: Claude-SearchBot
 Allow: /
+Disallow: /files/
+Disallow: /keystatic
+Disallow: /api/
+Disallow: /preview
 
 User-agent: PerplexityBot
 Allow: /
+Disallow: /files/
+Disallow: /keystatic
+Disallow: /api/
+Disallow: /preview
 
 User-agent: Perplexity-User
 Allow: /
+Disallow: /files/
+Disallow: /keystatic
+Disallow: /api/
+Disallow: /preview
 
 User-agent: Google-Extended
 Allow: /
+Disallow: /files/
+Disallow: /keystatic
+Disallow: /api/
+Disallow: /preview
 
 User-agent: CCBot
 Allow: /
+Disallow: /files/
+Disallow: /keystatic
+Disallow: /api/
+Disallow: /preview
 
 User-agent: Applebot-Extended
 Allow: /
+Disallow: /files/
+Disallow: /keystatic
+Disallow: /api/
+Disallow: /preview
 
 User-agent: Bytespider
 Allow: /
+Disallow: /files/
+Disallow: /keystatic
+Disallow: /api/
+Disallow: /preview
 
 User-agent: cohere-ai
 Allow: /
+Disallow: /files/
+Disallow: /keystatic
+Disallow: /api/
+Disallow: /preview
 
 User-agent: Meta-ExternalAgent
 Allow: /
+Disallow: /files/
+Disallow: /keystatic
+Disallow: /api/
+Disallow: /preview
 
 Sitemap: https://activistchecklist.org/sitemap.xml

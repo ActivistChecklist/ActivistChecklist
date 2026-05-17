@@ -80,6 +80,12 @@ describe('parseEstimatedTimeToIso', () => {
     expect(parseEstimatedTimeToIso('a while')).toBeNull();
     expect(parseEstimatedTimeToIso('45 minutes for baseline protections')).toBe('PT45M');
   });
+
+  it('combines mixed hour+minute units', () => {
+    expect(parseEstimatedTimeToIso('1 hour 30 minutes')).toBe('PT1H30M');
+    expect(parseEstimatedTimeToIso('2 hours 15 min')).toBe('PT2H15M');
+    expect(parseEstimatedTimeToIso('45 min')).toBe('PT45M');
+  });
 });
 
 describe('extractChecklistItemSlugsFromMdx', () => {
@@ -217,6 +223,19 @@ describe('buildArticle', () => {
       imageUrl: `${BASE}/og/signal.png`,
     });
     expect(a.image).toBe(`${BASE}/og/signal.png`);
+  });
+
+  it('uses seoTitle for headline when both seoTitle and title are set', () => {
+    const a = buildArticle({
+      baseUrl: BASE,
+      locale: 'en',
+      slug: 'signal',
+      frontmatter: {
+        title: 'Signal Security Checklist',
+        seoTitle: 'Signal Security Checklist for Activists (2026)',
+      },
+    });
+    expect(a.headline).toBe('Signal Security Checklist for Activists (2026)');
   });
 });
 

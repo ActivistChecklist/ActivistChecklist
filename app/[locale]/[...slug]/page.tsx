@@ -41,6 +41,24 @@ import {
 const DEFAULT_DESCRIPTION =
   'Plain language steps for digital security, because protecting yourself helps keep your whole community safer. Built by activists, for activists with field-tested, community-verified guides.';
 
+/**
+ * Resolve the OG image URL for a content page. Used by both generateMetadata
+ * (for <meta>/og:image) and the page render path (for JSON-LD Article.image)
+ * so the two agree. Precedence: frontmatter.image > frontmatter.imageOverride
+ * > auto-generated /images/og/<slug>.png.
+ */
+function resolveOgImageUrl(frontmatter, slug, baseUrl) {
+  const rawPageImage = frontmatter?.image || frontmatter?.imageOverride;
+  const customOgImage = rawPageImage
+    ? rawPageImage.startsWith('http://') || rawPageImage.startsWith('https://')
+      ? rawPageImage
+      : rawPageImage.startsWith('/')
+        ? `${baseUrl}${rawPageImage}`
+        : `${baseUrl}/${rawPageImage}`
+    : undefined;
+  return customOgImage ?? `${baseUrl}${getOgImagePathForSlug(slug)}`;
+}
+
 /** Frontmatter `tocDepth`: 2 = ## in the left TOC, 3 = ## and ###. Default 2. */
 function normalizeTocDepth(value) {
   const n = Number(value);
@@ -134,15 +152,7 @@ export async function generateMetadata({ params }) {
     frontmatter?.summary ||
     frontmatter?.description ||
     DEFAULT_DESCRIPTION;
-  const rawPageImage = frontmatter?.image || frontmatter?.imageOverride;
-  const customOgImage = rawPageImage
-    ? rawPageImage.startsWith('http://') || rawPageImage.startsWith('https://')
-      ? rawPageImage
-      : rawPageImage.startsWith('/')
-        ? `${baseUrl}${rawPageImage}`
-        : `${baseUrl}/${rawPageImage}`
-    : undefined;
-  const ogImageUrl = customOgImage ?? `${baseUrl}${getOgImagePathForSlug(slug)}`;
+  const ogImageUrl = resolveOgImageUrl(frontmatter, slug, baseUrl);
 
   const hrefLangLocales = Object.keys(LOCALES);
   const alternates = {};
@@ -251,7 +261,7 @@ export default async function SlugPage({ params }) {
 
     const guideFm = serializeFrontmatter(frontmatter);
 
-    const guideImageUrl = ogImagePath ? `${baseUrl}${ogImagePath}` : undefined;
+    const guideImageUrl = resolveOgImageUrl(guideFm, slug, baseUrl);
     const howToGraph = TOP_GUIDE_SLUGS.includes(slug)
       ? buildHowTo({
           baseUrl,
@@ -325,7 +335,7 @@ export default async function SlugPage({ params }) {
       locale,
       slug,
       frontmatter: fm,
-      imageUrl: `${baseUrl}${getOgImagePathForSlug(slug)}`,
+      imageUrl: resolveOgImageUrl(fm, slug, baseUrl),
       howTo: null,
     });
 

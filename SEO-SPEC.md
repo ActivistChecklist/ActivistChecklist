@@ -12,7 +12,7 @@ Both prompts below are designed to be invoked verbatim per page. They include th
 
 ### Prompt: SEO meta description (140-160 chars, all guides + pages)
 
-```
+```text
 Write a meta description for [content/en/{guides|pages}/{slug}.mdx] on Activist
 Checklist, a free plain-language digital security resource for activists and
 organizers.
@@ -129,7 +129,7 @@ ANTI-PATTERNS I have shipped before (do not repeat):
 
 ### Prompt: Answer capsule (40-80 words, top guides)
 
-```
+```text
 Write an `answerCapsule` for [content/en/guides/{slug}.mdx] on Activist
 Checklist. This is a 2-4 sentence paragraph rendered at the top of the guide
 in a tinted card. It serves two audiences: a human who wants a TL;DR before
@@ -445,7 +445,7 @@ A new script `scripts/build-llms-txt.cjs` runs as part of `next-sitemap`'s postb
 ### Format
 [llms.txt convention](https://llmstxt.org/):
 
-```
+```text
 # Activist Checklist
 
 > Plain-language digital security guides for activists and organizers. Free, CC BY-SA licensed, field-tested.
@@ -482,7 +482,7 @@ Checklist items are referenced under their parent guide's URL with a hash anchor
 
 Rewrite `public/robots.txt`:
 
-```
+```text
 User-agent: *
 Allow: /
 Disallow: /files/
@@ -566,7 +566,7 @@ Spanish (`es/`) content is **excluded** from the audit — those fields are Crow
 
 ### Output
 
-```
+```text
 SEO audit
 ─────────
 ✓  18 pages clean
@@ -602,7 +602,7 @@ Run with --strict to fail the build on warnings.
 
 ## 10. File-by-file change list
 
-```
+```text
 content/en/guides/*.mdx                       — add seoTitle (top 8) + seoDescription (all) + answerCapsule (top 8) + FAQ blocks (top 3)
 content/en/pages/*.mdx                        — add seoDescription (all)
 content/en/news/, content/en/changelog/       — no MDX changes this pass

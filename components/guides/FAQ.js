@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { ChevronRight } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import {
   Collapsible,
   CollapsibleTrigger,
@@ -49,11 +50,19 @@ export function FAQItem({ question, answer }) {
 /**
  * FAQ — a list of FAQItem children.
  *
- * Renders a styled accordion under "Frequently asked questions" and emits
- * inline FAQPage JSON-LD with each Q&A. Place this near the bottom of a
- * guide. Pulls questions+answers from each FAQItem child's props.
+ * Renders a styled accordion under a "Frequently asked questions" heading
+ * (localized; pass `title` to override) and emits inline FAQPage JSON-LD
+ * with each Q&A. Place this near the bottom of a guide. Pulls
+ * questions+answers from each FAQItem child's props.
+ *
+ * The heading id uses `useId` so multiple FAQ blocks on the same page
+ * produce unique, matching `aria-labelledby`/`id` pairs.
  */
-export function FAQ({ title = 'Frequently asked questions', children }) {
+export function FAQ({ title, children }) {
+  const t = useTranslations();
+  const headingId = React.useId();
+  const resolvedTitle = title ?? t('faq.defaultTitle');
+
   const pairs = [];
   React.Children.forEach(children, (child) => {
     if (!React.isValidElement(child)) return;
@@ -66,8 +75,8 @@ export function FAQ({ title = 'Frequently asked questions', children }) {
   const wrapped = schema ? { '@context': 'https://schema.org', ...schema } : null;
 
   return (
-    <section className="my-8" aria-labelledby="faq-heading">
-      <h2 id="faq-heading" className="mt-8 mb-4">{title}</h2>
+    <section className="my-8" aria-labelledby={headingId}>
+      <h2 id={headingId} className="mt-8 mb-4">{resolvedTitle}</h2>
       <div className="not-prose">{children}</div>
       {wrapped && (
         <script
