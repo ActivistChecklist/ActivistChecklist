@@ -2,10 +2,12 @@
 
 import React from 'react';
 import { useTranslations } from 'next-intl';
+import { usePathname } from 'next/navigation';
 import { Rows3, ListChecks } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useViewMode, VIEW_MODES } from '@/contexts/ViewModeContext';
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
+import { useAnalytics } from '@/hooks/use-analytics';
 
 /**
  * Segmented control for switching between detailed and compact checklist views.
@@ -13,7 +15,21 @@ import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/comp
  */
 export default function GuideViewToggle({ className }) {
   const t = useTranslations();
+  const pathname = usePathname();
   const { viewMode, setViewMode } = useViewMode();
+  const { trackEvent } = useAnalytics();
+
+  const handleSelect = (value) => {
+    if (value === viewMode) return;
+    setViewMode(value);
+    trackEvent({
+      name: 'checklist_view_mode_changed',
+      data: {
+        view_mode: value,
+        path: pathname,
+      },
+    });
+  };
 
   const options = [
     {
@@ -37,7 +53,7 @@ export default function GuideViewToggle({ className }) {
     const next = e.key === 'ArrowRight'
       ? options[(idx + 1) % options.length]
       : options[(idx - 1 + options.length) % options.length];
-    setViewMode(next.value);
+    handleSelect(next.value);
   };
 
   return (
@@ -58,7 +74,7 @@ export default function GuideViewToggle({ className }) {
               <TooltipTrigger asChild>
                 <button
                   type="button"
-                  onClick={() => setViewMode(value)}
+                  onClick={() => handleSelect(value)}
                   aria-pressed={isActive}
                   className={cn(
                     "inline-flex items-center gap-1.5 rounded-sm px-2.5 py-1 text-sm",
