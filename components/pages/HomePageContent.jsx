@@ -71,7 +71,6 @@ export default function HomePageContent({ children, changelogEntries = [], lates
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button asChild variant="default" size="xl" className="group bg-linear-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary transition-all">
                     <Link href={NAV_ITEMS.ESSENTIALS.href} className="block group">
-                      <Check className="mr-2" />
                       {t('hero.primaryCta')}
                     </Link>
                   </Button>
