@@ -38,7 +38,7 @@ Translations are automatic. Human reviewers edit and approve them on [Crowdin](h
 
 ## Local development
 
-See [CONTRIBUTORS.md](contributors.md) for local development setup instructions.
+See [CONTRIBUTORS.md](CONTRIBUTORS.md) for local development setup instructions.
 
 ## Contact
 
