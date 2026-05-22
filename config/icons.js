@@ -44,6 +44,7 @@ export const GUIDE_ICONS = {
   'protest': IoPeople,
   'travel': IoAirplane,
   'signal': IoChatbubble,
+  'whatsapp': IoChatbubble,
   'secondary': IoPhonePortraitFixed,
   'emergency': IoNotifications,
   'spyware': IoEyeOff,
