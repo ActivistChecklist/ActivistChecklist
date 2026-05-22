@@ -60,7 +60,7 @@ const ALLOWED_HTML_ELEMENTS = new Set([
   'h4', 'h5', 'h6', 'hr', 'i', 'img', 'li', 'ol', 'p', 'pre', 'span',
   'strong', 'sub', 'sup', 'table', 'tbody', 'td', 'th', 'thead', 'tr',
   'u', 'ul', 'del', 'ins', 'mark', 'small', 'details', 'summary',
-  'figure', 'figcaption', 'video', 'source',
+  'figure', 'figcaption', 'video', 'source', 'section',
 ]);
 
 // ─── Remark plugins for AST validation ───────────────────────────
