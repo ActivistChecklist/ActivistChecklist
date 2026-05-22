@@ -4,8 +4,12 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "weekly"
-    # Optional: Group minor and patch updates together
+      interval: "daily"
+    cooldown:
+      default-days: 2
+      semver-major-days: 7
+      semver-minor-days: 3
+      semver-patch-days: 2
     groups:
       dependencies:
         patterns:
@@ -13,16 +17,19 @@ updates:
         update-types:
           - "minor"
           - "patch"
-    # Optional: Limit number of open pull requests
     open-pull-requests-limit: 10
-    # Optional: Set reviewers/assignees
-    # reviewers:
-    #   - "your-username"
-    # assignees:
-    #   - "your-username"
 
   # Optional: Also check for GitHub Actions updates
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
+      semver-minor-days: 7
+      semver-patch-days: 3
+    groups:
+      actions:
+        patterns:
+          - "*"
