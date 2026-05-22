@@ -22,8 +22,8 @@ importers:
   .:
     dependencies:
       '@activistchecklist/react-review-comments':
-        specifier: ^0.1.5
-        version: 0.1.5(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(socks@2.8.7)
+        specifier: ^0.2.0
+        version: 0.2.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(socks@2.8.7)
       '@activistchecklist/umami-extra-privacy':
         specifier: github:ActivistChecklist/umami-extra-privacy#7669154d772ecbf3410c1243e8014ac8a0e74c5e
         version: https://codeload.github.com/ActivistChecklist/umami-extra-privacy/tar.gz/7669154d772ecbf3410c1243e8014ac8a0e74c5e(fastify@5.8.5)
@@ -309,8 +309,8 @@ packages:
       graphql:
         optional: true
 
-  '@activistchecklist/react-review-comments@0.1.5':
-    resolution: {integrity: sha512-ifurMc+ZNpGJDtVfwFK0eRCaH/chrrA/MVeYnSYquNL9AXuKguZ3ivUowlAzyp9SkZrSwC87tjBTdOYVTpDgsQ==}
+  '@activistchecklist/react-review-comments@0.2.0':
+    resolution: {integrity: sha512-rtgrlNzq9dk64XfqzoyJ+bPoytMY5jYAG/0YE6m8ZCr/LiQqyyLPc/2NoZtNL0qUI3SL0b/dObioiwo71luNyg==}
     peerDependencies:
       react: ^18.2.0 || ^19.0.0
       react-dom: ^18.2.0 || ^19.0.0
@@ -329,22 +329,19 @@ packages:
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
     engines: {node: '>=10'}
 
-  '@annotorious/annotorious@3.8.0':
-    resolution: {integrity: sha512-jaKAJ3Jp0g8atvHe1LfnczVPSWavGNhx/upVtZDUgTvrOAXjkDMWc4p0Dcoy5EveNwdvImdNU5y7XEw2qUnAng==}
-
-  '@annotorious/core@3.8.0':
-    resolution: {integrity: sha512-Xclq31mS9INpqMlv3QnfuwPI8R6jcowWkxmEQ+1j0Nnj88KmO2iZFr+PY6ZTfKK8AMhnjALc9a83FlCMNXl4Fw==}
+  '@annotorious/annotorious@3.8.2':
+    resolution: {integrity: sha512-xgGK0+apyDYrDaYqEmzyBX8spwSrU5zLE6SiiV8gnm8SiYJ7nRzYIXMD+biJjynG5OyevqqjBeWkGuQWfTdojQ==}
 
   '@annotorious/core@3.8.2':
     resolution: {integrity: sha512-8hmOt5TTmkFOweXADd/OGYpfbIJu9DF0tRn8bl34HHxn3IP7tmX/bdhovyWDMRb7LEPektLInMyzCRJcuMEvaw==}
 
-  '@annotorious/openseadragon@3.8.0':
-    resolution: {integrity: sha512-gNlGkW8QiY9upOSBjmPkEq4vh1Xk9NPCtnr72lHb+geYVQFZPQ9Y47zPKe4NeBNIwgDDQ54FHPBHubpjgqOb2g==}
+  '@annotorious/openseadragon@3.8.2':
+    resolution: {integrity: sha512-LaPkPcTeKCTUVnhUtlPdel5jOTNniDjbbRktygMuRNbUKzVZ48M6ZKYVCAYAgfaYpO7mI6CHnEl8TFAjds9/Ng==}
     peerDependencies:
       openseadragon: '>= ^4.0.0 || >= ^5.0.0 || >= ^6.0.0'
 
-  '@annotorious/react@3.8.0':
-    resolution: {integrity: sha512-tZINUH+7w5Ec9w8Z5y4uclHF/bvzsqgoLTiOqD0E0ymuQzfoDKPXQ7pg7HPspNEAbHj7ZIFChe2NxAA7ZdyuuQ==}
+  '@annotorious/react@3.8.2':
+    resolution: {integrity: sha512-+47cuOViwIGkESVWZT8RUEobYUhSWZ1PgViXb2XC2t2t26DMgPIoXGIPDXJ8g3hBl7W+bIIqO0RV3NMxzAQPSw==}
     peerDependencies:
       openseadragon: '>= ^4.0.0 || >= ^5.0.0 || >= ^6.0.0'
       react: ^16.8.0 || >= ^17.x || >= ^18.x || >= ^19.x
@@ -2517,24 +2514,24 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
 
-  '@recogito/react-text-annotator@3.4.9':
-    resolution: {integrity: sha512-PuZvu13nKu3RoxzNQDtgR01N1+sNoAoV0FOA1gqk0y8nCRH/9uB9qxXJxpi7lJbslV9Re8nHDYJcaDCc52Ke1w==}
+  '@recogito/react-text-annotator@3.4.10':
+    resolution: {integrity: sha512-rk6wAkeh9vObGyw9fhW4xL7QjNWxTCVXCE5hnlUQnRG6c05g98758u1JwSmWLVhw52msCXnvF4O8MoFMkDB6eg==}
     peerDependencies:
-      openseadragon: '>= ^4.0 || >= ^5.0'
+      openseadragon: '>= ^4.0 || >= ^5.0 || >= ^6.0'
       react: '>= ^18.x || >= ^19.x'
       react-dom: '>= ^18.x || >= ^19.x'
     peerDependenciesMeta:
       openseadragon:
         optional: true
 
-  '@recogito/text-annotator-tei@3.4.9':
-    resolution: {integrity: sha512-Zol4bLQwnTgjgqG+0CycE5ZE6hy7EI6Z/4z2DeB1Qk+hKNKvpvv6ZziJbzOmVdtAJhgT3ygnMLGLxwK8zw/vwQ==}
+  '@recogito/text-annotator-tei@3.4.10':
+    resolution: {integrity: sha512-UjLEEwea1RVZiQmeXF9YtgP1ehW88Ong+Okejcdrt2YYsT1iLW9/MScv6RO5rs2x/57LMfTGlEioukGm+yo2/A==}
     peerDependencies:
-      '@annotorious/core': ^3.7.13
-      '@recogito/text-annotator': 3.4.9
+      '@annotorious/core': ^3.8.1
+      '@recogito/text-annotator': 3.4.10
 
-  '@recogito/text-annotator@3.4.9':
-    resolution: {integrity: sha512-0Wa9IBMNafGmPKnTZAuVnOgRDA2osbxSU5S9x0uBpmquJqvlOFuXGaqvlIn366RSREUKkdaYnEfrnG1MIxMYLQ==}
+  '@recogito/text-annotator@3.4.10':
+    resolution: {integrity: sha512-3W+vEH6n71sT96i+h1LGxxprsgvp9g16B1YDSd43bOwCU6TM2H6aX1N2sLJ8AweGpKrZXoonW4cUqgIh5jGL9Q==}
 
   '@recogito/text-annotator@4.0.0':
     resolution: {integrity: sha512-SZHw4jGujzTJfkA3YyGLpG0S8HKOQxH43PQZwF+fgLKWbIR1WJsZ3XF/jexP39F5DDDZ3YOOuNFDjEmY0ZlSHQ==}
@@ -3381,9 +3378,6 @@ packages:
     resolution: {integrity: sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==}
     engines: {node: '>=6'}
 
-  detect-europe-js@0.1.2:
-    resolution: {integrity: sha512-lgdERlL3u0aUdHocoouzT10d9I89VVhk0qNRmll7mXdGfJT1/wqZ2ZLA4oJAjeACPY5fT1wsbq2AT+GkuInsow==}
-
   detect-libc@2.1.2:
     resolution: {integrity: sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==}
     engines: {node: '>=8'}
@@ -3954,9 +3948,6 @@ packages:
 
   is-potential-custom-element-name@1.0.1:
     resolution: {integrity: sha512-bCYeRA2rVibKZd+s2625gGnGF/t7DSqDs4dP7CrLA1m7jKWz6pps0LpYLJN8Q64HtmPKJ1hrN3nzPNKFEKOUiQ==}
-
-  is-standalone-pwa@0.1.1:
-    resolution: {integrity: sha512-9Cbovsa52vNQCjdXOzeQq5CnCbAcRk05aU62K20WO372NrTv0NxibLFCK6lQ4/iZEFdEA3p3t2VNOn8AJ53F5g==}
 
   isbinaryfile@4.0.10:
     resolution: {integrity: sha512-iHrqe5shvBUcFbmZq9zOQHBoeOhZJu6RQGrDpBgenUm/Am+F3JM2MgQj+rK3Z601fzrL5gLZWtAPH2OBaSVcyw==}
@@ -5300,15 +5291,8 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  ua-is-frozen@0.1.2:
-    resolution: {integrity: sha512-RwKDW2p3iyWn4UbaxpP2+VxwqXh0jpvdxsYpZ5j/MLLiQOfbsV5shpgQiw93+KMYQPcteeMQ289MaAFzs3G9pw==}
-
   ua-parser-js@1.0.41:
     resolution: {integrity: sha512-LbBDqdIC5s8iROCUjMbW1f5dJQTEFB1+KO9ogbvlb3nm9n4YHa5p4KTvFPWvh2Hs8gZMBuiB1/8+pdfe/tDPug==}
-    hasBin: true
-
-  ua-parser-js@2.0.9:
-    resolution: {integrity: sha512-OsqGhxyo/wGdLSXMSJxuMGN6H4gDnKz6Fb3IBm4bxZFMnyy0sdf6MN96Ie8tC6z/btdO+Bsy8guxlvLdwT076w==}
     hasBin: true
 
   undici-types@7.21.0:
@@ -5425,10 +5409,6 @@ packages:
 
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
-
-  uuid@13.0.2:
-    resolution: {integrity: sha512-vzi9uRZ926x4XV73S/4qQaTwPXM2JBj6/6lI/byHH1jOpCzb0zDbfytgA9LcN/hzb2l7WQSQnxITOVx5un/wGw==}
-    hasBin: true
 
   uuid@14.0.0:
     resolution: {integrity: sha512-Qo+uWgilfSmAhXCMav1uYFynlQO7fMFiMVZsQqZRMIXp0O7rR7qjkj+cPvBHLgBqi960QCoo/PH2/6ZtVqKvrg==}
@@ -5704,10 +5684,10 @@ snapshots:
     optionalDependencies:
       graphql: 16.13.2
 
-  '@activistchecklist/react-review-comments@0.1.5(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(socks@2.8.7)':
+  '@activistchecklist/react-review-comments@0.2.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(socks@2.8.7)':
     dependencies:
-      '@annotorious/react': 3.8.0(openseadragon@6.0.2)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
-      '@recogito/react-text-annotator': 3.4.9(openseadragon@6.0.2)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+      '@annotorious/react': 3.8.2(openseadragon@6.0.2)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+      '@recogito/react-text-annotator': 3.4.10(openseadragon@6.0.2)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       lucide-react: 1.14.0(react@19.2.6)
       mongodb: 7.2.0(socks@2.8.7)
       next: 15.5.18(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
@@ -5735,21 +5715,13 @@ snapshots:
 
   '@alloc/quick-lru@5.2.0': {}
 
-  '@annotorious/annotorious@3.8.0':
+  '@annotorious/annotorious@3.8.2':
     dependencies:
-      '@annotorious/core': 3.8.0
+      '@annotorious/core': 3.8.2
       dequal: 2.0.3
       rbush: 4.0.1
       simplify-js: 1.2.4
-      uuid: 13.0.2
-
-  '@annotorious/core@3.8.0':
-    dependencies:
-      dequal: 2.0.3
-      nanoevents: 9.1.0
-      nanoid: 5.1.11
-      nanostores: 1.3.0
-      uuid: 13.0.2
+      uuid: 14.0.0
 
   '@annotorious/core@3.8.2':
     dependencies:
@@ -5759,19 +5731,19 @@ snapshots:
       nanostores: 1.3.0
       uuid: 14.0.0
 
-  '@annotorious/openseadragon@3.8.0(openseadragon@6.0.2)':
+  '@annotorious/openseadragon@3.8.2(openseadragon@6.0.2)':
     dependencies:
-      '@annotorious/annotorious': 3.8.0
-      '@annotorious/core': 3.8.0
+      '@annotorious/annotorious': 3.8.2
+      '@annotorious/core': 3.8.2
       openseadragon: 6.0.2
       pixi.js: 7.4.3
-      uuid: 13.0.2
+      uuid: 14.0.0
 
-  '@annotorious/react@3.8.0(openseadragon@6.0.2)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
+  '@annotorious/react@3.8.2(openseadragon@6.0.2)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
     dependencies:
-      '@annotorious/annotorious': 3.8.0
-      '@annotorious/core': 3.8.0
-      '@annotorious/openseadragon': 3.8.0(openseadragon@6.0.2)
+      '@annotorious/annotorious': 3.8.2
+      '@annotorious/core': 3.8.2
+      '@annotorious/openseadragon': 3.8.2(openseadragon@6.0.2)
       '@floating-ui/react': 0.27.19(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       dequal: 2.0.3
       react: 19.2.6
@@ -8376,13 +8348,13 @@ snapshots:
       '@react-types/shared': 3.33.1(react@19.2.6)
       react: 19.2.6
 
-  '@recogito/react-text-annotator@3.4.9(openseadragon@6.0.2)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
+  '@recogito/react-text-annotator@3.4.10(openseadragon@6.0.2)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
     dependencies:
       '@annotorious/core': 3.8.2
-      '@annotorious/react': 3.8.0(openseadragon@6.0.2)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+      '@annotorious/react': 3.8.2(openseadragon@6.0.2)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@floating-ui/react': 0.27.19(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
-      '@recogito/text-annotator': 3.4.9
-      '@recogito/text-annotator-tei': 3.4.9(@annotorious/core@3.8.2)(@recogito/text-annotator@3.4.9)
+      '@recogito/text-annotator': 3.4.10
+      '@recogito/text-annotator-tei': 3.4.10(@annotorious/core@3.8.2)(@recogito/text-annotator@3.4.10)
       CETEIcean: 1.9.5
       debounce: 3.0.0
       react: 19.2.6
@@ -8390,12 +8362,12 @@ snapshots:
     optionalDependencies:
       openseadragon: 6.0.2
 
-  '@recogito/text-annotator-tei@3.4.9(@annotorious/core@3.8.2)(@recogito/text-annotator@3.4.9)':
+  '@recogito/text-annotator-tei@3.4.10(@annotorious/core@3.8.2)(@recogito/text-annotator@3.4.10)':
     dependencies:
       '@annotorious/core': 3.8.2
-      '@recogito/text-annotator': 3.4.9
+      '@recogito/text-annotator': 3.4.10
 
-  '@recogito/text-annotator@3.4.9':
+  '@recogito/text-annotator@3.4.10':
     dependencies:
       '@annotorious/core': 3.8.2
       colord: 2.9.3
@@ -8405,8 +8377,7 @@ snapshots:
       nanoevents: 9.1.0
       poll: 3.2.2
       rbush: 4.0.1
-      ua-parser-js: 2.0.9
-      uuid: 13.0.2
+      uuid: 14.0.0
 
   '@recogito/text-annotator@4.0.0':
     dependencies:
@@ -9151,8 +9122,6 @@ snapshots:
 
   dequal@2.0.3: {}
 
-  detect-europe-js@0.1.2: {}
-
   detect-libc@2.1.2: {}
 
   detect-node-es@1.1.0: {}
@@ -9816,8 +9785,6 @@ snapshots:
   is-plain-object@5.0.0: {}
 
   is-potential-custom-element-name@1.0.1: {}
-
-  is-standalone-pwa@0.1.1: {}
 
   isbinaryfile@4.0.10: {}
 
@@ -11553,15 +11520,7 @@ snapshots:
 
   typescript@6.0.3: {}
 
-  ua-is-frozen@0.1.2: {}
-
   ua-parser-js@1.0.41: {}
-
-  ua-parser-js@2.0.9:
-    dependencies:
-      detect-europe-js: 0.1.2
-      is-standalone-pwa: 0.1.1
-      ua-is-frozen: 0.1.2
 
   undici-types@7.21.0: {}
 
@@ -11681,8 +11640,6 @@ snapshots:
       react: 19.2.6
 
   util-deprecate@1.0.2: {}
-
-  uuid@13.0.2: {}
 
   uuid@14.0.0: {}
 

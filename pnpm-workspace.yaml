@@ -35,3 +35,6 @@ peerDependencyRules:
     tailwindcss: "4"
 
 confirmModulesPurge: false
+
+minimumReleaseAgeExclude:
+  - '@activistchecklist/react-review-comments@0.2.0'
