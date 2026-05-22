@@ -1,0 +1,163 @@
+---
+title: WhatsApp Security Checklist
+seoTitle: WhatsApp Security Checklist for Activists (2026)
+seoDescription: WhatsApp is not the most private messenger, but it's already where a lot of organizing happens. Step-by-step settings to keep your messages, groups, and contacts safer.
+answerCapsule: >
+  WhatsApp messages are end-to-end encrypted, but Meta still hands over a lot
+  of metadata. If you're already organizing on WhatsApp (especially in
+  immigrant communities), this checklist locks down backups, groups, AI
+  features, and notifications. For higher-risk political work, move sensitive
+  conversations to Signal.
+estimatedTime: 15 minutes
+excerpt: |
+  Configure WhatsApp to protect your messages, groups, and contacts
+relatedGuides:
+  - signal
+  - essentials
+  - spyware
+  - doxxing
+firstPublished: 2026-05-22
+lastUpdated: 2026-05-22
+---
+A lot of activism is already happening on WhatsApp, especially in immigrant communities. It isn't the most secure or private choice, but it's sometimes a useful tool for community organizing because people are already using it.
+
+Your WhatsApp messages are end-to-end encrypted, which makes WhatsApp more secure than regular text messages for protecting what you say. If the cops subpoena your phone carrier for your regular texts, they can see the content of every message. If they subpoena Meta for your WhatsApp messages, they cannot see the content (as long as you don't have Chat Backups enabled).
+
+For sensitive political organizing, [Signal](/signal/) is usually a better choice to protect you from government surveillance. But if you're organizing with a community that is already on WhatsApp and is unlikely to switch platforms, the guide below will help keep your messages safer.
+
+<Alert type="warning">
+  Even with the protections in this guide, there are a number of things WhatsApp will always be able to turn over to law enforcement:
+
+  * Your entire contact list (if you have ever given the app access to your contact list, they will always have it, even if you disable it later)
+  * The names and members of all the groups you're in
+  * Which phone numbers you're messaging and when (they can even get this information in [real-time](https://www.rollingstone.com/politics/politics-features/whatsapp-imessage-facebook-apple-fbi-privacy-1261816/), which most other tech companies don't provide to law enforcement)
+  * All the other WhatsApp users who have YOU in their contact list ([source](https://www.justsecurity.org/79549/we-now-know-what-information-the-fbi-can-obtain-from-encrypted-messaging-apps/))
+  * Any IP addresses you've used to connect to the app (which usually indicates your city-level location)
+  * If you enable them, Google or Apple will also be able to turn over your chat backups. These contain all of your messages unless you enable end-to-end encrypted backups (or Advanced Data Protection on iCloud if you use an iPhone).
+</Alert>
+
+**Brand new to WhatsApp?** See this guide on [how to use WhatsApp](https://ssd.eff.org/module/how-to-use-whatsapp).
+
+<Section title="Baseline protections" slug="baseline">
+  <RiskLevel level="everyone" mode="default">
+
+  </RiskLevel>
+
+  If you only have 10 minutes, start here.
+
+  <ChecklistItemGroup>
+    <ChecklistItem slug="whatsapp-disable-backups" />
+
+    <ChecklistItem slug="whatsapp-hide-last-seen" />
+
+    <ChecklistItem slug="whatsapp-strict-account" />
+
+    <ChecklistItem slug="whatsapp-disappearing" />
+  </ChecklistItemGroup>
+</Section>
+
+<Section title="Ongoing practices" slug="ongoing">
+  <RiskLevel level="everyone" mode="default">
+
+  </RiskLevel>
+
+  <ChecklistItemGroup>
+    <ChecklistItem slug="whatsapp-meta-ai" />
+
+    <ChecklistItem slug="whatsapp-no-sensitive-topics" />
+
+    <ChecklistItem slug="whatsapp-pairing-code-scams" />
+
+    <ChecklistItem slug="whatsapp-fake-support" />
+  </ChecklistItemGroup>
+</Section>
+
+<Section title="Medium-threat protections" slug="medium">
+  <RiskLevel level="medium" mode="default">
+
+  </RiskLevel>
+
+  <ChecklistItemGroup>
+    <ChecklistItem slug="whatsapp-advanced-chat-privacy" />
+
+    <ChecklistItem slug="whatsapp-disable-save-camera-roll" />
+
+    <ChecklistItem slug="whatsapp-display-name" />
+  </ChecklistItemGroup>
+</Section>
+
+<Section title="For group organizers/admins" slug="groups">
+  <RiskLevel level="medium" mode="default">
+
+  </RiskLevel>
+
+  If you're running an organizing group, the settings on the group itself matter as much as your personal settings.
+
+  <ChecklistItemGroup>
+    <ChecklistItem slug="whatsapp-group-settings" />
+
+    <ChecklistItem slug="whatsapp-communities" />
+  </ChecklistItemGroup>
+</Section>
+
+<Section title="Protections for higher-risk users" slug="higher">
+  <RiskLevel level="high" mode="default">
+
+  </RiskLevel>
+
+  The checklist items in this section will help protect your data if your device is seized by law enforcement.
+
+  <ChecklistItemGroup>
+    <ChecklistItem slug="lockdown" />
+
+    <ChecklistItem slug="updates" />
+
+    <ChecklistItem slug="biometrics-disable" />
+
+    <ChecklistItem slug="passcode" />
+
+    <ChecklistItem slug="whatsapp-limit-photo-access" />
+
+    <ChecklistItem slug="whatsapp-disable-notifications" />
+
+    <ChecklistItem slug="whatsapp-disable-ai" />
+
+    <ChecklistItem slug="whatsapp-linked-devices" />
+  </ChecklistItemGroup>
+</Section>
+
+<Section title="Coming soon in WhatsApp: usernames and phone number privacy" slug="usernames">
+  Keep an eye out for WhatsApp usernames. This feature should be released in [June or July 2026](https://wabetainfo.com/whatsapp-is-rolling-out-the-username-feature-on-android-and-ios/) and will give you the option to hide your phone number from other users you're connected to.
+
+  This will help protect your privacy when you're in groups with people you don't know or trust. That's particularly useful in large WhatsApp groups for organizing purposes, which can be infiltrated by bad actors.
+
+  You'll also be able to tell someone your username instead of your phone number if you want to connect with them. Your phone number will still be required to register an account.
+</Section>
+
+<Section title="Other resources" slug="resources">
+  * [How to use WhatsApp guide](https://ssd.eff.org/module/how-to-use-whatsapp) — Electronic Frontier Foundation
+  * [Upgrading WhatsApp security](https://freedom.press/digisec/blog/upgrading-whatsapp-security/) — Freedom of the Press Foundation
+</Section>
+
+<FAQ>
+  <FAQItem
+    question="What is this 'verify encryption key' option I see under each chat?"
+    answer="This feature gives you a way to verify the encryption keys for a specific chat. It's used in extremely high-risk situations where an attacker might have tried to insert themselves in the middle of your connection the first time you connected with a user. If your chats are so sensitive that you need to account for this kind of advanced threat, you should be using Signal rather than WhatsApp."
+  />
+  <FAQItem
+    question="What about the 2026 lawsuits claiming WhatsApp created a 'backdoor' to bypass end-to-end encryption?"
+    answer="Two separate lawsuits in 2026 have claimed that WhatsApp includes a way for Meta staff to read users' messages, bypassing end-to-end encryption. Cryptography experts who have looked at this claim think it is most likely either untrue or overstated. If the claims turn out to be true, it would be a breach of privacy unlike anything we've seen from a big tech company. Our stance: extraordinary claims require extraordinary evidence. While we don't think Meta is an ethical company by any means, we want to wait to see what turns up in the lawsuits. As always, if you're concerned, use Signal."
+  />
+  <FAQItem
+    question="Is WhatsApp safer than regular text messages (SMS)?"
+    answer="For message content, yes. WhatsApp messages are end-to-end encrypted, so your cell phone provider cannot turn over any of the message content to law enforcement, even if they have a subpoena. Normal texts (SMS) is unencrypted and the carrier sees every word. WhatsApp is still worse than Signal for metadata: Meta logs who you message, when, and which groups you're in, and turns that over to law enforcement when asked."
+  />
+  <FAQItem
+    question="Can law enforcement read my WhatsApp messages?"
+    answer="They can't read the message contents while traveling between your device and another person's device. However, they can access your emsages if you enable chat backups without end-to-end encryption turned on. They can compel Meta to turn over a lot of metadata (your contact list, who you message, group memberships, IP addresses). They can also break into a confiscated phone with a weak passcode and read the messages directly."
+  />
+  <FAQItem
+    question="Should I just use Signal instead?"
+    answer="For sensitive political organizing, yes. Signal collects almost no metadata and turns over almost nothing in response to law enforcement requests. WhatsApp is worth configuring if your community is already on it and unlikely to switch, but try to move higher-risk conversations to Signal."
+  />
+</FAQ>
