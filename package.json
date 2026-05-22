@@ -66,7 +66,7 @@
     "mongo:start": "sh -c 'docker start ac-mongo >/dev/null 2>&1 || docker run -d --name ac-mongo -p 27017:27017 -v ac-mongo-data:/data/db mongo:7'"
   },
   "dependencies": {
-    "@activistchecklist/react-review-comments": "^0.1.5",
+    "@activistchecklist/react-review-comments": "^0.2.0",
     "@activistchecklist/umami-extra-privacy": "github:ActivistChecklist/umami-extra-privacy#7669154d772ecbf3410c1243e8014ac8a0e74c5e",
     "@fastify/cors": "^11.2.0",
     "@fastify/helmet": "^13.0.2",
