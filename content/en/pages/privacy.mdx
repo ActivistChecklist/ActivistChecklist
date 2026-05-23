@@ -81,6 +81,32 @@ We protect access to this service with [Cloudflare](https://www.cloudflare.com/p
 
 If you want an extra layer of privacy, you can subscribe using an email anonymization service like Proton Mail’s hide-my-email aliases (10 aliases on the free plan, unlimited on the paid plan), [DuckDuckGo email aliases](https://github.com/Lanshuns/Qwacky), or [addy.io](http://addy.io) (which offers unlimited aliases).
 
+## How we respond to legal demands
+
+If we ever receive a legal demand affecting our users or our infrastructure, we will:
+
+1. **Challenge demands** we believe are overbroad, improper, or unconstitutional, to the extent we are able.
+1. **Notify the affected people directly** where we can identify them (for example, a subpoena for a specific newsletter subscriber's information).
+1. **Publicly disclose the demand** on this page in general terms when we cannot notify individuals directly, or when the demand affects the site as a whole.
+1. **Refuse to modify the site or its infrastructure** to facilitate surveillance of visitors, and refuse to grant covert third-party access to our systems.
+
+
+## Warrant canary
+
+We maintain a warrant canary to attest that we have not been compelled to modify the site or received any legal demand for user data that we were prohibited from disclosing. 
+
+[View our warrant canary →](/files/canary.txt)
+
+We will update this canary every 3 months. If more than 4 months pass without an update AND we are still regularly updating our [code respository](https://github.com/ActivistChecklist/ActivistChecklist), that is a sign to ask questions rather than a confirmed compromise. Start by [contacting](/contact/) us to see if we're just behind on an update.
+
+To verify, downlaod [`canary.txt`](/files/canary.txt), fetch our public key from one of the sources below, and run `gpg --verify canary.txt`. If it is valid, you should see something like `Good signature from "contact@activistchecklist.org <contact@activistchecklist.org>"`
+
+You can find our PGP public key and fingerprint (`B7AA5B9EC0F0351D9FB7E387D037BB0E887206EC`) in many places: [This site](https://activistchecklist.org/files/publickey.contact@activistchecklist.org.asc), [Proton](https://api.protonmail.ch/pks/lookup?op=get&search=contact@activsitchecklist.org), [openpgp.org](https://keys.openpgp.org/search?q=contact@activistchecklist.org), [archive.org](https://web.archive.org/web/20250928110818/https://activistchecklist.org/files/publickey.contact@activistchecklist.org.asc), [Bluesky](https://bsky.app/profile/activistchecklist.org/post/3mmkabjgpas2y), and [kolektiva.social](https://kolektiva.social/@activistchecklist/116625655033452078). If the fingerprints differ across sources, do not trust the canary.
+
+If we plan to retire the canary, we will include that information in the final update of the canary file.
+
+
+
 ## Questions?
 
 If you have questions about our privacy practices or need to verify any of our claims, our entire [website's code is open source and available for audit](https://github.com/ActivistChecklist/ActivistChecklist). We encourage you to inspect it yourself or have a trusted technical advisor review it.
