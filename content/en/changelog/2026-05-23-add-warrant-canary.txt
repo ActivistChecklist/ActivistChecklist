@@ -1,0 +1,6 @@
+---
+type: minor
+date: 2026-05-23
+---
+
+Added a [warrant canary](/privacy/#warrant-canary) to the site and updated our privacy policy with information about how we respond to legal demands.

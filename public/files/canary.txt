@@ -1,0 +1,27 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+ActivistChecklist.org Warrant Canary · 2026-05-24 01:39:08 UTC
+
+As of May 23, 2026, ActivistChecklist.org:
+
+* has not been compelled to alter the site or its behavior for surveillance purposes
+* has not been served with any legal demand for user data accompanied by a gag order
+* retains sole control over its infrastructure and signing keys
+
+This canary is valid through August 31, 2026. After that date, the
+absence of a newer canary indicates either a missed update or
+compromise.
+
+Datestamp Proof:
+  News headline: Trump says peace deal with Iran ‘largely negotiated’ with strait of Hormuz to open
+  News URL:      https://www.theguardian.com/world/2026/may/23/trump-ceasefire-iran-strait-of-hormuz
+  XMR block:     #3680701, 2026-05-24 01:36:37 UTC
+  Block hash:    f7e052ee4edee4f2b4a1b7bd066a11ec7f1e4cb082ec3852877ff510343b99c7
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYIAB0WIQS3qluewPA1HZ+344fQN7sOiHIG7AUCahJWxAAKCRDQN7sOiHIG
+7CzIAQDUsTJhpieXwBY8fU7YXTvjlei/1oK5JQGNoyFhCOEpCQD5AaCkzP507ZkC
+Jb/p903FOCe73433k7PALBVcfYYiuwI=
+=JZ0I
+-----END PGP SIGNATURE-----
