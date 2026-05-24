@@ -5,6 +5,10 @@
  * Fetches NTP time, the latest RSS headline, and the latest Monero block as
  * datestamp proofs. Builds a message, signs it with GPG, and writes it to
  * public/files/canary.txt.
+ * 
+ * Reference: https://sij.law/warrant-canaries/
+ * 
+ * Credit: Adapted from: https://sij.ai/sij/sw1tch/src/branch/main/sw1tch/canary.py
  *
  * Requires:
  *   - GPG installed and a signing key in your keyring
@@ -12,8 +16,8 @@
  *   - rss-parser installed (pnpm add rss-parser)
  *
  * Usage:
- *   GPG_KEY_ID=ABCD1234EF567890 node scripts/canary/generate.mjs
- *   GPG_KEY_ID=ABCD1234EF567890 node scripts/canary/generate.mjs --no-prompt
+ *   GPG_KEY_ID=ABCD1234EF567890 node scripts/canary.mjs
+ *   GPG_KEY_ID=ABCD1234EF567890 node scripts/canary.mjs --no-prompt
  */
 
 import fs from 'node:fs/promises';
@@ -36,10 +40,9 @@ const RSS_URL = 'https://www.theguardian.com/us-news/us-politics/rss';
 const RSS_NAME = 'The Guardian US Politics';
 
 const ATTESTATIONS = [
-  'maintains full control of its infrastructure, deployment credentials, and the PGP key used to sign this statement',
-  'has not been compelled to modify the site, inject tracking code, or alter content served to visitors',
-  'has not granted covert access to our systems to any third party',
-  'has not received any legal demand for user data that we were prohibited from disclosing',
+  'has not been compelled to modify the site, log visitors, inject tracking code, or alter content served to visitors',
+  'has not been gagged from disclosing the existence of any legal demand for user data',
+  'maintains full and exclusive control of its infrastructure, deployment credentials, and the PGP key used to sign this statement, with no third-party access granted under coercion or covert demand.',
 ];
 
 // ---------- Paths ----------
@@ -63,7 +66,7 @@ const GPG_KEY_ID = env.GPG_KEY_ID?.trim();
 if (!GPG_KEY_ID) {
   console.error('Error: GPG_KEY_ID env var is not set.');
   console.error('Find your key ID with: gpg --list-secret-keys --keyid-format=long');
-  console.error('Then run: GPG_KEY_ID=YOUR_KEY_ID node scripts/canary/generate.mjs');
+  console.error('Then run: GPG_KEY_ID=YOUR_KEY_ID node scripts/generate.mjs');
   process.exit(1);
 }
 
@@ -375,6 +378,14 @@ async function signWithGpg(message) {
   } finally {
     try { await fs.unlink(TEMP_MESSAGE_FILE); } catch {}
     try { await fs.unlink(signedPath); } catch {}
+    // Flush gpg-agent cache so the passphrase doesn't linger in memory
+    // after signing. Best-effort: failure here doesn't affect the canary.
+    try {
+      await execFileAsync('gpg-connect-agent', ['reloadagent', '/bye']);
+      console.log('Flushed gpg-agent cache.');
+    } catch (err) {
+      console.log(`Warning: could not flush gpg-agent cache: ${err.message}`);
+    }
   }
 }
 

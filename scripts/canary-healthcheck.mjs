@@ -20,7 +20,8 @@ import { dirname, resolve } from 'node:path';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const CANARY_PATH = resolve(__dirname, '..', 'public', 'files', 'canary.txt');
 const PING_URL = process.env.HEALTHCHECK_CANARY_URL;
-const MAX_AGE_DAYS = Number(process.env.CANARY_MAX_AGE_DAYS ?? 90);
+const parsedMaxAge = Number(process.env.CANARY_MAX_AGE_DAYS ?? 90);
+const MAX_AGE_DAYS = Number.isFinite(parsedMaxAge) && parsedMaxAge > 0 ? parsedMaxAge : 90;
 
 // Matches: "ActivistChecklist.org Warrant Canary · 2026-05-23 21:24:36 UTC"
 const DATE_RE = /Warrant Canary\s+\S\s+(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) UTC/;
@@ -37,14 +38,17 @@ async function ping(endpoint, body) {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain' },
       body: body ?? '',
+      signal: AbortSignal.timeout(10000),
     });
     if (!res.ok) {
       console.error(`Ping to ${url} returned ${res.status} ${res.statusText}`);
-    } else {
-      console.log(`Pinged ${url}`);
-    }
+       return false;
+     }
+     console.log(`Pinged ${url}`);
+     return true;
   } catch (err) {
     console.error(`Ping to ${url} failed: ${err.message}`);
+    return false;
   }
 }
 
@@ -81,11 +85,11 @@ async function main() {
   console.log(summary);
 
   if (ageDays > MAX_AGE_DAYS) {
-    await ping('fail', `STALE: ${summary}`);
-    process.exit(1);
+    const ok = await ping('fail', `STALE: ${summary}`);
+    process.exit(ok ? 1 : 2);
   }
 
-  await ping(null, `OK: ${summary}`);
+  if (!(await ping(null, `OK: ${summary}`))) process.exit(2);
 }
 
 main().catch(async (err) => {
