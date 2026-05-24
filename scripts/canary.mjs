@@ -40,10 +40,16 @@ const RSS_URL = 'https://www.theguardian.com/us-news/us-politics/rss';
 const RSS_NAME = 'The Guardian US Politics';
 
 const ATTESTATIONS = [
-  'has not been compelled to modify the site, log visitors, inject tracking code, or alter content served to visitors',
-  'has not been gagged from disclosing the existence of any legal demand for user data',
-  'maintains full and exclusive control of its infrastructure, deployment credentials, and the PGP key used to sign this statement, with no third-party access granted under coercion or covert demand.',
+  'has not been compelled to alter the site or its behavior for surveillance purposes',
+  'has not been served with any legal demand for user data accompanied by a gag order',
+  'retains sole control over its infrastructure and signing keys',
 ];
+
+// Number of days the canary remains valid after release. Should be slightly
+// longer than the re-sign cadence (currently ~3 months) to allow for slack
+// when a scheduled re-sign is delayed by travel, illness, or infrastructure
+// issues. If no fresher canary appears past this date, assume compromise.
+const VALIDITY_DAYS = 100;
 
 // ---------- Paths ----------
 
@@ -319,7 +325,10 @@ async function buildMessage() {
     if (noteIn) note = noteIn;
   }
 
-  const dateStr = formatDate(new Date());
+  const now = new Date();
+  const dateStr = formatDate(now);
+  const expiryDate = new Date(now.getTime() + VALIDITY_DAYS * 24 * 60 * 60 * 1000);
+  const expiryStr = formatDate(expiryDate);
 
   let msg = `${ORGANIZATION} Warrant Canary · ${nistTime}\n\n`;
   msg += `As of ${dateStr}, ${ORGANIZATION}:\n\n`;
@@ -327,6 +336,9 @@ async function buildMessage() {
     msg += `* ${att}\n`;
   }
   if (note) msg += `\nNOTE: ${note}\n`;
+  msg += `\nThis canary is valid through ${expiryStr}. After that date, the\n`;
+  msg += `absence of a newer canary indicates either a missed update or\n`;
+  msg += `compromise.\n`;
   msg += '\nDatestamp Proof:\n';
   msg += `  News headline: ${rss.title}\n`;
   msg += `  News URL:      ${rss.link}\n`;
