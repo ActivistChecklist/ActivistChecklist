@@ -8,7 +8,7 @@
 [![Deploy](https://github.com/ActivistChecklist/ActivistChecklist/actions/workflows/deploy-webhook.yml/badge.svg)](https://github.com/ActivistChecklist/ActivistChecklist/actions/workflows/deploy-webhook.yml)
 ![Healthchecks](https://healthchecks.io/badge/48683141-3e2b-4da2-a269-5d8293/cxb5iwnK-2.svg)
 [![Crowdin](https://badges.crowdin.net/activistchecklist/localized.svg)](https://crowdin.com/project/activistchecklist) 
-[![Warrant canary](https://img.shields.io/endpoint?url=https://healthchecks.io/b/2/f424e66f-06c3-463a-8d54-e5b4749a55e9.shields&label=Warrant%20canary&color=4c1)](https://activistchecklist.org/privacy/#warrant-canary) 
+[![Warrant canary](https://img.shields.io/endpoint?url=https://healthchecks.io/b/2/f424e66f-06c3-463a-8d54-e5b4749a55e9.shields&label=warrant%20canary&color=4c1)](https://activistchecklist.org/privacy/#warrant-canary) 
 [![Bluesky](https://img.shields.io/bluesky/followers/activistchecklist.org)](https://bsky.app/profile/activistchecklist.org)
 
 </div>
