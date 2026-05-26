@@ -1,8 +1,8 @@
 ---
 title: ¿Es Signal seguro? (¡Sí!)
-seoDescription: Is Signal secure for activist use? Yes. How the encryption works, what Signal can share with law enforcement, and the myths that get it wrong.
+seoDescription: ¿Es Signal seguro para uso activista? Sí. Cómo funciona el cifrado, qué puede compartir Signal con los cops, y los mitos que se equivocan al respecto.
 answerCapsule: |
-  Yes, Signal is secure for activist organizing. It's end-to-end encrypted, the code is open source and audited. When law enforcement subpoenas Signal, they get the account creation date and last connection date. They cannot get message contents or your contact list. The remaining risk is your device: a seized phone with a weak passcode exposes everything, regardless of how strong Signal itself is.
+  Sí, Signal es seguro para organizar acciones activistas. Tiene cifrado de extremo a extremo, su código es open source y está auditado. Cuando los cops le mandan una orden judicial a Signal, obtienen la fecha de creación de la cuenta y la fecha de última conexión. No pueden acceder al contenido de los mensajes ni a tu lista de contactos. El riesgo que queda es tu dispositivo: si te incautan un teléfono con un passcode débil, queda todo expuesto, sin importar qué tan seguro sea Signal.
 relatedGuides:
   - signal
   - essentials
@@ -11,55 +11,55 @@ lastUpdated: 2026-04-03
 ---
 
 <Alert type="success">
-  **Conclusión:** Signal es seguro de usar. Si ya usas Signal para tu activismo, puedes estar tranquilo/a: tus comunicaciones son privadas y seguras.
+  **En resumen:** Signal es seguro de usar. Si ya usas Signal para tu activismo, tranqui, tus comunicaciones son privadas y seguras.
 </Alert>
 
 <Alert type="info">
-  **Usar Signal de forma segura:** Este artículo trata sobre si Signal es confiable. Para pasos concretos para configurar la app, usa nuestra [Lista de verificación de seguridad de Signal](/signal/).
+  **Cómo usar Signal de forma segura:** Este artículo trata sobre si se puede confiar en Signal. Para ver los pasos concretos para configurar la app, revisa nuestra [Lista de seguridad de Signal](/signal/).
 </Alert>
 
-[Signal](https://signal.org/) es una plataforma de mensajería segura y cifrada, ampliamente utilizada por activistas, periodistas, abogados de derechos humanos e incluso funcionarios gubernamentales, para comunicaciones individuales o grupales que incluyen texto, voz y video.
+[Signal](https://signal.org/) es una plataforma de mensajería segura y cifrada que usan ampliamente activistas, periodistas, abogades de derechos humanos e incluso funcionarios del gobierno, para comunicarse uno a uno o en grupo mediante texto, voz y video.
 
-### Signal es administrado por una organización sin fines de lucro
+### Signal lo opera una organización sin fines de lucro
 
-La app Signal es propiedad de la Signal Technology Foundation, una organización sin fines de lucro con sede en EE. UU., que recibe fondos a través de donaciones individuales y subvenciones.
+La app de Signal pertenece a la Signal Technology Foundation, una organización sin fines de lucro con sede en EE. UU., que se financia mediante donaciones individuales y subvenciones.
 
-Puedes consultar las declaraciones fiscales de la Signal Technology Foundation, que detallan ingresos y gastos, [aquí](https://projects.propublica.org/nonprofits/organizations/824506840).
+Puedes consultar las declaraciones de impuestos de la Signal Technology Foundation, que detallan ingresos y gastos, [aquí](https://projects.propublica.org/nonprofits/organizations/824506840).
 
-### La comunicación a través de Signal es privada
+### La comunicación en Signal es privada
 
-Al comunicarte a través de Signal, los mensajes permanecen privados. Esta privacidad es posible gracias a la **tecnología de extremo a extremo**, lo que significa que mientras tus conversaciones pasan por internet, son **indescifables**, es decir, solo tú y la(s) persona(s) con quien te comunicas pueden leer o escuchar el contenido de tus comunicaciones.
+Cuando te comunicas por Signal, tus mensajes se mantienen privados. Esta privacidad es posible gracias al **cifrado de extremo a extremo**, lo que significa que mientras tus conversaciones viajan por internet, son **indescifrables**: solo tú y las personas con quienes te comunicas pueden leer o escuchar el contenido.
 
-Si una agencia gubernamental le exige a Signal mediante una citación legal los datos relacionados con una cuenta de Signal basándose en tu número de teléfono, Signal solo puede responder con los siguientes datos: el ID de la cuenta, un hash criptográfico de tu nombre de usuario, cuándo se creó la cuenta y cuándo se usó por última vez. Si la citación se basa en tu nombre de usuario, Signal puede vincular un nombre de usuario a un número de teléfono y producir una respuesta que incluye el número de teléfono. Esta es una de las razones por las que Signal diseñó los nombres de usuario para que sean efímeros y les da a los usuarios la posibilidad de cambiarlos según la necesidad. De lo contrario, Signal no sabe **nada más** sobre ti.
+Si una agencia del gobierno cita judicialmente a Signal para obtener datos de una cuenta asociada a tu número de teléfono, Signal solo puede entregar la siguiente información: el ID de la cuenta, un hash criptográfico de tu nombre de usuario, cuándo se creó la cuenta y cuándo se usó por última vez. Si la citación se basa en tu nombre de usuario, Signal puede vincular ese nombre con un número de teléfono y entregar una respuesta que incluya el número. Esta es una de las razones por las que Signal diseñó los nombres de usuario para que sean efímeros y para que puedas cambiarlos según lo necesites. Fuera de eso, Signal **no sabe nada más** sobre ti.
 
-### La aplicación Signal es de código abierto
+### La aplicación Signal es open source
 
-Si las apps fueran pasteles, código abierto significaría tener acceso a toda la receta del pastel, es decir, sabes cómo se hace el pastel y qué ingredientes se usan. Incluso puedes sugerir cambios que creas que podrían mejorar el pastel. De manera similar, el código base de Signal está disponible abiertamente para que cualquiera lo vea, lo inspeccione y sugiera modificaciones. De hecho, puedes [ver el código de Signal aquí](https://github.com/signalapp). La forma en que Signal protege los millones de mensajes que pasan a través de la app también está [disponible públicamente](https://github.com/signalapp/libsignal).
+Si las apps fueran pasteles, open source significa tener acceso a toda la receta del pastel, o sea, sabes cómo se hace y qué ingredientes lleva. Incluso puedes proponer cambios que creas que mejorarían el pastel. De la misma forma, el código de Signal está disponible públicamente para que cualquiera pueda verlo, revisarlo y proponer modificaciones. De hecho, puedes [ver el código de Signal aquí](https://github.com/signalapp). La forma en que Signal protege los millones de mensajes que pasan por la app también [está disponible públicamente](https://github.com/signalapp/libsignal).
 
-Este nivel de transparencia hace posible confiar en Signal porque podemos ver por nosotros mismos que funciona tal como dice que lo hace, y no solo confiar en su palabra.
+Este nivel de transparencia nos permite confiar en Signal porque podemos comprobar por nuestra cuenta que funciona como dice, sin tener que creerle solo por su palabra.
 
 <Alert type="default">
-  **Nota al margen:** En 2021, Signal introdujo un sistema antispam después de que los usuarios reportaran un aumento de spam de contactos desconocidos. Para evitar que los spammers estudien el código y lo eludan, este componente pasó a ser de código cerrado. Todo lo demás sigue siendo de código abierto. (Ver: [entrada del blog de Signal](https://signal.org/blog/keeping-spam-off-signal/))
+  **Nota:** En 2021, Signal lanzó un sistema antispam después de que muches usuaries reportaran un aumento de spam de contactos desconocidos. Para evitar que les spammers estudiaran el código y encontraran formas de evadirlo, ese componente en particular se hizo de código cerrado. Todo lo demás sigue siendo open source. (Mira: [la publicación del blog de Signal](https://signal.org/blog/keeping-spam-off-signal/))
 </Alert>
 
 ## El mito
 
-**Atención:** Una afirmación recurrente que circula en las redes sociales es que Signal está financiado por el gobierno de EE. UU. o la Agencia Central de Inteligencia (CIA), lo que implica que Signal es esencialmente una operación gubernamental y, por lo tanto, no es de fiar.
+**Ojo:** Un rumor que circula seguido en redes sociales es que Signal está financiado por el gobierno de EE. UU. o por la Agencia Central de Inteligencia (CIA), insinuando que Signal es básicamente una operación del gobierno y por eso no es de fiar.
 
-Esta afirmación se basa en el hecho de que Signal [recibió financiamiento](https://www.opentech.fund/projects-we-support/supported-projects/signal-open-whisper-systems/) del Open Technology Fund (OTF) entre 2012 y 2016. Signal siempre ha reconocido abiertamente este financiamiento. El OTF es una organización sin fines de lucro que [recibe la mayor parte de su dinero de](https://www.opentech.fund/about/about-our-funding/) la Agencia de EE. UU. para Medios Globales (USAGM), una agencia gubernamental independiente de EE. UU. cuyo trabajo es supervisar emisoras internacionales de noticias como Voice of America. El OTF ha financiado una amplia gama de proyectos de código abierto para apoyar a las personas en la lucha contra la vigilancia y la censura. La USAGM en sí misma no es una agencia de inteligencia, aunque opera como parte de los esfuerzos más amplios de política exterior de EE. UU.
+Este rumor se basa en el hecho de que Signal [recibió financiamiento](https://www.opentech.fund/projects-we-support/supported-projects/signal-open-whisper-systems/) del Open Technology Fund (OTF) entre 2012 y 2016. Signal siempre ha reconocido abiertamente este financiamiento. El OTF es una organización sin fines de lucro que [recibe la mayor parte de su dinero de](https://www.opentech.fund/about/about-our-funding/) la US Agency for Global Media (USAGM), una agencia independiente del gobierno de EE. UU. cuyo trabajo es supervisar emisoras internacionales de noticias como Voice of America. El OTF ha financiado un montón de proyectos open source para apoyar a personas que enfrentan vigilancia y censura. USAGM en sí no es una agencia de inteligencia, aunque opera como parte de los esfuerzos más amplios de política exterior de EE. UU.
 
-Siempre es bueno cuestionar las fuentes de financiamiento, especialmente en espacios activistas, y sobre todo al investigar las estructuras de gobernanza de las organizaciones y evaluar la confianza general en ellas. Sin embargo, pasar de "Signal recibió una subvención de una organización sin fines de lucro financiada por USAGM" a "Signal es una operación de la CIA" puede considerarse un **salto lógico** considerable. Con la misma lógica, se podría acusar a cualquier periodista u ONG que reciba una subvención financiada por USAGM de ser un activo de la CIA.
+Siempre es bueno cuestionar las fuentes de financiamiento, sobre todo en espacios activistas, y especialmente al investigar las estructuras de gobernanza de las organizaciones y evaluar cuánta confianza generan. Sin embargo, saltar de "Signal recibió una subvención de una organización sin fines de lucro financiada por USAGM" a "Signal es una operación de la CIA" puede considerarse un **gran salto lógico**. Con esa misma lógica, podrías acusar a cualquier periodista u ONG que reciba una subvención financiada por USAGM de ser un agente de la CIA.
 
-Dejando eso de lado, el financiamiento puede influir en muchos aspectos de una organización, pero no determina específicamente la seguridad de una aplicación de mensajería. Evaluar la seguridad de una app depende de cómo está diseñado el cifrado, si el código está disponible públicamente para que cualquiera lo inspeccione, y si investigadores de seguridad independientes lo han probado y lo han encontrado sólido. Signal cumple bien en los tres aspectos, y esos factores son en definitiva lo que importa para la seguridad.
+Dejando eso de lado, el financiamiento puede influir en muchos aspectos de una organización, pero no determina específicamente la seguridad de una app de mensajería. Evaluar la seguridad de una app depende de cómo está diseñado el cifrado, si el código está disponible públicamente para que cualquiera lo revise y si investigadores independientes en seguridad lo han puesto a prueba y lo han encontrado sólido. Signal sale bien parado en estos tres puntos, y al final eso es lo que importa para la seguridad.
 
-### Necesitas proteger tu dispositivo
+### Necesitas asegurar tu dispositivo
 
-Signal es ampliamente reconocido como una de las plataformas de mensajería para consumidores más seguras, porque está construido de manera transparente y su seguridad es auditada públicamente.
+Signal es considerada una de las plataformas de mensajería de consumo más seguras porque está construida de forma transparente y su seguridad se audita públicamente.
 
-Dicho esto, Signal es tan seguro como la forma en que manejas tu dispositivo. Si tu dispositivo es confiscado, tiene un código de acceso débil, tiene habilitado el desbloqueo por cara/huella dactilar, o [accidentalmente](https://micahflee.com/we-are-currently-clean-on-opsec-the-signalgate-saga/) agregas a alguien en quien no confías a tu grupo de Signal, tus comunicaciones seguirán estando comprometidas, aunque la app en sí esté funcionando perfectamente como se esperaba.
+Dicho esto, Signal es tan seguro como la forma en que manejas tu dispositivo. Si te incautan el dispositivo, tienes un código de acceso débil, tienes activado el desbloqueo por rostro o huella, o [por accidente](https://micahflee.com/we-are-currently-clean-on-opsec-the-signalgate-saga/) agregas a alguien en quien no confías a tu grupo de Signal, tus comunicaciones igual quedarán comprometidas, aunque la app esté funcionando perfectamente como debe.
 
-En los iPhones más nuevos, **Apple Intelligence** (y los resúmenes de notificaciones) es un problema aparte de si el cifrado de Signal es sólido. Ver [¿Apple Intelligence está leyendo mis mensajes de Signal?](/signal-ai/).
+En los iPhones más nuevos, **Apple Intelligence** (y los resúmenes de notificaciones) es un tema aparte de si el cifrado de Signal es sólido o no. Mira [¿Apple Intelligence está leyendo mis mensajes de Signal?](/signal-ai/).
 
-Te recomendamos seguir nuestra [Lista de verificación de seguridad de Signal](/signal/) y la [Lista de verificación de elementos esenciales](/essentials/) para ayudar a mantener seguros tus mensajes de Signal una vez que llegan a tu dispositivo.
+Te recomendamos seguir nuestra [Lista de seguridad de Signal](/signal/) y nuestra [Lista de lo esencial](/essentials/) para mantener seguros tus mensajes de Signal una vez que llegan a tu dispositivo.
 
-<Button title="Lista de verificación de seguridad de Signal →" href="/signal/" target="_self" size="lg" />
+<Button title="Lista de seguridad de Signal →" href="/signal/" target="_self" size="lg" />
