@@ -17,8 +17,20 @@ export default function Link({ href, children, target: targetProp, rel: relProp,
       </IntlLink>
     );
   }
-
   const resolvedHref = resolveLocaleAwareHref(href);
+
+  // Static files (anything with an extension) must skip IntlLink: next-intl's
+  // client-side routing strips the extension and 404s. Apache serves these
+  // directly from /public, so a native anchor is correct.
+  if (/\.[a-z0-9]+(?:[?#]|$)/i.test(href)) {
+    const target = targetProp ?? '_blank';
+    const rel = relProp ?? (target === '_blank' ? 'noopener noreferrer' : undefined);
+    return (
+      <a href={resolvedHref} target={target} rel={rel} {...props}>
+        {children}
+      </a>
+    );
+  }
 
   if (isExternalHref(href)) {
     const target = targetProp ?? defaultExternalTarget(href);
@@ -30,7 +42,6 @@ export default function Link({ href, children, target: targetProp, rel: relProp,
       </a>
     );
   }
-
   return (
     <IntlLink href={resolvedHref} target={targetProp} rel={relProp} {...props}>
       {children}
