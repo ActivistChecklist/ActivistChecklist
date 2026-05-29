@@ -189,6 +189,9 @@ importers:
       react-intersection-observer:
         specifier: ^10.0.3
         version: 10.0.3(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+      react-review-comments@0.3.0:
+        specifier: link:ActivistChecklist/react-review-comments@0.3.0
+        version: link:ActivistChecklist/react-review-comments@0.3.0
       rehype-sanitize:
         specifier: ^6.0.0
         version: 6.0.0
