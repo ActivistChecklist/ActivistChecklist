@@ -22,8 +22,8 @@ importers:
   .:
     dependencies:
       '@activistchecklist/react-review-comments':
-        specifier: ^0.2.0
-        version: 0.2.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(socks@2.8.7)
+        specifier: ^0.3.0
+        version: 0.3.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(socks@2.8.7)
       '@activistchecklist/umami-extra-privacy':
         specifier: github:ActivistChecklist/umami-extra-privacy#7669154d772ecbf3410c1243e8014ac8a0e74c5e
         version: https://codeload.github.com/ActivistChecklist/umami-extra-privacy/tar.gz/7669154d772ecbf3410c1243e8014ac8a0e74c5e(fastify@5.8.5)
@@ -189,9 +189,6 @@ importers:
       react-intersection-observer:
         specifier: ^10.0.3
         version: 10.0.3(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
-      react-review-comments@0.3.0:
-        specifier: link:ActivistChecklist/react-review-comments@0.3.0
-        version: link:ActivistChecklist/react-review-comments@0.3.0
       rehype-sanitize:
         specifier: ^6.0.0
         version: 6.0.0
@@ -315,8 +312,8 @@ packages:
       graphql:
         optional: true
 
-  '@activistchecklist/react-review-comments@0.2.0':
-    resolution: {integrity: sha512-rtgrlNzq9dk64XfqzoyJ+bPoytMY5jYAG/0YE6m8ZCr/LiQqyyLPc/2NoZtNL0qUI3SL0b/dObioiwo71luNyg==}
+  '@activistchecklist/react-review-comments@0.3.0':
+    resolution: {integrity: sha512-2dpx0vaD2TG7dPGvrMjf26Tf1xS4TZloTCcMq7/bvRS0x0WFTtNjbSCvTetDb9rOD0AKgUlvHBwSnv/w2DTlTQ==}
     peerDependencies:
       react: ^18.2.0 || ^19.0.0
       react-dom: ^18.2.0 || ^19.0.0
@@ -5694,7 +5691,7 @@ snapshots:
     optionalDependencies:
       graphql: 16.13.2
 
-  '@activistchecklist/react-review-comments@0.2.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(socks@2.8.7)':
+  '@activistchecklist/react-review-comments@0.3.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(socks@2.8.7)':
     dependencies:
       '@annotorious/react': 3.8.2(openseadragon@6.0.2)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@recogito/react-text-annotator': 3.4.10(openseadragon@6.0.2)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)

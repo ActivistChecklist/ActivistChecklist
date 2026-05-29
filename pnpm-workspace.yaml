@@ -37,4 +37,6 @@ peerDependencyRules:
 confirmModulesPurge: false
 
 minimumReleaseAgeExclude:
-  - '@activistchecklist/react-review-comments@0.2.0'
+  # First-party package — we publish it ourselves, so the release-age gate adds
+  # no supply-chain protection and just blocks installing our own fresh releases.
+  - '@activistchecklist/react-review-comments'
