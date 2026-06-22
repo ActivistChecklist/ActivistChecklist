@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { ChevronDown, Check, Link2 } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -7,6 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { MDXRemote } from 'next-mdx-remote';
 import Markdown from '../Markdown';
 import { Recommendations } from '@/components/guides/Recommendations'
+import { HowTo } from '@/components/guides/HowTo';
 import { IoInformationCircleOutline } from "react-icons/io5";
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
@@ -14,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { useAnalytics } from '@/hooks/use-analytics';
 import { useTranslations } from 'next-intl';
 import { migrateLegacyChecklistKeysForSlug } from '@/lib/checklist-storage-migrate';
+import { useViewMode, VIEW_MODES } from '@/contexts/ViewModeContext';
 
 const TITLE_BADGE_VARIANTS = {
   important: "destructive",
@@ -139,6 +141,8 @@ const ChecklistItem = ({
   stop: itemStop,
   titleBadges: itemTitleBadges = [],
   serializedBody,
+  serializedHowTo,
+  hasHowTo = false,
   bodyComponents,
   expandTrigger,
   index,
@@ -155,6 +159,8 @@ const ChecklistItem = ({
   const [enableTransitions, setEnableTransitions] = useState(false);
   const { trackEvent } = useAnalytics();
   const t = useTranslations();
+  const { viewMode } = useViewMode();
+  const isCompact = viewMode === VIEW_MODES.COMPACT;
   const hasTrackedExpansion = useRef(false);
   const cardRef = useRef(null);
   // Use slug-based keys so progress persists across remigrations (not _uid)
@@ -244,6 +250,21 @@ const ChecklistItem = ({
   const handleCheckboxChange = async (checked, shouldCollapseAfterDelay = false) => {
     setCheckedWithStorage(checked);
 
+    if (isCompact) {
+      // In compact mode the body is collapsed by being checked.
+      // Update expand state in the same render batch as the check so the
+      // gray-out and the collapse animate together, not in two steps.
+      // Fire analytics afterwards (don't await — it would split the renders).
+      setExpandedWithStorage(!checked);
+      if (checked) {
+        trackEvent({
+          name: 'checklist_item_checked',
+          data: { item_id: itemSlug },
+        });
+      }
+      return;
+    }
+
     if (checked) {
       // Track the checkbox being checked
       await trackEvent({
@@ -252,24 +273,22 @@ const ChecklistItem = ({
           item_id: itemSlug,
         }
       });
+    }
 
-      // If requested, collapse after a delay to show completion state briefly
-      if (shouldCollapseAfterDelay && isExpanded) {
+    if (checked && shouldCollapseAfterDelay && isExpanded) {
+      // Scroll to keep the collapsed item visible at the top with buffer
+      if (cardRef.current) {
+        const headerHeight = 80; // Approximate header/nav height buffer
+        const cardTop = cardRef.current.getBoundingClientRect().top + window.scrollY;
+        const targetScrollPosition = cardTop - headerHeight;
 
-        // Scroll to keep the collapsed item visible at the top with buffer
-        if (cardRef.current) {
-          const headerHeight = 80; // Approximate header/nav height buffer
-          const cardTop = cardRef.current.getBoundingClientRect().top + window.scrollY;
-          const targetScrollPosition = cardTop - headerHeight;
-          
-          window.scrollTo({
-            top: Math.max(0, targetScrollPosition),
-            behavior: 'smooth'
-          });
-        }
-
-        setExpandedWithStorage(false);
+        window.scrollTo({
+          top: Math.max(0, targetScrollPosition),
+          behavior: 'smooth'
+        });
       }
+
+      setExpandedWithStorage(false);
     }
   };
 
@@ -289,6 +308,142 @@ const ChecklistItem = ({
       }
     });
   };
+
+  // Compact-mode MDX components: hide info/success Alerts; render HowTo without its inner surface.
+  const compactBodyComponents = useMemo(() => {
+    if (!bodyComponents) return bodyComponents;
+    const BaseAlert = bodyComponents.Alert;
+    return {
+      ...bodyComponents,
+      HowTo: (props) => <HowTo {...props} compact />,
+      Alert: (props) => {
+        const v = props.type ?? props.variant ?? 'default';
+        if (v !== 'warning' && v !== 'error') return null;
+        return BaseAlert ? <BaseAlert {...props} /> : null;
+      },
+    };
+  }, [bodyComponents]);
+
+  if (isCompact) {
+    const compactBodyVisible = !isChecked || isExpanded;
+    return (
+      <Card
+        ref={cardRef}
+        className={cn(
+          "checklist-item checklist-item--compact",
+          "shadow-none rounded-none border-muted border-b-0 border-r-0 border-l-0 border-t",
+          "bg-transparent",
+          "py-5 px-3 md:px-5",
+        )}
+      >
+        <div className="flex gap-3 items-start">
+          <div
+            className={cn(
+              "w-5 h-5 shrink-0 relative mt-0.5",
+            )}
+          >
+            {itemType === 'info' ? (
+              <InfoItemIcon />
+            ) : (
+              <Checkbox
+                checked={isChecked}
+                onCheckedChange={(checked) => handleCheckboxChange(checked, false)}
+                className={cn(
+                  "h-5 w-5 cursor-pointer rounded-sm transition-colors duration-300 border-2",
+                )}
+              />
+            )}
+          </div>
+
+          <div className="min-w-0 flex-1">
+            <h3
+              className={cn(
+                "mt-0 mb-0 text-lg font-semibold tracking-tight leading-snug",
+                isChecked && "text-muted-foreground",
+                isChecked && `opacity-${checkedOpacity}`,
+              )}
+              id={hasMounted ? itemSlug : undefined}
+              data-slug={itemSlug}
+            >
+              {itemTitleBadges && itemTitleBadges.length > 0 && (
+                <>
+                  {itemTitleBadges.map((badgeType, idx) => {
+                    const variant = TITLE_BADGE_VARIANTS[badgeType];
+                    if (!variant) return null;
+                    return (
+                      <Badge
+                        key={idx}
+                        variant={variant}
+                        className={cn(
+                          "text-xs inline mr-2 align-middle",
+                          isChecked && "opacity-50"
+                        )}
+                      >
+                        {t('checklistItem.importantBadge')}
+                      </Badge>
+                    );
+                  })}
+                </>
+              )}
+              {itemTitle}
+            </h3>
+
+            {isChecked && itemType !== 'info' && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setExpandedWithStorage(!isExpanded);
+                }}
+                aria-expanded={compactBodyVisible}
+                aria-controls={`checklist-body-${itemSlug}`}
+                className={cn(
+                  "mt-1 inline-flex items-center gap-1 self-start text-sm",
+                  "text-muted-foreground hover:text-primary",
+                  "transition-colors duration-200",
+                  "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm",
+                  "print:hidden",
+                )}
+              >
+                <ChevronDown
+                  aria-hidden
+                  className={cn(
+                    "h-4 w-4 transition-transform duration-300",
+                    compactBodyVisible && "rotate-180",
+                  )}
+                />
+                {compactBodyVisible ? t('checklistView.hideDetails') : t('checklistView.showDetails')}
+              </button>
+            )}
+
+            <div
+              id={`checklist-body-${itemSlug}`}
+              className={cn(
+                "grid",
+                enableTransitions ? "transition-all duration-300" : "transition-none",
+                compactBodyVisible ? "grid-rows-[1fr] mt-2 opacity-100" : "grid-rows-[0fr] mt-0 opacity-0",
+              )}
+            >
+              <div className="overflow-hidden">
+                <div className={cn(
+                  "prose prose-slate max-w-none prose-sm",
+                  isChecked && "text-muted-foreground",
+                )}>
+                  {hasHowTo && serializedHowTo ? (
+                    <MDXRemote {...serializedHowTo} components={compactBodyComponents} />
+                  ) : (
+                    serializedBody && (
+                      <MDXRemote {...serializedBody} components={compactBodyComponents} />
+                    )
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Card>
+    );
+  }
 
   return (
     <Card
