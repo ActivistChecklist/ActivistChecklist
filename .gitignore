@@ -28,6 +28,7 @@ package-lock.json
 .idea
 .cursorrules
 .cursor/
+!.cursor/rules/
 
 # debug
 npm-debug.log*
