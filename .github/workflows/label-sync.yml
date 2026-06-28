@@ -18,7 +18,7 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Validate CodeRabbit and GitHub labels stay in sync
         run: |
           node -e '
