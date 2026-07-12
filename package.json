@@ -155,7 +155,7 @@
     "node-fetch": "^3.3.2",
     "open-graph-scraper": "^6.11.0",
     "pagefind": "^1.5.0",
-    "postcss": "^8.5.15",
+    "postcss": "^8.5.16",
     "prettier": "^3.8.3",
     "react-json-view": "^1.21.3",
     "rss-parser": "^3.13.0",
