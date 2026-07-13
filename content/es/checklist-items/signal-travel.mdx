@@ -1,33 +1,43 @@
 ---
-title: Asegura tu app de Signal antes de cruzar una frontera
+title: Backup Signal messages and delete the Signal app before entering a risky situation
 titleBadges: []
 ---
 
-[Signal](https://signal.org/) es una app importante que recomendamos usar para mantener tus comunicaciones seguras.
+[Signal](https://signal.org/) messages are often sensitive and something we want to protect from government surveillance.
 
-### Asegurar Signal en la frontera
+The [Signal backup feature](https://signal.org/blog/introducing-secure-backups/) is a great way to ensure your messages stay safe when you're headed into a situation where your phone might be confiscated or searched.
 
-<HowTo title="Cómo asegurar Signal para cruzar una frontera">
-  1. **Elimina conversaciones de Signal** con comunicación sensible
-  2. **Sal de los grupos de Signal** en los que estés con personas con las que no quieras que te asocien fácilmente. (Haz una lista de esos grupos y pídele a une admin del grupo que te vuelva a agregar después de cruzar la frontera.)
-  3. **Esconde la app:** Puedes mover una app a una carpeta oculta. Instrucciones: [iPhone](https://support.apple.com/guide/iphone/lock-or-hide-or-an-app-iph00f208d05/ios) y [Android](https://support.google.com/android/answer/15341885?hl=en). Esto solo te dará una ventaja pequeña, porque la mayoría de quienes revisan saben buscar en esa carpeta.
+### Backup Signal data and Delete Signal
+
+<HowTo title="How to backup Signal data and delete Signal">
+  1. **Enable Signal backups**:  <MenuPath inline>Open Signal > Tap your profile picture > **Settings** > **Backups** > **Enable Backups**</MenuPath>
+  2. **Save your recovery key**:  Save a copy of your recovery key in a secure location. We recommend using a [password manager like 1Password](/essentials/#password-manager).
+     * If you want to be as safe as possible, you can send the recovery key to a trusted friend or family member who can read it back to you when you restore the backup later (so it's not stored digitally anywhere).
+  3. **Confirm your recovery key**: Signal will prompt you to confirm your recovery key to prove that you've saved it.
+  4. **Select your plan**: The "free" plan is enough for most folks. If you need more than the last 45 days worth of media (photos/videos/attachments), you can upgrade to the paid plan.
+  5. Then click **Back Up Now** to start the backup process.
+  6. **Delete Signal**:  Finally, Delete the Signal app from your phone so the data is harder to access if your device is confiscated.
+
+  <Alert type="info">
+    **Keep the Recovery Key safe.** If someone gets this key, they can read all of your Signal messages.
+  </Alert>
+
+  <Alert type="info">
+    **Laptop as well**: If you are bringing your laptop and have Signal desktop installed, you'll also want to delete the Signal desktop app as well.
+  </Alert>
+
+  <Alert type="warning">
+    **Data deletion isn't always complete**: Deleting Signal does delete all the data associated. But if the state is willing to go to great lengths, there are ways they can sometimes still recover deleted data on a device. If you are in an extermely high-risk group, consider using a [secondary phone](/secondary/) that has minimal data on it instead of deleting Signal on your primary phone.
+  </Alert>
 </HowTo>
 
-**Tip:** Si has mantenido los [mensajes que desaparecen](/signal/) activados en todas tus conversaciones, ¡quizás no tengas mucho que borrar!
+### Restoring Signal data
 
-### Si estás dispuestue a desinstalar Signal
+Once you are ready to restore your Signal data, you can do so by following these steps:
 
-Aunque desinstalar Signal es la opción más segura, puede ser muy disruptivo.
-
-**Como es tan incómodo, solo recomendamos desinstalar Signal si tienes muchos mensajes de alto riesgo.** Si es tu caso, podrías considerar seguir la sección "Enfoque de Alta Seguridad" en su lugar.
-
-**Ventajas de desinstalar Signal:**
-
-* Tus comunicaciones quedan más protegidas frente a una revisión básica
-
-**Desventajas de desinstalar Signal:**
-
-* Se borra todo tu historial de mensajes
-* Tus grupos no aparecen hasta que alguien te vuelva a escribir en ese grupo
-
-Si vas a llevar tu laptop, considera desinstalar también la app de escritorio de Signal.
+<HowTo title="How to restore Signal data">
+  1. Reinstall the Signal app on your phone.
+  2. Follow the steps to confirm your phone number.
+  3. When prompted, select **Restore from Backup** to restore your Signal data.
+  4. Enter your Recovery Key when prompted.
+</HowTo>
