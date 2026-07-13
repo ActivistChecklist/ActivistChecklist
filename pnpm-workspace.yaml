@@ -1,7 +1,8 @@
 allowBuilds:
   "@activistchecklist/umami-extra-privacy": true
-  '@parcel/watcher': true
-  '@swc/core': true
+  "@activistchecklist/umami-extra-privacy@https://codeload.github.com/ActivistChecklist/umami-extra-privacy/tar.gz/7669154d772ecbf3410c1243e8014ac8a0e74c5e": true
+  "@parcel/watcher": true
+  "@swc/core": true
   esbuild: true
   sharp: true
 
@@ -39,4 +40,4 @@ confirmModulesPurge: false
 minimumReleaseAgeExclude:
   # First-party package — we publish it ourselves, so the release-age gate adds
   # no supply-chain protection and just blocks installing our own fresh releases.
-  - '@activistchecklist/react-review-comments'
+  - "@activistchecklist/react-review-comments"
