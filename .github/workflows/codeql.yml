@@ -51,6 +51,8 @@ jobs:
       - name: Setup pnpm
         if: matrix.codeql-language == 'javascript'
         uses: pnpm/action-setup@v6
+        with:
+          version: "package.json"
 
       - name: Setup Node
         if: matrix.codeql-language == 'javascript'
