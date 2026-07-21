@@ -1,12 +1,11 @@
 ---
 title: VPNs for activists
-seoTitle: VPNs for activists - when to use one and when not to (2026)
+seoTitle: VPNs for activists - do you need one? Myths and recommendations (2026)
 seoDescription: Why activists should use a trusted VPN with ad-blocking and which ones we recommend (IVPN, Proton).
 firstPublished: 2026-07-20
 lastUpdated: 2026-07-20
 excerpt: A trusted VPN with ad-blocking makes it harder for cops and data brokers to track where you go online.
 showToc: true
-tocDepth: 2
 relatedGuides:
   - essentials
   - signal
@@ -22,9 +21,28 @@ A VPN is an app you install on your phone or computer that redirects all your in
 
 (most people don't)
 
-## Busting myths about VPNs
 
-(test)
+## Cases where a VPN might be useful
+
+#### ✅ You want to make it harder for the cops to do warrantless surveillance 
+
+ICE and other law enforcement agencies are using tools like [Tangles and Webloc](https://www.404media.co/inside-ices-tool-to-monitor-phones-in-entire-neighborhoods/) to track phones. They have a long history of using [buying location data](https://www.theguardian.com/technology/2026/mar/19/fbi-buying-location-data-use), and [targeting communities](https://www.vice.com/en/article/us-military-location-data-xmode-locate-x/) based on data they purchase from data brokers.
+
+The best way to prevent the cops from using location data to target you is to [turn off location permissions for most apps](/essentials/#location) and [disable ad ID on your phone](/essentials/#ad-id).
+
+But, installing a VPN can help in three other ways:
+
+* It can stop your internet provider from selling any of your browsing data to data brokers, which can end in the hands of police.
+* It can give you a different IP address, making it harder for your city-level location to end up in a data broker's database and for your web traffic to be as easily correclted. (But see myths below, it does not make you anonymous online.)
+* It can make it easier to block ads, which is part of [how data brokers get info about you](https://www.eff.org/deeplinks/2026/03/targeted-advertising-gives-your-location-government-just-ask-cbp), even if you never click an ad. (There are other ways to block ads, but they are harder to set up for most users. See [AdGuard](https://adguard.com/en/welcome.html) and read more below about [encrypted DNS](#dns)).
+
+These are the main reasons why we still think VPNs are worthwhile for activists.
+
+<Alert type="info">
+  **Note:** this is a very small improvement and doesn't mean you're anonymous online. If you need a real guarantee of anonymity, [Tor Browser](https://www.torproject.org/) is the best option.
+</Alert>
+
+## Busting myths about VPNs
 
 #### ❌ FALSE: A VPN makes you anonymous online
 A VPN only changes your IP address. Most major websites (Google, Instagram, etc.) use a combination of factors to to uniquely identify you. This is called your browser's "fingerprint." It includes things like your browser version, operating system, screen size, timezone, browser plugins, and more. Check out [Cover Your Tracks from EFF](https://coveryourtracks.eff.org/) for an example. 
@@ -42,7 +60,7 @@ The US has a something called a "mutual legal assistance treaty" (MLAT) with man
 Even if your VPN doesn't keep logs, the cops could ask them for your payment information if you use a VPN attached to your email address. (This is why we recommend services like Mullvad and IVPN that give you a unique account ID not attached to an email.)
 
 #### ❌ FALSE: You need a VPN when on public Wi-Fi (coffee shops, airports, etc.)
-The advice to use a VPN when on public Wi-Fi was popular around 2010-2015. But since then, most websites now use a secure connection (HTTPS) by default. This means that the Wi-Fi network can only see domains you visit (example.com), not the specific page you are (example.com/activist-news-article) on or the content on the page (like your bank account number).
+The advice to use a VPN when on public Wi-Fi was popular around 2010-2015. But since then, most websites now use a secure connection (HTTPS) by default. This means that the Wi-Fi network can only see domains you visit (`example.com`), not the specific page you are (`example.com/activist-news-article`) on or the content on the page (like your bank account number).
 
 #### 🟠 MOSTLY FALSE: A VPN prevents you from being hacked
 By default, a VPN does not prevent the most common kind of attack phishing (where you accidentally give your password to a fake website). 
@@ -65,25 +83,11 @@ Most VPNs are not trustworthy (see our list below). Just because you're paying f
 
 
 
-## Cases where a VPN might be useful
 
-#### ✅ (location tracking on your phone via ads)
+## How to set up a VPN {#how}
 
-test
+<ChecklistItem slug="vpn" defaultExpanded />
 
-#### ✅ (ad blocking on your phone)
-
-test
-
-#### ✅ You want to make online activity slightly harder to trace 
-Many smaller and medium-sized websites don't have fancy fingerprinting technology to uniquely identify you. When you use your normal internet provider, you get an IP address that is unique to the devices in your house. So websites (and the cops) have an easier time determining which internet traffic is connected to you. When you use a VPN, you share the same IP address with thousands of other users.
-
-But as stated above, this is a very small improvement and doesn't mean you're anonymous online. If you need a real guarantee of anonymity, [Tor Browser](https://www.torproject.org/) is the best option.
-
-
-<Section title="How to set up a VPN" id="how">
-  <ChecklistItem slug="vpn" defaultExpanded />
-</Section>
 
 ## Downsides to using a VPN {#downsides}
 
@@ -96,12 +100,20 @@ If you experience odd behavior on a website, try turning off the VPN temporarily
 *Note:* You must use a trusted VPN that doesn't keep logs of your internet traffic and will push back on government requests. We've vetted our top recommendations.
 
 
+## What about encrypted DNS? {#dns}
+
+A common argument against VPNs is that you can just use an [encrypted DNS](https://www.privacyguides.org/en/dns/) provider instead, and it's usually free. Encrypted DNS will hide the domains (`example.com`) you visit from your internet provider, but it will not hide your IP address or approximate location.
+
+We love offering free options, but the reason we still recommend a VPN is actually for usability. It's a very technical setup that is going to be too hard for most non-technical users. If you can figure out how to set up encrypted DNS (on your phone and laptop) and enable ad blocking, then you will get a number of the privacy benefits of a VPN without the cost.
+
 ## ✅ VPNs we recommend for activists {#recommended}
+
 * **[IVPN](https://www.ivpn.net/)**: We recommend IVPN for activists. They've bulit trust over the long term with privacy advocates.
-* **[Proton VPN](https://proton.me/vpn)**: Good if you need a free option. (Slight downside: it is harder to have an anonymous account and payment method.)
+* **[Proton VPN](https://proton.me/vpn)**: Good if you need a free option. Slight downside: it is harder to have an anonymous account and payment method. But can be good if you already pay for other Proton services.
 * **[RiseupVPN](https://riseup.net/en/vpn)**: Good if you need a free option. Doesn't receive frequent security updates, but it is run by trusted activists in the US. (Normally we don't recommend using US-based VPNs, but we trust the people running Riseup to resist a warrant or subpoena as much as they can.)
 
 ## 🟡 VPNs that we don't have a verdict on yet {#maybe}
+
 * **[Windscribe](https://www.windscribe.com/)**: Has a decent track record. Not as feature-rich as IVPN.
 * **[NymVPN](https://nym.com/)**: Has an interesting design, but too new for us to recommend. Needs a security audit and a longer track record. Possible that their "mixnet" mode might actually be as secure or more secure than Tor, but it will be a while (years) before we know that for sure. Founder appears to have leftist politics.
 * **[Obscura](https://obscura.com/)**: Looks legit, but too new for us to recommend. Needs a security audit and a longer track record.
@@ -110,9 +122,10 @@ If you experience odd behavior on a website, try turning off the VPN temporarily
 * **[Apple iCloud Private Relay](https://support.apple.com/en-us/102602)**: Built into iCloud+ on iPhones and Macs, so many Apple users already have it on. It's quite well-designed (your traffic goes through not just Apple, but also a 3rd party provider, so it is much harder to track), but it only works on Safari and Apple Mail. So it isn't a full solution.
 
 ## ❌ VPNs we do NOT recommend {#avoid}
+
 We strongly suggest **not using any VPN that isn't in the recommended list above**. 
 
-A VPN has access to the domain name (example.com) of every website you visit, and can turn this information over to the cops ([like PureVPN did for the FBI](https://torrentfreak.com/purevpn-explains-how-it-helped-the-fbi-catch-a-cyberstalker-171016/)) or sell it to data brokers, which the cops also sometimes use for warrantless surveillance.
+A VPN has access to the domain name (`example.com`) of every website you visit, and can turn this information over to the cops ([like PureVPN did for the FBI](https://torrentfreak.com/purevpn-explains-how-it-helped-the-fbi-catch-a-cyberstalker-171016/)) or sell it to data brokers, which the cops also sometimes use for warrantless surveillance.
 
 <Collapsible title="Expand to see the full list of VPNs we do NOT recommend">
   We ruled out most VPNs based on [this report by Yael Grauer at Consumer Reports from 2021](https://www.consumerreports.org/electronics-computers/vpn-services/mullvad-ivpn-mozilla-vpn-top-consumer-reports-vpn-testing-a9588707317/) (see [white paper on how they did their research](https://innovation.consumerreports.org/wp-content/uploads/2021/12/VPN-White-Paper.pdf)).
@@ -124,20 +137,21 @@ A VPN has access to the domain name (example.com) of every website you visit, an
   * **[NordVPN](https://nordvpn.com/)**: Nord had a serious security breach in 2018 that they didn't disclose for 17 months. This makes them untrustworthy (even though you've probably seen a million ads for their services).
     * **[Surfshark](https://surfshark.com/)**: Owned by Nord. See above.
   * **[ExpressVPN](https://www.expressvpn.com/)**: Owned by **Kape**. Owned by an Israli billionaire. Company previously used sketchy practices to inject ads into user's browser sessions before they got into the VPN business.
-    * **[CyberGhost](https://www.cyberghostvpn.com/)**: Owned by Kape. See above.
-    * **[Private Internet Access (PIA)](https://www.privateinternetaccess.com/)**: Owned by Kape. See above.
-    * **[ZenMate](https://zenmate.com/)**: Owned by Kape. See above.
+    * **[CyberGhost](https://www.cyberghostvpn.com/)**: Owned by Kape.
+    * **[Private Internet Access (PIA)](https://www.privateinternetaccess.com/)**: Owned by Kape.
+    * **[ZenMate](https://zenmate.com/)**: Owned by Kape.
   * **[IPVanish](https://www.ipvanish.com/)**: Based in the US, meaning it is much easier for US law enforcement to force them to turn over you data (even if it's just your payment information). Does not have a recent public security audit.
   * **[TunnelBear](https://www.tunnelbear.com/)**: Owned by McAfee, not a trusted company when it comes to security. (Their antivirus software is basically spyware.) It's also a US company, which means it takes less work for the cops to force them to turn over your data.
   * **[Kaspersky VPN](https://www.kaspersky.com/vpn-secure-connection)**: Owned by a Russian company.
   * **[Hotspot Shield](https://www.hotspotshield.com/)**: Owned by a US-based company, meaning it is much easier for US law enforcement to force them to turn over you data (even if it's just your payment information). They received a complaint in 2017 claiming they were selling data to an ad company (it was never investigated, but still concerning).
-    * **[Betternet](https://www.betternet.co/)**: Same owner (Aura/Pango) as Hotspot Shield. See above.
-    * **[Bitdefender VPN](https://www.bitdefender.com/solutions/vpn.html)**: Powered by the same provider (Aura/Pango) behind Hotspot Shield. See above.
+    * **[Betternet](https://www.betternet.co/)**: Same owner (Aura/Pango) as Hotspot Shield.
+    * **[Bitdefender VPN](https://www.bitdefender.com/solutions/vpn.html)**: Powered by the same provider (Aura/Pango) behind Hotspot Shield.
+    * **[OVPN](https://www.ovpn.com/)**: Same owner (Aura/Pango) as Hotspot Shield. Never had a third-party security audit.
   * **[Guardian](https://guardianapp.com/)**: Acquired by a US company in 2022.
     * **[Brave VPN](https://brave.com/vpn/)**: Powered by Guardian. Guardian is a company that we don't consider trustworthy.
   * **[Norton VPN](https://us.norton.com/products/norton-vpn)**: Owned by **Gen Digital**, the antivirus conglomerate, and bundled into antivirus subscriptions, so millions of people have it without ever choosing it.
-    * **[Avast SecureLine](https://www.avast.com/secureline-vpn)**: Owned by Gen Digital. See above.
-    * **[AVG Secure VPN](https://www.avg.com/en-us/secure-vpn)**: Owned by Gen Digital. See above.
+    * **[Avast SecureLine](https://www.avast.com/secureline-vpn)**: Owned by Gen Digital.
+    * **[AVG Secure VPN](https://www.avg.com/en-us/secure-vpn)**: Owned by Gen Digital.
   * **[VyprVPN](https://www.vyprvpn.com/)**: Owned by a US company (as of 2023). No security audit since 2018.
   * **[PureVPN](https://www.purevpn.com/)**: Despite a "no logs" claim, they handed user logs to the FBI in 2017 (see the link above). A good reminder that a "no logs" claim means little without an independent audit.
   * **[Urban VPN](https://www.urban-vpn.com/)** and **SuperVPN**: Free apps with huge download counts and recurring malware and data-selling problems.
