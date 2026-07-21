@@ -145,10 +145,6 @@ const ChecklistItem = ({
   editable = true,
   defaultExpanded = false,
 }) => {
-  if (!itemSlug) {
-    console.warn('ChecklistItem: no slug provided. Skipping');
-    return null;
-  }
 
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
   const [isChecked, setIsChecked] = useState(false);
