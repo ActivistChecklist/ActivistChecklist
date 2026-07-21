@@ -15,6 +15,7 @@
 ## Content writing ruels
 
 * IMPORTANT: Do NOT use em-dashes when writing content or text in .mdx files or static strings.
+* To give a heading a custom anchor id, add `{#your-id}` at the end of the heading line (e.g. `## Downsides to using a VPN {#downsides}`), then link to it with `/page/#your-id`. Without the marker, headings still get an auto id derived from their text. See `lib/mdx-heading-ids.js`.
 
 ## Git commit rules
 

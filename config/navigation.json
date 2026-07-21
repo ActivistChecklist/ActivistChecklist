@@ -81,6 +81,10 @@
       "href": "/ice/",
       "description": "Digital security for ICE watch and rapid response networks."
     },
+    "vpn": {
+      "label": "VPNs for activists",
+      "href": "/vpn/"
+    },
     "movies": {
       "label": "Movies, books, & podcasts",
       "href": "/movies/"
@@ -155,6 +159,7 @@
       "label": "Resources",
       "href": "/resources/",
       "items": [
+        "vpn",
         "updates",
         "party",
         "links",
