@@ -10,6 +10,7 @@ import {
   ReviewCommentsProvider,
   type ReviewCommentsProviderProps,
 } from '@activistchecklist/react-review-comments';
+import ReviewCommentsDbStatusLogger from '@/components/review-comments/ReviewCommentsDbStatusLogger';
 import '@/styles/globals.css';
 
 export function generateStaticParams() {
@@ -73,6 +74,7 @@ export default async function LocaleLayout({ children, params }) {
           <NextIntlClientProvider locale={locale} messages={messages}>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
               <ReviewCommentsProvider {...reviewCommentsProviderProps}>
+                <ReviewCommentsDbStatusLogger enabled={reviewComments.enabled} />
                 {children}
               </ReviewCommentsProvider>
             </ThemeProvider>
