@@ -19,16 +19,25 @@ A VPN is an app you install on your phone or computer that redirects all your in
 
 ## Do you need a VPN?
 
-(most people don't)
+A VPN is only useful for activists in a narrow set of cases [that we describe in the next section](#value).
+
+There are a number of things that are much more helpful for activist digital security than installing a VPN:
+
+* [Turn off location permissions for most apps](/essentials/#location)
+* [Disable ad ID on your phone](/essentials/#ad-id)
+* [Use a privacy-focused browser with ad-blocking enabled by default](/essentials/#browser)
+* [Use a privacy-focused search engine](/essentials/#search)
+* [Use a privacy-focused map/navigation app (Apple Maps or Magic Earth)](/essentials/#maps)
+* And everything else on our [Essentials](/essentials/) checklist...
 
 
-## Cases where a VPN might be useful
+## Cases where a VPN might be useful {#value}
 
 #### ✅ You want to make it harder for the cops to do warrantless surveillance 
 
 ICE and other law enforcement agencies are using tools like [Tangles and Webloc](https://www.404media.co/inside-ices-tool-to-monitor-phones-in-entire-neighborhoods/) to track phones. They have a long history of using [buying location data](https://www.theguardian.com/technology/2026/mar/19/fbi-buying-location-data-use), and [targeting communities](https://www.vice.com/en/article/us-military-location-data-xmode-locate-x/) based on data they purchase from data brokers.
 
-The best way to prevent the cops from using location data to target you is to [turn off location permissions for most apps](/essentials/#location) and [disable ad ID on your phone](/essentials/#ad-id).
+The best way to prevent the cops from using location data to target you is to [disable location permissions for most apps](/essentials/#location) and [disable ad ID on your phone](/essentials/#ad-id).
 
 But, installing a VPN can help in three other ways:
 
@@ -36,7 +45,7 @@ But, installing a VPN can help in three other ways:
 * It can give you a different IP address, making it harder for your city-level location to end up in a data broker's database and for your web traffic to be as easily correclted. (But see myths below, it does not make you anonymous online.)
 * It can make it easier to block ads, which is part of [how data brokers get info about you](https://www.eff.org/deeplinks/2026/03/targeted-advertising-gives-your-location-government-just-ask-cbp), even if you never click an ad. (There are other ways to block ads, but they are harder to set up for most users. See [AdGuard](https://adguard.com/en/welcome.html) and read more below about [encrypted DNS](#dns)).
 
-These are the main reasons why we still think VPNs are worthwhile for activists.
+These are the main reasons why we still think VPNs are worthwhile for activists. We recognize some of the threats in the list above are unproven. It's possible that VPN doesn't offer any significant protection against these threats. But it's also possible that it does, so we recommend it for higher risk users.
 
 <Alert type="info">
   **Note:** this is a very small improvement and doesn't mean you're anonymous online. If you need a real guarantee of anonymity, [Tor Browser](https://www.torproject.org/) is the best option.
@@ -67,8 +76,8 @@ By default, a VPN does not prevent the most common kind of attack phishing (wher
 
 **However:** Some VPNs do have a setting that block malware sites, but most browsers already have a similar setting available.
 
-#### 🟠 MOSTLY FALSE: A VPN blocks trackers and ads
-It's true that many VPNs have a feature to block trackers and ads. But you can get this same protection in your browser by using a privacy-focused browser like [Brave](https://brave.com/)(or [Firefox](https://www.mozilla.org/en-US/firefox/new/) with [uBlock Origin](https://ublockorigin.com/) installed).
+#### 🟠 PARTIALLY TRUE: A VPN blocks trackers and ads
+It's true that many VPNs have a feature to block trackers and ads. But you can get this same protection in your browser by using a privacy-focused browser like [Brave](https://brave.com/)(or [Firefox](https://www.mozilla.org/en-US/firefox/new/) with [uBlock Origin](https://ublockorigin.com/) installed). A VPN can help block ads and trackers most effectively on mobile apps that don't use a browser. But you can also achieve this same effect through [custom DNS resolvers](#dns).
 
 #### 🟠 MOSTLY FALSE: Using a VPN is better than nothing at all
 A VPN can see all of your internet traffic. If they keep logs, they can turn this data over to the cops just like your internet provider could. They can also use this to sell data about you to advertisers and data brokers. So choosing an untrustworthy VPN is often worse than using nothing at all.
@@ -80,8 +89,6 @@ The only trustworthy free VPNs we can recommend are [Proton VPN](https://proton.
 
 #### 🟠 MOSTLY FALSE: If I pay for a VPN, it's safe
 Most VPNs are not trustworthy (see our list below). Just because you're paying for it, doesn't mean it's safe.
-
-
 
 
 ## How to set up a VPN {#how}
@@ -99,12 +106,6 @@ If you experience odd behavior on a website, try turning off the VPN temporarily
 
 *Note:* You must use a trusted VPN that doesn't keep logs of your internet traffic and will push back on government requests. We've vetted our top recommendations.
 
-
-## What about encrypted DNS? {#dns}
-
-A common argument against VPNs is that you can just use an [encrypted DNS](https://www.privacyguides.org/en/dns/) provider instead, and it's usually free. Encrypted DNS will hide the domains (`example.com`) you visit from your internet provider, but it will not hide your IP address or approximate location.
-
-We love offering free options, but the reason we still recommend a VPN is actually for usability. It's a very technical setup that is going to be too hard for most non-technical users. If you can figure out how to set up encrypted DNS (on your phone and laptop) and enable ad blocking, then you will get a number of the privacy benefits of a VPN without the cost.
 
 ## ✅ VPNs we recommend for activists {#recommended}
 
@@ -160,3 +161,16 @@ A VPN has access to the domain name (`example.com`) of every website you visit, 
 
   **If you don't see a VPN on this list, then assume it is not vetted and truthworthy.**
 </Collapsible>
+
+
+## FAQ
+
+#### What about encrypted DNS? {#dns}
+
+A common argument against VPNs is that you can just use and [encrypted DNS resolver](https://www.privacyguides.org/en/dns/) service to get many of the same benefits (and usually at no cost). Encrypted DNS will hide the domains (`example.com`) you visit from your internet provider, but it will not hide your IP address or approximate location.
+
+We love offering free options, but the reason we still recommend a VPN is primarily for usability. Setting up custom DNS is too challenging for most users. If you can figure out how to set up encrypted DNS (on your phone and laptop) and enable ad blocking, then you will get a number of the privacy benefits of a VPN without the cost.
+
+If you want to use a custom DNS resolver that doesn't require a highly technical setup, we recommend [AdGuard](https://adguard.com/en/welcome.html) ($1-3/month).
+
+You don't need to use this if you're using one of the VPNs we recommend, because ad-blocking DNS is already included as a feature.
