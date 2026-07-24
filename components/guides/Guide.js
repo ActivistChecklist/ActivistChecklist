@@ -7,6 +7,8 @@ import { Clock, Calendar } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
 import { mdxComponents } from '@/lib/mdx-components';
 import { ChecklistItemsContext } from '@/contexts/ChecklistItemsContext';
+import { ViewModeProvider } from '@/contexts/ViewModeContext';
+import GuideViewToggle from '@/components/guides/GuideViewToggle';
 import { FeedbackCTA } from '@/components/guides/FeedbackCTA';
 import InlineCta from '@/components/InlineCta';
 import { useLayout } from '@/contexts/LayoutContext';
@@ -81,6 +83,7 @@ export default function Guide({
 
   return (
     <ChecklistItemsContext.Provider value={checklistItems}>
+      <ViewModeProvider guideSlug={slug}>
       {/* Header */}
       <div className="relative bg-linear-to-r from-primary/15 via-primary/10 to-transparent dark:from-primary/40 dark:via-primary/25 rounded-lg px-6 py-6 mb-6 overflow-hidden print:bg-transparent print:p-0 print:mb-2">
         <div className="absolute top-1.5 bottom-1.5 right-3 aspect-square flex items-center justify-center pointer-events-none print:hidden">
@@ -102,6 +105,10 @@ export default function Guide({
             ))}
           </div>
         )}
+      </div>
+
+      <div className="mb-4 flex justify-end print:hidden">
+        <GuideViewToggle />
       </div>
 
       <PageNotices initialNotices={notices} />
@@ -128,6 +135,7 @@ export default function Guide({
           <FeedbackCTA />
         </div>
       </div>
+      </ViewModeProvider>
     </ChecklistItemsContext.Provider>
   );
 }
