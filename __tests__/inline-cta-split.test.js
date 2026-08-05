@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { splitGuideBodyForCta, splitPageContentForCta } from '../lib/inline-cta-split';
+import { splitGuideBodyForCta } from '../lib/inline-cta-split';
 
 describe('splitGuideBodyForCta', () => {
   it('splits after the first Section that contains a ChecklistItem', () => {
@@ -103,103 +103,5 @@ describe('splitGuideBodyForCta', () => {
     expect(didSplit).toBe(true);
     expect(beforeCta).toContain('alpha');
     expect(afterCta).toBe('');
-  });
-});
-
-describe('splitPageContentForCta', () => {
-  it('splits before the second H2', () => {
-    const content = [
-      'Intro paragraph.',
-      '',
-      '## First heading',
-      '',
-      'Some body content.',
-      '',
-      '## Second heading',
-      '',
-      'More content.',
-    ].join('\n');
-
-    const { beforeCta, afterCta, didSplit } = splitPageContentForCta(content);
-
-    expect(didSplit).toBe(true);
-    expect(beforeCta).toContain('First heading');
-    expect(beforeCta).toContain('Some body content');
-    expect(beforeCta).not.toContain('Second heading');
-    expect(afterCta).toMatch(/^##\s+Second heading/);
-  });
-
-  it('returns didSplit=false when there is only one H2', () => {
-    const content = ['Intro.', '', '## Only heading', '', 'Body.'].join('\n');
-
-    const { beforeCta, afterCta, didSplit } = splitPageContentForCta(content);
-
-    expect(didSplit).toBe(false);
-    expect(beforeCta).toBe(content);
-    expect(afterCta).toBe('');
-  });
-
-  it('returns didSplit=false when there are no H2s', () => {
-    const content = 'Just some paragraphs, no headings here.';
-
-    const { beforeCta, afterCta, didSplit } = splitPageContentForCta(content);
-
-    expect(didSplit).toBe(false);
-    expect(beforeCta).toBe(content);
-    expect(afterCta).toBe('');
-  });
-
-  it('skips auto-split when content contains a manual <InlineCta />', () => {
-    const content = [
-      '## One',
-      'Body.',
-      '<InlineCta />',
-      '## Two',
-      'More.',
-    ].join('\n');
-
-    const { didSplit, beforeCta } = splitPageContentForCta(content);
-
-    expect(didSplit).toBe(false);
-    expect(beforeCta).toBe(content);
-  });
-
-  it('ignores `## ` inside fenced code blocks', () => {
-    const content = [
-      '## Real heading',
-      '',
-      '```',
-      '## not a heading',
-      '## also not',
-      '```',
-      '',
-      'Body.',
-    ].join('\n');
-
-    const { didSplit } = splitPageContentForCta(content);
-
-    expect(didSplit).toBe(false);
-  });
-
-  it('recognizes raw <h2> tags', () => {
-    const content = [
-      '<h2>First</h2>',
-      'Body.',
-      '<h2>Second</h2>',
-      'More.',
-    ].join('\n');
-
-    const { beforeCta, afterCta, didSplit } = splitPageContentForCta(content);
-
-    expect(didSplit).toBe(true);
-    expect(beforeCta).toContain('First');
-    expect(beforeCta).not.toContain('Second');
-    expect(afterCta).toContain('Second');
-  });
-
-  it('does not treat ### as ##', () => {
-    const content = ['## H2', 'Body.', '### H3', 'More.'].join('\n');
-    const { didSplit } = splitPageContentForCta(content);
-    expect(didSplit).toBe(false);
   });
 });
