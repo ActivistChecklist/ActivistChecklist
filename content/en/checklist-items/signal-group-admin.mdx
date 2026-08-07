@@ -1,0 +1,52 @@
+---
+title: Lock down your large Signal group's admin settings
+preview: >
+  Default Signal group settings let any member add new people, edit the group
+  name, and change the disappearing messages timer, leaving your whole group
+  exposed if a single member's account is compromised.
+do: >
+  Set group permissions so only admins can add members, edit group info, and
+  control the join link
+dont: >
+  Leave a large organizing group on default settings. Anyone who joins could
+  immediately add hundreds more people.
+titleBadges: []
+firstPublished: 2026-04-22
+lastUpdated: 2026-04-22
+---
+
+When you create a Signal group, the default settings allow every member to add new people, edit the group name and description, and change the disappearing messages timer. In a small, trusted group, that's fine. In a large organizing group, it means a single compromised account, or a single person who turns out to be an infiltrator, can quietly add hundreds of new members or erase your disappearing messages settings.
+
+Locking these down takes two minutes and protects every person in the group.
+
+<HowTo title="How to configure group permissions">
+  Open the group chat > tap the group name at the top > **Edit Group** (or the gear icon on desktop) > **Permissions**
+
+  Set **Who can send messages** to **All Members** (for a normal group chat) or **Only Admins** (for a broadcast-only announcement channel)
+
+  Set **Who can add members** to **Only Admins**
+
+  Set **Who can edit group info** to **Only Admins** (this covers the group name, photo, description, and disappearing messages timer)
+</HowTo>
+
+<HowTo title="How to manage your group's join link">
+  Open the group chat > tap the group name > **Group Link**
+
+  Turn the link **on** only if you need it. When enabled, anyone with the link can request to join.
+
+  Turn on **Require Admin Approval** so join requests must be approved before anyone can enter.
+
+  You can **reset the link** at any time. This instantly invalidates the old link and cuts off anyone who had it but hadn't joined yet.
+</HowTo>
+
+**Keep your group description working for you.** Pin your community agreements, norms, and any vetting requirements in the group description. This is the first thing new members see when they're added.
+
+**Start your group name with a word, not an emoji.** Members often find groups using Signal's search function. A name starting with text is much easier to find than one starting with an emoji.
+
+<Alert type="warning">
+  If your group's join link is ever compromised or you suspect it has spread beyond your intended audience, reset it immediately. This doesn't remove existing members, but it cuts off anyone who hasn't joined yet.
+</Alert>
+
+<Alert type="info">
+  You can have multiple admins in a Signal group. If you're running a large organizing group, consider designating at least two trusted people as admins so there's no single point of failure.
+</Alert>
