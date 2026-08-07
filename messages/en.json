@@ -270,6 +270,15 @@
     "collapse": "Collapse",
     "importantBadge": "Important"
   },
+  "checklistView": {
+    "toggleLabel": "Checklist view",
+    "detailed": "Detailed",
+    "detailedTooltip": "Full context with explanations, recommendations, and tools for each item.",
+    "compact": "Compact",
+    "compactTooltip": "Just titles and step-by-step instructions. Best for quickly checking items off.",
+    "showDetails": "Show details",
+    "hideDetails": "Hide details"
+  },
   "copyButton": {
     "copy": "Copy",
     "copyText": "Copy text",
