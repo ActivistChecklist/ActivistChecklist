@@ -1,0 +1,69 @@
+---
+title: Anonymous email
+excerpt: ''
+relatedGuides: []
+tocDepth: '2'
+hideInlineCta: false
+---
+This guide will show you how to create and use an anonymous email account. Anonymous email accounts primarily protect personal privacy and hiding the identity of the account-holder.&#x20;
+
+This guide is written for the following situation:
+
+1. Protection from government and corporate surveillance.
+2. Communicating online in un-vetted spaces where surveillance is likely.
+3. Whistle-blowing and investigative journalism.
+4. Anti-harassment and doxxing protection.
+
+This guide does **not**:
+
+1. Shield the contents or metadata of emails obtained by law enforcement, whether through search warrants and subpoenas, or other means.
+2. Stop your email provider from releasing this information about an email you own.
+3. Protect your identity in the case that you share personal or identifying information about yourself online.
+4. Protect your identity in the case that you use forms of payment that expose your identity, such as credit/debit cards or bank details.&#x20;
+5. Shield you from legal prosecution (?)
+
+   <Alert type="warning" title="encryption-vs-anonymity">
+     Anonymous email is not the same as encrypted email. Anonymity hides the owner of the email address, while encryption hides the contents of a communication. While Proton Mail can facilitate encrypted email, this is outside the scope of this guide.
+   </Alert>
+
+<Section title="Acquire an anonymous email" slug="anonymize-connection">
+  <ChecklistItemGroup>
+    <ChecklistItem slug="browser" />
+
+    <ChecklistItem slug="vpn" />
+
+    <ChecklistItem slug="email" />
+  </ChecklistItemGroup>
+
+  <HowTo title="Save your recovery phrase">
+    This unique recovery phrase can be used as a password reset tool in the case it is lost or forgotten.&#x20;
+
+    <Alert type="info" title="Use a password manager">
+      <ChecklistItem slug="password-manager" />
+
+
+    </Alert>
+
+    &#x20;
+  </HowTo>
+</Section>
+
+<Section title="Using your anonymous email" slug="using-anon-email">
+  <HowTo title="Always connect to your trusted VPN before accessing your anonymous email">
+    <Alert type="warning">
+      You must **never** forget this step. Logging into your anonymous email account without a VPN or other anonymizing service even **one time** will de-anonymize your account, potentially allowing law enforcement to link any of your account's existing contents or metadata they obtain to your identity. Any continued use of this burned email address can be linked to your identity as well. Create a new email address using this guide.
+    </Alert>
+  </HowTo>
+
+  <HowTo title="Be mindful of what you email or post online">
+    <Alert type="warning" title="de-anonymizing-contents">
+      Your email address is only anonymous as long as you don't use it expose your identity, for example in your communications or by what you post online.
+    </Alert>
+
+    <Alert type="info" title="encrypted-proton-emails">
+      Emails sent between two Proton Mail accounts are end-to-end-encrypted. Emails sent to non-Proton email addresses will be visible to the recipient's email provider. If the recipient's emails are obtained by law enforcement, they may be able to view your communications.&#x20;
+    </Alert>
+
+    <ChecklistItem slug="proton-docs-mail" />
+  </HowTo>
+</Section>
