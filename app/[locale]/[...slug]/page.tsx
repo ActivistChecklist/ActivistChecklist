@@ -4,15 +4,12 @@ import { unstable_noStore as noStore } from 'next/cache';
 import { draftMode } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { serialize } from 'next-mdx-remote/serialize';
 import Layout from '@/components/layout/Layout';
 import Guide from '@/components/guides/Guide';
 import ContentPage from '@/components/pages/Page';
-import { mdxOptions } from '@/lib/mdx-options';
-import {
-  splitGuideBodyForCta,
-  splitPageContentForCta,
-} from '@/lib/inline-cta-split';
+import { ChecklistItemsProvider } from '@/contexts/ChecklistItemsContext';
+import { serializeMdx } from '@/lib/serialize-mdx';
+import { splitGuideBodyForCta } from '@/lib/inline-cta-split';
 import {
   getRouteTranslationStatus,
   shouldShowTranslationUnreviewedNotice,
@@ -207,7 +204,7 @@ export default async function SlugPage({ params }) {
     const sectionContent =
       firstSectionIndex === -1 ? '' : content.slice(firstSectionIndex).trim();
 
-    const serializedIntro = introContent ? await serialize(introContent, mdxOptions) : null;
+    const serializedIntro = introContent ? await serializeMdx(introContent) : null;
 
     // Split body around the auto-inserted inline CTA. Suppressed when the
     // guide frontmatter opts out or the body already contains a manual <InlineCta />.
@@ -215,8 +212,8 @@ export default async function SlugPage({ params }) {
     const { beforeCta, afterCta, didSplit } = hideInlineCta
       ? { beforeCta: sectionContent, afterCta: '', didSplit: false }
       : splitGuideBodyForCta(sectionContent);
-    const serializedBodyBeforeCta = beforeCta ? await serialize(beforeCta, mdxOptions) : null;
-    const serializedBodyAfterCta = afterCta ? await serialize(afterCta, mdxOptions) : null;
+    const serializedBodyBeforeCta = beforeCta ? await serializeMdx(beforeCta) : null;
+    const serializedBodyAfterCta = afterCta ? await serializeMdx(afterCta) : null;
     const showInlineCta = didSplit && !hideInlineCta;
 
     // Resolve all referenced checklist items
@@ -230,7 +227,7 @@ export default async function SlugPage({ params }) {
         const item = await resolveChecklistItem(itemSlug, locale);
         if (item) {
           try {
-            const serializedItemBody = await serialize(item.content, mdxOptions);
+            const serializedItemBody = await serializeMdx(item.content);
             checklistItems[itemSlug] = {
               frontmatter: serializeFrontmatter(item.frontmatter),
               serializedBody: serializedItemBody,
@@ -309,13 +306,31 @@ export default async function SlugPage({ params }) {
   if (page) {
     const { frontmatter, content, isFallback } = page;
 
-    const hidePageInlineCta = frontmatter?.hideInlineCta === true;
-    const { beforeCta: pageBefore, afterCta: pageAfter, didSplit: pageDidSplit } = hidePageInlineCta
-      ? { beforeCta: content, afterCta: '', didSplit: false }
-      : splitPageContentForCta(content);
-    const serializedBodyBeforeCta = pageBefore ? await serialize(pageBefore, mdxOptions) : null;
-    const serializedBodyAfterCta = pageAfter ? await serialize(pageAfter, mdxOptions) : null;
-    const showInlineCta = pageDidSplit && !hidePageInlineCta;
+    // Pages do not get the auto-inserted newsletter CTA (guides do). Editors can
+    // still place a manual <InlineCta /> in the page body if they want one.
+    const serializedBody = content ? await serializeMdx(content) : null;
+
+    // Resolve any checklist items embedded in the page via <ChecklistItem slug="…" />
+    const pageItemSlugs = extractChecklistItems(content);
+    const pageChecklistItems = {};
+    await Promise.all(
+      pageItemSlugs.map(async (itemSlug) => {
+        const item = await resolveChecklistItem(itemSlug, locale);
+        if (!item) {
+          console.warn(`Checklist item not found: "${itemSlug}" (referenced in page "${slug}")`);
+          return;
+        }
+        try {
+          const serializedItemBody = await serializeMdx(item.content);
+          pageChecklistItems[itemSlug] = {
+            frontmatter: serializeFrontmatter(item.frontmatter),
+            serializedBody: serializedItemBody,
+          };
+        } catch (err) {
+          console.warn(`Failed to serialize checklist item "${itemSlug}":`, err.message);
+        }
+      })
+    );
 
     // Generate OG image at build time
     try {
@@ -346,14 +361,14 @@ export default async function SlugPage({ params }) {
         tocPageTitle={fm.title}
       >
         <JsonLd data={pageGraph} />
-        <ContentPage
-          frontmatter={fm}
-          serializedBodyBeforeCta={serializedBodyBeforeCta}
-          serializedBodyAfterCta={serializedBodyAfterCta}
-          showInlineCta={showInlineCta}
-          locale={locale}
-          notices={pageNotices}
-        />
+        <ChecklistItemsProvider items={pageChecklistItems}>
+          <ContentPage
+            frontmatter={fm}
+            serializedBody={serializedBody}
+            locale={locale}
+            notices={pageNotices}
+          />
+        </ChecklistItemsProvider>
       </Layout>
     );
   }

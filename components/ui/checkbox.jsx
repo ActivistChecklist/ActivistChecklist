@@ -9,6 +9,13 @@ const Checkbox = React.forwardRef(({ className, ...props }, ref) => (
     ref={ref}
     className={cn(
       "peer h-4 w-4 shrink-0 rounded-xs border border-primary ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground",
+      // The review-comments text annotator calls preventDefault() on every click
+      // inside its container except links and `.not-annotatable`. React's
+      // delegated listeners run later (on `document`), so Radix's
+      // composeEventHandlers sees defaultPrevented and skips its toggle, leaving
+      // the checkbox dead while review comments are on. Opting out here also
+      // stops reviewers from trying to annotate a control with no text.
+      "not-annotatable",
       className
     )}
     {...props}>

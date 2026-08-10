@@ -20,6 +20,8 @@ import { fileURLToPath } from 'url';
 import { serialize } from 'next-mdx-remote/serialize';
 import matter from 'gray-matter';
 import remarkGfm from 'remark-gfm';
+import { applyHeadingIds } from '../lib/mdx-heading-ids.js';
+import { ALLOWED_COMPONENTS, ALLOWED_HTML_ELEMENTS } from '../lib/mdx-options.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -46,22 +48,12 @@ const SUSPICIOUS_PATTERNS = [
 ];
 
 // ─── Allowed component names ─────────────────────────────────────
-
-const ALLOWED_COMPONENTS = new Set([
-  'Alert', 'HowTo', 'Button', 'ImageEmbed', 'VideoEmbed',
-  'RiskLevel', 'Table', 'RelatedGuides', 'RelatedGuide', 'Section', 'ChecklistItem',
-  'ChecklistItemGroup',
-  'CopyButton', 'Badge', 'InlineChecklist',
-  'StyledSpan', 'SimpleImage', 'TranslationStats',
-]);
-
-const ALLOWED_HTML_ELEMENTS = new Set([
-  'a', 'b', 'blockquote', 'br', 'code', 'div', 'em', 'h1', 'h2', 'h3',
-  'h4', 'h5', 'h6', 'hr', 'i', 'img', 'li', 'ol', 'p', 'pre', 'span',
-  'strong', 'sub', 'sup', 'table', 'tbody', 'td', 'th', 'thead', 'tr',
-  'u', 'ul', 'del', 'ins', 'mark', 'small', 'details', 'summary',
-  'figure', 'figcaption', 'video', 'source', 'section',
-]);
+//
+// Sourced from lib/mdx-options.js so the allow-lists stay in sync with
+// the rendering pipeline (single source of truth). The remark plugins
+// below intentionally differ from the lib's: this is a validator, so it
+// *rejects* (throws) on ESM / expressions / unknown components rather
+// than silently stripping them.
 
 // ─── Remark plugins for AST validation ───────────────────────────
 
@@ -181,7 +173,7 @@ async function validateFile(filePath) {
 
   // Layer 2: AST validation via MDX compilation
   try {
-    await serialize(content, {
+    await serialize(applyHeadingIds(content), {
       mdxOptions: {
         remarkPlugins: [
           remarkGfm,
