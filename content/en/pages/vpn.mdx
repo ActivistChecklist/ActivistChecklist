@@ -1,7 +1,7 @@
 ---
 title: VPNs for activists
 seoTitle: VPNs for activists - do you need one? Myths and recommendations (2026)
-seoDescription: Why activists should use a trusted VPN with ad-blocking and which ones we recommend (IVPN, Proton).
+seoDescription: Why activists might benefit from using a trusted VPN with ad-blocking and which ones we recommend (IVPN, Proton).
 firstPublished: 2026-08-10
 lastUpdated: 2026-08-10
 excerpt: A trusted VPN with ad-blocking makes it harder for cops and data brokers to track where you go online.
@@ -49,7 +49,7 @@ The best way to prevent the cops from using location data to target you is to [d
 But, installing a VPN can help in three other ways:
 
 * It can stop your internet provider from [selling your browsing data to data brokers](https://www.bleepingcomputer.com/news/security/ftc-isps-collect-and-monetize-far-more-user-data-than-you-d-think/), which can end in the hands of police.
-* It can give you a different IP address, making it harder for your city-level location to end up in a data broker's database and for your web traffic to be as easily correlated. (But see myths below, it does not make you anonymous online.)
+* It can give you a different IP address, making it harder for your city-level location to end up in a data broker's database and for your web traffic to be as easily correlated. (But it does not make you anonymous online, see [the limits of a VPN](#limits) below.)
 * It can make it easier to block ads, which is part of [how data brokers get info about you](https://www.eff.org/deeplinks/2026/03/targeted-advertising-gives-your-location-government-just-ask-cbp), even if you never click an ad. Not every VPN does this, but the ones we recommend do (IVPN calls it "AntiTracker," Proton calls it "NetShield"). Note: There are other ways to block ads, but they are harder to set up for most users. See [AdGuard](https://adguard.com/en/welcome.html) and read more below about [encrypted DNS](#dns).
 
 These are the main reasons why we still think a VPN is worthwhile for higher-risk activists. It's possible that a VPN doesn't offer any significant protection against these threats. But it's also possible that it does, and the downsides to using one are relatively small.
@@ -70,42 +70,54 @@ The tradeoff is that your VPN company can now see that same information instead.
 * It can also let you bypass location-based restrictions on streaming services.
 
 
-## Busting myths about VPNs
+## Why VPN advice online is so unreliable {#marketing}
 
-#### ❌ FALSE: A VPN makes you anonymous online
-A VPN only changes your IP address. On most major websites (Google, Instagram, etc.) you are also logged into an account, which identifies you no matter what IP address you are using. Even when you aren't logged in, those sites use a combination of factors to uniquely identify you. This is called your browser's "fingerprint." It includes things like your browser version, operating system, screen size, timezone, browser plugins, and more. Check out [Cover Your Tracks from EFF](https://coveryourtracks.eff.org/) for an example. 
+It helps to know why so many people believe a VPN does more than it does.
 
-To be anonymous online, use [Tor Browser](https://www.torproject.org/) for your most sensitive online activity.
+VPN companies pay a commission for every person who signs up through an affiliate link. That is why your favorite YouTuber's video opens with a VPN ad, and why the internet is full of "best VPN of 2026" listicles.
 
-#### ❌ FALSE: A VPN means the cops can't identify you
-Same answer as above. The cops have the ability to subpoena your internet provider for the domains you have visited.
+It goes further than ads. Kape Technologies owns ExpressVPN, CyberGhost, Private Internet Access, and ZenMate. In 2021 it also bought [two of the largest VPN review sites](https://cyberinsider.com/kape-technologies-owns-expressvpn-cyberghost-pia-zenmate-vpn-review-sites/), vpnMentor and Wizcase, which ranked all three of Kape's own VPNs in their top three recommendations.
 
-If you choose an untrustworthy VPN that keeps logs, the cops can also subpoena that data.
+None of this means every VPN is bad. It means the loudest voices telling you that you need one are paid to say so, and their claims run well ahead of what the technology actually does.
 
-#### ❌ FALSE: Using a VPN based in another country means the US government can't get the data
+
+## The limits of a VPN {#limits}
+
+A VPN does one narrow thing. Here is what people expect it to do that it doesn't.
+
+#### A VPN does not make you anonymous
+It only changes your IP address. On most major websites (Google, Instagram, etc.) you are also logged into an account, which identifies you no matter what IP address you are using. Even when you aren't logged in, those sites combine other details to uniquely identify you: your browser version, operating system, screen size, timezone, browser plugins, etc. This is called your browser's "fingerprint." Check out [Cover Your Tracks from EFF](https://coveryourtracks.eff.org/) to see your browser's fingerprint.
+
+For real anonymity, use [Tor Browser](https://www.torproject.org/) for your most sensitive online activity.
+
+
+#### Being based in another country doesn't put a VPN out of reach of the US government
 The US has something called a "mutual legal assistance treaty" (MLAT) with many countries. This means they can submit a warrant to that country and they will use their legal system to execute the warrant. It usually does take a lot more work and time than if the company were based in the US, so there is a slight advantage. But it doesn't mean the data is safe.
 
 Even if your VPN doesn't keep logs, the cops could ask them for your payment information if you use a VPN attached to your email address. (This is why we recommend a service like IVPN that gives you a unique account ID not attached to an email.)
 
-#### ❌ FALSE: You need a VPN when on public Wi-Fi (coffee shops, airports, etc.)
-The advice to use a VPN when on public Wi-Fi was popular around 2010-2015. But since then, [most websites now use a secure connection](https://medium.com/@boblord/attack-of-the-evil-baristas-b204436f0853) (HTTPS) by default. This means that the Wi-Fi network can only see the domains you visit (`example.com`), not what you are doing there (such as the articles you read, the posts you view, or your password or credit card number).
+#### You don't need a VPN on public Wi-Fi
+ popular around 2010-2015, and it stuck around long after it stopped being true. These days, [most websites use a secure connection](https://medium.com/@boblord/attack-of-the-evil-baristas-b204436f0853) (HTTPS) by default. The coffee shop, the airport, and everyone else on the network can see the domains you visit (`example.com`), but not what you are doing there (such as the articles you read, the posts you view, or your password or credit card number).
 
-#### ❌ FALSE: A VPN prevents you from being hacked
-A VPN does nothing to stop the most common attacks: phishing (where you accidentally give your password to a fake website) or a malicious 
-email attachment.
+#### A VPN does not protect you from being hacked
+The most common attacks don't care whether a VPN is on. Phishing (where you accidentally give your password to a fake website) works exactly the same. So does a malicious email attachment.
 
 *Exception:* Some VPNs do have a setting that blocks known malware domains. That only catches a narrow slice of attacks, and most browsers and many DNS providers already offer similar filtering.
 
-#### 🟠 MOSTLY FALSE: If I pay for a VPN, it's safe
-Most VPNs are not trustworthy (see our list below). Just because you're paying for it, doesn't mean it's safe.
+#### Paying for a VPN doesn't make it trustworthy
+Price tells you nothing about whether a company will protect you. Some of the VPNs we specifically [do not recommend](#avoid) are also the most expensive and the most heavily advertised.
 
-#### 🟠 MOSTLY FALSE: Using a VPN is better than nothing at all
-A VPN can see all of your internet traffic. If they keep logs, they can turn this data over to the cops just like your internet provider could. They can also use this to sell data about you to advertisers and data brokers.
+#### A bad VPN is worse than no VPN
+A VPN can see all of your internet traffic. If they keep logs, they can turn this data over to the cops just like your internet provider could. They can also use it to sell data about you to advertisers and data brokers
 
-It gets worse than that with the sketchiest "free" VPN apps. Some are effectively malware that let other people maliciously use your internet connection. So choosing an untrustworthy VPN is often worse than using nothing at all.
+Most "free" VPN apps are really sketchy. Some are effectively malware that let other people maliciously use your internet connection.
 
-#### 🟡 PARTIALLY TRUE: A VPN blocks trackers and ads
-It's true that many VPNs have a feature to block trackers and ads. But you can get this same protection in your browser by using a privacy-focused browser like [Brave](https://brave.com/) (or [Firefox](https://www.mozilla.org/en-US/firefox/new/) with [uBlock Origin](https://ublockorigin.com/) installed). A VPN can help block ads and trackers most effectively on mobile apps that don't use a browser (You can also achieve this same effect through [custom DNS resolvers](#dns), but it is more complicated to set up).
+This is why "just use a VPN" is bad advice on its own, and why we keep [a list of the ones we have vetted](#recommended).
+
+#### You don't need a VPN to block ads and trackers (but a VPN can make it easier)
+Many VPNs do offer this, and it is a real feature. But your browser does it better: use a privacy-focused browser like [Brave](https://brave.com/) (or [Firefox](https://www.mozilla.org/en-US/firefox/new/) with [uBlock Origin](https://ublockorigin.com/) installed).
+
+Where a VPN helps is with mobile apps that don't use a browser, since your browser's blocker can't reach those. You can also get that through [custom DNS resolvers](#dns), but it is much more complicated to set up.
 
 
 ## How to set up a VPN {#how}
