@@ -88,6 +88,15 @@ describe('describeDbConnectivityError', () => {
     })
   })
 
+  it('prefers the innermost cause when an outer error also carries a code', () => {
+    const outer = railwayEnotfoundError()
+    outer.code = 'ESERVERSELECTION'
+    expect(describeDbConnectivityError(outer)).toEqual({
+      code: 'ENOTFOUND',
+      hostname: 'mongodb.railway.internal',
+    })
+  })
+
   it('returns an empty object when no code/hostname is present', () => {
     expect(describeDbConnectivityError(new Error('Missing REVIEW_COMMENTS_MONGODB_URL'))).toEqual({})
   })
