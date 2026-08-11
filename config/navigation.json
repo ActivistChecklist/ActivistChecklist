@@ -211,6 +211,7 @@
     ],
     "social": [
       "bluesky",
+      "mastodon",
       "github"
     ]
   },
@@ -225,7 +226,8 @@
       "label": "Mastodon",
       "username": "@ActivistChecklist",
       "href": "https://kolektiva.social/@activistchecklist",
-      "ariaLabel": "Follow us on Mastodon"
+      "ariaLabel": "Follow us on Mastodon",
+      "rel": "me"
     },
     "github": {
       "label": "GitHub",
