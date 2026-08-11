@@ -103,7 +103,7 @@ export function Footer() {
                   key={social.key}
                   href={social.href}
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel={['noopener', 'noreferrer', social.rel].filter(Boolean).join(' ')}
                   aria-label={
                     socialAriaLabelKeys[social.key]
                       ? translateText(socialAriaLabelKeys[social.key], social.ariaLabel)
