@@ -7,10 +7,15 @@
  *
  * Env vars:
  *   HEALTHCHECK_CANARY_URL  required, the base ping URL from healthchecks.io
- *   CANARY_MAX_AGE_DAYS      optional, defaults to 90
+ *   CANARY_MAX_AGE_DAYS     optional, defaults to 90
  *
- * Example cron (run every Monday at 14:00 UTC):
- *   0 14 * * 1 cd /path/to/repo && HEALTHCHECK_CANARY_URL=https://hc-ping.com/xxx node scripts/canary-healthcheck.mjs >> /var/log/canary-healthcheck.log 2>&1
+ * Usage:
+ *   pnpm healthcheck-canary
+ *
+ * Example cron (run every Monday at 14:00 UTC). The two --env-file-if-exists
+ * flags mean the same line works on the server (.env.production) and in dev
+ * (.env), and cron does not need nvm/pnpm on PATH:
+ *   0 14 * * 1 cd /path/to/repo && /path/to/node --env-file-if-exists=.env --env-file-if-exists=.env.production scripts/healthcheck-canary.mjs >> /path/to/logs/healthcheck-canary.log 2>&1
  */
 
 import { readFile } from 'node:fs/promises';
