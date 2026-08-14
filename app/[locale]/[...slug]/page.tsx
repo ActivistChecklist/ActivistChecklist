@@ -4,11 +4,12 @@ import { unstable_noStore as noStore } from 'next/cache';
 import { draftMode } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { serialize } from 'next-mdx-remote/serialize';
 import Layout from '@/components/layout/Layout';
 import Guide from '@/components/guides/Guide';
 import ContentPage from '@/components/pages/Page';
-import { mdxOptions } from '@/lib/mdx-options';
+import { ChecklistItemsProvider } from '@/contexts/ChecklistItemsContext';
+import { serializeMdx } from '@/lib/serialize-mdx';
+import { splitGuideBodyForCta } from '@/lib/inline-cta-split';
 import {
   getRouteTranslationStatus,
   shouldShowTranslationUnreviewedNotice,
@@ -28,9 +29,33 @@ import { getBaseUrl } from '@/lib/utils';
 import { getOgImagePathForSlug } from '@/lib/og-image';
 import { LOCALES, DEFAULT_LOCALE } from '@/lib/i18n-config';
 import { getOpenGraphLocale } from '@/lib/rtl';
+import JsonLd from '@/components/JsonLd';
+import {
+  buildContentPageGraph,
+  buildHowTo,
+  TOP_GUIDE_SLUGS,
+} from '@/lib/structured-data';
 
 const DEFAULT_DESCRIPTION =
   'Plain language steps for digital security, because protecting yourself helps keep your whole community safer. Built by activists, for activists with field-tested, community-verified guides.';
+
+/**
+ * Resolve the OG image URL for a content page. Used by both generateMetadata
+ * (for <meta>/og:image) and the page render path (for JSON-LD Article.image)
+ * so the two agree. Precedence: frontmatter.image > frontmatter.imageOverride
+ * > auto-generated /images/og/<slug>.png.
+ */
+function resolveOgImageUrl(frontmatter, slug, baseUrl) {
+  const rawPageImage = frontmatter?.image || frontmatter?.imageOverride;
+  const customOgImage = rawPageImage
+    ? rawPageImage.startsWith('http://') || rawPageImage.startsWith('https://')
+      ? rawPageImage
+      : rawPageImage.startsWith('/')
+        ? `${baseUrl}${rawPageImage}`
+        : `${baseUrl}/${rawPageImage}`
+    : undefined;
+  return customOgImage ?? `${baseUrl}${getOgImagePathForSlug(slug)}`;
+}
 
 /** Frontmatter `tocDepth`: 2 = ## in the left TOC, 3 = ## and ###. Default 2. */
 function normalizeTocDepth(value) {
@@ -112,20 +137,20 @@ export async function generateMetadata({ params }) {
   if (!content) return {};
 
   const { frontmatter } = content;
-  const pageTitle = frontmatter?.title
-    ? `${frontmatter.title} | Digital Security Checklists for Activists`
-    : 'Digital Security Checklists for Activists';
+  // seoTitle: full <title> override when set. Otherwise fall back to the
+  // suffixed pattern that's been the site default.
+  const pageTitle = frontmatter?.seoTitle
+    ? frontmatter.seoTitle
+    : frontmatter?.title
+      ? `${frontmatter.title} | Digital Security Checklists for Activists`
+      : 'Digital Security Checklists for Activists';
   const pageDescription =
-    frontmatter?.excerpt || frontmatter?.summary || frontmatter?.description || DEFAULT_DESCRIPTION;
-  const rawPageImage = frontmatter?.image || frontmatter?.imageOverride;
-  const customOgImage = rawPageImage
-    ? rawPageImage.startsWith('http://') || rawPageImage.startsWith('https://')
-      ? rawPageImage
-      : rawPageImage.startsWith('/')
-        ? `${baseUrl}${rawPageImage}`
-        : `${baseUrl}/${rawPageImage}`
-    : undefined;
-  const ogImageUrl = customOgImage ?? `${baseUrl}${getOgImagePathForSlug(slug)}`;
+    frontmatter?.seoDescription ||
+    frontmatter?.excerpt ||
+    frontmatter?.summary ||
+    frontmatter?.description ||
+    DEFAULT_DESCRIPTION;
+  const ogImageUrl = resolveOgImageUrl(frontmatter, slug, baseUrl);
 
   const hrefLangLocales = Object.keys(LOCALES);
   const alternates = {};
@@ -174,6 +199,7 @@ export default async function SlugPage({ params }) {
   }
 
   const t = await getTranslations();
+  const baseUrl = getBaseUrl();
 
   // ── Try guide ──────────────────────────────────────────────
   const guide = await resolveGuide(slug, locale);
@@ -185,21 +211,37 @@ export default async function SlugPage({ params }) {
     const sectionContent =
       firstSectionIndex === -1 ? '' : content.slice(firstSectionIndex).trim();
 
-    const serializedIntro = introContent ? await serialize(introContent, mdxOptions) : null;
-    const serializedBody = sectionContent ? await serialize(sectionContent, mdxOptions) : null;
+    const serializedIntro = introContent ? await serializeMdx(introContent) : null;
+
+    // Split body around the auto-inserted inline CTA. Suppressed when the
+    // guide frontmatter opts out or the body already contains a manual <InlineCta />.
+    const hideInlineCta = frontmatter?.hideInlineCta === true;
+    const { beforeCta, afterCta, didSplit } = hideInlineCta
+      ? { beforeCta: sectionContent, afterCta: '', didSplit: false }
+      : splitGuideBodyForCta(sectionContent);
+    const serializedBodyBeforeCta = beforeCta ? await serializeMdx(beforeCta) : null;
+    const serializedBodyAfterCta = afterCta ? await serializeMdx(afterCta) : null;
+    const showInlineCta = didSplit && !hideInlineCta;
 
     // Resolve all referenced checklist items
     const itemSlugs = extractChecklistItems(content);
     const checklistItems = {};
+    // Raw items kept alongside serialized ones so HowTo JSON-LD can use the
+    // pre-MDX body (HowToStep.text wants plain text, not a serialized bundle).
+    const rawChecklistItems = {};
     await Promise.all(
       itemSlugs.map(async (itemSlug) => {
         const item = await resolveChecklistItem(itemSlug, locale);
         if (item) {
           try {
-            const serializedItemBody = await serialize(item.content, mdxOptions);
+            const serializedItemBody = await serializeMdx(item.content);
             checklistItems[itemSlug] = {
               frontmatter: serializeFrontmatter(item.frontmatter),
               serializedBody: serializedItemBody,
+            };
+            rawChecklistItems[itemSlug] = {
+              frontmatter: item.frontmatter,
+              content: item.content,
             };
           } catch (err) {
             console.warn(`Failed to serialize checklist item "${itemSlug}":`, err.message);
@@ -223,16 +265,40 @@ export default async function SlugPage({ params }) {
 
     const guideFm = serializeFrontmatter(frontmatter);
 
+    const guideImageUrl = resolveOgImageUrl(guideFm, slug, baseUrl);
+    const howToGraph = TOP_GUIDE_SLUGS.includes(slug)
+      ? buildHowTo({
+          baseUrl,
+          locale,
+          slug,
+          frontmatter: guideFm,
+          checklistItemSlugs: itemSlugs,
+          checklistItemsBySlug: rawChecklistItems,
+        })
+      : null;
+
+    const guideGraph = buildContentPageGraph({
+      baseUrl,
+      locale,
+      slug,
+      frontmatter: guideFm,
+      imageUrl: guideImageUrl,
+      howTo: howToGraph,
+    });
+
     return (
       <Layout
         sidebarType="toc"
         tocDepth={normalizeTocDepth(guideFm.tocDepth)}
         tocPageTitle={guideFm.title}
       >
+        <JsonLd data={guideGraph} />
         <Guide
           frontmatter={guideFm}
           serializedIntro={serializedIntro}
-          serializedBody={serializedBody}
+          serializedBodyBeforeCta={serializedBodyBeforeCta}
+          serializedBodyAfterCta={serializedBodyAfterCta}
+          showInlineCta={showInlineCta}
           checklistItems={checklistItems}
           slug={slug}
           locale={locale}
@@ -247,7 +313,31 @@ export default async function SlugPage({ params }) {
   if (page) {
     const { frontmatter, content, isFallback } = page;
 
-    const serializedBody = await serialize(content, mdxOptions);
+    // Pages do not get the auto-inserted newsletter CTA (guides do). Editors can
+    // still place a manual <InlineCta /> in the page body if they want one.
+    const serializedBody = content ? await serializeMdx(content) : null;
+
+    // Resolve any checklist items embedded in the page via <ChecklistItem slug="…" />
+    const pageItemSlugs = extractChecklistItems(content);
+    const pageChecklistItems = {};
+    await Promise.all(
+      pageItemSlugs.map(async (itemSlug) => {
+        const item = await resolveChecklistItem(itemSlug, locale);
+        if (!item) {
+          console.warn(`Checklist item not found: "${itemSlug}" (referenced in page "${slug}")`);
+          return;
+        }
+        try {
+          const serializedItemBody = await serializeMdx(item.content);
+          pageChecklistItems[itemSlug] = {
+            frontmatter: serializeFrontmatter(item.frontmatter),
+            serializedBody: serializedItemBody,
+          };
+        } catch (err) {
+          console.warn(`Failed to serialize checklist item "${itemSlug}":`, err.message);
+        }
+      })
+    );
 
     // Generate OG image at build time
     try {
@@ -262,18 +352,30 @@ export default async function SlugPage({ params }) {
     const fm = serializeFrontmatter(frontmatter);
     const pageSidebarType = fm.showToc === true ? 'toc' : 'navigation';
 
+    const pageGraph = buildContentPageGraph({
+      baseUrl,
+      locale,
+      slug,
+      frontmatter: fm,
+      imageUrl: resolveOgImageUrl(fm, slug, baseUrl),
+      howTo: null,
+    });
+
     return (
       <Layout
         sidebarType={pageSidebarType}
         tocDepth={normalizeTocDepth(fm.tocDepth)}
         tocPageTitle={fm.title}
       >
-        <ContentPage
-          frontmatter={fm}
-          serializedBody={serializedBody}
-          locale={locale}
-          notices={pageNotices}
-        />
+        <JsonLd data={pageGraph} />
+        <ChecklistItemsProvider items={pageChecklistItems}>
+          <ContentPage
+            frontmatter={fm}
+            serializedBody={serializedBody}
+            locale={locale}
+            notices={pageNotices}
+          />
+        </ChecklistItemsProvider>
       </Layout>
     );
   }

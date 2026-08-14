@@ -129,6 +129,13 @@ const CopyLinkButton = ({ slug, onCopy }) => {
 /**
  * ChecklistItem — MDX-backed item (props from frontmatter + serialized body).
  * localStorage keys are slug-based.
+ *
+ * Expansion props:
+ * - `defaultExpanded` opens the item initially; the reader can still collapse
+ *   it, and their choice is remembered.
+ * - `alwaysExpanded` removes collapsing entirely (no chevron, no expand button,
+ *   header is not clickable, nothing persisted). Use when the item is embedded
+ *   as the body of a page section rather than as one row in a checklist.
  */
 const ChecklistItem = ({
   slug: itemSlug,
@@ -143,13 +150,11 @@ const ChecklistItem = ({
   expandTrigger,
   index,
   editable = true,
+  defaultExpanded = false,
+  alwaysExpanded = false,
 }) => {
-  if (!itemSlug) {
-    console.warn('ChecklistItem: no slug provided. Skipping');
-    return null;
-  }
 
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(defaultExpanded || alwaysExpanded);
   const [isChecked, setIsChecked] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
   const [enableTransitions, setEnableTransitions] = useState(false);
@@ -161,6 +166,10 @@ const ChecklistItem = ({
   const storageKey = `checklist-checked-${itemSlug}`;
   const expandedStorageKey = `checklist-expanded-${itemSlug}`;
   const checkedOpacity = 60;
+  // `alwaysExpanded` pins the body open: no toggle affordance, no persisted
+  // expand state, and nothing (deep link, group trigger, marking as done) can
+  // collapse it. Everything below renders off `expanded`, not `isExpanded`.
+  const expanded = alwaysExpanded || isExpanded;
 
   const setExpandedWithStorage = (expanded) => {
     setIsExpanded(expanded);
@@ -194,15 +203,18 @@ const ChecklistItem = ({
       setCheckedWithStorage(stored === 'true');
     }
 
-    // Load expanded state
-    const storedExpanded = localStorage.getItem(expandedStorageKey);
-    if (storedExpanded !== null) {
-      setExpandedWithStorage(storedExpanded === 'true');
+    // Load expanded state (skipped when the item can't collapse)
+    if (!alwaysExpanded) {
+      const storedExpanded = localStorage.getItem(expandedStorageKey);
+      if (storedExpanded !== null) {
+        setExpandedWithStorage(storedExpanded === 'true');
+      }
     }
 
     // Auto expand items if they've been linked to directly with an anchor in the URL
     // and scroll to them AFTER all items have restored their expanded states
     const checkUrlHash = () => {
+      if (alwaysExpanded) return;
       const hash = window.location.hash.slice(1); // Remove the # symbol
       if (hash === itemSlug && !isChecked) {
         setExpandedWithStorage(true);
@@ -217,16 +229,17 @@ const ChecklistItem = ({
     window.addEventListener('hashchange', handleHashChange);
 
     return () => window.removeEventListener('hashchange', handleHashChange);
-  }, [storageKey, expandedStorageKey, itemSlug, isChecked]);
+  }, [storageKey, expandedStorageKey, itemSlug, isChecked, alwaysExpanded]);
 
   // Handle expand/collapse trigger
   useEffect(() => {
-    if (expandTrigger?.timestamp && !isChecked) {
+    if (expandTrigger?.timestamp && !isChecked && !alwaysExpanded) {
       setExpandedWithStorage(expandTrigger.shouldExpand);
     }
-  }, [expandTrigger, isChecked, expandedStorageKey]);
-  
+  }, [expandTrigger, isChecked, expandedStorageKey, alwaysExpanded]);
+
   const toggleExpanded = () => {
+    if (alwaysExpanded) return;
     const newExpandedState = !isExpanded;
     setExpandedWithStorage(newExpandedState);
     
@@ -254,7 +267,7 @@ const ChecklistItem = ({
       });
 
       // If requested, collapse after a delay to show completion state briefly
-      if (shouldCollapseAfterDelay && isExpanded) {
+      if (shouldCollapseAfterDelay && expanded && !alwaysExpanded) {
 
         // Scroll to keep the collapsed item visible at the top with buffer
         if (cardRef.current) {
@@ -297,19 +310,20 @@ const ChecklistItem = ({
         "checklist-item",
         "transform mb-0 shadow-none bg-none rounded-none border-muted border-b-0 border-e-0 border-s-0 border-t",
         "hover:z-20 relative",
-        !isExpanded && !isChecked && "hover:bg-muted/40",
-        isExpanded && "mb-4 rounded-lg border-transparent",
-        isExpanded && "bg-muted",
+        !expanded && !isChecked && "hover:bg-muted/40",
+        expanded && "mb-4 rounded-lg border-transparent",
+        expanded && "bg-muted",
         "[transition:margin_300ms,border-radius_300ms,border_300ms,box-shadow_300ms]"
       )}
     >
-      <CardHeader 
+      <CardHeader
         className={cn(
-          "p-3 ps-3 md:ps-5 cursor-pointer",
-          isExpanded && "rounded-t-lg"
+          "p-3 ps-3 md:ps-5",
+          !alwaysExpanded && "cursor-pointer",
+          expanded && "rounded-t-lg"
         )}
-        aria-expanded={isExpanded}
-        onClick={toggleExpanded}
+        aria-expanded={alwaysExpanded ? undefined : expanded}
+        onClick={alwaysExpanded ? undefined : toggleExpanded}
         onClickCapture={handleLinkClick}
       >
         <div className="flex gap-3 items-start">
@@ -379,11 +393,11 @@ const ChecklistItem = ({
                     <span
                       className={cn(
                         "inline-flex h-7 shrink-0 items-center justify-center align-middle ms-2 print:hidden",
-                        isExpanded ? "w-7" : "w-px"
+                        expanded ? "w-7" : "w-px"
                       )}
-                      aria-hidden={!isExpanded}
+                      aria-hidden={!expanded}
                     >
-                      {isExpanded && (
+                      {expanded && (
                         <CopyLinkButton
                           slug={itemSlug}
                           onCopy={handleLinkCopy}
@@ -403,53 +417,57 @@ const ChecklistItem = ({
                 </CardDescription>
               </div>
 
-              <span
+              {!alwaysExpanded && (
+                <span
+                  className={cn(
+                    "hidden sm:inline-flex shrink-0 items-center justify-center",
+                    "h-8 w-8 mt-1 rounded-full bg-transparent p-1 hover:bg-primary/15",
+                    "text-muted-foreground hover:text-primary",
+                    expanded && "text-primary",
+                    "transition-[background-color,color] duration-300 ease-out",
+                    "print:hidden",
+                    isChecked && `opacity-${checkedOpacity}`,
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "inline-flex size-6 origin-center items-center justify-center transition-transform duration-300 ease-out",
+                      expanded && "rotate-180",
+                    )}
+                  >
+                    <ChevronDown aria-hidden className="h-6 w-6" />
+                  </span>
+                </span>
+              )}
+            </div>
+
+            {!alwaysExpanded && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                aria-expanded={expanded}
+                aria-controls={`checklist-body-${itemSlug}`}
                 className={cn(
-                  "hidden sm:inline-flex shrink-0 items-center justify-center",
-                  "h-8 w-8 mt-1 rounded-full bg-transparent p-1 hover:bg-primary/15",
-                  "text-muted-foreground hover:text-primary",
-                  isExpanded && "text-primary",
-                  "transition-[background-color,color] duration-300 ease-out",
+                  "flex h-9 w-full justify-start gap-2 px-2 sm:hidden",
+                  "-ms-2",
+                  "text-muted-foreground hover:bg-primary/10 hover:text-muted-foreground",
                   "print:hidden",
+                  enableTransitions ? "transition-colors duration-300" : "transition-none",
                   isChecked && `opacity-${checkedOpacity}`,
                 )}
               >
                 <span
                   className={cn(
-                    "inline-flex size-6 origin-center items-center justify-center transition-transform duration-300 ease-out",
-                    isExpanded && "rotate-180",
+                    "inline-flex shrink-0 origin-center transition-transform duration-300 ease-out",
+                    expanded && "rotate-180",
                   )}
                 >
-                  <ChevronDown aria-hidden className="h-6 w-6" />
+                  <ChevronDown aria-hidden className="h-4 w-4" />
                 </span>
-              </span>
-            </div>
-
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              aria-expanded={isExpanded}
-              aria-controls={`checklist-body-${itemSlug}`}
-              className={cn(
-                "flex h-9 w-full justify-start gap-2 px-2 sm:hidden",
-                "-ms-2",
-                "text-muted-foreground hover:bg-primary/10 hover:text-muted-foreground",
-                "print:hidden",
-                enableTransitions ? "transition-colors duration-300" : "transition-none",
-                isChecked && `opacity-${checkedOpacity}`,
-              )}
-            >
-              <span
-                className={cn(
-                  "inline-flex shrink-0 origin-center transition-transform duration-300 ease-out",
-                  isExpanded && "rotate-180",
-                )}
-              >
-                <ChevronDown aria-hidden className="h-4 w-4" />
-              </span>
-              {isExpanded ? t('checklistItem.collapse') : t('checklistItem.expand')}
-            </Button>
+                {expanded ? t('checklistItem.collapse') : t('checklistItem.expand')}
+              </Button>
+            )}
           </div>
         </div>
       </CardHeader>
@@ -459,7 +477,7 @@ const ChecklistItem = ({
         className={cn(
           "grid mt-2",
           enableTransitions ? "transition-all duration-300" : "transition-none",
-          isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
+          expanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
           isChecked && `opacity-${checkedOpacity}`,
         )}
       >

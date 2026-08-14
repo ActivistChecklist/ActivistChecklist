@@ -11,6 +11,7 @@ import {
   ReviewCommentsProvider,
   type ReviewCommentsProviderProps,
 } from '@activistchecklist/react-review-comments';
+import ReviewCommentsDbStatusLogger from '@/components/review-comments/ReviewCommentsDbStatusLogger';
 import '@/styles/globals.css';
 
 export function generateStaticParams() {
@@ -62,12 +63,20 @@ export default async function LocaleLayout({ children, params }) {
           href="/fonts/libre-franklin-v20-latin-700.woff2"
           crossOrigin="anonymous"
         />
+        {/* llms.txt — curated index for LLM crawlers (llmstxt.org). */}
+        <link
+          rel="alternate"
+          type="text/plain"
+          title="llms.txt"
+          href={locale === 'en' ? '/llms.txt' : `/${locale}/llms.txt`}
+        />
       </head>
       <body className="min-h-screen bg-background font-body antialiased">
         <AnnouncementProvider value={announcement}>
           <NextIntlClientProvider locale={locale} messages={messages}>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
               <ReviewCommentsProvider {...reviewCommentsProviderProps}>
+                <ReviewCommentsDbStatusLogger enabled={reviewComments.enabled} />
                 {children}
               </ReviewCommentsProvider>
             </ThemeProvider>

@@ -8,12 +8,14 @@ import { useTranslations, useLocale } from 'next-intl';
 import { mdxComponents } from '@/lib/mdx-components';
 import { ChecklistItemsContext } from '@/contexts/ChecklistItemsContext';
 import { FeedbackCTA } from '@/components/guides/FeedbackCTA';
+import InlineCta from '@/components/InlineCta';
 import { useLayout } from '@/contexts/LayoutContext';
 import { getGuideIcon } from '@/config/icons';
 import RelatedGuides from '@/components/RelatedGuides';
 import { LOCALES } from "@/lib/i18n-config";
 import { formatContentDate } from '@/lib/utils';
 import PageNotices from '@/components/layout/PageNotices';
+import AnswerCapsule from '@/components/AnswerCapsule';
 
 function parseRelatedGuides(value) {
   if (Array.isArray(value)) return value.filter(Boolean);
@@ -33,7 +35,17 @@ function parseRelatedGuides(value) {
  *   - checklistItems: { [slug]: { frontmatter, serializedBody } } map for ChecklistItemsContext
  *   - locale: BCP 47 locale string for date formatting (provided by parent Server Component)
  */
-export default function Guide({ frontmatter, serializedIntro, serializedBody, checklistItems = {}, slug, locale, notices = [] }) {
+export default function Guide({
+  frontmatter,
+  serializedIntro,
+  serializedBodyBeforeCta,
+  serializedBodyAfterCta,
+  showInlineCta = false,
+  checklistItems = {},
+  slug,
+  locale,
+  notices = [],
+}) {
   const t = useTranslations();
   // Prefer locale from NextIntlClientProvider (set by the locale layout), fall back to prop
   const intlLocale = useLocale() || locale || 'en';
@@ -97,12 +109,19 @@ export default function Guide({ frontmatter, serializedIntro, serializedBody, ch
       {/* Body */}
       <div className="mx-auto">
         <div className="relative">
+          <AnswerCapsule text={frontmatter.answerCapsule} />
           {serializedIntro && (
             <div className="prose prose-slate max-w-none">
               <MDXRemote {...serializedIntro} components={mdxComponents} />
             </div>
           )}
-          {serializedBody && <MDXRemote {...serializedBody} components={mdxComponents} />}
+          {serializedBodyBeforeCta && (
+            <MDXRemote {...serializedBodyBeforeCta} components={mdxComponents} />
+          )}
+          {showInlineCta && <InlineCta />}
+          {serializedBodyAfterCta && (
+            <MDXRemote {...serializedBodyAfterCta} components={mdxComponents} />
+          )}
           {relatedGuideSlugs.length > 0 && (
             <RelatedGuides isBlock guideSlugs={relatedGuideSlugs} />
           )}

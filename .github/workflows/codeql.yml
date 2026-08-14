@@ -39,10 +39,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v4
+        uses: github/codeql-action/init@v4.37.4
         with:
           languages: ${{ matrix.codeql-language }}
 
@@ -50,7 +50,7 @@ jobs:
       # (generic Autobuild often misses pnpm/Node version from .nvmrc).
       - name: Setup pnpm
         if: matrix.codeql-language == 'javascript'
-        uses: pnpm/action-setup@v6
+        uses: pnpm/action-setup@v6.0.9
 
       - name: Setup Node
         if: matrix.codeql-language == 'javascript'
@@ -71,6 +71,6 @@ jobs:
         run: ./node_modules/.bin/next build
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v4
+        uses: github/codeql-action/analyze@v4.37.4
         with:
           category: "/language:${{ matrix.name }}"

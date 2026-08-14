@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { serialize } from 'next-mdx-remote/serialize';
 import { getChecklistItem, serializeFrontmatter } from '@/lib/content';
-import { mdxOptions } from '@/lib/mdx-options';
+import { serializeMdx } from '@/lib/serialize-mdx';
 import { DEFAULT_LOCALE } from '@/lib/i18n-config';
 
 export const dynamic = 'force-dynamic';
@@ -22,7 +21,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const serializedBody = await serialize(item.content, mdxOptions);
+    const serializedBody = await serializeMdx(item.content);
     return NextResponse.json({
       frontmatter: serializeFrontmatter(item.frontmatter),
       serializedBody,

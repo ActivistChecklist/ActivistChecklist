@@ -331,6 +331,12 @@ const checklistItemComponent = block({
       label: 'Checklist Item',
       collection: 'checklistItems',
     }),
+    defaultExpanded: fields.checkbox({
+      label: 'Expanded by default',
+      description:
+        'Show this item already expanded on page load (useful when it is the only item on a page).',
+      defaultValue: false,
+    }),
   },
   ContentView(props) {
     return (
@@ -540,6 +546,23 @@ export default config({
         title: fields.slug({ name: { label: 'Title' } }),
         estimatedTime: fields.text({ label: 'Estimated Time' }),
         excerpt: fields.mdx.inline({ label: 'Summary', options: mdxEditorOptionsContent }),
+        seoTitle: fields.text({
+          label: 'SEO title (optional)',
+          description:
+            'Overrides the <title> tag and OG title. Front-load the search query; aim under 60 chars. Leave blank to use Title.',
+        }),
+        seoDescription: fields.text({
+          label: 'SEO meta description',
+          description:
+            '140–160 chars. Answer-first. Lead with what the reader will do. Plain language, no jargon, no marketing words, no em-dashes.',
+          multiline: true,
+        }),
+        answerCapsule: fields.text({
+          label: 'Answer capsule (optional)',
+          description:
+            '40–60 word direct answer to this page’s implicit search question. Renders at the top of the guide. AI engines often quote this verbatim.',
+          multiline: true,
+        }),
         relatedGuides: fields.array(
           fields.relationship({
             label: 'Related Guide',
@@ -558,6 +581,12 @@ export default config({
             { label: '3 — ## and ###', value: '3' },
           ],
           defaultValue: '2',
+        }),
+        hideInlineCta: fields.checkbox({
+          label: 'Hide inline newsletter CTA',
+          description:
+            'By default, a compact newsletter signup is inserted after the first section with checklist items. Check to suppress on this guide.',
+          defaultValue: false,
         }),
         body: fields.mdx({
           label: 'Guide Content',
@@ -641,6 +670,17 @@ export default config({
       columns: ['title', 'lastUpdated'],
       schema: {
         title: fields.slug({ name: { label: 'Title' } }),
+        seoTitle: fields.text({
+          label: 'SEO title (optional)',
+          description:
+            'Overrides the <title> tag and OG title. Front-load the search query; aim under 60 chars. Leave blank to use Title.',
+        }),
+        seoDescription: fields.text({
+          label: 'SEO meta description',
+          description:
+            '140–160 chars. Answer-first. Lead with what the reader will do. Plain language, no jargon, no marketing words, no em-dashes.',
+          multiline: true,
+        }),
         image: fields.image({
           label: 'Open Graph Image (optional)',
           description: 'Relative path or full URL for OpenGraph/Twitter image (e.g. /images/content/foo.jpg).',
@@ -675,7 +715,11 @@ export default config({
         body: fields.mdx({
           label: 'Body',
           options: mdxEditorOptionsContent,
-          components: contentComponents,
+          components: {
+            ...contentComponents,
+            ChecklistItem: checklistItemComponent,
+            ChecklistItemGroup: checklistItemGroupComponent,
+          },
         }),
       },
     }),

@@ -7,6 +7,8 @@ import { DEFAULT_LOCALE, LOCALES } from '@/lib/i18n-config';
 import { getBaseUrl } from '@/lib/utils';
 import { getOgImagePathForSlug } from '@/lib/og-image';
 import { getOpenGraphLocale } from '@/lib/rtl';
+import JsonLd from '@/components/JsonLd';
+import { buildHomePageGraph } from '@/lib/structured-data';
 
 function getMessageValue(messages, keyPath) {
   return keyPath.split('.').reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), messages);
@@ -67,14 +69,18 @@ export default async function HomePage({ params }) {
 
   const changelogEntries = getAllChangelogEntries(locale).map(toChangelogListEntry);
   const latestMajor = changelogEntries.find((e) => e.type === 'major');
+  const homeGraph = buildHomePageGraph({ baseUrl: getBaseUrl(), locale });
 
   return (
-    <HomePageContent
-      changelogEntries={changelogEntries.slice(0, 5)}
-      latestMajorBodyText={latestMajor?.bodyText ?? null}
-      locale={locale}
-    >
-      <HomeNewsSection locale={locale} />
-    </HomePageContent>
+    <>
+      <JsonLd data={homeGraph} />
+      <HomePageContent
+        changelogEntries={changelogEntries.slice(0, 5)}
+        latestMajorBodyText={latestMajor?.bodyText ?? null}
+        locale={locale}
+      >
+        <HomeNewsSection locale={locale} />
+      </HomePageContent>
+    </>
   );
 }

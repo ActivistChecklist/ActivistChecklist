@@ -5,11 +5,10 @@
 **Practical digital security guides for activists and organizers.**
 
 [![Last commit to main](https://img.shields.io/github/last-commit/ActivistChecklist/ActivistChecklist/main?label=last%20commit)](https://github.com/ActivistChecklist/ActivistChecklist/commits/main)
-[![PR checks](https://github.com/ActivistChecklist/ActivistChecklist/actions/workflows/pr-checks.yml/badge.svg)](https://github.com/ActivistChecklist/ActivistChecklist/actions/workflows/pr-checks.yml)
 [![Deploy](https://github.com/ActivistChecklist/ActivistChecklist/actions/workflows/deploy-webhook.yml/badge.svg)](https://github.com/ActivistChecklist/ActivistChecklist/actions/workflows/deploy-webhook.yml)
-[![Healthchecks](https://healthchecks.io/badge/48683141-3e2b-4da2-a269-5d8293/cxb5iwnK-2.svg)](https://healthchecks.io/)
+![Healthchecks](https://healthchecks.io/badge/48683141-3e2b-4da2-a269-5d8293/cxb5iwnK-2.svg)
 [![Crowdin](https://badges.crowdin.net/activistchecklist/localized.svg)](https://crowdin.com/project/activistchecklist)
-[![Node](https://img.shields.io/badge/node-%3E%3D22%20%3C23-339933?logo=node.js&logoColor=white)](https://github.com/ActivistChecklist/ActivistChecklist/blob/main/package.json)
+[![Warrant canary](https://img.shields.io/endpoint?url=https://healthchecks.io/b/2/f424e66f-06c3-463a-8d54-e5b4749a55e9.shields&label=warrant%20canary)](https://activistchecklist.org/privacy/#canary)
 [![Bluesky](https://img.shields.io/bluesky/followers/activistchecklist.org)](https://bsky.app/profile/activistchecklist.org)
 
 </div>
@@ -38,7 +37,7 @@ Translations are automatic. Human reviewers edit and approve them on [Crowdin](h
 
 ## Local development
 
-See [CONTRIBUTORS.md](contributors.md) for local development setup instructions.
+See [CONTRIBUTORS.md](CONTRIBUTORS.md) for local development setup instructions.
 
 ## Contact
 

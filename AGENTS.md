@@ -3,7 +3,7 @@
 ## General rules
 
 * Use pnpm to manage packages
-* Worktree setup is automatic: Claude Code reads `.worktreeinclude` at the repo root and symlinks the listed gitignored paths (env files, `node_modules`) from the main checkout into each new worktree. If you add new gitignored top-level state that worktrees should mirror, add a pattern to `.worktreeinclude`.
+* Worktree setup is automatic: Claude Code reads `.worktreeinclude` at the repo root and symlinks the listed gitignored paths (env files) from the main checkout into each new worktree. If you add new gitignored top-level state that worktrees should mirror, add a pattern to `.worktreeinclude`. When setting up a new worktree, run `pnpm install` so the modules are ready.
 
 ## Testing rules
 
@@ -15,6 +15,7 @@
 ## Content writing ruels
 
 * IMPORTANT: Do NOT use em-dashes when writing content or text in .mdx files or static strings.
+* To give a heading a custom anchor id, add `{#your-id}` at the end of the heading line (e.g. `## Downsides to using a VPN {#downsides}`), then link to it with `/page/#your-id`. Without the marker, headings still get an auto id derived from their text. See `lib/mdx-heading-ids.js`.
 
 ## Git commit rules
 

@@ -8,13 +8,20 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 # shellcheck source=scripts/lib/build-cli.sh
 source "${SCRIPT_DIR}/lib/build-cli.sh"
 
-build_section "🗺️" "Post-build — sitemap & RSS"
-build_detail "next-sitemap + pnpm rss"
+build_section "🗺️" "Post-build — sitemap, RSS, llms.txt"
+build_detail "next-sitemap + pnpm rss + build-llms-txt"
 next-sitemap
 pnpm rss
+node scripts/build-llms-txt.cjs
 build_section_done 0 \
   "Sitemap generated (next-sitemap)" \
-  "RSS feeds written under out/rss/"
+  "RSS feeds written under out/rss/" \
+  "llms.txt written for en + es"
+
+build_section "🔍" "Post-build — SEO audit"
+build_detail "Checks seoDescription / seoTitle / answerCapsule / FAQ coverage"
+node scripts/seo-audit.cjs || true
+build_section_done 0 "SEO audit complete (non-blocking)"
 
 if [ "$BUILD_MODE" = "static" ]; then
   build_section "📦" "Post-build — static export"

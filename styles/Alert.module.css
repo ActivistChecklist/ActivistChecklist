@@ -57,8 +57,16 @@
 }
 
 /* Variant styles */
+/* Default uses neutral gray (bg-accent at low opacity). bg-muted now resolves
+   to --brand-accent-light, which is a purple-tinted token used elsewhere; this
+   variant should stay neutral so the icon-only info alerts read as "note",
+   not "branded callout".
+   Note: /30 is intentionally heavier than the /10 used by the saturated
+   variants (.error, .warning, .info, .success). bg-accent is a near-neutral
+   gray, so at /10 it would be effectively invisible against the page; /30
+   gives a comparable visual weight to the saturated /10 fills. */
 .default {
-  @apply bg-muted text-foreground border-muted-foreground;
+  @apply bg-accent/30 text-foreground border-border;
 }
 
 .default svg {

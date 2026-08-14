@@ -91,6 +91,7 @@ const UNTRANSLATABLE_FRONTMATTER_SCALARS = [
   "tags",           // comma-separated tag identifiers
   "showToc",        // boolean: layout / “On this page” sidebar (pages)
   "tocDepth",       // 2 or 3: which heading levels appear in the left TOC
+  "hideInlineCta",  // boolean: suppress auto-inserted inline newsletter CTA
 ];
 
 // JSX attributes whose values should not be translated
