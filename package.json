@@ -43,6 +43,7 @@
     "healthcheck-ssl": "bash scripts/healthcheck-ssl.sh",
     "healthcheck-domain": "bash scripts/healthcheck-domain.sh",
     "healthcheck-api": "bash scripts/healthcheck-api.sh",
+    "healthcheck-onion": "bash scripts/healthcheck-onion.sh",
     "healthcheck-canary": "node --env-file-if-exists=.env --env-file-if-exists=.env.production scripts/healthcheck-canary.mjs",
     "check-build": "node scripts/check-build.mjs",
     "validate-build": "node scripts/validate-build.mjs",
