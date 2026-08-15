@@ -3,8 +3,10 @@ import * as React from "react"
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu"
 import { cva } from "class-variance-authority"
 import { ChevronDown } from "lucide-react"
+import { useLocale } from "next-intl"
 
 import { cn } from "@/lib/utils"
+import { getLocaleDir } from "@/lib/rtl"
 
 const NavigationMenuContext = React.createContext(null)
 
@@ -13,6 +15,12 @@ const NavigationMenu = React.forwardRef(({ className, children, ...props }, ref)
   const [isHovered, setIsHovered] = React.useState(false)
   const [isMobile, setIsMobile] = React.useState(false)
   const menuRef = React.useRef(null)
+  // Radix's useDirection() falls back to "ltr" and Root renders it as a real
+  // dir attribute on <nav>, which would override <html dir="rtl"> for the
+  // whole menu subtree (reversing item order and flipping chevron sides).
+  // Feed it the locale direction so the list inherits RTL correctly.
+  const locale = useLocale()
+  const dir = getLocaleDir(locale)
   
   React.useEffect(() => {
     const checkMobile = () => {
@@ -38,6 +46,7 @@ const NavigationMenu = React.forwardRef(({ className, children, ...props }, ref)
         )}
         delayDuration={100}
         skipDelayDuration={0}
+        dir={dir}
         onMouseLeave={() => !isMobile && setIsHovered(false)}
         {...props}>
         {children}
@@ -117,7 +126,7 @@ const NavigationMenuContent = React.forwardRef(({ className, ...props }, ref) =>
   <NavigationMenuPrimitive.Content
     ref={ref}
     className={cn(
-      "inset-s-0 top-0 w-full data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52 [dir=rtl]:data-[motion=from-end]:slide-in-from-left-52 [dir=rtl]:data-[motion=from-start]:slide-in-from-right-52 [dir=rtl]:data-[motion=to-end]:slide-out-to-left-52 [dir=rtl]:data-[motion=to-start]:slide-out-to-right-52 md:absolute md:w-auto ",
+      "inset-s-0 top-0 w-full data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52 rtl:data-[motion=from-end]:slide-in-from-left-52 rtl:data-[motion=from-start]:slide-in-from-right-52 rtl:data-[motion=to-end]:slide-out-to-left-52 rtl:data-[motion=to-start]:slide-out-to-right-52 md:absolute md:w-auto ",
       className
     )}
     {...props} />

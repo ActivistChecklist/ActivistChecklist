@@ -28,7 +28,7 @@ const DropdownMenuSubTrigger = React.forwardRef(({ className, inset, children, .
     )}
     {...props}>
     {children}
-    <ChevronRight className="ms-auto [dir=rtl]:rotate-180" />
+    <ChevronRight className="ms-auto rtl:rotate-180" />
   </DropdownMenuPrimitive.SubTrigger>
 ))
 DropdownMenuSubTrigger.displayName =

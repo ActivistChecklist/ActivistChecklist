@@ -25,7 +25,7 @@ const InfoItemIcon = () => {
     <TooltipProvider>
       <Tooltip delayDuration={0}>
         <TooltipTrigger asChild>
-          <div className="absolute inset-s-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
+          <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
             <IoInformationCircleOutline
               className={cn(
                 "h-[1.7rem] w-[1.7rem]",
@@ -105,14 +105,14 @@ const CopyLinkButton = ({ slug, onCopy }) => {
             <Link2
               aria-hidden
               className={cn(
-                "absolute inset-s-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-200",
+                "absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-200",
                 linkCopied && "opacity-0"
               )}
             />
             <Check
               aria-hidden
               className={cn(
-                "absolute inset-s-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 text-green-600 transition-opacity duration-200",
+                "absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 text-green-600 transition-opacity duration-200",
                 linkCopied ? "opacity-100" : "opacity-0"
               )}
             />

@@ -36,7 +36,7 @@ const GuideCard = ({
           </CardContent>
           <CardFooter className="relative mt-auto pt-0">
             <span className="text-primary font-medium inline-flex items-center text-base">
-              {t('common.viewChecklist')} <ArrowRight className="ms-2 transition-transform duration-300 ease-out group-hover:translate-x-1 [dir=rtl]:rotate-180 [dir=rtl]:group-hover:-translate-x-1" />
+              {t('common.viewChecklist')} <ArrowRight className="ms-2 transition-transform duration-300 ease-out group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
             </span>
           </CardFooter>
         </Card>
@@ -60,7 +60,7 @@ const GuideCard = ({
         </CardContent>
         <CardFooter className="py-3 px-4 pt-0 mt-auto">
           <span className="text-primary font-medium inline-flex items-center text-sm">
-            {t('common.viewChecklist')} <ArrowRight className="ms-2 transition-transform duration-300 ease-out group-hover:translate-x-1 [dir=rtl]:rotate-180 [dir=rtl]:group-hover:-translate-x-1" />
+            {t('common.viewChecklist')} <ArrowRight className="ms-2 transition-transform duration-300 ease-out group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
           </span>
         </CardFooter>
       </Card>

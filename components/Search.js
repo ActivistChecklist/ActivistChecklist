@@ -46,7 +46,7 @@ const GuideCard = ({ href, icon: Icon, title, description, onClose }) => (
       <div className="text-sm font-medium group-hover:text-primary transition-colors">{title}</div>
       <div className="text-xs text-muted-foreground">{description}</div>
     </div>
-    <IoChevronForward className="h-4 w-4 text-muted-foreground transition-all group-hover:text-primary group-hover:translate-x-0.5 [dir=rtl]:rotate-180 [dir=rtl]:group-hover:-translate-x-0.5" />
+    <IoChevronForward className="h-4 w-4 text-muted-foreground transition-all group-hover:text-primary group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
   </Link>
 );
 
