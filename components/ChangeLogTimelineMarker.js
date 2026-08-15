@@ -16,7 +16,7 @@ const ChangeLogTimelineMarker = ({ type }) => {
       <TooltipProvider delayDuration={0}>
         <Tooltip>
           <TooltipTrigger asChild>
-            <div className="absolute z-20 left-6 top-[12px] w-5 h-5 -translate-x-1/2 flex items-center justify-center">
+            <div className="absolute z-20 inset-s-6 top-[12px] w-5 h-5 -translate-x-1/2 flex items-center justify-center">
               <div className="w-3 h-3 bg-primary rounded-full ring-2 ring-primary/50 ring-offset-2 ring-offset-background"></div>
             </div>
           </TooltipTrigger>
@@ -28,7 +28,7 @@ const ChangeLogTimelineMarker = ({ type }) => {
     );
   }
   return (
-    <div className="absolute z-20 left-6 top-[18px] w-2 h-2 bg-primary rounded-full -translate-x-1/2"></div>
+    <div className="absolute z-20 inset-s-6 top-[18px] w-2 h-2 bg-primary rounded-full -translate-x-1/2"></div>
   );
 };
 

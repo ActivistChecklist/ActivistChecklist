@@ -24,11 +24,10 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    # Only default-days is supported for github-actions; the semver-*-days
+    # keys are npm-only and make Dependabot reject the whole config.
     cooldown:
       default-days: 7
-      semver-major-days: 14
-      semver-minor-days: 7
-      semver-patch-days: 3
     groups:
       actions:
         patterns:
