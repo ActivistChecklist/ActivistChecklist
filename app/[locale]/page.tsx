@@ -3,10 +3,9 @@ import { setRequestLocale } from 'next-intl/server';
 import { getAllChangelogEntries, toChangelogListEntry } from '@/lib/content';
 import HomePageContent from '@/components/pages/HomePageContent';
 import HomeNewsSection from './HomeNewsSection';
-import { DEFAULT_LOCALE, LOCALES } from '@/lib/i18n-config';
+import { DEFAULT_LOCALE } from '@/lib/i18n-config';
 import { getBaseUrl } from '@/lib/utils';
 import { getOgImagePathForSlug } from '@/lib/og-image';
-import { getOpenGraphLocale } from '@/lib/rtl';
 import JsonLd from '@/components/JsonLd';
 import { buildHomePageGraph } from '@/lib/structured-data';
 
@@ -33,10 +32,6 @@ export async function generateMetadata({ params }) {
   const canonical =
     locale === DEFAULT_LOCALE ? `${baseUrl}/` : `${baseUrl}/${locale}/`;
   const ogImageUrl = `${baseUrl}${getOgImagePathForSlug('')}`;
-  const openGraphLocale = getOpenGraphLocale(locale);
-  const openGraphAlternateLocales = Object.keys(LOCALES)
-    .filter((loc) => loc !== locale)
-    .map((loc) => getOpenGraphLocale(loc));
 
   return {
     title,
@@ -49,8 +44,6 @@ export async function generateMetadata({ params }) {
       description,
       url: canonical,
       type: 'website',
-      locale: openGraphLocale,
-      alternateLocale: openGraphAlternateLocales,
       siteName: 'Activist Checklist',
       images: [ogImageUrl],
     },
