@@ -34,7 +34,7 @@ importers:
         version: 0.3.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(socks@2.8.9)
       '@activistchecklist/umami-extra-privacy':
         specifier: github:ActivistChecklist/umami-extra-privacy#7669154d772ecbf3410c1243e8014ac8a0e74c5e
-        version: https://codeload.github.com/ActivistChecklist/umami-extra-privacy/tar.gz/7669154d772ecbf3410c1243e8014ac8a0e74c5e(fastify@5.11.2)
+        version: https://codeload.github.com/ActivistChecklist/umami-extra-privacy/tar.gz/7669154d772ecbf3410c1243e8014ac8a0e74c5e(fastify@5.11.3)
       '@fastify/cors':
         specifier: ^11.3.0
         version: 11.3.0
@@ -48,11 +48,11 @@ importers:
         specifier: ^5.7.1
         version: 5.7.1(@standard-schema/spec@1.1.0)(ajv@8.20.0)(react-hook-form@7.85.0(react@19.2.8))(superstruct@1.0.4)(zod@4.4.3)
       '@keystatic/core':
-        specifier: ^0.6.4
-        version: 0.6.4(@keystar/ui@0.7.22(@react-spectrum/provider@3.11.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(next@15.5.23(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8)
+        specifier: ^0.6.5
+        version: 0.6.5(@keystar/ui@0.7.22(@react-spectrum/provider@3.11.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(next@15.5.23(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8)
       '@keystatic/next':
         specifier: ^5.0.4
-        version: 5.0.4(@keystatic/core@0.6.4(@keystar/ui@0.7.22(@react-spectrum/provider@3.11.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(next@15.5.23(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(next@15.5.23(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 5.0.4(@keystatic/core@0.6.5(@keystar/ui@0.7.22(@react-spectrum/provider@3.11.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(next@15.5.23(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(next@15.5.23(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@next/env':
         specifier: ^16.3.0
         version: 16.3.0
@@ -138,8 +138,8 @@ importers:
         specifier: ^17.4.2
         version: 17.4.2
       fastify:
-        specifier: ^5.11.2
-        version: 5.11.2
+        specifier: ^5.11.3
+        version: 5.11.3
       fluent-ffmpeg:
         specifier: ^2.1.3
         version: 2.1.3
@@ -153,8 +153,8 @@ importers:
         specifier: '>=4.1.2 <5'
         version: 4.3.0
       lucide-react:
-        specifier: ^1.30.0
-        version: 1.30.0(react@19.2.8)
+        specifier: ^1.31.0
+        version: 1.31.0(react@19.2.8)
       mongodb:
         specifier: ^7.5.0
         version: 7.5.0(socks@2.8.9)
@@ -162,8 +162,8 @@ importers:
         specifier: ^15.5.23
         version: 15.5.23(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       next-intl:
-        specifier: ^4.13.5
-        version: 4.13.5(@swc/helpers@0.5.23)(next@15.5.23(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)(typescript@6.0.3)
+        specifier: ^4.13.6
+        version: 4.13.6(@swc/helpers@0.5.23)(next@15.5.23(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)(typescript@6.0.3)
       next-mdx-remote:
         specifier: ^6.0.0
         version: 6.0.0(@types/react@19.2.18)(react@19.2.8)
@@ -301,17 +301,17 @@ importers:
         specifier: ^4.3.3
         version: 4.3.3
       tsx:
-        specifier: ^4.23.11
-        version: 4.23.11
+        specifier: ^4.23.12
+        version: 4.23.12
       typescript:
         specifier: 6.0.3
         version: 6.0.3
       vite:
         specifier: '>=8.0.16'
-        version: 8.2.1(@types/node@25.9.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.11)(yaml@2.9.0)
+        version: 8.2.1(@types/node@25.9.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0)
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@25.9.2)(jsdom@29.1.1)(vite@8.2.1(@types/node@25.9.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.11)(yaml@2.9.0))
+        version: 4.1.10(@types/node@25.9.2)(jsdom@29.1.1)(vite@8.2.1(@types/node@25.9.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0))
 
 packages:
 
@@ -1211,8 +1211,8 @@ packages:
       next:
         optional: true
 
-  '@keystatic/core@0.6.4':
-    resolution: {integrity: sha512-YXGqDf3xEChh74ox/qxZrLvn/O7GPyX1wAcbEZk4YTuRY/ca6MQi1jR6HDr0uTRWwDLRZqvo8sUDUsRblkKYQg==}
+  '@keystatic/core@0.6.5':
+    resolution: {integrity: sha512-M7zVB0gGf5O+arqy+5bp9xm2WqHaWiyzspiz4fyJDCG8Ov71WzM+i7coSrdQp2oZfxIDCZXe70qVOq3ddOK6lA==}
     peerDependencies:
       '@keystar/ui': '*'
       react: ^18.2.0 || ^19.0.0
@@ -3977,8 +3977,8 @@ packages:
   fastify-plugin@6.0.0:
     resolution: {integrity: sha512-fZOty7z3O7vOliF6d8bHE3wiEh1KcNnKEQensSgTk9C1DvN6nRLS++XVd86v33Hw/8u9Un8A1zDrQ8ujcQDHEg==}
 
-  fastify@5.11.2:
-    resolution: {integrity: sha512-i/eJG7nXR9OkbFgoX4jFiPOHoRq0rXqDACVAXELh5Fdg6BFBErIVZ8MyibGCwup9Go1pYrxZJ0ogIub8vVdEcQ==}
+  fastify@5.11.3:
+    resolution: {integrity: sha512-W6hzDP8s0iSeL7LGwY6Oc/ZxuXWOvFEMs6p2L0Si415YRo27W5pBKdOTXxhemBDeSTAcpYf5evRA9onF2OYhPA==}
 
   fastq@1.20.1:
     resolution: {integrity: sha512-GGToxJ/w1x32s/D2EKND7kTil4n8OVk/9mycTc4VDza13lOvpUZTGX3mFSCtV9ksdGBVzvsyAVLM6mHFThxXxw==}
@@ -4207,8 +4207,8 @@ packages:
     resolution: {integrity: sha512-IKXpvIzjnC9XTAUbVBcMfGS0EPaIXtW6v+zr+RRp+hqULEpo0owZax6wyRwPOJbWbzjYspQwusTsfVr0ifh4uQ==}
     engines: {node: '>=0.10.0'}
 
-  icu-minify@4.13.5:
-    resolution: {integrity: sha512-sGCVm06cfsk/t9F4s9vYBCCI5k5cf2SuH21uPm6L9uK8i+bWY9NDMSUsYzYsZ4lxohTvGa3oGixtlQvZMMz5fg==}
+  icu-minify@4.13.6:
+    resolution: {integrity: sha512-iYZGCJZ+kX6o7GrxpVe2sOSdW86AvEqh8RQBvWeBd9jqmuABsMc2B6xongACfItLOogyIWH6GuBslNHr79OU8Q==}
 
   idb-keyval@6.3.0:
     resolution: {integrity: sha512-um+2dgAWmYsu615EXpWVwSmapJhON0G43t3Ka/EVaohzPQXSMqKEqeDK/oIW3Ow+BXaF2PvSc+oBTFp793A5Ow==}
@@ -4566,8 +4566,8 @@ packages:
     resolution: {integrity: sha512-jumlc0BIUrS3qJGgIkWZsyfAM7NCWiBcCDhnd+3NNM5KbBmLTgHVfWBcg6W+rLUsIpzpERPsvwUP7CckAQSOoA==}
     engines: {node: '>=12'}
 
-  lucide-react@1.30.0:
-    resolution: {integrity: sha512-tUIr2jXLbWpCkdtH8XP7P7YppM9ueWgTky99lpWDY6z5REs6B+O6ZQ3U5tHkUUY59ANyOv/PBcs8E4Fe3KO3eA==}
+  lucide-react@1.31.0:
+    resolution: {integrity: sha512-G8u2eEtoHUnUa9f8lbvqDhCiORMnYLdUEo06EEG9MQvHQrInKcX3Pa2TH39MM5qyzRcWETxB0+aOwAPI1g1kEg==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
@@ -4830,11 +4830,11 @@ packages:
     resolution: {integrity: sha512-eonl3sLUha+S1GzTPxychyhnUzKyeQkZ7jLjKrBagJgPla13F+uQ71HgpFefyHgqrjEbCPkDArxYsjY8/+gLKA==}
     engines: {node: '>= 0.4.0'}
 
-  next-intl-swc-plugin-extractor@4.13.5:
-    resolution: {integrity: sha512-Sxdgpp4y12zUYq8XzZoQQSIL9CU1T210l7dLrfVLeIykaRslBJEHNacGTy8CLqJc5uLFsmzukANbEOpa5XgAiQ==}
+  next-intl-swc-plugin-extractor@4.13.6:
+    resolution: {integrity: sha512-M2L8jtPEAXj0CPmXbiW66THdr3OnDqA9IsU1hqv3CdxtVow3Bl9eXPdT9Opeji7L4AFrUZ016dJOs+CoTw66OA==}
 
-  next-intl@4.13.5:
-    resolution: {integrity: sha512-9tIeZmBgxS0yYw+NN0mOfLxrH/r1l9CF/A4noKCwUfTyGIHZHrUmBnvOhbNmI4TgN7Piraf+BmIDU9pnZzjF7A==}
+  next-intl@4.13.6:
+    resolution: {integrity: sha512-loS6tjWWkr/IP+EV1yXUm9URB54QmZOp4+ZsMZNmeYxY8IZxLvO2esUegnXIDxj5DpK/4BsxwDGfGhlqodpkCQ==}
     peerDependencies:
       next: ^12.0.0 || ^13.0.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || >=19.0.0-rc <19.0.0 || ^19.0.0
@@ -5107,8 +5107,8 @@ packages:
   property-information@7.2.0:
     resolution: {integrity: sha512-IAtzIB6sUiWaJYrX9smp3V46pBGbBeLFRGdh25kg1334VcBlD8HzhPeNIWQH9zhGmo2itIe25EHt9dQP7G5hmg==}
 
-  prosemirror-commands@1.7.1:
-    resolution: {integrity: sha512-rT7qZnQtx5c0/y/KlYaGvtG411S97UaL6gdp6RIZ23DLHanMYLyfGBV5DtSnZdthQql7W+lEVbpSfwtO8T+L2w==}
+  prosemirror-commands@1.7.2:
+    resolution: {integrity: sha512-q6Q6szxqdu9Xd6EcdKsqXghu5nQdZTpB4Q9yd04WRc7/jt763e/rT60Owh0L1GYY+T46o5rD+9lEN36dZS43tw==}
 
   prosemirror-history@1.5.0:
     resolution: {integrity: sha512-zlzTiH01eKA55UAf1MEjtssJeHnGxO0j4K4Dpx+gnmX9n+SHNlDqI2oO1Kv1iPN5B1dm5fsljCfqKF9nFL6HRg==}
@@ -5730,8 +5730,8 @@ packages:
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
 
-  tsx@4.23.11:
-    resolution: {integrity: sha512-Ry2oTEUnhBdeEdWIztY8kf3/nBGnPnjMLVGL0YfdRXMORuPER5NlKmayqxtxRxwB1xBN+RivRaJfe7PM1rtiyw==}
+  tsx@4.23.12:
+    resolution: {integrity: sha512-FDf4L4sYzKtzWYhU/Xm0AQFdTjdIxNo9ElTf2mxXM6k8YMHXzYUe4yODVaXP4V9uMFbVg8c0qyBccK2OOxb45Q==}
     engines: {node: '>=18.0.0'}
     hasBin: true
 
@@ -5821,8 +5821,8 @@ packages:
       '@types/react':
         optional: true
 
-  use-intl@4.13.5:
-    resolution: {integrity: sha512-oYpi0M6Cd7V0ZAvOPakB3kUCVzpwsVbod47G/xbZV5dvrqFMAw4fcwOS+sKpAjVdNW+CbQUeBk4Vnyzmk/07Bw==}
+  use-intl@4.13.6:
+    resolution: {integrity: sha512-RLej84qL6PGTDp/PSG3tqRpwr7IvJfOu4Qfv/uyy8CrnYn1oEOQb6osNJb++jZ7FQxqN3aQ5BI7wTIerUgrgMA==}
     peerDependencies:
       react: ^17.0.0 || ^18.0.0 || >=19.0.0-rc <19.0.0 || ^19.0.0
 
@@ -6105,8 +6105,8 @@ packages:
     resolution: {integrity: sha512-4UEqdc2RYGHZc7Doyqkrqiln3p9X2DZVxaGbwhn2pi7MrRagKaOcIKe8L3OxYcbhXLgLFUS3zAYuQjKBQgmuNg==}
     engines: {node: ^20.19.0 || ^22.12.0 || >=23}
 
-  yjs@13.6.31:
-    resolution: {integrity: sha512-Eq+5BRfbeGyqGVrTJL3bEcr8gKkxPuyuoHmAwpk52fDb8kOVMrfVSTRPd6yiGgX5Fskb96qCRjzjbRjrL4YEnw==}
+  yjs@13.6.32:
+    resolution: {integrity: sha512-lfiJIIC4Xayt5ItynE407ehlE03pCjeOc4hkR4yxxvvNJ4kuiN25B0g+Qp8XagYz361LLL7DCzR5bvFJ81QKtQ==}
     engines: {node: '>=16.0.0', npm: '>=8.0.0'}
 
   yoga-layout@3.2.1:
@@ -6128,7 +6128,7 @@ snapshots:
     dependencies:
       '@annotorious/react': 3.8.8(openseadragon@6.1.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@recogito/react-text-annotator': 3.4.10(openseadragon@6.1.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      lucide-react: 1.30.0(react@19.2.8)
+      lucide-react: 1.31.0(react@19.2.8)
       mongodb: 7.5.0(socks@2.8.9)
       next: 15.5.23(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       openseadragon: 6.1.0
@@ -6149,9 +6149,9 @@ snapshots:
       - snappy
       - socks
 
-  '@activistchecklist/umami-extra-privacy@https://codeload.github.com/ActivistChecklist/umami-extra-privacy/tar.gz/7669154d772ecbf3410c1243e8014ac8a0e74c5e(fastify@5.11.2)':
+  '@activistchecklist/umami-extra-privacy@https://codeload.github.com/ActivistChecklist/umami-extra-privacy/tar.gz/7669154d772ecbf3410c1243e8014ac8a0e74c5e(fastify@5.11.3)':
     optionalDependencies:
-      fastify: 5.11.2
+      fastify: 5.11.3
 
   '@adobe/react-spectrum-ui@1.2.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:
@@ -6935,7 +6935,7 @@ snapshots:
       - '@react-spectrum/provider'
       - supports-color
 
-  '@keystatic/core@0.6.4(@keystar/ui@0.7.22(@react-spectrum/provider@3.11.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(next@15.5.23(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8)':
+  '@keystatic/core@0.6.5(@keystar/ui@0.7.22(@react-spectrum/provider@3.11.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(next@15.5.23(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8)':
     dependencies:
       '@babel/runtime': 7.29.7
       '@braintree/sanitize-url': 6.0.4
@@ -6948,7 +6948,7 @@ snapshots:
       '@markdoc/markdoc': 0.4.0(@types/react@19.2.18)(react@19.2.8)
       '@react-types/shared': 3.36.1(react@19.2.8)
       '@sindresorhus/slugify': 1.1.2
-      '@toeverything/y-indexeddb': 0.10.0-canary.9(yjs@13.6.31)
+      '@toeverything/y-indexeddb': 0.10.0-canary.9(yjs@13.6.32)
       '@ts-gql/tag': 0.7.3(graphql@16.14.2)
       '@types/react': 19.2.18
       '@urql/core': 5.2.0(graphql@16.14.2)
@@ -6979,7 +6979,7 @@ snapshots:
       micromark-extension-mdxjs: 3.0.0
       minimatch: 9.0.9
       partysocket: 0.0.22
-      prosemirror-commands: 1.7.1
+      prosemirror-commands: 1.7.2
       prosemirror-history: 1.5.0
       prosemirror-keymap: 1.2.3
       prosemirror-model: 1.25.11
@@ -6998,16 +6998,16 @@ snapshots:
       superstruct: 1.0.4
       unist-util-visit: 5.1.0
       urql: 4.2.2(@urql/core@5.2.0(graphql@16.14.2))(react@19.2.8)
-      y-prosemirror: 1.3.7(prosemirror-model@1.25.11)(prosemirror-state@1.4.4)(prosemirror-view@1.42.2)(y-protocols@1.0.7(yjs@13.6.31))(yjs@13.6.31)
-      y-protocols: 1.0.7(yjs@13.6.31)
-      yjs: 13.6.31
+      y-prosemirror: 1.3.7(prosemirror-model@1.25.11)(prosemirror-state@1.4.4)(prosemirror-view@1.42.2)(y-protocols@1.0.7(yjs@13.6.32))(yjs@13.6.32)
+      y-protocols: 1.0.7(yjs@13.6.32)
+      yjs: 13.6.32
     transitivePeerDependencies:
       - supports-color
 
-  '@keystatic/next@5.0.4(@keystatic/core@0.6.4(@keystar/ui@0.7.22(@react-spectrum/provider@3.11.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(next@15.5.23(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(next@15.5.23(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+  '@keystatic/next@5.0.4(@keystatic/core@0.6.5(@keystar/ui@0.7.22(@react-spectrum/provider@3.11.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(next@15.5.23(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(next@15.5.23(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:
       '@babel/runtime': 7.29.7
-      '@keystatic/core': 0.6.4(@keystar/ui@0.7.22(@react-spectrum/provider@3.11.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(next@15.5.23(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8)
+      '@keystatic/core': 0.6.5(@keystar/ui@0.7.22(@react-spectrum/provider@3.11.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(next@15.5.23(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8)
       '@types/react': 19.2.18
       chokidar: 3.6.0
       next: 15.5.23(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -8988,12 +8988,12 @@ snapshots:
       postcss: 8.5.26
       tailwindcss: 4.3.3
 
-  '@toeverything/y-indexeddb@0.10.0-canary.9(yjs@13.6.31)':
+  '@toeverything/y-indexeddb@0.10.0-canary.9(yjs@13.6.32)':
     dependencies:
       idb: 7.1.1
       nanoid: 5.1.16
-      y-provider: 0.10.0-canary.9(yjs@13.6.31)
-      yjs: 13.6.31
+      y-provider: 0.10.0-canary.9(yjs@13.6.32)
+      yjs: 13.6.32
 
   '@tootallnate/quickjs-emscripten@0.23.0': {}
 
@@ -9108,13 +9108,13 @@ snapshots:
       chai: 6.2.2
       tinyrainbow: 3.1.0
 
-  '@vitest/mocker@4.1.10(vite@8.2.1(@types/node@25.9.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.11)(yaml@2.9.0))':
+  '@vitest/mocker@4.1.10(vite@8.2.1(@types/node@25.9.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0))':
     dependencies:
       '@vitest/spy': 4.1.10
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 8.2.1(@types/node@25.9.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.11)(yaml@2.9.0)
+      vite: 8.2.1(@types/node@25.9.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0)
 
   '@vitest/pretty-format@4.1.10':
     dependencies:
@@ -9756,7 +9756,7 @@ snapshots:
       chokidar: 5.0.0
       close-with-grace: 2.5.0
       commist: 3.2.0
-      fastify: 5.11.2
+      fastify: 5.11.3
       fastify-plugin: 5.1.0
       generify: 4.2.0
       help-me: 5.0.0
@@ -9771,7 +9771,7 @@ snapshots:
 
   fastify-plugin@6.0.0: {}
 
-  fastify@5.11.2:
+  fastify@5.11.3:
     dependencies:
       '@fastify/ajv-compiler': 4.0.6
       '@fastify/error': 4.2.0
@@ -10088,7 +10088,7 @@ snapshots:
     dependencies:
       safer-buffer: 2.1.2
 
-  icu-minify@4.13.5:
+  icu-minify@4.13.6:
     dependencies:
       '@formatjs/icu-messageformat-parser': 3.5.16
 
@@ -10371,7 +10371,7 @@ snapshots:
 
   lru-cache@7.18.3: {}
 
-  lucide-react@1.30.0(react@19.2.8):
+  lucide-react@1.31.0(react@19.2.8):
     dependencies:
       react: 19.2.8
 
@@ -10867,20 +10867,20 @@ snapshots:
 
   netmask@2.1.1: {}
 
-  next-intl-swc-plugin-extractor@4.13.5: {}
+  next-intl-swc-plugin-extractor@4.13.6: {}
 
-  next-intl@4.13.5(@swc/helpers@0.5.23)(next@15.5.23(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)(typescript@6.0.3):
+  next-intl@4.13.6(@swc/helpers@0.5.23)(next@15.5.23(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)(typescript@6.0.3):
     dependencies:
       '@formatjs/intl-localematcher': 0.8.13
       '@parcel/watcher': 2.6.0
       '@swc/core': 1.15.47(@swc/helpers@0.5.23)
-      icu-minify: 4.13.5
+      icu-minify: 4.13.6
       negotiator: 1.0.0
       next: 15.5.23(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      next-intl-swc-plugin-extractor: 4.13.5
+      next-intl-swc-plugin-extractor: 4.13.6
       po-parser: 2.1.1
       react: 19.2.8
-      use-intl: 4.13.5(react@19.2.8)
+      use-intl: 4.13.6(react@19.2.8)
     optionalDependencies:
       typescript: 6.0.3
     transitivePeerDependencies:
@@ -11239,7 +11239,7 @@ snapshots:
 
   property-information@7.2.0: {}
 
-  prosemirror-commands@1.7.1:
+  prosemirror-commands@1.7.2:
     dependencies:
       prosemirror-model: 1.25.11
       prosemirror-state: 1.4.4
@@ -12006,7 +12006,7 @@ snapshots:
 
   tslib@2.8.1: {}
 
-  tsx@4.23.11:
+  tsx@4.23.12:
     dependencies:
       esbuild: 0.28.2
     optionalDependencies:
@@ -12104,11 +12104,11 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.2.18
 
-  use-intl@4.13.5(react@19.2.8):
+  use-intl@4.13.6(react@19.2.8):
     dependencies:
       '@formatjs/fast-memoize': 3.1.7
       '@schummar/icu-type-parser': 1.21.5
-      icu-minify: 4.13.5
+      icu-minify: 4.13.6
       intl-messageformat: 11.2.13
       react: 19.2.8
 
@@ -12156,7 +12156,7 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
 
-  vite@8.2.1(@types/node@25.9.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.11)(yaml@2.9.0):
+  vite@8.2.1(@types/node@25.9.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0):
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.5
@@ -12168,13 +12168,13 @@ snapshots:
       esbuild: 0.28.2
       fsevents: 2.3.3
       jiti: 2.7.0
-      tsx: 4.23.11
+      tsx: 4.23.12
       yaml: 2.9.0
 
-  vitest@4.1.10(@types/node@25.9.2)(jsdom@29.1.1)(vite@8.2.1(@types/node@25.9.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.11)(yaml@2.9.0)):
+  vitest@4.1.10(@types/node@25.9.2)(jsdom@29.1.1)(vite@8.2.1(@types/node@25.9.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0)):
     dependencies:
       '@vitest/expect': 4.1.10
-      '@vitest/mocker': 4.1.10(vite@8.2.1(@types/node@25.9.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.11)(yaml@2.9.0))
+      '@vitest/mocker': 4.1.10(vite@8.2.1(@types/node@25.9.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0))
       '@vitest/pretty-format': 4.1.10
       '@vitest/runner': 4.1.10
       '@vitest/snapshot': 4.1.10
@@ -12191,7 +12191,7 @@ snapshots:
       tinyexec: 1.2.4
       tinyglobby: 0.2.17
       tinyrainbow: 3.1.0
-      vite: 8.2.1(@types/node@25.9.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.11)(yaml@2.9.0)
+      vite: 8.2.1(@types/node@25.9.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0)
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 25.9.2
@@ -12283,23 +12283,23 @@ snapshots:
 
   xmlchars@2.2.0: {}
 
-  y-prosemirror@1.3.7(prosemirror-model@1.25.11)(prosemirror-state@1.4.4)(prosemirror-view@1.42.2)(y-protocols@1.0.7(yjs@13.6.31))(yjs@13.6.31):
+  y-prosemirror@1.3.7(prosemirror-model@1.25.11)(prosemirror-state@1.4.4)(prosemirror-view@1.42.2)(y-protocols@1.0.7(yjs@13.6.32))(yjs@13.6.32):
     dependencies:
       lib0: 0.2.117
       prosemirror-model: 1.25.11
       prosemirror-state: 1.4.4
       prosemirror-view: 1.42.2
-      y-protocols: 1.0.7(yjs@13.6.31)
-      yjs: 13.6.31
+      y-protocols: 1.0.7(yjs@13.6.32)
+      yjs: 13.6.32
 
-  y-protocols@1.0.7(yjs@13.6.31):
+  y-protocols@1.0.7(yjs@13.6.32):
     dependencies:
       lib0: 0.2.117
-      yjs: 13.6.31
+      yjs: 13.6.32
 
-  y-provider@0.10.0-canary.9(yjs@13.6.31):
+  y-provider@0.10.0-canary.9(yjs@13.6.32):
     dependencies:
-      yjs: 13.6.31
+      yjs: 13.6.32
 
   y18n@5.0.8: {}
 
@@ -12318,7 +12318,7 @@ snapshots:
       y18n: 5.0.8
       yargs-parser: 22.0.0
 
-  yjs@13.6.31:
+  yjs@13.6.32:
     dependencies:
       lib0: 0.2.117
 
