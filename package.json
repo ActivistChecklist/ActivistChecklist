@@ -149,7 +149,7 @@
     "commander": "^15.0.0",
     "concurrently": "^10.0.4",
     "fastify-cli": "^8.0.0",
-    "feed": "^5.2.1",
+    "feed": "^6.0.0",
     "http-server": "^14.1.1",
     "husky": "^9.1.7",
     "jsdom": "^29.1.1",
