@@ -1,0 +1,74 @@
+# Checks that our Tor onion service is reachable and serving the real site.
+#
+# The shared web host can't run a Tor daemon, so this runs on a GitHub runner
+# instead: install tor, wait for it to bootstrap, then run the same
+# scripts/healthcheck-onion.sh that would run from cron elsewhere. The script
+# pings Healthchecks.io itself (success, or /fail with diagnostics).
+#
+# Required repository secret:
+#   ONION_HEALTHCHECK_PING_URL — the Ping URL of the onion check on Healthchecks.io
+#
+# Scheduled runs only happen on the default branch, and GitHub delays cron runs
+# under load, so give the Healthchecks check a generous grace period (period 1h,
+# grace 1h works well with the 30-minute schedule below).
+
+name: Onion healthcheck
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: healthcheck-onion
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Install Tor
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends tor
+          sudo systemctl start tor@default || sudo service tor start
+
+      # Gate on a third-party onion we don't control. If this fails, the runner's
+      # Tor is broken (or Tor itself is having a bad day) and any failure from our
+      # own check would be noise — so we stop here without pinging Healthchecks.
+      # The job goes red and GitHub emails you; the check goes late instead of down.
+      - name: Wait for Tor to bootstrap
+        env:
+          # torproject.org's own onion service, used purely as a liveness control.
+          CONTROL_ONION: http://2gzyxa5ihm7nsggfxnu52rck2vv4rvmdlkiu3zzui5du4xyclen53wid.onion/
+        run: |
+          for attempt in $(seq 1 8); do
+            if curl -fsS --max-time 45 --socks5-hostname 127.0.0.1:9050 \
+              -o /dev/null "$CONTROL_ONION"; then
+              echo "Tor is up and resolving onion services (attempt $attempt)."
+              exit 0
+            fi
+            echo "Tor not ready yet (attempt $attempt/8); waiting 15s..."
+            sleep 15
+          done
+          echo "::error::Tor never reached a usable state on this runner. Skipping the onion check so we don't report a false outage."
+          exit 1
+
+      - name: Check onion service
+        env:
+          ONION_HEALTHCHECK_PING_URL: ${{ secrets.ONION_HEALTHCHECK_PING_URL }}
+          TOR_SOCKS_PROXY: 127.0.0.1:9050
+        run: |
+          if [ -z "$ONION_HEALTHCHECK_PING_URL" ]; then
+            echo "::error::Repository secret ONION_HEALTHCHECK_PING_URL is not set."
+            exit 1
+          fi
+          bash scripts/healthcheck-onion.sh
