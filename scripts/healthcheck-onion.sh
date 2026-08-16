@@ -11,9 +11,9 @@
 # Requires a local Tor SOCKS proxy (the `tor` daemon, default 127.0.0.1:9050).
 # Onion fetches are slow, so timeouts are generous and failures are retried.
 #
-# In production this runs on a GitHub runner every 30 minutes, since the web host
-# has no Tor daemon: see .github/workflows/healthcheck-onion.yml. The cron form
-# below works on any machine that does run tor.
+# This has no scheduled runner: the web host has no Tor daemon, and the GitHub
+# Actions workflow that used to run it every 30 minutes has been removed. Run it
+# by hand, or via the cron form below, on any machine that does run tor.
 #
 # Setup example:
 #   export ONION_HEALTHCHECK_PING_URL="https://hc-ping.com/your-uuid"
