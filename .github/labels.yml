@@ -67,3 +67,9 @@
 - name: "effort: high 🏔️"
   color: "fbca04"
   description: "Large task requiring significant effort"
+
+# Applied automatically by .github/workflows/sofa-watchlist-check.yml.
+# Plain name (no emoji) because the workflow matches this exact string.
+- name: "sofa-watchlist"
+  color: "bfd4f2"
+  description: "Automated SOFA macOS feed watchlist drift: dropped or newly added Mac models"
