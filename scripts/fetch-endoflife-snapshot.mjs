@@ -445,7 +445,7 @@ async function main() {
   const newHash = stableSnapshotHash(snapshot);
   const oldHash = previous ? stableSnapshotHash(previous) : null;
   if (oldHash && newHash === oldHash) {
-    console.log(`Snapshot content unchanged (hash ${newHash.slice(0, 12)}); skipping write`);
+    console.log(`Snapshot content unchanged (hash ${newHash.slice(0, 12)}); skipping write to ${outputPath}`);
     await pingHealthcheck(true);
     return;
   }
