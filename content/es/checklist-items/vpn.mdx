@@ -1,59 +1,48 @@
 ---
-title: Instala una VPN confiable con bloqueo de anuncios para que sea más difícil que los policías hagan vigilancia sin orden judicial
+title: Instala una VPN confiable con bloqueo de anuncios para dificultar que los cops te vigilen sin una orden judicial
 preview: |
   Una VPN hace que sea más difícil que los sitios web te rastreen y evita que tu proveedor de internet registre tu tráfico.
 do: |
-  Instala una VPN confiable y mantenla activada. Recomendamos [Mullvad VPN](https://mullvad.net/en) ($5/mes) o [IVPN](https://www.ivpn.net/) ($6/mes).
+  Instala una VPN confiable y mantenla activada. Recomendamos [IVPN](https://www.ivpn.net/) ($6/mes).
 dont: |
-  Usar una VPN cualquiera que encuentres en internet. Nord VPN, Surfshark, ExpressVPN, etc. son populares pero no tan confiables.
+  Usar cualquier VPN que encuentres por ahí en internet. Nord VPN, Surfshark, ExpressVPN, etc. son populares pero no tan confiables.
 titleBadges: []
 firstPublished: 2025-06-13
-lastUpdated: 2026-03-09
+lastUpdated: 2026-07-20
 ---
 
-Cada vez que te conectas a internet (teléfono o computadora), tu proveedor de internet le revela tu ubicación aproximada a cada sitio o app que uses.
+Cada vez que te conectas a internet (desde el teléfono o la computadora), tu proveedor de internet le revela tu ubicación aproximada a cada sitio o app que usas.
 
-Sabemos que [las agencias policiales están usando herramientas para rastrear tu ubicación](https://www.404media.co/inside-ices-tool-to-monitor-phones-in-entire-neighborhoods/) usando datos recopilados de las apps que tienes y los anuncios que ves. Usar una VPN con funciones de bloqueo de anuncios activadas hace mucho más difícil que te rastreen. Además, los policías pueden conseguir una orden judicial para obtener tu tráfico de internet de tu proveedor.
+Sabemos que [las agencias policiales están usando herramientas para rastrear tu ubicación](https://www.404media.co/inside-ices-tool-to-monitor-phones-in-entire-neighborhoods/) con datos recopilados de las apps que tienes y los anuncios que ves. Usar una VPN con el bloqueo de anuncios activado les dificulta mucho más rastrearte. Además, los cops pueden conseguir una citación judicial para obtener tu tráfico de internet de tu proveedor.
 
-Una VPN (Red Privada Virtual) ayuda a ocultar tu ubicación y hace un poco más difícil identificarte.
+Una VPN (Red Privada Virtual) ayuda a ocultar tu ubicación y te hace un poco más difícil de identificar.
 
-Una VPN con bloqueo de anuncios activado en tu celular puede ayudar a evitar que el gobierno rastree tu ubicación sin una orden judicial (a través de redes publicitarias).
+Una VPN con bloqueo de anuncios activado en tu teléfono puede ayudar a evitar el rastreo de ubicación sin orden judicial (a través de redes publicitarias).
+
+Visita nuestra [página sobre VPN](/vpn/) para más información sobre cuándo una VPN sirve de verdad y cuándo no.
 
 <Alert type="warning">
-  **Una VPN no te hace totalmente anónime.** Para navegación sensible que requiera mayor anonimato, considera [Tor Browser](https://activistchecklist.org/research) como un segundo navegador junto al que usas a diario.
+  **Una VPN no te hace totalmente anónimo.** Para navegación sensible que requiera mayor anonimato, considera usar [Tor Browser](https://activistchecklist.org/research) como un segundo navegador junto al que usas a diario.
 </Alert>
 
-**Opciones:** Todas estas son opciones muy confiables.
+**Opciones:** Estas son las VPN que recomendamos para la mayoría de activistas (mira nuestra [lista completa de VPN revisadas](/vpn/#recommended)):
 
-* [**Mullvad VPN**](https://mullvad.net/en/vpn) **(nuestra principal recomendación)**: Mejor privacidad porque no guarda la información de pago, pero tienes que pagar manualmente cada ciclo.
-* [**IVPN**](https://www.ivpn.net/en/) puede ser más fácil porque se renueva automáticamente.
-* [**Proton VPN**](https://protonvpn.com/) tiene un plan gratuito sólido, pero solo es para 1 dispositivo. Para obtener bloqueo de anuncios, necesitas un plan de pago. (Si usas Proton, mira nuestra [guía para usar Proton de forma segura](/proton/).)
+* [**IVPN**](https://www.ivpn.net/en/) **(nuestra recomendación principal)**: Fácil de usar y se renueva automáticamente.
+* [**Proton VPN**](https://protonvpn.com/) tiene un plan gratuito sólido, pero solo funciona en 1 dispositivo. Para tener bloqueo de anuncios necesitas un plan de pago. (Si usas Proton, mira nuestra [guía para usar Proton de forma segura](/proton/).)
 
-<HowTo title="Cómo configurar Mullvad VPN">
-  ***App móvil***
+<HowTo title="Cómo configurar IVPN">
+  1. **Crea tu cuenta:** Ve a IVPN y haz clic en [Generate IVPN Account](https://www.ivpn.net/en/pricing/) ($6/mes o $60/año). En **Standard Plan** haz clic en **Select** (elige el **Pro Plan** si tienes más de 2 dispositivos).
+  2. **Anota tu Account ID:** Guárdalo en un lugar seguro, como tu gestor de contraseñas. No hay opción de "olvidé mi contraseña", así que si lo pierdes, nadie podrá recuperarlo por ti.
+  3. **Paga:** Elige mensual o anual, marca la casilla **Automatic renewal**, ingresa los datos de pago y haz clic en **Make Payment**.
+     * En vez de una tarjeta de crédito, también puedes pedir una [tarjeta voucher para IVPN](https://digitalgoods.proxysto.re/en) para proteger aún más tu identidad.
+  4. **Instala la app de escritorio** ([Mac](https://www.ivpn.net/en/apps-macos/), [Windows](https://www.ivpn.net/en/apps-windows)) e inicia sesión con tu Account ID.
+  5. **Activa la conexión automática:** <MenuPath inline>Busca IVPN en tu barra de herramientas > **Show IVPN** > ⚙️ **Ícono de engranaje** > **Settings** > **General**</MenuPath> y activa **Launch at login**, **Autoconnect on launch** y **Allow background daemon to manage autoconnect**.
+  6. **Activa el bloqueo de anuncios:** Enciende **AntiTracker** en la pantalla principal de la app de IVPN para bloquear anuncios (esto ayuda a mantener tu ubicación privada, sobre todo en el teléfono).
+  7. **Instala la app móvil** ([iPhone](https://www.ivpn.net/en/apps-ios), [Android](https://www.ivpn.net/en/apps-android)) e inicia sesión con el mismo Account ID, luego activa las mismas opciones de arriba. (En iPhone no hay opción de conexión automática porque viene activada por defecto.)
 
-  1. **Crea un número de cuenta y anótalo:** Crea un [número de cuenta de Mullvad](https://mullvad.net/en/account/create) (no hay contraseña) y *<u>**anótalo**</u>* en un lugar seguro como tu administrador de contraseñas.
-  2. **Paga (o sea, "Añade tiempo"):** No hay renovación automática, así que todos los pagos son manuales. Pagar anualmente puede facilitarte las cosas para que no tengas que acordarte.
-  3. **Instala la app móvil de Mullvad** ([iPhone](https://apps.apple.com/us/app/mullvad-vpn/id1488466513), [Android](https://mullvad.net/en/download/vpn/android)) e inicia sesión con tu número de cuenta.
-  4. **Activa el bloqueo de anuncios:** <MenuPath inline>**Ícono de Engranaje** ⚙️ > **VPN Settings** > **DNS Settings** > **DNS content blockers** > Activa **Ads**, **Trackers**, y (opcionalmente) **Malware**</MenuPath>
-
-  ***App de escritorio***
-
-  1. **Instala la app de escritorio de Mullvad** ([Mac,](https://mullvad.net/en/download/vpn/macos) [Windows)](https://mullvad.net/en/download/vpn/windows). Obtén el número de cuenta desde la app del teléfono.
-  2. **Activa la conexión automática:** <MenuPath inline>Busca Mullvad en tu barra de herramientas > **Ícono de Engranaje** ⚙️ > **VPN Settings** > Activa **Launch app on start-up** y **Auto-connect**</MenuPath>
-  3. **Activa el bloqueo de anuncios:** <MenuPath inline>Busca Mullvad en tu barra de herramientas > **Ícono de Engranaje** ⚙️ > **VPN Settings** > **DNS content blockers** > Activa **Ads**, **Trackers**, y (opcionalmente) **Malware**</MenuPath>
-
-  Recomendamos mantener tu VPN encendida todo el tiempo, a menos que tengas problemas para conectarte a un sitio (ver abajo).
-
-  *Nota:* En lugar de una tarjeta de crédito, también puedes pedir una tarjeta de vale para [Mullvad](https://www.amazon.com/Mullvad-VPN-Devices-Protect-Security/dp/B092M55HJ2/) o [IVPN](https://www.amazon.com/IVPN-Privacy-Protection-Surveillance-Open-Source/dp/B0BL8FWDRL/) para que tu identidad esté aún más protegida. (Sí, nosotres también odiamos a Amazon, pero es el único lugar en internet donde puedes comprar estas tarjetas.)
+  Recomendamos mantener tu VPN encendida todo el tiempo, salvo que tengas problemas para conectarte a un sitio (mira nuestra lista de [desventajas de usar una VPN](/vpn/#downsides)).
 </HowTo>
 
-**Desventajas de usar una VPN**
-
-* Te vas a encontrar con más CAPTCHAs en los sitios web
-* Algunos sitios web pueden bloquear el acceso por VPN, y vas a tener que desactivarla y acordarte de volver a activarla después
-* Algunos servicios de streaming pueden no funcionar
-
-Si notas un comportamiento extraño en un sitio web, intenta apagar la VPN temporalmente para ver si carga. Pero, como es fácil olvidarse de volver a encender la VPN, la mejor solución es activar [split tunneling](https://mullvad.net/en/help/split-tunneling-with-the-mullvad-app) en Mullvad. Puedes configurarla para que un navegador secundario se salte la VPN. Por ejemplo, si usas Brave como tu navegador principal, puedes configurar Chrome o Safari para que omitan la VPN y usar ese navegador solo cuando un sitio web no esté funcionando.
-
-*Nota:* Debes usar una VPN confiable que no guarde registros de tu tráfico de internet y que se resista a las solicitudes del gobierno. Ya investigamos nuestras recomendaciones principales.
+<Alert type="información">
+  **Por qué ya no recomendamos Mullvad:** Mullvad solía ser la VPN más recomendada por activistas y personas en riesgo. Su tecnología VPN sigue siendo la mejor que existe, pero uno de sus cofundadores arruinó recientemente esa gran reputación al [donar cientos de miles de dólares](https://www.techradar.com/vpn/vpn-privacy-security/i-dont-like-that-he-made-this-donation-mullvad-ceo-reacts-to-co-founders-donation-to-controversial-swedish-populist-party) a un partido político de ultraderecha en Suecia. Por eso ya no podemos recomendarlos.
+</Alert>

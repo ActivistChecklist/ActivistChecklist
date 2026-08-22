@@ -1,0 +1,211 @@
+---
+title: VPN para activistas
+seoTitle: "VPN para activistas: ¿necesitas una? Mitos y recomendaciones (2026)"
+seoDescription: Por qué a los activistas les puede convenir usar una VPN confiable con bloqueo de anuncios y cuáles recomendamos (IVPN, Proton).
+firstPublished: 2026-08-10
+lastUpdated: 2026-08-10
+excerpt: Una VPN confiable con bloqueo de anuncios hace más difícil que la policía y los data brokers rastreen a dónde vas en internet.
+showToc: true
+relatedGuides:
+  - essentials
+  - signal
+---
+
+En internet se debate mucho si una VPN es útil o no. La respuesta depende de qué quieras proteger y de quién.
+
+**¿Qué es una VPN?** Una VPN es una app que instalas en tu teléfono o computadora y que redirige todo tu tráfico de internet a través de sus servidores. Su función principal es cambiar tu dirección IP (que es la "dirección de casa" de tu computadora en internet). Normalmente todos los dispositivos de tu casa tienen la misma dirección IP y todo tu tráfico pasa por tu proveedor de internet. Si usas una VPN, compartes la misma dirección IP con miles de otros usuarios y tu tráfico pasa por la empresa de la VPN en lugar de tu proveedor de internet.
+
+Esto hace dos cosas: mantiene tu navegación fuera del alcance de tu proveedor de internet y oculta tu IP real de los sitios que visitas. También puede saltarse bloqueos por ubicación, porque la IP que te da la VPN puede estar en otro país.
+
+Para activistas, nuestra actividad en internet puede usarse en nuestra contra en un tribunal, aunque lo que hagamos sea legal. Por eso proteger nuestros datos importa. Una VPN puede ayudar, pero no es una solución mágica. Protege una parte muy limitada de tus datos y no es la gran victoria de privacidad que la publicidad de las VPN y los anuncios patrocinados de youtubers quieren hacerte creer.
+
+## ¿Necesitas una VPN?
+
+**Tal vez, pero probablemente no.**
+
+Una VPN te da una IP diferente y saca tu tráfico de internet del alcance de tu proveedor. Eso vale algo, pero hay muchas otras formas en que nos rastrean en internet, y una VPN no ayuda con la mayoría de ellas.
+
+Hay varias cosas que ayudan mucho más a la seguridad digital de activistas que instalar una VPN:
+
+* [Desactiva los permisos de ubicación en la mayoría de las apps](/essentials/#location)
+* [Desactiva el ad ID en tu teléfono](/essentials/#ad-id)
+* [Usa un navegador enfocado en privacidad con bloqueo de anuncios activado por defecto](/essentials/#browser)
+* [Usa un buscador enfocado en privacidad](/essentials/#search)
+* [Usa una app de mapas/navegación enfocada en privacidad (Apple Maps o Magic Earth)](/essentials/#maps)
+* Y todo lo demás en nuestra lista de [Esenciales](/essentials/)...
+
+Una vez que hayas hecho eso, una VPN es útil para activistas en [un conjunto reducido de casos que describimos en la siguiente sección](#value).
+
+Y si solo ocasionalmente necesitas proteger lo que haces en un navegador, [Tor Browser](https://www.torproject.org/) es gratis y hace mucho más para darte anonimato que una VPN.
+
+## Casos en los que una VPN puede ser útil {#value}
+
+#### ✅ Quieres dificultarles a los data brokers recolectar tus datos de navegación y ubicación (que la policía puede usar para vigilarte)
+
+ICE y otras agencias policiales están usando herramientas como [Tangles y Webloc](https://www.404media.co/inside-ices-tool-to-monitor-phones-in-entire-neighborhoods/) para rastrear teléfonos. Tienen un largo historial de [comprar datos de ubicación](https://www.theguardian.com/technology/2026/mar/19/fbi-buying-location-data-use) y [dirigirse a comunidades](https://www.vice.com/en/article/us-military-location-data-xmode-locate-x/) según los datos que compran a data brokers.
+
+La mejor forma de evitar que la policía use los datos de ubicación para vigilarte es [desactivar los permisos de ubicación en la mayoría de las apps](/essentials/#location) y [desactivar el ad ID en tu teléfono](/essentials/#ad-id).
+
+Pero instalar una VPN puede ayudar de otras tres maneras:
+
+* Puede impedir que tu proveedor de internet [venda tus datos de navegación a data brokers](https://www.bleepingcomputer.com/news/security/ftc-isps-collect-and-monetize-far-more-user-data-than-you-d-think/), que pueden terminar en manos de la policía.
+* Puede darte una IP distinta, dificultando que tu ubicación a nivel de ciudad termine en la base de datos de un data broker y que tu tráfico web se pueda correlacionar tan fácilmente. (Pero no te hace anónimx en internet, mira [los límites de una VPN](#limits) más abajo.)
+* Puede facilitar el bloqueo de anuncios, que es parte de [cómo los data brokers obtienen información sobre ti](https://www.eff.org/deeplinks/2026/03/targeted-advertising-gives-your-location-government-just-ask-cbp), aunque nunca hagas clic en un anuncio. No todas las VPN lo hacen, pero las que recomendamos sí (IVPN lo llama "AntiTracker" y Proton lo llama "NetShield"). Nota: hay otras formas de bloquear anuncios, pero son más difíciles de configurar para la mayoría. Mira [AdGuard](https://adguard.com/en/welcome.html) y lee más abajo sobre [DNS cifrado](#dns).
+
+Estas son las razones principales por las que seguimos pensando que una VPN vale la pena para activistas en mayor riesgo. Es posible que una VPN no ofrezca una protección significativa contra estas amenazas. Pero también es posible que sí, y las desventajas de usarla son relativamente pequeñas.
+
+<Alert type="información">
+  **Nota:** esta es una mejora muy pequeña y no significa que seas anónimx en internet. Si necesitas una garantía real de anonimato, [Tor Browser](https://www.torproject.org/) es la mejor opción.
+</Alert>
+
+#### ✅ Quieres impedir que tu proveedor de internet venda tus datos o los entregue a la policía
+
+Si te preocupa que tu proveedor de internet de casa o tu compañía celular (que le da datos a tu teléfono) [venda tus datos](https://www.bleepingcomputer.com/news/security/ftc-isps-collect-and-monetize-far-more-user-data-than-you-d-think/) o los entregue a la policía, una VPN les quita esos datos de las manos. Todo lo que tu proveedor de internet puede ver es que estás conectadx a una VPN.
+
+La contrapartida es que ahora es la empresa de la VPN la que puede ver esa misma información. No estás eliminando el riesgo, estás eligiendo quién lo tiene. Por eso importa tanto qué VPN eliges (mira nuestras [recomendaciones abajo](#recommended)).
+
+#### ✅ Otros casos en los que una VPN puede ser útil
+
+* Una VPN puede ser útil si intentas saltarte la censura en internet en tu país (o si viajas al extranjero).
+* También te puede permitir saltarte restricciones por ubicación en servicios de streaming.
+
+## Por qué los consejos sobre VPN en internet son tan poco confiables {#marketing}
+
+Ayuda saber por qué tanta gente cree que una VPN hace más de lo que realmente hace.
+
+Las empresas de VPN pagan una comisión por cada persona que se registra a través de un enlace de afiliado. Por eso el video de tu youtuber favoritx empieza con un anuncio de VPN, y por eso internet está lleno de listas de "las mejores VPN de 2026".
+
+Va más allá de los anuncios. Kape Technologies es dueña de ExpressVPN, CyberGhost, Private Internet Access y ZenMate. En 2021 también compró [dos de los sitios de reseñas de VPN más grandes](https://cyberinsider.com/kape-technologies-owns-expressvpn-cyberghost-pia-zenmate-vpn-review-sites/), vpnMentor y Wizcase, que pusieron a las tres VPN de Kape en sus tres primeras recomendaciones.
+
+Nada de esto significa que toda VPN sea mala. Significa que las voces más ruidosas que te dicen que necesitas una están pagadas para decirlo, y sus afirmaciones van mucho más allá de lo que la tecnología realmente hace.
+
+## Los límites de una VPN {#limits}
+
+Una VPN hace una cosa muy específica. Aquí está lo que la gente espera que haga y que no hace.
+
+#### Una VPN no te hace anónimx
+
+Solo cambia tu dirección IP. En la mayoría de sitios grandes (Google, Instagram, etc.) también estás en una cuenta, que te identifica sin importar qué IP uses. Incluso cuando no estás en una cuenta, esos sitios combinan otros detalles para identificarte de forma única: la versión de tu navegador, sistema operativo, tamaño de pantalla, zona horaria, plugins del navegador, etc. Esto se llama la "huella" o fingerprint de tu navegador. Prueba [Cover Your Tracks de la EFF](https://coveryourtracks.eff.org/) para ver la huella de tu navegador.
+
+Para un anonimato real, usa [Tor Browser](https://www.torproject.org/) para tu actividad en internet más sensible.
+
+#### Estar en otro país no pone a una VPN fuera del alcance del gobierno de EE. UU.
+
+EE. UU. tiene algo llamado "tratado de asistencia legal mutua" (MLAT) con muchos países. Esto significa que pueden presentar una orden judicial a ese país y usarán su sistema legal para ejecutarla. Suele requerir mucho más trabajo y tiempo que si la empresa estuviera en EE. UU., así que hay una ligera ventaja. Pero no significa que los datos estén a salvo.
+
+Aunque tu VPN no guarde registros, la policía podría pedirles tu información de pago si usas una VPN vinculada a tu correo electrónico. (Por eso recomendamos un servicio como IVPN que te da un ID de cuenta único no vinculado a un correo.)
+
+#### No necesitas una VPN en Wi-Fi público
+
+Este consejo era popular entre 2010 y 2015, y siguió repitiéndose mucho después de dejar de ser cierto. Hoy en día, [la mayoría de sitios usan una conexión segura](https://medium.com/@boblord/attack-of-the-evil-baristas-b204436f0853) (HTTPS) por defecto. El café, el aeropuerto y cualquier otra persona en la red pueden ver los dominios que visitas (`example.com`), pero no lo que haces ahí (como los artículos que lees, las publicaciones que ves, o tu contraseña o número de tarjeta).
+
+#### Una VPN no te protege de que te hackeen
+
+A los ataques más comunes no les importa si tienes una VPN encendida. El phishing (cuando por accidente le das tu contraseña a un sitio falso) funciona exactamente igual. Y lo mismo pasa con un archivo adjunto malicioso en un correo.
+
+*Excepción:* algunas VPN tienen un ajuste que bloquea dominios conocidos por malware. Eso solo atrapa una parte muy limitada de ataques, y la mayoría de navegadores y muchos proveedores de DNS ya ofrecen un filtrado similar.
+
+#### Pagar por una VPN no la hace confiable
+
+El precio no te dice nada sobre si una empresa te va a proteger. Algunas de las VPN que específicamente [no recomendamos](#avoid) son también las más caras y las más publicitadas.
+
+#### Una mala VPN es peor que no tener VPN
+
+Una VPN puede ver todo tu tráfico de internet. Si guardan registros, pueden entregar esos datos a la policía igual que tu proveedor de internet. También pueden usarlo para vender datos sobre ti a anunciantes y data brokers
+
+La mayoría de las apps de VPN "gratis" son muy sospechosas. Algunas son básicamente malware que permiten que otras personas usen tu conexión a internet con fines maliciosos.
+
+Por eso "solo usa una VPN" es un mal consejo por sí solo, y por eso mantenemos [una lista de las que hemos revisado](#recommended).
+
+#### No necesitas una VPN para bloquear anuncios y rastreadores (pero una VPN lo puede facilitar)
+
+Muchas VPN ofrecen esto, y es una función real. Pero tu navegador lo hace mejor: usa un navegador enfocado en privacidad como [Brave](https://brave.com/) (o [Firefox](https://www.mozilla.org/en-US/firefox/new/) con [uBlock Origin](https://ublockorigin.com/) instalado).
+
+Donde una VPN ayuda es con apps móviles que no usan un navegador, porque el bloqueador de tu navegador no llega hasta ahí. También puedes conseguirlo con [resolvedores DNS personalizados](#dns), pero es mucho más complicado de configurar.
+
+## Cómo configurar una VPN {#how}
+
+<ChecklistItem slug="vpn-es" alwaysExpanded />
+
+## Desventajas de usar una VPN {#downsides}
+
+* Te vas a encontrar con más CAPTCHAs en sitios web (esos pequeños puzzles de "demuestra que eres humanx")
+* Algunos sitios pueden bloquear el acceso con VPN, y vas a tener que desactivarla y acordarte de volver a activarla después
+* Algunos servicios de streaming pueden no funcionar
+* El Wi-Fi público que te hace iniciar sesión en una página emergente (aeropuertos, aviones, hoteles) a menudo no carga con la VPN encendida. Usualmente tienes que apagar la VPN para iniciar sesión y luego volver a encenderla. Esto puede ser especialmente molesto si olvidas que la VPN puede ser la causa del problema.
+
+Si notas un comportamiento raro en un sitio, prueba apagar la VPN un momento a ver si carga. IVPN ofrece una opción de "pausar 5 minutos", que te ayuda a no tener que acordarte de volver a activarla después.
+
+*Nota:* debes usar una VPN confiable que no guarde registros de tu tráfico de internet y que se resista a las solicitudes del gobierno. Hemos revisado nuestras recomendaciones principales.
+
+## ✅ VPN que recomendamos para activistas {#recommended}
+
+* **[IVPN](https://www.ivpn.net/)**: recomendamos IVPN para activistas. Se han ganado la confianza de defensores de la privacidad a largo plazo.
+* **[Proton VPN](https://proton.me/vpn)**: buena si necesitas una opción gratuita. Pequeña desventaja: es más difícil tener una cuenta y un método de pago anónimos. Pero puede ser buena si ya pagas por otros servicios de Proton.
+* **[RiseupVPN](https://riseup.net/en/vpn)**: buena si necesitas una opción gratuita. No recibe actualizaciones de seguridad frecuentes, pero está manejada por activistas de confianza en EE. UU. (Normalmente no recomendamos usar VPN basadas en EE. UU. Hacemos una excepción aquí porque Riseup está diseñada para no retener el tipo de datos que le serían útiles a la policía, así que hay muy poco para entregar, y tienen un largo historial de resistirse a solicitudes legales del gobierno.)
+
+## 🟡 VPN sobre las que aún no tenemos un veredicto {#maybe}
+
+* **[Windscribe](https://www.windscribe.com/)**: tiene un historial decente. No es tan completa en funciones como IVPN.
+* **[NymVPN](https://nym.com/)**: tiene un diseño interesante, pero es demasiado nueva como para recomendarla. Le hace falta una auditoría de seguridad y un historial más largo. Es posible que su modo "mixnet" sea tan seguro o más que Tor, pero tomará un tiempo (años) hasta saberlo con certeza. El fundador parece tener una política de izquierda.
+* **[Obscura](https://obscura.com/)**: se ve legítima, pero es demasiado nueva como para recomendarla. Le hace falta una auditoría de seguridad y un historial más largo.
+* **[AirVPN](https://airvpn.org/)**: popular entre algunxs defensores de la privacidad.
+* **[Hide.me](https://hide.me/)**: historial decente, y no vemos banderas grandes. Pero no tiene las funciones de cuenta anónima que ofrece IVPN (a través de vales). Y no ha invertido tanto en auditorías de seguridad a lo largo de los años.
+* **[Apple iCloud Private Relay](https://support.apple.com/en-us/102602)**: viene incluido en iCloud+ en iPhones y Macs, así que muchxs usuarixs de Apple ya lo tienen activado. Está bastante bien diseñado (tu tráfico pasa no solo por Apple, sino también por un proveedor externo de terceros, así que es mucho más difícil de rastrear), pero solo funciona en Safari y Apple Mail. Así que no es una solución completa.
+
+## ❌ VPN que NO recomendamos {#avoid}
+
+Recomendamos con fuerza **no usar ninguna VPN que no esté en la lista de recomendadas de arriba**.
+
+Una VPN tiene acceso al nombre de dominio (`example.com`) de cada sitio que visitas, y puede entregar esta información a la policía ([como hizo PureVPN con el FBI](https://torrentfreak.com/purevpn-explains-how-it-helped-the-fbi-catch-a-cyberstalker-171016/)) o venderla a data brokers, cuya información la policía también usa a veces para vigilancia sin orden judicial.
+
+<Collapsible title="Expandir para ver la lista completa de VPN que NO recomendamos">
+  Descartamos la mayoría de las VPN basándonos en [este informe de Yael Grauer para Consumer Reports de 2021](https://www.consumerreports.org/electronics-computers/vpn-services/mullvad-ivpn-mozilla-vpn-top-consumer-reports-vpn-testing-a9588707317/) (mira el [documento sobre cómo hicieron la investigación](https://innovation.consumerreports.org/wp-content/uploads/2021/12/VPN-White-Paper.pdf)).
+
+  Aquí tienes una lista de VPN que descartamos y una breve explicación de por qué.
+
+  * **[Mullvad](https://mullvad.net/)**: Mullvad solía ser la VPN #1 recomendada por activistas y personas en mayor riesgo. Su tecnología de VPN sigue siendo la mejor que hay, pero unx de sus cofundadores arruinó recientemente su excelente reputación al [donar cientos de miles de dólares](https://www.techradar.com/vpn/vpn-privacy-security/i-dont-like-that-he-made-this-donation-mullvad-ceo-reacts-to-co-founders-donation-to-controversial-swedish-populist-party) a un partido político de ultraderecha en Suecia. Así que ya no podemos recomendarla.
+    * **[Mozilla VPN](https://www.mozilla.org/en-US/products/vpn/)**: usa la tecnología de Mullvad. Ver arriba.
+  * **[NordVPN](https://nordvpn.com/)**: Nord tuvo una brecha de seguridad grave en 2018 que no reveló durante 17 meses. Esto los hace poco confiables (aunque probablemente hayas visto un millón de anuncios de sus servicios).
+    * **[Surfshark](https://surfshark.com/)**: propiedad de Nord. Ver arriba.
+  * **[ExpressVPN](https://www.expressvpn.com/)**: propiedad de **Kape**. Propiedad de un multimillonario israelí. La empresa antes usaba prácticas turbias para inyectar anuncios en las sesiones de navegación de sus usuarixs antes de entrar en el negocio de las VPN.
+    * **[CyberGhost](https://www.cyberghostvpn.com/)**: propiedad de Kape.
+    * **[Private Internet Access (PIA)](https://www.privateinternetaccess.com/)**: propiedad de Kape.
+    * **[ZenMate](https://zenmate.com/)**: propiedad de Kape.
+  * **[IPVanish](https://www.ipvanish.com/)**: basada en EE.UU., lo que hace mucho más fácil que la policía de EE.UU. los obligue a entregar tus datos (aunque sea solo tu información de pago). No tiene una auditoría de seguridad pública reciente.
+  * **[TunnelBear](https://www.tunnelbear.com/)**: propiedad de McAfee, una empresa poco confiable en cuanto a seguridad. (Su software antivirus es básicamente spyware.) También es una empresa de EE. UU., lo que significa que a los cops les cuesta menos obligarlos a entregar tus datos.
+  * **[Kaspersky VPN](https://www.kaspersky.com/vpn-secure-connection)**: propiedad de una empresa rusa.
+  * **[Hotspot Shield](https://www.hotspotshield.com/)**: propiedad de una empresa basada en EE.UU., lo que hace mucho más fácil que la policía de EE.UU. los obligue a entregar tus datos (aunque sea solo tu información de pago). Recibieron una denuncia en 2017 que afirmaba que estaban vendiendo datos a una empresa de publicidad (nunca se investigó, pero igual preocupante).
+    * **[Betternet](https://www.betternet.co/)**: mismo dueño (Aura/Pango) que Hotspot Shield.
+    * **[Bitdefender VPN](https://www.bitdefender.com/solutions/vpn.html)**: usa la tecnología del mismo proveedor (Aura/Pango) que Hotspot Shield.
+    * **[OVPN](https://www.ovpn.com/)**: mismo dueño (Aura/Pango) que Hotspot Shield. Nunca ha tenido una auditoría de seguridad externa.
+  * **[Guardian](https://guardianapp.com/)**: adquirida por una empresa de EE.UU. en 2022.
+    * **[Brave VPN](https://brave.com/vpn/)**: usa la tecnología de Guardian. Guardian es una empresa que no consideramos confiable.
+  * **[Norton VPN](https://us.norton.com/products/norton-vpn)**: propiedad de **Gen Digital**, el conglomerado de antivirus, y viene incluida en suscripciones de antivirus, así que millones de personas la tienen sin haberla elegido.
+    * **[Avast SecureLine](https://www.avast.com/secureline-vpn)**: propiedad de Gen Digital.
+    * **[AVG Secure VPN](https://www.avg.com/en-us/secure-vpn)**: propiedad de Gen Digital.
+  * **[VyprVPN](https://www.vyprvpn.com/)**: propiedad de una empresa de EE.UU. (desde 2023). Sin auditoría de seguridad desde 2018.
+  * **[PureVPN](https://www.purevpn.com/)**: a pesar de decir que "no guarda registros", entregaron registros de usuarixs al FBI en 2017 (mira el enlace de arriba). Un buen recordatorio de que decir "sin registros" significa poco sin una auditoría independiente.
+  * **[Urban VPN](https://www.urban-vpn.com/)** y **SuperVPN**: apps gratuitas con enormes cifras de descargas y problemas recurrentes de malware y venta de datos.
+  * **[Hola VPN](https://hola.org/)**: enruta el tráfico peer-to-peer a través de los dispositivos de otrxs usuarixs, lo que significa que tu conexión puede usarse como nodo de salida de alguien más, y tiene un historial de vender el ancho de banda de sus usuarixs. Puede ponerte en riesgo si el tráfico de alguien más pasa por tu dispositivo.
+  * **[TorGuard](https://torguard.net/)**: propiedad de una empresa de EE.UU.
+
+  **Si no ves una VPN en esta lista, asume que no está revisada ni es confiable.**
+</Collapsible>
+
+## Preguntas frecuentes
+
+#### ¿Y el DNS cifrado? {#dns}
+
+Un argumento común contra las VPN es que puedes simplemente usar un servicio de [resolvedor DNS cifrado](https://www.privacyguides.org/en/dns/) para obtener muchos de los mismos beneficios (y usualmente gratis). El DNS cifrado ocultará los dominios (`example.com`) que visitas de tu proveedor de internet, pero no ocultará tu IP ni tu ubicación aproximada.
+
+Nos encanta ofrecer opciones gratuitas, pero seguimos recomendando una VPN principalmente por facilidad de uso. Configurar DNS personalizado en cada dispositivo es demasiado complicado para la mayoría. Si logras configurar DNS cifrado (en tu teléfono y laptop) y activar el bloqueo de anuncios, obtendrás varios de los beneficios de privacidad de una VPN sin el costo.
+
+Si quieres usar un resolvedor DNS personalizado que no requiera una configuración muy técnica, recomendamos [AdGuard](https://adguard.com/en/welcome.html) ($1-3/mes).
+
+No necesitas usar esto si estás usando una de las VPN que recomendamos, porque el DNS con bloqueo de anuncios ya viene incluido como función.
+
+## Aprende más
+
+* [¿Qué es una VPN?](https://www.privacyguides.org/en/basics/vpn-overview/) - Privacy Guides
+* [Attack of the evil baristas](https://medium.com/@boblord/attack-of-the-evil-baristas-b204436f0853) - Por qué no necesitas una VPN en un café
