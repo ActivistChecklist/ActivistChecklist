@@ -8,7 +8,11 @@
  *   node scripts/fetch-endoflife-snapshot.mjs --dry-run # fetch and print, no write
  *
  * Env vars:
- *   EOL_SNAPSHOT_PATH       Override output path (default: data/eol-snapshot.json)
+ *   EOL_SNAPSHOT_PATH       Override output path (default: public/data/eol-snapshot.json).
+ *                           Set in .env.production.local to the server docroot so the
+ *                           cron and build write the served copy directly. Its parent
+ *                           directory must already exist — see resolveOutputPath().
+ *   NODE_ENV=production     Required for .env.production.local to be loaded at all.
  *   HEALTHCHECK_EOL_PING_URL Optional ping URL on success/failure (skipped if unset)
  */
 
@@ -18,7 +22,12 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import pkg from '@next/env';
 const { loadEnvConfig } = pkg;
-loadEnvConfig(process.cwd());
+// The second arg is @next/env's `dev` flag. Omitting it defaults the mode to
+// "production", which made local runs load .env.production.local — picking up the
+// server's docroot EOL_SNAPSHOT_PATH and the production healthcheck ping URL. Gate
+// on NODE_ENV so only real production runs (build-deploy.sh and the docroot cron
+// both export NODE_ENV=production) see the production env file.
+loadEnvConfig(process.cwd(), process.env.NODE_ENV !== 'production');
 
 import { deriveMacProductsFromSofa } from '../lib/updates/sofa-macos.js';
 import {
@@ -199,7 +208,7 @@ function transformProduct(raw, meta) {
 async function pingHealthcheck(success, error) {
   const url = process.env.HEALTHCHECK_EOL_PING_URL;
   if (!url) {
-    console.log("Noe HEALTHCHECK_EOL_PING_URL found. Skipping healthcheck ping.")
+    console.log("No HEALTHCHECK_EOL_PING_URL found. Skipping healthcheck ping.")
     return;
   }
   const log_message = success ? "Pinging healthcheck. Success!" : "Pinging healthcheck. Error!";
@@ -216,9 +225,38 @@ async function pingHealthcheck(success, error) {
   }
 }
 
-async function writeAtomic(targetPath, contents) {
-  const dir = path.dirname(targetPath);
-  await fs.mkdir(dir, { recursive: true });
+/**
+ * Resolve where the snapshot goes, and refuse to invent a directory tree for an
+ * explicit EOL_SNAPSHOT_PATH override. The override always points at an existing
+ * server docroot; if its parent is missing we are running with the wrong env
+ * loaded, and silently mkdir -p'ing it just buries a stale snapshot somewhere
+ * nobody serves. The in-repo default is allowed to create public/data/ because
+ * that directory is gitignored and absent on a fresh clone.
+ */
+async function resolveOutputPath() {
+  const override = process.env.EOL_SNAPSHOT_PATH;
+  if (!override) return { outputPath: DEFAULT_OUTPUT, mayCreateDir: true };
+
+  const outputPath = path.resolve(override);
+  const dir = path.dirname(outputPath);
+  try {
+    const stat = await fs.stat(dir);
+    if (!stat.isDirectory()) throw new Error('not a directory');
+  } catch {
+    throw new Error(
+      `EOL_SNAPSHOT_PATH points into ${dir}, which does not exist.\n` +
+      `   Expected an existing docroot. If you are running locally, unset ` +
+      `EOL_SNAPSHOT_PATH (or leave NODE_ENV unset so .env.production.local is skipped) ` +
+      `and the snapshot will go to ${DEFAULT_OUTPUT}.`
+    );
+  }
+  return { outputPath, mayCreateDir: false };
+}
+
+async function writeAtomic(targetPath, contents, mayCreateDir = true) {
+  if (mayCreateDir) {
+    await fs.mkdir(path.dirname(targetPath), { recursive: true });
+  }
   const tmp = `${targetPath}.tmp-${process.pid}`;
   await fs.writeFile(tmp, contents, 'utf8');
   await fs.rename(tmp, targetPath);
@@ -324,8 +362,9 @@ async function fetchSofaModels() {
 
 async function main() {
   const dryRun = process.argv.includes('--dry-run');
-  const outputPath = process.env.EOL_SNAPSHOT_PATH || DEFAULT_OUTPUT;
+  const { outputPath, mayCreateDir } = await resolveOutputPath();
 
+  console.log(`Output path: ${outputPath}`);
   console.log(`Fetching ${PRODUCTS.length} products from endoflife.date...`);
   const previous = await loadExistingSnapshot(outputPath);
   const previousById = new Map((previous?.products || []).map((p) => [p.id, p]));
@@ -450,7 +489,7 @@ async function main() {
     return;
   }
 
-  await writeAtomic(outputPath, json);
+  await writeAtomic(outputPath, json, mayCreateDir);
   console.log(`Wrote ${json.length} bytes to ${outputPath} (hash ${newHash.slice(0, 12)})`);
   await pingHealthcheck(true);
 }
