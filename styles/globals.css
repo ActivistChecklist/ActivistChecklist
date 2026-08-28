@@ -729,12 +729,6 @@
   }
 }
 
-/* Hide non-US threat-model notice pre-hydration when the user has already dismissed it.
-   Set by an inline script in app/[locale]/layout.tsx reading localStorage before paint. */
-html[data-non-us-dismissed="true"] [data-non-us-notice] {
-  display: none;
-}
-
 /* ─────────────────────────────────────────────────────────────────────────────
    Text selection. Lives at the bottom of the file, OUTSIDE any @layer block, so
    it sits in the implicit "no-layer" group (highest priority in the CSS Cascade

@@ -13,7 +13,9 @@ import { useNonUsNotice } from '@/hooks/use-non-us-notice';
  * Every page-level notice belongs here so they stack in one place rather than
  * appearing above and below the title. Notices passed by the page come in via
  * initialNotices; the non-US threat-model notice is built in, because it is
- * client-detected and applies to every page.
+ * client-detected and applies to every page. It renders hidden and is only
+ * revealed by useNonUsNotice once JS confirms a non-US timezone, so it is
+ * absent from the server-rendered HTML and for visitors without JS.
  *
  * @param {Array<{ id: string, type: 'warning'|'info', message: string|ReactNode }>} initialNotices
  *
@@ -53,22 +55,10 @@ export default function PageNotices({ initialNotices = [] }) {
   const allNotices = [...initialNotices, ...devNotices];
   if (allNotices.length === 0 && !showNonUs) return null;
 
-  // Pre-hydration hiding: an inline script in app/[locale]/layout.tsx flags an
-  // already-dismissed notice on <html>, and globals.css hides anything marked
-  // data-non-us-notice. When the non-US notice is the only one, tag the whole
-  // container so its spacing collapses along with it.
-  const nonUsIsOnlyNotice = showNonUs && allNotices.length === 0;
-
   return (
-    <div
-      className={styles.container}
-      role="status"
-      aria-label="Page notices"
-      {...(nonUsIsOnlyNotice && { 'data-non-us-notice': '' })}
-    >
+    <div className={styles.container} role="status" aria-label="Page notices">
       {showNonUs && (
         <Notice
-          data-non-us-notice=""
           type="warning"
           message={t('pageNotices.nonUsThreatModel')}
           onDismiss={dismissNonUs}

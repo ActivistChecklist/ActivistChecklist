@@ -70,16 +70,6 @@ export default async function LocaleLayout({ children, params }) {
         />
       </head>
       <body className="min-h-screen bg-background font-body antialiased">
-        {/* Prevent flash-of-content for returning visitors who already dismissed
-          the non-US notice. This inline script runs before paint, reads
-          localStorage, and sets a data attribute that CSS uses to hide the
-          notice immediately, avoiding a visible flicker before React hydrates
-          and the useNonUsNotice hook can run. */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `try{if(localStorage.getItem('non-us-notice-dismissed')==='true')document.documentElement.dataset.nonUsDismissed='true'}catch(e){}`,
-          }}
-        />
         <AnnouncementProvider value={announcement}>
           <NextIntlClientProvider locale={locale} messages={messages}>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
