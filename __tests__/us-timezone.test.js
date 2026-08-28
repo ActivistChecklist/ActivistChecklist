@@ -1,4 +1,4 @@
-import { isUsTimezone } from '../lib/us-timezone';
+import { isUsTimezone, shouldShowNonUsNotice } from '../lib/us-timezone';
 
 describe('isUsTimezone', () => {
   test.each([
@@ -65,5 +65,34 @@ describe('isUsTimezone', () => {
 
   test.each([undefined, null, '', 0, {}, []])('returns false for invalid input %p', (tz) => {
     expect(isUsTimezone(tz)).toBe(false);
+  });
+});
+
+describe('shouldShowNonUsNotice', () => {
+  test('hides for a US timezone', () => {
+    expect(shouldShowNonUsNotice({ dismissed: false, timezone: 'America/Chicago' })).toBe(false);
+  });
+
+  test('shows for a non-US timezone', () => {
+    expect(shouldShowNonUsNotice({ dismissed: false, timezone: 'Europe/Berlin' })).toBe(true);
+  });
+
+  test('dismissal wins over a non-US timezone', () => {
+    expect(shouldShowNonUsNotice({ dismissed: true, timezone: 'Europe/Berlin' })).toBe(false);
+  });
+
+  test('dismissal keeps it hidden for a US timezone too', () => {
+    expect(shouldShowNonUsNotice({ dismissed: true, timezone: 'America/Chicago' })).toBe(false);
+  });
+
+  test.each([undefined, '', null])(
+    'fails safe and shows when the timezone is undetectable (%p)',
+    (timezone) => {
+      expect(shouldShowNonUsNotice({ dismissed: false, timezone })).toBe(true);
+    }
+  );
+
+  test('fails safe with no arguments at all', () => {
+    expect(shouldShowNonUsNotice()).toBe(true);
   });
 });

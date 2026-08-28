@@ -18,11 +18,12 @@ const ICONS = {
  * @param {string|ReactNode} message
  * @param {() => void} [onDismiss] When provided, renders an accessible dismiss button.
  * @param {string} [dismissLabel] aria-label for the dismiss button (required when onDismiss is set).
+ * Any remaining props (e.g. data-* attributes) are spread onto the root element.
  */
-export default function Notice({ type = 'warning', message, onDismiss, dismissLabel }) {
+export default function Notice({ type = 'warning', message, onDismiss, dismissLabel, ...rest }) {
   const Icon = ICONS[type] ?? ICONS.warning;
   return (
-    <div className={`${styles.notice} ${styles[type]}`}>
+    <div className={`${styles.notice} ${styles[type]}`} {...rest}>
       <div className={styles.iconCol}>
         <Icon className={styles.icon} aria-hidden />
       </div>

@@ -3,6 +3,7 @@
 import React from 'react';
 import { Shield, Users, ArrowRight, Sparkles, Check } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
+import PageNotices from '@/components/layout/PageNotices';
 import { Card, CardHeader, CardFooter, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { cn, getBaseUrl } from '@/lib/utils';
@@ -88,6 +89,8 @@ export default function HomePageContent({ children, changelogEntries = [], lates
               </div>
             </header>
           </div>
+
+          <PageNotices />
 
           {/* Quick Action Guides */}
           <section className="mb-16">
