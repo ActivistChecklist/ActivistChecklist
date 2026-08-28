@@ -46,6 +46,8 @@ const API_BASE = 'https://endoflife.date/api/v1/products';
 const SOFA_URL = 'https://sofafeed.macadmins.io/v2/macos_data_feed.json';
 const USER_AGENT = 'ActivistChecklist/1.0 (+https://activistchecklist.org)';
 const REQUEST_TIMEOUT_MS = 30_000;
+const RETRY_ATTEMPTS = 3;
+const RETRY_BASE_DELAY_MS = 500;
 
 const SCHEMA_VERSION = 1;
 
@@ -80,15 +82,54 @@ const SUPPORTED_OS_RANGE_KEYS = [
 ];
 
 class FetchError extends Error {
-  constructor(message, { cause, productId } = {}) {
+  constructor(message, { cause, productId, status } = {}) {
     super(message);
     this.name = 'FetchError';
     this.cause = cause;
     this.productId = productId;
+    // HTTP status when the request completed; undefined for network-level
+    // failures and timeouts. Drives isRetryable().
+    this.status = status;
   }
 }
 
-async function fetchProduct(id) {
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+/**
+ * A 404 or a malformed payload will not fix itself, so retrying just wastes
+ * requests against a free public service. Network failures, timeouts, 429s and
+ * 5xx are worth another go.
+ */
+function isRetryable(err) {
+  if (err?.status != null) return err.status === 429 || err.status >= 500;
+  return true;
+}
+
+/**
+ * Retries `fn` on transient failures with exponential backoff. Without this a
+ * single blip permanently degraded one product to last snapshot's data for the
+ * whole build, which is how `iphone` (first in PRODUCTS, so it pays the
+ * cold-connection cost) kept going stale.
+ */
+async function withRetry(label, fn) {
+  let lastErr;
+  for (let attempt = 1; attempt <= RETRY_ATTEMPTS; attempt += 1) {
+    try {
+      return await fn();
+    } catch (err) {
+      lastErr = err;
+      if (attempt === RETRY_ATTEMPTS || !isRetryable(err)) break;
+      const delay = RETRY_BASE_DELAY_MS * 2 ** (attempt - 1);
+      console.error(
+        `    ${label}: attempt ${attempt}/${RETRY_ATTEMPTS} failed (${err.message}); retrying in ${delay}ms`
+      );
+      await sleep(delay);
+    }
+  }
+  throw lastErr;
+}
+
+async function fetchProductOnce(id) {
   const url = `${API_BASE}/${id}`;
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
@@ -98,11 +139,18 @@ async function fetchProduct(id) {
       signal: controller.signal,
     });
     if (!res.ok) {
-      throw new FetchError(`HTTP ${res.status} for ${id}`, { productId: id });
+      throw new FetchError(`HTTP ${res.status} for ${id}`, {
+        productId: id,
+        status: res.status,
+      });
     }
     const json = await res.json();
     if (!json?.result) {
-      throw new FetchError(`Missing result field for ${id}`, { productId: id });
+      // Reachable but wrong shape: retrying will not change the answer.
+      throw new FetchError(`Missing result field for ${id}`, {
+        productId: id,
+        status: res.status,
+      });
     }
     return json.result;
   } catch (err) {
@@ -111,6 +159,10 @@ async function fetchProduct(id) {
   } finally {
     clearTimeout(timeout);
   }
+}
+
+function fetchProduct(id) {
+  return withRetry(id, () => fetchProductOnce(id));
 }
 
 /**
@@ -339,7 +391,7 @@ const MAC_PRODUCT_IDS = [
  * SecurityReleases) is huge and we don't use it. Returned shape is the raw
  * Models object; deriveMacProductsFromSofa turns it into our product structure.
  */
-async function fetchSofaModels() {
+async function fetchSofaModelsOnce() {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
   try {
@@ -348,16 +400,21 @@ async function fetchSofaModels() {
       signal: controller.signal,
     });
     if (!res.ok) {
-      throw new Error(`HTTP ${res.status} for SOFA feed`);
+      throw new FetchError(`HTTP ${res.status} for SOFA feed`, { status: res.status });
     }
     const json = await res.json();
     if (!json?.Models || typeof json.Models !== 'object') {
-      throw new Error('SOFA feed missing Models map');
+      // Reachable but wrong shape: retrying will not change the answer.
+      throw new FetchError('SOFA feed missing Models map', { status: 200 });
     }
     return json.Models;
   } finally {
     clearTimeout(timeout);
   }
+}
+
+function fetchSofaModels() {
+  return withRetry('SOFA feed', () => fetchSofaModelsOnce());
 }
 
 async function main() {
