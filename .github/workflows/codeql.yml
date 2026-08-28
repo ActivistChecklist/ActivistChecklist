@@ -64,11 +64,16 @@ jobs:
         run: pnpm run install:ci
 
       # Invoke Next directly so package.json `postbuild` (sitemap/RSS) does not run in this job.
+      # --webpack is required and must stay in sync with the `build` script:
+      # Next 16 defaults `next build` to Turbopack, which ignores next.config.js's
+      # `webpack:` config (the @ alias and the static-export stubs) and cannot
+      # resolve @keystar/ui, so the build fails with module-not-found. Bypassing
+      # `pnpm build` here means we do not inherit the flag from package.json.
       - name: Build application
         if: matrix.codeql-language == 'javascript'
         env:
           NEXT_TELEMETRY_DISABLED: 1
-        run: ./node_modules/.bin/next build
+        run: ./node_modules/.bin/next build --webpack
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4.37.4
