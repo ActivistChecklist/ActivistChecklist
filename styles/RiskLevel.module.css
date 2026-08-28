@@ -47,8 +47,8 @@
 }
 
 .riskLevelBadgeFloat {
-  float: left;
-  @apply mr-2 mt-0.5;
+  float: inline-start;
+  @apply me-2 mt-0.5;
 }
 
 .riskLevelFirstRow {

@@ -1,6 +1,7 @@
 import { NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+import { DirectionProvider } from '@radix-ui/react-direction';
 import { ThemeProvider } from '@/components/layout/ThemeProvider';
 import { AnnouncementProvider } from '@/contexts/AnnouncementContext';
 import { getAnnouncement } from '@/lib/content';
@@ -72,16 +73,24 @@ export default async function LocaleLayout({ children, params }) {
         />
       </head>
       <body className="min-h-screen bg-background font-body antialiased">
-        <AnnouncementProvider value={announcement}>
-          <NextIntlClientProvider locale={locale} messages={messages}>
-            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-              <ReviewCommentsProvider {...reviewCommentsProviderProps}>
-                <ReviewCommentsDbStatusLogger enabled={reviewComments.enabled} />
-                {children}
-              </ReviewCommentsProvider>
-            </ThemeProvider>
-          </NextIntlClientProvider>
-        </AnnouncementProvider>
+        {/* Every Radix primitive resolves its direction through useDirection(),
+            which falls back to "ltr" when no dir prop or DirectionProvider is
+            present — and the primitives render that as a real dir attribute,
+            overriding <html dir="rtl"> for their whole subtree. That is what
+            put the RadioGroup's buttons on the wrong side and reversed the nav
+            menu order. One provider here covers all 22 primitives we use. */}
+        <DirectionProvider dir={dir}>
+          <AnnouncementProvider value={announcement}>
+            <NextIntlClientProvider locale={locale} messages={messages}>
+              <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+                <ReviewCommentsProvider {...reviewCommentsProviderProps}>
+                  <ReviewCommentsDbStatusLogger enabled={reviewComments.enabled} />
+                  {children}
+                </ReviewCommentsProvider>
+              </ThemeProvider>
+            </NextIntlClientProvider>
+          </AnnouncementProvider>
+        </DirectionProvider>
       </body>
     </html>
   );

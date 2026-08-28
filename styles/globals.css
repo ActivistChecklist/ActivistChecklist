@@ -646,17 +646,28 @@
     }
     
     /* Override prose img margins for floated images */
-    img.float-left {
+    img.float-start {
       @apply ms-0! me-6!;
     }
     
-    img.float-right {
+    img.float-end {
       @apply me-0! ms-6!;
     }
 
-    /* Inline code */
+    /* Inline code. Forced LTR and bidi-isolated: spans like `?si=...` are
+       technical LTR text, and inside an Arabic sentence the neutral ? and =
+       characters get reordered by the bidi algorithm into "...=si?". Isolating
+       keeps the span itself in the RTL flow while its contents read correctly. */
     code:not(pre code) {
       @apply bg-muted rounded px-1 py-0.5 text-sm font-normal before:content-none after:content-none;
+      direction: ltr;
+      unicode-bidi: isolate;
+    }
+
+    /* Code blocks are LTR by nature, whatever the page direction. */
+    pre {
+      direction: ltr;
+      text-align: left;
     }
 
     /* Links */
