@@ -14,13 +14,20 @@ import SkipLink from "./SkipLink";
 import PageCounter from "./PageCounter";
 import AnnouncementBar from "./AnnouncementBar";
 import LanguageDetectionBanner from '@/components/LanguageDetectionBanner';
-import Script from 'next/script';
 import { extractHeaders } from "@/components/layout/TableOfContentsSidebar";
 import { cn } from "@/lib/utils";
 
-const LayoutContent = ({ children, className, fullWidthMain = false, searchable = true}) => {
+const LayoutContent = ({
+  children,
+  className,
+  fullWidthMain = false,
+  searchable = true,
+  tocDepth = 2,
+  tocPageTitle,
+}) => {
   const { sidebarType } = useLayout();
   const maxWidth = "max-w-5xl";
+  const includeH3InToc = Number(tocDepth) >= 3;
 
   // Extract headers from children if they're available server-side
   let initialHeaders = [];
@@ -28,7 +35,7 @@ const LayoutContent = ({ children, className, fullWidthMain = false, searchable 
     const content = children.props.children;
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = content;
-    initialHeaders = extractHeaders(tempDiv);
+    initialHeaders = extractHeaders(tempDiv, includeH3InToc);
   }
 
   return (
@@ -45,13 +52,19 @@ const LayoutContent = ({ children, className, fullWidthMain = false, searchable 
                 <div className={`${maxWidth} mx-auto px-4`}>
                   <div className={`flex gap-4 py-6 print:py-1 ${!sidebarType ? 'justify-center' : ''}`}>
                    {sidebarType === 'toc' && (
-                      <aside 
-                        className={`w-60 hidden md:block`}
-                        role="complementary" 
+                      <aside
+                        className={`not-annotatable w-60 hidden md:block`}
+                        role="complementary"
                         aria-label="Sidebar navigation"
                       >
                         {/* {sidebarType === 'navigation' && <NavigationSidebar />} */}
-                        {sidebarType === 'toc' && <TableOfContentsSidebar initialHeaders={initialHeaders} />}
+                        {sidebarType === 'toc' && (
+                          <TableOfContentsSidebar
+                            initialHeaders={initialHeaders}
+                            tocDepth={tocDepth}
+                            tocPageTitle={tocPageTitle}
+                          />
+                        )}
                       </aside>
                     )}
                     <main 
@@ -77,10 +90,16 @@ const LayoutContent = ({ children, className, fullWidthMain = false, searchable 
   );
 };
 
-const Layout = ({ children, sidebarType: initialSidebarType = 'navigation', ...props }) => {
+const Layout = ({
+  children,
+  sidebarType: initialSidebarType = 'navigation',
+  tocDepth = 2,
+  tocPageTitle,
+  ...props
+}) => {
   return (
     <LayoutProvider initialSidebarType={initialSidebarType}>
-      <LayoutContent {...props}>
+      <LayoutContent tocDepth={tocDepth} tocPageTitle={tocPageTitle} {...props}>
         {children}
       </LayoutContent>
     </LayoutProvider>

@@ -97,6 +97,7 @@ const AnnouncementBar = () => {
 
   return (
     <div
+      className="not-annotatable"
       style={{
         maxHeight: shouldShow ? `${height}px` : '0px',
         opacity: shouldShow ? 1 : 0,

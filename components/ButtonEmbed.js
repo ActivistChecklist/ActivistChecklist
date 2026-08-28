@@ -1,11 +1,12 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { IoCloudDownloadOutline, IoDocumentsOutline, IoOpenOutline } from 'react-icons/io5';
+import { IoArrowForwardOutline, IoCloudDownloadOutline, IoDocumentsOutline, IoOpenOutline } from 'react-icons/io5';
 import Link from '@/components/Link';
 import { trackFileDownload } from '@/lib/download-tracker';
 
 // Static registry of icons used in content. Add new icons here as needed.
 const ICON_REGISTRY = {
+  IoArrowForwardOutline,
   IoCloudDownloadOutline,
   IoDocumentsOutline,
   IoOpenOutline,

@@ -18,4 +18,4 @@ if [ -n "$STAGED" ]; then
 fi
 
 echo "→ pre-commit: unit tests"
-yarn test
+pnpm test

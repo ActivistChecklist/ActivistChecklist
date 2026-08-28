@@ -13,6 +13,7 @@ import Layout from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { NAV_ITEMS } from '@/config/navigation';
+import { useAnalytics } from '@/hooks/use-analytics';
 
 const VARIATIONS = [
   { icon: FaGhost, key: 'goneUnderground' },
@@ -29,12 +30,23 @@ const VARIATIONS = [
 
 function NotFoundInner() {
   const t = useTranslations();
+  const { trackEvent } = useAnalytics();
   const [variationIndex, setVariationIndex] = useState(0);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
     setVariationIndex(Math.floor(Math.random() * VARIATIONS.length));
+  }, []);
+
+  useEffect(() => {
+    trackEvent({
+      name: '404_not_found',
+      data: {
+        path: window.location.pathname + window.location.search,
+        referrer: document.referrer || '(none)',
+      },
+    });
   }, []);
 
   const variation = VARIATIONS[variationIndex];

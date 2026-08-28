@@ -31,6 +31,11 @@
       "href": "/signal/",
       "description": "Secure your Signal messaging app for safer communications."
     },
+    "whatsapp": {
+      "label": "WhatsApp security",
+      "href": "/whatsapp/",
+      "description": "Configure WhatsApp to protect your messages, groups, and contacts."
+    },
     "secondary": {
       "label": "Secondary phone",
       "href": "/secondary/",
@@ -76,6 +81,10 @@
       "href": "/ice/",
       "description": "Digital security for ICE watch and rapid response networks."
     },
+    "vpn": {
+      "label": "VPNs for activists",
+      "href": "/vpn/"
+    },
     "movies": {
       "label": "Movies, books, & podcasts",
       "href": "/movies/"
@@ -119,6 +128,14 @@
     "links": {
       "label": "Remove link tracking",
       "href": "/links/"
+    },
+    "party": {
+      "label": "Host a security party",
+      "href": "/party/"
+    },
+    "updates": {
+      "label": "Security update checker",
+      "href": "/updates/"
     }
   },
   "menus": {
@@ -142,6 +159,9 @@
       "label": "Resources",
       "href": "/resources/",
       "items": [
+        "vpn",
+        "updates",
+        "party",
         "links",
         "police-door-poster",
         "flyer",
@@ -191,6 +211,7 @@
     ],
     "social": [
       "bluesky",
+      "mastodon",
       "github"
     ]
   },
@@ -205,7 +226,8 @@
       "label": "Mastodon",
       "username": "@ActivistChecklist",
       "href": "https://kolektiva.social/@activistchecklist",
-      "ariaLabel": "Follow us on Mastodon"
+      "ariaLabel": "Follow us on Mastodon",
+      "rel": "me"
     },
     "github": {
       "label": "GitHub",

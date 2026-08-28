@@ -9,11 +9,11 @@
  * This includes:
  *   - JSX attributes: slug, type, size, level, mode, alignment, target, variant, icon, href, src, className
  *   - Frontmatter arrays: relatedGuides, titleBadges
- *   - Frontmatter scalars: slug, type, date, firstPublished, lastUpdated, image, imageOverride, url, source, tags
+ *   - Frontmatter scalars: slug, type, date, firstPublished, lastUpdated, image, imageOverride, url, source, tags, showToc, tocDepth
  *
  * Usage:
- *   yarn crowdin:hide-strings           (dry run — reads CROWDIN_* from .env)
- *   yarn crowdin:hide-strings --apply   (hides strings and clears stray translations)
+ *   pnpm crowdin:hide-strings           (dry run — reads CROWDIN_* from .env)
+ *   pnpm crowdin:hide-strings --apply   (hides strings and clears stray translations)
  *
  * Only strings in Crowdin source files under content/en/** /*.mdx are affected (Crowdin paths may
  * include a branch prefix, e.g. /main/content/en/...). Same English text in messages/en.json
@@ -77,6 +77,7 @@ Example:
 // --- Step 1: Extract untranslatable values from MDX files ---
 
 // Frontmatter scalar fields whose values should not be translated
+// Keep in sync with Keystatic / MDX frontmatter: when you add a non-copy field there, add its key here too.
 const UNTRANSLATABLE_FRONTMATTER_SCALARS = [
   "slug",           // URL identifiers
   "type",           // enum: major, minor, info, etc.
@@ -88,6 +89,9 @@ const UNTRANSLATABLE_FRONTMATTER_SCALARS = [
   "url",            // external URLs
   "source",         // publication/author attribution
   "tags",           // comma-separated tag identifiers
+  "showToc",        // boolean: layout / “On this page” sidebar (pages)
+  "tocDepth",       // 2 or 3: which heading levels appear in the left TOC
+  "hideInlineCta",  // boolean: suppress auto-inserted inline newsletter CTA
 ];
 
 // JSX attributes whose values should not be translated

@@ -15,8 +15,8 @@ export const REPO_ROOT = ROOT;
 export const SNAPSHOT_PATH_ARG_HELP =
   'Paths can be absolute, relative to the repo root, or a folder name under buildbackups/ (e.g. snapshot-…, out-…).';
 
-export function usageSnapshotTwoDirs(yarnScriptName) {
-  return `Usage: yarn ${yarnScriptName} <dir-1> <dir-2>\n  ${SNAPSHOT_PATH_ARG_HELP}`;
+export function usageSnapshotTwoDirs(scriptName) {
+  return `Usage: pnpm ${scriptName} <dir-1> <dir-2>\n  ${SNAPSHOT_PATH_ARG_HELP}`;
 }
 
 /**

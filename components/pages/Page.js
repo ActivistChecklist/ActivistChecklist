@@ -9,6 +9,7 @@ import { MetaBar, getDateMetaItem } from '@/components/ui/meta-bar';
 import RelatedGuides from '@/components/RelatedGuides';
 import { LOCALES } from "@/lib/i18n-config";
 import PageNotices from '@/components/layout/PageNotices';
+import AnswerCapsule from '@/components/AnswerCapsule';
 
 function parseRelatedGuides(value) {
   if (Array.isArray(value)) return value.filter(Boolean);
@@ -26,16 +27,24 @@ function parseRelatedGuides(value) {
  *   - frontmatter: title, lastUpdated (date)
  *   - serializedBody: next-mdx-remote compiled MDX
  *   - locale: BCP 47 locale string for date formatting (provided by parent Server Component)
+ *
+ * Unlike guides, pages do not get the auto-inserted newsletter CTA. A page can
+ * still include a manual <InlineCta /> in its MDX body.
  */
-export default function Page({ frontmatter, serializedBody, locale, notices = [] }) {
+export default function Page({
+  frontmatter,
+  serializedBody,
+  locale,
+  notices = [],
+}) {
   const t = useTranslations();
   const intlLocale = useLocale() || locale || 'en';
   const dateLocale = LOCALES[intlLocale]?.intlLocale || 'en-US';
   const { setSidebarType } = useLayout();
 
   useEffect(() => {
-    setSidebarType('navigation');
-  }, []);
+    setSidebarType(frontmatter.showToc === true ? 'toc' : 'navigation');
+  }, [setSidebarType, frontmatter.showToc]);
 
   const metaBarItems = [
     getDateMetaItem(frontmatter.lastUpdated, t('meta.lastUpdatedOn'), dateLocale),
@@ -47,8 +56,11 @@ export default function Page({ frontmatter, serializedBody, locale, notices = []
       <h1 className="mb-6">{frontmatter.title}</h1>
       <PageNotices initialNotices={notices} />
       {metaBarItems.length > 0 && <MetaBar items={metaBarItems} />}
+      <AnswerCapsule text={frontmatter.answerCapsule} />
       <div className="prose prose-slate max-w-none">
-        <MDXRemote {...serializedBody} components={mdxComponents} />
+        {serializedBody && (
+          <MDXRemote {...serializedBody} components={mdxComponents} />
+        )}
       </div>
       {relatedGuideSlugs.length > 0 && (
         <RelatedGuides isBlock guideSlugs={relatedGuideSlugs} />

@@ -31,6 +31,16 @@ node_modules
 webhooks/deploy-webhook.error.log
 webhooks/webhook-secrets.local.php
 
+# Large files only on the server (scp or SFTP into docroot large-assets/).
+# Same rule as webhooks: excluded paths are not deleted by rsync --delete.
+large-assets/***
+
+# EOL snapshot is server-owned: the daily cron and the build's prebuild step both
+# write it straight to the docroot via EOL_SNAPSHOT_PATH (.env.production). The
+# copy inside out/ comes from the repo's public/data/ and is stale, so without
+# this exclude every deploy would overwrite the fresh docroot copy with it.
+data/eol-snapshot.json
+
 # Build / dev artifacts
 out
 .next

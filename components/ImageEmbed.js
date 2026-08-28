@@ -7,6 +7,7 @@ import Link from "@/components/Link";
 /**
  * ImageEmbed — <ImageEmbed src="/path/to/img.jpg" alt="...">Caption text</ImageEmbed>
  *              <ImageEmbed src="..." alt="..." link="/some/path" />
+ *              <ImageEmbed src="..." alt="..." raw />  // no styling, intrinsic size
  */
 export const ImageEmbed = ({
   src,
@@ -15,6 +16,7 @@ export const ImageEmbed = ({
   size = 'medium',
   alignment = 'center',
   link,
+  raw = false,
   className,
   ...props
 }) => {
@@ -25,14 +27,28 @@ export const ImageEmbed = ({
     return null;
   }
 
+  // Raw mode: plain <img>, no wrapper styling, no caption block, intrinsic size.
+  if (raw) {
+    const img = (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src={src} alt={alt || ''} loading="lazy" className={className} {...props} />
+    );
+    return link ? (
+      <Link href={typeof link === 'string' ? link : '#'}>{img}</Link>
+    ) : img;
+  }
+
+  const isNatural = size === 'natural';
+
   const getSizeClass = () => {
     switch (size) {
-      case 'xs':     return 'max-w-48 sm:max-w-[16rem]';
-      case 'small':  return 'max-w-xs sm:max-w-sm';
-      case 'medium': return 'max-w-sm sm:max-w-md';
-      case 'large':  return 'max-w-md sm:max-w-2xl';
-      case 'full':   return 'max-w-full';
-      default:       return 'max-w-sm sm:max-w-md';
+      case 'xs':      return 'max-w-48 sm:max-w-[16rem]';
+      case 'small':   return 'max-w-xs sm:max-w-sm';
+      case 'medium':  return 'max-w-sm sm:max-w-md';
+      case 'large':   return 'max-w-md sm:max-w-2xl';
+      case 'full':    return 'max-w-full';
+      case 'natural': return '';
+      default:        return 'max-w-sm sm:max-w-md';
     }
   };
 
@@ -46,13 +62,22 @@ export const ImageEmbed = ({
     }
   };
 
-  const imageElement = (
+  const imageElement = isNatural ? (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={src}
+      alt={alt || 'Embedded image'}
+      loading="lazy"
+      className={cn('rounded-lg shadow-xs', getAlignmentClass())}
+      {...props}
+    />
+  ) : (
     <Image
       src={src}
       alt={alt || 'Embedded image'}
       width={800}
       height={600}
-      className={cn("rounded-lg shadow-xs w-full h-auto", getSizeClass(), getAlignmentClass())}
+      className={cn('rounded-lg shadow-xs w-full h-auto', getSizeClass(), getAlignmentClass())}
       loading="lazy"
       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
       {...props}
@@ -77,7 +102,6 @@ export const ImageEmbed = ({
     );
   }
 
-  // Use <span className="block"> (not <div>) so markdown images inside <p> stay valid HTML and hydrate cleanly.
   return (
     <span className={cn('my-4 block', className)}>
       {wrappedImage}

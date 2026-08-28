@@ -20,8 +20,8 @@ if [ "$BUILD_MODE" = "static" ]; then
   fi
 elif [ "$NODE_ENV" = "development" ]; then
   if [ ! -d "out" ]; then
-    build_detail "No out/ yet — running yarn buildstatic…"
-    yarn buildstatic
+    build_detail "No out/ yet — running pnpm buildstatic…"
+    pnpm buildstatic
   fi
   rm -rf public/pagefind
   if pagefind --site out --output-path public/pagefind; then

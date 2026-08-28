@@ -1,6 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
 const createNextIntlPlugin = require('next-intl/plugin');
+const { REDIRECTS } = require('./lib/redirects.config.cjs');
+const linkedReviewCommentsRoot = require('./scripts/rrc-linked-root.cjs');
 
 /**
  * Omit Keystatic from the webpack graph only for static export (BUILD_MODE=static).
@@ -12,15 +14,32 @@ function shouldStubKeystaticWebpackModules() {
 
 /** When stubs apply, real app modules are swapped for `lib/stubs/*` (see webpack block below). */
 const STATIC_EXPORT_STUBS = [
+  // Every App Router API route: `output: 'export'` cannot use `force-dynamic` or server-only handlers.
+  [/app[\\/]api[\\/].+[\\/]route\.(ts|tsx|js)$/, 'api-route-static.ts'],
   [/app[\\/]keystatic[\\/]layout\.tsx$/, 'keystatic-layout-static.tsx'],
   [/app[\\/]keystatic[\\/]\[\[\.\.\.params\]\][\\/]page\.tsx$/, 'keystatic-page-static.tsx'],
-  [/app[\\/]api[\\/]keystatic[\\/]\[\.\.\.params\][\\/]route\.ts$/, 'keystatic-api-catchall.ts'],
-  [/app[\\/]api[\\/]keystatic[\\/]checklist-item-preview[\\/]route\.ts$/, 'keystatic-checklist-preview.ts'],
   [/app[\\/]preview[\\/]start[\\/]route\.ts$/, 'preview-start-static.ts'],
   [/app[\\/]preview[\\/]end[\\/]route\.ts$/, 'preview-end-static.ts'],
+  [/packages[\\/]react-review-comments[\\/]src[\\/]ReviewCommentsShell\.tsx$/, 'annotation-shell-static.jsx'],
 ];
 
 const baseConfig = {
+  async redirects() {
+    return REDIRECTS.map(({ source, destination, permanent = true }) => ({
+      source,
+      destination,
+      permanent,
+    }));
+  },
+  // Pin the workspace root so Next.js doesn't auto-detect a stray
+  // package-lock.json, pnpm-lock.yaml, or yarn.lock in a parent directory and
+  // start resolving node_modules from there. The deploy server had an unrelated
+  // package-lock.json one level above the project; Next.js picked that as
+  // the workspace root and resolved deps from a parallel node_modules tree
+  // with stale @radix-ui/react-slot, breaking the build with "createSlot is
+  // not exported from @radix-ui/react-slot". Setting this anchors module
+  // resolution to THIS project's directory regardless of what's around it.
+  outputFileTracingRoot: __dirname,
   // Smaller server/client bundles and faster compiles for barrel-import icon packages.
   experimental: {
     optimizePackageImports: ['lucide-react', 'react-icons'],
@@ -28,7 +47,7 @@ const baseConfig = {
   // Native / ESM-heavy deps: bundling breaks default export interop (e.g. "(0 , cH.default) is not a function" during OG image generation).
   // Keystatic must read KEYSTATIC_* from real process.env at runtime (Railway secrets), not from build-time inlining.
   serverExternalPackages: ['sharp', 'satori', '@keystatic/core', '@keystatic/next'],
-  transpilePackages: ['next-mdx-remote'],
+  transpilePackages: ['next-mdx-remote', '@activistchecklist/react-review-comments'],
   trailingSlash: true,
   images: {
     unoptimized: true,
@@ -46,8 +65,8 @@ const baseConfig = {
     };
 
     // Static export: Keystatic admin UI still pulls @keystatic/next via PageClient unless we
-    // replace page + layout. API route must be stubbed too: `output: 'export'` requires literal
-    // `dynamic = 'force-static'` (can't branch in source), and the real route uses force-dynamic.
+    // replace page + layout. All `app/api/**/route.*` are replaced with `api-route-static.ts`:
+    // `output: 'export'` forbids `force-dynamic` in route modules, so real handlers cannot ship.
     if (shouldStubKeystaticWebpackModules()) {
       const stubDir = path.join(__dirname, 'lib', 'stubs');
       for (const [pathRe, file] of STATIC_EXPORT_STUBS) {
@@ -72,6 +91,16 @@ if (process.env.BUILD_MODE === 'static') {
   delete baseConfig.images.domains;
   baseConfig.images.loader = 'custom';
   baseConfig.images.loaderFile = './utils/imageLoader.js';
+}
+
+// Dev-only: when react-review-comments is `pnpm rrc:link`ed to a local checkout,
+// widen the root so Turbopack can resolve its external realpath (else "Module not
+// found"). No-op for normal installs and production builds. See the module.
+const linkedRoot = linkedReviewCommentsRoot(__dirname);
+if (linkedRoot) {
+  baseConfig.outputFileTracingRoot = linkedRoot;
+  baseConfig.turbopack = { ...baseConfig.turbopack, root: linkedRoot };
+  console.log(`[next.config] react-review-comments linked — dev root widened to ${linkedRoot}`);
 }
 
 // i18n is handled by App Router [locale] dynamic segment + next-intl.

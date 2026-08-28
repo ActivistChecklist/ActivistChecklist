@@ -4,7 +4,13 @@ import { notFound } from 'next/navigation';
 import { ThemeProvider } from '@/components/layout/ThemeProvider';
 import { AnnouncementProvider } from '@/contexts/AnnouncementContext';
 import { getAnnouncement } from '@/lib/content';
+import { getReviewCommentsConfig } from '@/lib/review-comments/env';
 import { routing } from '@/i18n/routing';
+import {
+  ReviewCommentsProvider,
+  type ReviewCommentsProviderProps,
+} from '@activistchecklist/react-review-comments';
+import ReviewCommentsDbStatusLogger from '@/components/review-comments/ReviewCommentsDbStatusLogger';
 import '@/styles/globals.css';
 
 export function generateStaticParams() {
@@ -18,15 +24,57 @@ export default async function LocaleLayout({ children, params }) {
   setRequestLocale(locale);
   const messages = (await import(`@/messages/${locale}.json`)).default;
   const announcement = getAnnouncement(locale);
+  const reviewComments = getReviewCommentsConfig();
+  const reviewCommentsProviderProps = {
+    enabled: reviewComments.enabled,
+  } satisfies Pick<ReviewCommentsProviderProps, 'enabled'>;
 
   return (
     <html lang={locale} suppressHydrationWarning>
+      <head>
+        {/* Preload the font weights every page renders heavily — Source Sans 3
+            400 for body copy, Libre Franklin 600 (font-semibold, e.g. HowTo
+            titles) and 700 (default heading bold) for headings. Without preload
+            the browser doesn't request these woff2 files until CSS parsing
+            surfaces them, which means cross-breakpoint resizes (desktop nav →
+            mobile nav) sometimes need to load a not-yet-rendered weight
+            mid-resize, and briefly substitute the system fallback. Preloading
+            + font-display: optional on these weights stops that mid-life swap. */}
+        <link
+          rel="preload"
+          as="font"
+          type="font/woff2"
+          href="/fonts/source-sans-3-v19-latin-regular.woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          as="font"
+          type="font/woff2"
+          href="/fonts/libre-franklin-v20-latin-600.woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          as="font"
+          type="font/woff2"
+          href="/fonts/libre-franklin-v20-latin-700.woff2"
+          crossOrigin="anonymous"
+        />
+        {/* llms.txt — curated index for LLM crawlers (llmstxt.org). */}
+        <link
+          rel="alternate"
+          type="text/plain"
+          title="llms.txt"
+          href={locale === 'en' ? '/llms.txt' : `/${locale}/llms.txt`}
+        />
+      </head>
       <body className="min-h-screen bg-background font-body antialiased">
         {/* Prevent flash-of-content for returning visitors who already dismissed
           the non-US notice. This inline script runs before paint, reads
           localStorage, and sets a data attribute that CSS uses to hide the
           notice immediately, avoiding a visible flicker before React hydrates
-          and the useEffect in NonUsNotice can run. */}
+          and the useNonUsNotice hook can run. */}
         <script
           dangerouslySetInnerHTML={{
             __html: `try{if(localStorage.getItem('non-us-notice-dismissed')==='true')document.documentElement.dataset.nonUsDismissed='true'}catch(e){}`,
@@ -35,7 +83,10 @@ export default async function LocaleLayout({ children, params }) {
         <AnnouncementProvider value={announcement}>
           <NextIntlClientProvider locale={locale} messages={messages}>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-              {children}
+              <ReviewCommentsProvider {...reviewCommentsProviderProps}>
+                <ReviewCommentsDbStatusLogger enabled={reviewComments.enabled} />
+                {children}
+              </ReviewCommentsProvider>
             </ThemeProvider>
           </NextIntlClientProvider>
         </AnnouncementProvider>

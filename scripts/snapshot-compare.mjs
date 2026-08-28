@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * yarn snapshot-compare <dir-1> <dir-2>
+ * pnpm snapshot-compare <dir-1> <dir-2>
  * 1) Normalizes both static trees (same as snapshot-normalize).
  * 2) Diffs the normalized text outputs.
  * Everything goes under one folder: buildbackups/snapshot-compare-DATETIME/

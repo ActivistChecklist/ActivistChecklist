@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * yarn snapshot-normalize <static-dir-1> <static-dir-2>
+ * pnpm snapshot-normalize <static-dir-1> <static-dir-2>
  * Standalone normalize only (same logic as the first step of snapshot-compare).
  * Writes under buildbackups/snapshot-compare-DATETIME/1-before-HASH/ and 2-after-HASH/
  */

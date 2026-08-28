@@ -21,6 +21,7 @@ jobs:
           REPO_FULL_NAME: ${{ github.repository }}
           REF: ${{ github.ref }}
         run: |
+          set -eo pipefail
           node - <<'NODE' 2>&1 | tee deploy-log.txt
           const crypto = require('crypto');
           const fs = require('fs');
@@ -104,6 +105,7 @@ jobs:
             process.exit(1);
           }
           NODE
+          exit "${PIPESTATUS[0]}"
 
       - name: Notify Healthchecks.io
         if: always()
@@ -111,7 +113,8 @@ jobs:
         env:
           HEALTHCHECKS_DEPLOY_PING_URL: ${{ secrets.HEALTHCHECKS_DEPLOY_PING_URL }}
           JOB_STATUS: ${{ job.status }}
-          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{
+            github.run_id }}
         run: |
           if [ -z "$HEALTHCHECKS_DEPLOY_PING_URL" ]; then
             echo 'Skipping Healthchecks: HEALTHCHECKS_DEPLOY_PING_URL secret is not set.'

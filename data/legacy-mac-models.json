@@ -1,0 +1,59 @@
+{
+  "_README": "Hand-curated Mac model entries that are NOT in the current SOFA macOS feed (https://sofafeed.macadmins.io/v2/macos_data_feed.json). SOFA only lists Macs whose maximum supported macOS is still receiving updates from Apple, so it sheds older models over time. Entries here are kept so legacy hardware (commonly still in users' hands) keeps appearing in our /updates autocomplete and gets the correct device-EOL classification. Each entry mirrors the SOFA Models map shape (MarketingName + OSVersions) so it can be merged in scripts/fetch-endoflife-snapshot.mjs and fed through the same deriveMacProductsFromSofa() pipeline. The extra Source field is for human review only — the pipeline ignores it.",
+
+  "MacBookAir6,1": {
+    "MarketingName": "MacBook Air (11-inch, Mid 2013)",
+    "OSVersions": [11],
+    "Source": "https://support.apple.com/en-us/HT201862"
+  },
+  "MacBookAir6,2": {
+    "MarketingName": "MacBook Air (13-inch, Mid 2013)",
+    "OSVersions": [11],
+    "Source": "https://support.apple.com/en-us/HT201862"
+  },
+  "MacBookPro11,1": {
+    "MarketingName": "MacBook Pro (Retina, 13-inch, Late 2013)",
+    "OSVersions": [11],
+    "Source": "https://support.apple.com/en-us/HT201300"
+  },
+  "MacBookPro11,2": {
+    "MarketingName": "MacBook Pro (Retina, 15-inch, Late 2013)",
+    "OSVersions": [11],
+    "Source": "https://support.apple.com/en-us/HT201300"
+  },
+  "MacBookPro11,3": {
+    "MarketingName": "MacBook Pro (Retina, 15-inch, Late 2013)",
+    "OSVersions": [11],
+    "Source": "https://support.apple.com/en-us/HT201300"
+  },
+  "iMac14,1": {
+    "MarketingName": "iMac (21.5-inch, Late 2013)",
+    "OSVersions": [11],
+    "Source": "https://support.apple.com/en-us/HT201634"
+  },
+  "iMac14,2": {
+    "MarketingName": "iMac (27-inch, Late 2013)",
+    "OSVersions": [11],
+    "Source": "https://support.apple.com/en-us/HT201634"
+  },
+  "iMac14,3": {
+    "MarketingName": "iMac (21.5-inch, Late 2013)",
+    "OSVersions": [11],
+    "Source": "https://support.apple.com/en-us/HT201634"
+  },
+  "iMac14,4": {
+    "MarketingName": "iMac (21.5-inch, Mid 2014)",
+    "OSVersions": [11],
+    "Source": "https://support.apple.com/en-us/HT201634"
+  },
+  "MacBook8,1": {
+    "MarketingName": "MacBook (Retina, 12-inch, Early 2015)",
+    "OSVersions": [11],
+    "Source": "https://support.apple.com/en-us/HT201608"
+  },
+  "MacBook9,1": {
+    "MarketingName": "MacBook (Retina, 12-inch, Early 2016)",
+    "OSVersions": [12],
+    "Source": "https://support.apple.com/en-us/HT201608"
+  }
+}

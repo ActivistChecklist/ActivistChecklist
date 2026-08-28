@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * yarn compare <ref1> <ref2>
+ * pnpm compare <ref1> <ref2>
  *
  * Builds each ref in its own detached git worktree under buildbackups/.worktrees/
  * (main clone branch and working tree are left unchanged — no stash).
@@ -88,7 +88,7 @@ function parseArgs(argv) {
 }
 
 function usage() {
-  return `Usage: yarn compare <ref1> <ref2> [options]
+  return `Usage: pnpm compare <ref1> <ref2> [options]
 
   Builds each ref in a detached worktree (main clone unchanged), normalizes both static
   trees, writes a unified diff.
@@ -99,11 +99,11 @@ Options:
   --no-prompt        Use ref strings as labels (non-interactive)
 
 Examples:
-  yarn compare main HEAD
-  yarn compare main feature/x --name-a main --name-b feature-x
+  pnpm compare main HEAD
+  pnpm compare main feature/x --name-a main --name-b feature-x
 
 Env:
-  SNAPSHOT_CACHE=0   Always run yarn buildstatic (ignore .cache)`;
+  SNAPSHOT_CACHE=0   Always run pnpm buildstatic (ignore .cache)`;
 }
 
 async function promptLabels(ref1, ref2, nameA, nameB, noPrompt) {
@@ -164,8 +164,8 @@ function buildRefToStatic(ref, label, destStatic) {
     console.log('📎 Symlink node_modules ← main clone…');
     linkNodeModulesFromMain(ROOT, wtPath);
 
-    console.log('🔨 yarn buildstatic…');
-    execSync('yarn buildstatic', { cwd: wtPath, stdio: 'inherit', env });
+    console.log('🔨 pnpm buildstatic…');
+    execSync('pnpm buildstatic', { cwd: wtPath, stdio: 'inherit', env });
 
     const newest = listOutBackups(path.join(wtPath, 'buildbackups'))[0];
     if (!newest) {

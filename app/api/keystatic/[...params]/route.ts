@@ -4,7 +4,7 @@ import keystaticConfig, { showKeystaticUI } from '../../../../keystatic.config';
 import { rewriteRequestUrlForPublicOrigin } from '@/lib/keystatic-public-request-url';
 import { beautifyGithubOauthCallbackCloseIfNeeded } from '@/lib/keystatic-github-oauth-callback-response';
 
-/** Server deployments (OAuth, GitHub API). Static export swaps this file for `lib/stubs/keystatic-api-catchall.ts`. */
+/** Server deployments (OAuth, GitHub API). Static export swaps this file for `lib/stubs/api-route-static.ts`. */
 export const dynamic = 'force-dynamic';
 
 function notFoundRouteHandler() {

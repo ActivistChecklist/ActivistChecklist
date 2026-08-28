@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import Markdown from '@/components/Markdown';
 import { cn, formatRelativeDate } from "@/lib/utils";
-import { IoStar } from 'react-icons/io5';
 import { useLocale } from 'next-intl';
 import { getIntlLocale } from '@/lib/i18n-config';
 
@@ -46,13 +45,8 @@ const ChangeLogEntry = ({ entry }) => {
           {displayDate}
         </time>
         {entry.bodyText && (
-          <div className="flex items-start gap-1 flex-1">
-            {entry.type === 'major' && (
-              <IoStar className="text-yellow-500 shrink-0 mt-[2px]" size={16} />
-            )}
-            <div className="prose prose-slate max-w-none text-sm flex-1">
-              <Markdown content={entry.bodyText} isProse={false} />
-            </div>
+          <div className="prose prose-slate max-w-none text-sm flex-1">
+            <Markdown content={entry.bodyText} isProse={false} />
           </div>
         )}
       </div>
