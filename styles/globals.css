@@ -173,23 +173,73 @@
     src: url('/fonts/source-sans-3-v19-latin-700italic.woff2') format('woff2');
   }
 
+  /* ── Rubik (Arabic UI font) ─────────────────────────────────────────────
+     Self-hosted from Google Fonts v31, never fetched from fonts.gstatic.com.
+     These are VARIABLE fonts covering weight 300-900 in one file per subset,
+     so `font-weight: 300 900` lets every weight the design uses resolve from
+     a single download instead of one file per weight.
+
+     Split by subset with Google's own unicode-range values: the browser only
+     fetches the Arabic file when Arabic codepoints are actually painted, and
+     only fetches the Latin file when Latin appears (brand names like Signal,
+     URLs, numerals inside Arabic copy). Combined with the [lang="ar"] scoping
+     further down, an English or Spanish reader downloads none of this. */
+  @font-face {
+    font-display: swap;
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 300 900;
+    src: url('/fonts/rubik-v31-arabic-wght-normal.woff2') format('woff2');
+    unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1;
+  }
+  @font-face {
+    font-display: swap;
+    font-family: 'Rubik';
+    font-style: italic;
+    font-weight: 300 900;
+    src: url('/fonts/rubik-v31-arabic-wght-italic.woff2') format('woff2');
+    unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1;
+  }
+  @font-face {
+    font-display: swap;
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 300 900;
+    src: url('/fonts/rubik-v31-latin-wght-normal.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-display: swap;
+    font-family: 'Rubik';
+    font-style: italic;
+    font-weight: 300 900;
+    src: url('/fonts/rubik-v31-latin-wght-italic.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-display: swap;
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 300 900;
+    src: url('/fonts/rubik-v31-latin-ext-wght-normal.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-display: swap;
+    font-family: 'Rubik';
+    font-style: italic;
+    font-weight: 300 900;
+    src: url('/fonts/rubik-v31-latin-ext-wght-italic.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
   html,
   body {
     padding: 0;
     margin: 0;
-    font-family:
-      'Source Sans 3',
-      -apple-system,
-      BlinkMacSystemFont,
-      Segoe UI,
-      Roboto,
-      Oxygen,
-      Ubuntu,
-      Cantarell,
-      Fira Sans,
-      Droid Sans,
-      Helvetica Neue,
-      sans-serif;
+    /* var(), not a hardcoded stack: the per-locale override below swaps
+       --font-body, and body copy has to follow it. */
+    font-family: var(--font-body);
     font-size: 17px; /* Slightly larger to compensate for Source Sans 3's smaller appearance */
   }
 
@@ -216,34 +266,16 @@
   * {
     box-sizing: border-box;
   }
-
-  /* English violet 275 31% 29% */
-  /* Avocado: 81 96% 29% */
-  /* Sea green: 161 89% 28% */
-  /* skbeuloff: 175 89% 28% */
-  /* paynes gray 196 39% 32% */
-  /* intl orange: 18 88% 50% */
 } 
 
 @layer base {
   :root {
-    /* Font Variables - Community Font Combination */
+    /* Font Variables - Community Font Combination.
+       --font-body carries the full fallback chain that used to be inlined on
+       html/body, so pointing body at the token changes nothing for en/es. */
     --font-heading: 'Libre Franklin', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    --font-body: 'Source Sans 3', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    
-    --proton: 251 100% 64.7%;
-    --intercept: 247 100% 66%; /* passes accessibility */
-    --intercept2: 247 100% 65.5%; /* passes accessibility */
-    /* --purple1: 259 79% 72%; */
-    /* --purple2: 257 45% 49%; */
-    /* --purple3: 266 41% 44%; */
-    /* --purple4: 266 54% 51%; */
-    /* --purple5: 266 63% 35%; */
-    /* --zomp: 168 41% 44%; */
-    /* --rust: 18 100% 37%;    passes accessibility */
-    /* --delft-blue: 231 39% 32%;  maybe as a secondary */
-    /* --bizantium: 314 59% 33%; */
-
+    --font-body: 'Source Sans 3', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", system-ui, sans-serif;
+  
     --brand: 247 100% 65.5%;
 
     --brand-gray-5: 247 9% 95%;
@@ -384,6 +416,23 @@
     /* Mark Colors - Dark Mode */
     --mark-background: 48 30% 25%;
     --mark-foreground: inherit;
+  }
+
+  /* ── Arabic typography ────────────────────────────────────────────────────
+     Rubik replaces both faces for Arabic only. The :lang(ar) scope is what
+     makes the load conditional: no rule on an en/es page ever names 'Rubik',
+     and a browser only downloads a font it actually has to paint with, so
+     English and Spanish readers fetch none of these files. Combined with the
+     per-subset unicode-range above, an Arabic page pulls the ~32KB Arabic file
+     plus the ~34KB Latin one (for brand names, URLs and numerals) and skips
+     the italic / latin-ext files unless the page really uses them.
+
+     Arabic has no italic tradition and no case distinction, so one family
+     serves both roles here; the 300-900 variable axis carries the hierarchy
+     that Libre Franklin vs Source Sans 3 carries in Latin. */
+  :root:lang(ar) {
+    --font-heading: 'Rubik', 'Geeza Pro', 'Noto Sans Arabic', 'Segoe UI', Tahoma, system-ui, sans-serif;
+    --font-body: 'Rubik', 'Geeza Pro', 'Noto Sans Arabic', 'Segoe UI', Tahoma, system-ui, sans-serif;
   }
 }
 

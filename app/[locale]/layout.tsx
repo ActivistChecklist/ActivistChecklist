@@ -15,6 +15,25 @@ import {
 import ReviewCommentsDbStatusLogger from '@/components/review-comments/ReviewCommentsDbStatusLogger';
 import '@/styles/globals.css';
 
+/**
+ * Fonts worth preloading per script. Rubik is variable (300-900) and split by
+ * unicode-range, so two files cover every weight an Arabic page renders: the
+ * Arabic subset for the copy itself, and the Latin subset for the brand names,
+ * URLs and numerals that appear inside it.
+ */
+const FONT_PRELOADS = {
+  latin: [
+    '/fonts/source-sans-3-v19-latin-regular.woff2',
+    '/fonts/libre-franklin-v20-latin-600.woff2',
+    '/fonts/libre-franklin-v20-latin-700.woff2',
+  ],
+  ar: [
+    '/fonts/rubik-v31-arabic-wght-normal.woff2',
+    '/fonts/rubik-v31-latin-wght-normal.woff2',
+  ],
+} as const;
+
+
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
@@ -42,28 +61,22 @@ export default async function LocaleLayout({ children, params }) {
             surfaces them, which means cross-breakpoint resizes (desktop nav →
             mobile nav) sometimes need to load a not-yet-rendered weight
             mid-resize, and briefly substitute the system fallback. Preloading
-            + font-display: optional on these weights stops that mid-life swap. */}
-        <link
-          rel="preload"
-          as="font"
-          type="font/woff2"
-          href="/fonts/source-sans-3-v19-latin-regular.woff2"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          as="font"
-          type="font/woff2"
-          href="/fonts/libre-franklin-v20-latin-600.woff2"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          as="font"
-          type="font/woff2"
-          href="/fonts/libre-franklin-v20-latin-700.woff2"
-          crossOrigin="anonymous"
-        />
+            + font-display: optional on these weights stops that mid-life swap.
+
+            Arabic renders in Rubik instead (see :root:lang(ar) in globals.css),
+            so ar pages preload Rubik's Arabic + Latin subsets and skip the
+            Latin-only families entirely — preloading a font the page never
+            paints with is wasted bandwidth and a console warning. */}
+        {FONT_PRELOADS[locale === 'ar' ? 'ar' : 'latin'].map((href) => (
+          <link
+            key={href}
+            rel="preload"
+            as="font"
+            type="font/woff2"
+            href={href}
+            crossOrigin="anonymous"
+          />
+        ))}
         {/* llms.txt — curated index for LLM crawlers (llmstxt.org). */}
         <link
           rel="alternate"
