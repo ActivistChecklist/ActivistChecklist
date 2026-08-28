@@ -22,13 +22,61 @@ and move the entry to [Cleared](#cleared).
 *Last reviewed* even when the answer is "still holding", so a stale date means
 nobody looked rather than nothing changed.
 
-**Before you trust a recorded reason, re-test it.** Every hold in this repo as
-of 2026-08-28 turned out to be either fixed upstream or never a hold at all.
+**Before you trust a recorded reason, re-test it.** On the 2026-08-28 sweep,
+every hold that had been recorded informally turned out to be either already
+fixed upstream or never a hold at all, while two real blockers had no record.
 Reasons rot; builds do not lie.
 
 ## Active holds
 
-None. Every hold has been re-tested and cleared. See below.
+### typescript 7: blocked by Next.js 15, not by our code
+
+- **We are on:** `6.0.3` (exact)
+- **Declining:** `7.0.2` (Dependabot #575)
+- **Why:** Next.js 15 refuses to build with it. The error is explicit:
+
+  > TypeScript 7.0.2 is not supported by this version of Next.js. The
+  > TypeScript 7 native compiler does not provide the JavaScript compiler API
+  > that Next.js requires. Install TypeScript 6 (e.g. npm install --save-dev
+  > typescript@^6) or upgrade to a Next.js v16.2.11 or later to get support
+  > for TypeScript 7.
+
+  Our own code is already TS7-clean: `tsc --noEmit` exits 0 on 7.0.2 and the
+  full test suite passes. The only thing missing is Next's build integration.
+- **Take it when:** we are on Next.js >= 16.2.11. This is gated entirely on the
+  Next 16 decision below, so take both together or neither.
+- **How to check:** `pnpm exec tsc --noEmit` (passes today) then
+  `BUILD_MODE=static next build` (this is what fails).
+- **Last reviewed:** 2026-08-28
+
+### js-yaml 5: blocked by @keystatic/core, and breaks our date handling
+
+- **We are on:** `^4.3.1`
+- **Declining:** `5.2.3` (Dependabot #580)
+- **Why:** three independent problems, verified by testing v4 and v5 side by side.
+
+  1. **No default export.** v5 is named-exports only.
+     [`lib/content.js`](lib/content.js) does `import yaml from 'js-yaml'`, which
+     fails outright.
+  2. **Dates become strings.** v5 defaults to `CORE_SCHEMA`, so `2026-08-14`
+     loads as a `String` instead of a `Date`, and `dump()` writes
+     `date: '2026-08-14'` where v4 writes `date: 2026-08-14T00:00:00.000Z`.
+     [`scripts/keystatic-format-mdx.mjs`](scripts/keystatic-format-mdx.mjs)
+     exists precisely to reproduce Keystatic's `dump()` output byte for byte,
+     and its `patchDates()` step assumes `Date` objects.
+  3. **`load('')` throws** a `YAMLException` instead of returning `undefined`.
+
+  Problem 2 is the one that cannot be worked around: `@keystatic/core@0.6.8`
+  depends on `js-yaml: ^4.1.0`. Moving our direct dependency to v5 while
+  Keystatic stays on v4 means our formatter and Keystatic's own writer would
+  disagree about frontmatter, producing diff churn on every save.
+- **Take it when:** `@keystatic/core` moves to js-yaml 5. Check with
+  `npm view @keystatic/core dependencies | grep js-yaml`. Then also fix the
+  default import in `lib/content.js` and re-check `patchDates()`.
+- **Note:** the tree already carries js-yaml 3.15.1 (via `gray-matter`) and
+  4.3.1 (via Keystatic and pm2). Adding a third major is worth avoiding on its
+  own.
+- **Last reviewed:** 2026-08-28
 
 ## Cleared
 
@@ -52,6 +100,16 @@ package. That trades a real supply-chain protection for four days of freshness,
 which is not a trade worth making on this project. 1.34.0 clears the gate on
 its own. The caret range will pick up 1.35.x normally once it ages past the
 gate; do not add an exclude entry to force it early.
+
+### @types/node 26: cleared 2026-08-28, taken
+
+Was pinned `25.9.2`. Tested `26.2.0` (Dependabot #578): `tsc --noEmit` exits 0,
+full suite passes, `BUILD_MODE=static next build` exits 0 with the same 73-page
+output. Taken. `skipLibCheck: true` in `tsconfig.json` keeps this class of bump
+low risk.
+
+Still pinned exact by repo convention, so future majors will show up as their
+own PR rather than riding in the grouped minor/patch updates.
 
 ### @radix-ui/react-slot: never a hold
 

@@ -22,10 +22,20 @@ updates:
     # Bumps we have evaluated and declined live here. Every entry MUST have a
     # matching section in /DEPENDENCIES.md with the reason and the condition
     # that would let us accept it. Removing a rule means the hold is over.
-    #
-    # Currently empty on purpose: as of 2026-08-28 every hold we had was
-    # re-tested and cleared. Do not add a rule without a DEPENDENCIES.md entry.
-    ignore: []
+    ignore:
+      # DEPENDENCIES.md#typescript-7-blocked-by-nextjs-15-not-by-our-code
+      # Next 15 cannot build with the TS7 native compiler. Needs Next >= 16.2.11.
+      # Our code is already TS7-clean; drop this rule when Next 16 lands.
+      - dependency-name: "typescript"
+        update-types:
+          - "version-update:semver-major"
+
+      # DEPENDENCIES.md#js-yaml-5-blocked-by-keystaticcore-and-breaks-our-date-handling
+      # @keystatic/core pins js-yaml ^4.1.0, and v5 drops the default export
+      # and loads YAML dates as strings instead of Date objects.
+      - dependency-name: "js-yaml"
+        update-types:
+          - "version-update:semver-major"
 
   # Optional: Also check for GitHub Actions updates
   - package-ecosystem: "github-actions"

@@ -32,7 +32,7 @@ importers:
     dependencies:
       '@activistchecklist/react-review-comments':
         specifier: ^0.3.0
-        version: 0.3.0(@types/node@25.9.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(socks@2.8.9)
+        version: 0.3.0(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(socks@2.8.9)
       '@activistchecklist/umami-extra-privacy':
         specifier: github:ActivistChecklist/umami-extra-privacy#7669154d772ecbf3410c1243e8014ac8a0e74c5e
         version: https://codeload.github.com/ActivistChecklist/umami-extra-privacy/tar.gz/7669154d772ecbf3410c1243e8014ac8a0e74c5e(fastify@5.12.1)
@@ -50,10 +50,10 @@ importers:
         version: 5.9.1(@standard-schema/spec@1.1.0)(ajv@8.20.0)(react-hook-form@7.85.0(react@19.2.8))(superstruct@1.0.4)(zod@4.4.3)
       '@keystatic/core':
         specifier: ^0.6.8
-        version: 0.6.8(@keystar/ui@0.9.6(next@15.5.23(@types/node@25.9.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8)
+        version: 0.6.8(@keystar/ui@0.9.6(next@15.5.23(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8)
       '@keystatic/next':
         specifier: ^5.0.5
-        version: 5.0.5(@keystatic/core@0.6.8(@keystar/ui@0.9.6(next@15.5.23(@types/node@25.9.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(next@15.5.23(@types/node@25.9.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 5.0.5(@keystatic/core@0.6.8(@keystar/ui@0.9.6(next@15.5.23(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(next@15.5.23(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@next/env':
         specifier: ^16.3.1
         version: 16.3.1
@@ -161,10 +161,10 @@ importers:
         version: 7.5.0(socks@2.8.9)
       next:
         specifier: ^15.5.23
-        version: 15.5.23(@types/node@25.9.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 15.5.23(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       next-intl:
         specifier: ^4.13.7
-        version: 4.13.7(@swc/helpers@0.5.23)(next@15.5.23(@types/node@25.9.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)(typescript@6.0.3)
+        version: 4.13.7(@swc/helpers@0.5.23)(next@15.5.23(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)(typescript@6.0.3)
       next-mdx-remote:
         specifier: ^6.0.0
         version: 6.0.0(@types/react@19.2.18)(react@19.2.8)
@@ -230,8 +230,8 @@ importers:
         specifier: ^4.3.3
         version: 4.3.3
       '@types/node':
-        specifier: 25.9.2
-        version: 25.9.2
+        specifier: 26.2.0
+        version: 26.2.0
       '@types/react':
         specifier: 19.2.18
         version: 19.2.18
@@ -261,7 +261,7 @@ importers:
         version: 9.1.7
       next-sitemap:
         specifier: ^4.2.3
-        version: 4.2.3(next@15.5.23(@types/node@25.9.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))
+        version: 4.2.3(next@15.5.23(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))
       node-fetch:
         specifier: ^3.3.2
         version: 3.3.2
@@ -288,7 +288,7 @@ importers:
         version: 0.29.1
       sharp:
         specifier: '>=0.35.0'
-        version: 0.35.3(@types/node@25.9.2)
+        version: 0.35.3(@types/node@26.2.0)
       tailwindcss:
         specifier: ^4.3.3
         version: 4.3.3
@@ -300,10 +300,10 @@ importers:
         version: 6.0.3
       vite:
         specifier: '>=8.0.16'
-        version: 8.2.2(@types/node@25.9.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0)
+        version: 8.2.2(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0)
       vitest:
         specifier: ^4.1.11
-        version: 4.1.11(@types/node@25.9.2)(vite@8.2.2(@types/node@25.9.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0))
+        version: 4.1.11(@types/node@26.2.0)(vite@8.2.2(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0))
 
 packages:
 
@@ -2324,8 +2324,8 @@ packages:
   '@types/ms@2.1.0':
     resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
 
-  '@types/node@25.9.2':
-    resolution: {integrity: sha512-G05zqtJhcDLb8uslf5EjCxXg9G1KQxiV8OS0R26IC//Eoyitzqe8z37I7cqvnZlrlSfgocQRfSn/AHBZJJFyGw==}
+  '@types/node@26.2.0':
+    resolution: {integrity: sha512-5IviulTZeRNp2vAJ514cc/HUlY5nZ9fCbq9DMyC52BrhFZACo3nI0R7qBxhQmo/d27NFe96ur/b7Wwxklda+kg==}
 
   '@types/react@19.2.18':
     resolution: {integrity: sha512-AnzbBERsrLKtk2XSfTbYRLjQPdy116Sty4q+T+Bp3IC4l6jNBvreVPAHmpq9qhXQM7CXZPjLVmGMw9sy+hxQ3w==}
@@ -4616,8 +4616,8 @@ packages:
     resolution: {integrity: sha512-LbBDqdIC5s8iROCUjMbW1f5dJQTEFB1+KO9ogbvlb3nm9n4YHa5p4KTvFPWvh2Hs8gZMBuiB1/8+pdfe/tDPug==}
     hasBin: true
 
-  undici-types@7.24.6:
-    resolution: {integrity: sha512-WRNW+sJgj5OBN4/0JpHFqtqzhpbnV0GuB+OozA9gCL7a993SmU+1JBZCzLNxYsbMfIeDL+lTsphD5jN5N+n0zg==}
+  undici-types@8.3.0:
+    resolution: {integrity: sha512-j375ScV60dom+YkPFIfTLcOiPxkN/buHz5GobjLhixFuANaNs3C9l4GmrWqejgXWJ7BbJcFYpTEUkS1Ge8bpZQ==}
 
   undici@8.10.0:
     resolution: {integrity: sha512-HvltHd7avK13QIw/oLe4qoOLyoVSoafqJ2jYOrtMRBkbYT31eiBQ8O0ehRKZiEZCMEyLFQNIADpgCWC5fALvYQ==}
@@ -4962,13 +4962,13 @@ snapshots:
     optionalDependencies:
       graphql: 16.14.2
 
-  '@activistchecklist/react-review-comments@0.3.0(@types/node@25.9.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(socks@2.8.9)':
+  '@activistchecklist/react-review-comments@0.3.0(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(socks@2.8.9)':
     dependencies:
       '@annotorious/react': 3.8.9(openseadragon@6.1.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@recogito/react-text-annotator': 3.4.10(openseadragon@6.1.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       lucide-react: 1.34.0(react@19.2.8)
       mongodb: 7.5.0(socks@2.8.9)
-      next: 15.5.23(@types/node@25.9.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      next: 15.5.23(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       openseadragon: 6.1.0
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)
@@ -5397,7 +5397,7 @@ snapshots:
 
   '@juggle/resize-observer@3.4.0': {}
 
-  '@keystar/ui@0.9.6(next@15.5.23(@types/node@25.9.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8)':
+  '@keystar/ui@0.9.6(next@15.5.23(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8)':
     dependencies:
       '@babel/runtime': 7.29.7
       '@emotion/cache': 11.14.0
@@ -5417,9 +5417,9 @@ snapshots:
       react-dom: 19.2.8(react@19.2.8)
       react-stately: 3.48.0(react@19.2.8)
     optionalDependencies:
-      next: 15.5.23(@types/node@25.9.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      next: 15.5.23(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
 
-  '@keystatic/core@0.6.8(@keystar/ui@0.9.6(next@15.5.23(@types/node@25.9.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8)':
+  '@keystatic/core@0.6.8(@keystar/ui@0.9.6(next@15.5.23(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8)':
     dependencies:
       '@babel/runtime': 7.29.7
       '@braintree/sanitize-url': 6.0.4
@@ -5428,7 +5428,7 @@ snapshots:
       '@internationalized/date': 3.12.3
       '@internationalized/number': 3.6.7
       '@internationalized/string': 3.2.10
-      '@keystar/ui': 0.9.6(next@15.5.23(@types/node@25.9.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8)
+      '@keystar/ui': 0.9.6(next@15.5.23(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8)
       '@markdoc/markdoc': 0.4.0(@types/react@19.2.18)(react@19.2.8)
       '@react-types/shared': 3.36.1(react@19.2.8)
       '@sindresorhus/slugify': 1.1.2
@@ -5488,13 +5488,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@keystatic/next@5.0.5(@keystatic/core@0.6.8(@keystar/ui@0.9.6(next@15.5.23(@types/node@25.9.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(next@15.5.23(@types/node@25.9.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+  '@keystatic/next@5.0.5(@keystatic/core@0.6.8(@keystar/ui@0.9.6(next@15.5.23(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(next@15.5.23(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:
       '@babel/runtime': 7.29.7
-      '@keystatic/core': 0.6.8(@keystar/ui@0.9.6(next@15.5.23(@types/node@25.9.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8)
+      '@keystatic/core': 0.6.8(@keystar/ui@0.9.6(next@15.5.23(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8)
       '@types/react': 19.2.18
       chokidar: 3.6.0
-      next: 15.5.23(@types/node@25.9.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      next: 15.5.23(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)
       server-only: 0.0.1
@@ -6759,9 +6759,9 @@ snapshots:
 
   '@types/ms@2.1.0': {}
 
-  '@types/node@25.9.2':
+  '@types/node@26.2.0':
     dependencies:
-      undici-types: 7.24.6
+      undici-types: 8.3.0
 
   '@types/react@19.2.18':
     dependencies:
@@ -6813,13 +6813,13 @@ snapshots:
       chai: 6.2.2
       tinyrainbow: 3.1.1
 
-  '@vitest/mocker@4.1.11(vite@8.2.2(@types/node@25.9.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0))':
+  '@vitest/mocker@4.1.11(vite@8.2.2(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0))':
     dependencies:
       '@vitest/spy': 4.1.11
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 8.2.2(@types/node@25.9.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0)
+      vite: 8.2.2(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0)
 
   '@vitest/pretty-format@4.1.11':
     dependencies:
@@ -8465,14 +8465,14 @@ snapshots:
 
   next-intl-swc-plugin-extractor@4.13.7: {}
 
-  next-intl@4.13.7(@swc/helpers@0.5.23)(next@15.5.23(@types/node@25.9.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)(typescript@6.0.3):
+  next-intl@4.13.7(@swc/helpers@0.5.23)(next@15.5.23(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)(typescript@6.0.3):
     dependencies:
       '@formatjs/intl-localematcher': 0.8.13
       '@parcel/watcher': 2.6.0
       '@swc/core': 1.15.47(@swc/helpers@0.5.23)
       icu-minify: 4.13.7
       negotiator: 1.1.0
-      next: 15.5.23(@types/node@25.9.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      next: 15.5.23(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       next-intl-swc-plugin-extractor: 4.13.7
       po-parser: 2.2.0
       react: 19.2.8
@@ -8496,20 +8496,20 @@ snapshots:
       - '@types/react'
       - supports-color
 
-  next-sitemap@4.2.3(next@15.5.23(@types/node@25.9.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)):
+  next-sitemap@4.2.3(next@15.5.23(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)):
     dependencies:
       '@corex/deepmerge': 4.0.43
       '@next/env': 13.5.11
       fast-glob: 3.3.3
       minimist: 1.2.8
-      next: 15.5.23(@types/node@25.9.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      next: 15.5.23(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
 
   next-themes@0.4.6(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
     dependencies:
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)
 
-  next@15.5.23(@types/node@25.9.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
+  next@15.5.23(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
     dependencies:
       '@next/env': 15.5.23
       '@swc/helpers': 0.5.15
@@ -8527,7 +8527,7 @@ snapshots:
       '@next/swc-linux-x64-musl': 15.5.23
       '@next/swc-win32-arm64-msvc': 15.5.23
       '@next/swc-win32-x64-msvc': 15.5.23
-      sharp: 0.35.3(@types/node@25.9.2)
+      sharp: 0.35.3(@types/node@26.2.0)
     transitivePeerDependencies:
       - '@babel/core'
       - '@types/node'
@@ -9219,7 +9219,7 @@ snapshots:
 
   setimmediate@1.0.5: {}
 
-  sharp@0.35.3(@types/node@25.9.2):
+  sharp@0.35.3(@types/node@26.2.0):
     dependencies:
       '@img/colour': 1.1.0
       detect-libc: 2.1.2
@@ -9250,7 +9250,7 @@ snapshots:
       '@img/sharp-win32-arm64': 0.35.3
       '@img/sharp-win32-ia32': 0.35.3
       '@img/sharp-win32-x64': 0.35.3
-      '@types/node': 25.9.2
+      '@types/node': 26.2.0
 
   shell-quote@1.9.0: {}
 
@@ -9477,7 +9477,7 @@ snapshots:
 
   ua-parser-js@1.0.41: {}
 
-  undici-types@7.24.6: {}
+  undici-types@8.3.0: {}
 
   undici@8.10.0: {}
 
@@ -9611,7 +9611,7 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
 
-  vite@8.2.2(@types/node@25.9.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0):
+  vite@8.2.2(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0):
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.5
@@ -9619,17 +9619,17 @@ snapshots:
       rolldown: 1.2.5
       tinyglobby: 0.2.17
     optionalDependencies:
-      '@types/node': 25.9.2
+      '@types/node': 26.2.0
       esbuild: 0.28.2
       fsevents: 2.3.3
       jiti: 2.7.0
       tsx: 4.23.12
       yaml: 2.9.0
 
-  vitest@4.1.11(@types/node@25.9.2)(vite@8.2.2(@types/node@25.9.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0)):
+  vitest@4.1.11(@types/node@26.2.0)(vite@8.2.2(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0)):
     dependencies:
       '@vitest/expect': 4.1.11
-      '@vitest/mocker': 4.1.11(vite@8.2.2(@types/node@25.9.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0))
+      '@vitest/mocker': 4.1.11(vite@8.2.2(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0))
       '@vitest/pretty-format': 4.1.11
       '@vitest/runner': 4.1.11
       '@vitest/snapshot': 4.1.11
@@ -9646,10 +9646,10 @@ snapshots:
       tinyexec: 1.3.0
       tinyglobby: 0.2.17
       tinyrainbow: 3.1.1
-      vite: 8.2.2(@types/node@25.9.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0)
+      vite: 8.2.2(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      '@types/node': 25.9.2
+      '@types/node': 26.2.0
     transitivePeerDependencies:
       - msw
 
