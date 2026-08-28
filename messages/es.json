@@ -131,9 +131,9 @@
   },
   "pageNotices": {
     "translationUnreviewedTitle": "Traducido automáticamente",
-    "translationUnreviewed": "Esta página fue traducida automáticamente. Solo el {approvalPercent}% de esta página ha sido revisado por una persona hasta ahora. El resto del texto puede tener errores. <link>Ayúdanos a revisar esta traducción</link>.",
-    "nonUsThreatModel": "Outside the US? Some tools here, including encrypted messaging apps, are illegal in certain countries. Check your local laws before acting on this guidance.",
-    "dismiss": "Dismiss"
+    "translationUnreviewed": "Esta página se tradujo automáticamente. Por ahora, solo el {approvalPercent}% de la página ha sido revisado por personas. El resto del texto puede tener errores. <link>Ayúdanos a revisar esta traducción</link>.",
+    "nonUsThreatModel": "¿Estás fuera de Estados Unidos? Algunas herramientas de este sitio, como las apps de mensajería cifrada, son ilegales en ciertos países. Consulta las leyes locales antes de seguir estas recomendaciones.",
+    "dismiss": "Cerrar"
   },
   "languageDetection": {
     "message": "Este sitio está disponible en {language}.",

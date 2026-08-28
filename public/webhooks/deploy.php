@@ -26,6 +26,15 @@
  * proxy_read_timeout (and GitHub will retry on 5xx) or switch to a queue that
  * returns 202 immediately.
  *
+ * Overlapping deliveries: builds are serialized by flock(2) on repo root
+ * .build-deploy.lock, held by scripts/build-deploy.sh. A push that lands mid-build
+ * does NOT fail — the script records .build-deploy.pending and exits 0, and the
+ * running build re-syncs to the tip of the branch and builds it before exiting.
+ * This file probes that same lock before its git pre-sync, so the pre-sync can never
+ * hard-reset the working tree out from under a build that is already running.
+ * Worst case a single request runs up to MAX_BUILD_ITERATIONS builds back to back,
+ * so size proxy_read_timeout / request_terminate_timeout accordingly.
+ *
  * Hardening notes:
  *   - Secret never appears in this file; use webhook-secrets.local.php (not in git).
  *   - Signature verified with hash_equals before parsing JSON.
@@ -327,14 +336,56 @@ if (isset($deployEnv['PATH']) && is_string($deployEnv['PATH']) && $deployEnv['PA
   unset($deployEnv['PATH']);
 }
 
+$delivery = $_SERVER['HTTP_X_GITHUB_DELIVERY'] ?? '';
+if (!is_string($delivery)) {
+  $delivery = '';
+}
+
+// The deploy script re-syncs git itself on every build iteration, so it needs the
+// same update mode this file uses for its pre-sync.
+$gitUpdateMode = (string) ($config['git_update_mode'] ?? 'hard-reset');
+if ($gitUpdateMode !== 'hard-reset' && $gitUpdateMode !== 'ff-only') {
+  failConfig('git_update_mode_invalid', [
+    'configPath' => $configPath,
+    'git_update_mode' => $gitUpdateMode,
+  ]);
+}
+
 $env = array_merge($_ENV, [
   'PATH' => $effectivePath,
   'HOME' => getenv('HOME') ?: '',
-  'GITHUB_DELIVERY' => $_SERVER['HTTP_X_GITHUB_DELIVERY'] ?? '',
+  'GITHUB_DELIVERY' => $delivery,
 ], $deployEnv, [
   'REPO_DIR' => $repoRoot,
   'GIT_BRANCH' => $branch,
+  'GIT_UPDATE_MODE' => $gitUpdateMode,
 ]);
+
+// Concurrency gate for the git pre-sync below. scripts/build-deploy.sh serializes
+// builds with flock(2) on this file; probe the same lock here so the pre-sync can
+// never hard-reset the working tree out from under a build that is already running.
+//
+// Coalescing overlapping deliveries is deliberately NOT handled here. The deploy
+// script does it, running as the deploy user — the only account guaranteed to be able
+// to write in the repo root (PHP-FPM often runs as www-data). A delivery that lands
+// mid-build just skips the pre-sync; the script then records a pending rebuild and
+// exits 0, so GitHub still sees a successful deploy.
+$lockPath = $repoRoot . DIRECTORY_SEPARATOR . '.build-deploy.lock';
+$lockFh = null;
+// A missing lock file means build-deploy.sh has never run (it creates the file and
+// leaves it in place), so nothing can be in flight. Do not create it from here: if
+// PHP runs as a different user, a lock file it owns may be unopenable by the build.
+$presyncSafe = !is_file($lockPath);
+if (!$presyncSafe) {
+  $lockFh = @fopen($lockPath, 'c');
+  if (is_resource($lockFh)) {
+    $presyncSafe = flock($lockFh, LOCK_EX | LOCK_NB);
+    if (!$presyncSafe) {
+      fclose($lockFh);
+      $lockFh = null;
+    }
+  }
+}
 
 // Pre-sync: ensure the repo (and deploy script) are up to date before resolving script paths.
 // Default is hard-reset to origin/<branch> (server is treated as disposable deploy checkout).
@@ -353,15 +404,16 @@ foreach ($gitPrefix as $part) {
 }
 
 $runGitPull = ($config['git_pull'] ?? true) !== false;
+if ($runGitPull && !$presyncSafe) {
+  // Either a build is in flight, or the lock file is not openable from here (PHP-FPM
+  // as www-data, builds as the deploy user). Either way we cannot prove it is safe to
+  // touch the working tree, so skip the pre-sync. The deploy script re-syncs git on
+  // every iteration, so the only cost is that an edit to the script itself lands one
+  // push later than it otherwise would.
+  earlyLog('git_presync_skipped', ['lock_path' => $lockPath]);
+  $runGitPull = false;
+}
 if ($runGitPull) {
-  $gitUpdateMode = (string) ($config['git_update_mode'] ?? 'hard-reset');
-  if ($gitUpdateMode !== 'hard-reset' && $gitUpdateMode !== 'ff-only') {
-    failConfig('git_update_mode_invalid', [
-      'configPath' => $configPath,
-      'git_update_mode' => $gitUpdateMode,
-    ]);
-  }
-
   $gitSteps = [
     array_merge($gitPrefix, ['git', 'fetch', 'origin', '--prune']),
     array_merge($gitPrefix, ['git', 'checkout', $branch]),
@@ -401,6 +453,16 @@ if ($runGitPull) {
       ]);
     }
   }
+}
+
+// Hand the lock over to the deploy script, which takes it itself. Release before
+// proc_open so the child cannot inherit the descriptor and deadlock on itself.
+// The gap between unlock and the script's flock is benign: a delivery that wins the
+// race just becomes the builder, and ours coalesces into it via the pending marker.
+if (is_resource($lockFh)) {
+  flock($lockFh, LOCK_UN);
+  fclose($lockFh);
+  $lockFh = null;
 }
 
 $defaultDeployScript = $repoRoot . DIRECTORY_SEPARATOR . 'scripts' . DIRECTORY_SEPARATOR . 'build-deploy.sh';
@@ -486,8 +548,6 @@ if (!is_string($runLog) || $runLog === '') {
   http_response_code(500);
   exit('Deploy failed');
 }
-
-$delivery = $_SERVER['HTTP_X_GITHUB_DELIVERY'] ?? '';
 
 $bash = ['/bin/bash', '--noprofile', '--norc', $realScript];
 $resolvedCmd = array_merge($prefix, $bash);

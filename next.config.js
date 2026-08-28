@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const createNextIntlPlugin = require('next-intl/plugin');
 const { REDIRECTS } = require('./lib/redirects.config.cjs');
+const linkedReviewCommentsRoot = require('./scripts/rrc-linked-root.cjs');
 
 /**
  * Omit Keystatic from the webpack graph only for static export (BUILD_MODE=static).
@@ -90,6 +91,16 @@ if (process.env.BUILD_MODE === 'static') {
   delete baseConfig.images.domains;
   baseConfig.images.loader = 'custom';
   baseConfig.images.loaderFile = './utils/imageLoader.js';
+}
+
+// Dev-only: when react-review-comments is `pnpm rrc:link`ed to a local checkout,
+// widen the root so Turbopack can resolve its external realpath (else "Module not
+// found"). No-op for normal installs and production builds. See the module.
+const linkedRoot = linkedReviewCommentsRoot(__dirname);
+if (linkedRoot) {
+  baseConfig.outputFileTracingRoot = linkedRoot;
+  baseConfig.turbopack = { ...baseConfig.turbopack, root: linkedRoot };
+  console.log(`[next.config] react-review-comments linked — dev root widened to ${linkedRoot}`);
 }
 
 // i18n is handled by App Router [locale] dynamic segment + next-intl.

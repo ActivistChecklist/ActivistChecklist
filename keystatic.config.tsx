@@ -331,6 +331,12 @@ const checklistItemComponent = block({
       label: 'Checklist Item',
       collection: 'checklistItems',
     }),
+    defaultExpanded: fields.checkbox({
+      label: 'Expanded by default',
+      description:
+        'Show this item already expanded on page load (useful when it is the only item on a page).',
+      defaultValue: false,
+    }),
   },
   ContentView(props) {
     return (
@@ -706,16 +712,14 @@ export default config({
           ],
           defaultValue: '2',
         }),
-        hideInlineCta: fields.checkbox({
-          label: 'Hide inline newsletter CTA',
-          description:
-            'By default, a compact newsletter signup is inserted between the first and second H2 section. Check to suppress on this page.',
-          defaultValue: false,
-        }),
         body: fields.mdx({
           label: 'Body',
           options: mdxEditorOptionsContent,
-          components: contentComponents,
+          components: {
+            ...contentComponents,
+            ChecklistItem: checklistItemComponent,
+            ChecklistItemGroup: checklistItemGroupComponent,
+          },
         }),
       },
     }),

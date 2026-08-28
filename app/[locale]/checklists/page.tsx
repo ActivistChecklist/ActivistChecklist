@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import Layout from '@/components/layout/Layout';
+import PageNotices from '@/components/layout/PageNotices';
 import { getAllGuides } from '@/lib/content';
 import { guideToCardCopy } from '@/lib/guide-card-copy';
 import { SECURITY_CHECKLISTS, NAV_ITEMS } from '@/config/navigation';
@@ -73,6 +74,8 @@ export default async function ChecklistsPage({ params }) {
         <h1 className="page-title">
           {t('checklists.title')}
         </h1>
+
+        <PageNotices />
 
         {/* Top 8 Checklists */}
         <section className="mb-12">

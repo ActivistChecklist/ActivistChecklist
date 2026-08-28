@@ -76,3 +76,5 @@ issue_enrichment:
         instructions: "Apply when the issue requires moderate implementation work, likely a half day to a full day"
       - label: "effort: high 🏔️"
         instructions: "Apply when the issue requires significant architectural thought, coordination, or many hours of work"
+      - label: "sofa-watchlist"
+        instructions: "Do not apply. Reserved for issues opened automatically by .github/workflows/sofa-watchlist-check.yml when the SOFA macOS feed drops or adds a watched Mac model."

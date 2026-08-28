@@ -215,8 +215,8 @@ export default function UpdatesPage() {
     // result + EssentialsPanel stack expands. Works for mobile and desktop —
     // the viewport-height baseline is always at least dropdown-height + chrome.
     <div className="min-h-screen space-y-6">
-      <PageNotices initialNotices={pageNotices} />
       <PageHero />
+      <PageNotices initialNotices={pageNotices} />
 
       {found ? null : (
         <FamilyCategorySelector value={category} onChange={handleCategoryChange} />

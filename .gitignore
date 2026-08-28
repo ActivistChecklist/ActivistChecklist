@@ -74,6 +74,9 @@ public/webhooks/deploy-webhook.error.log
 # Deploy lock file (flock in scripts/build-deploy.sh)
 .build-deploy.lock
 
+# Set by a webhook delivery that arrived mid-build; the running deploy rebuilds for it
+.build-deploy.pending
+
 # GitHub webhook deploy log (default path written by public/webhooks/deploy.php)
 .deploy-webhook.log
 .deploy-webhook-auth.log
