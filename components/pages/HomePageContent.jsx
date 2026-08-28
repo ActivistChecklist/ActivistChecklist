@@ -71,7 +71,7 @@ export default function HomePageContent({ children, changelogEntries = [], lates
                  escape to tint the whole viewport instead of just the hero. */
               "before:content-[''] before:absolute before:inset-0 before:bg-linear-to-r before:from-primary/10 before:via-accent/5 before:to-primary/10 before:opacity-70 before:pointer-events-none"
             )}>
-              <div className="absolute inset-0 bg-linear-to-r from-primary/10 via-accent/5 to-primary/10 opacity-70" />
+
               <div className="relative max-w-4xl mx-auto text-center">
                 {/* text-5xl/6xl ship line-height:1, which is too tight for
                     Arabic — diacritics and descenders collide on a wrapped
