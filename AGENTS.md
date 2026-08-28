@@ -3,6 +3,7 @@
 ## General rules
 
 * Use pnpm to manage packages
+* Before rejecting or re-evaluating a dependency upgrade, read `DEPENDENCIES.md`. It records which major bumps we have already declined and the condition that would let us accept them. If you decline a new one, add a section there AND a matching `ignore` rule in `.github/dependabot.yml`.
 * Worktree setup is automatic: Claude Code reads `.worktreeinclude` at the repo root and symlinks the listed gitignored paths (env files) from the main checkout into each new worktree. If you add new gitignored top-level state that worktrees should mirror, add a pattern to `.worktreeinclude`. When setting up a new worktree, run `pnpm install` so the modules are ready.
 
 ## Testing rules

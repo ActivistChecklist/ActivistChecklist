@@ -13,6 +13,13 @@ onlyBuiltDependencies:
   - sharp
 
 overrides:
+  # Uncommented entries are security floors (minimums for transitive deps),
+  # not holds. Anything that actually blocks an upgrade is explained in
+  # /DEPENDENCIES.md.
+  #
+  # react-slot: floor, not a ceiling. 1.3.3 is the current latest stable. Guards
+  # against a stale parallel node_modules resolving an old copy ("createSlot is
+  # not exported"); see the outputFileTracingRoot note in next.config.js.
   "@radix-ui/react-slot": "1.3.3"
   picomatch: ">=4.0.4"
   systeminformation: ">=5.31.0"
@@ -33,8 +40,6 @@ overrides:
   "js-yaml@3": ">=3.15.1 <4"
   "js-yaml@4": ">=4.3.1 <5"
   sharp: ">=0.35.0"
-  # 1.33.0 breaks `pnpm buildstatic` (RSC client manifest). See commit msg.
-  lucide-react: "1.30.0"
 
 peerDependencyRules:
   # Packages that haven't declared React 19 support (or use malformed semver

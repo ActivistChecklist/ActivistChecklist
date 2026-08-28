@@ -19,6 +19,14 @@ updates:
           - "patch"
     open-pull-requests-limit: 10
 
+    # Bumps we have evaluated and declined live here. Every entry MUST have a
+    # matching section in /DEPENDENCIES.md with the reason and the condition
+    # that would let us accept it. Removing a rule means the hold is over.
+    #
+    # Currently empty on purpose: as of 2026-08-28 every hold we had was
+    # re-tested and cleared. Do not add a rule without a DEPENDENCIES.md entry.
+    ignore: []
+
   # Optional: Also check for GitHub Actions updates
   - package-ecosystem: "github-actions"
     directory: "/"
