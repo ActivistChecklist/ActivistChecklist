@@ -26,7 +26,7 @@ const ChangeLogRecentEntries = ({ entries = [] }) => {
               <ChangeLogTimelineMarker type={entry.type} />
               {/* Timeline line */}
               {index < entries.length - 1 && (
-                <div className="absolute z-0 inset-s-6 top-[26px] w-px bg-border h-full -translate-x-1/2"></div>
+                <div className="absolute z-0 inset-s-6 top-[26px] w-px bg-border h-full -translate-x-1/2 rtl:translate-x-1/2"></div>
               )}
               <ChangeLogEntry entry={entry} />
             </div>
