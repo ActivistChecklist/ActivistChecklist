@@ -49,6 +49,8 @@ return [
   // Optional. How webhook updates the server checkout before running build-deploy.sh:
   // - 'hard-reset' (default if omitted): force repo to exactly origin/<branch>
   // - 'ff-only': safer for local changes; fails if fast-forward isn't possible
+  // Also forwarded to build-deploy.sh as GIT_UPDATE_MODE, which re-syncs before every
+  // build iteration (see the concurrency notes at the top of deploy.php).
   // 'git_update_mode' => 'hard-reset',
 
   // Passed into scripts/build-deploy.sh (PHP often runs as www-data).
