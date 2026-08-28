@@ -131,7 +131,9 @@
   },
   "pageNotices": {
     "translationUnreviewedTitle": "Automatically translated",
-    "translationUnreviewed": "This page was automatically translated. Only {approvalPercent}% of this page is human-reviewed so far. Other text may have errors. <link>Help us review this translation</link>."
+    "translationUnreviewed": "This page was automatically translated. Only {approvalPercent}% of this page is human-reviewed so far. Other text may have errors. <link>Help us review this translation</link>.",
+    "nonUsThreatModel": "Outside the US? Some tools here, including encrypted messaging apps, are illegal in certain countries. Check your local laws before acting on this guidance.",
+    "dismiss": "Dismiss"
   },
   "languageDetection": {
     "message": "This site is available in {language}.",
