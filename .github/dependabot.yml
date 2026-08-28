@@ -23,9 +23,10 @@ updates:
     # matching section in /DEPENDENCIES.md with the reason and the condition
     # that would let us accept it. Removing a rule means the hold is over.
     ignore:
-      # DEPENDENCIES.md#typescript-7-blocked-by-nextjs-15-not-by-our-code
-      # Next 15 cannot build with the TS7 native compiler. Needs Next >= 16.2.11.
-      # Our code is already TS7-clean; drop this rule when Next 16 lands.
+      # DEPENDENCIES.md#typescript-7-blocker-lifted-not-yet-taken
+      # The Next 15 blocker is GONE (we are on 16.3.3 now). This rule remains
+      # only so the compiler swap does not land unreviewed. Verify with
+      # `tsc --noEmit && pnpm buildstatic`, then delete this rule.
       - dependency-name: "typescript"
         update-types:
           - "version-update:semver-major"

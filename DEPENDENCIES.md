@@ -29,24 +29,21 @@ Reasons rot; builds do not lie.
 
 ## Active holds
 
-### typescript 7: blocked by Next.js 15, not by our code
+### typescript 7: blocker lifted, not yet taken
 
 - **We are on:** `6.0.3` (exact)
-- **Declining:** `7.0.2` (Dependabot #575)
-- **Why:** Next.js 15 refuses to build with it. The error is explicit:
-
-  > TypeScript 7.0.2 is not supported by this version of Next.js. The
-  > TypeScript 7 native compiler does not provide the JavaScript compiler API
-  > that Next.js requires. Install TypeScript 6 (e.g. npm install --save-dev
-  > typescript@^6) or upgrade to a Next.js v16.2.11 or later to get support
-  > for TypeScript 7.
-
-  Our own code is already TS7-clean: `tsc --noEmit` exits 0 on 7.0.2 and the
-  full test suite passes. The only thing missing is Next's build integration.
-- **Take it when:** we are on Next.js >= 16.2.11. This is gated entirely on the
-  Next 16 decision below, so take both together or neither.
-- **How to check:** `pnpm exec tsc --noEmit` (passes today) then
-  `BUILD_MODE=static next build` (this is what fails).
+- **Available:** `7.0.2` (was Dependabot #575, closed)
+- **Status:** the blocker is **gone** as of the Next 16 upgrade on 2026-08-28.
+  Next.js 15 could not build with the TS7 native compiler and told us to
+  "upgrade to a Next.js v16.2.11 or later to get support for TypeScript 7".
+  We are now on 16.3.3, so that condition is satisfied.
+- **Already known good:** `tsc --noEmit` exits 0 on 7.0.2 and the full test
+  suite passes. What was never verified is `next build` on 16.x with TS 7.
+- **Take it when:** now, once someone runs the check below and it passes.
+- **How to check:** set `typescript` to `7.0.2`, `pnpm install`, then
+  `pnpm exec tsc --noEmit && pnpm buildstatic`.
+- **Why it is still an ignore rule:** the rule stays only so the bump does not
+  land unreviewed. Drop it the moment the check above passes.
 - **Last reviewed:** 2026-08-28
 
 ### js-yaml 5: blocked by @keystatic/core, and breaks our date handling
@@ -101,6 +98,48 @@ which is not a trade worth making on this project. 1.34.0 clears the gate on
 its own. The caret range will pick up 1.35.x normally once it ages past the
 gate; do not add an exclude entry to force it early.
 
+### next 16: cleared 2026-08-28, taken
+
+Was held on `^15.5.23` with no recorded reason. Now on `^16.3.3` (with
+`@next/env` realigned to `^16.3.3`, which had drifted to 16.x while `next`
+stayed on 15.x).
+
+**The one change required:** Next 16 makes Turbopack the default bundler for
+`next build`, and Turbopack ignores this repo's custom `webpack:` config,
+including the `@` path alias and the `NormalModuleReplacementPlugin` calls that
+swap in `lib/stubs/*` for static export. Without the opt-out the build dies on
+module-not-found. So `build` is now:
+
+```
+"build": "NEXT_TELEMETRY_DISABLED=1 next build --webpack"
+```
+
+Verified: `pnpm buildstatic` exits 0 through the whole pipeline (build,
+`check-build`, `check-links`, `validate-build`, plus the postbuild sitemap /
+RSS / llms.txt / pagefind steps). 109 HTML files, 35 per locale, 267 internal
+paths resolved. `tsc --noEmit` exits 0, 1031 tests pass, and `next dev` boots
+and serves a correct page.
+
+**Side effects to be aware of:**
+
+- Next rewrote `tsconfig.json`: `jsx` changed from `preserve` to `react-jsx`
+  (Next calls this mandatory) and `include` gained `.next/dev/types/**/*.ts`,
+  since `next dev` now writes to `.next/dev` so dev and build can run at once.
+- Next appends a managed `<!-- BEGIN:nextjs-agent-rules -->` block to
+  `AGENTS.md` on every `next dev`. It is committed deliberately, because
+  removing it just recreates an uncommitted change. Set `agentRules: false` in
+  `next.config.js` to stop it.
+- The static export now also emits `out/__next.*.txt` RSC prefetch payloads.
+  Checked: they contain only values already present in the rendered HTML, so
+  they add no new exposure.
+
+**Still outstanding:** `middleware.ts` is deprecated in favour of `proxy.ts`.
+It still works and Next 16 already reports it as "Proxy (Middleware)". Renaming
+is not cosmetic, because `proxy` does not support the edge runtime and would
+move the next-intl middleware onto the Node runtime, so it deserves its own
+change. A real deploy has not been exercised either; only the local static
+export and test suite.
+
 ### @types/node 26: cleared 2026-08-28, taken
 
 Was pinned `25.9.2`. Tested `26.2.0` (Dependabot #578): `tsc --noEmit` exits 0,
@@ -124,49 +163,6 @@ from @radix-ui/react-slot". The actual fix was `outputFileTracingRoot`, which
 is in place. The override is a belt-and-braces floor, not a ceiling.
 
 Left in place, but it blocks nothing and needs no ignore rule.
-
-## Verified upgradeable, awaiting a decision
-
-### next 16: builds clean, needs a one-line build-script change
-
-Held on `^15.5.23` with no recorded reason. Tested `16.3.3` end to end:
-
-- `BUILD_MODE=static next build --webpack` exits 0 and produces the same static
-  export as 15.x, plus one extra `_not-found/index.html`. Nothing is lost.
-- Full test suite passes. `pnpm install` reports zero peer-dependency warnings.
-
-**The one required change:** Next 16 makes Turbopack the default bundler for
-`next build`. This repo has a custom `webpack:` config in `next.config.js` that
-Turbopack ignores, including the `@` path alias and the
-`NormalModuleReplacementPlugin` calls that swap in `lib/stubs/*` for static
-export. Without the flag the build fails with module-not-found errors. So:
-
-```
-"build": "NEXT_TELEMETRY_DISABLED=1 next build --webpack"
-```
-
-Everything else in the 16 upgrade guide is already satisfied. Audited and clean:
-Node 22 (needs 20.9+), TypeScript 6.0.3 (needs 5.1+), React 19.2.8, and async
-`params` already migrated everywhere. Not used at all: AMP, `next lint`,
-`serverRuntimeConfig`/`publicRuntimeConfig`, `experimental_ppr`, `dynamicIO`,
-`useCache`, `unstable_rootParams`, parallel routes, `next/legacy/image`,
-`revalidateTag`, and the `opengraph-image`/`sitemap` file conventions.
-
-**Not blocking, worth doing eventually:**
-
-- `middleware.ts` is deprecated in favour of `proxy.ts`. It still works in 16.
-  Note `proxy` does not support the edge runtime, so confirm the next-intl
-  middleware is happy on the Node runtime before renaming. Next 16 already
-  labels it "Proxy (Middleware)" in build output.
-- Turbopack cannot run the static-export stubbing, so `--webpack` is required
-  for as long as `next.config.js` uses `NormalModuleReplacementPlugin`. Porting
-  the stub mechanism to a Turbopack-native approach is the only way off the flag.
-
-**What has not been verified:** a real deploy. The static export and the test
-suite pass locally; `pnpm buildstatic` also runs `check-build`, `check-links`,
-and `validate-build`, and the Railway/server path was not exercised. Treat the
-extra `_not-found/index.html` as the one output difference to confirm those
-scripts tolerate.
 
 ## Known future breaks
 
