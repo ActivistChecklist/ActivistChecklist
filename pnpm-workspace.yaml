@@ -14,8 +14,8 @@ onlyBuiltDependencies:
 
 overrides:
   # Uncommented entries are security floors (minimums for transitive deps),
-  # not holds. Anything that actually blocks an upgrade is explained in
-  # /DEPENDENCIES.md.
+  # not holds. Declined upgrades are recorded in .github/dependabot.yml, next
+  # to the ignore rules that enforce them.
   #
   # react-slot: floor, not a ceiling. 1.3.3 is the current latest stable. Guards
   # against a stale parallel node_modules resolving an old copy ("createSlot is
