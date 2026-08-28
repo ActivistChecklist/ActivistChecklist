@@ -140,15 +140,21 @@ const NavigationMenuViewport = React.forwardRef(({ className, ...props }, ref) =
   const viewportStyle = React.useMemo(() => {
     if (!activeItemRect) return {}
     
+    // activeItemRect.left is a PHYSICAL offset (getBoundingClientRect left,
+    // measured from the menu's left edge), so it must be applied through a
+    // physical property. Using insetInlineStart here flipped it to `right`
+    // under RTL, mirroring the panel away from its trigger — worst for the
+    // right-most triggers, whose offset is largest. `left` + translateX are
+    // both physical, so this positions identically in LTR and RTL.
     return {
-      insetInlineStart: `${activeItemRect.left}px`,
+      left: `${activeItemRect.left}px`,
       transform: `translateX(-50%)`,
       transition: 'all 0.15s ease'
     }
   }, [activeItemRect])
 
   return (
-    <div className={cn("absolute inset-s-0 top-full flex justify-center")} style={viewportStyle}>
+    <div className={cn("absolute left-0 top-full flex justify-center")} style={viewportStyle}>
       <NavigationMenuPrimitive.Viewport
         className={cn(
           "origin-top-center relative mt-1.5 h-(--radix-navigation-menu-viewport-height) w-full overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-lg data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90 md:w-(--radix-navigation-menu-viewport-width)",

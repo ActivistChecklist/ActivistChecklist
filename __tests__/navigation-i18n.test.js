@@ -89,4 +89,45 @@ describe('createIntlTranslator', () => {
     });
     expect(translateText('nav.home', 'Home')).toBe('Home');
   });
+
+  // next-intl's real behaviour: a missing message does not throw. It reports
+  // MISSING_MESSAGE and returns the key path as the string, so without a
+  // t.has() check the raw key leaks into the UI instead of the English label.
+  function makeNextIntlLikeT(messages) {
+    const has = (key) => Object.prototype.hasOwnProperty.call(messages, key);
+    const t = (key) => (has(key) ? messages[key] : key);
+    t.has = has;
+    return t;
+  }
+
+  it('returns fallback for a missing key even though next-intl does not throw', () => {
+    const translateText = createIntlTranslator(makeNextIntlLikeT({}));
+    expect(translateText('navItems.vpn.title', 'VPNs for activists')).toBe(
+      'VPNs for activists',
+    );
+  });
+
+  it('never leaks the raw key path into the output', () => {
+    const translateText = createIntlTranslator(makeNextIntlLikeT({}));
+    expect(translateText('navItems.vpn.label', 'VPNs for activists')).not.toBe(
+      'navItems.vpn.label',
+    );
+  });
+
+  it('uses the translation when the key is present', () => {
+    const translateText = createIntlTranslator(
+      makeNextIntlLikeT({ 'navItems.vpn.title': 'شبكات VPN' }),
+    );
+    expect(translateText('navItems.vpn.title', 'VPNs for activists')).toBe('شبكات VPN');
+  });
+
+  it('returns undefined fallback rather than the key when no fallback is given', () => {
+    const translateText = createIntlTranslator(makeNextIntlLikeT({}));
+    expect(translateText('navItems.vpn.title', undefined)).toBeUndefined();
+  });
+
+  it('still works when t has no has() method', () => {
+    const translateText = createIntlTranslator((key) => `translated:${key}`);
+    expect(translateText('nav.home', 'Home')).toBe('translated:nav.home');
+  });
 });
