@@ -1,1 +1,2 @@
 .env*
+public/webhooks/webhook-secrets.local.php
