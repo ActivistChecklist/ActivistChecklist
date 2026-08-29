@@ -11,6 +11,11 @@ import { LOCALES } from "@/lib/i18n-config";
 import PageNotices from '@/components/layout/PageNotices';
 import AnswerCapsule from '@/components/AnswerCapsule';
 
+// The newsletter CTA belongs to guides only. Neutralizing the component here
+// (rather than only stripping it from the MDX) also covers translated copies
+// that still carry the tag until Crowdin catches up.
+const pageMdxComponents = { ...mdxComponents, InlineCta: () => null };
+
 function parseRelatedGuides(value) {
   if (Array.isArray(value)) return value.filter(Boolean);
   if (typeof value !== 'string') return [];
@@ -28,8 +33,8 @@ function parseRelatedGuides(value) {
  *   - serializedBody: next-mdx-remote compiled MDX
  *   - locale: BCP 47 locale string for date formatting (provided by parent Server Component)
  *
- * Unlike guides, pages do not get the auto-inserted newsletter CTA. A page can
- * still include a manual <InlineCta /> in its MDX body.
+ * The newsletter CTA is a guides-only treatment, so pages neither get the
+ * auto-inserted one nor render a manual <InlineCta /> left in their MDX.
  */
 export default function Page({
   frontmatter,
@@ -59,7 +64,7 @@ export default function Page({
       <AnswerCapsule text={frontmatter.answerCapsule} />
       <div className="prose prose-slate max-w-none">
         {serializedBody && (
-          <MDXRemote {...serializedBody} components={mdxComponents} />
+          <MDXRemote {...serializedBody} components={pageMdxComponents} />
         )}
       </div>
       {relatedGuideSlugs.length > 0 && (

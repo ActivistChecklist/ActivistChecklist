@@ -306,8 +306,8 @@ export default async function SlugPage({ params }) {
   if (page) {
     const { frontmatter, content, isFallback } = page;
 
-    // Pages do not get the auto-inserted newsletter CTA (guides do). Editors can
-    // still place a manual <InlineCta /> in the page body if they want one.
+    // The newsletter CTA is guides-only: pages get neither the auto-inserted one
+    // nor a manual <InlineCta /> (components/pages/Page.js renders it as null).
     const serializedBody = content ? await serializeMdx(content) : null;
 
     // Resolve any checklist items embedded in the page via <ChecklistItem slug="…" />
