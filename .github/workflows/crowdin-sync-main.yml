@@ -61,9 +61,12 @@ jobs:
             sleep "${EXTRA}m"
           fi
 
-      # Temporarily off — set `if:` back to run on push/workflow_dispatch when re-enabling.
+      # Hides JSX attribute/frontmatter values (level=, slug=, type=, ...) so Crowdin can't
+      # translate them, and clears any stray translations. Only affects strings sourced from
+      # content/en/**/*.mdx — same English text in messages/en.json (e.g. riskLevel.everyoneLabel
+      # vs level="everyone") is explicitly left visible and translatable.
       - name: Hide untranslatable strings
-        if: false
+        if: true
         env:
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
