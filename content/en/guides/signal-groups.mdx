@@ -1,0 +1,111 @@
+---
+title: Signal Safety for Large Group Chats
+estimatedTime: 25 minutes
+excerpt: >
+  A large Signal group is only as secure as its least-secured phone. These steps
+  help protect the whole network, whether you're a member or an admin.
+relatedGuides:
+  - signal
+  - protest
+  - doxxing
+firstPublished: 2026-04-22
+lastUpdated: 2026-04-22
+---
+
+Signal has become one of the most important tools in our movements. More people are using it than ever. Large group chats are being used for regional networks, rapid response groups, [ICE watch groups](/ice/), and mutual aid groups. It's become a core way we organize and communicate. Many of those groups include people who are new to Signal, new to organizing. That's good!
+
+These large groups are almost always unvetted. Meaning anyone can join. That comes with benefits and risk.
+
+This guide is to help us have better practices for large groups.
+
+Signal's encryption is real protection, but it only covers part of what makes a large group safe.
+
+**Signal protects you from:**
+- Messages being intercepted in transit: end-to-end encryption means only group members can read them, not your cell phone carrier or internet provider or the NSA snooping on internet traffic.
+- Government data requests: Signal's encryption system means that they don't have your message content to hand over, even if they receive a court order.
+
+**Signal cannot protect you from:**
+- A member taking screenshots or sharing what was said
+- A device that has [spyware](/spyware/) 
+- The police breaking into your phone (see the [Protest Safety Checklist](/protest/))
+- An infiltrator silently documenting your coordination
+
+A group of 200 people means 200 phones. Your choices, what you share, how you refer to other members, and which conversations you move somewhere smaller, matter just as much as your app settings.
+
+This guide covers the settings and habits that specifically matter in large, semi-public organizing spaces: regional networks, mutual aid groups, rapid response chains, or any group with members you haven't vetted individually. If you're an admin, there's a section at the end with settings that can protect your whole group.
+
+<Alert type="success"> 
+  **Before this guide:** If you haven't gone through the [Signal Security Checklist](/signal/) yet, start there. This guide builds on that foundation and focuses on what changes when you're operating in a large group.
+</Alert>
+
+<Section title="Protect your identity in the group" slug="identity">
+  <RiskLevel level="everyone" mode="single_line">
+    For anyone who is a **member** of a large group, especially one with members you haven't personally vetted.
+  </RiskLevel>
+
+  Your Signal profile is visible to everyone you're connected with. In a large group, that may include infiltrators, people with different threat models than you, and people whose devices are not well-secured. The two most important things you can do are use a pseudonym and hide your phone number.
+
+  <ChecklistItemGroup>
+    <ChecklistItem slug="signal-display-name" />
+    <ChecklistItem slug="signal-enable-username" />
+  </ChecklistItemGroup>
+</Section>
+
+<Section title="Lock down your account" slug="account">
+  <RiskLevel level="everyone" mode="default" />
+
+  These settings protect your account from takeover, keep your messages from being exposed if your phone is handed to the wrong person, and cut off one subtle way an attacker can silently read everything you send.
+
+  <ChecklistItemGroup>
+    <ChecklistItem slug="signal-pin" />
+    <ChecklistItem slug="signal-check-linked-devices" />
+    <ChecklistItem slug="screen-lock" />
+    <ChecklistItem slug="signal-link-previews" />
+  </ChecklistItemGroup>
+</Section>
+
+<Section title="How you communicate matters" slug="behavior">
+  <RiskLevel level="everyone" mode="default" />
+
+  Encryption protects your messages in transit. Your choices about what to say and how to say it protect the people in your group. These habits cost almost nothing and protect everyone.
+
+  <ChecklistItemGroup>
+    <ChecklistItem slug="signal-group-behavior" />
+    <ChecklistItem slug="signal-small-groups" />
+    <ChecklistItem slug="signal-disappearing" />
+  </ChecklistItemGroup>
+</Section>
+
+<Section title="Before high-risk situations" slug="high-risk">
+  <RiskLevel level="medium" mode="for_you_if">
+    * **You're heading into situations where your phone might be searched**, such as a protest, border crossing, or police stop.
+    * **You're an organizer or visible leader** and arrest is a realistic possibility.
+    * **Your large group includes members who are being monitored** by law enforcement or right-wing adversaries.
+  </RiskLevel>
+
+  If your phone is seized, law enforcement can see every group you're in and use your Signal contact list to map out your entire network, even if names are pseudonymous. The unique Signal identity behind each account can be correlated across multiple seized devices.
+
+  <ChecklistItemGroup>
+    <ChecklistItem slug="signal-leave-extra-groups" />
+  </ChecklistItemGroup>
+
+  For full device hardening before a protest or action (strong passcode, biometrics, encryption), see the [Protest Safety Checklist](/protest/).
+</Section>
+
+<Section title="Admin settings for large groups" slug="admin">
+  <RiskLevel level="everyone" mode="single_line">
+    This section is for admins of large Signal groups.
+  </RiskLevel>
+
+  If you're running a large organizing group, the default Signal settings leave important doors open: anyone can add new members, anyone can edit the group name or disappearing message timer, and join links are unmoderated. Locking these down protects the whole group, not just you.
+
+  <ChecklistItemGroup>
+    <ChecklistItem slug="signal-group-admin" />
+    <ChecklistItem slug="signal-group-member-vetting" />
+    <ChecklistItem slug="signal-delete-group" />
+  </ChecklistItemGroup>
+</Section>
+
+<Section title="Other resources" slug="resources">
+  * [Using Signal groups for activism](https://micahflee.com/using-signal-groups-for-activism/) by Micah Lee: covers group links, QR code onboarding, semi-public groups with vetting, and announcement-only groups for rapid response networks.
+</Section>
