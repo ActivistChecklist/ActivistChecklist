@@ -717,7 +717,7 @@ describe('buildDeviceMaxOsWarning', () => {
     const product = snap.products.find((p) => p.id === 'iphone');
     const r = product.releases.find((x) => x.id === '12-pro');
     const reminder = buildLatestOsReminder(snap, product, r);
-    expect(buildDeviceMaxOsWarning(snap, product, r, reminder)).toBeNull();
+    expect(buildDeviceMaxOsWarning(snap, product, r, reminder, NOW)).toBeNull();
   });
 
   it('iPhone 8 (max iOS 16, family latest 26, 16 still EOL) → older-os-eol', () => {
@@ -725,7 +725,7 @@ describe('buildDeviceMaxOsWarning', () => {
     const product = snap.products.find((p) => p.id === 'iphone');
     const r = product.releases.find((x) => x.id === '8');
     const reminder = buildLatestOsReminder(snap, product, r);
-    const warn = buildDeviceMaxOsWarning(snap, product, r, reminder);
+    const warn = buildDeviceMaxOsWarning(snap, product, r, reminder, NOW);
     expect(warn.kind).toBe('older-os-eol');
     expect(warn.maxMajor).toBe(16);
     expect(warn.latestMajor).toBe(26);
@@ -736,7 +736,7 @@ describe('buildDeviceMaxOsWarning', () => {
     const product = snap.products.find((p) => p.id === 'iphone');
     const r = product.releases.find((x) => x.id === '6');
     const reminder = buildLatestOsReminder(snap, product, r);
-    const warn = buildDeviceMaxOsWarning(snap, product, r, reminder);
+    const warn = buildDeviceMaxOsWarning(snap, product, r, reminder, NOW);
     expect(warn.kind).toBe('older-os-eol');
     expect(warn.maxVersion).toBe('12.5.8');
   });
@@ -771,7 +771,7 @@ describe('buildDeviceMaxOsWarning', () => {
     const product = snap.products.find((p) => p.id === 'macbook-pro');
     const r = product.releases[0];
     const reminder = buildLatestOsReminder(snap, product, r);
-    const warn = buildDeviceMaxOsWarning(snap, product, r, reminder);
+    const warn = buildDeviceMaxOsWarning(snap, product, r, reminder, NOW);
     expect(warn.kind).toBe('older-os');
     expect(warn.maxCodename).toBe('Sonoma');
     expect(warn.latestCodename).toBe('Tahoe');
