@@ -1,0 +1,247 @@
+# Daily sweep for security alerts that Dependabot structurally cannot fix.
+#
+# Dependabot fixes a transitive vulnerability by bumping the PARENT to a release
+# that already depends on a patched version. It never does a lockfile-only bump,
+# and it will not write a pnpm override. So when the parent has no such release,
+# the alert just sits open forever with no PR. On 2026-09-03 ten alerts had piled
+# up that way. This closes that gap.
+#
+# There is no `dependabot_alert` workflow trigger, so this polls on a schedule.
+#
+# Two outcomes, matching the two cases documented in pnpm-workspace.yaml:
+#
+#   - the parent's range already allows the fix, the lockfile is just stuck
+#     → `pnpm update --depth Infinity` moves it → opens a PR
+#   - a parent's range CAPS us below the fix
+#     → needs an override with a hand-written "delete it when" annotation
+#     → opens an issue, because that annotation is a judgment call
+#
+# Runs daily at 07:00 UTC, after Dependabot's own daily scan. Manual
+# `workflow_dispatch` included. Note that GitHub disables scheduled workflows
+# after 60 days without repository activity.
+
+name: Security autofix
+
+on:
+  schedule:
+    - cron: '0 7 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: security-autofix
+  cancel-in-progress: false
+
+jobs:
+  autofix:
+    if: github.repository == 'ActivistChecklist/ActivistChecklist'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6.0.10
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm run install:ci
+
+      # ── What is currently vulnerable ──────────────────────────────────────
+      - name: Audit
+        id: audit
+        run: |
+          pnpm audit --json > audit-before.json || true
+          node <<'EOF' >> "$GITHUB_OUTPUT"
+            const fs = require('fs');
+            let report = {};
+            try {
+              report = JSON.parse(fs.readFileSync('audit-before.json', 'utf8'));
+            } catch {
+              // pnpm emits nothing parseable when the registry is unreachable.
+              // Treat that as "nothing to do" rather than inventing an update.
+              console.log('packages=');
+              console.log('count=0');
+              process.exit(0);
+            }
+            const advisories = Object.values(report.advisories || {});
+            const packages = [...new Set(advisories.map((a) => a.module_name))].sort();
+            console.log(`packages=${packages.join(' ')}`);
+            console.log(`count=${advisories.length}`);
+          EOF
+          echo '----- advisories -----'
+          node -e 'const r=JSON.parse(require("fs").readFileSync("audit-before.json","utf8"));for(const a of Object.values(r.advisories||{}))console.log(a.module_name,a.severity,a.github_advisory_id,a.vulnerable_versions,"-> fixed",a.patched_versions)' || true
+
+      - name: Nothing to do
+        if: steps.audit.outputs.count == '0'
+        run: echo 'No open advisories. Exiting.'
+
+      # ── Try the lockfile-only nudge ───────────────────────────────────────
+      # Deliberately NOT `pnpm audit --fix`: its "update" method runs a broad
+      # update and rewrites ranges in package.json (verified 2026-09-03 --
+      # it bumped satori while fixing zero vulnerabilities). `pnpm update
+      # --depth Infinity <pkg>` touches only the named transitive entries.
+      - name: Nudge stuck lockfile entries
+        if: steps.audit.outputs.count != '0'
+        run: |
+          echo "Updating: ${{ steps.audit.outputs.packages }}"
+          pnpm update --depth Infinity ${{ steps.audit.outputs.packages }}
+
+      # package.json must not move. If it did, something changed upstream in
+      # pnpm's behaviour and this workflow should stop rather than open a PR
+      # that quietly widens a dependency range.
+      - name: Assert package.json untouched
+        if: steps.audit.outputs.count != '0'
+        run: git diff --exit-code -- package.json pnpm-workspace.yaml
+
+      - name: Re-audit
+        id: reaudit
+        if: steps.audit.outputs.count != '0'
+        run: |
+          pnpm audit --json > audit-after.json || true
+          node <<'EOF' >> "$GITHUB_OUTPUT"
+            const fs = require('fs');
+            const { execSync } = require('child_process');
+            let advisories = [];
+            try {
+              const report = JSON.parse(fs.readFileSync('audit-after.json', 'utf8'));
+              advisories = Object.values(report.advisories || {});
+            } catch {
+              advisories = [];
+            }
+            const lockChanged =
+              execSync('git status --porcelain -- pnpm-lock.yaml').toString().trim() !== '';
+            console.log(`remaining=${advisories.length}`);
+            console.log(`lock_changed=${lockChanged}`);
+            const lines = advisories.map(
+              (a) =>
+                `- \`${a.module_name}\` ${a.severity} — [${a.github_advisory_id}](https://github.com/advisories/${a.github_advisory_id}), affects \`${a.vulnerable_versions}\`, fixed in \`${a.patched_versions}\``
+            );
+            console.log('remaining_list<<REMAINING_EOF');
+            console.log(lines.join('\n'));
+            console.log('REMAINING_EOF');
+            // One advisory can appear twice when a package has two live majors
+            // (fast-uri did), so dedupe or the fingerprint won't match a rerun.
+            const ids = [...new Set(advisories.map((a) => a.github_advisory_id))].sort();
+            console.log(`fingerprint=${ids.join(',')}`);
+          EOF
+
+      # ── Path A: the nudge worked. Verify, then PR. ────────────────────────
+      - name: Unit tests
+        if: steps.reaudit.outputs.remaining == '0' && steps.reaudit.outputs.lock_changed == 'true'
+        run: pnpm test
+
+      - name: Static export build
+        if: steps.reaudit.outputs.remaining == '0' && steps.reaudit.outputs.lock_changed == 'true'
+        run: pnpm buildstatic
+
+      - name: Open PR
+        if: steps.reaudit.outputs.remaining == '0' && steps.reaudit.outputs.lock_changed == 'true'
+        uses: peter-evans/create-pull-request@v8
+        with:
+          # A PAT, not GITHUB_TOKEN: PRs opened with GITHUB_TOKEN do not trigger
+          # other workflows, so pr-checks.yml would never run on them.
+          token: ${{ secrets.SECURITY_AUTOFIX_TOKEN }}
+          add-paths: pnpm-lock.yaml
+          commit-message: 'Security: bump ${{ steps.audit.outputs.packages }} in lockfile'
+          title: 'Security: lockfile bump for ${{ steps.audit.outputs.packages }}'
+          body: |
+            Dependabot opened alerts for these packages but could not PR a fix: they are transitive-only, and its npm updater bumps the *parent* rather than the lockfile entry.
+
+            Their parents' ranges already allowed the patched versions — the lockfile was simply stuck, because pnpm never re-resolves an existing entry on a plain install. `pnpm update --depth Infinity ${{ steps.audit.outputs.packages }}` moved them. No override needed, and `package.json` is untouched.
+
+            Cleared ${{ steps.audit.outputs.count }} advisor(y/ies). `pnpm audit` is clean, unit tests pass, and `pnpm buildstatic` succeeds on this branch.
+
+            Worth a skim of the lockfile diff anyway: a transitive bump can pull in a new major further down the tree.
+
+            *Opened automatically by `.github/workflows/security-autofix.yml`. See the overrides block in `pnpm-workspace.yaml` for why this exists.*
+          branch: security/lockfile-autofix
+          delete-branch: true
+          labels: security 🔐
+
+      # ── Path B: verification failed, or a parent caps us. Escalate. ───────
+      - name: Open issue when a fix needs human judgment
+        if: always() && steps.audit.outputs.count != '0' && (failure() || steps.reaudit.outputs.remaining != '0')
+        uses: actions/github-script@v9
+        env:
+          REMAINING_LIST: ${{ steps.reaudit.outputs.remaining_list }}
+          REMAINING: ${{ steps.reaudit.outputs.remaining }}
+          FINGERPRINT: ${{ steps.reaudit.outputs.fingerprint }}
+          PACKAGES: ${{ steps.audit.outputs.packages }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        with:
+          script: |
+            const remaining = process.env.REMAINING || '0';
+            const capped = remaining !== '0';
+            const fingerprint = `<!-- security-autofix-fingerprint: ${process.env.FINGERPRINT || 'verify-failed'} -->`;
+
+            const { data: existing } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'security 🔐',
+              per_page: 50,
+            });
+            const dup = existing.find((i) => (i.body || '').includes(fingerprint));
+            if (dup) {
+              core.info(`Open issue with same fingerprint already exists: #${dup.number}`);
+              return;
+            }
+
+            const body = capped
+              ? [
+                  `The daily security sweep could not close ${remaining} advisor(y/ies) with a lockfile bump. That means a parent's range **caps us below the fix**, so this needs an override in \`pnpm-workspace.yaml\`.`,
+                  '',
+                  process.env.REMAINING_LIST,
+                  '',
+                  '## How to resolve',
+                  '',
+                  '1. Find who is capping the version:',
+                  '   ```bash',
+                  '   npm view <parent>@<locked-version> dependencies',
+                  '   ```',
+                  '2. Add a floor to the `overrides:` block in `pnpm-workspace.yaml`. Scope it per-major (`pkg@3`) if the tree carries more than one live major — an unscoped floor will drag every consumer onto the newest major.',
+                  '3. Annotate it with who is capping us and a **checkable** "delete it when" condition. That annotation is the whole reason this is an issue and not an automatic PR.',
+                  '4. `pnpm install && pnpm audit --audit-level=low && pnpm test && pnpm buildstatic`',
+                  '',
+                  'Read the header of that overrides block first — it explains the invariant (a floor is justified only when a parent caps us) and the one-minute check for retiring an entry later.',
+                ].join('\n')
+              : [
+                  `The daily security sweep bumped \`${process.env.PACKAGES}\` in the lockfile to clear open advisories, but **verification failed** — tests or the static build did not pass on the result.`,
+                  '',
+                  'No PR was opened. A transitive bump can pull a new major further down the tree, which is most likely what happened here.',
+                  '',
+                  `[View the failing run](${process.env.RUN_URL})`,
+                  '',
+                  '## How to resolve',
+                  '',
+                  '```bash',
+                  `pnpm update --depth Infinity ${process.env.PACKAGES}`,
+                  'pnpm test && pnpm buildstatic',
+                  '```',
+                  '',
+                  'Then either fix the breakage, or pin the offending package with an annotated entry in the `overrides:` block of `pnpm-workspace.yaml`.',
+                ].join('\n');
+
+            const title = capped
+              ? `Security: ${remaining} advisor(y/ies) need a pnpm override`
+              : `Security: lockfile bump for ${process.env.PACKAGES} fails verification`;
+
+            const { data: created } = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              body: [body, '', '---', '', '*Opened automatically by `.github/workflows/security-autofix.yml`.*', '', fingerprint].join('\n'),
+              labels: ['security 🔐'],
+            });
+            core.info(`Opened issue #${created.number}`);
