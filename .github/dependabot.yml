@@ -34,8 +34,11 @@ updates:
     # either already fixed upstream or never a hold at all, while two real
     # blockers had no record. Re-test before trusting a reason below.
     #
-    # Overrides in pnpm-workspace.yaml are a separate mechanism: uncommented
-    # entries there are security floors (minimums), not holds.
+    # Overrides in pnpm-workspace.yaml are the mirror image of this list:
+    # these are upgrades we declined, those are upgrades Dependabot could
+    # not offer (it will not PR a transitive-only fix). Those are floors,
+    # these are holds, and each entry there carries its own "delete it
+    # when" check. The 2026-09-03 sweep deleted 11 of 18 of them.
     ignore:
       # typescript: BLOCKER LIFTED 2026-08-28, not yet taken.
       #   Was: Next 15 could not build with the TS7 native compiler ("does not
