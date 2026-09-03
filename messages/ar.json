@@ -133,7 +133,7 @@
     "translationUnreviewedTitle": "مُترجَم آليًا",
     "translationUnreviewed": "تُرجمت هذه الصفحة آليًا. حتى الآن، تمت مراجعة {approvalPercent}% فقط من هذه الصفحة بشريًا. قد تحتوي بقية النصوص على أخطاء. <link>ساعدنا في مراجعة هذه الترجمة</link>.",
     "nonUsThreatModel": "Outside the US? Some tools here, including encrypted messaging apps, are illegal in certain countries. Check your local laws before acting on this guidance.",
-    "dismiss": "Dismiss"
+    "dismiss": "إغلاق"
   },
   "languageDetection": {
     "message": "هذا الموقع متوفر بـ {language}.",
