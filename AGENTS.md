@@ -3,6 +3,7 @@
 ## General rules
 
 * Use pnpm to manage packages
+* Before rejecting or re-evaluating a dependency upgrade, read the `ignore:` comments in `.github/dependabot.yml`. That is the single record of which major bumps we have declined and what would lift each one. If you decline a new one, close the PR and add a rule there with the reason and a checkable "take it when" condition. Do not create a separate doc for this.
 * Worktree setup is automatic: Claude Code reads `.worktreeinclude` at the repo root and symlinks the listed gitignored paths (env files) from the main checkout into each new worktree. If you add new gitignored top-level state that worktrees should mirror, add a pattern to `.worktreeinclude`. When setting up a new worktree, run `pnpm install` so the modules are ready.
 
 ## Testing rules
@@ -50,3 +51,13 @@
 * Use parameterized queries — never interpolate into SQL.
 * Use constant-time comparison for tokens and hashes.
 * Never log secrets, tokens, or PII.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

@@ -19,6 +19,60 @@ updates:
           - "patch"
     open-pull-requests-limit: 10
 
+    # ── Declined upgrades ────────────────────────────────────────────────
+    # THIS IS THE ONLY RECORD of which major bumps we have evaluated and
+    # rejected. There is no separate doc; if it is not written here, it is not
+    # written down. So:
+    #
+    #   * Declining a bump  = close the PR + add a rule below with the reason
+    #                         AND the specific condition that would lift it.
+    #   * Revisiting        = if that condition is met, delete the rule and
+    #                         take the upgrade. Do not re-litigate otherwise.
+    #   * "Take it when"    = must be checkable. Not "revisit later".
+    #
+    # Reasons rot. On the 2026-08-28 sweep every informally-recorded hold was
+    # either already fixed upstream or never a hold at all, while two real
+    # blockers had no record. Re-test before trusting a reason below.
+    #
+    # Overrides in pnpm-workspace.yaml are a separate mechanism: uncommented
+    # entries there are security floors (minimums), not holds.
+    ignore:
+      # typescript: BLOCKER LIFTED 2026-08-28, not yet taken.
+      #   Was: Next 15 could not build with the TS7 native compiler ("does not
+      #   provide the JavaScript compiler API that Next.js requires ... upgrade
+      #   to a Next.js v16.2.11 or later"). We are on 16.3.3 now, so that is
+      #   satisfied. Verified on 16.3.3: tsc --noEmit exits 0, buildstatic
+      #   exits 0, 1031 tests pass.
+      #   Take it when: now. This rule only stops a compiler swap landing
+      #   unreviewed. Re-check `tsc --noEmit && pnpm buildstatic`, then DELETE
+      #   this rule.
+      - dependency-name: "typescript"
+        update-types:
+          - "version-update:semver-major"
+
+      # js-yaml: HELD on v4. v5 breaks us three ways, verified side by side:
+      #   1. No default export (v5 is named-only); lib/content.js does
+      #      `import yaml from 'js-yaml'`.
+      #   2. Dates become strings: v5 defaults to CORE_SCHEMA, so 2026-08-14
+      #      loads as String not Date, and dump() writes '2026-08-14' where v4
+      #      writes 2026-08-14T00:00:00.000Z.
+      #   3. load('') throws YAMLException instead of returning undefined.
+      #   The wall is (2): @keystatic/core pins js-yaml ^4.1.0, and
+      #   scripts/keystatic-format-mdx.mjs exists to reproduce Keystatic's
+      #   dump() byte for byte. v5 on our side only = frontmatter churn on
+      #   every save. The tree already carries js-yaml 3.15.1 (gray-matter)
+      #   and 4.3.1 (Keystatic, pm2); a third major is worth avoiding anyway.
+      #   Take it when: @keystatic/core moves to js-yaml 5. Check with
+      #   `npm view @keystatic/core dependencies | grep js-yaml`. Then also fix
+      #   the default import in lib/content.js and re-check patchDates().
+      - dependency-name: "js-yaml"
+        update-types:
+          - "version-update:semver-major"
+
+    # Not holds, for the record: typescript / @types/node / @types/react are
+    # pinned exact for reproducibility, so their majors arrive as their own PR
+    # rather than riding in the grouped minor/patch updates. Merge normally.
+
   # Optional: Also check for GitHub Actions updates
   - package-ecosystem: "github-actions"
     directory: "/"

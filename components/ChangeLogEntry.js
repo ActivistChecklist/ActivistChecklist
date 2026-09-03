@@ -1,33 +1,26 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Markdown from '@/components/Markdown';
-import { cn, formatRelativeDate } from "@/lib/utils";
-import { useLocale } from 'next-intl';
-import { getIntlLocale } from '@/lib/i18n-config';
+import { cn } from "@/lib/utils";
+import { useRelativeDate } from '@/hooks/use-relative-date';
 
 const ChangeLogEntry = ({ entry }) => {
-  const [entryDate, setEntryDate] = useState('');
-  const [isClient, setIsClient] = useState(false);
-  const locale = useLocale();
-  const dateLocale = getIntlLocale(locale);
+  // No `new Date()` fallback: it would differ between the build-time server
+  // render and the browser, which is the hydration mismatch useRelativeDate
+  // exists to avoid.
+  const dateString =
+    entry?.first_published_at || entry?.created_at || entry?.published_at || '';
+
+  // Hooks must run before the early return below (Rules of Hooks).
+  const displayDate = useRelativeDate(dateString);
 
   if (!entry) {
     console.log('⚠️ ChangeLogEntry: entry is undefined. Skipping');
     return null;
   }
 
-  const dateString = entry.first_published_at || entry.created_at || entry.published_at || new Date().toISOString();
-
   // Format date for hover tooltip (YYYY-MM-DD)
-  const hoverDate = new Date(dateString).toISOString().split('T')[0];
-
-  useEffect(() => {
-    setIsClient(true);
-    setEntryDate(formatRelativeDate(dateString, dateLocale));
-  }, [dateString, dateLocale]);
-
-  // Show fallback date format during SSR/hydration
-  const displayDate = isClient ? entryDate : hoverDate;
+  const hoverDate = dateString ? new Date(dateString).toISOString().split('T')[0] : '';
 
   return (
     <div

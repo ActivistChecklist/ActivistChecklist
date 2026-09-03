@@ -1,8 +1,15 @@
 import { handleReviewCommentsRequest } from '@activistchecklist/react-review-comments/server';
 import { getReviewCommentsConfig } from '@/lib/review-comments/env';
 import { isDbConnectivityError, describeDbConnectivityError } from '@/lib/review-comments/db-errors';
+import { applyMongoTimeoutToEnv } from '@/lib/review-comments/mongo-url';
 
 export const dynamic = 'force-dynamic';
+
+// Bound MongoDB server selection before the package opens its (cached) client.
+// Without this an unreachable database holds each request for the driver's
+// 30s default, which saturates the browser's per-origin connection limit and
+// stalls the whole page. See lib/review-comments/mongo-url.js.
+applyMongoTimeoutToEnv();
 
 const handlerOptions = {
   getReviewCommentsRuntimeConfig: getReviewCommentsConfig,
