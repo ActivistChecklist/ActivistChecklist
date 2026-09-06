@@ -10,7 +10,15 @@ dotenv.config({
 });
 
 // Instantiate Fastify with the options from server.js (logger is not in server.js so CLI pretty-logs still work)
-const server = Fastify({ logger: true, ...(app.options || {}) });
+// disableRequestLogging: Fastify's default logger writes an "incoming request"
+// and a "request completed" line for every call. The onResponse hook in
+// server.js already logs one concise line per request, so the built-in pair was
+// pure duplication — 1.47M of the 1.8M lines in a 351MB log.
+const server = Fastify({
+  logger: true,
+  disableRequestLogging: true,
+  ...(app.options || {}),
+});
 
 // Register your application as a normal plugin
 server.register(app);

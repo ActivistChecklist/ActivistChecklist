@@ -52,6 +52,32 @@
 * Use constant-time comparison for tokens and hashes.
 * Never log secrets, tokens, or PII.
 
+## Logging rules
+
+This is a site for activists. A visitor IP or a subscriber email sitting in a log
+file is a safety problem, not just a compliance one. PM2 keeps app logs on disk
+indefinitely, so anything logged persists until someone notices.
+
+* **Never log an IP address, email address, name, form body, or contact message.**
+  This includes indirect logging: dumping a request body, an API response body, or
+  a caught `error` object that carries the payload. Both real leaks we have had
+  came from logging a whole object rather than a chosen field — `console.log('...',
+  { payload })` and `console.log('...', { data: parsedData })` in `lib/listmonk.js`,
+  which wrote ~1,300 subscriber emails to `include/.pm2/logs/`.
+* **Log chosen fields, never whole objects.** `{ status, endpoint }`, not
+  `{ status, data }`. If you need to log a caught error, log `error.message`, not
+  `error`.
+* Reviewing a diff: any new `console.log` / `console.error` / `log.info` in `api/`
+  or `lib/` whose argument is a bare object or an `error` is the thing to question.
+  Ask "what is actually inside this at runtime?" — a Listmonk or Resend response
+  contains the user's email even when the call succeeded.
+* IP addresses may be used in memory (rate-limit keys, hashing) but must never
+  reach a log line. `api/server.js` reads `x-forwarded-for` for rate limiting only.
+* Keep log volume bounded. Fastify's default per-request logging is disabled in
+  `api/start.js` (`disableRequestLogging`) because the `onResponse` hook in
+  `api/server.js` already logs one line per request — leaving both on produced a
+  351MB log file.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know
