@@ -78,6 +78,20 @@ indefinitely, so anything logged persists until someone notices.
   `api/server.js` already logs one line per request — leaving both on produced a
   351MB log file.
 
+## Temp file rules
+
+The web host is shared: `/tmp` is world-readable and ~318 other accounts live on
+the same machine.
+
+* **Never hardcode `/tmp`** in a script or Node module. Use `mktemp` in shell and
+  `os.tmpdir()` in Node — both follow `TMPDIR`, which `scripts/load-env.sh` points
+  at `~/include/.tmp` (mode 0700) on the servers.
+* For anything sensitive, create a private directory rather than a single file:
+  `mkdtemp` in Node, `mktemp -d` in shell. A predictable name like
+  `/tmp/metadata_temp_<Date.now()><ext>` is both world-readable and guessable —
+  that one staged images that still carried their original EXIF.
+* Always clean up on the error path too, not just on success.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know

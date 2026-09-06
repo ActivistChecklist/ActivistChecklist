@@ -27,19 +27,37 @@ source "$SCRIPT_DIR/log.sh"
 
 init_scripts_file_log "$(resolve_server_log_dir "$PROJECT_DIR")" "cleanup-tmp.log" "$(resolve_server_log_lines_keep)"
 
-TMP_DIR="${CLEANUP_TMP_DIR:-${TMPDIR:-$HOME/.tmp}}"
-TMP_DIR="${TMP_DIR%/}"
 MIN_AGE="${CLEANUP_TMP_MIN_AGE:-1440}"
 DRY_RUN="${CLEANUP_TMP_DRY_RUN:-0}"
 
-# Only ever prune a real, non-root directory we own. A misconfigured
-# CLEANUP_TMP_DIR should abort, not walk someone's home or /.
-if [[ -z "$TMP_DIR" || "$TMP_DIR" == "/" || "$TMP_DIR" == "$HOME" ]]; then
-  log_echo "ERROR: refusing to prune TMP_DIR='$TMP_DIR'"
-  exit 1
+# Prune the active temp dir (load-env.sh points TMPDIR at ~/include/.tmp on the
+# servers) *and* the legacy ~/.tmp the scheduler still sets for jobs that do not
+# source load-env.sh. Without the second entry the 215MB of pre-pnpm yarn dirs
+# sitting there would never be collected again.
+CANDIDATE_DIRS=()
+if [[ -n "${CLEANUP_TMP_DIR:-}" ]]; then
+  CANDIDATE_DIRS+=("$CLEANUP_TMP_DIR")
+else
+  [[ -n "${TMPDIR:-}" ]] && CANDIDATE_DIRS+=("$TMPDIR")
+  CANDIDATE_DIRS+=("$HOME/include/.tmp" "$HOME/.tmp")
 fi
-if [[ ! -d "$TMP_DIR" ]]; then
-  log_echo "Nothing to do: $TMP_DIR does not exist"
+
+# Only ever prune a real, non-root directory we own, and never the same one
+# twice. A misconfigured path should abort, not walk someone's home or /.
+TMP_DIRS=()
+for d in "${CANDIDATE_DIRS[@]}"; do
+  d="${d%/}"
+  [[ -z "$d" || "$d" == "/" || "$d" == "$HOME" ]] && continue
+  [[ -d "$d" ]] || continue
+  seen=0
+  for existing in ${TMP_DIRS[@]+"${TMP_DIRS[@]}"}; do
+    [[ "$existing" == "$d" ]] && seen=1 && break
+  done
+  (( seen )) || TMP_DIRS+=("$d")
+done
+
+if (( ${#TMP_DIRS[@]} == 0 )); then
+  log_echo "Nothing to do: no prunable temp directory found"
   exit 0
 fi
 
@@ -58,22 +76,27 @@ fi
 # node rebuilds, not orphaned working directories.
 PATTERNS=('yarn--*' 'pnpm-*' 'npm-*' 'tmp.*')
 
-log_echo "=== cleanup-tmp started dir=$TMP_DIR min_age_min=$MIN_AGE dry_run=$DRY_RUN ==="
-before_size="$(du -sh "$TMP_DIR" 2>/dev/null | awk '{print $1}')"
+log_echo "=== cleanup-tmp started dirs='${TMP_DIRS[*]}' min_age_min=$MIN_AGE dry_run=$DRY_RUN ==="
 
-removed=0
-for pattern in "${PATTERNS[@]}"; do
-  # -mindepth 1 keeps $TMP_DIR itself out of the match set.
-  while IFS= read -r -d '' entry; do
-    if [[ "$DRY_RUN" == "1" ]]; then
-      log_echo "would remove: $entry"
-    else
-      rm -rf -- "$entry"
-    fi
-    removed=$((removed + 1))
-  done < <(find "$TMP_DIR" -mindepth 1 -maxdepth 1 -name "$pattern" -mmin "+$MIN_AGE" -print0 2>/dev/null)
+total_removed=0
+for TMP_DIR in "${TMP_DIRS[@]}"; do
+  before_size="$(du -sh "$TMP_DIR" 2>/dev/null | awk '{print $1}')"
+  removed=0
+  for pattern in "${PATTERNS[@]}"; do
+    # -mindepth 1 keeps $TMP_DIR itself out of the match set.
+    while IFS= read -r -d '' entry; do
+      if [[ "$DRY_RUN" == "1" ]]; then
+        log_echo "would remove: $entry"
+      else
+        rm -rf -- "$entry"
+      fi
+      removed=$((removed + 1))
+    done < <(find "$TMP_DIR" -mindepth 1 -maxdepth 1 -name "$pattern" -mmin "+$MIN_AGE" -print0 2>/dev/null)
+  done
+  after_size="$(du -sh "$TMP_DIR" 2>/dev/null | awk '{print $1}')"
+  log_echo "$TMP_DIR: removed=$removed size ${before_size:-?} -> ${after_size:-?}"
+  total_removed=$((total_removed + removed))
 done
 
-after_size="$(du -sh "$TMP_DIR" 2>/dev/null | awk '{print $1}')"
-log_echo "=== cleanup-tmp done removed=$removed size ${before_size:-?} -> ${after_size:-?} ==="
+log_echo "=== cleanup-tmp done removed=$total_removed across ${#TMP_DIRS[@]} dir(s) ==="
 trim_log
