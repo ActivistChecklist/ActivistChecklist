@@ -48,6 +48,11 @@ fi
 
 echo "===> [site] Uploading remote .env.production from $LOCAL_ENV_PRODUCTION_FILE..."
 rsync -avz "$LOCAL_ENV_PRODUCTION_FILE" "$FTP_USER@$FTP_HOST:$ENV_PRODUCTION_PATH"
+# rsync -a implies -p, so the remote file inherits the *local* file's mode: a 644
+# copy here would silently re-widen the server's env file on every deploy. This
+# holds API keys and IP_HASH_SALT, so pin it owner-only regardless of local mode.
+# The newsletter branch below does the same.
+ssh "$FTP_USER@$FTP_HOST" "chmod 600 '$ENV_PRODUCTION_PATH'"
 
 echo "===> [site] Syncing public/webhooks/ to $FTP_HOST:$FTP_DIR/webhooks/ ..."
 # Exclude webhook-secrets.local.php from this pass: with --delete, an absent local copy would
