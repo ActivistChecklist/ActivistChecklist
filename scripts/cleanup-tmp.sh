@@ -43,6 +43,15 @@ if [[ ! -d "$TMP_DIR" ]]; then
   exit 0
 fi
 
+# A non-numeric age makes find reject the -mmin argument, which (with stderr
+# discarded) would silently prune nothing forever. A too-small one is worse: it
+# would delete the working directories of builds that are still running. Require
+# an integer, floor at an hour.
+if [[ ! "$MIN_AGE" =~ ^[0-9]+$ ]] || (( MIN_AGE < 60 )); then
+  log_echo "ERROR: CLEANUP_TMP_MIN_AGE must be an integer >= 60 minutes (got '$MIN_AGE')"
+  exit 1
+fi
+
 # Leftovers from yarn (pre-pnpm), pnpm, npm, and mktemp. Anything not matching
 # these stays put — this runs unattended and should not guess. Deliberately
 # excludes v8-compile-cache-* and node-compile-cache: those are live caches that
