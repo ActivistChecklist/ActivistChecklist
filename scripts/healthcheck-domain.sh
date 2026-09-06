@@ -60,8 +60,14 @@ fi
 # rdap.org is a bootstrap/redirect service: it answers 302 pointing at the TLD's
 # authoritative server (.org -> rdap.publicinterestregistry.org), so -L is required.
 # Without it curl returns an empty body and the check fails as expiry_not_found.
+#
+# -L means a third party now chooses where this request lands, so constrain it:
+# --proto-redir =https blocks a downgrade to http or a jump to another scheme,
+# and --max-redirs caps the chain (curl's default is 50). Without these a hijacked
+# rdap.org could point the check at an internal address and get a slice of the
+# response echoed into the could_not_parse_expiry ping body below.
 if [[ -z "$expiry_raw" ]]; then
-  rdap_json="$(curl -fsSL --max-time 15 "https://rdap.org/domain/${DOMAIN_NAME}" 2>/dev/null || true)"
+  rdap_json="$(curl -fsSL --proto-redir =https --max-redirs 3 --max-time 15 "https://rdap.org/domain/${DOMAIN_NAME}" 2>/dev/null || true)"
   if [[ -n "$rdap_json" ]]; then
     one_line_json="$(echo "$rdap_json" | tr -d '\n' | tr -d '\r')"
     # Common case: eventAction then eventDate in same event object.
