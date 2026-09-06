@@ -57,8 +57,11 @@ if command -v whois >/dev/null 2>&1; then
 fi
 
 # 2) Fallback to RDAP over HTTPS (no whois binary/sudo required).
+# rdap.org is a bootstrap/redirect service: it answers 302 pointing at the TLD's
+# authoritative server (.org -> rdap.publicinterestregistry.org), so -L is required.
+# Without it curl returns an empty body and the check fails as expiry_not_found.
 if [[ -z "$expiry_raw" ]]; then
-  rdap_json="$(curl -fsS --max-time 15 "https://rdap.org/domain/${DOMAIN_NAME}" 2>/dev/null || true)"
+  rdap_json="$(curl -fsSL --max-time 15 "https://rdap.org/domain/${DOMAIN_NAME}" 2>/dev/null || true)"
   if [[ -n "$rdap_json" ]]; then
     one_line_json="$(echo "$rdap_json" | tr -d '\n' | tr -d '\r')"
     # Common case: eventAction then eventDate in same event object.
