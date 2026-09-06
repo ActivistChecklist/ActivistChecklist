@@ -36,8 +36,17 @@ if (!PING_URL) {
   process.exit(2);
 }
 
+// A Healthchecks ping URL is a bearer credential: anyone holding it can forge
+// OK pings and silence the check. This script's output is redirected to
+// include/logs/healthcheck-canary.log, so logging the raw URL wrote the UUID to
+// disk in cleartext. Log only the endpoint being pinged.
+function pingLabel(endpoint) {
+  return `canary ping${endpoint ? ` /${endpoint}` : ''}`;
+}
+
 async function ping(endpoint, body) {
   const url = endpoint ? `${PING_URL}/${endpoint}` : PING_URL;
+  const label = pingLabel(endpoint);
   try {
     const res = await fetch(url, {
       method: 'POST',
@@ -46,13 +55,13 @@ async function ping(endpoint, body) {
       signal: AbortSignal.timeout(10000),
     });
     if (!res.ok) {
-      console.error(`Ping to ${url} returned ${res.status} ${res.statusText}`);
-       return false;
-     }
-     console.log(`Pinged ${url}`);
-     return true;
+      console.error(`${label} returned ${res.status} ${res.statusText}`);
+      return false;
+    }
+    console.log(`${label} ok`);
+    return true;
   } catch (err) {
-    console.error(`Ping to ${url} failed: ${err.message}`);
+    console.error(`${label} failed: ${err.message}`);
     return false;
   }
 }
