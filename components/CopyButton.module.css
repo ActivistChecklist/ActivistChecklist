@@ -36,7 +36,7 @@
   flex-shrink: 0;
 }
 
-/* Blockquote variant: float the button to the top-right of the blockquote
+/* Blockquote variant: float the button to the top inline-end corner of the blockquote
    as an icon-only affordance, with the text label visually hidden (still
    read by screen readers). The :has() selector promotes the blockquote to
    relative-positioned only when it actually contains a copy button, so
@@ -74,7 +74,7 @@ blockquote .button + * {
 blockquote .button {
   position: absolute;
   top: 0.5rem;
-  right: 0.5rem;
+  inset-inline-end: 0.5rem;
   padding: 0.375rem;
   background: hsl(var(--background));
   border-color: hsl(var(--border));

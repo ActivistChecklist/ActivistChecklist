@@ -55,18 +55,34 @@ export default function HomePageContent({ children, changelogEntries = [], lates
           {/* Hero Section */}
           <div className="">
             <header className={cn(
-              "not-prose relative left-1/2 w-dvw max-w-none -translate-x-1/2",
-              "relative mb-16 -mt-8 py-16 px-4 overflow-hidden",
+              /* Direction-agnostic full bleed. Symmetric negative inline
+                 margins that sum exactly to the container width, so the box
+                 is never over-constrained and `direction` cannot affect it.
+                 Avoid the left-1/2 + -translate-x-1/2 trick here: w-dvw is
+                 wider than the containing block, and CSS resolves that
+                 over-constraint by dropping margin-right in LTR but
+                 margin-left in RTL — flipping the static position the trick
+                 measures from, which threw the hero off-centre in Arabic. */
+              "not-prose relative w-dvw max-w-none mx-[calc(50%-50dvw)]",
+              "mb-16 -mt-8 py-16 px-4 overflow-hidden",
               /* v4: use bg-radial / bg-linear-to-* so from/via/to populate --tw-gradient-stops */
               "bg-radial-[ellipse_at_top] from-primary/20 via-background to-background",
-              "before:content-[''] before:fixed before:inset-0 before:bg-linear-to-r before:from-primary/10 before:via-accent/5 before:to-primary/10 before:opacity-70 before:pointer-events-none"
+              /* absolute, not fixed: the header is already full-bleed, and
+                 without a transform on it a fixed pseudo-element would
+                 escape to tint the whole viewport instead of just the hero. */
+              "before:content-[''] before:absolute before:inset-0 before:bg-linear-to-r before:from-primary/10 before:via-accent/5 before:to-primary/10 before:opacity-70 before:pointer-events-none"
             )}>
-              <div className="absolute inset-0 bg-linear-to-r from-primary/10 via-accent/5 to-primary/10 opacity-70" />
+
               <div className="relative max-w-4xl mx-auto text-center">
-                <h1 className="text-5xl md:text-6xl font-heavy mb-6 bg-linear-to-br from-primary via-primary to-primary/70 bg-clip-text text-transparent text-balance">
+                {/* text-5xl/6xl ship line-height:1, which is too tight for
+                    Arabic — diacritics and descenders collide on a wrapped
+                    title and get clipped by bg-clip-text. Loosen leading and
+                    open up the gap to the <p> for RTL only, so the Latin
+                    design is untouched. */}
+                <h1 className="text-5xl md:text-6xl font-heavy mb-6 rtl:leading-[1.35] rtl:mb-8 bg-linear-to-br from-primary via-primary to-primary/70 bg-clip-text text-transparent text-balance">
                   {t('hero.title')}
                 </h1>
-                <p className="text-xl md:text-2xl mb-10 text-muted-foreground max-w-2xl mx-auto">
+                <p className="text-xl md:text-2xl mb-10 rtl:leading-[1.8] text-muted-foreground max-w-2xl mx-auto">
                   {t('hero.description')}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -86,7 +102,7 @@ export default function HomePageContent({ children, changelogEntries = [], lates
                 </div>
                 {latestMajorBodyText && (
                   <div className="mt-8 text-muted-foreground">
-                    <Sparkles className="h-4 w-4 inline mr-1" />
+                    <Sparkles className="h-4 w-4 inline me-1" />
                     <Markdown content={latestMajorBodyText} isProse={false} inlineOnly={true} />
                   </div>
                 )}
@@ -107,7 +123,7 @@ export default function HomePageContent({ children, changelogEntries = [], lates
             <div className="mt-8 text-center">
               <Button asChild variant="outline" size="lg">
                 <Link href={SECURITY_CHECKLISTS.href} className="group">
-                  {t('homepage.browseAll')} <ArrowRight className="ml-2 transition-transform duration-300 ease-out group-hover:translate-x-1" />
+                  {t('homepage.browseAll')} <ArrowRight className="ms-2 transition-transform duration-300 ease-out group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
                 </Link>
               </Button>
             </div>
@@ -156,7 +172,7 @@ export default function HomePageContent({ children, changelogEntries = [], lates
               <h2 className="text-2xl font-bold">{t('homepage.recentUpdatesHeading')}</h2>
               <Button asChild variant="outline" size="sm">
                 <Link href={NAV_ITEMS.CHANGELOG.href} className="group">
-                  {t('homepage.viewAllUpdates')} <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 ease-out group-hover:translate-x-1" />
+                  {t('homepage.viewAllUpdates')} <ArrowRight className="ms-2 h-4 w-4 transition-transform duration-300 ease-out group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
                 </Link>
               </Button>
             </div>

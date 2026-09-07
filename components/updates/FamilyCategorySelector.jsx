@@ -141,7 +141,7 @@ function L2({ platform, onPick, onBack }) {
           onClick={onBack}
           className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
         >
-          <ChevronLeft className="h-4 w-4" />
+          <ChevronLeft className="h-4 w-4 rtl:rotate-180" />
           {t('updates.subCategory.back')}
         </button>
         {/* "Other" is an info panel, not a sub-category picker — the prompt would be
@@ -257,7 +257,7 @@ function L3({ platform, subCategory, onClickPlatform, onClear }) {
         </button>
         {subLabel && subLabel !== platformLabel ? (
           <>
-            <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+            <ChevronRight className="h-4 w-4 shrink-0 rtl:rotate-180 text-muted-foreground" aria-hidden="true" />
             <button
               type="button"
               onClick={onClickPlatform}

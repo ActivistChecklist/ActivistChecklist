@@ -308,7 +308,7 @@ const ChecklistItem = ({
       ref={cardRef}
       className={cn(
         "checklist-item",
-        "transform mb-0 shadow-none bg-none rounded-none border-muted border-b-0 border-r-0 border-l-0 border-t",
+        "transform mb-0 shadow-none bg-none rounded-none border-muted border-b-0 border-e-0 border-s-0 border-t",
         "hover:z-20 relative",
         !expanded && !isChecked && "hover:bg-muted/40",
         expanded && "mb-4 rounded-lg border-transparent",
@@ -318,7 +318,7 @@ const ChecklistItem = ({
     >
       <CardHeader
         className={cn(
-          "p-3 pl-3 md:pl-5",
+          "p-3 ps-3 md:ps-5",
           !alwaysExpanded && "cursor-pointer",
           expanded && "rounded-t-lg"
         )}
@@ -379,7 +379,7 @@ const ChecklistItem = ({
                               key={index}
                               variant={variant}
                               className={cn(
-                                "text-xs inline mr-2 align-middle",
+                                "text-xs inline me-2 align-middle",
                                 isChecked && "opacity-50"
                               )}
                             >
@@ -392,7 +392,7 @@ const ChecklistItem = ({
                     {itemTitle}
                     <span
                       className={cn(
-                        "inline-flex h-7 shrink-0 items-center justify-center align-middle ml-2 print:hidden",
+                        "inline-flex h-7 shrink-0 items-center justify-center align-middle ms-2 print:hidden",
                         expanded ? "w-7" : "w-px"
                       )}
                       aria-hidden={!expanded}
@@ -450,7 +450,7 @@ const ChecklistItem = ({
                 aria-controls={`checklist-body-${itemSlug}`}
                 className={cn(
                   "flex h-9 w-full justify-start gap-2 px-2 sm:hidden",
-                  "-ml-2",
+                  "-ms-2",
                   "text-muted-foreground hover:bg-primary/10 hover:text-muted-foreground",
                   "print:hidden",
                   enableTransitions ? "transition-colors duration-300" : "transition-none",
@@ -482,9 +482,9 @@ const ChecklistItem = ({
         )}
       >
       <div className="overflow-hidden">
-        <div className="ml-4 md:ml-9 pl-0 mb-6">
+        <div className="ms-4 md:ms-9 ps-0 mb-6">
           <CardContent className={cn(
-            "py-0 pt-0 pl-0 md:pl-4 pr-4 md:pr-6",
+            "py-0 pt-0 ps-0 md:ps-4 pe-4 md:pe-6",
             "prose prose-slate max-w-none",
             isChecked && "text-muted-foreground"
           )}>

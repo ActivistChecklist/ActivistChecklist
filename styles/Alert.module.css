@@ -2,7 +2,7 @@
 
 /* Alert styles - !text-inherit overrides prose's font-size so alert matches its container */
 .alert {
-  @apply relative w-full rounded-md border-l-[6px] py-2 px-5 [&:not(:first-child)]:mt-3 !text-inherit min-h-[2.7rem];
+  @apply relative w-full rounded-md border-s-[6px] py-2 px-5 [&:not(:first-child)]:mt-3 !text-inherit min-h-[2.7rem];
 }
 
 .alertWithTitle {
@@ -15,7 +15,7 @@
 }
 
 .alertIcon {
-  @apply absolute left-3 top-3 text-foreground;
+  @apply absolute inset-s-3 top-3 text-foreground;
 }
 
 .alertTitle {
@@ -26,8 +26,10 @@
   @apply w-full;
 }
 
+/* ps-, not pl-: the icon sits at the inline-start, so the padding that
+   clears it has to follow the same edge or the text runs under it. */
 .alertContentWithIcon {
-  @apply pl-7;
+  @apply ps-7;
 }
 
 
