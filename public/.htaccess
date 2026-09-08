@@ -51,6 +51,39 @@ ErrorDocument 404 /404/index.html
 
 ### END GENERATED REDIRECTS ###
 
+# Caching. Two buckets, split on whether a URL's bytes can ever change.
+#
+#   /_next/static/*  Every filename carries a content hash, so a given URL is
+#                    immutable — cache it for a year. This is also what lets a
+#                    visitor who already holds a chunk keep using it while a
+#                    deploy swaps the _next/ tree underneath them.
+#
+#   HTML             Must never be served from a cache without asking us first.
+#                    Each build rewrites every page with new chunk hashes, so a
+#                    stale HTML file references chunks that no longer exist: the
+#                    page renders and then dies on hydration with a
+#                    ChunkLoadError. Apache sends no Cache-Control of its own,
+#                    which leaves browsers free to invent a freshness lifetime
+#                    (heuristically ~10% of the file's age), so this is not
+#                    hypothetical. "no-cache" still lets the browser store the
+#                    file — it just has to revalidate, which is a cheap 304 for
+#                    as long as the page is unchanged.
+#
+# Matched on the request URI rather than with <FilesMatch> because a request for
+# /proton/ reaches index.html through an internal subrequest (and because
+# <LocationMatch> is not permitted in .htaccess). Directory requests all end in
+# "/" — DirectorySlash redirects /proton to /proton/ — so that suffix plus an
+# explicit .html covers every page. Anything else (images, fonts, files/, rss/)
+# is left alone and keeps the behavior it has today.
+<IfModule mod_setenvif.c>
+  SetEnvIf Request_URI "^/_next/static/" AC_IMMUTABLE_ASSET
+  SetEnvIf Request_URI "(/|\.html)$" AC_HTML_DOC
+</IfModule>
+<IfModule mod_headers.c>
+  Header set Cache-Control "public, max-age=31536000, immutable" env=AC_IMMUTABLE_ASSET
+  Header set Cache-Control "no-cache" env=AC_HTML_DOC
+</IfModule>
+
 # Security Headers
 <IfModule mod_headers.c>
   Header set Content-Security-Policy "default-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://img.shields.io; media-src 'self'; font-src 'self'; connect-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
