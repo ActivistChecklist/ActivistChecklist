@@ -31,7 +31,9 @@
 # green, and then kills it on the way out. ensure_pm2_daemon() below places the
 # daemon in its own cgroup first: a transient unit, which works here because
 # systemd forks straight into the new cgroup, falling back to a transient scope
-# on hosts that permit migrating a PID into one.
+# on hosts that permit migrating a PID into one. If neither works the check
+# reports RED even when the API is answering - it is answering now and will be
+# dead in a second, and saying "healthy" to that is the original bug.
 # See the comments on that function, and scripts/launch-listmonk.sh for the same
 # problem on the newsletter host.
 #
@@ -161,58 +163,81 @@ pm2_daemon_placed_ok() {
   [[ "$ours" != "$theirs" ]]
 }
 
-# Resolve a directly executable pm2 plus the PATH that finds its node. systemd-run
-# needs a real binary, and nvm_pnpm is a shell function that may wrap
-# `nvm exec <ver> pnpm`. Neither command here runs pm2, so this does not spawn the
-# daemon before we have placed it.
-pm2_exec_env() {
-  # `command -v pm2` under pnpm answers "./node_modules/.bin/pm2" - a relative
-  # path, which systemd-run rejects outright. Absolutise it here.
-  nvm_pnpm exec bash -c '
-    p="$(command -v pm2)" || exit 1
-    [[ "$p" == /* ]] || p="$PWD/${p#./}"
-    printf "%s\n%s\n" "$p" "$PATH"
-  ' 2>/dev/null || true
+# Bring a PM2 daemon up, as an argv systemd-run can exec. pm2 only reaches us
+# through the nvm_pnpm shell function, and shell functions do not survive an
+# exec, so the child re-sources the helper rather than us resolving a pm2 binary
+# and its PATH by hand (`command -v pm2` under pnpm answers a *relative* path,
+# which systemd-run rejects outright). Approach borrowed from the parallel work
+# on dev/api-healthcheck-systemd-fix.
+PM2_PING_ARGV=(
+  /bin/bash -c 'set -euo pipefail
+cd "$NVM_PNPM_PROJECT_DIR"
+source "$NVM_PNPM_PROJECT_DIR/scripts/lib/nvm-pnpm.sh"
+nvm_pnpm_init
+nvm_pnpm exec pm2 ping'
+)
+
+# A scope inherits our exported environment; a transient unit inherits nothing,
+# so everything nvm_pnpm_init and pm2 need has to be handed over explicitly.
+pm2_unit_setenv_args() {
+  printf '%s\n' \
+    "--setenv=HOME=$HOME" \
+    "--setenv=PATH=$PATH" \
+    "--setenv=PM2_HOME=$PM2_HOME" \
+    "--setenv=NVM_PNPM_PROJECT_DIR=$NVM_PNPM_PROJECT_DIR" \
+    "--setenv=NVM_PNPM_USE_NVM=$NVM_PNPM_USE_NVM" \
+    "--setenv=NVM_PNPM_NVM_DIR=$NVM_PNPM_NVM_DIR" \
+    "--setenv=NVM_PNPM_NODE_VERSION=$NVM_PNPM_NODE_VERSION" \
+    "--setenv=NVM_PNPM_PATH_EXTRA=$NVM_PNPM_PATH_EXTRA"
 }
 
-# Start the PM2 God daemon inside its own transient systemd scope, so it lives in
-# a different cgroup than this (Type=oneshot) job and is not reaped when we exit.
-# Ordering matters: the PM2 CLI auto-spawns the daemon on ANY command, `pm2 status`
-# included, so this must run before every other pm2 invocation.
+# Place the PM2 God daemon in a cgroup that outlives this (Type=oneshot) job.
+# Ordering matters: the PM2 CLI auto-spawns the daemon on ANY command, `pm2
+# status` included, so this must run before every other pm2 invocation.
+#
+# Sets PM2_DAEMON_PLACED to one of:
+#   ok  - the daemon is in a cgroup that is not ours, so it survives our exit
+#   na  - isolation not applicable (disabled by config, or no systemd user
+#         session - dev machines and non-systemd hosts run this way by design)
+#   bad - we could not place it; it will be reaped when this script exits
+PM2_DAEMON_PLACED="na"
 ensure_pm2_daemon() {
   if [[ "${API_HEALTH_PM2_SCOPE:-1}" == "0" ]]; then
-    return 0
-  fi
-  # Already running: it either survived, or a prior run placed it correctly.
-  if pm2_daemon_pid >/dev/null; then
+    PM2_DAEMON_PLACED="na"
     return 0
   fi
   if ! command -v systemd-run >/dev/null 2>&1; then
+    log_echo "systemd-run unavailable; PM2 daemon will start in the caller's cgroup"
+    PM2_DAEMON_PLACED="na"
     return 0
   fi
 
   export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
   if [[ ! -d "$XDG_RUNTIME_DIR" ]]; then
+    log_echo "no systemd user session at $XDG_RUNTIME_DIR; PM2 daemon will start in the caller's cgroup"
+    PM2_DAEMON_PLACED="na"
     return 0
   fi
 
-  local resolved pm2_bin scope_path
-  resolved="$(pm2_exec_env)"
-  pm2_bin="$(printf '%s\n' "$resolved" | sed -n '1p')"
-  scope_path="$(printf '%s\n' "$resolved" | sed -n '2p')"
-  # systemd-run needs an absolute, executable path; anything else is a silent no-op.
-  if [[ "$pm2_bin" != /* || ! -x "$pm2_bin" ]]; then
-    log_echo "WARN: could not resolve a pm2 binary for systemd-run; PM2 may be reaped when this job exits"
-    return 0
+  # Already running: it either survived, or a prior run placed it. Still has to
+  # be judged on where it actually is - a daemon adopted into an earlier job's
+  # cgroup is exactly the state we must not report green on.
+  if pm2_daemon_pid >/dev/null; then
+    if pm2_daemon_placed_ok; then
+      PM2_DAEMON_PLACED="ok"
+      return 0
+    fi
+    log_echo "WARN: existing PM2 daemon shares this job's cgroup; restarting it somewhere safe"
+    nvm_pnpm exec pm2 kill >/dev/null 2>&1 </dev/null || true
   fi
+
+  local -a setenv_args=()
+  while IFS= read -r arg; do setenv_args+=("$arg"); done < <(pm2_unit_setenv_args)
 
   # Attempt 1: a transient UNIT. This is the one that works on May First:
   # `--unit=` has systemd fork the process directly into the new cgroup, so no
   # PID has to be migrated. Verified on weborigin002 (2026-09-07).
   #
-  # Two costs, both handled here. The environment does NOT come along the way it
-  # would with a scope, hence --setenv for the PATH that finds node plus
-  # PM2_HOME and HOME (pm2 derives its default state dir from HOME). And
   # `pm2 ping` exits as soon as the daemon is up, so the unit needs
   # KillMode=process plus RemainAfterExit: without them the unit going inactive
   # takes the daemon we just spawned down with it, which is the very thing this
@@ -221,55 +246,38 @@ ensure_pm2_daemon() {
   systemd-run --user --unit=ac-api-pm2-daemon --quiet \
     --property=KillMode=process \
     --property=RemainAfterExit=yes \
-    --setenv=PATH="${scope_path:-$PATH}" \
-    --setenv=PM2_HOME="$PM2_HOME" \
-    --setenv=HOME="$HOME" \
-    -- "$pm2_bin" ping >/dev/null 2>&1 || true
+    "${setenv_args[@]}" \
+    -- "${PM2_PING_ARGV[@]}" >/dev/null 2>&1 || true
   if pm2_daemon_placed_ok; then
     log_echo "PM2 daemon started in its own systemd unit"
+    PM2_DAEMON_PLACED="ok"
     return 0
   fi
 
   # Clear out a daemon that got spawned but landed in our cgroup anyway, or the
-  # next attempt just pings that misplaced daemon and declares success. Safe to
-  # kill here: we only reach this point when no daemon was running on entry, so
-  # nothing is parented to it yet.
+  # next attempt just pings that misplaced daemon and declares success.
   nvm_pnpm exec pm2 kill >/dev/null 2>&1 </dev/null || true
 
   # Attempt 2: a scope. Tried second, not first, because on these hosts cgroup
   # delegation to the user manager is restricted and a scope cannot migrate an
   # already-running PID (systemd-run's own) into the new cgroup:
-  #   test-scope-probe.scope: Couldn't move process ... Input/output error
-  #   test-scope-probe.scope: Failed to add PIDs to scope's control group: Permission denied
+  #   Couldn't move process ... Input/output error
+  #   Failed to add PIDs to scope's control group: Permission denied
   # Worse, it fails QUIETLY - `pm2 ping` has already run and left the daemon in
   # the caller's cgroup - which is why every attempt here is judged by
-  # pm2_daemon_placed_ok() and never by systemd-run's exit status. Kept as a
-  # fallback for hosts that do allow it, where a scope is the better mechanism:
-  # the command is forked from here, so it inherits our whole environment and
-  # needs no --setenv at all, and --collect reaps the scope once it empties.
-  PATH="${scope_path:-$PATH}" systemd-run --user --scope --quiet --collect \
-    --unit="ac-api-pm2-daemon-$$" -- "$pm2_bin" ping >/dev/null 2>&1 || true
+  # pm2_daemon_placed_ok() and never by systemd-run's exit status. Kept for
+  # hosts that do allow it, where a scope is the better mechanism: it inherits
+  # our whole environment, and --collect reaps it once it empties.
+  systemd-run --user --scope --quiet --collect \
+    --unit="ac-api-pm2-daemon-$$" -- "${PM2_PING_ARGV[@]}" >/dev/null 2>&1 || true
   if pm2_daemon_placed_ok; then
     log_echo "PM2 daemon started in its own systemd scope"
+    PM2_DAEMON_PLACED="ok"
     return 0
   fi
 
-  log_echo "WARN: could not place the PM2 daemon outside this job's cgroup; it may be reaped when this job exits"
-}
-
-# Warn when the daemon shares our cgroup, which means systemd will kill it the
-# moment this script returns. Purely diagnostic, but this is the exact condition
-# that let a green health check sit on top of a dead service.
-warn_if_pm2_shares_our_cgroup() {
-  local pid ours theirs
-  pid="$(pm2_daemon_pid)" || return 0
-  ours="$(proc_cgroup "$$")"
-  theirs="$(proc_cgroup "$pid")"
-  [[ -n "$ours" && -n "$theirs" ]] || return 0
-  if [[ "$ours" == "$theirs" ]]; then
-    log_echo "WARN: PM2 daemon (pid $pid) is in this job's cgroup ($ours)."
-    log_echo "      A Type=oneshot unit will SIGTERM it when this script exits."
-  fi
+  log_echo "ERROR: could not place the PM2 daemon outside this job's cgroup; it will be reaped when this script exits"
+  PM2_DAEMON_PLACED="bad"
 }
 
 # --- HTTP probe ---
@@ -415,10 +423,16 @@ if [[ "$pm2_online" == true ]]; then
   esac
 fi
 
-status_line="pm2_online=$pm2_online probe=$PROBE_VERDICT restart_attempted=$needs_restart"
+# A green probe is NOT enough when the daemon could not be placed: the API is
+# answering right now but is about to be reaped on our way out, which is exactly
+# the state that reported healthy every five minutes while the site served 503s.
+# Report the truth instead of the snapshot.
+if [[ "$service_online" == true && "$PM2_DAEMON_PLACED" == "bad" ]]; then
+  log_echo "WARN: API is answering, but its PM2 daemon shares this job's cgroup and will be killed on exit"
+  service_online=false
+fi
 
-# Diagnose the cgroup trap before we exit, whichever way this went.
-warn_if_pm2_shares_our_cgroup
+status_line="pm2_online=$pm2_online probe=$PROBE_VERDICT daemon_placed=$PM2_DAEMON_PLACED restart_attempted=$needs_restart"
 
 if [[ "$service_online" == true ]]; then
   hc_ok "api-health ok $(date -u +"%Y-%m-%dT%H:%M:%SZ") app=$APP_NAME $status_line"
