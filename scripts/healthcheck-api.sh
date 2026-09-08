@@ -100,6 +100,14 @@ nvm_pnpm_err() {
 init_scripts_file_log "$(resolve_server_log_dir "$PROJECT_DIR")" "api-health-monitor.log" "$(resolve_server_log_lines_keep)"
 mkdir -p "$PM2_HOME" "$PM2_HOME/logs" "$PM2_HOME/pids" "$PM2_HOME/modules"
 
+# Scratch file for pm2 output. NOT a command substitution: pm2 auto-spawns its
+# God daemon, the daemon inherits our stdout, and $( ) blocks until every writer
+# closes the pipe - i.e. until the daemon exits. Wrapping a pm2 call that might
+# spawn it in $( ) can therefore hang the monitor outright. Every pm2 invocation
+# below also gets </dev/null so the daemon cannot hold our stdin either.
+PM2_OUT_TMP="$(mktemp "${TMPDIR:-/tmp}/ac-api-health.XXXXXX")"
+trap 'rm -f "$PM2_OUT_TMP"' EXIT
+
 hc_post() {
   local url="$1"
   local body="$2"
@@ -226,7 +234,7 @@ ensure_pm2_daemon() {
   # next attempt just pings that misplaced daemon and declares success. Safe to
   # kill here: we only reach this point when no daemon was running on entry, so
   # nothing is parented to it yet.
-  nvm_pnpm exec pm2 kill >/dev/null 2>&1 || true
+  nvm_pnpm exec pm2 kill >/dev/null 2>&1 </dev/null || true
 
   # Attempt 2: a scope. Tried second, not first, because on these hosts cgroup
   # delegation to the user manager is restricted and a scope cannot migrate an
@@ -303,11 +311,10 @@ run_probe() {
 }
 
 pm2_is_online() {
-  local output
-  output="$(nvm_pnpm exec pm2 status "$APP_NAME" --no-color 2>&1 || true)"
-  printf '%s\n' "$output" >> "$LOG_FILE"
-  PM2_OUTPUT="$output"
-  grep -q "online" <<<"$output"
+  nvm_pnpm exec pm2 status "$APP_NAME" --no-color >"$PM2_OUT_TMP" 2>&1 </dev/null || true
+  cat "$PM2_OUT_TMP" >> "$LOG_FILE"
+  PM2_OUTPUT="$(cat "$PM2_OUT_TMP")"
+  grep -q "online" "$PM2_OUT_TMP"
 }
 
 # --- main ---
@@ -373,8 +380,8 @@ fi
 
 if [[ "$needs_restart" == true ]]; then
   log_echo "Attempting to start/restart $APP_NAME..."
-  START_OUTPUT="$(nvm_pnpm api:start 2>&1 || true)"
-  printf '%s\n' "$START_OUTPUT" >> "$LOG_FILE"
+  nvm_pnpm api:start >"$PM2_OUT_TMP" 2>&1 </dev/null || true
+  cat "$PM2_OUT_TMP" >> "$LOG_FILE"
 
   pm2_online=false
   for ((attempt = 1; attempt <= START_ATTEMPTS; attempt++)); do
