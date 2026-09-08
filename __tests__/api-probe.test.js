@@ -1,26 +1,27 @@
 import { execFileSync } from 'node:child_process'
+import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 
-const LIB = path.resolve(import.meta.dirname, '../scripts/lib/api-probe.sh')
+// Read the lib in Node and hand it to bash on stdin, rather than passing its
+// path into `bash -c`. The path derives from import.meta.dirname, and a shell
+// command built from a filesystem-derived value trips CodeQL's
+// js/shell-command-injection-from-environment - fairly, even though a positional
+// argument is not itself injectable. This way no path reaches the shell at all:
+// bash -s reads the script from stdin and takes the test values as $1..$3.
+const LIB_SOURCE = readFileSync(
+  path.resolve(import.meta.dirname, '../scripts/lib/api-probe.sh'),
+  'utf8'
+)
 
 const MARKER = 'Hello World'
 
 /** Run classify_api_probe from the shell lib and return its verdict. */
 function classify(code, body = '', marker = MARKER) {
-  return execFileSync(
-    'bash',
-    [
-      '-c',
-      'source "$1"; classify_api_probe "$2" "$3" "$4"',
-      'bash',
-      LIB,
-      String(code),
-      body,
-      marker,
-    ],
-    { encoding: 'utf8' }
-  ).trim()
+  return execFileSync('bash', ['-s', '--', String(code), body, marker], {
+    encoding: 'utf8',
+    input: `${LIB_SOURCE}\nclassify_api_probe "$1" "$2" "$3"\n`,
+  }).trim()
 }
 
 describe('classify_api_probe', () => {
