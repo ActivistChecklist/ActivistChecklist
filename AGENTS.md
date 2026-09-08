@@ -56,14 +56,14 @@
 
 This is a site for activists. A visitor IP or a subscriber email sitting in a log
 file is a safety problem, not just a compliance one. PM2 keeps app logs on disk
-indefinitely, so anything logged persists until someone notices.
+until something trims them, so anything logged persists until someone notices.
 
 * **Never log an IP address, email address, name, form body, or contact message.**
   This includes indirect logging: dumping a request body, an API response body, or
   a caught `error` object that carries the payload. Both real leaks we have had
   came from logging a whole object rather than a chosen field — `console.log('...',
   { payload })` and `console.log('...', { data: parsedData })` in `lib/listmonk.js`,
-  which wrote ~1,300 subscriber emails to `include/.pm2/logs/`.
+  which wrote a large number of subscriber emails into the PM2 app log.
 * **Log chosen fields, never whole objects.** `{ status, endpoint }`, not
   `{ status, data }`. If you need to log a caught error, log `error.message`, not
   `error`.
@@ -75,21 +75,20 @@ indefinitely, so anything logged persists until someone notices.
   reach a log line. `api/server.js` reads `x-forwarded-for` for rate limiting only.
 * Keep log volume bounded. Fastify's default per-request logging is disabled in
   `api/start.js` (`disableRequestLogging`) because the `onResponse` hook in
-  `api/server.js` already logs one line per request — leaving both on produced a
-  351MB log file.
+  `api/server.js` already logs one line per request — leaving both on grew the log
+  to hundreds of megabytes.
 
 ## Temp file rules
 
-The web host is shared: `/tmp` is world-readable and ~318 other accounts live on
-the same machine.
+Treat the system temp dir as off limits for anything we would not want another
+local account to read.
 
-* **Never hardcode `/tmp`** in a script or Node module. Use `mktemp` in shell and
-  `os.tmpdir()` in Node — both follow `TMPDIR`, which `scripts/load-env.sh` points
-  at `~/include/.tmp` (mode 0700) on the servers.
+* **Never hardcode a system temp path** in a script or Node module. Use `mktemp`
+  in shell and `os.tmpdir()` in Node — both follow `TMPDIR`, which
+  `scripts/load-env.sh` points at a private 0700 directory on the servers.
 * For anything sensitive, create a private directory rather than a single file:
-  `mkdtemp` in Node, `mktemp -d` in shell. A predictable name like
-  `/tmp/metadata_temp_<Date.now()><ext>` is both world-readable and guessable —
-  that one staged images that still carried their original EXIF.
+  `mkdtemp` in Node, `mktemp -d` in shell. A name built from a timestamp is
+  guessable; we had one staging media that still carried its original metadata.
 * Always clean up on the error path too, not just on success.
 
 <!-- BEGIN:nextjs-agent-rules -->

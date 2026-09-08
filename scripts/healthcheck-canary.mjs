@@ -36,12 +36,19 @@ if (!PING_URL) {
   process.exit(2);
 }
 
-// A Healthchecks ping URL is a bearer credential: anyone holding it can forge
-// OK pings and silence the check. This script's output is redirected to
-// include/logs/healthcheck-canary.log, so logging the raw URL wrote the UUID to
-// disk in cleartext. Log only the endpoint being pinged.
+// A Healthchecks ping URL is a credential, and this script's output is captured
+// to a log file, so logging the raw URL persisted it in cleartext. Log only the
+// endpoint being pinged.
 function pingLabel(endpoint) {
   return `canary ping${endpoint ? ` /${endpoint}` : ''}`;
+}
+
+// A thrown fetch error can carry the request URL in its message depending on the
+// runtime and failure mode. Strip any occurrence before it reaches a log file.
+function safeErrorMessage(err) {
+  const message = String(err?.message ?? err ?? 'unknown error');
+  if (!PING_URL) return message;
+  return message.split(PING_URL).join('[REDACTED]');
 }
 
 async function ping(endpoint, body) {
@@ -61,7 +68,7 @@ async function ping(endpoint, body) {
     console.log(`${label} ok`);
     return true;
   } catch (err) {
-    console.error(`${label} failed: ${err.message}`);
+    console.error(`${label} failed: ${safeErrorMessage(err)}`);
     return false;
   }
 }

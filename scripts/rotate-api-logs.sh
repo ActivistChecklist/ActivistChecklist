@@ -2,11 +2,11 @@
 #
 # Trim the PM2 app logs to a short retention window.
 #
-# PM2 does not rotate logs on its own, so include/.pm2/logs grew to 640MB across
-# two files, the oldest entries dating to 2025. Anything logged lives forever
-# until someone notices — which is how ~1,300 subscriber emails ended up sitting
-# on disk for a year. Keep the window short so a future logging mistake has a
-# bounded blast radius.
+# PM2 does not rotate logs on its own, so the app logs had grown to hundreds of
+# megabytes with entries going back more than a year. Anything logged lives until
+# someone notices, which is how PII from a since-fixed logging bug stayed on disk
+# for so long. Keep the window short so a future logging mistake has a bounded
+# blast radius.
 #
 # Truncates in place with `: >` rather than deleting: PM2 holds the file open, so
 # unlinking it would leave the daemon writing to an invisible inode until restart.

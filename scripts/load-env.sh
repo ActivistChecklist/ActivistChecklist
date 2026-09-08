@@ -31,25 +31,20 @@ load_env_file() {
 # ---------------------------------------------------------------------------
 # Temp directory
 # ---------------------------------------------------------------------------
-# The web host is shared: /tmp is world-readable and 318 other accounts live on
-# the same box. Anything these scripts stage there — a health-check response
-# body, an image still carrying the EXIF we are about to strip — is readable by
-# all of them. Point TMPDIR at a private directory instead, which mktemp,
-# os.tmpdir() and most tooling follow automatically.
+# Optionally point TMPDIR at a directory owned by this account rather than the
+# system temp dir, so intermediates (response bodies, media being processed) are
+# not left where other local accounts could read them. mktemp, os.tmpdir() and
+# most tooling follow TMPDIR automatically.
 #
-# Resolution order:
-#   1. SCRIPTS_TMPDIR, if set (put it in .env.production to be explicit)
-#   2. $HOME/include/.tmp, if it exists — the convention on the servers
-#   3. otherwise leave TMPDIR alone, so dev machines keep their own default
+# Opt-in only: set SCRIPTS_TMPDIR in the environment that needs it (production
+# does, via .env.production). When it is unset nothing is touched and the system
+# default applies, so dev machines behave exactly as they always have.
 #
 # Called from every exit path below, including the ones that return early: this
-# has to run whether or not an env file was found, and SCRIPTS_TMPDIR may itself
-# come from the file that was just sourced.
+# has to run whether or not an env file was found, and SCRIPTS_TMPDIR normally
+# comes from the file that was just sourced.
 apply_scripts_tmpdir() {
   local dir="${SCRIPTS_TMPDIR:-}"
-  if [[ -z "$dir" && -d "$HOME/include/.tmp" ]]; then
-    dir="$HOME/include/.tmp"
-  fi
   [[ -n "$dir" ]] || return 0
 
   if ! mkdir -p "$dir" 2>/dev/null; then

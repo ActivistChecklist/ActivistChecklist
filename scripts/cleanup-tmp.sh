@@ -2,11 +2,11 @@
 #
 # Prune stale temp directories left behind by package managers and build tooling.
 #
-# Replaces two control-panel jobs that pointed at /tmp with a malformed
-# `find ... -exec -delete`. Both were also looking in the wrong place: the
-# scheduler sets TMPDIR to ~/.tmp, so nothing lands in /tmp any more. By the time
-# this script was written ~/.tmp held 439 orphaned `yarn--*` directories going
-# back to 2024 (215MB), none of them newer than the pnpm migration.
+# Replaces two scheduled jobs that pointed at the system temp dir with a
+# malformed `find ... -exec -delete`. Both were also looking in the wrong place:
+# the scheduler sets TMPDIR under the account's own home. Orphaned `yarn--*`
+# directories predating the pnpm migration had been accumulating there for
+# months.
 #
 # Scheduler example (daily):
 #   /absolute/path/to/repo/scripts/cleanup-tmp.sh
@@ -32,8 +32,8 @@ DRY_RUN="${CLEANUP_TMP_DRY_RUN:-0}"
 
 # Prune the active temp dir (load-env.sh points TMPDIR at ~/include/.tmp on the
 # servers) *and* the legacy ~/.tmp the scheduler still sets for jobs that do not
-# source load-env.sh. Without the second entry the 215MB of pre-pnpm yarn dirs
-# sitting there would never be collected again.
+# source load-env.sh. Without the second entry the older directory would stop
+# being collected entirely once TMPDIR moved.
 CANDIDATE_DIRS=()
 if [[ -n "${CLEANUP_TMP_DIR:-}" ]]; then
   CANDIDATE_DIRS+=("$CLEANUP_TMP_DIR")
@@ -42,18 +42,38 @@ else
   CANDIDATE_DIRS+=("$HOME/include/.tmp" "$HOME/.tmp")
 fi
 
-# Only ever prune a real, non-root directory we own, and never the same one
-# twice. A misconfigured path should abort, not walk someone's home or /.
+# This script runs `rm -rf`, so be strict about what it will accept. Resolve each
+# candidate to a real path first: a string comparison alone would let a value
+# like "$HOME/include/.tmp/../.." past the checks below, and a symlink could
+# point anywhere. Then require the result to sit strictly inside $HOME, so a
+# misconfigured CLEANUP_TMP_DIR aborts rather than walking an unrelated tree.
+CONTAINMENT_ROOT="${CLEANUP_TMP_ROOT:-$HOME}"
+CONTAINMENT_ROOT="$(cd "$CONTAINMENT_ROOT" 2>/dev/null && pwd -P || printf '%s' "$CONTAINMENT_ROOT")"
+
 TMP_DIRS=()
 for d in "${CANDIDATE_DIRS[@]}"; do
   d="${d%/}"
-  [[ -z "$d" || "$d" == "/" || "$d" == "$HOME" ]] && continue
+  [[ -n "$d" ]] || continue
   [[ -d "$d" ]] || continue
+
+  # pwd -P resolves symlinks and .. segments.
+  resolved="$(cd "$d" 2>/dev/null && pwd -P)" || continue
+  [[ -n "$resolved" ]] || continue
+
+  if [[ "$resolved" == "/" || "$resolved" == "$CONTAINMENT_ROOT" ]]; then
+    log_echo "refusing to prune '$d' (resolves to '$resolved')"
+    continue
+  fi
+  if [[ "$resolved" != "$CONTAINMENT_ROOT"/* ]]; then
+    log_echo "refusing to prune '$d': outside '$CONTAINMENT_ROOT' (resolves to '$resolved')"
+    continue
+  fi
+
   seen=0
   for existing in ${TMP_DIRS[@]+"${TMP_DIRS[@]}"}; do
-    [[ "$existing" == "$d" ]] && seen=1 && break
+    [[ "$existing" == "$resolved" ]] && seen=1 && break
   done
-  (( seen )) || TMP_DIRS+=("$d")
+  (( seen )) || TMP_DIRS+=("$resolved")
 done
 
 if (( ${#TMP_DIRS[@]} == 0 )); then
