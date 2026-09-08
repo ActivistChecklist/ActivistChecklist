@@ -29,8 +29,9 @@
 # command, `pm2 status` included, so a plain first call adopts the daemon (and
 # ac-api with it) into the doomed cgroup: the check restarts the API, reports
 # green, and then kills it on the way out. ensure_pm2_daemon() below places the
-# daemon in its own cgroup first - a transient scope where that is permitted, a
-# transient unit where cgroup delegation is restricted and a scope is refused.
+# daemon in its own cgroup first: a transient unit, which works here because
+# systemd forks straight into the new cgroup, falling back to a transient scope
+# on hosts that permit migrating a PID into one.
 # See the comments on that function, and scripts/launch-listmonk.sh for the same
 # problem on the newsletter host.
 #
@@ -40,7 +41,7 @@
 #   API_APP_NAME               — PM2 process name (default: ac-api)
 #   API_HEALTHCHECK_PING_URL   — Healthchecks.io ping URL
 #   API_HEALTH_PM2_HOME        — PM2 state dir (default: <repo>/.pm2)
-#   API_HEALTH_PM2_SCOPE       — 0 to skip the systemd scope described above
+#   API_HEALTH_PM2_SCOPE       — 0 to skip the cgroup isolation described above
 #   API_HEALTH_PROBE_URL       — HTTP probe target; empty disables the probe
 #   API_HEALTH_PROBE_MARKER    — string the probe body must contain
 #   API_HEALTH_PROBE_TIMEOUT   — seconds for the probe request (default 10)
@@ -197,35 +198,17 @@ ensure_pm2_daemon() {
     return 0
   fi
 
-  # Attempt 1: a scope. --scope, not --service, because the command is forked
-  # from here and so inherits PM2_HOME and the PATH set below for free; a
-  # --service unit starts from systemd's own environment and loses all of it.
-  # --collect reaps the scope once it is empty; the scope itself stays alive as
-  # long as the daemon holds a process in it.
-  PATH="${scope_path:-$PATH}" systemd-run --user --scope --quiet --collect \
-    --unit="ac-api-pm2-daemon-$$" -- "$pm2_bin" ping >/dev/null 2>&1 || true
-  if pm2_daemon_placed_ok; then
-    log_echo "PM2 daemon started in its own systemd scope"
-    return 0
-  fi
-
-  # A scope has to migrate an already-running PID (systemd-run's own) into the
-  # new cgroup, and a host that restricts cgroup delegation to the user manager
-  # refuses that:
-  #   Failed to add PIDs to scope's control group: Permission denied
-  # This is why the check above asks where the daemon actually landed instead of
-  # trusting the exit status: the scope can fail QUIETLY, having already run
-  # `pm2 ping` and spawned the daemon into OUR cgroup. Clear it out, or the
-  # retry below just pings that misplaced daemon and declares success. Safe to
-  # kill here: we only reach this point when no daemon was running on entry, so
-  # nothing is parented to it yet.
-  nvm_pnpm exec pm2 kill >/dev/null 2>&1 || true
-
-  # Attempt 2: a transient unit. `--unit=` has systemd fork the process directly
-  # into the new cgroup, so there is nothing to migrate. Two costs, both handled
-  # here: the environment does not come along (hence --setenv), and `pm2 ping`
-  # exits once the daemon is up, so the unit needs KillMode=process plus
-  # RemainAfterExit so that going inactive does not take the daemon with it.
+  # Attempt 1: a transient UNIT. This is the one that works on May First:
+  # `--unit=` has systemd fork the process directly into the new cgroup, so no
+  # PID has to be migrated. Verified on weborigin002 (2026-09-07).
+  #
+  # Two costs, both handled here. The environment does NOT come along the way it
+  # would with a scope, hence --setenv for the PATH that finds node plus
+  # PM2_HOME and HOME (pm2 derives its default state dir from HOME). And
+  # `pm2 ping` exits as soon as the daemon is up, so the unit needs
+  # KillMode=process plus RemainAfterExit: without them the unit going inactive
+  # takes the daemon we just spawned down with it, which is the very thing this
+  # function exists to prevent.
   systemctl --user reset-failed ac-api-pm2-daemon.service >/dev/null 2>&1 || true
   systemd-run --user --unit=ac-api-pm2-daemon --quiet \
     --property=KillMode=process \
@@ -235,7 +218,31 @@ ensure_pm2_daemon() {
     --setenv=HOME="$HOME" \
     -- "$pm2_bin" ping >/dev/null 2>&1 || true
   if pm2_daemon_placed_ok; then
-    log_echo "PM2 daemon started in its own systemd unit (scope was refused)"
+    log_echo "PM2 daemon started in its own systemd unit"
+    return 0
+  fi
+
+  # Clear out a daemon that got spawned but landed in our cgroup anyway, or the
+  # next attempt just pings that misplaced daemon and declares success. Safe to
+  # kill here: we only reach this point when no daemon was running on entry, so
+  # nothing is parented to it yet.
+  nvm_pnpm exec pm2 kill >/dev/null 2>&1 || true
+
+  # Attempt 2: a scope. Tried second, not first, because on these hosts cgroup
+  # delegation to the user manager is restricted and a scope cannot migrate an
+  # already-running PID (systemd-run's own) into the new cgroup:
+  #   test-scope-probe.scope: Couldn't move process ... Input/output error
+  #   test-scope-probe.scope: Failed to add PIDs to scope's control group: Permission denied
+  # Worse, it fails QUIETLY - `pm2 ping` has already run and left the daemon in
+  # the caller's cgroup - which is why every attempt here is judged by
+  # pm2_daemon_placed_ok() and never by systemd-run's exit status. Kept as a
+  # fallback for hosts that do allow it, where a scope is the better mechanism:
+  # the command is forked from here, so it inherits our whole environment and
+  # needs no --setenv at all, and --collect reaps the scope once it empties.
+  PATH="${scope_path:-$PATH}" systemd-run --user --scope --quiet --collect \
+    --unit="ac-api-pm2-daemon-$$" -- "$pm2_bin" ping >/dev/null 2>&1 || true
+  if pm2_daemon_placed_ok; then
+    log_echo "PM2 daemon started in its own systemd scope"
     return 0
   fi
 
