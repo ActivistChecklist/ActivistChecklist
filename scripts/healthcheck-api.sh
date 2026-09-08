@@ -1,14 +1,51 @@
 #!/usr/bin/env bash
 #
-# API health monitor for PM2 app.
-# - Checks whether APP_NAME is online in PM2
-# - Attempts restart/start if not online
-# - Sends Healthchecks ping on success
+# Health check + auto-restart for the ac-api Fastify server (PM2 app "ac-api").
 #
-# Cron example:
-# */5 * * * * /absolute/path/to/repo/scripts/api-health-monitor.sh >/dev/null 2>&1
+# Runs on the main site host. Two independent probes:
+#
+#   1. PM2 state - is APP_NAME listed as "online"?
+#   2. HTTP probe - does the API actually serve its expected payload?
+#
+# The second one is the one that catches real outages. "online" in `pm2 status`
+# only means PM2 has a child it has not seen exit: it says nothing about whether
+# Fastify bound the port, whether the routes registered, or whether a wedged
+# event loop is refusing every request. This monitor used to ping Healthchecks
+# green on that text alone. See scripts/lib/api-probe.sh for why the probe has to
+# assert on the response body and not just the status code (api/subscribe.js
+# returns its result object, so Fastify answers HTTP 200 even on failure).
+#
+# Scheduling: run it every 5 minutes. May First no longer honours user crontabs on
+# these hosts, so the job is defined in the control panel, which generates
+# ~/.config/systemd/user/red-item-<id>.{service,timer}. Verify it is actually
+# scheduled, because a missing job looks exactly like a healthy service that
+# never alerts:
+#   systemctl --user list-timers
+#   journalctl --user -u red-item-<id>.service
+#
+# IMPORTANT (systemd): those generated units are Type=oneshot, which defaults to
+# KillMode=control-group - when this script exits, systemd SIGTERMs everything
+# left in the unit's cgroup. The PM2 CLI auto-spawns the God daemon on ANY
+# command, `pm2 status` included, so a plain first call adopts the daemon (and
+# ac-api with it) into the doomed cgroup: the check restarts the API, reports
+# green, and then kills it on the way out. ensure_pm2_daemon() below places the
+# daemon in its own cgroup first - a transient scope where that is permitted, a
+# transient unit where cgroup delegation is restricted and a scope is refused.
+# See the comments on that function, and scripts/launch-listmonk.sh for the same
+# problem on the newsletter host.
 #
 # Logs: LOG_DIR (or <repo>/logs); trim lines from LOG_LINES_KEEP (or 500).
+#
+# Optional env (see .env.template):
+#   API_APP_NAME               — PM2 process name (default: ac-api)
+#   API_HEALTHCHECK_PING_URL   — Healthchecks.io ping URL
+#   API_HEALTH_PM2_HOME        — PM2 state dir (default: <repo>/.pm2)
+#   API_HEALTH_PM2_SCOPE       — 0 to skip the systemd scope described above
+#   API_HEALTH_PROBE_URL       — HTTP probe target; empty disables the probe
+#   API_HEALTH_PROBE_MARKER    — string the probe body must contain
+#   API_HEALTH_PROBE_TIMEOUT   — seconds for the probe request (default 10)
+#   API_HEALTH_START_ATTEMPTS  — post-restart probes (default 6)
+#   API_HEALTH_START_RETRY_SLEEP — seconds between probes (default 5)
 #
 set -euo pipefail
 
@@ -26,12 +63,25 @@ fi
 source "$SCRIPT_DIR/load-env.sh"
 # shellcheck disable=SC1091
 source "$SCRIPT_DIR/log.sh"
+# shellcheck disable=SC1091
+source "$SCRIPT_DIR/lib/api-probe.sh"
 
 PROJECT_DIR="${PROJECT_DIR:-$ROOT_DIR}"
 APP_NAME="${API_APP_NAME:-ac-api}"
 API_HEALTHCHECK_PING_URL="${API_HEALTHCHECK_PING_URL:-}"
 PM2_HOME="${API_HEALTH_PM2_HOME:-$PROJECT_DIR/.pm2}"
 export PM2_HOME
+
+# Probe the loopback port directly rather than the public URL: this monitor owns
+# ac-api, not nginx, and restarting the app cannot fix a proxy or TLS problem.
+# scripts/healthcheck-site.sh already covers the public path.
+PROBE_URL="${API_HEALTH_PROBE_URL-http://127.0.0.1:${API_PORT:-4321}/api-server/hello}"
+# The distinctive half of /api-server/hello's {"message":"Hello World"} response.
+# Matching the value, not the whole JSON, survives serializer whitespace changes.
+PROBE_MARKER="${API_HEALTH_PROBE_MARKER:-Hello World}"
+PROBE_TIMEOUT="${API_HEALTH_PROBE_TIMEOUT:-10}"
+START_ATTEMPTS="${API_HEALTH_START_ATTEMPTS:-6}"
+START_RETRY_SLEEP="${API_HEALTH_START_RETRY_SLEEP:-5}"
 
 # Shared nvm-pnpm lib (scripts/lib/nvm-pnpm.sh): prefer NVM_PNPM_* from .env;
 # API_HEALTH_* nvm vars are legacy aliases only.
@@ -70,11 +120,173 @@ hc_ok() {
   fi
 }
 
+# --- PM2 daemon placement (see the systemd note in the header) ---
+
+pm2_daemon_pid() {
+  local pidfile="${PM2_HOME:-$HOME/.pm2}/pm2.pid" pid
+  [[ -r "$pidfile" ]] || return 1
+  pid="$(cat "$pidfile" 2>/dev/null)" || return 1
+  [[ -n "$pid" ]] || return 1
+  kill -0 "$pid" 2>/dev/null || return 1
+  printf '%s' "$pid"
+}
+
+# cgroup path of a pid (systemd unified hierarchy), empty when unavailable.
+proc_cgroup() {
+  local pid="$1"
+  [[ -r "/proc/$pid/cgroup" ]] || return 0
+  awk -F: '$1 == "0" { print $3; exit }' "/proc/$pid/cgroup" 2>/dev/null || true
+}
+
+# Resolve a directly executable pm2 plus the PATH that finds its node. systemd-run
+# needs a real binary, and nvm_pnpm is a shell function that may wrap
+# `nvm exec <ver> pnpm`. Neither command here runs pm2, so this does not spawn the
+# daemon before we have placed it.
+pm2_exec_env() {
+  # `command -v pm2` under pnpm answers "./node_modules/.bin/pm2" - a relative
+  # path, which systemd-run rejects outright. Absolutise it here.
+  nvm_pnpm exec bash -c '
+    p="$(command -v pm2)" || exit 1
+    [[ "$p" == /* ]] || p="$PWD/${p#./}"
+    printf "%s\n%s\n" "$p" "$PATH"
+  ' 2>/dev/null || true
+}
+
+# Start the PM2 God daemon inside its own transient systemd scope, so it lives in
+# a different cgroup than this (Type=oneshot) job and is not reaped when we exit.
+# Ordering matters: the PM2 CLI auto-spawns the daemon on ANY command, `pm2 status`
+# included, so this must run before every other pm2 invocation.
+ensure_pm2_daemon() {
+  if [[ "${API_HEALTH_PM2_SCOPE:-1}" == "0" ]]; then
+    return 0
+  fi
+  # Already running: it either survived, or a prior run placed it correctly.
+  if pm2_daemon_pid >/dev/null; then
+    return 0
+  fi
+  if ! command -v systemd-run >/dev/null 2>&1; then
+    return 0
+  fi
+
+  export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+  if [[ ! -d "$XDG_RUNTIME_DIR" ]]; then
+    return 0
+  fi
+
+  local resolved pm2_bin scope_path
+  resolved="$(pm2_exec_env)"
+  pm2_bin="$(printf '%s\n' "$resolved" | sed -n '1p')"
+  scope_path="$(printf '%s\n' "$resolved" | sed -n '2p')"
+  # systemd-run needs an absolute, executable path; anything else is a silent no-op.
+  if [[ "$pm2_bin" != /* || ! -x "$pm2_bin" ]]; then
+    log_echo "WARN: could not resolve a pm2 binary for systemd-run; PM2 may be reaped when this job exits"
+    return 0
+  fi
+
+  # Preferred: a scope. --scope, not --service, because the command is forked
+  # from here and so inherits PM2_HOME and the PATH set below for free; a
+  # --service unit starts from systemd's own environment and loses all of it.
+  # --collect reaps the scope once it is empty; the scope itself stays alive as
+  # long as the daemon holds a process in it.
+  if PATH="${scope_path:-$PATH}" systemd-run --user --scope --quiet --collect \
+    --unit="ac-api-pm2-daemon-$$" -- "$pm2_bin" ping >/dev/null 2>&1; then
+    log_echo "PM2 daemon started in its own systemd scope"
+    return 0
+  fi
+
+  # Fallback: a transient unit. A scope has to migrate an already-running PID
+  # (systemd-run's own) into the new cgroup, and a host that restricts cgroup
+  # delegation to the user manager refuses that outright:
+  #   Failed to add PIDs to scope's control group: Permission denied
+  # `--unit=` has systemd fork the process directly into the new cgroup, so there
+  # is nothing to move. Two costs, both handled here: the environment does not
+  # come along (hence --setenv), and `pm2 ping` exits once the daemon is up, so
+  # the unit needs KillMode=process + RemainAfterExit so that going inactive does
+  # not take the daemon we just spawned down with it.
+  systemctl --user reset-failed ac-api-pm2-daemon.service >/dev/null 2>&1 || true
+  if systemd-run --user --unit=ac-api-pm2-daemon --quiet \
+    --property=KillMode=process \
+    --property=RemainAfterExit=yes \
+    --setenv=PATH="${scope_path:-$PATH}" \
+    --setenv=PM2_HOME="$PM2_HOME" \
+    --setenv=HOME="$HOME" \
+    -- "$pm2_bin" ping >/dev/null 2>&1; then
+    log_echo "PM2 daemon started in its own systemd unit (scope was refused)"
+    return 0
+  fi
+
+  log_echo "WARN: systemd-run scope and unit both failed; PM2 may be reaped when this job exits"
+}
+
+# Warn when the daemon shares our cgroup, which means systemd will kill it the
+# moment this script returns. Purely diagnostic, but this is the exact condition
+# that let a green health check sit on top of a dead service.
+warn_if_pm2_shares_our_cgroup() {
+  local pid ours theirs
+  pid="$(pm2_daemon_pid)" || return 0
+  ours="$(proc_cgroup "$$")"
+  theirs="$(proc_cgroup "$pid")"
+  [[ -n "$ours" && -n "$theirs" ]] || return 0
+  if [[ "$ours" == "$theirs" ]]; then
+    log_echo "WARN: PM2 daemon (pid $pid) is in this job's cgroup ($ours)."
+    log_echo "      A Type=oneshot unit will SIGTERM it when this script exits."
+  fi
+}
+
+# --- HTTP probe ---
+
+# Sets PROBE_VERDICT. See scripts/lib/api-probe.sh for what each verdict means.
+PROBE_VERDICT="SKIPPED"
+run_probe() {
+  local label="$1" result code detail
+  if [[ -z "$PROBE_URL" ]]; then
+    PROBE_VERDICT="SKIPPED"
+    log_echo "SKIP: HTTP probe disabled (set API_HEALTH_PROBE_URL to enable)"
+    return 0
+  fi
+
+  result="$(api_probe "$PROBE_URL" "$PROBE_MARKER" "$PROBE_TIMEOUT")"
+  PROBE_VERDICT="${result%% *}"
+  result="${result#* }"
+  code="${result%% *}"
+  detail="${result#* }"
+
+  case "$PROBE_VERDICT" in
+    PASS)
+      log_echo "OK: $label probe served the expected payload from $PROBE_URL (http=$code)"
+      ;;
+    FAIL)
+      # The 200 here is the trap: something answers, but it is not a working API.
+      log_echo "ERROR: $label probe - $PROBE_URL answered http=$code but the body did not contain '$PROBE_MARKER': $detail"
+      ;;
+    DOWN)
+      log_echo "ERROR: $label probe - nothing healthy answered at $PROBE_URL (http=$code): $detail"
+      ;;
+    INCONCLUSIVE)
+      log_echo "WARN: $label probe rate limited (http=$code); treating as inconclusive: $detail"
+      ;;
+    BAD_REQUEST)
+      log_echo "ERROR: $label probe rejected (http=$code) - check API_HEALTH_PROBE_URL and API_HEALTH_PROBE_MARKER: $detail"
+      ;;
+  esac
+}
+
+pm2_is_online() {
+  local output
+  output="$(nvm_pnpm exec pm2 status "$APP_NAME" --no-color 2>&1 || true)"
+  printf '%s\n' "$output" >> "$LOG_FILE"
+  PM2_OUTPUT="$output"
+  grep -q "online" <<<"$output"
+}
+
+# --- main ---
+
 log_echo "=== API Health Monitor Started ==="
 log_echo "Project: $PROJECT_DIR"
 log_echo "App: $APP_NAME"
 log_echo "Log file: $LOG_FILE"
 log_echo "PM2_HOME: $PM2_HOME"
+log_echo "Probe: ${PROBE_URL:-<disabled>}"
 
 if [[ ! -d "$PROJECT_DIR" ]]; then
   msg="api-health failed ($(date -u +"%Y-%m-%dT%H:%M:%SZ"))\nproject_dir_missing=$PROJECT_DIR\npm2_home=$PM2_HOME"
@@ -103,40 +315,87 @@ else
   log_echo "pnpm: $(command -v pnpm)"
 fi
 
-PM2_OUTPUT="$(nvm_pnpm exec pm2 status "$APP_NAME" --no-color 2>&1 || true)"
-echo "$PM2_OUTPUT" >> "$LOG_FILE"
+# MUST come before any other pm2 command - see the systemd note in the header.
+ensure_pm2_daemon
 
-if echo "$PM2_OUTPUT" | grep -q "online"; then
-  log_echo "OK: $APP_NAME is online"
-  SERVICE_ONLINE=1
+PM2_OUTPUT=""
+pm2_online=false
+if pm2_is_online; then
+  log_echo "OK: $APP_NAME is online in PM2"
+  pm2_online=true
 else
-  log_echo "WARN: $APP_NAME is not online; attempting start/restart"
-  START_OUTPUT="$(nvm_pnpm api:start 2>&1 || true)"
-  echo "$START_OUTPUT" >> "$LOG_FILE"
-  sleep 5
-  RECHECK_OUTPUT="$(nvm_pnpm exec pm2 status "$APP_NAME" --no-color 2>&1 || true)"
-  echo "$RECHECK_OUTPUT" >> "$LOG_FILE"
+  log_echo "WARN: $APP_NAME is not online in PM2"
+fi
 
-  if echo "$RECHECK_OUTPUT" | grep -q "online"; then
-    log_echo "OK: $APP_NAME is online after restart"
-    SERVICE_ONLINE=1
-  else
+run_probe "initial"
+
+# Restart only for problems a restart can actually fix. A rate-limited probe
+# proves nothing, and a misconfigured probe URL is not the API's fault - bouncing
+# the service on those just adds an outage to an outage.
+needs_restart=false
+if [[ "$pm2_online" == false ]]; then
+  needs_restart=true
+elif [[ "$PROBE_VERDICT" == "FAIL" || "$PROBE_VERDICT" == "DOWN" ]]; then
+  log_echo "PM2 reports $APP_NAME online but it is not serving; restarting anyway."
+  needs_restart=true
+fi
+
+if [[ "$needs_restart" == true ]]; then
+  log_echo "Attempting to start/restart $APP_NAME..."
+  START_OUTPUT="$(nvm_pnpm api:start 2>&1 || true)"
+  printf '%s\n' "$START_OUTPUT" >> "$LOG_FILE"
+
+  pm2_online=false
+  for ((attempt = 1; attempt <= START_ATTEMPTS; attempt++)); do
+    sleep "$START_RETRY_SLEEP"
+    if pm2_is_online; then
+      pm2_online=true
+      run_probe "post-restart"
+      # A freshly started Fastify can be listed online a beat before it binds the
+      # port, so keep probing rather than failing on the first refused connection.
+      if [[ "$PROBE_VERDICT" != "FAIL" && "$PROBE_VERDICT" != "DOWN" ]]; then
+        log_echo "OK: $APP_NAME recovered after $((attempt * START_RETRY_SLEEP))s"
+        break
+      fi
+    fi
+    log_echo "  ... attempt $attempt/$START_ATTEMPTS: not healthy yet"
+  done
+
+  if [[ "$pm2_online" == false ]]; then
     log_echo "ERROR: $APP_NAME failed to become online"
-    SERVICE_ONLINE=0
   fi
 fi
 
-if [[ "$SERVICE_ONLINE" -eq 1 ]]; then
-  hc_ok "api-health ok $(date -u +"%Y-%m-%dT%H:%M:%SZ") app=$APP_NAME"
-  log_echo "OK: API health ping sent"
+# Green requires PM2 online AND a probe that did not fail. INCONCLUSIVE and
+# SKIPPED stay green: they carry no evidence of an outage, and flapping the alert
+# on a rate limit trains people to ignore it. BAD_REQUEST is red on purpose - a
+# monitor that cannot verify anything must not claim the service is healthy.
+service_online=false
+if [[ "$pm2_online" == true ]]; then
+  case "$PROBE_VERDICT" in
+    PASS | INCONCLUSIVE | SKIPPED) service_online=true ;;
+  esac
+fi
+
+status_line="pm2_online=$pm2_online probe=$PROBE_VERDICT restart_attempted=$needs_restart"
+
+# Diagnose the cgroup trap before we exit, whichever way this went.
+warn_if_pm2_shares_our_cgroup
+
+if [[ "$service_online" == true ]]; then
+  hc_ok "api-health ok $(date -u +"%Y-%m-%dT%H:%M:%SZ") app=$APP_NAME $status_line"
+  log_echo "OK: API health ping sent ($status_line)"
 else
   body=$(
     printf "api-health failed (%s)\n" "$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
     printf "app=%s\nproject_dir=%s\npm2_home=%s\n" "$APP_NAME" "$PROJECT_DIR" "$PM2_HOME"
-    printf "pm2_status_snippet=%s\n" "$(echo "$PM2_OUTPUT" | tr '\n' ' ' | head -c 400)"
+    printf "%s\nprobe_url=%s\n" "$status_line" "${PROBE_URL:-<disabled>}"
+    printf "pm2_status_snippet=%s\n" "$(printf '%s' "$PM2_OUTPUT" | tr '\n' ' ' | head -c 400)"
   )
   hc_fail "$body"
-  log_echo "WARN: Service not online; sent fail ping"
+  log_echo "WARN: Service not healthy; sent fail ping ($status_line)"
+  log_echo "=== API Health Monitor Completed ==="
+  trim_log
   exit 1
 fi
 
