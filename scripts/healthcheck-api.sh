@@ -43,7 +43,7 @@
 #   API_APP_NAME               — PM2 process name (default: ac-api)
 #   API_HEALTHCHECK_PING_URL   — Healthchecks.io ping URL
 #   API_HEALTH_PM2_HOME        — PM2 state dir (default: <repo>/.pm2)
-#   API_HEALTH_PM2_SCOPE       — 0 to skip the cgroup isolation described above
+#   API_HEALTH_PM2_ISOLATE     — 0 to skip the cgroup isolation described above
 #   API_HEALTH_PROBE_URL       — HTTP probe target; empty disables the probe
 #   API_HEALTH_PROBE_MARKER    — string the probe body must contain
 #   API_HEALTH_PROBE_TIMEOUT   — seconds for the probe request (default 10)
@@ -202,7 +202,7 @@ pm2_unit_setenv_args() {
 #   bad - we could not place it; it will be reaped when this script exits
 PM2_DAEMON_PLACED="na"
 ensure_pm2_daemon() {
-  if [[ "${API_HEALTH_PM2_SCOPE:-1}" == "0" ]]; then
+  if [[ "${API_HEALTH_PM2_ISOLATE:-1}" == "0" ]]; then
     PM2_DAEMON_PLACED="na"
     return 0
   fi

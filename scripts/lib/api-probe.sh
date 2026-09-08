@@ -15,10 +15,11 @@
 # status code, so Fastify serializes a failure as HTTP 200. Any endpoint in this
 # API can answer 200 while being broken, so the probe asserts on the body.
 #
-# This is the sibling of scripts/lib/listmonk-roundtrip.sh and deliberately not a
-# reuse of it: there, an unreachable site API means "not listmonk's fault, do not
-# restart". Here, an unreachable API is exactly the thing we manage, so it gets
-# its own DOWN verdict that DOES trigger a restart. Same shape, inverted meaning.
+# The listmonk health check has a sibling of this file (lib/listmonk-roundtrip.sh,
+# landing separately) and this is deliberately not a reuse of it: there, an
+# unreachable site API means "not listmonk's fault, do not restart". Here, an
+# unreachable API is exactly the thing we manage, so it gets its own DOWN verdict
+# that DOES trigger a restart. Same shape, inverted meaning.
 
 # classify_api_probe <http_code> <body> <marker>
 #
