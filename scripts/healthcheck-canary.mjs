@@ -36,8 +36,24 @@ if (!PING_URL) {
   process.exit(2);
 }
 
+// A Healthchecks ping URL is a credential, and this script's output is captured
+// to a log file, so logging the raw URL persisted it in cleartext. Log only the
+// endpoint being pinged.
+function pingLabel(endpoint) {
+  return `canary ping${endpoint ? ` /${endpoint}` : ''}`;
+}
+
+// A thrown fetch error can carry the request URL in its message depending on the
+// runtime and failure mode. Strip any occurrence before it reaches a log file.
+function safeErrorMessage(err) {
+  const message = String(err?.message ?? err ?? 'unknown error');
+  if (!PING_URL) return message;
+  return message.split(PING_URL).join('[REDACTED]');
+}
+
 async function ping(endpoint, body) {
   const url = endpoint ? `${PING_URL}/${endpoint}` : PING_URL;
+  const label = pingLabel(endpoint);
   try {
     const res = await fetch(url, {
       method: 'POST',
@@ -46,13 +62,13 @@ async function ping(endpoint, body) {
       signal: AbortSignal.timeout(10000),
     });
     if (!res.ok) {
-      console.error(`Ping to ${url} returned ${res.status} ${res.statusText}`);
-       return false;
-     }
-     console.log(`Pinged ${url}`);
-     return true;
+      console.error(`${label} returned ${res.status} ${res.statusText}`);
+      return false;
+    }
+    console.log(`${label} ok`);
+    return true;
   } catch (err) {
-    console.error(`Ping to ${url} failed: ${err.message}`);
+    console.error(`${label} failed: ${safeErrorMessage(err)}`);
     return false;
   }
 }

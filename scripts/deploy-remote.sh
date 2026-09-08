@@ -40,6 +40,10 @@ rsync -avz --delete "${RSYNC_EXCLUDE[@]}" "$ROOT/out/" "$FTP_USER@$FTP_HOST:$FTP
 
 echo "===> Uploading remote .env.production from $LOCAL_ENV_PRODUCTION_FILE..."
 rsync -avz "$LOCAL_ENV_PRODUCTION_FILE" "$FTP_USER@$FTP_HOST:$ENV_PRODUCTION_PATH"
+# rsync -a implies -p, so the remote file takes the local file's mode. Pin it
+# owner-only here as well as in deploy-secrets.sh: this path uploads the same
+# file, so without it a full deploy would widen what deploy:secrets narrowed.
+ssh "$FTP_USER@$FTP_HOST" "chmod 600 '$ENV_PRODUCTION_PATH'"
 
 if [[ "$REMOTE_SKIP_GIT" == "1" ]]; then
   echo "===> Skipping git pull (REMOTE_SKIP_GIT=1)."
