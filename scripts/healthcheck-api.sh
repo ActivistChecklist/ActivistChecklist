@@ -138,6 +138,20 @@ proc_cgroup() {
   awk -F: '$1 == "0" { print $3; exit }' "/proc/$pid/cgroup" 2>/dev/null || true
 }
 
+# 0 when a PM2 daemon is running in a cgroup that is NOT this job's - i.e. it
+# will survive our exit. When cgroup info is unavailable (no /proc, e.g. macOS)
+# fall back to "is it running at all" rather than reporting a false failure.
+pm2_daemon_placed_ok() {
+  local pid ours theirs
+  pid="$(pm2_daemon_pid)" || return 1
+  ours="$(proc_cgroup "$$")"
+  theirs="$(proc_cgroup "$pid")"
+  if [[ -z "$ours" || -z "$theirs" ]]; then
+    return 0
+  fi
+  [[ "$ours" != "$theirs" ]]
+}
+
 # Resolve a directly executable pm2 plus the PATH that finds its node. systemd-run
 # needs a real binary, and nvm_pnpm is a shell function that may wrap
 # `nvm exec <ver> pnpm`. Neither command here runs pm2, so this does not spawn the
@@ -183,39 +197,49 @@ ensure_pm2_daemon() {
     return 0
   fi
 
-  # Preferred: a scope. --scope, not --service, because the command is forked
+  # Attempt 1: a scope. --scope, not --service, because the command is forked
   # from here and so inherits PM2_HOME and the PATH set below for free; a
   # --service unit starts from systemd's own environment and loses all of it.
   # --collect reaps the scope once it is empty; the scope itself stays alive as
   # long as the daemon holds a process in it.
-  if PATH="${scope_path:-$PATH}" systemd-run --user --scope --quiet --collect \
-    --unit="ac-api-pm2-daemon-$$" -- "$pm2_bin" ping >/dev/null 2>&1; then
+  PATH="${scope_path:-$PATH}" systemd-run --user --scope --quiet --collect \
+    --unit="ac-api-pm2-daemon-$$" -- "$pm2_bin" ping >/dev/null 2>&1 || true
+  if pm2_daemon_placed_ok; then
     log_echo "PM2 daemon started in its own systemd scope"
     return 0
   fi
 
-  # Fallback: a transient unit. A scope has to migrate an already-running PID
-  # (systemd-run's own) into the new cgroup, and a host that restricts cgroup
-  # delegation to the user manager refuses that outright:
+  # A scope has to migrate an already-running PID (systemd-run's own) into the
+  # new cgroup, and a host that restricts cgroup delegation to the user manager
+  # refuses that:
   #   Failed to add PIDs to scope's control group: Permission denied
-  # `--unit=` has systemd fork the process directly into the new cgroup, so there
-  # is nothing to move. Two costs, both handled here: the environment does not
-  # come along (hence --setenv), and `pm2 ping` exits once the daemon is up, so
-  # the unit needs KillMode=process + RemainAfterExit so that going inactive does
-  # not take the daemon we just spawned down with it.
+  # This is why the check above asks where the daemon actually landed instead of
+  # trusting the exit status: the scope can fail QUIETLY, having already run
+  # `pm2 ping` and spawned the daemon into OUR cgroup. Clear it out, or the
+  # retry below just pings that misplaced daemon and declares success. Safe to
+  # kill here: we only reach this point when no daemon was running on entry, so
+  # nothing is parented to it yet.
+  nvm_pnpm exec pm2 kill >/dev/null 2>&1 || true
+
+  # Attempt 2: a transient unit. `--unit=` has systemd fork the process directly
+  # into the new cgroup, so there is nothing to migrate. Two costs, both handled
+  # here: the environment does not come along (hence --setenv), and `pm2 ping`
+  # exits once the daemon is up, so the unit needs KillMode=process plus
+  # RemainAfterExit so that going inactive does not take the daemon with it.
   systemctl --user reset-failed ac-api-pm2-daemon.service >/dev/null 2>&1 || true
-  if systemd-run --user --unit=ac-api-pm2-daemon --quiet \
+  systemd-run --user --unit=ac-api-pm2-daemon --quiet \
     --property=KillMode=process \
     --property=RemainAfterExit=yes \
     --setenv=PATH="${scope_path:-$PATH}" \
     --setenv=PM2_HOME="$PM2_HOME" \
     --setenv=HOME="$HOME" \
-    -- "$pm2_bin" ping >/dev/null 2>&1; then
+    -- "$pm2_bin" ping >/dev/null 2>&1 || true
+  if pm2_daemon_placed_ok; then
     log_echo "PM2 daemon started in its own systemd unit (scope was refused)"
     return 0
   fi
 
-  log_echo "WARN: systemd-run scope and unit both failed; PM2 may be reaped when this job exits"
+  log_echo "WARN: could not place the PM2 daemon outside this job's cgroup; it may be reaped when this job exits"
 }
 
 # Warn when the daemon shares our cgroup, which means systemd will kill it the
