@@ -8,6 +8,7 @@ import { Card, CardHeader, CardFooter, CardTitle, CardDescription } from '@/comp
 import { Button } from '@/components/ui/button';
 import { cn, getBaseUrl } from '@/lib/utils';
 import { NAV_ITEMS, SECURITY_CHECKLISTS } from '@/config/navigation';
+import FEATURED_LOGOS from '@/config/featured.json'
 import ChangeLogRecentEntries from '@/components/ChangeLogRecentEntries';
 import GuideCard from '@/components/GuideCard';
 import Markdown from '@/components/Markdown';
@@ -15,6 +16,7 @@ import { useTranslations } from 'next-intl';
 import { useLocale } from 'next-intl';
 import Link from '@/components/Link';
 import { LOCALES, DEFAULT_LOCALE } from '@/lib/i18n-config';
+import Image from 'next/image';
 
 const ACTION_GUIDES = SECURITY_CHECKLISTS.items.slice(0, 8);
 
@@ -39,6 +41,16 @@ const ConcernCard = ({ title, description }) => (
       <p className="text-base text-muted-foreground">{description}</p>
     </CardHeader>
   </Card>
+);
+
+const FeatureLogo = ({ name, image, url }) => (
+  <div className='flex justify-center items-center'>
+    <a href={url} target="_blank">
+      <div className='relative w-[200px] h-[100px]'>
+        <Image title={name} alt={name} src={image} fill={true} className="object-contain" />
+      </div>
+    </a>
+  </div>
 );
 
 export default function HomePageContent({ children, changelogEntries = [], latestMajorBodyText = null, locale = 'en' }) {
@@ -149,6 +161,21 @@ export default function HomePageContent({ children, changelogEntries = [], lates
 
           {/* Latest News — loaded in server component HomeNewsSection (see app/[locale]/page.tsx) */}
           {children}
+
+          {/* Featured In - orgs that have linked to us */}
+          <section className="mb-16">
+            <h2 className="text-2xl font-bold mb-6">{t('featured.sectionTitle')}</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {FEATURED_LOGOS.map((logo, index) => 
+                <FeatureLogo
+                  key={index}
+                  name={logo.name}
+                  image={logo.image}
+                  url={logo.url}
+                />
+              )}
+            </div>
+          </section>
 
           {/* Recent Updates */}
           <section className="mb-16">
