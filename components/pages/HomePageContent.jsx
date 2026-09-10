@@ -167,12 +167,7 @@ export default function HomePageContent({ children, changelogEntries = [], lates
             <h2 className="text-2xl font-bold mb-6">{t('featured.sectionTitle')}</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {FEATURED_LOGOS.map((logo, index) => 
-                <FeatureLogo
-                  key={index}
-                  name={logo.name}
-                  image={logo.image}
-                  url={logo.url}
-                />
+                <FeatureLogo key={index} name={logo.name} image={logo.image} url={logo.url} />
               )}
             </div>
           </section>
