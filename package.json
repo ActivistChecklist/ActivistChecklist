@@ -145,7 +145,7 @@
     "cheerio": "^1.2.0",
     "commander": "^15.0.0",
     "concurrently": "^10.0.5",
-    "fastify-cli": "^8.0.0",
+    "fastify-cli": "^8.0.1",
     "feed": "^6.0.0",
     "http-server": "^14.1.1",
     "husky": "^9.1.7",
