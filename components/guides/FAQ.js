@@ -35,7 +35,7 @@ export function FAQItem({ question, answer }) {
         )}
       >
         <ChevronRight
-          className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 mt-1"
+          className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 mt-1 rtl:rotate-180"
           aria-hidden="true"
         />
         <span>{question}</span>

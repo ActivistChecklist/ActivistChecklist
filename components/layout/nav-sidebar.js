@@ -36,9 +36,9 @@ export function NavSidebar() {
               asChild 
               size="lg" 
               className={cn(
-                "font-normal relative pl-4 py-0 border-l-2 border-l-transparent hover:border-l-foreground/20",
+                "font-normal relative ps-4 py-0 border-s-2 border-s-transparent hover:border-s-foreground/20",
                 "transition-all duration-200",
-                "hover:bg-accent rounded-l-none rounded-r-lg h-10 my-0",
+                "hover:bg-accent rounded-s-none rounded-e-lg h-10 my-0",
                 isSubItemActive(item, pathname) && "border-link font-bold text-link hover:text-link hover:border-link"
               )}
             >

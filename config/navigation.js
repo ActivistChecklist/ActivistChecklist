@@ -42,7 +42,10 @@ function resolveMenu(menuKey) {
       type: "full-width",
       icon: IoArrowForward,
       className: "group",
-      iconClassName: "transition-transform duration-200 group-hover:translate-x-1",
+      // rtl:rotate-180 flips the arrow to point left in Arabic; the hover nudge
+      // has to be negated too, so it still travels the way the arrow points.
+      iconClassName:
+        "transition-transform duration-200 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1",
     }
   }
   return resolved

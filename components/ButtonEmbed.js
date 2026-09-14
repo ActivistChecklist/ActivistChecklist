@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { IoArrowForwardOutline, IoCloudDownloadOutline, IoDocumentsOutline, IoOpenOutline } from 'react-icons/io5';
 import Link from '@/components/Link';
 import { trackFileDownload } from '@/lib/download-tracker';
+import { cn } from '@/lib/utils';
 
 // Static registry of icons used in content. Add new icons here as needed.
 const ICON_REGISTRY = {
@@ -21,7 +22,13 @@ const DynamicIcon = ({ iconName, className, ...props }) => {
     console.warn(`Icon "${formattedIconName}" not in ButtonEmbed registry. Add it to ICON_REGISTRY in ButtonEmbed.js`);
     return null;
   }
-  return <IconComponent className={className} {...props} />;
+  const isDirectional = /Arrow(Forward|Back)/.test(formattedIconName);
+  return (
+    <IconComponent
+      className={cn(isDirectional && 'rtl:rotate-180', className)}
+      {...props}
+    />
+  );
 };
 
 export const ButtonEmbed = (props) => {

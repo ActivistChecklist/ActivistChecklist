@@ -118,7 +118,7 @@ export function InlineChecklist({ children, storageKey, className }) {
     if (type === 'ul') {
       const items = React.Children.toArray(props.children);
       return (
-        <ul className={cn("checklist-items list-none pl-0 space-y-2", props.className)}>
+        <ul className={cn("checklist-items list-none ps-0 space-y-2", props.className)}>
           {items.map((item, idx) => {
             if (React.isValidElement(item) && item.type === 'li') {
               const itemIndex = `${path}-${idx}`;

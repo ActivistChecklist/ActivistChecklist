@@ -1,7 +1,7 @@
 import { defineRouting } from 'next-intl/routing';
 
 export const routing = defineRouting({
-  locales: ['en', 'es'],
+  locales: ['en', 'es', 'ar'],
   defaultLocale: 'en',
   // English has no URL prefix: / → /en internally
   // Spanish keeps /es/ prefix
