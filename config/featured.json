@@ -1,0 +1,27 @@
+[
+    {
+        "name": "Electronic Frontier Foundation",
+        "image": "/images/org-logos/EFF-logo.png",
+        "url": "https://www.eff.org/deeplinks/2026/01/how-hackers-are-fighting-back-against-ice"
+    },
+    {
+        "name": "Indivisible",
+        "image": "/images/org-logos/Indivisible-logo.png",
+        "url": "https://indivisible.org/resource/safety-security-and-digital-preparedness-second-trump-administration/"
+    },
+    {
+        "name": "CrimethInc.",
+        "image": "/images/org-logos/CrimethInc-logo.png",
+        "url": "https://crimethinc.com/2025/12/03/when-the-feds-come-to-your-city-standing-up-to-ice-a-guide-from-chicago-organizers"
+    },
+    {
+        "name": "Palestine Legal",
+        "image": "/images/org-logos/PalestineLegal-logo.png",
+        "url": "https://palestinelegal.org/news/2023/10/12/resources-for-advocating-for-palestine-across-us"
+    },
+    {
+        "name": "50501",
+        "image": "/images/org-logos/50501-logo.png",
+        "url": "https://50501.co/learn/hub/digital-security-safety-is-for-everyone/"
+    }
+]

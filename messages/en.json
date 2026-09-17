@@ -114,6 +114,9 @@
     "dontCareTitle": "\"They don't care about what I'm doing\"",
     "dontCareDescription": "Mass surveillance affects everyone. Your data can be used to profile communities, predict protests, or target those you care about. Protecting your communications helps protect all of us."
   },
+  "featured": {
+    "sectionTitle": "Featured In"
+  },
   "homepage": {
     "checklistsHeading": "Digital Security & Physical Safety Checklists",
     "browseAll": "See all checklists",
