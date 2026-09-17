@@ -47,7 +47,7 @@ const FeatureLogo = ({ name, image, url }) => (
   <div className='flex justify-center items-center'>
     <a href={url} target="_blank">
       <div className='relative w-[200px] h-[100px]'>
-        <Image title={name} alt={name} src={image} fill={true} className="object-contain" />
+        <Image title={name} alt={name} src={image} fill={true} sizes="200px" className="object-contain" />
       </div>
     </a>
   </div>
