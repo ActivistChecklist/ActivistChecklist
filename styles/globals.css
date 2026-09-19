@@ -448,6 +448,27 @@
   .text-success {
     color: hsl(var(--text-success));
   }
+
+  /* Diagonal band edges (hero bottom, footer top).
+     The slope angle is atan(height / width), so a fixed pixel height makes the
+     diagonal steepen as the viewport narrows - 2.5deg on a laptop became almost
+     10deg on a phone. Deriving the height from the element's own width with
+     aspect-ratio keeps that ratio, and therefore the angle, identical at every
+     width. 20/1 is a ~2.86deg slope; change the ratio to change the angle. */
+  .diagonal-edge {
+    aspect-ratio: 20 / 1;
+    width: 100%;
+  }
+
+  /* Band sits above the diagonal; what is behind shows through below it. */
+  .diagonal-edge-above {
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+  }
+
+  /* Band sits below the diagonal; what is behind shows through above it. */
+  .diagonal-edge-below {
+    clip-path: polygon(0 100%, 100% 0, 100% 100%);
+  }
 }
 
 @layer base {
