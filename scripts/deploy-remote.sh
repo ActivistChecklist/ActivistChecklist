@@ -10,6 +10,8 @@ ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 ENV_FILE="${ENV_FILE:-$ROOT/.env}"
 # shellcheck disable=SC1091
 source "$SCRIPT_DIR/load-env.sh"
+# shellcheck disable=SC1091
+source "$SCRIPT_DIR/lib/ensure-remote-large-assets-dir.sh"
 
 : "${REMOTE_SSH_HOST:?Set REMOTE_SSH_HOST in .env (e.g. user@host or SSH alias)}"
 LOCAL_ENV_PRODUCTION_FILE="${LOCAL_ENV_PRODUCTION_FILE:-$ROOT/.env.production.local}"
@@ -32,10 +34,33 @@ RSYNC_EXCLUDE=()
 if [[ -f "$ROOT/.rsync-exclude" ]]; then
   RSYNC_EXCLUDE=(--exclude-from="$ROOT/.rsync-exclude")
 fi
+# Server-only large files (see .rsync-exclude); create once so uploads have a stable path.
+ensure_remote_large_assets_dir
+
+# Two passes, for the same reason as scripts/build-deploy.sh: rsync sorts _next/
+# ahead of every lowercase page directory, so one --delete pass swaps the chunks
+# and deletes the old ones well before it rewrites the pages that reference them,
+# and requests landing in that window get a ChunkLoadError. Pass 1 adds the new
+# build without removing anything; pass 2 prunes once every page on disk is new.
+echo "===> Publishing pass 1/2 (add and update, no deletes)..."
+rsync -avz "${RSYNC_EXCLUDE[@]}" "$ROOT/out/" "$FTP_USER@$FTP_HOST:$FTP_DIR"
+
+# Let page loads from the tail of pass 1 finish fetching their chunks.
+DEPLOY_SETTLE_SECONDS="${DEPLOY_SETTLE_SECONDS:-5}"
+if [[ "$DEPLOY_SETTLE_SECONDS" != "0" ]]; then
+  echo "===> Settling ${DEPLOY_SETTLE_SECONDS}s before pruning..."
+  sleep "$DEPLOY_SETTLE_SECONDS"
+fi
+
+echo "===> Publishing pass 2/2 (prune files the new build dropped)..."
 rsync -avz --delete "${RSYNC_EXCLUDE[@]}" "$ROOT/out/" "$FTP_USER@$FTP_HOST:$FTP_DIR"
 
 echo "===> Uploading remote .env.production from $LOCAL_ENV_PRODUCTION_FILE..."
 rsync -avz "$LOCAL_ENV_PRODUCTION_FILE" "$FTP_USER@$FTP_HOST:$ENV_PRODUCTION_PATH"
+# rsync -a implies -p, so the remote file takes the local file's mode. Pin it
+# owner-only here as well as in deploy-secrets.sh: this path uploads the same
+# file, so without it a full deploy would widen what deploy:secrets narrowed.
+ssh "$FTP_USER@$FTP_HOST" "chmod 600 '$ENV_PRODUCTION_PATH'"
 
 if [[ "$REMOTE_SKIP_GIT" == "1" ]]; then
   echo "===> Skipping git pull (REMOTE_SKIP_GIT=1)."

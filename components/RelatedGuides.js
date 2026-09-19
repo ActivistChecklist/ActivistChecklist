@@ -3,6 +3,7 @@ import React from 'react';
 import GuideCard from '@/components/GuideCard';
 import { NAV_ITEMS } from '@/config/navigation';
 import { cn } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 
 const ALL_GUIDE_ITEMS = Object.values(NAV_ITEMS).filter(item => item.icon && item.href);
 
@@ -17,6 +18,7 @@ function findGuideBySlug(slug) {
  * RelatedGuides — <RelatedGuides><RelatedGuide slug="essentials" />...</RelatedGuides>
  */
 const RelatedGuides = ({ children, guideSlugs = [], isBlock = false }) => {
+  const t = useTranslations();
   const slugsFromChildren = React.Children.toArray(children)
     .filter((child) => child?.props?.slug)
     .map((child) => child.props.slug);
@@ -44,9 +46,9 @@ const RelatedGuides = ({ children, guideSlugs = [], isBlock = false }) => {
     ? "text-xl font-semibold text-foreground mb-4" 
     : "";
 
-  const defaultTitle = isBlock 
-    ? "Keep learning with these related guides"
-    : "If you found this helpful, also check out these guides";
+  const defaultTitle = isBlock
+    ? t('relatedGuides.headingBlock')
+    : t('relatedGuides.headingFooter');
 
   return (
     <div className={containerClass}>

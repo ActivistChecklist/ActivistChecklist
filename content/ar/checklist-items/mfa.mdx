@@ -1,0 +1,38 @@
+---
+title: Enable two-factor authentication
+preview: |
+  If someone steals your password, two-factor authentication keeps them from being able to get in unless they have your phone too.
+do: |
+  Enable two-factor authentication for important sites
+dont: |
+  Use only a password
+titleBadges: []
+---
+
+After entering your password, you'll need to enter a code from your phone to prove it's really you. Think of it like having both a key and an alarm code to get into your house—someone needs both to get in.
+
+Your email is the most important account to protect with two-factor authentication. If an attacker gets access to your email, they can reset all your other passwords.
+
+<HowTo title="How to set up">
+  **Install an authenticator app:**
+
+  1. **Option 1: 1Password:** If you're using [1Password](#password-manager), it has an "authenticator" feature built-in ([details here](https://support.1password.com/one-time-passwords/)).
+  2. **Option 2: Ente Auth:** Install [Ente Auth](https://ente.io/auth/) (iPhone, Android)
+     * Optional: You can create an account. Your data is end-to-end encrypted. Or you can not have an account, but you may lose your one time passwords if your phone is not backed up.
+
+  **To set up two-factor authentication:**
+
+  1. Go to Security/Privacy settings
+  2. Look for "2FA" or "two-factor authentication" or "multi-factor authentication"
+  3. If an “authenticator app” option is available, select that! (Remember to save the backup codes somewhere secure, like your password manager.)
+  4. If “text/SMS verification” is the only option, select that and follow the instructions.
+  5. Links to set up 2FA on common sites:
+     * [Google](https://myaccount.google.com/signinoptions/two-step-verification)
+     * [Apple ID](https://support.apple.com/en-us/HT204915)
+     * [Facebook](https://www.facebook.com/settings?tab=security)
+     * [Twitter / X](https://twitter.com/settings/security)
+     * [Instagram](https://help.instagram.com/566810106808145)
+     * Or look up whether a website/service/app has 2FA on the [2FA Directory](https://2fa.directory/us/).
+</HowTo>
+
+Note: When a service allows you to choose between an **authenticator app** and **SMS text message verification codes,** opting for the authenticator app is always best. It’s possible for an attacker to [intercept your SMS texts](https://www.wired.com/2016/06/hey-stop-using-texts-two-factor-authentication/).

@@ -2,7 +2,9 @@
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { getAllChangelogEntries, toChangelogListEntry } from '@/lib/content';
 import Layout from '@/components/layout/Layout';
+import PageNotices from '@/components/layout/PageNotices';
 import ChangeLogEntry from '@/components/ChangeLogEntry';
+import ChangeLogTimelineMarker from '@/components/ChangeLogTimelineMarker';
 import RSSButton from '@/components/ui/RSSButton';
 import { cn } from "@/lib/utils";
 
@@ -57,11 +59,10 @@ function TimelineSection({ title, entries, isFirst = false }) {
         {entries.map((entry, index) => (
           <div key={entry.slug} id={entry.slug} className="relative">
             <div className="py-3 pl-12 text-sm text-muted-foreground relative">
-              {/* Timeline dot */}
-              <div className="absolute left-6 top-[18px] w-2 h-2 bg-primary rounded-full -translate-x-1/2"></div>
+              <ChangeLogTimelineMarker type={entry.type} />
               {/* Timeline line */}
               {index < entries.length - 1 && (
-                <div className="absolute left-6 top-[26px] w-px bg-border h-full -translate-x-1/2"></div>
+                <div className="absolute z-0 left-6 top-[26px] w-px bg-border h-full -translate-x-1/2"></div>
               )}
               <ChangeLogEntry entry={entry} />
             </div>
@@ -76,6 +77,7 @@ export default async function ChangelogPage({ params }) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations();
+  const currentYear = new Date().getFullYear();
 
   const changelogEntries = getAllChangelogEntries(locale).map(toChangelogListEntry);
   const grouped = groupEntriesByTime(changelogEntries);
@@ -87,20 +89,21 @@ export default async function ChangelogPage({ params }) {
     <Layout>
       <div className="max-w-4xl mx-auto">
         <header className="mb-8">
-          <div className="flex items-start justify-between">
-            <div>
-              <h1 className="page-title">{t('changelog.title')}</h1>
-              <p className="text-lg text-muted-foreground">
-                {t('changelog.description')}
-              </p>
-            </div>
+          <h1 className="page-title">{t('changelog.title')}</h1>
+          <div className="mt-2 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <p className="text-lg text-muted-foreground sm:min-w-0 sm:flex-1 sm:pr-4">
+              {t('changelog.description')}
+            </p>
             <RSSButton
               href="/rss/changelog.xml"
               variant="outline"
               size="sm"
+              className="w-fit shrink-0 self-start sm:mt-0.5"
             />
           </div>
         </header>
+
+        <PageNotices />
 
         {changelogEntries.length === 0 ? (
           <div className="text-center py-12">
@@ -115,7 +118,7 @@ export default async function ChangelogPage({ params }) {
             />
 
             <TimelineSection
-              title={t('changelog.previousChanges')}
+              title={currentYear.toString()}
               entries={grouped.thisYear}
             />
 

@@ -1,0 +1,74 @@
+# Makes the required PR checks actually report on Crowdin's l10n_* pull requests.
+#
+# Crowdin opens and pushes to l10n_* branches, and GitHub delivers those webhooks
+# (Railway and CodeRabbit post their checks), but GitHub Actions creates no workflow
+# run for them - verified on PR #601, whose head SHA had zero entries in
+# `actions/runs?head_sha=...` while its Railway and CodeRabbit check suites existed.
+# With no run, the required contexts from pr-checks.yml never report and the PR sits
+# on "Expected - waiting for status to be reported" until someone pushes a commit
+# from their own account.
+#
+# `schedule` fires as the repository itself, so it is unaffected by whatever
+# suppresses the pull_request runs. This job dispatches pr-checks.yml at the head of
+# any open l10n_* PR that has no run of its own; those check runs attach to the PR's
+# head SHA and satisfy the branch ruleset.
+#
+# No PAT needed: workflow_dispatch is an explicit exception to the rule that events
+# triggered by GITHUB_TOKEN do not create new workflow runs.
+
+name: l10n check watchdog
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: l10n-check-watchdog
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: write
+  pull-requests: read
+
+jobs:
+  ensure_checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Dispatch pr-checks for l10n PRs with no Actions run
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+
+          gh pr list --repo "$REPO" --state open --limit 50 \
+            --json number,headRefName,headRefOid \
+            --jq '.[] | select(.headRefName | startswith("l10n_")) | [.number, .headRefName, .headRefOid] | @tsv' \
+            > prs.tsv
+
+          if [ ! -s prs.tsv ]; then
+            echo "No open l10n_* pull requests - nothing to do."
+            exit 0
+          fi
+
+          while IFS="$(printf '\t')" read -r number branch sha; do
+            [ -n "${sha:-}" ] || continue
+
+            # Scoped to pr-checks.yml so the count can't be satisfied by some other
+            # workflow, and so re-dispatching is idempotent once a run exists.
+            runs=$(gh api \
+              "repos/$REPO/actions/workflows/pr-checks.yml/runs?head_sha=$sha" \
+              --jq '.total_count')
+
+            if [ "$runs" != "0" ]; then
+              echo "PR #$number ($branch @ ${sha:0:8}): $runs pr-checks run(s) already."
+              continue
+            fi
+
+            echo "PR #$number ($branch @ ${sha:0:8}): no pr-checks run - dispatching."
+            gh workflow run pr-checks.yml --repo "$REPO" --ref "$branch"
+          done < prs.tsv

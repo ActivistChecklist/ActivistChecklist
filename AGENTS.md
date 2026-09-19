@@ -1,0 +1,102 @@
+# AI Agent rules
+
+## General rules
+
+* Use pnpm to manage packages
+* Before rejecting or re-evaluating a dependency upgrade, read the `ignore:` comments in `.github/dependabot.yml`. That is the single record of which major bumps we have declined and what would lift each one. If you decline a new one, close the PR and add a rule there with the reason and a checkable "take it when" condition. Do not create a separate doc for this.
+* Worktree setup is automatic: Claude Code reads `.worktreeinclude` at the repo root and symlinks the listed gitignored paths (env files) from the main checkout into each new worktree. If you add new gitignored top-level state that worktrees should mirror, add a pattern to `.worktreeinclude`. When setting up a new worktree, run `pnpm install` so the modules are ready.
+
+## Testing rules
+
+* IMPORTANT: when adding new pure-logic modules (decision trees, parsers, normalizers, search ranking, transforms, etc.), add vitest tests under `__tests__/` covering the meaningful branches. The repo runs vitest as a pre-commit hook, so tests must pass before any commit.
+* Tests should be behavior-focused: cover the public API, the decision-tree branches, and edge cases that would silently produce wrong answers (e.g. an EOL date in the past vs. the future). Don't write tests for internal helpers that are already exercised through the public surface.
+* Skip tests for: trivial glue code, presentational components without logic, one-line wrappers, and things that are exclusively tested by integration (build-time scripts where running the script IS the test).
+* When adding a non-trivial feature, mention test coverage in your final summary so the user knows what's covered and what's not.
+
+## Content writing ruels
+
+* IMPORTANT: Do NOT use em-dashes when writing content or text in .mdx files or static strings.
+* To give a heading a custom anchor id, add `{#your-id}` at the end of the heading line (e.g. `## Downsides to using a VPN {#downsides}`), then link to it with `/page/#your-id`. Without the marker, headings still get an auto id derived from their text. See `lib/mdx-heading-ids.js`.
+
+## Git commit rules
+
+* IMPORTANT: Do not do any automatic commits for this project unless explicitly instructed.
+* Do not use stash unless you have to
+* Do not commit directly to main
+* Always commit in this way: check if we're already on a dev/NAME feature branch. If not, open one. Commit changes. DO NOT include claude's name in the commit message. Do not merge into main. I will do that later on GH. If you need to use one branch for multiple different changes, thats fine. Doesnt matter if the branch name isn't perfect for the tasks at hand.
+* Never include Claude or Cursor or the current AI agent in the name of the commit or as a co-author (e.g., "Co-authored-by: Cursor <...>")
+
+## CSS rules
+
+* **Tailwind utility classes** (inline on elements) are the default for layout, spacing, and color. Use semantic color tokens (`bg-background`, `text-foreground`, `text-muted-foreground`, `text-primary`, etc.) — never raw scale values like `bg-gray-100` or `text-zinc-600` in components.
+* **`dark:` variants** are for one-off dark mode adjustments that can't be expressed through the CSS variable system alone. The variable system handles most cases automatically.
+* **CSS Modules** (`.module.css`) are for scoped component styles with multiple named variants or complex selectors (Alert and RiskLevel are the right use cases). Don't use them for single-element components.
+* **`globals.css`** is for: design tokens (CSS variables in `:root`/`.dark`), base element resets, cross-cutting utility classes (`.link`, `.prose`, print styles). No component-specific rules.
+* **`style={}`** only for truly dynamic runtime values (e.g., calculated pixel offsets). Never for static styles.
+
+## Internationalization (i18n) rules
+
+* All user-facing strings in the public site must go into `messages/en.json`. Never hardcode English text directly in components or pages.
+* Crowdin handles translation of new strings, so you only need to add to `messages/en.json`.
+* Use `useTranslations()` in client components and `await getTranslations()` in server components (from `next-intl` and `next-intl/server` respectively).
+* The convention in this project is `const t = useTranslations()` without a namespace, using full dot-notation paths (e.g., `t('contact.title')`).
+* This does not apply to admin/Keystatic interfaces, scripts, or internal tooling.
+* IMPORTANT: Do not manually edit or add non-English mdx files while editing/adding English files
+* **Internal links:** use `import Link from '@/components/Link'`, not `next/link`, so paths get the right locale prefix (`/es/…`, etc.). Exception: root-only URLs that must not be prefixed (e.g. `/rss/*.xml`) — note why in a comment if you use `next/link`.
+
+## Coding security principles
+
+* Always make sure to write code with security as a core principle. Don't be excessive (ex: lots of try/catch loops), but do use thinking time to consider how an attacker could mount a meaningful attack.
+* Never hardcode secrets — use environment variables.
+* Use parameterized queries — never interpolate into SQL.
+* Use constant-time comparison for tokens and hashes.
+* Never log secrets, tokens, or PII.
+
+## Logging rules
+
+This is a site for activists. A visitor IP or a subscriber email sitting in a log
+file is a safety problem, not just a compliance one. PM2 keeps app logs on disk
+until something trims them, so anything logged persists until someone notices.
+
+* **Never log an IP address, email address, name, form body, or contact message.**
+  This includes indirect logging: dumping a request body, an API response body, or
+  a caught `error` object that carries the payload. Both real leaks we have had
+  came from logging a whole object rather than a chosen field — `console.log('...',
+  { payload })` and `console.log('...', { data: parsedData })` in `lib/listmonk.js`,
+  which wrote a large number of subscriber emails into the PM2 app log.
+* **Log chosen fields, never whole objects.** `{ status, endpoint }`, not
+  `{ status, data }`. If you need to log a caught error, log `error.message`, not
+  `error`.
+* Reviewing a diff: any new `console.log` / `console.error` / `log.info` in `api/`
+  or `lib/` whose argument is a bare object or an `error` is the thing to question.
+  Ask "what is actually inside this at runtime?" — a Listmonk or Resend response
+  contains the user's email even when the call succeeded.
+* IP addresses may be used in memory (rate-limit keys, hashing) but must never
+  reach a log line. `api/server.js` reads `x-forwarded-for` for rate limiting only.
+* Keep log volume bounded. Fastify's default per-request logging is disabled in
+  `api/start.js` (`disableRequestLogging`) because the `onResponse` hook in
+  `api/server.js` already logs one line per request — leaving both on grew the log
+  to hundreds of megabytes.
+
+## Temp file rules
+
+Treat the system temp dir as off limits for anything we would not want another
+local account to read.
+
+* **Never hardcode a system temp path** in a script or Node module. Use `mktemp`
+  in shell and `os.tmpdir()` in Node — both follow `TMPDIR`, which
+  `scripts/load-env.sh` points at a private 0700 directory on the servers.
+* For anything sensitive, create a private directory rather than a single file:
+  `mkdtemp` in Node, `mktemp -d` in shell. A name built from a timestamp is
+  guessable; we had one staging media that still carried its original metadata.
+* Always clean up on the error path too, not just on success.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

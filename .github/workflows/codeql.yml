@@ -1,0 +1,81 @@
+# Advanced CodeQL
+
+name: CodeQL
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: "25 2 * * 1"
+
+concurrency:
+  group: codeql-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+  security-events: write
+
+jobs:
+  analyze:
+    if: ${{ !startsWith(github.head_ref, 'l10n_') && !startsWith(github.ref_name, 'l10n_') }}
+    name: Analyze (${{ matrix.name }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - codeql-language: javascript
+            name: javascript-typescript
+          - codeql-language: actions
+            name: actions
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4.37.9
+        with:
+          languages: ${{ matrix.codeql-language }}
+
+      # Next.js: explicit install + build matches CI and gives CodeQL a reliable trace
+      # (generic Autobuild often misses pnpm/Node version from .nvmrc).
+      - name: Setup pnpm
+        if: matrix.codeql-language == 'javascript'
+        uses: pnpm/action-setup@v6.1.0
+
+      - name: Setup Node
+        if: matrix.codeql-language == 'javascript'
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies
+        if: matrix.codeql-language == 'javascript'
+        run: pnpm run install:ci
+
+      # Invoke Next directly so package.json `postbuild` (sitemap/RSS) does not run in this job.
+      # --webpack is required and must stay in sync with the `build` script:
+      # Next 16 defaults `next build` to Turbopack, which ignores next.config.js's
+      # `webpack:` config (the @ alias and the static-export stubs) and cannot
+      # resolve @keystar/ui, so the build fails with module-not-found. Bypassing
+      # `pnpm build` here means we do not inherit the flag from package.json.
+      - name: Build application
+        if: matrix.codeql-language == 'javascript'
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+        run: ./node_modules/.bin/next build --webpack
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v4.37.9
+        with:
+          category: "/language:${{ matrix.name }}"

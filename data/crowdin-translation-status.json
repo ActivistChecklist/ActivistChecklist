@@ -1,0 +1,177 @@
+{
+  "version": 2,
+  "generatedAt": "2026-04-12T18:19:49.051Z",
+  "thresholds": {
+    "unreviewedNoticeMaxApprovalPercent": 80
+  },
+  "routes": {
+    "action": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    },
+    "doxxing": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 3,
+        "showUnreviewedNotice": true
+      }
+    },
+    "emergency": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    },
+    "essentials": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    },
+    "federal": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    },
+    "ice": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    },
+    "organizing": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    },
+    "protest": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    },
+    "research": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    },
+    "secondary": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    },
+    "signal": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    },
+    "spyware": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    },
+    "travel": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    },
+    "about": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    },
+    "contribute": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    },
+    "flyer": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    },
+    "links": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    },
+    "movies": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    },
+    "police": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    },
+    "privacy": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    },
+    "proton": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    },
+    "resources": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    },
+    "signal-ai": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    },
+    "signal-secure": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    }
+  }
+}

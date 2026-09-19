@@ -1,0 +1,26 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+ActivistChecklist.org Warrant Canary · 2026-08-11 18:42:49 UTC
+
+As of August 11, 2026, ActivistChecklist.org:
+
+* has not been compelled to alter the site or its behavior for surveillance purposes
+* has not been served with any legal demand for user data accompanied by a gag order
+* retains sole control over its infrastructure and signing keys
+
+This canary is valid through November 19, 2026. After that date, the absence of a newer
+indicates either a missed update or compromise.
+
+Datestamp Proof:
+  News headline: The Guardian view on AI money in US politics: not the way to hold an urgent democratic debate | Editorial
+  News URL:      https://www.theguardian.com/commentisfree/2026/aug/11/the-guardian-view-on-ai-money-in-us-politics-not-the-way-to-hold-an-urgent-democratic-debate
+  XMR block:     #3738017, 2026-08-11 18:41:11 UTC
+  Block hash:    ccd5b1386c641cea8219024c2b3d23d78f2ad89cacd0fa8fdc179d9cad33d1ba
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYIAB0WIQS3qluewPA1HZ+344fQN7sOiHIG7AUCanttVwAKCRDQN7sOiHIG
+7KUuAQCF1wJnTSqE4xO+A4H2UnVkugmanzwzy9XK43i77V/e9gEAzs2p/2NtGw2o
+nrQm7IAZ6FZx8sYQeScAkS7WQsAA1A4=
+=AJZe
+-----END PGP SIGNATURE-----

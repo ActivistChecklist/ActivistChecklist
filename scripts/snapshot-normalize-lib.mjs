@@ -325,7 +325,7 @@ export async function normalizeOneStaticDir(absRoot, outSubdir) {
   const port = await getFreePort();
   const bin = path.join(ROOT, 'node_modules', '.bin', 'http-server');
   if (!fs.existsSync(bin)) {
-    throw new Error('http-server not found. Run yarn install.');
+    throw new Error('http-server not found. Run pnpm install.');
   }
 
   const child = spawn(bin, [absRoot, '-p', String(port), '-s', '-a', '127.0.0.1'], {

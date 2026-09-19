@@ -1,3 +1,13 @@
+# Crowdin CLI config: https://developer.crowdin.com/configuration-file/
+# Set CROWDIN_PROJECT_ID and CROWDIN_PERSONAL_TOKEN in the environment (or a local .env).
+
+project_id_env: CROWDIN_PROJECT_ID
+api_token_env: CROWDIN_PERSONAL_TOKEN
+
+# Source and translation paths are relative to the repo root.
+base_path: "."
+preserve_hierarchy: true
+
 files:
   - source: /content/en/**/*.mdx
     translation: /content/%two_letters_code%/**/%original_file_name%

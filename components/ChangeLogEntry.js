@@ -1,31 +1,26 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Markdown from '@/components/Markdown';
-import { cn, formatRelativeDate } from "@/lib/utils";
-import { IoStar } from 'react-icons/io5';
+import { cn } from "@/lib/utils";
+import { useRelativeDate } from '@/hooks/use-relative-date';
 
 const ChangeLogEntry = ({ entry }) => {
-  const [entryDate, setEntryDate] = useState('');
-  const [isClient, setIsClient] = useState(false);
+  // No `new Date()` fallback: it would differ between the build-time server
+  // render and the browser, which is the hydration mismatch useRelativeDate
+  // exists to avoid.
+  const dateString =
+    entry?.first_published_at || entry?.created_at || entry?.published_at || '';
+
+  // Hooks must run before the early return below (Rules of Hooks).
+  const displayDate = useRelativeDate(dateString);
 
   if (!entry) {
     console.log('⚠️ ChangeLogEntry: entry is undefined. Skipping');
     return null;
   }
 
-  const dateString = entry.first_published_at || entry.created_at || entry.published_at || new Date().toISOString();
-
   // Format date for hover tooltip (YYYY-MM-DD)
-  const hoverDate = new Date(dateString).toISOString().split('T')[0];
-
-  useEffect(() => {
-    // Mark as client-side and format date
-    setIsClient(true);
-    setEntryDate(formatRelativeDate(dateString));
-  }, [dateString]);
-
-  // Show fallback date format during SSR/hydration
-  const displayDate = isClient ? entryDate : hoverDate;
+  const hoverDate = dateString ? new Date(dateString).toISOString().split('T')[0] : '';
 
   return (
     <div
@@ -43,13 +38,8 @@ const ChangeLogEntry = ({ entry }) => {
           {displayDate}
         </time>
         {entry.bodyText && (
-          <div className="flex items-start gap-1 flex-1">
-            {entry.type === 'major' && (
-              <IoStar className="text-yellow-500 shrink-0 mt-[2px]" size={16} />
-            )}
-            <div className="prose prose-slate max-w-none text-sm flex-1">
-              <Markdown content={entry.bodyText} isProse={false} />
-            </div>
+          <div className="prose prose-slate max-w-none text-sm flex-1">
+            <Markdown content={entry.bodyText} isProse={false} />
           </div>
         )}
       </div>

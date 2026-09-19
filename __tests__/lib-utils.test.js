@@ -1,5 +1,11 @@
 import { describe, it, expect } from 'vitest'
-import { cn, formatRelativeDate, parseContentDateOnly, formatContentDate } from '../lib/utils'
+import {
+  cn,
+  formatRelativeDate,
+  parseContentDateOnly,
+  formatContentDate,
+  sentenceCaseCompactRelativePhrase,
+} from '../lib/utils'
 
 describe('cn', () => {
   it('merges class names', () => {
@@ -62,21 +68,29 @@ describe('formatRelativeDate', () => {
     expect(formatRelativeDate('')).toBe('')
   })
 
-  it('returns "Today" for today\'s date', () => {
+  it('returns locale-relative wording for today and yesterday with sentence case (en-US)', () => {
     const today = new Date()
-    expect(formatRelativeDate(today.toISOString())).toBe('Today')
-  })
-
-  it('returns "Yesterday" for yesterday\'s date', () => {
+    expect(formatRelativeDate(today.toISOString(), 'en-US')).toBe('Today')
     const yesterday = new Date()
     yesterday.setDate(yesterday.getDate() - 1)
-    expect(formatRelativeDate(yesterday.toISOString())).toBe('Yesterday')
+    expect(formatRelativeDate(yesterday.toISOString(), 'en-US')).toBe('Yesterday')
   })
 
-  it('returns "N days ago" for 2-7 days ago', () => {
+  it('returns "N days ago" for 2-7 days ago (en-US)', () => {
     const threeDaysAgo = new Date()
     threeDaysAgo.setDate(threeDaysAgo.getDate() - 3)
-    expect(formatRelativeDate(threeDaysAgo.toISOString())).toBe('3 days ago')
+    expect(formatRelativeDate(threeDaysAgo.toISOString(), 'en-US')).toBe('3 days ago')
+  })
+
+  it('uses Spanish relative phrases when dateLocale is es-MX', () => {
+    const threeDaysAgo = new Date()
+    threeDaysAgo.setDate(threeDaysAgo.getDate() - 3)
+    expect(formatRelativeDate(threeDaysAgo.toISOString(), 'es-MX')).toBe('hace 3 días')
+  })
+
+  it('sentence-cases Spanish "hoy" for today (es-MX)', () => {
+    const today = new Date()
+    expect(formatRelativeDate(today.toISOString(), 'es-MX')).toBe('Hoy')
   })
 
   it('returns formatted date for dates older than 7 days', () => {
@@ -92,5 +106,17 @@ describe('formatRelativeDate', () => {
     const result = formatRelativeDate(oldDate.toISOString())
     // Should include the year
     expect(result).toContain('2020')
+  })
+})
+
+describe('sentenceCaseCompactRelativePhrase', () => {
+  it('capitalizes single-word phrases', () => {
+    expect(sentenceCaseCompactRelativePhrase('today')).toBe('Today')
+    expect(sentenceCaseCompactRelativePhrase('yesterday')).toBe('Yesterday')
+  })
+
+  it('leaves multi-word phrases unchanged', () => {
+    expect(sentenceCaseCompactRelativePhrase('3 days ago')).toBe('3 days ago')
+    expect(sentenceCaseCompactRelativePhrase('hace 3 días')).toBe('hace 3 días')
   })
 })

@@ -46,6 +46,7 @@ const PROJECT_ID = process.env.CROWDIN_PROJECT_ID;
 const BASE_URL = "https://api.crowdin.com/api/v2";
 
 const DRY_RUN = process.argv.includes("--dry-run");
+const VERBOSE = process.argv.includes("--verbose");
 
 function parseBool(v, defaultVal) {
   if (v === undefined || v === "") return defaultVal;
@@ -116,23 +117,20 @@ async function getDefaultBranchId() {
   const names = list.map((b) => b.data?.name);
   for (const prefer of ["main", "master"]) {
     const idx = names.indexOf(prefer);
-    if (idx !== -1) return list[idx].data.id;
+    if (idx !== -1) return { id: list[idx].data.id, name: list[idx].data.name };
   }
-  return list[0].data.id;
+  const first = list[0].data;
+  return { id: first.id, name: first.name };
 }
 
-async function listAllProjectFiles() {
-  const branchId = await getDefaultBranchId();
+async function paginateFiles(query) {
   const files = [];
   let offset = 0;
   const limit = 500;
-
   while (true) {
-    let url = `/projects/${PROJECT_ID}/files?limit=${limit}&offset=${offset}`;
-    if (branchId) {
-      url += `&branchId=${branchId}&recursion=1`;
-    }
-    const data = await crowdinGet(url);
+    const data = await crowdinGet(
+      `/projects/${PROJECT_ID}/files?limit=${limit}&offset=${offset}${query}`
+    );
     for (const item of data.data || []) {
       const row = item.data;
       if (row.path && row.id) {
@@ -142,8 +140,115 @@ async function listAllProjectFiles() {
     if ((data.data || []).length < limit) break;
     offset += limit;
   }
-
   return files;
+}
+
+/**
+ * Merge branch-scoped (recursive) and project-level file lists. Crowdin paths may include a
+ * version-branch prefix (e.g. /main/content/...) while repo paths are content/en/...
+ */
+async function listAllProjectFiles() {
+  const branch = await getDefaultBranchId();
+  const byId = new Map();
+
+  function merge(rows) {
+    for (const row of rows) {
+      if (!byId.has(row.id)) {
+        byId.set(row.id, row);
+      }
+    }
+  }
+
+  if (branch) {
+    if (VERBOSE) {
+      console.log(
+        `${c.gray}Using Crowdin branch: ${c.white}${branch.name}${c.gray} (id ${branch.id})${c.reset}`
+      );
+    }
+    merge(await paginateFiles(`&branchId=${branch.id}&recursion=1`));
+  } else if (VERBOSE) {
+    console.log(`${c.gray}No Crowdin version branch — listing project files without branchId.${c.reset}`);
+  }
+
+  merge(await paginateFiles(""));
+
+  return [...byId.values()];
+}
+
+/**
+ * Match repo-relative path to a Crowdin file row. Tries exact path keys, then unique suffix match
+ * (handles /main/content/en/... vs content/en/...).
+ */
+function findCrowdinFile(repoPath, files) {
+  const want = normalizePath(repoPath).replace(/^\/+/, "");
+
+  const exactKeys = new Set([
+    normalizePath(repoPathToCrowdinPath(repoPath)),
+    normalizePath(`/${want}`),
+    normalizePath(want),
+  ]);
+
+  const byKey = new Map();
+  for (const f of files) {
+    const raw = f.path || f.name;
+    if (!raw) continue;
+    const p = normalizePath(raw);
+    const noLead = p.replace(/^\/+/, "");
+    byKey.set(p, f);
+    byKey.set(noLead, f);
+  }
+
+  for (const k of exactKeys) {
+    if (byKey.has(k)) {
+      return { file: byKey.get(k), how: "exact" };
+    }
+  }
+
+  const candidates = files.filter((f) => {
+    const p = normalizePath(f.path || f.name || "").replace(/^\/+/, "");
+    return p === want || p.endsWith(`/${want}`) || p === want;
+  });
+
+  if (candidates.length === 1) {
+    return { file: candidates[0], how: "suffix" };
+  }
+  if (candidates.length > 1) {
+    const exact = candidates.find(
+      (f) => normalizePath(f.path || "").replace(/^\/+/, "") === want
+    );
+    if (exact) {
+      return { file: exact, how: "suffix-exact" };
+    }
+    candidates.sort(
+      (a, b) =>
+        normalizePath(a.path || "").length - normalizePath(b.path || "").length
+    );
+    return { file: candidates[0], how: "suffix-shortest" };
+  }
+
+  return { file: null, how: null };
+}
+
+function logMissHints(repoPath, files) {
+  const base = repoPath.split("/").pop() || repoPath;
+  const needle = base.replace(/\.[^.]+$/, "");
+  const hits = files
+    .map((f) => normalizePath(f.path || ""))
+    .filter((p) => p.includes(base) || p.includes(needle))
+    .slice(0, 12);
+
+  console.log(`${c.gray}Hint: Crowdin may not have imported this file yet, or the path differs.${c.reset}`);
+  if (hits.length) {
+    console.log(`${c.gray}Crowdin paths mentioning this filename (${hits.length} shown):${c.reset}`);
+    for (const h of hits) {
+      console.log(`  ${c.dim}${h}${c.reset}`);
+    }
+  } else {
+    console.log(
+      `${c.gray}No Crowdin file paths contain "${base}". Total source files seen: ${c.bold}${files.length}${c.reset}${c.gray}.${c.reset}`
+    );
+  }
+  console.log();
 }
 
 /** Repo path like content/en/x.mdx -> Crowdin path /content/en/x.mdx */
@@ -224,21 +329,21 @@ async function run() {
 
   console.log(`${c.blue}Fetching${c.reset} Crowdin file list...`);
   const crowdinFiles = await listAllProjectFiles();
-  const byCrowdinPath = new Map();
-  for (const f of crowdinFiles) {
-    const path = f.path || f.name;
-    if (path) {
-      byCrowdinPath.set(normalizePath(path), f);
-    }
+  if (VERBOSE) {
+    console.log(`${c.gray}Source files in Crowdin (deduped): ${crowdinFiles.length}${c.reset}\n`);
   }
 
   const fileIds = [];
   const missing = [];
   for (const rp of repoPaths) {
-    const key = repoPathToCrowdinPath(rp);
-    const hit = byCrowdinPath.get(normalizePath(key));
-    if (hit && hit.id) {
-      fileIds.push(hit.id);
+    const { file, how } = findCrowdinFile(rp, crowdinFiles);
+    if (file && file.id) {
+      fileIds.push(file.id);
+      if (how && how !== "exact") {
+        console.log(
+          `${c.gray}Resolved ${rp} → ${file.path} (${how})${c.reset}`
+        );
+      }
     } else {
       missing.push(rp);
     }
@@ -248,8 +353,8 @@ async function run() {
     console.log(`${c.yellow}Warning: no Crowdin file id for:${c.reset}`);
     for (const m of missing) {
       console.log(`  ${m}`);
+      logMissHints(m, crowdinFiles);
     }
-    console.log();
   }
 
   if (fileIds.length === 0) {

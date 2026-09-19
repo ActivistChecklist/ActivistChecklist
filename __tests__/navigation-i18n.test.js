@@ -1,5 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { translateMainNavigation } from '../lib/navigation-i18n';
+import {
+  createIntlTranslator,
+  getTranslatedNavItemFields,
+  translateMainNavigation,
+} from '../lib/navigation-i18n';
 import { navigationConfig } from '../config/navigation';
 
 describe('navigation i18n translation mapping', () => {
@@ -48,5 +52,41 @@ describe('navigation i18n translation mapping', () => {
 
     expect(home.label).toBe('Home');
     expect(resources.label).toBe('Resources');
+  });
+});
+
+describe('getTranslatedNavItemFields', () => {
+  it('maps kebab-case nav keys to the same messages as the header (police-door-poster)', () => {
+    const translateText = (key, fallback) => {
+      if (key === 'navItems.policeDoorPoster.title') return 'Póster policía';
+      return fallback;
+    };
+    const out = getTranslatedNavItemFields(
+      'police-door-poster',
+      { title: 'Police poster', description: 'Desc' },
+      translateText
+    );
+    expect(out.title).toBe('Póster policía');
+    expect(out.description).toBe('Desc');
+  });
+
+  it('returns fallbacks unchanged when the nav key has no message map entry', () => {
+    const translateText = (_key, fallback) => fallback;
+    const out = getTranslatedNavItemFields(
+      'unknown-guide',
+      { title: 'T', description: 'D' },
+      translateText
+    );
+    expect(out.title).toBe('T');
+    expect(out.description).toBe('D');
+  });
+});
+
+describe('createIntlTranslator', () => {
+  it('returns fallback when t throws', () => {
+    const translateText = createIntlTranslator(() => {
+      throw new Error('missing');
+    });
+    expect(translateText('nav.home', 'Home')).toBe('Home');
   });
 });

@@ -73,7 +73,7 @@ export function linkNodeModulesFromMain(repoRoot, worktreePath) {
   const dest = path.join(worktreePath, 'node_modules');
   if (!fs.existsSync(src)) {
     throw new Error(
-      'Repo root has no node_modules — run `yarn install` in the main clone first.'
+      'Repo root has no node_modules — run `pnpm install` in the main clone first.'
     );
   }
   if (fs.existsSync(dest)) {
@@ -119,9 +119,9 @@ export function moveDirPreferRename(src, dest) {
   }
 }
 
-/** Env for builds in a worktree: no URL prompts; ensure postbuild runs buildbackup (not skipped when CI is set). */
+/** Env for builds in a worktree: ensure postbuild runs buildbackup (not skipped when CI is set). */
 export function snapshotBuildEnv() {
-  const env = { ...process.env, CHECKBUILD_URL_APPROVAL: 'allow' };
+  const env = { ...process.env };
   delete env.CI;
   return env;
 }

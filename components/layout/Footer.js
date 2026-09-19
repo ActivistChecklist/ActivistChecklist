@@ -4,18 +4,13 @@ import { DarkModeToggle } from "@/components/layout/DarkModeToggle"
 import { CompactNewsletterSubscribe } from "@/components/NewsletterSubscribe"
 import { footerConfig } from '@/config/navigation'
 import { useTranslations } from 'next-intl'
-import { translateNavigationItem } from '@/lib/navigation-i18n'
+import { createIntlTranslator, translateNavigationItem } from '@/lib/navigation-i18n'
+import { SiTorbrowser } from 'react-icons/si'
 
 export function Footer() {
   const t = useTranslations();
 
-  const translateText = (key, fallback) => {
-    try {
-      return t(key);
-    } catch {
-      return fallback;
-    }
-  };
+  const translateText = createIntlTranslator(t);
 
   const sectionTitleKeys = {
     Navigation: 'footer.sections.navigation',
@@ -37,7 +32,7 @@ export function Footer() {
   }));
 
   return (
-    <footer className="print:hidden bg-gray-900 text-gray-400">
+    <footer className="not-annotatable print:hidden bg-gray-900 text-gray-400">
       <div className="w-full bg-background" style={{ height: '80px', clipPath: 'polygon(0 0, 100% 0, 100% 20%, 0 100%)' }} />
       <div className="container max-w-6xl mx-auto px-4 md:px-8 pt-12 pb-12">
 
@@ -96,12 +91,20 @@ export function Footer() {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-2">
             <DarkModeToggle />
             <div className="flex flex-wrap items-center gap-4">
+              <Link
+                href="/onion/"
+                aria-label={t('footer.onion.ariaLabel')}
+                className="flex items-center gap-2 hover:text-white transition-colors"
+              >
+                <SiTorbrowser className="h-5 w-5" aria-hidden="true" />
+                <span>{t('footer.onion.label')}</span>
+              </Link>
               {footerConfig.socialLinks?.map((social) => (
                 <a
                   key={social.key}
                   href={social.href}
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel={['noopener', 'noreferrer', social.rel].filter(Boolean).join(' ')}
                   aria-label={
                     socialAriaLabelKeys[social.key]
                       ? translateText(socialAriaLabelKeys[social.key], social.ariaLabel)

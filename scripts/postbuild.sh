@@ -8,20 +8,28 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 # shellcheck source=scripts/lib/build-cli.sh
 source "${SCRIPT_DIR}/lib/build-cli.sh"
 
-build_section "🗺️" "Post-build — sitemap & RSS"
-build_detail "next-sitemap + yarn rss"
+build_section "🗺️" "Post-build — sitemap, RSS, llms.txt"
+build_detail "next-sitemap + pnpm rss + build-llms-txt"
 next-sitemap
-yarn rss
+pnpm rss
+node scripts/build-llms-txt.cjs
 build_section_done 0 \
   "Sitemap generated (next-sitemap)" \
-  "RSS feeds written under out/rss/"
+  "RSS feeds written under out/rss/" \
+  "llms.txt written for en + es"
+
+build_section "🔍" "Post-build — SEO audit"
+build_detail "Checks seoDescription / seoTitle / answerCapsule / FAQ coverage"
+node scripts/seo-audit.cjs || true
+build_section_done 0 "SEO audit complete (non-blocking)"
 
 if [ "$BUILD_MODE" = "static" ]; then
   build_section "📦" "Post-build — static export"
   build_detail "Search index, Apache rules, English root mirror"
-  yarn index
+  pnpm index
 
   cp public/.htaccess out/.htaccess
+  node scripts/inject-htaccess-redirects.cjs out/.htaccess
 
   # Copy English content to root so bare URLs (e.g. /about/) work on any static server.
   # Spanish stays at /es/. The .htaccess rewrite is a fallback for Apache.
@@ -45,5 +53,5 @@ if [ -n "$CI" ]; then
   build_detail "CI detected — skipping local out/ backup"
   build_section_done 0 "Backup skipped (CI environment)"
 else
-  yarn buildbackup
+  pnpm buildbackup
 fi

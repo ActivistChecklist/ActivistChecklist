@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import Layout from '@/components/layout/Layout';
+import PageNotices from '@/components/layout/PageNotices';
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { IoLogoGithub, IoKeyOutline } from "react-icons/io5";
 import ContactForm from '@/components/forms/ContactForm';
@@ -19,8 +20,11 @@ export default async function ContactPage({ params }) {
     <Layout>
       <div>
         <div>
+          <h1 className="page-title">{t('contact.title')}</h1>
+
+          <PageNotices />
+
           <section className="prose mb-12">
-            <h1 className="page-title">{t('contact.title')}</h1>
             <p>
               {t('contact.intro')}
             </p>

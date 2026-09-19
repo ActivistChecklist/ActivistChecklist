@@ -1,12 +1,6 @@
 'use client';
-import React, { useState, useEffect, useRef } from 'react';
-import { 
-  IoSearch, 
-  IoMegaphone, 
-  IoChatbubbleEllipses, 
-  IoLocate,
-  IoChevronForward 
-} from "react-icons/io5";
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { IoSearch, IoChevronForward } from "react-icons/io5";
 import {
   Dialog,
   DialogContent,
@@ -21,19 +15,14 @@ import { cn } from '@/lib/utils';
 import Link from '@/components/Link';
 import { SECURITY_CHECKLISTS } from '@/config/navigation';
 import { useAnalytics } from '@/hooks/use-analytics';
-
-const POPULAR_SEARCHES = [
-  'phone security protest',
-  'signal secure messaging',
-  'location tracking',
-  'passcode security',
-  'high risk protection',
-];
+import { useTranslations } from 'next-intl';
+import { createIntlTranslator, getTranslatedNavItemFields } from '@/lib/navigation-i18n';
 
 const MAX_SUB_RESULTS = 3; // Maximum number of sub-results to show per result
 const MAX_CURRENT_PAGE_SUB_RESULTS = 6; // Maximum sub-results for current page
 
 const TOP_GUIDES = SECURITY_CHECKLISTS.items.slice(0, 4);
+const SUGGESTION_COUNT = 5;
 
 const SearchSuggestion = ({ query, onClick }) => (
   <button 
@@ -61,42 +50,6 @@ const GuideCard = ({ href, icon: Icon, title, description, onClose }) => (
   </Link>
 );
 
-const InitialContent = ({ onSearch, onClose }) => (
-  <div className="py-8 px-2">
-    <div className="max-w-2xl mx-auto space-y-6">
-      <div>
-        <h3 className="text-sm font-medium text-muted-foreground mb-3">POPULAR SEARCHES</h3>
-        <div className="flex flex-wrap gap-2">
-          {POPULAR_SEARCHES.map((query, index) => (
-            <SearchSuggestion 
-              key={index}
-              query={query}
-              onClick={onSearch}
-            />
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <h3 className="text-sm font-medium text-muted-foreground mb-3">TOP GUIDES</h3>
-        <div className="grid grid-cols-1 gap-2">
-          {TOP_GUIDES.map((guide, index) => (
-            <GuideCard 
-              key={index}
-              {...guide}
-              onClose={onClose}
-            />
-          ))}
-        </div>
-      </div>
-
-      <div className="text-xs text-center text-muted-foreground">
-        Press <kbd className="px-1.5 py-0.5 text-[10px] font-mono rounded border bg-muted">↵</kbd> to search
-      </div>
-    </div>
-  </div>
-);
-
 const Search = ({ variant = 'searchbar', className, ...props }) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
@@ -105,7 +58,30 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
   const [open, setOpen] = useState(false);
   const { addDebugData } = useDebug();
   const { trackEvent } = useAnalytics();
-  
+  const t = useTranslations();
+  const translateText = useMemo(() => createIntlTranslator(t), [t]);
+
+  const popularQueries = useMemo(
+    () =>
+      Array.from({ length: SUGGESTION_COUNT }, (_, i) =>
+        t(`search.suggestion${i}`)
+      ),
+    [t]
+  );
+
+  const topGuidesForUi = useMemo(
+    () =>
+      TOP_GUIDES.map((guide) => {
+        const fields = getTranslatedNavItemFields(
+          guide.key,
+          { title: guide.title, description: guide.description },
+          translateText
+        );
+        return { ...guide, title: fields.title, description: fields.description };
+      }),
+    [translateText]
+  );
+
   // Refs for tracking search queries
   const searchTrackingTimeoutRef = useRef(null);
   const lastTrackedQueryRef = useRef('');
@@ -295,7 +271,7 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
             <Input
               type="search"
               readOnly
-              placeholder="Search..."
+              placeholder={t('search.placeholder')}
               onClick={() => setOpen(true)}
               className="pl-10 cursor-pointer"
             />
@@ -314,9 +290,9 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
 
       <DialogContent className={cn("sm:max-w-3xl h-[80vh] flex flex-col p-0 gap-0")} {...props}>
         <div className="p-6 pb-4 border-b pr-14">
-          <DialogTitle className="sr-only">Search Content</DialogTitle>
+          <DialogTitle className="sr-only">{t('search.dialogTitle')}</DialogTitle>
           <DialogDescription className="sr-only">
-            Search through all content on the site
+            {t('search.dialogDescription')}
           </DialogDescription>
           <div className="relative">
             <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
@@ -326,7 +302,7 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
               type="search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search..."
+              placeholder={t('search.placeholder')}
               autoFocus
               className="pl-10"
             />
@@ -337,16 +313,58 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
           {/* Loading State */}
           {loading && (
             <div className="text-center text-muted-foreground">
-              Searching...
+              {t('search.searching')}
             </div>
           )}
 
           {/* Initial State - show when no query */}
           {!loading && !query && (
-            <InitialContent 
-              onSearch={setQuery}
-              onClose={() => setOpen(false)}
-            />
+            <div className="py-8 px-2">
+              <div className="max-w-2xl mx-auto space-y-6">
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground mb-3">
+                    {t('search.popularHeading')}
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {popularQueries.map((q, index) => (
+                      <SearchSuggestion
+                        key={index}
+                        query={q}
+                        onClick={setQuery}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground mb-3">
+                    {t('search.topGuidesHeading')}
+                  </h3>
+                  <div className="grid grid-cols-1 gap-2">
+                    {topGuidesForUi.map((guide) => (
+                      <GuideCard
+                        key={guide.key}
+                        href={guide.href}
+                        icon={guide.icon}
+                        title={guide.title}
+                        description={guide.description}
+                        onClose={() => setOpen(false)}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                <div className="text-xs text-center text-muted-foreground">
+                  {t.rich('search.pressEnter', {
+                    kbd: (chunks) => (
+                      <kbd className="px-1.5 py-0.5 text-[10px] font-mono rounded border bg-muted">
+                        {chunks}
+                      </kbd>
+                    ),
+                  })}
+                </div>
+              </div>
+            </div>
           )}
 
           {/* Results */}
@@ -361,7 +379,7 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
                     onClick={() => setOpen(false)}
                   >
                     <div className="text-lg font-semibold text-primary group-hover:underline">
-                      {result.meta?.title || 'Untitled'}
+                      {result.meta?.title || t('search.untitled')}
                     </div>
                     <div 
                       className="mt-2 text-muted-foreground"
@@ -399,7 +417,7 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
           {/* No Results */}
           {!loading && query && results.length === 0 && (
             <div className="text-center text-muted-foreground">
-              No results found for "{query}"
+              {t('search.noResults', { query })}
             </div>
           )}
         </div>

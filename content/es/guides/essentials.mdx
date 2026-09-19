@@ -1,8 +1,12 @@
 ---
 title: Fundamentos de seguridad
+seoTitle: Fundamentos de seguridad digital para activistas (2026)
+seoDescription: Asegurar tu teléfono protege a toda tu comunidad, no solo a ti. Guías fáciles paso a paso para tu teléfono, tu computadora, Signal, el navegador y tus cuentas.
+answerCapsule: |
+  Los pasos que más protegen a activistas: usa Signal para mensajería, desactiva el uso de ubicación en las apps que no la necesitan, cámbiate a un navegador enfocado en la privacidad como Brave y a un buscador como DuckDuckGo, y pon un passcode fuerte en el teléfono. Estos cubren los mayores riesgos. El resto de la lista es para quienes están listes para ir más allá.
 estimatedTime: 45 minutos
 excerpt: |
-  Lo esencial que toda persona debería hacer para protegerse de la vigilancia y los atacantes.
+  Lo esencial que todes deberían hacer para protegerse de la vigilancia y de atacantes.
 relatedGuides:
   - protest
   - signal
@@ -10,32 +14,47 @@ firstPublished: 2024-12-07
 lastUpdated: 2026-01-29
 ---
 
-Cada clic, mensaje y señal de ubicación crea un rastro digital que puede usarse en contra de activistas y organizadores. Las autoridades le piden datos a empresas tecnológicas regularmente para identificar y vigilar a personas que trabajan por el cambio social.
+Cada clic, mensaje y señal de ubicación crea un rastro digital que puede usarse contra activistas y organizadores. Los cops le exigen datos a las empresas tecnológicas todo el tiempo para identificar y vigilar a quienes trabajan por el cambio social.
 
-**Esta guía te ayuda a minimizar tu rastro digital.** Estos pasos no te harán invisible, pero harán que sea mucho más difícil para las autoridades:
+**Esta guía te ayuda a reducir tu rastro digital.** Estos pasos no te van a hacer invisible, pero sí van a hacer mucho más difícil que las autoridades puedan:
 
 * Rastrear tu ubicación y tus patrones de movimiento
-* Monitorear tus comunicaciones y discusiones políticas
+* Vigilar tus comunicaciones y discusiones políticas
 * Mapear tus relaciones y redes
-* Crear perfiles de tus actividades y asociaciones
+* Armar perfiles de tus actividades y vínculos
 
-<Section title="Protecciones básicas" slug="baseline">
+<Alert type="info">
+  **Es más fácil en grupo.** La mayoría de la gente piensa hacer estos pasos algún día y nunca los hace. Piensa en hacer esta lista con amigues en una [security party](/party/): 90 minutos, algo para picar y avances reales que hacen más segura a toda tu comunidad.
+</Alert>
+
+<Section title="Empieza aquí" slug="get-started">
   <RiskLevel level="everyone" mode="default" />
 
+  Estos cuatro pasos toman menos de 30 minutos y te dan las mayores mejoras de privacidad al instante. Empieza por aquí antes que nada.
+
   <ChecklistItemGroup>
+    <ChecklistItem slug="ad-id" />
+
+    <ChecklistItem slug="location" />
+
     <ChecklistItem slug="signal" />
 
     <ChecklistItem slug="signal-disappearing" />
 
     <ChecklistItem slug="browser" />
 
-    <ChecklistItem slug="updates" />
-
     <ChecklistItem slug="search" />
 
     <ChecklistItem slug="maps" />
+  </ChecklistItemGroup>
+</Section>
 
-    <ChecklistItem slug="location" />
+<Section title="Protecciones básicas" slug="baseline">
+  <RiskLevel level="everyone" mode="default" />
+
+  <ChecklistItemGroup>
+
+    <ChecklistItem slug="updates" />
 
     <ChecklistItem slug="doxxing" />
 
@@ -46,8 +65,6 @@ Cada clic, mensaje y señal de ubicación crea un rastro digital que puede usars
     <ChecklistItem slug="passcode" />
 
     <ChecklistItem slug="proton-docs-mail" />
-
-    <ChecklistItem slug="laptop-encryption" />
   </ChecklistItemGroup>
 </Section>
 
@@ -55,9 +72,7 @@ Cada clic, mensaje y señal de ubicación crea un rastro digital que puede usars
   <RiskLevel level="medium" mode="default" />
 
   <ChecklistItemGroup>
-    <ChecklistItem slug="ad-id" />
-
-    <ChecklistItem slug="vpn" />
+    <ChecklistItem slug="laptop-encryption" />
 
     <ChecklistItem slug="lockdown" />
 
@@ -72,3 +87,11 @@ Cada clic, mensaje y señal de ubicación crea un rastro digital que puede usars
     <ChecklistItem slug="sso" />
   </ChecklistItemGroup>
 </Section>
+
+<FAQ>
+  <FAQItem question="¿Cuánto tiempo toma realmente la lista de fundamentos?" answer="Los primeros elementos toman unos 30 minutos y te dan las mayores mejoras de privacidad. La sección básica completa suele tomar de 45 a 60 minutos. La sección avanzada agrega una o dos horas más según qué elementos hagas. La mayoría de quienes intentan hacerlo en solitario nunca terminan, por eso sugerimos hacerlo con amigues en una security party." />
+  <FAQItem question="¿Necesito crear cuentas nuevas para hacer todo esto?" answer="Solo una: una cuenta de Proton Mail para correo y documentos con cifrado de extremo a extremo. Todo lo demás usa apps y ajustes del teléfono que ya tienes. No necesitas cuentas nuevas de redes sociales, un número de teléfono nuevo, ni hardware especial." />
+  <FAQItem question="¿Qué es mejor para activistas, iPhone o Android?" answer="Para la mayoría de la gente, el iPhone es la opción más segura por defecto. Apple lanza actualizaciones de seguridad más rápido y por más tiempo, y iOS tiene un mejor aislamiento entre apps. Quienes tienen más experiencia pueden obtener más privacidad y control con un Google Pixel corriendo GrapheneOS, pero toma tiempo configurarlo y acostumbrarse a las limitaciones de apps." />
+  <FAQItem question="¿Qué hago si no puedo hacer todo esto ahora mismo?" answer="Haz la primera sección. Los cinco elementos ahí cubren los mayores riesgos: usar Signal para mensajes, desactivar la ubicación en apps que no la necesitan, usar un navegador y buscador enfocados en la privacidad, y poner un passcode fuerte. Con solo hacer eso ya obtienes la mayor parte de la protección, y puedes volver por el resto después." />
+  <FAQItem question="¿Algo de esto detendrá al FBI o la NSA si soy un blanco específico?" answer="No, y cualquier guía que diga lo contrario te está engañando. Un actor estatal con muchos recursos que decide vigilar a una persona en específico tiene herramientas que la mayoría de las defensas no puede frenar. Lo que esta lista sí hace es reducir la vigilancia masiva, hacer que las órdenes judiciales devuelvan menos información útil, ralentizar los análisis forenses de teléfonos incautados y proteger a la red de personas conectadas contigo." />
+</FAQ>

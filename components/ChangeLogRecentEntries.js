@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import ChangeLogEntry from './ChangeLogEntry';
+import ChangeLogTimelineMarker from './ChangeLogTimelineMarker';
 import { cn } from "@/lib/utils";
 import { useTranslations } from 'next-intl';
 
@@ -22,11 +23,10 @@ const ChangeLogRecentEntries = ({ entries = [] }) => {
         {entries.map((entry, index) => (
           <div key={entry.slug} className="relative">
             <div className="py-3 pl-12 text-sm text-muted-foreground relative">
-              {/* Timeline dot */}
-              <div className="absolute left-6 top-[18px] w-2 h-2 bg-primary rounded-full -translate-x-1/2"></div>
+              <ChangeLogTimelineMarker type={entry.type} />
               {/* Timeline line */}
               {index < entries.length - 1 && (
-                <div className="absolute left-6 top-[26px] w-px bg-border h-full -translate-x-1/2"></div>
+                <div className="absolute z-0 left-6 top-[26px] w-px bg-border h-full -translate-x-1/2"></div>
               )}
               <ChangeLogEntry entry={entry} />
             </div>

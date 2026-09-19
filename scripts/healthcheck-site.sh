@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 #
-# Cron-driven health check for static site + API.
+# Scheduled health check for the static site.
 # If all checks pass, ping Healthchecks.io.
+#
+# Deliberately does NOT probe the API: an API outage used to fail this check and
+# fire a misleading "main site down" alert. scripts/healthcheck-api.sh owns the
+# API and probes it over HTTP.
 #
 # Setup example:
 #   export HEALTHCHECK_PING_URL="https://hc-ping.com/your-uuid"
@@ -122,11 +126,6 @@ fi
 # News index should resolve.
 if ! curl -fsS --max-time 15 "$SITE_URL/news/" >/dev/null; then
   errors+=("news: curl failed ($SITE_URL/news/)")
-fi
-
-# API liveness endpoint should resolve.
-if ! curl -fsS --max-time 15 "$SITE_URL/api-server/hello" >/dev/null; then
-  errors+=("api: curl failed ($SITE_URL/api-server/hello)")
 fi
 
 if (( ${#errors[@]} > 0 )); then

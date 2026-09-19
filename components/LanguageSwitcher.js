@@ -10,7 +10,6 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { LOCALES } from '@/lib/i18n-config';
-import { isTranslationUiVisible } from '@/utils/core';
 import { usePathname, useRouter } from '@/i18n/navigation';
 
 export default function LanguageSwitcher() {
@@ -20,7 +19,7 @@ export default function LanguageSwitcher() {
   const t = useTranslations();
 
   const availableLocales = Object.keys(LOCALES);
-  if (!isTranslationUiVisible || availableLocales.length <= 1) return null;
+  if (availableLocales.length <= 1) return null;
 
   /**
    * Must use next-intl's router.replace(..., { locale }) so NEXT_LOCALE is updated
@@ -35,7 +34,7 @@ export default function LanguageSwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" aria-label={t('languageSwitcher.ariaLabel')}>
+        <Button variant="ghost" size="icon" className="h-9 w-9 hover:bg-muted" aria-label={t('languageSwitcher.ariaLabel')}>
           <Globe className="h-5 w-5" />
         </Button>
       </DropdownMenuTrigger>

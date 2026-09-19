@@ -23,7 +23,7 @@ export const HowTo = ({ title, children }) => {
           "rounded-md",
         )}
       >
-        <div className="py-3 relative">
+        <div className="py-1 relative">
           {title && (
             <>
               <Settings className={cn(

@@ -86,7 +86,7 @@ export const navigationConfig = {
     if (navData.menus[key]) return resolveMenu(key)
     return { ...resolveItem(key), type: "link" }
   }),
-  socialLinks: [],
+  socialLinks: [resolveSocialLink('bluesky')],
 }
 
 export const footerConfig = {

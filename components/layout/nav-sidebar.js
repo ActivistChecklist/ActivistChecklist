@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/sidebar"
 import { navigationConfig, findActiveSection, isSubItemActive } from "@/config/navigation"
 import { cn } from "@/lib/utils"
-import Link from "next/link"
+import Link from "@/components/Link"
 
 
 export function NavSidebar() {

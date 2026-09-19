@@ -31,8 +31,7 @@ package-lock.json
 
 # debug
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+pnpm-debug.log*
 logs/
 
 # local env files
@@ -50,14 +49,17 @@ public/pagefind
 **/playground/***
 .image-cache.json
 
-# URL scanner
-.approved-urls.json
+# Server-side deploy state
+.deploy-lock.sha256
 
 # Backups
 buildbackups/
 
 # Generated OG share images
 public/images/og/
+
+# Auto-generated endoflife.date snapshot (regenerated daily by scripts/fetch-endoflife-snapshot.mjs)
+public/data/eol-snapshot.json
 
 # Metadata cleaner folder
 metadata-cleaner/
@@ -71,6 +73,9 @@ public/webhooks/deploy-webhook.error.log
 
 # Deploy lock file (flock in scripts/build-deploy.sh)
 .build-deploy.lock
+
+# Set by a webhook delivery that arrived mid-build; the running deploy rebuilds for it
+.build-deploy.pending
 
 # GitHub webhook deploy log (default path written by public/webhooks/deploy.php)
 .deploy-webhook.log

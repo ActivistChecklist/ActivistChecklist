@@ -3,14 +3,6 @@ export const isDev = process.env.NODE_ENV === 'development';
 export const isStaticBuild = process.env.BUILD_MODE === 'static';
 export const isVercel = process.env.VERCEL === 'true';
 
-/**
- * Language switcher + browser-language banner: off in production builds unless explicitly enabled.
- * Set NEXT_PUBLIC_SHOW_TRANSLATION_UI=true when non-English locales are ready to surface in the UI.
- */
-export const isTranslationUiVisible =
-  process.env.NODE_ENV !== 'production' ||
-  process.env.NEXT_PUBLIC_SHOW_TRANSLATION_UI === 'true';
-
 export const getRevalidate = () => {
   // 0 will revalidate on every request
   return !isStaticBuild ? { revalidate: 0 } : {};
