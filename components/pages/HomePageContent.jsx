@@ -91,7 +91,7 @@ export default function HomePageContent({ children, changelogEntries = [], lates
                   </div>
                 )}
               </div>
-              <div className="absolute bottom-0 left-0 right-0 bg-background" style={{ height: '80px', clipPath: 'polygon(0 100%, 100% 20%, 100% 100%)' }} />
+              <div className="diagonal-edge diagonal-edge-below absolute bottom-0 left-0 bg-background" />
             </header>
           </div>
 
