@@ -12,10 +12,25 @@
  * Usage:
  *   pnpm healthcheck-canary
  *
- * Example cron (run every Monday at 14:00 UTC). The two --env-file-if-exists
- * flags mean the same line works on the server (.env.production) and in dev
- * (.env), and cron does not need nvm/pnpm on PATH:
- *   0 14 * * 1 cd /path/to/repo && /path/to/node --env-file-if-exists=.env --env-file-if-exists=.env.production scripts/healthcheck-canary.mjs >> /path/to/logs/healthcheck-canary.log 2>&1
+ * The two --env-file-if-exists flags (see the healthcheck-canary package script)
+ * mean the same command works on the server (.env.production) and in dev (.env).
+ *
+ * Scheduling: run it weekly. May First no longer honours user crontabs on these
+ * hosts, so the job is defined in the control panel, which generates
+ * ~/.config/systemd/user/red-item-<id>.{service,timer}. Schedule it as:
+ *   /path/to/repo/scripts/run-with-repo-node.sh run healthcheck-canary
+ *
+ * IMPORTANT (systemd): the control panel pastes the command straight into
+ * ExecStart, which is NOT a shell - it execs argv[0] directly. A crontab-style
+ * `cd /path/to/repo && node ...` therefore fails instantly with 203/EXEC,
+ * looking for an executable named `cd`; `&&`, `;`, globs and `>>` redirects are
+ * equally dead. Always schedule a single script that cds itself, which is what
+ * run-with-repo-node.sh does (it also bootstraps nvm, absent from the unit PATH).
+ * This exact mistake silently broke this check for two weeks in Sept 2026 - the
+ * timer fired on schedule and the job failed before reaching any code here, so
+ * the only symptom was healthchecks.io going quiet. Verify with:
+ *   systemctl --user list-timers
+ *   journalctl --user -u red-item-<id>.service
  */
 
 import { readFile } from 'node:fs/promises';
