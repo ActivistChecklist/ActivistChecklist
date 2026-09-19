@@ -12,7 +12,7 @@
 # pnpm-workspace.yaml:
 #
 #   - the parent's range already allows the fix, the lockfile is just stuck
-#     → `pnpm update --depth Infinity` moves it → opens a PR
+#     → `pnpm update <pkg>` moves it → opens a PR
 #   - a parent's range CAPS us below the fix
 #     → needs an override with a hand-written "delete it when" annotation
 #     → opens an issue, because that annotation is a judgment call
@@ -112,7 +112,17 @@ jobs:
       # Deliberately NOT `pnpm audit --fix`: its "update" method runs a broad
       # update and rewrites ranges in package.json (verified 2026-09-03 --
       # it bumped satori while fixing zero vulnerabilities). `pnpm update
-      # --depth Infinity <pkg>` touches only the named transitive entries.
+      # <pkg>` leaves package.json alone, which is the property we need.
+      #
+      # No `--depth Infinity` any more. pnpm 12's Rust CLI parses --depth as an
+      # integer and dies on "Infinity"; unlimited depth is now the default, so
+      # the flag is simply gone. Note the behaviour underneath it also changed:
+      # pnpm 11 moved only the named entries, while pnpm 12 re-resolves the
+      # whole graph and carries along any other entry its parent's range
+      # already allowed. Verified 2026-09-19 on 12.4.1 -- `pnpm update` with a
+      # package name that is not in the tree at all still bumped @keystar/ui
+      # 0.9.6 -> 0.10.0. So expect a wider lockfile diff than the named
+      # packages, and read it before merging; the PR body says the same.
       #
       # ONLY names we do not declare ourselves. `pnpm update` resolves a name
       # to the DIRECT dependency when one exists, and for a direct dependency
@@ -120,10 +130,11 @@ jobs:
       # assert below and the run dies without ever reaching the transitive
       # copy it was aiming at. That is what broke run #16 (2026-09-19):
       # next is vulnerable at 15.5.23 under @activistchecklist/react-review-
-      # comments while we carry ^16.3.3 directly. Verified on pnpm 11.4.0:
+      # comments while we carry ^16.3.3 directly. Verified on pnpm 11.4.0, and
+      # again on 12.4.1 (2026-09-19) -- the collision survived the upgrade:
       #
-      #   pnpm update --depth Infinity next      → package.json ^16.3.3 → ^16.3.5
-      #   pnpm update --depth Infinity 'next@15' → package.json ^16.3.3 → ^15.5.25
+      #   pnpm update next      → package.json ^16.3.3 → ^16.3.5
+      #   pnpm update 'next@15' → package.json ^16.3.3 → ^15.5.25
       #
       # The second is a DOWNGRADE of the direct dependency. No pnpm spec
       # reaches only the transitive copy, so colliding names skip the nudge
@@ -136,7 +147,7 @@ jobs:
           echo "Updating: $NUDGEABLE"
           # Word splitting is deliberate here: NUDGEABLE is a package list.
           # shellcheck disable=SC2086
-          pnpm update --depth Infinity $NUDGEABLE
+          pnpm update $NUDGEABLE
 
       - name: Report names that collide with a direct dependency
         if: steps.audit.outputs.count != '0' && steps.audit.outputs.collisions != ''
@@ -207,11 +218,11 @@ jobs:
           body: |
             Dependabot opened alerts for these packages but could not PR a fix: they are transitive-only, and its npm updater bumps the *parent* rather than the lockfile entry.
 
-            Their parents' ranges already allowed the patched versions — the lockfile was simply stuck, because pnpm never re-resolves an existing entry on a plain install. `pnpm update --depth Infinity ${{ steps.audit.outputs.nudgeable }}` moved them. No override needed, and `package.json` is untouched.
+            Their parents' ranges already allowed the patched versions — the lockfile was simply stuck, because pnpm never re-resolves an existing entry on a plain install. `pnpm update ${{ steps.audit.outputs.nudgeable }}` moved them. No override needed, and `package.json` is untouched.
 
             Cleared ${{ steps.audit.outputs.count }} advisor(y/ies). `pnpm audit` is clean, unit tests pass, and `pnpm buildstatic` succeeds on this branch.
 
-            Worth a skim of the lockfile diff anyway: a transitive bump can pull in a new major further down the tree.
+            Worth a skim of the lockfile diff anyway, and expect it to be wider than the packages named above: pnpm 12 re-resolves the whole graph on an update, so unrelated entries their parents' ranges already allowed come along too. A transitive bump can also pull in a new major further down the tree.
 
             *Opened automatically by `.github/workflows/security-autofix.yml`. See the overrides block in `pnpm-workspace.yaml` for why this exists.*
           branch: security/lockfile-autofix
@@ -285,7 +296,7 @@ jobs:
                   '## How to resolve',
                   '',
                   '```bash',
-                  `pnpm update --depth Infinity ${process.env.PACKAGES}`,
+                  `pnpm update ${process.env.PACKAGES}`,
                   'pnpm test && pnpm buildstatic',
                   '```',
                   '',
