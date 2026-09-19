@@ -8,13 +8,19 @@
 #
 # There is no `dependabot_alert` workflow trigger, so this polls on a schedule.
 #
-# Two outcomes, matching the two cases documented in pnpm-workspace.yaml:
+# Three outcomes. The first two match the two cases documented in
+# pnpm-workspace.yaml:
 #
 #   - the parent's range already allows the fix, the lockfile is just stuck
 #     → `pnpm update --depth Infinity` moves it → opens a PR
 #   - a parent's range CAPS us below the fix
 #     → needs an override with a hand-written "delete it when" annotation
 #     → opens an issue, because that annotation is a judgment call
+#   - the vulnerable copy is transitive but shares its NAME with a direct
+#     dependency (we carry next@16 directly and next@15 under
+#     @activistchecklist/react-review-comments)
+#     → the nudge cannot express that update, so it is skipped and this
+#       opens an issue. See the Nudge step for the verification.
 #
 # Runs daily at 07:00 UTC, after Dependabot's own daily scan. Manual
 # `workflow_dispatch` included. Note that GitHub disables scheduled workflows
@@ -46,7 +52,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v6.0.10
+        uses: pnpm/action-setup@v6.1.0
 
       - name: Setup Node
         uses: actions/setup-node@v7
@@ -71,12 +77,28 @@ jobs:
               // pnpm emits nothing parseable when the registry is unreachable.
               // Treat that as "nothing to do" rather than inventing an update.
               console.log('packages=');
+              console.log('nudgeable=');
+              console.log('collisions=');
               console.log('count=0');
               process.exit(0);
             }
             const advisories = Object.values(report.advisories || {});
             const packages = [...new Set(advisories.map((a) => a.module_name))].sort();
+
+            // A name we declare ourselves is not nudgeable -- see the Nudge step.
+            const manifest = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            const direct = new Set([
+              ...Object.keys(manifest.dependencies || {}),
+              ...Object.keys(manifest.devDependencies || {}),
+              ...Object.keys(manifest.optionalDependencies || {}),
+              ...Object.keys(manifest.peerDependencies || {}),
+            ]);
+            const collisions = packages.filter((p) => direct.has(p));
+            const nudgeable = packages.filter((p) => !direct.has(p));
+
             console.log(`packages=${packages.join(' ')}`);
+            console.log(`nudgeable=${nudgeable.join(' ')}`);
+            console.log(`collisions=${collisions.join(' ')}`);
             console.log(`count=${advisories.length}`);
           EOF
           echo '----- advisories -----'
@@ -91,15 +113,42 @@ jobs:
       # update and rewrites ranges in package.json (verified 2026-09-03 --
       # it bumped satori while fixing zero vulnerabilities). `pnpm update
       # --depth Infinity <pkg>` touches only the named transitive entries.
+      #
+      # ONLY names we do not declare ourselves. `pnpm update` resolves a name
+      # to the DIRECT dependency when one exists, and for a direct dependency
+      # it rewrites the specifier in package.json -- so the nudge trips the
+      # assert below and the run dies without ever reaching the transitive
+      # copy it was aiming at. That is what broke run #16 (2026-09-19):
+      # next is vulnerable at 15.5.23 under @activistchecklist/react-review-
+      # comments while we carry ^16.3.3 directly. Verified on pnpm 11.4.0:
+      #
+      #   pnpm update --depth Infinity next      → package.json ^16.3.3 → ^16.3.5
+      #   pnpm update --depth Infinity 'next@15' → package.json ^16.3.3 → ^15.5.25
+      #
+      # The second is a DOWNGRADE of the direct dependency. No pnpm spec
+      # reaches only the transitive copy, so colliding names skip the nudge
+      # and take the issue path, where a scoped override fixes them.
       - name: Nudge stuck lockfile entries
-        if: steps.audit.outputs.count != '0'
+        if: steps.audit.outputs.count != '0' && steps.audit.outputs.nudgeable != ''
+        env:
+          NUDGEABLE: ${{ steps.audit.outputs.nudgeable }}
         run: |
-          echo "Updating: ${{ steps.audit.outputs.packages }}"
-          pnpm update --depth Infinity ${{ steps.audit.outputs.packages }}
+          echo "Updating: $NUDGEABLE"
+          # Word splitting is deliberate here: NUDGEABLE is a package list.
+          # shellcheck disable=SC2086
+          pnpm update --depth Infinity $NUDGEABLE
 
-      # package.json must not move. If it did, something changed upstream in
-      # pnpm's behaviour and this workflow should stop rather than open a PR
-      # that quietly widens a dependency range.
+      - name: Report names that collide with a direct dependency
+        if: steps.audit.outputs.count != '0' && steps.audit.outputs.collisions != ''
+        env:
+          COLLISIONS: ${{ steps.audit.outputs.collisions }}
+        run: |
+          echo "Not nudgeable, escalating instead: $COLLISIONS"
+
+      # package.json must not move. With colliding names filtered out above
+      # this is a true invariant: if it trips, pnpm's behaviour changed
+      # upstream and this workflow should stop rather than open a PR that
+      # quietly widens a dependency range.
       - name: Assert package.json untouched
         if: steps.audit.outputs.count != '0'
         run: git diff --exit-code -- package.json pnpm-workspace.yaml
@@ -153,12 +202,12 @@ jobs:
           # other workflows, so pr-checks.yml would never run on them.
           token: ${{ secrets.SECURITY_AUTOFIX_TOKEN }}
           add-paths: pnpm-lock.yaml
-          commit-message: 'Security: bump ${{ steps.audit.outputs.packages }} in lockfile'
-          title: 'Security: lockfile bump for ${{ steps.audit.outputs.packages }}'
+          commit-message: 'Security: bump ${{ steps.audit.outputs.nudgeable }} in lockfile'
+          title: 'Security: lockfile bump for ${{ steps.audit.outputs.nudgeable }}'
           body: |
             Dependabot opened alerts for these packages but could not PR a fix: they are transitive-only, and its npm updater bumps the *parent* rather than the lockfile entry.
 
-            Their parents' ranges already allowed the patched versions — the lockfile was simply stuck, because pnpm never re-resolves an existing entry on a plain install. `pnpm update --depth Infinity ${{ steps.audit.outputs.packages }}` moved them. No override needed, and `package.json` is untouched.
+            Their parents' ranges already allowed the patched versions — the lockfile was simply stuck, because pnpm never re-resolves an existing entry on a plain install. `pnpm update --depth Infinity ${{ steps.audit.outputs.nudgeable }}` moved them. No override needed, and `package.json` is untouched.
 
             Cleared ${{ steps.audit.outputs.count }} advisor(y/ies). `pnpm audit` is clean, unit tests pass, and `pnpm buildstatic` succeeds on this branch.
 
@@ -178,6 +227,8 @@ jobs:
           REMAINING: ${{ steps.reaudit.outputs.remaining }}
           FINGERPRINT: ${{ steps.reaudit.outputs.fingerprint }}
           PACKAGES: ${{ steps.audit.outputs.packages }}
+          NUDGEABLE: ${{ steps.audit.outputs.nudgeable }}
+          COLLISIONS: ${{ steps.audit.outputs.collisions }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         with:
           script: |
@@ -204,13 +255,21 @@ jobs:
                   '',
                   process.env.REMAINING_LIST,
                   '',
+                  ...(process.env.COLLISIONS
+                    ? [
+                        `**\`${process.env.COLLISIONS}\`** was not even attempted.`,
+                        '',
+                        'Each of those names is a direct dependency of ours *and* appears deeper in the tree at a vulnerable version. `pnpm update <name>` resolves to the direct dependency and rewrites its specifier in `package.json`; `pnpm update <name>@<major>` downgrades it. Neither reaches the transitive copy. A scoped override is the only thing that does.',
+                        '',
+                      ]
+                    : []),
                   '## How to resolve',
                   '',
                   '1. Find who is capping the version:',
                   '   ```bash',
                   '   npm view <parent>@<locked-version> dependencies',
                   '   ```',
-                  '2. Add a floor to the `overrides:` block in `pnpm-workspace.yaml`. Scope it per-major (`pkg@3`) if the tree carries more than one live major — an unscoped floor will drag every consumer onto the newest major.',
+                  '2. Add a floor to the `overrides:` block in `pnpm-workspace.yaml`. Scope it per-major (`pkg@3`) if the tree carries more than one live major — an unscoped floor will drag every consumer onto the newest major. Scoping is mandatory, not optional, for a name we also depend on directly: `next@15: ">=15.5.24 <16"` floors the transitive copy and leaves our own `next` alone.',
                   '3. Annotate it with who is capping us and a **checkable** "delete it when" condition. That annotation is the whole reason this is an issue and not an automatic PR.',
                   '4. `pnpm install && pnpm audit --audit-level=low && pnpm test && pnpm buildstatic`',
                   '',
