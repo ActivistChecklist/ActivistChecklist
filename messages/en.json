@@ -71,6 +71,10 @@
       "title": "Security update checker",
       "label": "Security update checker"
     },
+    "tools": {
+      "title": "Tools we built",
+      "label": "Tools we built"
+    },
     "resources": {
       "title": "Resources",
       "label": "Resources"
@@ -656,5 +660,74 @@
       }
     },
     "footer": "Powered by <eolLink>endoflife.date</eolLink> and <sofaLink>SOFA</sofaLink> · Updated {date}."
+  },
+  "tools": {
+    "metaTitle": "Tools we built | Activist Checklist",
+    "metaDescription": "Four free tools for organizers: map your risks before an action, lock down 130+ social accounts, check whether your phone still gets security updates, and clear out old AI chats.",
+    "documentTitle": "Tools we built | Activist Checklist",
+    "title": "Tools we built",
+    "intro": "Some checklist steps don't survive being written as a paragraph. They need a grid your group can argue over, a list that keeps your place, or a straight answer about your phone. So we built four small tools that do those jobs and nothing else.",
+    "pills": {
+      "free": "Always free",
+      "noAccount": "No account needed",
+      "onDevice": "Your data stays on your device",
+      "openSource": "Open source"
+    },
+    "items": {
+      "riskMapper": {
+        "eyebrow": "Plan an action",
+        "name": "Risk Mapper",
+        "lede": "A shared worksheet for the conversation your group keeps putting off: what could actually go wrong, and what would we do about it?",
+        "bullet1": "Everyone names what worries them, then you drag each risk onto a grid of how likely it is and how bad it would be. The red corner is what you plan for first.",
+        "bullet2": "Every risk gets two columns: how to make it less likely, and how to limit the harm if it happens anyway. Star the ones you'll actually do.",
+        "bullet3": "Share an end-to-end encrypted link with your group, or export a PDF for the people who weren't in the room.",
+        "cta": "Open Risk Mapper",
+        "secondaryCta": "Action organizer checklist",
+        "meta": "riskmapper.app · free · saved in your browser",
+        "shotAlt": "Risk Mapper mid-session: risks placed on a grid of likelihood and impact, with the worst ones written up as a plan."
+      },
+      "socialScrub": {
+        "eyebrow": "Shrink your footprint",
+        "name": "Social Scrub",
+        "lede": "Locking down one account is easy. Remembering the other thirty is the hard part. Social Scrub keeps the list and your place in it.",
+        "bullet1": "Pick from more than 130 sites, including the ones you forgot you signed up for, and add any we missed.",
+        "bullet2": "The same eight steps on every account: delete or keep, display name, photo, username, email, location and bio, old posts, privacy settings.",
+        "bullet3": "Stop after five minutes and pick it up next week. Your progress is saved in your browser, not on our server.",
+        "cta": "Open Social Scrub",
+        "secondaryCta": "Doxxing defense guide",
+        "meta": "socialscrub.app · free · no account needed",
+        "shotAlt": "Social Scrub working through one of the eight steps on a Facebook account, showing the profile before and after."
+      },
+      "updates": {
+        "eyebrow": "Check your device",
+        "name": "Security update checker",
+        "lede": "Type in your phone or laptop and find out whether it still gets security updates. If it doesn't, you'll know what that means for you.",
+        "bullet1": "Covers phones, tablets, watches and laptops from Apple, Google, Samsung, Motorola, OnePlus and Nokia, plus iOS, Android, macOS and Windows.",
+        "bullet2": "Not sure which model you have? It walks you to the settings screen where it's printed.",
+        "bullet3": "Once a device stops getting patches, every flaw found after that stays open and publicly documented. It is the cheapest way into your phone.",
+        "cta": "Check my device",
+        "secondaryCta": "Secondary phone checklist",
+        "meta": "On this site · data from endoflife.date",
+        "shotAlt": "The update checker reporting that a searched phone stopped getting security updates, with advice on what to do about it."
+      },
+      "autoDelete": {
+        "eyebrow": "Leave less behind",
+        "name": "AI chat auto-delete",
+        "lede": "A Chrome extension that clears out old Claude conversations on a schedule, so a year of half-finished thinking isn't sitting in an account that could be subpoenaed.",
+        "bullet1": "You pick the window. Thirty days by default, and anything older goes.",
+        "bullet2": "Star the conversations you want to keep and it leaves them alone. It can ask before deleting, or just do it.",
+        "bullet3": "It records how many chats it deleted, never which ones. Nothing is sent to us, ever.",
+        "cta": "Add to Chrome",
+        "secondaryCta": "Source on GitHub",
+        "meta": "Chrome Web Store · works on claude.ai",
+        "shotAlt": "The extension set to delete chats older than 30 days every week, next to the bar it shows on claude.ai when deletions are waiting."
+      }
+    },
+    "closing": {
+      "title": "Built while writing the checklists",
+      "body": "Every one of these started as a step we couldn't explain well enough in words. If something here is wrong, missing, or should exist and doesn't, tell us.",
+      "primaryCta": "Send feedback",
+      "secondaryCta": "All our code"
+    }
   }
 }

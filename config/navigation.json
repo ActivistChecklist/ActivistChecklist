@@ -136,6 +136,10 @@
     "updates": {
       "label": "Security update checker",
       "href": "/updates/"
+    },
+    "tools": {
+      "label": "Tools we built",
+      "href": "/tools/"
     }
   },
   "menus": {
@@ -159,6 +163,7 @@
       "label": "Resources",
       "href": "/resources/",
       "items": [
+        "tools",
         "vpn",
         "updates",
         "party",
@@ -195,6 +200,7 @@
         "items": [
           "home",
           "essentials",
+          "tools",
           "news",
           "about",
           "movies",
