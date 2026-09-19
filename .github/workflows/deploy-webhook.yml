@@ -9,6 +9,9 @@ on:
 # (from Healthchecks.io, e.g. https://hc-ping.com/...). On success we GET that URL; on
 # failure we POST to .../fail with the deploy step output (truncated to 100 kB).
 
+# This workflow only calls an external webhook; it needs nothing from GITHUB_TOKEN.
+permissions: {}
+
 jobs:
   trigger_build_and_deploy_webhook:
     runs-on: ubuntu-latest

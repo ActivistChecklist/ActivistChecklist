@@ -2,14 +2,17 @@ import { execFileSync } from 'node:child_process'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 
-const LIB = path.resolve(import.meta.dirname, '../scripts/lib/listmonk-roundtrip.sh')
+const REPO_ROOT = path.resolve(import.meta.dirname, '..')
+// Kept as a literal relative path and resolved via cwd: an absolute path built from
+// import.meta.dirname would be an environment value flowing into a shell command.
+const LIB = 'scripts/lib/listmonk-roundtrip.sh'
 
 /** Run classify_roundtrip from the shell lib and return its verdict. */
 function classify(code, body = '') {
   return execFileSync(
     'bash',
     ['-c', 'source "$1"; classify_roundtrip "$2" "$3"', 'bash', LIB, String(code), body],
-    { encoding: 'utf8' }
+    { encoding: 'utf8', cwd: REPO_ROOT }
   ).trim()
 }
 
