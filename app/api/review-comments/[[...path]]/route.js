@@ -1,24 +1,57 @@
 import { handleReviewCommentsRequest } from '@activistchecklist/react-review-comments/server';
 import { getReviewCommentsConfig } from '@/lib/review-comments/env';
-import { isDbConnectivityError, describeDbConnectivityError } from '@/lib/review-comments/db-errors';
+import {
+  isDbConfigurationError,
+  isDbConnectivityError,
+  describeDbConnectivityError,
+} from '@/lib/review-comments/db-errors';
 import { applyMongoTimeoutToEnv } from '@/lib/review-comments/mongo-url';
 
 export const dynamic = 'force-dynamic';
 
-// Bound MongoDB server selection before the package opens its (cached) client.
-// Without this an unreachable database holds each request for the driver's
-// 30s default, which saturates the browser's per-origin connection limit and
-// stalls the whole page. See lib/review-comments/mongo-url.js.
+// Normalise the connection string before the package opens its (cached) client:
+// unwrap stray quotes, and bound MongoDB server selection. Without the timeout
+// an unreachable database holds each request for the driver's 30s default,
+// which saturates the browser's per-origin connection limit and stalls the
+// whole page. See lib/review-comments/mongo-url.js.
 applyMongoTimeoutToEnv();
 
 const handlerOptions = {
   getReviewCommentsRuntimeConfig: getReviewCommentsConfig,
 };
 
+/**
+ * Reads degrade to empty with HTTP 200 (matches the package's own `dbOffline`
+ * contract, so the client Shell renders no comments quietly). Writes report 503
+ * so the client composers surface the failure to the user.
+ */
+function degradedResponse(request, { code = null } = {}) {
+  return Response.json(
+    {
+      error: 'Review comments database is unavailable',
+      dbOffline: true,
+      code,
+    },
+    { status: request.method === 'GET' ? 200 : 503 }
+  );
+}
+
 async function handler(request, context) {
   try {
     return await handleReviewCommentsRequest(request, context, handlerOptions);
   } catch (error) {
+    // A malformed REVIEW_COMMENTS_MONGODB_URL throws synchronously out of
+    // `new MongoClient(url)` before any socket opens, so it never looks like a
+    // connectivity failure and used to surface as an opaque 500 on every
+    // request. Never echo the error message here: some MongoParseError
+    // messages quote the connection string back, which carries credentials.
+    if (isDbConfigurationError(error)) {
+      console.warn(
+        '[review-comments] REVIEW_COMMENTS_MONGODB_URL is missing or malformed; serving degraded response.'
+      );
+      return degradedResponse(request, { code: 'INVALID_CONNECTION_STRING' });
+    }
+
     // Genuine application bugs still surface as a 500 with their stack trace.
     if (!isDbConnectivityError(error)) {
       throw error;
@@ -37,17 +70,7 @@ async function handler(request, context) {
       `[review-comments] MongoDB unreachable (${code || 'unknown'}${hostname ? ` ${hostname}` : ''}); serving degraded response.`
     );
 
-    const body = {
-      error: 'Review comments database is unavailable',
-      dbOffline: true,
-      code: code || null,
-    };
-
-    // Reads degrade to empty with HTTP 200 (matches the package's own
-    // `dbOffline` contract, so the client Shell renders no comments quietly).
-    // Writes report 503 so the client composers surface the failure to the user.
-    const status = request.method === 'GET' ? 200 : 503;
-    return Response.json(body, { status });
+    return degradedResponse(request, { code: code || null });
   }
 }
 
