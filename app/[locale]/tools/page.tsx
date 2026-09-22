@@ -17,14 +17,15 @@ import { cn } from '@/lib/utils';
 
 const CHROME_STORE_URL =
   'https://chromewebstore.google.com/detail/ai-chat-history-auto-dele/ipmoefogkkpbgpbniklknonnmbmcbnpk';
-const AUTO_DELETE_REPO_URL =
-  'https://github.com/ActivistChecklist/ai-chat-history-auto-delete-extension';
 
 /**
  * Order here is the order on the page. `accent` colors the eyebrow icon and the
  * bullet checks only: the eyebrow label itself stays muted-foreground because
  * the alternating `bg-muted` panels don't leave enough contrast for small
  * colored text (primary and success both land near 4.1:1 on it).
+ *
+ * `secondaryHref` is optional. Only Social Scrub has one, because the doxxing
+ * checklist is the thing you actually want to read alongside it.
  */
 const TOOLS = [
   {
@@ -33,7 +34,6 @@ const TOOLS = [
     icon: LayoutGrid,
     accent: 'text-primary',
     href: 'https://riskmapper.app',
-    secondaryHref: '/organizing/',
     shotUrl: 'riskmapper.app',
     Shot: RiskMapperShot,
   },
@@ -53,7 +53,6 @@ const TOOLS = [
     icon: Smartphone,
     accent: 'text-error',
     href: '/updates/',
-    secondaryHref: '/secondary/',
     shotUrl: 'activistchecklist.org/updates',
     Shot: UpdateCheckerShot,
   },
@@ -63,13 +62,10 @@ const TOOLS = [
     icon: Trash2,
     accent: 'text-info',
     href: CHROME_STORE_URL,
-    secondaryHref: AUTO_DELETE_REPO_URL,
     shotUrl: 'AI chat auto-delete · Settings',
     Shot: AutoDeleteShot,
   },
 ];
-
-const PILL_KEYS = ['free', 'noAccount', 'onDevice', 'openSource'];
 
 function isExternal(href) {
   return href.startsWith('http');
@@ -110,7 +106,6 @@ export async function generateMetadata({ params }) {
 function ToolRow({ tool, tinted, reversed, t }) {
   const { key, id, icon: Icon, accent, href, secondaryHref, shotUrl, Shot } = tool;
   const item = (field) => t(`tools.items.${key}.${field}`);
-  const external = isExternal(href);
 
   return (
     <section
@@ -152,16 +147,18 @@ function ToolRow({ tool, tinted, reversed, t }) {
             <Button asChild>
               <Link href={href}>
                 {item('cta')}
-                {external ? (
+                {isExternal(href) ? (
                   <ExternalLink aria-hidden="true" />
                 ) : (
                   <ArrowRight aria-hidden="true" />
                 )}
               </Link>
             </Button>
-            <Button asChild variant="outline">
-              <Link href={secondaryHref}>{item('secondaryCta')}</Link>
-            </Button>
+            {secondaryHref && (
+              <Button asChild variant="outline">
+                <Link href={secondaryHref}>{item('secondaryCta')}</Link>
+              </Button>
+            )}
           </div>
 
           <p className="mt-3 text-xs text-muted-foreground">{item('meta')}</p>
@@ -187,21 +184,11 @@ export default async function ToolsPage({ params }) {
       <header>
         <h1 className="page-title">{t('tools.title')}</h1>
         <p className="max-w-3xl text-lg text-muted-foreground sm:text-xl">{t('tools.intro')}</p>
-        <ul className="mt-5 flex flex-wrap gap-2">
-          {PILL_KEYS.map((pill) => (
-            <li
-              key={pill}
-              className="rounded-full border border-border bg-card px-3 py-1.5 text-sm font-semibold text-foreground/80"
-            >
-              {t(`tools.pills.${pill}`)}
-            </li>
-          ))}
-        </ul>
       </header>
 
       <PageNotices />
 
-      <div className="mt-6 flex flex-col gap-4 sm:gap-6">
+      <div className="mt-8 flex flex-col gap-4 sm:gap-6">
         {TOOLS.map((tool, index) => (
           <ToolRow
             key={tool.key}
@@ -214,27 +201,32 @@ export default async function ToolsPage({ params }) {
       </div>
 
       <section className="mt-10 rounded-lg border border-border bg-linear-to-br from-muted via-muted to-accent/5 p-6 sm:p-8">
-        <div className="flex flex-col gap-6 md:flex-row md:items-center md:gap-10">
-          <div className="grow">
-            <h2 className="mb-2 text-xl font-bold tracking-tight sm:text-2xl">
-              {t('tools.closing.title')}
-            </h2>
-            <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
-              {t('tools.closing.body')}
-            </p>
-          </div>
-          <div className="flex shrink-0 flex-wrap gap-3">
-            <Button asChild>
-              <Link href="/contact/">{t('tools.closing.primaryCta')}</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="https://github.com/ActivistChecklist">
-                {t('tools.closing.secondaryCta')}
-                <ExternalLink aria-hidden="true" />
-              </Link>
-            </Button>
-          </div>
+        <h2 className="mb-2 text-xl font-bold tracking-tight sm:text-2xl">
+          {t('tools.closing.title')}
+        </h2>
+        <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
+          {t('tools.closing.body')}
+        </p>
+        <div className="mt-5 flex flex-wrap gap-3">
+          <Button asChild>
+            <Link href="/essentials/">
+              {t('tools.closing.primaryCta')}
+              <ArrowRight aria-hidden="true" />
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/doxxing/">{t('tools.closing.secondaryCta')}</Link>
+          </Button>
         </div>
+        <p className="mt-5 border-t border-border pt-4 text-sm text-muted-foreground">
+          {t.rich('tools.closing.openSource', {
+            contact: (chunks) => (
+              <Link href="/contact/" className="link">
+                {chunks}
+              </Link>
+            ),
+          })}
+        </p>
       </section>
     </Layout>
   );

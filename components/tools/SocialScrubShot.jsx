@@ -1,118 +1,182 @@
-import { ArrowRight, UserRound } from 'lucide-react';
+import { MapPin, UserRound } from 'lucide-react';
+import SimpleImage from '@/components/SimpleImage';
 
 /**
- * Illustration of socialscrub.app working through step 1 of 8 on an account.
- * See BrowserFrame for why these are hand-built rather than screenshots. Social
- * Scrub ships a dark interface only, so this illustration stays dark in both of
- * our themes, the same way a real screenshot of it would.
+ * Illustration of what Social Scrub does to a profile: the same sample account
+ * before and after the eight steps. The sample persona and the photos are the
+ * ones socialscrub.app itself uses, copied from ActivistChecklist/social-scrub
+ * and resized. See BrowserFrame for why these are hand-built rather than
+ * screenshots. Social Scrub ships a dark interface only, so this stays dark in
+ * both of our themes, the same way a real screenshot of it would.
  */
 
-const DONE_STEP = 'bg-[#22C55E] text-[#06210F]';
-const TODO_STEP = 'border border-[#2B303C] bg-[#171B24] text-[#6B7488]';
+const CARD = 'rounded-xl border p-2.5 sm:p-3';
+const BEFORE_CARD = `${CARD} border-[#4A2226] bg-[#140E10]`;
+const AFTER_CARD = `${CARD} border-[#1F4632] bg-[#0C1410]`;
 
-function Step({ n, done }) {
+const ROW = 'border-t border-[#FFFFFF1A] pt-2 mt-2';
+/** Floors that keep each section level across the two columns: the scrubbed
+ *  side is always the shorter one, and drifting labels make it harder to read. */
+const ROW_BIO = `${ROW} min-h-[3.25rem]`;
+const ROW_FRIENDS = `${ROW} min-h-[5.25rem]`;
+const ROW_POSTS = `${ROW} hidden min-h-[7rem] sm:block`;
+const KEY = 'text-[9px] font-bold uppercase tracking-wider text-[#6B7488]';
+const VAL = 'mt-0.5 text-[11px] leading-snug text-[#E7ECF7]';
+const GONE = 'mt-0.5 text-[11px] leading-snug italic text-[#6B7488]';
+
+/** Fields the scrub changes are boxed, the way the real before/after marks them. */
+const HIT = 'rounded-sm border px-1';
+const HIT_BAD = `${HIT} border-[#EF4444]/50 bg-[#EF4444]/20`;
+const HIT_OK = `${HIT} border-[#22C55E]/50 bg-[#22C55E]/20`;
+
+function Heading({ tone }) {
+  const before = tone === 'before';
   return (
     <span
-      className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-extrabold sm:h-[22px] sm:w-[22px] sm:text-[11px] ${
-        done ? DONE_STEP : TODO_STEP
+      className={`flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-wider ${
+        before ? 'text-[#F98080]' : 'text-[#6EE7A0]'
       }`}
     >
-      {n}
+      <span className={`h-1.5 w-1.5 rounded-full ${before ? 'bg-[#EF4444]' : 'bg-[#22C55E]'}`} />
+      {before ? 'Before' : 'After'}
     </span>
   );
 }
 
-function Rail() {
+function Friend({ src, name }) {
   return (
-    <div className="flex items-center">
-      {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
-        <span key={n} className="flex min-w-0 grow items-center last:grow-0">
-          <Step n={n} done={n === 1} />
-          {n < 8 && <span className="h-0.5 grow bg-[#262B36]" />}
-        </span>
-      ))}
-    </div>
+    <span className="flex min-w-0 items-center gap-1">
+      <SimpleImage
+        src={src}
+        alt=""
+        width="16"
+        height="16"
+        className="h-4 w-4 shrink-0 rounded-full object-cover"
+      />
+      <span className="truncate text-[10px] text-[#C9D1E0]">{name}</span>
+    </span>
   );
 }
 
 export default function SocialScrubShot() {
   return (
-    <div className="bg-[#0B0E14] pb-4">
-      <div className="flex items-center gap-2 border-b border-[#1C202A] px-3 py-2.5 sm:px-4">
-        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-[#1877F2] font-heading text-sm font-extrabold text-white">
-          f
-        </span>
-        <span className="flex flex-col leading-tight">
-          <span className="text-xs font-bold text-[#4ADE80] sm:text-[13px]">Facebook</span>
-          <span className="text-[10px] text-[#8A93A5]">Step 1 of 8</span>
-        </span>
-        <span className="grow" />
-        <span className="hidden text-[10px] text-[#8A93A5] sm:inline">Auto-saved locally</span>
-        <span className="rounded-md border border-[#2B303C] px-2 py-1 text-[10px] font-semibold text-[#C9D1E0]">
-          Dashboard
-        </span>
-      </div>
+    <div className="bg-[#0B0E14] p-2.5 sm:p-4">
+      <div className="grid grid-cols-2 gap-2 sm:gap-3">
+        {/* BEFORE */}
+        <div className={BEFORE_CARD}>
+          <Heading tone="before" />
 
-      <div className="px-3 pt-4 sm:px-5">
-        <Rail />
-      </div>
-
-      <div className="px-3 pt-4 sm:px-5">
-        <h3 className="font-heading text-lg font-extrabold leading-tight tracking-tight text-[#F3F5F9] sm:text-[22px]">
-          Change your display name <span className="text-[#4ADE80]">on Facebook</span>
-        </h3>
-        <p className="mt-2 max-w-md text-[11px] leading-relaxed text-[#9AA3B4] sm:text-xs">
-          Your real name links your profile to public records, property filings and relatives. Swap
-          it for something that doesn&rsquo;t.
-        </p>
-        <div className="mt-3 flex gap-2">
-          <span className="grow rounded-lg bg-[#22C55E] py-2 text-center text-xs font-bold text-[#06210F] sm:text-[13px]">
-            I did this
-          </span>
-          <span className="grow rounded-lg border border-[#2D323E] py-2 text-center text-xs font-semibold text-[#C9D1E0] sm:text-[13px]">
-            Skip
-          </span>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-[1fr_1rem_1fr] items-center px-3 pt-4 sm:px-5">
-        <div className="rounded-xl border border-[#4A2226] bg-[#140E10] p-2.5">
-          <span className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-wider text-[#F98080]">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#EF4444]" />
-            Before
-          </span>
-          <div className="mt-2.5 flex items-center gap-2">
-            <span className="h-8 w-8 shrink-0 rounded-full bg-linear-to-br from-[#7C5C3E] to-[#C99A6B]" />
+          <div className="mt-2.5 flex flex-col items-start gap-1.5 sm:flex-row sm:items-center sm:gap-2">
+            <SimpleImage
+              src="/images/tools/social-scrub-luke.jpg"
+              alt=""
+              width="40"
+              height="40"
+              className="h-9 w-9 shrink-0 rounded-full object-cover sm:h-11 sm:w-11"
+            />
             <span className="flex min-w-0 flex-col gap-0.5">
-              <span className="truncate rounded-sm border border-[#EF4444]/50 bg-[#EF4444]/20 px-1 text-[11px] font-bold text-[#F3F5F9] sm:text-xs">
-                Alex Rivera
+              <span className={`max-w-full self-start truncate text-[11px] font-bold text-[#F3F5F9] sm:text-xs ${HIT_BAD}`}>
+                Luke Skywalker
               </span>
-              <span className="truncate text-[10px] text-[#8A93A5]">@alexrivera</span>
+              <span className={`max-w-full self-start truncate text-[10px] text-[#C9D1E0] ${HIT_BAD}`}>
+                @lukeskywalker
+              </span>
             </span>
           </div>
-          <p className="mt-2 text-[10px] leading-snug text-[#C08C8C]">
-            Anyone can search your name and find you.
+
+          <div className={ROW_BIO}>
+            <span className={KEY}>Bio</span>
+            <p className={VAL}>
+              <span className={HIT_BAD}>Tatooine</span> native, organizer at{' '}
+              <span className={HIT_BAD}>Rebel Alliance</span>
+            </p>
+          </div>
+
+          <div className={ROW}>
+            <span className={KEY}>Account</span>
+            <p className={VAL}>847 posts, 1.2K friends, public</p>
+            <p className={`${VAL} truncate`}>
+              <span className={HIT_BAD}>luke@gmail.com</span>
+            </p>
+          </div>
+
+          <div className={ROW_FRIENDS}>
+            <span className={KEY}>Friends (244)</span>
+            <div className="mt-1 flex flex-col gap-1">
+              <Friend src="/images/tools/social-scrub-han.jpg" name="Han Solo" />
+              <Friend src="/images/tools/social-scrub-leia.jpg" name="Leia Organa" />
+              <Friend src="/images/tools/social-scrub-obiwan.jpg" name="Obi-Wan Kenobi" />
+            </div>
+          </div>
+
+          <div className={ROW_POSTS}>
+            <span className={KEY}>Recent posts</span>
+            <p className={`${VAL} flex items-start gap-1`}>
+              <MapPin className="mt-0.5 h-3 w-3 shrink-0 text-[#F98080]" />
+              <span className={HIT_BAD}>Tagged at Mos Eisley Cantina</span>
+            </p>
+            <p className={VAL}>
+              &ldquo;Just started my new job at <span className={HIT_BAD}>Acme Corp</span>{' '}
+              downtown. The office on <span className={HIT_BAD}>5th &amp; Main</span> has the best
+              coffee...&rdquo;
+            </p>
+          </div>
+
+          <p className="mt-2.5 text-[10px] leading-snug text-[#C08C8C]">
+            Enough here to find your address, your job, and who you organize with.
           </p>
         </div>
-        <ArrowRight className="mx-auto h-3.5 w-3.5 text-[#6B7488]" />
-        <div className="rounded-xl border border-[#1F4632] bg-[#0C1410] p-2.5">
-          <span className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-wider text-[#6EE7A0]">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#22C55E]" />
-            After
-          </span>
-          <div className="mt-2.5 flex items-center gap-2">
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#1F2937] text-[#6B7488]">
-              <UserRound className="h-4 w-4" />
+
+        {/* AFTER */}
+        <div className={AFTER_CARD}>
+          <Heading tone="after" />
+
+          <div className="mt-2.5 flex flex-col items-start gap-1.5 sm:flex-row sm:items-center sm:gap-2">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#1F2937] text-[#6B7488] sm:h-11 sm:w-11">
+              <UserRound className="h-4 w-4 sm:h-5 sm:w-5" />
             </span>
             <span className="flex min-w-0 flex-col gap-0.5">
-              <span className="truncate rounded-sm border border-[#22C55E]/50 bg-[#22C55E]/20 px-1 text-[11px] font-bold text-[#F3F5F9] sm:text-xs">
+              <span className={`max-w-full self-start truncate text-[11px] font-bold text-[#F3F5F9] sm:text-xs ${HIT_OK}`}>
                 John Doe
               </span>
-              <span className="truncate text-[10px] text-[#8A93A5]">@happy-dolphin-742</span>
+              <span className={`max-w-full self-start truncate text-[10px] text-[#C9D1E0] ${HIT_OK}`}>
+                @happy-dolphin-742
+              </span>
             </span>
           </div>
-          <p className="mt-2 text-[10px] leading-snug text-[#79A98C]">
-            Your profile stops showing up in name searches.
+
+          <div className={ROW_BIO}>
+            <span className={KEY}>Bio</span>
+            <p className={GONE}>Removed</p>
+          </div>
+
+          <div className={ROW}>
+            <span className={KEY}>Account</span>
+            <p className={VAL}>12 posts, friends hidden, private</p>
+            <p className={`${VAL} truncate`}>
+              <span className={HIT_OK}>luke+ig@grr.la</span>
+            </p>
+          </div>
+
+          <div className={ROW_FRIENDS}>
+            <span className={KEY}>Friends</span>
+            <p className={GONE}>Friends list is private</p>
+            <p className="mt-1 text-[10px] leading-snug text-[#6B7488]">
+              Only you can see who you are connected to.
+            </p>
+          </div>
+
+          <div className={ROW_POSTS}>
+            <span className={KEY}>Recent posts</span>
+            <p className={`${GONE} flex items-start gap-1`}>
+              <MapPin className="mt-0.5 h-3 w-3 shrink-0 text-[#6B7488]" />
+              Location removed
+            </p>
+            <p className={GONE}>Post deleted</p>
+          </div>
+
+          <p className="mt-2.5 text-[10px] leading-snug text-[#79A98C]">
+            Nothing left that ties the account back to you.
           </p>
         </div>
       </div>
