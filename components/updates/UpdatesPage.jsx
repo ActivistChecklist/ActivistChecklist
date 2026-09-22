@@ -26,6 +26,14 @@ function isSnapshotStale(snapshot) {
   return ageMs > STALE_THRESHOLD_DAYS * 24 * 60 * 60 * 1000;
 }
 
+/**
+ * Deliberately NOT lib/updates/format-date.js, which forces UTC.
+ *
+ * `generatedAt` is a real timestamp rather than a calendar date, and "Updated
+ * <date>" is about when the reader's copy was refreshed, so their local day is the
+ * right answer. The UTC helper exists for the snapshot's date-only fields, where
+ * local rendering silently shifted every date back a month west of UTC.
+ */
 function formatStaleDate(iso) {
   if (!iso) return '';
   const d = new Date(iso);

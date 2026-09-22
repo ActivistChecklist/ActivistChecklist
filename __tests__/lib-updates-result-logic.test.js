@@ -1169,3 +1169,122 @@ describe('decrementPatchVersion', () => {
     expect(decrementPatchVersion(15.75)).toBeNull();
   });
 });
+
+describe('stale OS ceiling (endoflife.date lag after a new major ships)', () => {
+  // Reproduces September 2026: iOS 27 is published, but every iPhone's
+  // supportedIosVersions still caps at 26 — including the 17e, which shipped six
+  // months before iOS 27. The ceiling is upstream lag, not hardware obsolescence.
+  const STALE_NOW = new Date('2026-09-21T00:00:00Z');
+
+  function staleSnapshot(iphoneCeiling = '26') {
+    return normalizeSnapshot({
+      schemaVersion: 1, generatedAt: '2026-09-21T00:00:00Z', source: 'x',
+      products: [
+        {
+          id: 'iphone', label: 'Apple iPhone', kind: 'device', family: 'apple', formFactor: 'phone',
+          endoflifeUrl: 'https://x',
+          releases: [
+            { id: '17e', label: '17e', releaseDate: '2026-03-11', supportedOsRange: iphoneCeiling },
+            { id: '15', label: '15', releaseDate: '2023-09-22', supportedOsRange: `17 - ${iphoneCeiling}` },
+            { id: '8', label: '8', releaseDate: '2017-09-22', supportedOsRange: '11 - 16' },
+          ],
+        },
+        {
+          id: 'ios', label: 'Apple iOS', kind: 'os', family: 'apple', formFactor: 'os',
+          endoflifeUrl: 'https://x',
+          releases: [
+            { id: '27', label: '27', releaseDate: '2026-09-14', latestVersion: '27' },
+            { id: '26', label: '26', releaseDate: '2025-09-15', latestVersion: '26.7' },
+            { id: '18', label: '18', releaseDate: '2024-09-16', latestVersion: '18.7.10' },
+            { id: '16', label: '16', releaseDate: '2022-09-12', latestVersion: '16.7.16' },
+          ],
+        },
+      ],
+    });
+  }
+
+  function pick(snap, releaseId) {
+    const product = snap.products.find((p) => p.id === 'iphone');
+    return { product, release: product.releases.find((r) => r.id === releaseId) };
+  }
+
+  it('offers the newer major in the picker so the user can report what they actually run', () => {
+    const snap = staleSnapshot();
+    const { product, release } = pick(snap, '15');
+    const majors = buildOsCheckOptions(snap, product, release).map((o) => o.major);
+    expect(majors[0]).toBe(27);
+    expect(majors).toContain(26);
+  });
+
+  it('suppresses the "plan a hardware upgrade" warning rather than acting on a ceiling we distrust', () => {
+    const snap = staleSnapshot();
+    const { product, release } = pick(snap, '15');
+    const reminder = buildLatestOsReminder(snap, product, release);
+    expect(buildDeviceMaxOsWarning(snap, product, release, reminder, STALE_NOW)).toBeNull();
+  });
+
+  it('still classifies the device as supported', () => {
+    const snap = staleSnapshot();
+    const { product, release } = pick(snap, '15');
+    expect(classifyResult({ product, release }, { now: STALE_NOW, snapshot: snap }).variant)
+      .toBe('device-supported');
+  });
+
+  it('leaves a genuinely capped model in the same line untouched', () => {
+    // The iPhone 8 really does top out at iOS 16: its picker stays truncated and its
+    // max-OS warning still fires. Blanket-distrusting the whole product would have
+    // stopped telling those users the thing they most need to hear.
+    const snap = staleSnapshot();
+    const { product, release } = pick(snap, '8');
+    const majors = buildOsCheckOptions(snap, product, release).map((o) => o.major);
+    expect(majors).toEqual([16]);
+    const reminder = buildLatestOsReminder(snap, product, release);
+    const warn = buildDeviceMaxOsWarning(snap, product, release, reminder, STALE_NOW);
+    expect(warn.kind).toBe('older-os');
+    expect(warn.maxMajor).toBe(16);
+    expect(warn.latestMajor).toBe(27);
+  });
+
+  it('reverts to normal behaviour the moment upstream publishes the real ceiling', () => {
+    // iPhone 15 genuinely dropped at iOS 27: ceiling 26 is now one behind a line whose
+    // newest model reads 27, so nothing is suspect and the warning must come back.
+    const snap = normalizeSnapshot({
+      schemaVersion: 1, generatedAt: '2026-09-21T00:00:00Z', source: 'x',
+      products: [
+        {
+          id: 'iphone', label: 'Apple iPhone', kind: 'device', family: 'apple', formFactor: 'phone',
+          endoflifeUrl: 'https://x',
+          releases: [
+            { id: '17e', label: '17e', releaseDate: '2026-03-11', supportedOsRange: '27' },
+            { id: '15', label: '15', releaseDate: '2023-09-22', supportedOsRange: '17 - 26' },
+          ],
+        },
+        {
+          id: 'ios', label: 'Apple iOS', kind: 'os', family: 'apple', formFactor: 'os',
+          endoflifeUrl: 'https://x',
+          releases: [
+            { id: '27', label: '27', releaseDate: '2026-09-14', latestVersion: '27' },
+            { id: '26', label: '26', releaseDate: '2025-09-15', latestVersion: '26.7' },
+          ],
+        },
+      ],
+    });
+    const { product, release } = pick(snap, '15');
+    expect(buildOsCheckOptions(snap, product, release).map((o) => o.major)).toEqual([26]);
+    const reminder = buildLatestOsReminder(snap, product, release);
+    expect(buildDeviceMaxOsWarning(snap, product, release, reminder, STALE_NOW).kind).toBe('older-os');
+  });
+});
+
+describe('buildAppleSupportEstimate — estimated release dates', () => {
+  it('declines to project a support window off an inferred launch date', () => {
+    // Macs whose marketing name carries no year get a date inferred from the oldest
+    // macOS they boot (see sofa-macos.js). Good enough to sort by, not good enough to
+    // turn into "about N more years" next to a green check.
+    const product = deviceProduct({ formFactor: 'laptop' });
+    const dated = release({ releaseDate: '2025-09-15' });
+    const estimated = release({ releaseDate: '2025-09-15', releaseDateIsEstimate: true });
+    expect(buildAppleSupportEstimate(product, dated, NOW)).not.toBeNull();
+    expect(buildAppleSupportEstimate(product, estimated, NOW)).toBeNull();
+  });
+});
