@@ -1,5 +1,5 @@
 import { NextIntlClientProvider } from 'next-intl';
-import { setRequestLocale } from 'next-intl/server';
+import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { ThemeProvider } from '@/components/layout/ThemeProvider';
 import { AnnouncementProvider } from '@/contexts/AnnouncementContext';
@@ -22,7 +22,8 @@ export default async function LocaleLayout({ children, params }) {
   if (!routing.locales.includes(locale)) notFound();
 
   setRequestLocale(locale);
-  const messages = (await import(`@/messages/${locale}.json`)).default;
+  // Merged over English in i18n/request.ts so untranslated keys fall back instead of going missing.
+  const messages = await getMessages();
   const announcement = getAnnouncement(locale);
   const reviewComments = getReviewCommentsConfig();
   const reviewCommentsProviderProps = {
