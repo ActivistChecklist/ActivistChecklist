@@ -5,8 +5,19 @@ import { Search, TriangleAlert, X, Settings } from 'lucide-react';
  *
  * Unlike the other three, this tool is part of this site, so the illustration is
  * built from our own semantic tokens and follows the reader's light/dark theme,
- * which is exactly what they'd see if they clicked through. The device, dates
- * and counts are sample data, not a live lookup.
+ * which is exactly what they'd see if they clicked through.
+ *
+ * The sample device is not a live lookup, so every fact in it is pinned by hand
+ * and has to stand on its own: iPhone X, released 2017, security support ended
+ * 2025-03-31, and iPhone 11 is the oldest model Apple still maintains (iOS 26).
+ * All from endoflife.date, the same source the real page uses, checked
+ * 2026-09-22.
+ *
+ * Always pick a device that is comfortably past end of support. An earlier
+ * version of this used the iPhone 11, which is still maintained, so the
+ * illustration told readers a safe phone was unsafe, and its advice line said
+ * "iPhone XS or newer" months after the XS went end of life. Re-check against
+ * endoflife.date when Apple's supported floor moves.
  */
 export default function UpdateCheckerShot() {
   return (
@@ -17,9 +28,9 @@ export default function UpdateCheckerShot() {
         </span>
         <div className="flex items-center gap-2 rounded-lg border border-input px-2.5 py-2 ring-3 ring-primary/15">
           <Search className="h-4 w-4 shrink-0 text-primary" />
-          <span className="grow truncate text-sm font-semibold text-foreground">iPhone 11</span>
+          <span className="grow truncate text-sm font-semibold text-foreground">iPhone X</span>
           <span className="hidden shrink-0 rounded-full bg-muted px-2 py-0.5 text-[10px] font-bold text-primary sm:inline">
-            Phone · released 2019
+            Phone · released 2017
           </span>
           <X className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
         </div>
@@ -29,11 +40,11 @@ export default function UpdateCheckerShot() {
         <TriangleAlert className="mt-0.5 h-6 w-6 shrink-0 text-error sm:h-7 sm:w-7" />
         <div className="min-w-0">
           <h3 className="font-heading text-base font-bold leading-snug tracking-tight text-foreground sm:text-xl">
-            iPhone 11 stopped receiving security updates{' '}
-            <span className="whitespace-nowrap rounded-sm bg-mark pl-1 pr-0.5">11 months ago</span>.
+            iPhone X stopped receiving security updates{' '}
+            <span className="whitespace-nowrap rounded-sm bg-mark pl-1 pr-0.5">1 year ago</span>.
           </h3>
           <p className="mt-1.5 text-xs leading-relaxed text-foreground/80 sm:text-sm">
-            Security support ended <strong className="text-foreground">October 2025</strong>. Every
+            Security support ended <strong className="text-foreground">March 2025</strong>. Every
             flaw found since then is public and unfixed on this phone.
           </p>
         </div>
@@ -49,7 +60,7 @@ export default function UpdateCheckerShot() {
               If you can replace it
             </p>
             <p className="mt-0.5 text-xs leading-relaxed text-foreground sm:text-[13px]">
-              Any iPhone XS or newer is still supported. A refurbished one costs less than most
+              Any iPhone 11 or newer is still supported. A refurbished one costs less than most
               people expect.
             </p>
           </div>

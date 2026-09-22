@@ -1,5 +1,6 @@
-import { TriangleAlert, UserRound } from 'lucide-react';
-import SimpleImage from '@/components/SimpleImage';
+import { Check, TriangleAlert } from 'lucide-react';
+import { FaLinkedin } from 'react-icons/fa';
+import { SiFacebook, SiInstagram, SiReddit, SiX, SiYoutube } from 'react-icons/si';
 
 /**
  * Card-top previews for the homepage tool teaser.
@@ -52,41 +53,59 @@ function RiskMapperThumb() {
   );
 }
 
-/** The rename, spelled out: your photo and real name swapped for a placeholder. */
+/**
+ * The list of platforms, ticked off one at a time. The row is wider than the
+ * frame on purpose: the cut-off logos on the right edge are the point, since the
+ * real list runs to 130 sites and a tidy row of six would undersell it.
+ */
+const PLATFORMS = [
+  { name: 'Facebook', Icon: SiFacebook, color: 'text-[#1877F2]', done: true },
+  { name: 'Instagram', Icon: SiInstagram, color: 'text-[#E1306C]', done: true },
+  { name: 'LinkedIn', Icon: FaLinkedin, color: 'text-[#0A66C2]', done: true },
+  { name: 'X', Icon: SiX, color: 'text-[#F3F5F9]', done: true },
+  { name: 'YouTube', Icon: SiYoutube, color: 'text-[#FF0000]', done: false },
+  { name: 'Reddit', Icon: SiReddit, color: 'text-[#FF4500]', done: false },
+];
+
 function SocialScrubThumb() {
-  const row = 'flex items-center gap-2 rounded-md border px-2 py-1.5';
+  const rows = [PLATFORMS.slice(0, 3), PLATFORMS.slice(3)];
   return (
-    <Frame className="flex flex-col justify-center gap-1.5 bg-[#0B0E14] px-3">
-      <span className={`${row} border-[#4A2226] bg-[#140E10]`}>
-        <SimpleImage
-          src="/images/tools/social-scrub-luke.jpg"
-          alt=""
-          width="20"
-          height="20"
-          className="h-5 w-5 shrink-0 rounded-full object-cover"
-        />
-        <span className="truncate text-[11px] font-semibold text-[#F3F5F9]">Luke Skywalker</span>
-      </span>
-      <span className={`${row} border-[#1F4632] bg-[#0C1410]`}>
-        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#1F2937] text-[#6B7488]">
-          <UserRound className="h-3 w-3" />
+    <Frame className="flex flex-col justify-center gap-1.5 bg-[#0B0E14] pl-3">
+      {rows.map((row, i) => (
+        <span key={i} className="flex w-max gap-1.5">
+          {row.map(({ name, Icon, color, done }) => (
+            <span
+              key={name}
+              className={`flex w-[104px] shrink-0 items-center gap-1.5 rounded-md border px-2 py-1.5 ${
+                done ? 'border-[#1F4632] bg-[#0C1410]' : 'border-[#242A36] bg-[#12161F]'
+              }`}
+            >
+              <Icon className={`h-3.5 w-3.5 shrink-0 ${color}`} aria-hidden="true" />
+              <span className="grow truncate text-[10px] font-medium text-[#C9D1E0]">{name}</span>
+              {done && <Check className="h-3 w-3 shrink-0 text-[#22C55E]" strokeWidth={3} />}
+            </span>
+          ))}
         </span>
-        <span className="truncate text-[11px] font-semibold text-[#F3F5F9]">John Doe</span>
-      </span>
+      ))}
     </Frame>
   );
 }
 
-/** The answer nobody wants, in the words the page uses. */
+/**
+ * The answer nobody wants, in the words the page uses. Device and date are
+ * pinned by hand: iPhone X, security support ended 2025-03-31 per
+ * endoflife.date. See UpdateCheckerShot for why this must never name a model
+ * that is still supported.
+ */
 function UpdateCheckerThumb() {
   return (
     <Frame className="flex items-center bg-background px-3">
       <span className="flex w-full items-center gap-2 rounded-md border-2 border-destructive/45 bg-destructive/5 px-2.5 py-2">
         <TriangleAlert className="h-5 w-5 shrink-0 text-error" />
         <span className="min-w-0">
-          <span className="block truncate text-[11px] font-bold text-foreground">iPhone 11</span>
+          <span className="block truncate text-[11px] font-bold text-foreground">iPhone X</span>
           <span className="block truncate text-[10px] text-foreground/70">
-            No security updates since Oct 2025
+            No security updates since March 2025
           </span>
         </span>
       </span>
