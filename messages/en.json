@@ -674,7 +674,7 @@
       "riskMapper": {
         "eyebrow": "Plan an action",
         "name": "Risk Mapper",
-        "short": "Map out what could go wrong before an action, with your group.",
+        "short": "Map out the risks in your work and precautions you can take.",
         "lede": "Work out what could go wrong before an action, and decide what your group will do about it.",
         "bullet1": "Everyone adds the risks they are worried about. Then you drag each one onto a grid: how likely is it, and how bad would it be?",
         "bullet2": "For the risks that land in the top right, you write down two things. How to make it less likely, and how to limit the harm if it happens anyway.",

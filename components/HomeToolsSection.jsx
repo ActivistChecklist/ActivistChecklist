@@ -6,39 +6,34 @@ import Link from '@/components/Link';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { TOOLS, TOOLS_HREF } from '@/config/tools';
-import { cn } from '@/lib/utils';
 
 /**
- * Compact teaser for /tools/ near the bottom of the homepage. Four small cards,
- * same card treatment as GuideCard's medium size so the page keeps one visual
- * language, but without the footer CTA row: at this size the whole card is the
- * link and a third line of chrome just makes it noisy.
+ * Compact teaser for /tools/ near the bottom of the homepage.
  *
- * Cards go straight to each tool, the way the checklist cards above go straight
- * to each checklist. The heading's button is the route to /tools/, where the
- * screenshots and the longer explanation are.
+ * Deliberately text only. An icon badge on every card reads as stock template
+ * filler, and four lucide glyphs in tinted squares say nothing the tool's name
+ * doesn't already say. The one glyph that earns its place is the small external
+ * mark after the name: three of the four leave the site, and readers should know
+ * that before they click.
  */
 function ToolCard({ tool }) {
   const t = useTranslations();
-  const { key, icon: Icon, accent, href } = tool;
-  const external = href.startsWith('http');
-  const Indicator = external ? ExternalLink : ArrowRight;
+  const { key, href } = tool;
 
   return (
     <Link href={href} className="group block">
       <Card className="flex h-full flex-col border-primary/10 bg-linear-to-br from-card via-card to-primary/5 transition-all duration-200 ease-in-out hover:scale-101 hover:border-primary/30 hover:shadow-xl dark:to-primary/25">
-        <CardHeader className="space-y-0 p-4">
-          <div className="mb-3 flex items-start justify-between gap-2">
-            <span className={cn('rounded-lg bg-primary/10 p-2', accent)}>
-              <Icon className="h-5 w-5" aria-hidden="true" />
-            </span>
-            <Indicator
-              className="mt-1 h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-300 ease-out group-hover:translate-x-0.5"
-              aria-hidden="true"
-            />
-          </div>
-          <CardTitle className="text-lg">{t(`tools.items.${key}.name`)}</CardTitle>
-          <CardDescription className="pt-1 text-sm">
+        <CardHeader className="space-y-0 p-5">
+          <CardTitle className="text-lg leading-snug">
+            {t(`tools.items.${key}.name`)}
+            {href.startsWith('http') && (
+              <ExternalLink
+                className="ml-1.5 inline-block h-3.5 w-3.5 align-[-0.1em] text-muted-foreground transition-colors group-hover:text-primary"
+                aria-hidden="true"
+              />
+            )}
+          </CardTitle>
+          <CardDescription className="pt-2 text-sm leading-relaxed">
             {t(`tools.items.${key}.short`)}
           </CardDescription>
         </CardHeader>
