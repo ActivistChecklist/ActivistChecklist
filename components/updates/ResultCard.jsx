@@ -33,6 +33,7 @@ import {
   updateYearsFor,
 } from '@/lib/updates/result-logic';
 import { osProductForDevice, latestSupportedOsRelease } from '@/lib/updates/snapshot';
+import { formatMonthYear } from '@/lib/updates/format-date';
 import { buildDisplayLabel } from '@/lib/updates/search';
 import { useAnalytics } from '@/hooks/use-analytics';
 
@@ -113,16 +114,6 @@ function patchStateFor(classification) {
     default:
       return 'patches_unknown';
   }
-}
-
-// Locale-aware "October 2026" formatter. Caller passes the page locale via
-// useLocale() — toLocaleDateString translates the month name accordingly so
-// /es/ users see "octubre 2026" instead of always-English "October 2026".
-function formatMonthYear(iso, locale) {
-  if (!iso) return '';
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return iso;
-  return d.toLocaleDateString(locale, { month: 'long', year: 'numeric' });
 }
 
 function formatYearsAgo(years, t) {
