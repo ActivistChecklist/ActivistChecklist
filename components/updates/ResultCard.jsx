@@ -32,7 +32,7 @@ import {
   latestPickerMajor,
   updateYearsFor,
 } from '@/lib/updates/result-logic';
-import { osProductForDevice } from '@/lib/updates/snapshot';
+import { osProductForDevice, latestSupportedOsRelease } from '@/lib/updates/snapshot';
 import { buildDisplayLabel } from '@/lib/updates/search';
 import { useAnalytics } from '@/hooks/use-analytics';
 
@@ -972,20 +972,27 @@ function FinalSuccessBox({ snapshot, product, release, displayLabel, pickedOptio
       })
     : t('updates.result.finalSuccess.deviceCheck', { label: displayLabel });
 
+  // Guard the word "latest". The picker is scoped to the majors this device can run,
+  // so its top row is not always the family's current major (an iPhone 8 tops out at
+  // iOS 16). Confirming the newest patch of that major is a real pass for that device,
+  // but calling it "the latest version" of iOS is simply false, and it reads as "you
+  // have nothing left to do" to someone whose next step is new hardware.
+  const familyLatest = product.kind === 'os' ? null : latestSupportedOsRelease(osProduct);
+  const isFamilyLatest = !familyLatest || !pickedOption
+    || parseFloat(familyLatest.id) <= pickedOption.major;
+
   let osLine;
   if (pickedOption && osLabel) {
     // For OSes without point versions (Android), the major IS the version they confirm.
     const versionLabel = pickedOption.latestVersion || String(pickedOption.major);
-    osLine = pickedOption.codename
-      ? t('updates.result.finalSuccess.osCheckCodename', {
-          os: osLabel,
-          version: versionLabel,
-          codename: pickedOption.codename,
-        })
-      : t('updates.result.finalSuccess.osCheck', {
-          os: osLabel,
-          version: versionLabel,
-        });
+    const key = pickedOption.codename
+      ? (isFamilyLatest ? 'osCheckCodename' : 'osCheckDeviceMaxCodename')
+      : (isFamilyLatest ? 'osCheck' : 'osCheckDeviceMax');
+    osLine = t(`updates.result.finalSuccess.${key}`, {
+      os: osLabel,
+      version: versionLabel,
+      codename: pickedOption.codename,
+    });
   } else {
     osLine = t('updates.result.finalSuccess.osCheckNoVersion');
   }
@@ -1032,6 +1039,7 @@ function OsNeedsUpdateBox({
   snapshot,
   product,
   uncertain = false,
+  pickedOption = null,
   latestOption = null,
   onDidUpdate,
   onNoUpdatesAvailable,
@@ -1050,6 +1058,16 @@ function OsNeedsUpdateBox({
   const heading = uncertain
     ? t('updates.result.osNeedsUpdate.headingMaybe')
     : t('updates.result.osNeedsUpdate.heading');
+
+  const majorBehindLine = (() => {
+    if (!osLabel || !pickedOption || !latestOption) return null;
+    if (pickedOption.major >= latestOption.major) return null;
+    return t('updates.result.osNeedsUpdate.newerMajorAvailable', {
+      os: osLabel,
+      latestMajor: latestOption.major,
+      currentMajor: pickedOption.major,
+    });
+  })();
 
   const noUpdatesLabel = (() => {
     if (!uncertain || !latestOption || !osLabel) return null;
@@ -1076,6 +1094,13 @@ function OsNeedsUpdateBox({
           <p className="text-base text-foreground/80">
             {t('updates.result.osNeedsUpdate.body')}
           </p>
+
+          {/* Name the gap when the user is a whole major behind rather than a few
+              patches. "Update to the latest version" is not actionable enough when the
+              action is a major upgrade the user may not know exists. */}
+          {majorBehindLine ? (
+            <p className="text-base text-foreground/80">{majorBehindLine}</p>
+          ) : null}
 
           {updatePath ? (
             <div className="space-y-2 pt-1">
@@ -1152,9 +1177,16 @@ function DeviceSupported({ snapshot, product, release, classification, onReset }
   const showSecond = useDelayedMount(STAGGER_SECOND_MS);
   const showThird = useDelayedMount(STAGGER_THIRD_MS);
 
+  // "I'm on the newest patch of major X" is only a clean bill of health when X is the
+  // newest major the picker offered. Confirming the top patch of a superseded major
+  // (iOS 26.7 while iOS 27 is out and offered above it) means the user is fully patched
+  // on a branch that has been replaced: Apple backports some fixes there but lands
+  // actively-exploited ones on the current major first, so a major upgrade is still
+  // outstanding. Route it to the needs-update box instead of the green success box.
   function pickLatest(opt) {
     setPickedOption(opt);
-    setStep('success');
+    const onSupersededMajor = Boolean(latestOption && opt && opt.major < latestOption.major);
+    setStep(onSupersededMajor ? 'needs-update' : 'success');
   }
   // `uncertain` distinguishes "I clicked Older than X.Y.Z" (we know roughly where they
   // sit) from "I clicked Not sure" (we don't, so the box softens its language and adds
@@ -1164,6 +1196,10 @@ function DeviceSupported({ snapshot, product, release, classification, onReset }
     setStep(opt ? 'needs-update' : 'needs-update-uncertain');
   }
   function didUpdate() {
+    // "Done, I've updated" means they are now on the newest version the picker offered.
+    // Carrying the old pick through would render "you're on iOS 26.7" in the success
+    // box immediately after they told us they upgraded off it.
+    setPickedOption(latestOption);
     setStep('success');
   }
   function declareNoUpdatesAvailable() {
@@ -1235,6 +1271,7 @@ function DeviceSupported({ snapshot, product, release, classification, onReset }
                 snapshot={snapshot}
                 product={product}
                 uncertain={step === 'needs-update-uncertain'}
+                pickedOption={pickedOption}
                 latestOption={latestOption}
                 onDidUpdate={didUpdate}
                 onNoUpdatesAvailable={declareNoUpdatesAvailable}

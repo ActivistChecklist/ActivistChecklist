@@ -30,6 +30,8 @@ const { loadEnvConfig } = pkg;
 loadEnvConfig(process.cwd(), process.env.NODE_ENV !== 'production');
 
 import { deriveMacProductsFromSofa } from '../lib/updates/sofa-macos.js';
+import { normalizeSnapshot } from '../lib/updates/snapshot.js';
+import { auditSnapshotOsCaps, formatOsCapFinding } from '../lib/updates/os-cap-audit.js';
 import {
   diffSofaWatchlist,
   mergeLegacyAndSofa,
@@ -525,6 +527,27 @@ async function main() {
     source: 'https://endoflife.date/api/v1/',
     products,
   };
+
+  // endoflife.date's per-device OS ceiling lives in a hand-maintained `custom`
+  // field that lags the OS product when a new major ships. The /updates page
+  // treats that ceiling as ground truth, so a lag makes us tell people on current
+  // hardware that their device has hit its OS ceiling. The UI now degrades
+  // gracefully on its own (lib/updates/os-cap-audit.js), but a finding here means
+  // upstream needs a nudge — so say so loudly rather than sitting on it.
+  //
+  // Not fatal: shipping a build with a detected-and-handled lag beats shipping no
+  // build at all, and the condition clears itself when upstream catches up.
+  const capFindings = auditSnapshotOsCaps(normalizeSnapshot(snapshot));
+  if (capFindings.length > 0) {
+    console.error(
+      `⚠️  ${capFindings.length} product line(s) look one major behind upstream:\n` +
+      capFindings.map((f) => `   - ${formatOsCapFinding(f)}`).join('\n') + '\n' +
+      `   A line still shipping hardware should have a model that runs the newest OS.\n` +
+      `   Check the product's \`custom.supported*Versions\` fields on endoflife.date and\n` +
+      `   open a PR there if they are stale. The site suppresses its max-OS warning and\n` +
+      `   widens the OS picker for these lines until the ceiling catches up.`
+    );
+  }
 
   const json = JSON.stringify(snapshot, null, 2);
 
