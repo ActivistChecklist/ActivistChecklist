@@ -1275,3 +1275,16 @@ describe('stale OS ceiling (endoflife.date lag after a new major ships)', () => 
     expect(buildDeviceMaxOsWarning(snap, product, release, reminder, STALE_NOW).kind).toBe('older-os');
   });
 });
+
+describe('buildAppleSupportEstimate — estimated release dates', () => {
+  it('declines to project a support window off an inferred launch date', () => {
+    // Macs whose marketing name carries no year get a date inferred from the oldest
+    // macOS they boot (see sofa-macos.js). Good enough to sort by, not good enough to
+    // turn into "about N more years" next to a green check.
+    const product = deviceProduct({ formFactor: 'laptop' });
+    const dated = release({ releaseDate: '2025-09-15' });
+    const estimated = release({ releaseDate: '2025-09-15', releaseDateIsEstimate: true });
+    expect(buildAppleSupportEstimate(product, dated, NOW)).not.toBeNull();
+    expect(buildAppleSupportEstimate(product, estimated, NOW)).toBeNull();
+  });
+});

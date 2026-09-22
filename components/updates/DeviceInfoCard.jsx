@@ -37,7 +37,12 @@ export default function DeviceInfoCard({ product, release, onReset, onEdit }) {
     /* fall through */
   }
 
-  const dateText = release.releaseDate ? formatMonthYear(release.releaseDate) : null;
+  // An estimated date (inferred from the oldest OS the model runs, for Macs whose
+  // marketing name carries no year) is good enough to sort by and not good enough
+  // to print. Fall through to the no-date subtitle rather than state a guess.
+  const dateText = release.releaseDate && !release.releaseDateIsEstimate
+    ? formatMonthYear(release.releaseDate)
+    : null;
   const subtitle = dateText
     ? t('updates.result.deviceInfo.manufacturerLine', { manufacturer, date: dateText })
     : manufacturer

@@ -29,7 +29,7 @@ const { loadEnvConfig } = pkg;
 // both export NODE_ENV=production) see the production env file.
 loadEnvConfig(process.cwd(), process.env.NODE_ENV !== 'production');
 
-import { deriveMacProductsFromSofa } from '../lib/updates/sofa-macos.js';
+import { deriveMacProductsFromSofa, sofaTrackingFloor } from '../lib/updates/sofa-macos.js';
 import { normalizeSnapshot } from '../lib/updates/snapshot.js';
 import { auditSnapshotOsCaps, formatOsCapFinding } from '../lib/updates/os-cap-audit.js';
 import {
@@ -463,6 +463,16 @@ async function main() {
   // expect to see; any expected entry missing from SOFA fires a drop alert
   // (move it to the legacy file). Any SOFA entry not in the watchlist is logged
   // as informational (add it to the watchlist when you want drop-detection).
+  // SOFA gives us no hardware release dates, and Apple's M5 marketing names no
+  // longer carry a year. Hand the macOS majors we just fetched to the derivation so
+  // an undated model can fall back to "no earlier than the oldest macOS it boots".
+  const macosProduct = products.find((p) => p.id === 'macos');
+  const macosReleaseDates = Object.fromEntries(
+    (macosProduct?.releases || [])
+      .filter((r) => r.releaseDate)
+      .map((r) => [String(parseFloat(r.id)), r.releaseDate])
+  );
+
   const legacyModels = await readLegacyMacModels();
   const watchlist = await readSofaWatchlist();
   let macProducts = [];
@@ -487,7 +497,12 @@ async function main() {
       );
     }
     const merged = mergeLegacyAndSofa(legacyModels, sofaModels);
-    macProducts = deriveMacProductsFromSofa(merged);
+    // Floor measured on the raw feed, before the legacy file's pre-window majors
+    // are merged in — see deriveMacProductsFromSofa.
+    macProducts = deriveMacProductsFromSofa(merged, {
+      macosReleaseDates,
+      trackingFloor: sofaTrackingFloor(sofaModels),
+    });
     const legacyOnly = sofaIds.length === 0
       ? Object.keys(stripDocKeys(legacyModels)).length
       : Object.keys(stripDocKeys(legacyModels)).filter((id) => !sofaIds.includes(id)).length;
@@ -500,7 +515,7 @@ async function main() {
     console.error(`SOFA fetch failed: ${err.message}; using legacy-only data + previous snapshot`);
     // Even when SOFA is unreachable the legacy file still gives us 2013-era
     // coverage, which is better than the empty set.
-    macProducts = deriveMacProductsFromSofa(stripDocKeys(legacyModels));
+    macProducts = deriveMacProductsFromSofa(stripDocKeys(legacyModels), { macosReleaseDates });
     const fromPrevious = MAC_PRODUCT_IDS.map((id) => previousById.get(id)).filter(Boolean);
     const legacyIds = new Set(macProducts.map((p) => p.id));
     for (const stale of fromPrevious) {
