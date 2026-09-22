@@ -41,7 +41,7 @@
     },
     "emergency": {
       "title": "Planificación de emergencia",
-      "description": "Arma una red de apoyo de emergencia por si te detienen o te amenazan."
+      "description": "Arma una red de apoyo de emergencia en caso de detención o amenazas."
     },
     "secondary": {
       "title": "Teléfono secundario",
@@ -52,8 +52,8 @@
       "label": "Eliminar rastreo de enlaces"
     },
     "policeDoorPoster": {
-      "title": "Póster \"Los cops en la puerta\"",
-      "label": "Póster \"Los cops en la puerta\""
+      "title": "Póster \"La poli en la puerta\"",
+      "label": "Póster \"La poli en la puerta\""
     },
     "flyer": {
       "title": "Volante imprimible",
@@ -100,7 +100,7 @@
   },
   "trustPoints": {
     "experienceTitle": "Hecho desde la experiencia",
-    "experienceDescription": "Nuestras guías se basan en el trabajo real de organización y en los comentarios directos de activistas. Aunque cada situación es única, buscamos compartir ideas prácticas que puedan ayudarte a tomar decisiones.",
+    "experienceDescription": "Nuestras guías se basan en trabajo real de organización y comentarios directos de activistas. Aunque cada situación es única, buscamos compartir ideas prácticas que ayuden a informar tus decisiones.",
     "updatedTitle": "Actualizado con regularidad",
     "updatedDescription": "Nuestro contenido lo revisan regularmente organizadores que entienden las preocupaciones de seguridad. Trabajamos para mantener la información al día a medida que cambian los riesgos y las tecnologías."
   },
@@ -635,6 +635,7 @@
         "heading": "Tu sistema operativo necesita una actualización",
         "headingMaybe": "Tu sistema operativo podría necesitar una actualización",
         "body": "Actualiza a la versión más reciente para obtener las actualizaciones de seguridad más nuevas.",
+        "newerMajorAvailable": "{os} {latestMajor} is now available. You are fully patched on {os} {currentMajor}, but that release has been superseded, and fixes for actively exploited flaws land on the newest version first.",
         "howToHeading": "Cómo actualizar:",
         "didUpdateButton": "Listo, ya actualicé",
         "noUpdatesAvailableButton": "No hay actualizaciones disponibles y estoy en una versión más antigua que {os} {major}",
@@ -647,6 +648,8 @@
         "deviceCheckUntil": "{label} recibe actualizaciones de seguridad hasta {date}.",
         "osCheck": "{os} tiene la versión más reciente ({version}).",
         "osCheckCodename": "{os} {version} ({codename}) es la última versión.",
+        "osCheckDeviceMax": "{os} {version} is the newest version this device can run.",
+        "osCheckDeviceMaxCodename": "{os} {version} ({codename}) is the newest version this device can run.",
         "osCheckNoVersion": "El sistema operativo está al día.",
         "osLatestUpdates": "Tienes las actualizaciones de seguridad más recientes instaladas para {label}.",
         "osLatestUpdatesWithVersion": "Tienes las actualizaciones de seguridad más recientes instaladas ({os} {version}).",
