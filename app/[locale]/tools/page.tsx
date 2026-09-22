@@ -160,8 +160,6 @@ function ToolRow({ tool, tinted, reversed, t }) {
               </Button>
             )}
           </div>
-
-          <p className="mt-3 text-xs text-muted-foreground">{item('meta')}</p>
         </div>
 
         <div className="min-w-0 lg:w-[63%] lg:grow">

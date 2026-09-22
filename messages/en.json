@@ -676,7 +676,6 @@
         "bullet2": "For the risks that land in the top right, you write down two things. How to make it less likely, and how to limit the harm if it happens anyway.",
         "bullet3": "Share it with your group over an end-to-end encrypted link, or export a PDF for the people who were not at the meeting.",
         "cta": "Open Risk Mapper",
-        "meta": "riskmapper.app",
         "shotAlt": "Risk Mapper mid-session, with risks placed on a grid of how likely they are and how bad they would be."
       },
       "socialScrub": {
@@ -688,7 +687,6 @@
         "bullet3": "It remembers where you left off, so you can do a few accounts at a time.",
         "cta": "Open Social Scrub",
         "secondaryCta": "Doxxing defense guide",
-        "meta": "socialscrub.app",
         "shotAlt": "A sample profile before and after a scrub. The name, photo, username, bio, friends list and location are all changed or hidden."
       },
       "updates": {
@@ -699,7 +697,6 @@
         "bullet2": "Once a device stops getting updates, every new security hole in it stays open. That makes it much easier for spyware, a hacker, or police forensics tools to get in.",
         "bullet3": "Covers Apple, Google, Samsung, Motorola, OnePlus, and Nokia devices, plus iOS, Android, macOS, and Windows.",
         "cta": "Check my device",
-        "meta": "Data from endoflife.date",
         "shotAlt": "The update checker reporting that a searched phone stopped getting security updates, with advice on what to do about it."
       },
       "autoDelete": {
@@ -710,7 +707,6 @@
         "bullet2": "Star the chats you want to keep and it leaves them alone. It can ask you first, or run on its own.",
         "bullet3": "It records how many chats it deleted, not which ones. Nothing gets sent to us.",
         "cta": "Add to Chrome",
-        "meta": "Chrome Web Store. Works on claude.ai.",
         "shotAlt": "The extension set to delete chats older than 30 days every week, with the bar it shows on claude.ai when deletions are waiting."
       }
     },
