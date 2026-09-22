@@ -139,7 +139,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",
-    "@types/node": "26.6.1",
+    "@types/node": "26.6.2",
     "@types/react": "19.3.0",
     "chalk": "^6.0.0",
     "cheerio": "^1.2.0",
@@ -160,7 +160,7 @@
     "satori": "^0.33.4",
     "sharp": "^0.35.4",
     "tailwindcss": "^4.3.3",
-    "tsx": "^4.23.13",
+    "tsx": "^4.23.14",
     "typescript": "6.0.3",
     "vite": "^8.3.0",
     "vitest": "^5.0.1"
