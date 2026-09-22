@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { setRequestLocale, getTranslations } from 'next-intl/server';
-import { ArrowRight, Check, ExternalLink, LayoutGrid, Smartphone, Trash2, UserX } from 'lucide-react';
+import { ArrowRight, Check, ExternalLink } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import PageNotices from '@/components/layout/PageNotices';
 import Link from '@/components/Link';
@@ -13,59 +13,16 @@ import AutoDeleteShot from '@/components/tools/AutoDeleteShot';
 import { DEFAULT_LOCALE } from '@/lib/i18n-config';
 import { getBaseUrl } from '@/lib/utils';
 import { getOgImagePathForSlug } from '@/lib/og-image';
+import { TOOLS } from '@/config/tools';
 import { cn } from '@/lib/utils';
 
-const CHROME_STORE_URL =
-  'https://chromewebstore.google.com/detail/ai-chat-history-auto-dele/ipmoefogkkpbgpbniklknonnmbmcbnpk';
-
-/**
- * Order here is the order on the page. `accent` colors the eyebrow icon and the
- * bullet checks only: the eyebrow label itself stays muted-foreground because
- * the alternating `bg-muted` panels don't leave enough contrast for small
- * colored text (primary and success both land near 4.1:1 on it).
- *
- * `secondaryHref` is optional. Only Social Scrub has one, because the doxxing
- * checklist is the thing you actually want to read alongside it.
- */
-const TOOLS = [
-  {
-    key: 'riskMapper',
-    id: 'risk-mapper',
-    icon: LayoutGrid,
-    accent: 'text-primary',
-    href: 'https://riskmapper.app',
-    shotUrl: 'riskmapper.app',
-    Shot: RiskMapperShot,
-  },
-  {
-    key: 'socialScrub',
-    id: 'social-scrub',
-    icon: UserX,
-    accent: 'text-success',
-    href: 'https://socialscrub.app',
-    secondaryHref: '/doxxing/',
-    shotUrl: 'socialscrub.app',
-    Shot: SocialScrubShot,
-  },
-  {
-    key: 'updates',
-    id: 'update-checker',
-    icon: Smartphone,
-    accent: 'text-error',
-    href: '/updates/',
-    shotUrl: 'activistchecklist.org/updates',
-    Shot: UpdateCheckerShot,
-  },
-  {
-    key: 'autoDelete',
-    id: 'ai-chat-auto-delete',
-    icon: Trash2,
-    accent: 'text-info',
-    href: CHROME_STORE_URL,
-    shotUrl: 'AI chat auto-delete · Settings',
-    Shot: AutoDeleteShot,
-  },
-];
+/** Each tool's illustration. Everything else about them lives in config/tools. */
+const SHOTS = {
+  riskMapper: RiskMapperShot,
+  socialScrub: SocialScrubShot,
+  updates: UpdateCheckerShot,
+  autoDelete: AutoDeleteShot,
+};
 
 function isExternal(href) {
   return href.startsWith('http');
@@ -104,7 +61,8 @@ export async function generateMetadata({ params }) {
 }
 
 function ToolRow({ tool, tinted, reversed, t }) {
-  const { key, id, icon: Icon, accent, href, secondaryHref, shotUrl, Shot } = tool;
+  const { key, id, icon: Icon, accent, href, secondaryHref, shotUrl } = tool;
+  const Shot = SHOTS[key];
   const item = (field) => t(`tools.items.${key}.${field}`);
 
   return (

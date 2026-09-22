@@ -125,6 +125,9 @@
     "trustDescription": "We built this because digital security shouldn't be overwhelming. We take a harm reduction approach: start where you are and do what you can.",
     "latestNewsHeading": "Latest Surveillance News",
     "viewAllNews": "View all news",
+    "toolsHeading": "Tools we built",
+    "toolsDescription": "Free tools we made to go along with the checklists, for the steps that are hard to finish on your own.",
+    "viewAllTools": "See all tools",
     "recentUpdatesHeading": "Recent Site Updates",
     "viewAllUpdates": "View all updates",
     "noRecentChanges": "No recent changes available"
@@ -671,6 +674,7 @@
       "riskMapper": {
         "eyebrow": "Plan an action",
         "name": "Risk Mapper",
+        "short": "Map out what could go wrong before an action, with your group.",
         "lede": "Work out what could go wrong before an action, and decide what your group will do about it.",
         "bullet1": "Everyone adds the risks they are worried about. Then you drag each one onto a grid: how likely is it, and how bad would it be?",
         "bullet2": "For the risks that land in the top right, you write down two things. How to make it less likely, and how to limit the harm if it happens anyway.",
@@ -681,6 +685,7 @@
       "socialScrub": {
         "eyebrow": "Lock down your profiles",
         "name": "Social Scrub",
+        "short": "Lock down your social media accounts, one at a time.",
         "lede": "Walks you through the same eight privacy steps on every social media account you have.",
         "bullet1": "Pick your platforms from a list of 130 sites, including the ones you forgot about. Add any we missed.",
         "bullet2": "For each account: delete it or keep it, change your display name and username, remove your photo, take your location and employer out of your bio, and lock down your privacy settings.",
@@ -692,6 +697,7 @@
       "updates": {
         "eyebrow": "Check your device",
         "name": "Security update checker",
+        "short": "Check whether your phone still gets security updates.",
         "lede": "Find out whether your phone, tablet, or laptop is still getting security updates.",
         "bullet1": "Type in your model. If you do not know it, the page shows you where to find it in your settings.",
         "bullet2": "Once a device stops getting updates, every new security hole in it stays open. That makes it much easier for spyware, a hacker, or police forensics tools to get in.",
@@ -702,6 +708,7 @@
       "autoDelete": {
         "eyebrow": "Delete old AI chats",
         "name": "AI chat auto-delete",
+        "short": "Delete your old Claude chats on a schedule.",
         "lede": "A Chrome extension that deletes your old Claude conversations on a schedule you set.",
         "bullet1": "You pick how long to keep them. Anything older than 30 days is the default.",
         "bullet2": "Star the chats you want to keep and it leaves them alone. It can ask you first, or run on its own.",

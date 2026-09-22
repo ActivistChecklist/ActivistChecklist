@@ -10,6 +10,7 @@ import { cn, getBaseUrl } from '@/lib/utils';
 import { NAV_ITEMS, SECURITY_CHECKLISTS } from '@/config/navigation';
 import ChangeLogRecentEntries from '@/components/ChangeLogRecentEntries';
 import GuideCard from '@/components/GuideCard';
+import HomeToolsSection from '@/components/HomeToolsSection';
 import Markdown from '@/components/Markdown';
 import { useTranslations } from 'next-intl';
 import { useLocale } from 'next-intl';
@@ -150,6 +151,9 @@ export default function HomePageContent({ children, changelogEntries = [], lates
 
           {/* Latest News — loaded in server component HomeNewsSection (see app/[locale]/page.tsx) */}
           {children}
+
+          {/* Tools */}
+          <HomeToolsSection />
 
           {/* Recent Updates */}
           <section>
