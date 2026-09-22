@@ -58,16 +58,18 @@ export default function HomePageContent({ children, changelogEntries = [], lates
             <header className={cn(
               "not-prose relative left-1/2 w-dvw max-w-none -translate-x-1/2",
               "relative mb-16 -mt-8 pt-16 pb-32 px-4 overflow-hidden",
-              /* v4: use bg-radial / bg-linear-to-* so from/via/to populate --tw-gradient-stops */
-              "bg-radial-[ellipse_at_top] from-primary/20 via-background to-background",
-              "before:content-[''] before:fixed before:inset-0 before:bg-linear-to-r before:from-primary/10 before:via-accent/5 before:to-primary/10 before:opacity-70 before:pointer-events-none"
+              /* Inverted band, the same move as InlineCta: dark ground and light
+                 type in light mode, primary-tinted in dark mode. The slant into
+                 the page below reads much harder this way. */
+              "bg-foreground text-background dark:bg-primary/15 dark:text-foreground"
             )}>
-              <div className="absolute inset-0 bg-linear-to-r from-primary/10 via-accent/5 to-primary/10 opacity-70" />
+              {/* v4: use bg-radial / bg-linear-to-* so from/via/to populate --tw-gradient-stops */}
+              <div className="absolute inset-0 bg-radial-[ellipse_at_top] from-primary/40 via-transparent to-transparent dark:from-primary/25" />
               <div className="relative max-w-4xl mx-auto text-center">
-                <h1 className="text-5xl md:text-6xl font-heavy mb-6 bg-linear-to-br from-primary via-primary to-primary/70 bg-clip-text text-transparent text-balance">
+                <h1 className="text-5xl md:text-6xl font-heavy mb-6 text-balance text-background dark:bg-linear-to-br dark:from-primary dark:via-primary dark:to-primary/70 dark:bg-clip-text dark:text-transparent">
                   {t('hero.title')}
                 </h1>
-                <p className="text-xl md:text-2xl mb-10 text-muted-foreground max-w-2xl mx-auto">
+                <p className="text-xl md:text-2xl mb-10 text-background/80 dark:text-muted-foreground max-w-2xl mx-auto">
                   {t('hero.description')}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -86,7 +88,7 @@ export default function HomePageContent({ children, changelogEntries = [], lates
                   </Button>
                 </div>
                 {latestMajorBodyText && (
-                  <div className="mt-8 text-muted-foreground">
+                  <div className="mt-8 text-background/75 dark:text-muted-foreground [&_a]:text-inherit">
                     <Sparkles className="h-4 w-4 inline mr-1" />
                     <Markdown content={latestMajorBodyText} isProse={false} inlineOnly={true} />
                   </div>

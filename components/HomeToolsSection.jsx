@@ -5,16 +5,20 @@ import { useTranslations } from 'next-intl';
 import Link from '@/components/Link';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import ToolThumb from '@/components/tools/ToolThumb';
 import { TOOLS, TOOLS_HREF } from '@/config/tools';
 
 /**
  * Compact teaser for /tools/ near the bottom of the homepage.
  *
- * Deliberately text only. An icon badge on every card reads as stock template
- * filler, and four lucide glyphs in tinted squares say nothing the tool's name
- * doesn't already say. The one glyph that earns its place is the small external
- * mark after the name: three of the four leave the site, and readers should know
- * that before they click.
+ * Each card opens with a small preview distilled from that tool's full
+ * illustration on /tools/ (see ToolThumb). Not an icon badge: a heat grid, a
+ * before and after pair, an alert, a list of chats clearing out. They give the
+ * card a bit of the tool's character without pretending to be a screenshot.
+ *
+ * The one glyph that earns its place is the small external mark after the name:
+ * three of the four leave the site, and readers should know that before they
+ * click.
  */
 function ToolCard({ tool }) {
   const t = useTranslations();
@@ -22,7 +26,8 @@ function ToolCard({ tool }) {
 
   return (
     <Link href={href} className="group block">
-      <Card className="flex h-full flex-col border-primary/10 bg-linear-to-br from-card via-card to-primary/5 transition-all duration-200 ease-in-out hover:scale-101 hover:border-primary/30 hover:shadow-xl dark:to-primary/25">
+      <Card className="flex h-full flex-col overflow-hidden border-primary/10 bg-linear-to-br from-card via-card to-primary/5 transition-all duration-200 ease-in-out hover:scale-101 hover:border-primary/30 hover:shadow-xl dark:to-primary/25">
+        <ToolThumb toolKey={key} />
         <CardHeader className="space-y-0 p-5">
           <CardTitle className="text-lg leading-snug">
             {t(`tools.items.${key}.name`)}
