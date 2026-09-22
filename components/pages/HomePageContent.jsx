@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Shield, Users, ArrowRight, Sparkles, Check } from 'lucide-react';
+import { Shield, Users, ArrowRight, Sparkles } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import PageNotices from '@/components/layout/PageNotices';
 import { Card, CardHeader, CardFooter, CardTitle, CardDescription } from '@/components/ui/card';
@@ -68,7 +68,7 @@ export default function HomePageContent({ children, changelogEntries = [], lates
           <div className="">
             <header className={cn(
               "not-prose relative left-1/2 w-dvw max-w-none -translate-x-1/2",
-              "relative mb-16 -mt-8 py-16 px-4 overflow-hidden",
+              "relative mb-16 -mt-8 pt-16 pb-32 px-4 overflow-hidden",
               /* v4: use bg-radial / bg-linear-to-* so from/via/to populate --tw-gradient-stops */
               "bg-radial-[ellipse_at_top] from-primary/20 via-background to-background",
               "before:content-[''] before:fixed before:inset-0 before:bg-linear-to-r before:from-primary/10 before:via-accent/5 before:to-primary/10 before:opacity-70 before:pointer-events-none"
@@ -103,6 +103,7 @@ export default function HomePageContent({ children, changelogEntries = [], lates
                   </div>
                 )}
               </div>
+              <div className="diagonal-edge diagonal-edge-below absolute bottom-0 left-0 bg-background" />
             </header>
           </div>
 
@@ -173,7 +174,7 @@ export default function HomePageContent({ children, changelogEntries = [], lates
           </section>
 
           {/* Recent Updates */}
-          <section className="mb-16">
+          <section>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold">{t('homepage.recentUpdatesHeading')}</h2>
               <Button asChild variant="outline" size="sm">

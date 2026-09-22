@@ -1,4 +1,6 @@
 allowBuilds:
+  # pnpm 12 will not run a git-hosted package's prepare scripts off a bare name. ERR_PNPM_GIT_DEP_PREPARE_NOT_ALLOWED wants the resolved tarball URL, commit SHA and all, so the allowance names one immutable tree rather than "whatever that ref points at today". It must be updated in lockstep with the `github:...#<sha>` spec in package.json; the bare-name entry below stays for the published copy of the same package.
+  "@activistchecklist/umami-extra-privacy@https://codeload.github.com/ActivistChecklist/umami-extra-privacy/tar.gz/7669154d772ecbf3410c1243e8014ac8a0e74c5e": true
   "@activistchecklist/umami-extra-privacy": true
   '@parcel/watcher': true
   '@swc/core': true
@@ -13,140 +15,74 @@ onlyBuiltDependencies:
   - sharp
 
 overrides:
+  # ── FORMATTING RULE, READ FIRST ──────────────────────────────────────
+  # Keep every unbroken run of comment lines under 32. pnpm 12's Rust YAML parser (granit-parser) buffers at most 32 consecutive comments while it resolves an ambiguous collection entry, then fails the whole install with "too many consecutive comments before resolving collection entry". Blank lines do NOT reset the counter, only a real entry does. So write long unwrapped lines here, never a wrapped-at-76-columns essay. (granit-parser 1.2 made this a tunable that defaults to 96, but pnpm is on the fixed-32 behavior, so assume 32.)
+  #
   # ── Why this block exists ────────────────────────────────────────────
-  # Dependabot cannot fix a transitive-only dependency for us. Its npm
-  # updater fixes a transitive vuln by bumping the PARENT to a release that
-  # already depends on a patched version. It does not do lockfile-only
-  # bumps, and it will not write a pnpm override. So when the parent has no
-  # such release -- ajv is already latest; next and pm2 ship pinned old
-  # copies -- the alert just sits open with "Dependabot cannot update X to a
-  # non-vulnerable version", forever, with no PR.
+  # Dependabot cannot fix a transitive-only dependency for us. Its npm updater fixes a transitive vuln by bumping the PARENT to a release that already depends on a patched version; it does not do lockfile-only bumps, and it will not write a pnpm override. So when the parent has no such release (ajv is already latest; next and pm2 ship pinned old copies) the alert just sits open forever with "Dependabot cannot update X to a non-vulnerable version" and no PR.
+  # Every entry below is a hand-applied fix for exactly that, and the counterpart to the ignore rules in .github/dependabot.yml: those record upgrades we DECLINED, these record upgrades Dependabot could not OFFER. They are floors, never ceilings. A hold belongs in dependabot.yml.
   #
-  # Every entry below is a hand-applied fix for exactly that. It is the
-  # counterpart to the ignore rules in .github/dependabot.yml: those record
-  # upgrades we DECLINED, these record upgrades Dependabot could not OFFER.
+  # ── Reach for an override LAST ───────────────────────────────────────
+  # Only when a parent's range actually CAPS us below the fix. Usually the parent already allows the patched version and the lockfile is merely stuck on an old entry, because pnpm never re-resolves an existing entry on a plain install. That case needs no override, just the lockfile-only bump Dependabot refuses to do:
+  #     pnpm update <pkg> [<pkg>...]
+  # It leaves package.json alone; verified 2026-09-03 that it moved fast-uri and qs and touched nothing else, and re-verified on pnpm 12.4.1 on 2026-09-19 that package.json still does not move. Drop the old `--depth Infinity`: pnpm 12 rejects a non-integer depth and defaults to unlimited anyway. It is no longer surgical, though. pnpm 12 re-resolves the whole graph, so other stuck entries ride along (a no-op update bumped @keystar/ui 0.9.6 -> 0.10.0 on that same check); read the lockfile diff rather than assuming it only contains what you asked for. Do NOT use `pnpm audit --fix update` for this: on the same tree it ran a broad update and bumped satori's range in package.json while fixing zero vulnerabilities. All ten alerts on the 2026-09-03 sweep (fast-uri x8, qs x2) were this case, and floors for them would have been four lines of permanent debt in exchange for a one-time nudge.
   #
-  # But reach for an override LAST, and only when a parent's range actually
-  # CAPS us below the fix. Usually the parent allows the patched version
-  # and the lockfile is merely stuck on an old entry, because pnpm never
-  # re-resolves an existing entry on a plain install. That case needs no
-  # override at all -- it needs a targeted nudge:
-  #
-  #     pnpm update --depth Infinity <pkg> [<pkg>...]
-  #
-  # which is the lockfile-only bump Dependabot refuses to do. It leaves
-  # package.json alone; verified 2026-09-03 that it moved fast-uri and qs
-  # and touched nothing else. Do NOT use `pnpm audit --fix update` for
-  # this -- on the same tree it ran a broad update and bumped satori's
-  # range in package.json while fixing zero vulnerabilities.
-  #
-  # All ten alerts on the 2026-09-03 sweep (fast-uri x8, qs x2) were this
-  # case. Floors for them would have been four lines of permanent debt in
-  # exchange for a one-time nudge.
-  #
-  # These are floors, never ceilings. A hold belongs in dependabot.yml.
-  #
-  # ── None of these are permanent. How to retire one ───────────────────
-  # Parents catch up, and a stale override silently forces a major on some
-  # transitive consumer for no reason. The check is the same for every
-  # entry and takes about a minute:
-  #
-  #   1. comment the line out
-  #   2. pnpm install --lockfile-only
-  #   3. pnpm audit --audit-level=low
-  #   4. git checkout pnpm-lock.yaml   (then re-install for real)
-  #
-  # If audit is clean, the override is dead -- delete it. Each entry below
-  # records who is capping the version, so you can tell whether re-testing
-  # is even worth it.
-  #
-  # Last swept 2026-09-03, against pnpm 11.4.0 / next 15.5.23 / pm2 7.0.3.
-  # That sweep deleted 16 of 20 entries and added none. Expect that rot
-  # rate: the default answer to "should this be an override?" is no.
+  # ── How to retire one ────────────────────────────────────────────────
+  # None of these are permanent. Parents catch up, and a stale override silently forces a major on some transitive consumer for no reason. The check is the same for every entry and takes about a minute: (1) comment the line out, (2) `pnpm install --lockfile-only`, (3) `pnpm audit --audit-level=low`, (4) `git checkout pnpm-lock.yaml`, then re-install for real. If audit is clean the override is dead, so delete it. Each entry below records who is capping the version, so you can tell whether re-testing is even worth it.
+  # Last swept 2026-09-03, against pnpm 11.4.0 / next 15.5.23 / pm2 7.0.3. That sweep deleted 16 of 20 entries and added none. Expect that rot rate: the default answer to "should this be an override?" is no.
   # ─────────────────────────────────────────────────────────────────────
 
-  # NOT a security floor. 1.3.3 is current latest stable. Guards against a
-  # stale parallel node_modules resolving an old copy ("createSlot is not
-  # exported"); see the outputFileTracingRoot note in next.config.js.
-  # Delete it when: never, unless outputFileTracingRoot stops pointing
-  # outside this directory.
+  # NOT a security floor. 1.3.3 is current latest stable. Guards against a stale parallel node_modules resolving an old copy ("createSlot is not exported"); see the outputFileTracingRoot note in next.config.js.
+  # Delete it when: never, unless outputFileTracingRoot stops pointing outside this directory.
   "@radix-ui/react-slot": "1.3.3"
 
-  # next@15.5.23 bundles postcss 8.4.31. Four advisories apply to it, the
-  # newest fixed in 8.5.23 (GHSA-fxqj-rqcc-2cmp, GHSA-r28c-9q8g-f849).
-  # Resolves to 8.5.26 (our own direct devDependency) with this in place.
-  # Delete it when: `npm view next@latest dependencies | grep postcss` is
-  # >=8.5.23 and we are on that Next.
+  # next@15.5.23 bundles postcss 8.4.31. Four advisories apply to it, the newest fixed in 8.5.23 (GHSA-fxqj-rqcc-2cmp, GHSA-r28c-9q8g-f849). Resolves to 8.5.26 (our own direct devDependency) with this in place.
+  # Delete it when: `npm view next@latest dependencies | grep postcss` is >=8.5.23 and we are on that Next.
   postcss: ">=8.5.23"
 
   # next@15.5.23 bundles sharp 0.34.5 (GHSA-f88m-g3jw-g9cj, fixed 0.35.0).
   # Delete it when: Next's bundled sharp is >=0.35.0.
   sharp: ">=0.35.0"
 
-  # pm2@7.0.3 pins js-yaml 4.3.0 (GHSA-5p4m-2wfm-xmqj, fixed 4.3.1). The
-  # `<5` half is the one exception to "floors, never ceilings" -- it
-  # enforces the js-yaml v5 hold recorded in .github/dependabot.yml (no
-  # default export, dates load as strings), because a bare floor would
-  # resolve straight to v5. The scope is `js-yaml@4` so it cannot touch
-  # gray-matter's js-yaml 3.x, which needs no override.
+  # pm2@7.0.3 pins js-yaml 4.3.0 (GHSA-5p4m-2wfm-xmqj, fixed 4.3.1). The `<5` half is the one exception to "floors, never ceilings": it enforces the js-yaml v5 hold recorded in .github/dependabot.yml (no default export, dates load as strings), because a bare floor would resolve straight to v5. The scope is `js-yaml@4` so it cannot touch gray-matter's js-yaml 3.x, which needs no override.
   # Delete it when: pm2 ships js-yaml >=4.3.1 AND that hold is lifted.
   "js-yaml@4": ">=4.3.1 <5"
 
+  # satori@0.33.4 pins fflate EXACTLY at 0.7.3 (GHSA-px8p-9vwx-vf98, infinite loop in unzipSync on a malformed ZIP64 archive). An exact pin is a hard cap, so an override is the only thing that moves it. satori 0.33.4 is already latest and its main branch still pins 0.7.3, so waiting for upstream is not a plan.
+  # Not reachable today, for the record: the bug is in unzipSync, and the only two consumers here (satori and @shuding/opentype.js) import inflateSync and nothing else. Taken to clear the alert, not to close an exposure.
+  # Deliberately a bare floor even though 0.8.0 carries a breaking change, because the break does not reach us. fflate 0.8.0 changed the synchronous decompress signature: `inflateSync(buf, out)` became `inflateSync(buf, { out })`. Both consumers still call the two-positional-arg form, so on 0.8.x the buffer is parsed as an options object, `out` is undefined, and fflate returns its own buffer while leaving the caller's untouched, silently, no throw. satori discards the return value and reads the buffer.
+  # But that is satori's WOFF1 decoder, and lib/og-image.js feeds it TTF (the .woff2 files in public/fonts are Brotli, for the browser, and never reach satori), so the code path never executes. Verified 2026-09-19 by rendering a real OG image on 0.7.5 and again on 0.8.3: byte-identical PNG, same sha256, plus a clean audit, 2511 tests and a green buildstatic on both.
+  # The residual risk is a latent one and worth knowing: route a .woff through satori and OG images would render from zeroed font tables with a green build, because nothing in __tests__ renders through satori. If that ever becomes a real possibility, add a render smoke test before adding a ceiling here; a ceiling would only hide it.
+  # Delete it when: `npm view satori dependencies | grep fflate` is >=0.8.3.
+  fflate: ">=0.8.3"
+
   # ── Deleted in the 2026-09-03 sweep ──────────────────────────────────
-  # Kept as a record so nobody re-adds one without re-testing. Restated
-  # reasons rot; if you think one is needed again, run the check above.
+  # Kept as a record so nobody re-adds one without re-testing. Restated reasons rot; if you think one is needed again, run the check above.
   #
-  # Package had left the tree entirely -- nothing depended on it any more:
-  #   markdown-it       ">=14.1.1"
-  #   rollup            ">=4.59.0"   (vite 8 uses rolldown)
-  #   systeminformation ">=5.31.0"
-  #   yauzl             ">=3.2.1"
+  # Gone from the tree entirely, nothing depended on them any more: markdown-it ">=14.1.1", rollup ">=4.59.0" (vite 8 uses rolldown), systeminformation ">=5.31.0", yauzl ">=3.2.1".
   #
-  # Never needed: the parent's range already allowed the patched version,
-  # so `pnpm audit --fix update` moved the stuck lockfile entry and that
-  # was the whole fix. Added and removed the same day, 2026-09-03.
+  # Never needed: the parent's range already allowed the patched version, so moving the stuck lockfile entry was the whole fix. Added and removed the same day, 2026-09-03.
   #   qs          ">=6.16.0"      union ^6.4.0, url ^6.12.3 -> 6.16.0
   #   fast-uri@3  ">=3.1.6 <4"    ajv ^3.0.1 -> 3.1.7
   #   fast-uri@4  ">=4.1.3"       fastify chain ^4.0.0 -> 4.1.4
-  # (fast-uri also shows why scoping matters: it has two live majors, and
-  # an unscoped floor would have dragged ajv's 3.x onto 4.x -- exactly what
-  # the old `ws@7: ">=7.5.11"` entry did before it was deleted.)
+  # fast-uri also shows why scoping matters: it has two live majors, and an unscoped floor would have dragged ajv's 3.x onto 4.x, exactly what the old `ws@7: ">=7.5.11"` entry did before it was deleted.
   #
-  # Advisory no longer applied, and the override was forcing a major on its
-  # consumers for nothing:
-  #   brace-expansion "^2.0.3"  a ceiling, not a floor. Pinned minimatch@10
-  #                             three majors back at 2.1.4 when it wants
-  #                             5.0.9. GHSA-v6h2-p8h4-qcjw was fixed in
-  #                             2.0.2, so the reason was long gone.
-  #   picomatch       ">=4.0.4" forced anymatch/micromatch/readdirp from
-  #                             2.3.2 to 4.0.5. ReDoS fixed in 2.3.1.
-  #   undici          ">=8.9.0" forced cheerio + open-graph-scraper from
-  #                             7.29.0 to 8.10.0. 7.x carries no advisory.
+  # Advisory no longer applied, and the override was forcing a major on its consumers for nothing:
+  #   brace-expansion "^2.0.3"  a ceiling, not a floor. Pinned minimatch@10 three majors back at 2.1.4 when it wants 5.0.9. GHSA-v6h2-p8h4-qcjw was fixed in 2.0.2, so the reason was long gone.
+  #   picomatch       ">=4.0.4" forced anymatch/micromatch/readdirp from 2.3.2 to 4.0.5. ReDoS fixed in 2.3.1.
+  #   undici          ">=8.9.0" forced cheerio + open-graph-scraper from 7.29.0 to 8.10.0. 7.x carries no advisory.
   #   basic-ftp       ">=5.2.2" forced get-uri from 5.3.1 to 6.2.0.
   #
-  # Already pure no-ops -- the tree resolved at or above the floor unaided,
-  # so deleting them changed nothing:
-  #   lodash    ">=4.18.0"     async@2.6.4 + slate-react give 4.18.1
-  #   ajv       ">=8.18.0"     fastify chain gives 8.20.0 (latest)
-  #   vite      ">=8.0.16"     our own direct devDependency, 8.2.2
-  #   esbuild   ">=0.28.1"     tsx + vite give 0.28.2
-  #   ws@8      ">=8.21.0"     pm2@7.0.3 gives 8.21.0
-  #   ws@7      ">=7.5.11"     no ws 7 in the tree at all, and with no
-  #                            upper bound it resolved to ws 8 anyway
-  #   js-yaml@3 ">=3.15.1 <4"  gray-matter gives 3.15.1
+  # Already pure no-ops, the tree resolved at or above the floor unaided: lodash ">=4.18.0" (async@2.6.4 + slate-react give 4.18.1), ajv ">=8.18.0" (fastify chain gives 8.20.0, latest), vite ">=8.0.16" (our own direct devDependency, 8.2.2), esbuild ">=0.28.1" (tsx + vite give 0.28.2), ws@8 ">=8.21.0" (pm2@7.0.3 gives 8.21.0), ws@7 ">=7.5.11" (no ws 7 in the tree at all, and with no upper bound it resolved to ws 8 anyway), js-yaml@3 ">=3.15.1 <4" (gray-matter gives 3.15.1).
 
 peerDependencyRules:
-  # Packages that haven't declared React 19 support (or use malformed semver
-  # like ">= ^19.x") but work in practice on the React 19 we're shipping.
+  # Packages that haven't declared React 19 support (or use malformed semver like ">= ^19.x") but work in practice on the React 19 we're shipping.
   allowedVersions:
     react: "19"
     react-dom: "19"
     openseadragon: "6"
     tailwindcss: "4"
 
-confirmModulesPurge: false
-
 minimumReleaseAgeExclude:
-  # First-party package — we publish it ourselves, so the release-age gate adds
-  # no supply-chain protection and just blocks installing our own fresh releases.
+  # First-party package: we publish it ourselves, so the release-age gate adds no supply-chain protection and just blocks installing our own fresh releases.
   - '@activistchecklist/react-review-comments'

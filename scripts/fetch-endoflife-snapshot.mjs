@@ -29,7 +29,9 @@ const { loadEnvConfig } = pkg;
 // both export NODE_ENV=production) see the production env file.
 loadEnvConfig(process.cwd(), process.env.NODE_ENV !== 'production');
 
-import { deriveMacProductsFromSofa } from '../lib/updates/sofa-macos.js';
+import { deriveMacProductsFromSofa, sofaTrackingFloor } from '../lib/updates/sofa-macos.js';
+import { normalizeSnapshot } from '../lib/updates/snapshot.js';
+import { auditSnapshotOsCaps, formatOsCapFinding } from '../lib/updates/os-cap-audit.js';
 import {
   diffSofaWatchlist,
   mergeLegacyAndSofa,
@@ -461,6 +463,16 @@ async function main() {
   // expect to see; any expected entry missing from SOFA fires a drop alert
   // (move it to the legacy file). Any SOFA entry not in the watchlist is logged
   // as informational (add it to the watchlist when you want drop-detection).
+  // SOFA gives us no hardware release dates, and Apple's M5 marketing names no
+  // longer carry a year. Hand the macOS majors we just fetched to the derivation so
+  // an undated model can fall back to "no earlier than the oldest macOS it boots".
+  const macosProduct = products.find((p) => p.id === 'macos');
+  const macosReleaseDates = Object.fromEntries(
+    (macosProduct?.releases || [])
+      .filter((r) => r.releaseDate)
+      .map((r) => [String(parseFloat(r.id)), r.releaseDate])
+  );
+
   const legacyModels = await readLegacyMacModels();
   const watchlist = await readSofaWatchlist();
   let macProducts = [];
@@ -485,7 +497,12 @@ async function main() {
       );
     }
     const merged = mergeLegacyAndSofa(legacyModels, sofaModels);
-    macProducts = deriveMacProductsFromSofa(merged);
+    // Floor measured on the raw feed, before the legacy file's pre-window majors
+    // are merged in — see deriveMacProductsFromSofa.
+    macProducts = deriveMacProductsFromSofa(merged, {
+      macosReleaseDates,
+      trackingFloor: sofaTrackingFloor(sofaModels),
+    });
     const legacyOnly = sofaIds.length === 0
       ? Object.keys(stripDocKeys(legacyModels)).length
       : Object.keys(stripDocKeys(legacyModels)).filter((id) => !sofaIds.includes(id)).length;
@@ -498,7 +515,7 @@ async function main() {
     console.error(`SOFA fetch failed: ${err.message}; using legacy-only data + previous snapshot`);
     // Even when SOFA is unreachable the legacy file still gives us 2013-era
     // coverage, which is better than the empty set.
-    macProducts = deriveMacProductsFromSofa(stripDocKeys(legacyModels));
+    macProducts = deriveMacProductsFromSofa(stripDocKeys(legacyModels), { macosReleaseDates });
     const fromPrevious = MAC_PRODUCT_IDS.map((id) => previousById.get(id)).filter(Boolean);
     const legacyIds = new Set(macProducts.map((p) => p.id));
     for (const stale of fromPrevious) {
@@ -525,6 +542,27 @@ async function main() {
     source: 'https://endoflife.date/api/v1/',
     products,
   };
+
+  // endoflife.date's per-device OS ceiling lives in a hand-maintained `custom`
+  // field that lags the OS product when a new major ships. The /updates page
+  // treats that ceiling as ground truth, so a lag makes us tell people on current
+  // hardware that their device has hit its OS ceiling. The UI now degrades
+  // gracefully on its own (lib/updates/os-cap-audit.js), but a finding here means
+  // upstream needs a nudge — so say so loudly rather than sitting on it.
+  //
+  // Not fatal: shipping a build with a detected-and-handled lag beats shipping no
+  // build at all, and the condition clears itself when upstream catches up.
+  const capFindings = auditSnapshotOsCaps(normalizeSnapshot(snapshot));
+  if (capFindings.length > 0) {
+    console.error(
+      `⚠️  ${capFindings.length} product line(s) look one major behind upstream:\n` +
+      capFindings.map((f) => `   - ${formatOsCapFinding(f)}`).join('\n') + '\n' +
+      `   A line still shipping hardware should have a model that runs the newest OS.\n` +
+      `   Check the product's \`custom.supported*Versions\` fields on endoflife.date and\n` +
+      `   open a PR there if they are stale. The site suppresses its max-OS warning and\n` +
+      `   widens the OS picker for these lines until the ceiling catches up.`
+    );
+  }
 
   const json = JSON.stringify(snapshot, null, 2);
 

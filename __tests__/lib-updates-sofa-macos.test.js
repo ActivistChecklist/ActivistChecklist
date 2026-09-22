@@ -2,9 +2,11 @@ import { describe, it, expect } from 'vitest';
 
 import {
   deriveMacProductsFromSofa,
+  estimateReleaseDate,
   inferMacProductLine,
   modelIdentifierToSlug,
   parseReleaseDateFromMarketingName,
+  sofaTrackingFloor,
 } from '../lib/updates/sofa-macos';
 
 describe('inferMacProductLine', () => {
@@ -105,10 +107,11 @@ describe('deriveMacProductsFromSofa', () => {
       MarketingName: 'Virtual Machine (x86_64)',
       OSVersions: [26],
     },
-    'MacBookNeo': {
-      // Real SOFA entry — pre-release, no year in name. Should be dropped.
+    'Mac17,5': {
+      // Real SOFA entry. Apple's M5-era names carry no year, so it must survive
+      // the undated path rather than being mistaken for a pre-release placeholder.
       MarketingName: 'MacBook Neo',
-      OSVersions: [26],
+      OSVersions: [27, 26],
     },
   };
 
@@ -126,11 +129,16 @@ describe('deriveMacProductsFromSofa', () => {
     expect(ids).toContain('mac-mini');
   });
 
-  it('skips VMs and undated pre-release entries', () => {
+  it('skips VMs, which match no product-line prefix', () => {
     const products = deriveMacProductsFromSofa(sample);
     const allLabels = products.flatMap((p) => p.releases.map((r) => r.label));
     expect(allLabels).not.toContain('Virtual Machine (x86_64)');
-    expect(allLabels).not.toContain('MacBook Neo');
+  });
+
+  it('keeps undated models (Apple stopped putting years in M5-era names)', () => {
+    const products = deriveMacProductsFromSofa(sample);
+    const allLabels = products.flatMap((p) => p.releases.map((r) => r.label));
+    expect(allLabels).toContain('MacBook Neo');
   });
 
   it('uses the highest OSVersion as supportedOsRange', () => {
@@ -171,5 +179,122 @@ describe('deriveMacProductsFromSofa', () => {
     };
     const products = deriveMacProductsFromSofa(broken);
     expect(products.map((p) => p.id)).toEqual(['macbook-pro']);
+  });
+});
+
+describe('sofaTrackingFloor', () => {
+  it('returns the oldest macOS major any model supports', () => {
+    expect(sofaTrackingFloor({
+      a: { OSVersions: [27, 26] },
+      b: { OSVersions: [27, 26, 15, 14, 13, 12] },
+    })).toBe(12);
+  });
+
+  it('ignores models with missing or unusable OSVersions', () => {
+    expect(sofaTrackingFloor({
+      a: { OSVersions: [26] },
+      b: {},
+      c: { OSVersions: 'nope' },
+      d: null,
+    })).toBe(26);
+  });
+
+  it('returns null for empty / non-object input', () => {
+    expect(sofaTrackingFloor({})).toBeNull();
+    expect(sofaTrackingFloor(null)).toBeNull();
+    expect(sofaTrackingFloor('x')).toBeNull();
+  });
+});
+
+describe('estimateReleaseDate', () => {
+  const macosDates = { '26': '2025-09-15', '15': '2024-09-16', '12': '2021-10-25' };
+
+  it('dates a model to the release of the oldest macOS it can boot', () => {
+    expect(estimateReleaseDate(26, 12, macosDates)).toBe('2025-09-15');
+  });
+
+  it('refuses when the minimum sits at SOFA tracking floor', () => {
+    // A minimum of 12 when SOFA tracks nothing below 12 is clamped by the feed's
+    // window, not the hardware — this is the 2017 iMac Pro, which would otherwise
+    // be dated to 2021.
+    expect(estimateReleaseDate(12, 12, macosDates)).toBeNull();
+    expect(estimateReleaseDate(11, 12, macosDates)).toBeNull();
+  });
+
+  it('returns null when the macOS major has no known release date', () => {
+    expect(estimateReleaseDate(27, 12, macosDates)).toBeNull();
+    expect(estimateReleaseDate(26, 12, null)).toBeNull();
+  });
+
+  it('returns null for a non-numeric minimum', () => {
+    expect(estimateReleaseDate(NaN, 12, macosDates)).toBeNull();
+    expect(estimateReleaseDate(undefined, 12, macosDates)).toBeNull();
+  });
+});
+
+describe('deriveMacProductsFromSofa — undated models', () => {
+  const macosReleaseDates = { '26': '2025-09-15', '15': '2024-09-16', '12': '2021-10-25' };
+
+  const models = {
+    'Mac17,5': { MarketingName: 'MacBook Neo', OSVersions: [27, 26] },
+    'Mac17,2': { MarketingName: 'MacBook Pro 14-inch (M5)', OSVersions: [27, 26] },
+    'Mac15,3': { MarketingName: 'MacBook Pro (14-inch, M3, Nov 2023)', OSVersions: [27, 26, 15, 14, 13, 12] },
+    'iMacPro1,1': { MarketingName: 'iMac Pro', OSVersions: [15, 14, 13, 12] },
+  };
+
+  it('estimates a date from the oldest bootable macOS and flags it', () => {
+    const products = deriveMacProductsFromSofa(models, { macosReleaseDates });
+    const neo = products.find((p) => p.id === 'macbook').releases[0];
+    expect(neo.label).toBe('MacBook Neo');
+    expect(neo.releaseDate).toBe('2025-09-15');
+    expect(neo.releaseDateIsEstimate).toBe(true);
+  });
+
+  it('never flags a date parsed from the marketing name', () => {
+    const products = deriveMacProductsFromSofa(models, { macosReleaseDates });
+    const m3 = products.find((p) => p.id === 'macbook-pro').releases
+      .find((r) => r.id === 'mac15-3');
+    expect(m3.releaseDate).toBe('2023-11-01');
+    expect(m3.releaseDateIsEstimate).toBeUndefined();
+  });
+
+  it('leaves a model clamped at the tracking floor undated rather than guessing', () => {
+    const products = deriveMacProductsFromSofa(models, { macosReleaseDates });
+    const imacPro = products.find((p) => p.id === 'imac-pro').releases[0];
+    expect(imacPro.releaseDate).toBeNull();
+    expect(imacPro.releaseDateIsEstimate).toBeUndefined();
+  });
+
+  it('honours an explicit trackingFloor over one computed from the map', () => {
+    // The real fetcher passes the RAW SOFA floor because the map it hands in has
+    // the legacy file merged into it, whose old majors would sink the computed one.
+    const withLegacy = { ...models, 'MacBookAir6,1': { MarketingName: 'MacBook Air (11-inch, Mid 2013)', OSVersions: [11] } };
+    const guessed = deriveMacProductsFromSofa(withLegacy, { macosReleaseDates });
+    expect(guessed.find((p) => p.id === 'imac-pro').releases[0].releaseDate).toBe('2021-10-25');
+
+    const guarded = deriveMacProductsFromSofa(withLegacy, { macosReleaseDates, trackingFloor: 12 });
+    expect(guarded.find((p) => p.id === 'imac-pro').releases[0].releaseDate).toBeNull();
+  });
+
+  it('leaves the date null when no macOS dates are supplied', () => {
+    const products = deriveMacProductsFromSofa(models);
+    const neo = products.find((p) => p.id === 'macbook').releases[0];
+    expect(neo.releaseDate).toBeNull();
+    expect(neo.releaseDateIsEstimate).toBeUndefined();
+  });
+
+  it('sorts an undatable model last within its line, behind estimates and real dates', () => {
+    const mixed = {
+      // Undatable: minimum is at the tracking floor.
+      'Mac13,2': { MarketingName: 'Mac Studio (M1 Ultra)', OSVersions: [27, 12] },
+      'Mac14,13': { MarketingName: 'Mac Studio (M2 Max, 2023)', OSVersions: [27, 13] },
+      // Undated name, but a minimum above the floor, so it gets an estimate.
+      'Mac17,1': { MarketingName: 'Mac Studio (M5 Ultra)', OSVersions: [27, 26] },
+    };
+    const products = deriveMacProductsFromSofa(mixed, { macosReleaseDates, trackingFloor: 12 });
+    const studio = products.find((p) => p.id === 'mac-studio');
+    expect(studio.releases.map((r) => r.id)).toEqual(['mac17-1', 'mac14-13', 'mac13-2']);
+    expect(studio.releases[0].releaseDateIsEstimate).toBe(true);
+    expect(studio.releases[2].releaseDate).toBeNull();
   });
 });
