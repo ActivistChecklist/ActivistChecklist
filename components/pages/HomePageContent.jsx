@@ -92,7 +92,9 @@ export default function HomePageContent({ children, changelogEntries = [], lates
                   </div>
                 )}
               </div>
-              <div className="diagonal-edge diagonal-edge-below absolute bottom-0 left-0 bg-background" />
+              {/* Mirrored so the hero slants the opposite way to the footer
+                  rather than running parallel to it. */}
+              <div className="diagonal-edge diagonal-edge-below absolute bottom-0 left-0 scale-x-[-1] bg-background" />
             </header>
           </div>
 
