@@ -58,22 +58,22 @@ export default function HomePageContent({ children, changelogEntries = [], lates
             <header className={cn(
               "not-prose relative left-1/2 w-dvw max-w-none -translate-x-1/2",
               "relative mb-16 -mt-8 pt-16 pb-32 px-4 overflow-hidden",
-              /* Inverted band, the same move as InlineCta: dark ground and light
-                 type in light mode, primary-tinted in dark mode. The slant into
-                 the page below reads much harder this way. */
-              "bg-foreground text-background dark:bg-primary/15 dark:text-foreground"
+              /* Flat brand band, identical in both themes: --brand and
+                 --brand-foreground are the two tokens we never flip for dark mode.
+                 Every piece of text on it is full brand-foreground rather than a
+                 faded one, because white at 85% over this purple drops to 4.1:1
+                 and the body copy is under 24px. */
+              "bg-brand text-brand-foreground"
             )}>
-              {/* v4: use bg-radial / bg-linear-to-* so from/via/to populate --tw-gradient-stops */}
-              <div className="absolute inset-0 bg-radial-[ellipse_at_top] from-primary/40 via-transparent to-transparent dark:from-primary/25" />
               <div className="relative max-w-4xl mx-auto text-center">
-                <h1 className="text-5xl md:text-6xl font-heavy mb-6 text-balance text-background dark:bg-linear-to-br dark:from-primary dark:via-primary dark:to-primary/70 dark:bg-clip-text dark:text-transparent">
+                <h1 className="text-5xl md:text-6xl font-heavy mb-6 text-balance text-brand-foreground">
                   {t('hero.title')}
                 </h1>
-                <p className="text-xl md:text-2xl mb-10 text-background/80 dark:text-muted-foreground max-w-2xl mx-auto">
+                <p className="text-xl md:text-2xl mb-10 text-brand-foreground max-w-2xl mx-auto">
                   {t('hero.description')}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button asChild variant="default" size="xl" className="group bg-linear-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary transition-all">
+                  <Button asChild variant="default" size="xl" className="group transition-all bg-brand-foreground text-brand hover:bg-brand-foreground/90">
                     <Link href={NAV_ITEMS.ESSENTIALS.href} className="block group">
                       {t('hero.primaryCta')}
                     </Link>
@@ -82,13 +82,13 @@ export default function HomePageContent({ children, changelogEntries = [], lates
                     asChild
                     variant="outline"
                     size="xl"
-                    className="border-primary/30 bg-background/90 text-foreground hover:bg-background hover:border-primary/50 shadow-xs"
+                    className="border-2 border-brand-foreground/70 bg-transparent text-brand-foreground hover:bg-brand-foreground/10 shadow-xs"
                   >
                     <Link href={NAV_ITEMS.PARTY.href}>{t('hero.secondaryCta')}</Link>
                   </Button>
                 </div>
                 {latestMajorBodyText && (
-                  <div className="mt-8 text-background/75 dark:text-muted-foreground [&_a]:text-inherit">
+                  <div className="mt-8 text-brand-foreground [&_a]:text-inherit">
                     <Sparkles className="h-4 w-4 inline mr-1" />
                     <Markdown content={latestMajorBodyText} isProse={false} inlineOnly={true} />
                   </div>

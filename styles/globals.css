@@ -245,6 +245,9 @@
     /* --bizantium: 314 59% 33%; */
 
     --brand: 247 100% 65.5%;
+    /* Deliberately not redefined in .dark. A brand band keeps the same
+       saturated purple and white type in both themes. */
+    --brand-foreground: 0 0% 100%;
 
     --brand-gray-5: 247 9% 95%;
     --brand-gray-10: 270 4% 91%;

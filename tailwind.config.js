@@ -46,6 +46,10 @@ module.exports = {
   		},
   		colors: {
   			link: 'hsl(var(--link))',
+  			brand: {
+  				DEFAULT: 'hsl(var(--brand))',
+  				foreground: 'hsl(var(--brand-foreground))'
+  			},
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
