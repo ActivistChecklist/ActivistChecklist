@@ -26,7 +26,10 @@ function Frame({ className, children }) {
   );
 }
 
-/** A risk being dropped into the corner of the grid you have to plan for. */
+/**
+ * A risk being dropped into the top right of the grid: high likelihood, high
+ * impact, the corner the tool exists to make you deal with first.
+ */
 function RiskMapperThumb() {
   const cells = [
     'bg-[#F1EDC4] dark:bg-[#45411F]',
@@ -46,7 +49,7 @@ function RiskMapperThumb() {
           <span key={i} className={tone} />
         ))}
       </span>
-      <span className="absolute right-2.5 top-1/2 w-[62%] -translate-y-1/2 -rotate-2 rounded-md border border-l-[3px] border-[#E0B3B5] border-l-[#C0392B] bg-white px-2 py-1.5 text-[10px] font-medium leading-tight text-[#0B081B] shadow-md dark:border-[#3A3A44] dark:border-l-[#C0392B] dark:bg-[#1A1A21] dark:text-[#E7ECF7]">
+      <span className="absolute right-2.5 top-2 w-[58%] -rotate-2 rounded-md border border-l-[3px] border-[#E0B3B5] border-l-[#C0392B] bg-white px-2 py-1.5 text-[10px] font-medium leading-tight text-[#0B081B] shadow-md dark:border-[#3A3A44] dark:border-l-[#C0392B] dark:bg-[#1A1A21] dark:text-[#E7ECF7]">
         Phone seized at the action
       </span>
     </Frame>
