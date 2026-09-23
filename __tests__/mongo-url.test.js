@@ -1,6 +1,8 @@
 import {
   withServerSelectionTimeout,
   applyMongoTimeoutToEnv,
+  stripEnclosingQuotes,
+  normalizeConnectionString,
   DEFAULT_SERVER_SELECTION_TIMEOUT_MS,
 } from '../lib/review-comments/mongo-url';
 
@@ -88,5 +90,68 @@ describe('applyMongoTimeoutToEnv', () => {
     const first = env.REVIEW_COMMENTS_MONGODB_URL;
     applyMongoTimeoutToEnv(env);
     expect(env.REVIEW_COMMENTS_MONGODB_URL).toBe(first);
+  });
+});
+
+describe('stripEnclosingQuotes', () => {
+  // The real incident: Railway shows a variable's value wrapped in backticks,
+  // and the value was pasted into another service's variable with them attached.
+  test('unwraps the backticks Railway renders around a value', () => {
+    expect(stripEnclosingQuotes('`mongodb://mongo:pw@mongodb.railway.internal:27017`')).toBe(
+      'mongodb://mongo:pw@mongodb.railway.internal:27017'
+    );
+  });
+
+  test.each([
+    ['"mongodb://h/db"', 'mongodb://h/db'],
+    ["'mongodb://h/db'", 'mongodb://h/db'],
+    ['  mongodb://h/db\n', 'mongodb://h/db'],
+    ['  `mongodb://h/db`  ', 'mongodb://h/db'],
+  ])('normalises %p', (input, expected) => {
+    expect(stripEnclosingQuotes(input)).toBe(expected);
+  });
+
+  test('leaves an already-clean string untouched', () => {
+    expect(stripEnclosingQuotes('mongodb://h/db')).toBe('mongodb://h/db');
+  });
+
+  test('does not strip when only one end is quoted', () => {
+    expect(stripEnclosingQuotes('`mongodb://h/db')).toBe('`mongodb://h/db');
+    expect(stripEnclosingQuotes('mongodb://h/db`')).toBe('mongodb://h/db`');
+  });
+
+  test('leaves a quote that is part of a password alone', () => {
+    const url = "mongodb://user:pa'ss@h/db";
+    expect(stripEnclosingQuotes(url)).toBe(url);
+  });
+
+  test('strips only one layer, so a doubly wrapped value is still reported as broken', () => {
+    expect(stripEnclosingQuotes('``mongodb://h/db``')).toBe('`mongodb://h/db`');
+  });
+
+  test.each([[undefined], [null], [42]])('passes through non-string %p', (input) => {
+    expect(stripEnclosingQuotes(input)).toBe(input);
+  });
+});
+
+describe('normalizeConnectionString', () => {
+  test('a backticked URL becomes usable and gains the timeout', () => {
+    const out = normalizeConnectionString('`mongodb://mongo:pw@mongodb.railway.internal:27017`');
+    const u = new URL(out);
+    expect(u.protocol).toBe('mongodb:');
+    expect(u.hostname).toBe('mongodb.railway.internal');
+    expect(u.password).toBe('pw');
+    expect(timeoutOf(out)).toBe(String(DEFAULT_SERVER_SELECTION_TIMEOUT_MS));
+  });
+});
+
+describe('applyMongoTimeoutToEnv (quoted values)', () => {
+  test('repairs the backticked value the package would otherwise reject', () => {
+    const env = {
+      REVIEW_COMMENTS_MONGODB_URL: '`mongodb://mongo:pw@mongodb.railway.internal:27017`',
+    };
+    applyMongoTimeoutToEnv(env);
+    expect(env.REVIEW_COMMENTS_MONGODB_URL.startsWith('mongodb://')).toBe(true);
+    expect(env.REVIEW_COMMENTS_MONGODB_URL).not.toContain('`');
   });
 });
