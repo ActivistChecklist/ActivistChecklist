@@ -722,7 +722,7 @@
       "body": "Each of these comes out of one of our checklists. Start with the checklist and it will point you to the tool when you get to that step.",
       "primaryCta": "Digital Security Essentials",
       "secondaryCta": "Doxxing Defense Checklist",
-      "openSource": "All four are open source. If one is broken, or you need something we have not built yet, <contact>let us know</contact>."
+      "openSource": "All four are <repos>open source</repos>. If one is broken, or you need something we have not built yet, <contact>let us know</contact>."
     }
   }
 }

@@ -176,6 +176,12 @@ export default async function ToolsPage({ params }) {
         </div>
         <p className="mt-5 border-t border-border pt-4 text-sm text-muted-foreground">
           {t.rich('tools.closing.openSource', {
+            /* The claim needs somewhere to go: the org page carries all four repos. */
+            repos: (chunks) => (
+              <Link href="https://github.com/ActivistChecklist" className="link">
+                {chunks}
+              </Link>
+            ),
             contact: (chunks) => (
               <Link href="/contact/" className="link">
                 {chunks}
