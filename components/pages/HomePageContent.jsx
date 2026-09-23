@@ -8,6 +8,8 @@ import { Card, CardHeader, CardFooter, CardTitle, CardDescription } from '@/comp
 import { Button } from '@/components/ui/button';
 import { cn, getBaseUrl } from '@/lib/utils';
 import { NAV_ITEMS, SECURITY_CHECKLISTS } from '@/config/navigation';
+import FEATURE_LOGOS from '@/config/featured.json';
+import FeatureLogo from '@/components/FeatureLogo';
 import ChangeLogRecentEntries from '@/components/ChangeLogRecentEntries';
 import GuideCard from '@/components/GuideCard';
 import Markdown from '@/components/Markdown';
@@ -150,6 +152,16 @@ export default function HomePageContent({ children, changelogEntries = [], lates
 
           {/* Latest News — loaded in server component HomeNewsSection (see app/[locale]/page.tsx) */}
           {children}
+
+          {/* Featured In - orgs that have linked to us */}
+          <section className="mb-16">
+            <h2 className="text-2xl font-bold mb-6">{t('featured.sectionTitle')}</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {FEATURE_LOGOS.map((logo, index) => 
+                <FeatureLogo key={index} logo={logo} />
+              )}
+            </div>
+          </section>
 
           {/* Recent Updates */}
           <section>
