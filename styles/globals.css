@@ -245,6 +245,9 @@
     /* --bizantium: 314 59% 33%; */
 
     --brand: 247 100% 65.5%;
+    /* Deliberately not redefined in .dark. A brand band keeps the same
+       saturated purple and white type in both themes. */
+    --brand-foreground: 0 0% 100%;
 
     --brand-gray-5: 247 9% 95%;
     --brand-gray-10: 270 4% 91%;
@@ -460,14 +463,22 @@
     width: 100%;
   }
 
+  /* The flat edge of each triangle is pushed 1px outside the box on purpose.
+     clip-path antialiases every edge of the shape, so a flat edge lying exactly
+     along the box boundary blends the band's color with whatever sits behind it
+     and paints a grey hairline the full width of the page. The footer showed
+     this: a horizontal line across the top of its slant. Moving the flat edge
+     out of the painted area leaves the diagonal as the only boundary inside the
+     box. The 1px also changes the slope by about 2%, which is not visible. */
+
   /* Band sits above the diagonal; what is behind shows through below it. */
   .diagonal-edge-above {
-    clip-path: polygon(0 0, 100% 0, 0 100%);
+    clip-path: polygon(0 -1px, 100% -1px, 0 100%);
   }
 
   /* Band sits below the diagonal; what is behind shows through above it. */
   .diagonal-edge-below {
-    clip-path: polygon(0 100%, 100% 0, 100% 100%);
+    clip-path: polygon(0 calc(100% + 1px), 100% 0, 100% calc(100% + 1px));
   }
 }
 

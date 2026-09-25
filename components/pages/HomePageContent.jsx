@@ -12,6 +12,7 @@ import FEATURE_LOGOS from '@/config/featured.json';
 import FeatureLogo from '@/components/FeatureLogo';
 import ChangeLogRecentEntries from '@/components/ChangeLogRecentEntries';
 import GuideCard from '@/components/GuideCard';
+import HomeToolsSection from '@/components/HomeToolsSection';
 import Markdown from '@/components/Markdown';
 import { useTranslations } from 'next-intl';
 import { useLocale } from 'next-intl';
@@ -59,20 +60,22 @@ export default function HomePageContent({ children, changelogEntries = [], lates
             <header className={cn(
               "not-prose relative left-1/2 w-dvw max-w-none -translate-x-1/2",
               "relative mb-16 -mt-8 pt-16 pb-32 px-4 overflow-hidden",
-              /* v4: use bg-radial / bg-linear-to-* so from/via/to populate --tw-gradient-stops */
-              "bg-radial-[ellipse_at_top] from-primary/20 via-background to-background",
-              "before:content-[''] before:fixed before:inset-0 before:bg-linear-to-r before:from-primary/10 before:via-accent/5 before:to-primary/10 before:opacity-70 before:pointer-events-none"
+              /* Flat brand band, identical in both themes: --brand and
+                 --brand-foreground are the two tokens we never flip for dark mode.
+                 Every piece of text on it is full brand-foreground rather than a
+                 faded one, because white at 85% over this purple drops to 4.1:1
+                 and the body copy is under 24px. */
+              "bg-brand text-brand-foreground"
             )}>
-              <div className="absolute inset-0 bg-linear-to-r from-primary/10 via-accent/5 to-primary/10 opacity-70" />
               <div className="relative max-w-4xl mx-auto text-center">
-                <h1 className="text-5xl md:text-6xl font-heavy mb-6 bg-linear-to-br from-primary via-primary to-primary/70 bg-clip-text text-transparent text-balance">
+                <h1 className="text-5xl md:text-6xl font-heavy mb-6 text-balance text-brand-foreground">
                   {t('hero.title')}
                 </h1>
-                <p className="text-xl md:text-2xl mb-10 text-muted-foreground max-w-2xl mx-auto">
+                <p className="text-xl md:text-2xl mb-10 text-brand-foreground max-w-2xl mx-auto">
                   {t('hero.description')}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button asChild variant="default" size="xl" className="group bg-linear-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary transition-all">
+                  <Button asChild variant="default" size="xl" className="group transition-all bg-brand-foreground text-brand hover:bg-brand-foreground/90">
                     <Link href={NAV_ITEMS.ESSENTIALS.href} className="block group">
                       {t('hero.primaryCta')}
                     </Link>
@@ -81,19 +84,21 @@ export default function HomePageContent({ children, changelogEntries = [], lates
                     asChild
                     variant="outline"
                     size="xl"
-                    className="border-primary/30 bg-background/90 text-foreground hover:bg-background hover:border-primary/50 shadow-xs"
+                    className="border-2 border-brand-foreground/70 bg-transparent text-brand-foreground hover:bg-brand-foreground/10 shadow-xs"
                   >
                     <Link href={NAV_ITEMS.PARTY.href}>{t('hero.secondaryCta')}</Link>
                   </Button>
                 </div>
                 {latestMajorBodyText && (
-                  <div className="mt-8 text-muted-foreground">
+                  <div className="mt-8 text-brand-foreground [&_a]:text-inherit">
                     <Sparkles className="h-4 w-4 inline mr-1" />
                     <Markdown content={latestMajorBodyText} isProse={false} inlineOnly={true} />
                   </div>
                 )}
               </div>
-              <div className="diagonal-edge diagonal-edge-below absolute bottom-0 left-0 bg-background" />
+              {/* Mirrored so the hero slants the opposite way to the footer
+                  rather than running parallel to it. */}
+              <div className="diagonal-edge diagonal-edge-below absolute bottom-0 left-0 scale-x-[-1] bg-background" />
             </header>
           </div>
 
@@ -152,6 +157,9 @@ export default function HomePageContent({ children, changelogEntries = [], lates
 
           {/* Latest News — loaded in server component HomeNewsSection (see app/[locale]/page.tsx) */}
           {children}
+
+          {/* Tools */}
+          <HomeToolsSection />
 
           {/* Featured In - orgs that have linked to us */}
           <section className="mb-16">

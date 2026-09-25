@@ -71,6 +71,10 @@
       "title": "Security update checker",
       "label": "Security update checker"
     },
+    "tools": {
+      "title": "Tools we built",
+      "label": "Tools we built"
+    },
     "resources": {
       "title": "Resources",
       "label": "Resources"
@@ -124,6 +128,9 @@
     "trustDescription": "We built this because digital security shouldn't be overwhelming. We take a harm reduction approach: start where you are and do what you can.",
     "latestNewsHeading": "Latest Surveillance News",
     "viewAllNews": "View all news",
+    "toolsHeading": "Tools we built",
+    "toolsDescription": "Free tools we made to go along with the checklists, for the steps that are hard to finish on your own.",
+    "viewAllTools": "See all tools",
     "recentUpdatesHeading": "Recent Site Updates",
     "viewAllUpdates": "View all updates",
     "noRecentChanges": "No recent changes available"
@@ -662,5 +669,66 @@
       }
     },
     "footer": "Powered by <eolLink>endoflife.date</eolLink> and <sofaLink>SOFA</sofaLink> · Updated {date}."
+  },
+  "tools": {
+    "metaTitle": "Tools we built | Activist Checklist",
+    "metaDescription": "Tools we built to go with our checklists: map your risks before an action, lock down your social media, and check if your phone still gets security updates.",
+    "documentTitle": "Tools we built | Activist Checklist",
+    "title": "Tools we built",
+    "intro": "Four tools we built to go along with the checklists. Each one covers a step that is hard to finish from written instructions alone.",
+    "items": {
+      "riskMapper": {
+        "eyebrow": "Plan an action",
+        "name": "Risk Mapper",
+        "short": "Map out the risks in your work and precautions you can take.",
+        "lede": "Work out what could go wrong before an action, and decide what your group will do about it.",
+        "bullet1": "Everyone adds the risks they are worried about. Then you drag each one onto a grid: how likely is it, and how bad would it be?",
+        "bullet2": "For the risks that land in the top right, you write down two things. How to make it less likely, and how to limit the harm if it happens anyway.",
+        "bullet3": "Share it with your group over an end-to-end encrypted link, or export a PDF for the people who were not at the meeting.",
+        "cta": "Open Risk Mapper",
+        "shotAlt": "Risk Mapper mid-session, with risks placed on a grid of how likely they are and how bad they would be."
+      },
+      "socialScrub": {
+        "eyebrow": "Lock down your profiles",
+        "name": "Social Scrub",
+        "short": "Lock down your social media accounts, one at a time.",
+        "lede": "Walks you through the same eight privacy steps on every social media account you have.",
+        "bullet1": "Pick your platforms from a list of 130 sites, including the ones you forgot about. Add any we missed.",
+        "bullet2": "For each account: delete it or keep it, change your display name and username, remove your photo, take your location and employer out of your bio, and lock down your privacy settings.",
+        "bullet3": "It remembers where you left off, so you can do a few accounts at a time.",
+        "cta": "Open Social Scrub",
+        "secondaryCta": "Doxxing defense guide",
+        "shotAlt": "A sample profile before and after a scrub. The name, photo, username, bio, friends list and location are all changed or hidden."
+      },
+      "updates": {
+        "eyebrow": "Check your device",
+        "name": "Security update checker",
+        "short": "Check whether your phone still gets security updates.",
+        "lede": "Find out whether your phone, tablet, or laptop is still getting security updates.",
+        "bullet1": "Type in your model. If you do not know it, the page shows you where to find it in your settings.",
+        "bullet2": "Once a device stops getting updates, every new security hole in it stays open. That makes it much easier for spyware, a hacker, or police forensics tools to get in.",
+        "bullet3": "Covers Apple, Google, Samsung, Motorola, OnePlus, and Nokia devices, plus iOS, Android, macOS, and Windows.",
+        "cta": "Check my device",
+        "shotAlt": "The update checker reporting that a searched phone stopped getting security updates, with advice on what to do about it."
+      },
+      "autoDelete": {
+        "eyebrow": "Delete old AI chats",
+        "name": "AI chat auto-delete",
+        "short": "Delete your old Claude chats on a schedule.",
+        "lede": "A Chrome extension that deletes your old Claude conversations on a schedule you set.",
+        "bullet1": "You pick how long to keep them. Anything older than 30 days is the default.",
+        "bullet2": "Star the chats you want to keep and it leaves them alone. It can ask you first, or run on its own.",
+        "bullet3": "It records how many chats it deleted, not which ones. Nothing gets sent to us.",
+        "cta": "Add to Chrome",
+        "shotAlt": "The extension set to delete chats older than 30 days every week, with the bar it shows on claude.ai when deletions are waiting."
+      }
+    },
+    "closing": {
+      "title": "Not sure which one you need?",
+      "body": "Each of these comes out of one of our checklists. Start with the checklist and it will point you to the tool when you get to that step.",
+      "primaryCta": "Digital Security Essentials",
+      "secondaryCta": "Doxxing Defense Checklist",
+      "openSource": "All four are <repos>open source</repos>. If one is broken, or you need something we have not built yet, <contact>let us know</contact>."
+    }
   }
 }

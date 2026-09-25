@@ -1,0 +1,195 @@
+// @ts-nocheck
+import { setRequestLocale, getTranslations } from 'next-intl/server';
+import { ArrowRight, Check, ExternalLink } from 'lucide-react';
+import Layout from '@/components/layout/Layout';
+import PageNotices from '@/components/layout/PageNotices';
+import Link from '@/components/Link';
+import { Button } from '@/components/ui/button';
+import BrowserFrame from '@/components/tools/BrowserFrame';
+import RiskMapperShot from '@/components/tools/RiskMapperShot';
+import SocialScrubShot from '@/components/tools/SocialScrubShot';
+import UpdateCheckerShot from '@/components/tools/UpdateCheckerShot';
+import AutoDeleteShot from '@/components/tools/AutoDeleteShot';
+import { DEFAULT_LOCALE } from '@/lib/i18n-config';
+import { getBaseUrl } from '@/lib/utils';
+import { getOgImagePathForSlug } from '@/lib/og-image';
+import { TOOLS } from '@/config/tools';
+import { cn } from '@/lib/utils';
+
+/** Each tool's illustration. Everything else about them lives in config/tools. */
+const SHOTS = {
+  riskMapper: RiskMapperShot,
+  socialScrub: SocialScrubShot,
+  updates: UpdateCheckerShot,
+  autoDelete: AutoDeleteShot,
+};
+
+function isExternal(href) {
+  return href.startsWith('http');
+}
+
+export async function generateMetadata({ params }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations({ locale });
+
+  const baseUrl = getBaseUrl();
+  const canonical = locale === DEFAULT_LOCALE ? `${baseUrl}/tools/` : `${baseUrl}/${locale}/tools/`;
+  const title = t('tools.metaTitle');
+  const description = t('tools.metaDescription');
+  const ogImageUrl = `${baseUrl}${getOgImagePathForSlug('tools')}`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      type: 'website',
+      siteName: 'Activist Checklist',
+      images: [ogImageUrl],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [ogImageUrl],
+    },
+  };
+}
+
+function ToolRow({ tool, tinted, reversed, t }) {
+  const { key, id, icon: Icon, accent, href, secondaryHref, shotUrl } = tool;
+  const Shot = SHOTS[key];
+  const item = (field) => t(`tools.items.${key}.${field}`);
+
+  return (
+    <section
+      className={cn(
+        'rounded-lg px-1 py-8 sm:p-8',
+        tinted && 'bg-muted px-5 dark:border dark:border-border'
+      )}
+    >
+      <div
+        className={cn(
+          'flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-12',
+          reversed && 'lg:flex-row-reverse'
+        )}
+      >
+        <div className="lg:w-[37%] lg:shrink-0">
+          <p className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
+            <Icon className={cn('h-4 w-4 shrink-0', accent)} aria-hidden="true" />
+            {item('eyebrow')}
+          </p>
+          <h2 id={id} className="mb-3 text-2xl font-bold tracking-tight sm:text-3xl">
+            {item('name')}
+          </h2>
+          <p className="text-base text-muted-foreground sm:text-lg">{item('lede')}</p>
+
+          <ul className="mt-4 flex flex-col gap-2.5">
+            {['bullet1', 'bullet2', 'bullet3'].map((field) => (
+              <li key={field} className="flex gap-2.5 text-sm leading-relaxed sm:text-base">
+                <Check
+                  className={cn('mt-1 h-4 w-4 shrink-0', accent)}
+                  aria-hidden="true"
+                  strokeWidth={3}
+                />
+                <span>{item(field)}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <Button asChild>
+              <Link href={href}>
+                {item('cta')}
+                {isExternal(href) ? (
+                  <ExternalLink aria-hidden="true" />
+                ) : (
+                  <ArrowRight aria-hidden="true" />
+                )}
+              </Link>
+            </Button>
+            {secondaryHref && (
+              <Button asChild variant="outline">
+                <Link href={secondaryHref}>{item('secondaryCta')}</Link>
+              </Button>
+            )}
+          </div>
+        </div>
+
+        <div className="min-w-0 lg:w-[63%] lg:grow">
+          <BrowserFrame label={item('shotAlt')} url={shotUrl}>
+            <Shot />
+          </BrowserFrame>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default async function ToolsPage({ params }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations();
+
+  return (
+    <Layout sidebarType={null} fullWidthMain={true}>
+      <header>
+        <h1 className="page-title">{t('tools.title')}</h1>
+        <p className="max-w-3xl text-lg text-muted-foreground sm:text-xl">{t('tools.intro')}</p>
+      </header>
+
+      <PageNotices />
+
+      <div className="mt-8 flex flex-col gap-4 sm:gap-6">
+        {TOOLS.map((tool, index) => (
+          <ToolRow
+            key={tool.key}
+            tool={tool}
+            tinted={index % 2 === 0}
+            reversed={index % 2 === 1}
+            t={t}
+          />
+        ))}
+      </div>
+
+      <section className="mt-10 rounded-lg border border-border bg-linear-to-br from-muted via-muted to-accent/5 p-6 sm:p-8">
+        <h2 className="mb-2 text-xl font-bold tracking-tight sm:text-2xl">
+          {t('tools.closing.title')}
+        </h2>
+        <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
+          {t('tools.closing.body')}
+        </p>
+        <div className="mt-5 flex flex-wrap gap-3">
+          <Button asChild>
+            <Link href="/essentials/">
+              {t('tools.closing.primaryCta')}
+              <ArrowRight aria-hidden="true" />
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/doxxing/">{t('tools.closing.secondaryCta')}</Link>
+          </Button>
+        </div>
+        <p className="mt-5 border-t border-border pt-4 text-sm text-muted-foreground">
+          {t.rich('tools.closing.openSource', {
+            /* The claim needs somewhere to go: the org page carries all four repos. */
+            repos: (chunks) => (
+              <Link href="https://github.com/ActivistChecklist" className="link">
+                {chunks}
+              </Link>
+            ),
+            contact: (chunks) => (
+              <Link href="/contact/" className="link">
+                {chunks}
+              </Link>
+            ),
+          })}
+        </p>
+      </section>
+    </Layout>
+  );
+}
