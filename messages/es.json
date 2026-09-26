@@ -72,8 +72,8 @@
       "label": "Verificador de actualizaciones de seguridad"
     },
     "tools": {
-      "title": "Tools we built",
-      "label": "Tools we built"
+      "title": "Herramientas que creamos",
+      "label": "Herramientas que creamos"
     },
     "resources": {
       "title": "Recursos",
@@ -128,9 +128,9 @@
     "trustDescription": "Creamos esto porque la seguridad digital no debería ser abrumadora. Adoptamos un enfoque de reducción de daños: empieza donde estés y haz lo que puedas.",
     "latestNewsHeading": "Últimas noticias sobre vigilancia",
     "viewAllNews": "Ver todas las noticias",
-    "toolsHeading": "Tools we built",
-    "toolsDescription": "Free tools we made to go along with the checklists, for the steps that are hard to finish on your own.",
-    "viewAllTools": "See all tools",
+    "toolsHeading": "Herramientas que creamos",
+    "toolsDescription": "Herramientas gratuitas que hicimos para acompañar las checklists, para los pasos que son difíciles de completar por tu cuenta.",
+    "viewAllTools": "Ver todas las herramientas",
     "recentUpdatesHeading": "Actualizaciones recientes del sitio",
     "viewAllUpdates": "Ver todas las actualizaciones",
     "noRecentChanges": "No hay cambios recientes disponibles"
@@ -671,64 +671,64 @@
     "footer": "Con información de <eolLink>endoflife.date</eolLink> y <sofaLink>SOFA</sofaLink> · Actualizado el {date}."
   },
   "tools": {
-    "metaTitle": "Tools we built | Activist Checklist",
-    "metaDescription": "Tools we built to go with our checklists: map your risks before an action, lock down your social media, and check if your phone still gets security updates.",
-    "documentTitle": "Tools we built | Activist Checklist",
-    "title": "Tools we built",
-    "intro": "Four tools we built to go along with the checklists. Each one covers a step that is hard to finish from written instructions alone.",
+    "metaTitle": "Herramientas que creamos | Activist Checklist",
+    "metaDescription": "Herramientas que creamos para acompañar nuestras checklists: mapea tus riesgos antes de una acción, blinda tus redes sociales y revisa si tu celular todavía recibe actualizaciones de seguridad.",
+    "documentTitle": "Herramientas que creamos | Activist Checklist",
+    "title": "Herramientas que creamos",
+    "intro": "Cuatro herramientas que creamos para acompañar las checklists. Cada una cubre un paso difícil de completar solo con instrucciones escritas.",
     "items": {
       "riskMapper": {
-        "eyebrow": "Plan an action",
+        "eyebrow": "Planea una acción",
         "name": "Risk Mapper",
-        "short": "Map out the risks in your work and precautions you can take.",
-        "lede": "Work out what could go wrong before an action, and decide what your group will do about it.",
-        "bullet1": "Everyone adds the risks they are worried about. Then you drag each one onto a grid: how likely is it, and how bad would it be?",
-        "bullet2": "For the risks that land in the top right, you write down two things. How to make it less likely, and how to limit the harm if it happens anyway.",
-        "bullet3": "Share it with your group over an end-to-end encrypted link, or export a PDF for the people who were not at the meeting.",
-        "cta": "Open Risk Mapper",
-        "shotAlt": "Risk Mapper mid-session, with risks placed on a grid of how likely they are and how bad they would be."
+        "short": "Mapea los riesgos de tu trabajo y las precauciones que puedes tomar.",
+        "lede": "Piensa qué podría salir mal antes de una acción, y decide qué hará tu grupo al respecto.",
+        "bullet1": "Cada persona agrega los riesgos que le preocupan. Después arrastras cada uno a una cuadrícula: ¿qué tan probable es y qué tan grave sería?",
+        "bullet2": "Para los riesgos que caen arriba a la derecha, anotas dos cosas. Cómo hacerlo menos probable, y cómo limitar el daño si igual llega a pasar.",
+        "bullet3": "Compártelo con tu grupo mediante un enlace cifrado de extremo a extremo, o exporta un PDF para quienes no estuvieron en la reunión.",
+        "cta": "Abrir Risk Mapper",
+        "shotAlt": "Risk Mapper a mitad de sesión, con los riesgos ubicados en una cuadrícula según qué tan probables son y qué tan graves serían."
       },
       "socialScrub": {
-        "eyebrow": "Lock down your profiles",
+        "eyebrow": "Blinda tus perfiles",
         "name": "Social Scrub",
-        "short": "Lock down your social media accounts, one at a time.",
-        "lede": "Walks you through the same eight privacy steps on every social media account you have.",
-        "bullet1": "Pick your platforms from a list of 130 sites, including the ones you forgot about. Add any we missed.",
-        "bullet2": "For each account: delete it or keep it, change your display name and username, remove your photo, take your location and employer out of your bio, and lock down your privacy settings.",
-        "bullet3": "It remembers where you left off, so you can do a few accounts at a time.",
-        "cta": "Open Social Scrub",
-        "secondaryCta": "Doxxing defense guide",
-        "shotAlt": "A sample profile before and after a scrub. The name, photo, username, bio, friends list and location are all changed or hidden."
+        "short": "Blinda tus cuentas de redes sociales, una por una.",
+        "lede": "Te guía por los mismos ocho pasos de privacidad en cada cuenta de redes sociales que tengas.",
+        "bullet1": "Elige tus plataformas de una lista de 130 sitios, incluyendo los que habías olvidado. Agrega los que falten.",
+        "bullet2": "Para cada cuenta: bórrala o consérvala, cambia tu nombre visible y tu usuario, quita tu foto, saca tu ubicación y trabajo de la bio, y blinda tu configuración de privacidad.",
+        "bullet3": "Recuerda dónde te quedaste, así puedes hacer unas pocas cuentas a la vez.",
+        "cta": "Abrir Social Scrub",
+        "secondaryCta": "Guía de defensa contra doxxing",
+        "shotAlt": "Un perfil de ejemplo antes y después de una limpieza. El nombre, la foto, el nombre de usuario, la biografía, la lista de amigos y la ubicación están todos cambiados u ocultos."
       },
       "updates": {
-        "eyebrow": "Check your device",
+        "eyebrow": "Revisa tu dispositivo",
         "name": "Verificador de actualizaciones de seguridad",
-        "short": "Check whether your phone still gets security updates.",
-        "lede": "Find out whether your phone, tablet, or laptop is still getting security updates.",
-        "bullet1": "Type in your model. If you do not know it, the page shows you where to find it in your settings.",
-        "bullet2": "Once a device stops getting updates, every new security hole in it stays open. That makes it much easier for spyware, a hacker, or police forensics tools to get in.",
-        "bullet3": "Covers Apple, Google, Samsung, Motorola, OnePlus, and Nokia devices, plus iOS, Android, macOS, and Windows.",
-        "cta": "Check my device",
-        "shotAlt": "The update checker reporting that a searched phone stopped getting security updates, with advice on what to do about it."
+        "short": "Verifica si tu teléfono todavía recibe actualizaciones de seguridad.",
+        "lede": "Averigua si tu teléfono, tableta o laptop todavía recibe actualizaciones de seguridad.",
+        "bullet1": "Escribe tu modelo. Si no lo sabes, la página te muestra dónde encontrarlo en tus ajustes.",
+        "bullet2": "Cuando un dispositivo deja de recibir actualizaciones, cada nueva falla de seguridad se queda abierta. Eso hace mucho más fácil que entre spyware, un hacker o herramientas forenses de los cops.",
+        "bullet3": "Cubre dispositivos Apple, Google, Samsung, Motorola, OnePlus y Nokia, además de iOS, Android, macOS y Windows.",
+        "cta": "Revisar mi dispositivo",
+        "shotAlt": "El verificador de actualizaciones informando que un teléfono buscado dejó de recibir actualizaciones de seguridad, con consejos sobre qué hacer al respecto."
       },
       "autoDelete": {
-        "eyebrow": "Delete old AI chats",
-        "name": "AI chat auto-delete",
-        "short": "Delete your old Claude chats on a schedule.",
-        "lede": "A Chrome extension that deletes your old Claude conversations on a schedule you set.",
-        "bullet1": "You pick how long to keep them. Anything older than 30 days is the default.",
-        "bullet2": "Star the chats you want to keep and it leaves them alone. It can ask you first, or run on its own.",
-        "bullet3": "It records how many chats it deleted, not which ones. Nothing gets sent to us.",
-        "cta": "Add to Chrome",
-        "shotAlt": "The extension set to delete chats older than 30 days every week, with the bar it shows on claude.ai when deletions are waiting."
+        "eyebrow": "Borra chats viejos de IA",
+        "name": "Autoborrado de chats de IA",
+        "short": "Borra tus chats viejos de Claude según un horario.",
+        "lede": "Una extensión de Chrome que borra tus conversaciones viejas de Claude según el horario que tú definas.",
+        "bullet1": "Tú eliges cuánto tiempo conservarlos. Por defecto, cualquier cosa con más de 30 días.",
+        "bullet2": "Marca con estrella los chats que quieres conservar y los deja en paz. Puede preguntarte primero o correr por su cuenta.",
+        "bullet3": "Registra cuántos chats borró, no cuáles. Nada se nos envía.",
+        "cta": "Agregar a Chrome",
+        "shotAlt": "La extensión configurada para borrar chats con más de 30 días cada semana, con la barra que muestra en claude.ai cuando hay borrados pendientes."
       }
     },
     "closing": {
-      "title": "Not sure which one you need?",
-      "body": "Each of these comes out of one of our checklists. Start with the checklist and it will point you to the tool when you get to that step.",
+      "title": "¿No sabes cuál necesitas?",
+      "body": "Cada una de estas sale de una de nuestras checklists. Empieza con la checklist y te va a guiar a la herramienta cuando llegues a ese paso.",
       "primaryCta": "Fundamentos de seguridad digital",
       "secondaryCta": "Lista de Defensa Doxxing",
-      "openSource": "All four are <repos>open source</repos>. If one is broken, or you need something we have not built yet, <contact>let us know</contact>."
+      "openSource": "Las cuatro son <repos>open source</repos>. Si alguna está rota, o necesitas algo que aún no hemos construido, <contact>avísanos</contact>."
     }
   }
 }
