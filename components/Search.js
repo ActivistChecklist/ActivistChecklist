@@ -293,7 +293,7 @@ const Search = ({ variant = "searchbar", className, ...props }) => {
             size="icon"
             onClick={() => setOpen(true)}
             className={cn("h-9 w-9 hover:bg-muted", className)}
-            aria-label="Search"
+            aria-label={t("search.dialogTitle")}
           >
             <IoSearch className="h-5 w-5" />
           </Button>

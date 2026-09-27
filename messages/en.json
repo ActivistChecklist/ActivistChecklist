@@ -19,6 +19,17 @@
       "title": "Security essentials",
       "description": "Core security practices every activist should follow."
     },
+
+    "search": {
+      "dialogTitle": "Search the site",
+      "dialogDescription": "Use the search bar to find relevant content across the site.",
+      "placeholder": "Search...",
+      "searching": "Searching...",
+      "popularHeading": "Popular searches",
+      "topGuidesHeading": "Top guides",
+      "pressEnter": "Press {kbd} to search"
+    },
+    
     "signal": {
       "title": "Signal security",
       "description": "Secure your Signal messaging app for safer communications."
