@@ -8,6 +8,15 @@ api_token_env: CROWDIN_PERSONAL_TOKEN
 base_path: "."
 preserve_hierarchy: true
 
+# The GitHub integration appends "[ci skip]" to every commit it makes unless we
+# replace its message. GitHub Actions honors that tag on the PR's head commit, so
+# pull_request workflows never ran on l10n_* PRs and the required merge_gate check
+# sat on "Expected" until someone pushed a commit by hand. Burst pushes are fine:
+# pr-checks.yml and codeql.yml cancel superseded runs, and both skip heavy jobs on
+# l10n_* branches.
+commit_message: "New translations %original_file_name% (%language%)"
+append_commit_message: false
+
 files:
   - source: /content/en/**/*.mdx
     translation: /content/%two_letters_code%/**/%original_file_name%
