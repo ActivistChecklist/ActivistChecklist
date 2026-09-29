@@ -10,16 +10,18 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-
-const THEMES = [
-  { value: "light", label: "Light", Icon: Sun },
-  { value: "dark",  label: "Dark",  Icon: Moon },
-  { value: "system", label: "System", Icon: Laptop },
-]
+import { useTranslations } from "next-intl"
 
 export function DarkModeToggle({ className } = {}) {
   const { theme, resolvedTheme, setTheme } = useTheme()
   const [mounted, setMounted] = React.useState(false)
+  
+  const t = useTranslations()
+  const THEMES = [
+    { value: "light", label: t("themeSwitcher.light"), Icon: Sun },
+    { value: "dark",  label: t("themeSwitcher.dark"),  Icon: Moon },
+    { value: "system", label: t("themeSwitcher.system"), Icon: Laptop },
+  ]
 
   React.useEffect(() => {
     setMounted(true)
@@ -27,7 +29,7 @@ export function DarkModeToggle({ className } = {}) {
 
   if (!mounted) {
     return (
-      <Button variant="ghost" size="icon" className={className} aria-label="Toggle theme" disabled>
+      <Button variant="ghost" size="icon" className={className} aria-label={t("themeSwitcher.placeholderAriaLabel")} disabled>
         <Sun className="h-[1.2rem] w-[1.2rem]" aria-hidden="true" />
       </Button>
     )
@@ -42,8 +44,8 @@ export function DarkModeToggle({ className } = {}) {
           variant="ghost"
           size="icon"
           className={className}
-          aria-label={`Theme: ${theme}. Change theme`}
-          title="Change theme"
+          aria-label={t("themeSwitcher.ariaLabel", {theme: theme})}
+          title={t("themeSwitcher.title")}
         >
           <CurrentIcon className="h-[1.2rem] w-[1.2rem]" aria-hidden="true" />
         </Button>
@@ -59,7 +61,7 @@ export function DarkModeToggle({ className } = {}) {
             <Icon className="h-4 w-4" aria-hidden="true" />
             <span>{label}</span>
             {theme === value && (
-              <span className="ml-auto text-xs text-muted-foreground">Active</span>
+              <span className="ml-auto text-xs text-muted-foreground">{t("themeSwitcher.active")}</span>
             )}
           </DropdownMenuItem>
         ))}
