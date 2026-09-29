@@ -1,6 +1,5 @@
 'use client';
 import Link from '@/components/Link'
-import { DarkModeToggle } from "@/components/layout/DarkModeToggle"
 import { CompactNewsletterSubscribe } from "@/components/NewsletterSubscribe"
 import { footerConfig } from '@/config/navigation'
 import { useTranslations } from 'next-intl'
@@ -87,9 +86,8 @@ export function Footer() {
             })}
           </p>
 
-          {/* Utility bar: theme left, social right */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-2">
-            <DarkModeToggle />
+          {/* Utility bar: social links */}
+          <div className="flex flex-row items-center justify-start gap-4 pt-2">
             <div className="flex flex-wrap items-center gap-4">
               <Link
                 href="/onion/"
