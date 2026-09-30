@@ -153,6 +153,15 @@
   "languageSwitcher": {
     "ariaLabel": "Switch language"
   },
+  "themeSwitcher": {
+    "placeholderAriaLabel": "Toggle theme",
+    "ariaLabel": "Theme: {theme}. Change theme",
+    "title": "Change theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "active": "Active"
+  },
   "meta": {
     "lastUpdatedOn": "Last updated on",
     "lastReviewedOn": "Last reviewed on",
