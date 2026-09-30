@@ -135,6 +135,17 @@ export default async function ToolsPage({ params }) {
   setRequestLocale(locale);
   const t = await getTranslations();
 
+  // Generate OG image at build time. /tools/ is an app route, not MDX, so the
+  // guide/page render path never builds a card for it. One card is shared by
+  // every locale, so render it from the English title.
+  try {
+    const { generateOgImageForRoute } = await import('@/lib/og-image');
+    const tEn = await getTranslations({ locale: DEFAULT_LOCALE });
+    await generateOgImageForRoute({ title: tEn('tools.title'), pageType: 'page', slug: 'tools' });
+  } catch (err) {
+    console.warn('OG image skipped for page "tools":', err.message);
+  }
+
   return (
     <Layout sidebarType={null} fullWidthMain={true}>
       <header>
