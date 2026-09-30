@@ -1,7 +1,7 @@
 {
   "site": {
-    "title": "قوائم تدقيق الأمن الرقمي للناشطين",
-    "description": "خطوات بلغة بسيطة للأمن الرقمي. لأنّ حماية نفسك تساعد في حماية مجتمعك بأكمله."
+    "title": "قوائم التحقق للأمن الرقمي للناشطين",
+    "description": "خطوات بلغة بسيطة للأمن الرقمي. لأن حماية نفسك تساعد على إبقاء مجتمعك بأكمله أكثر أماناً."
   },
   "faq": {
     "defaultTitle": "الأسئلة المتكررة"
@@ -17,10 +17,10 @@
   "navItems": {
     "essentials": {
       "title": "أساسيات الأمان",
-      "description": "ممارسات الأمن الأساسية التي ينبغي على كل ناشط اتّباعها."
+      "description": "ممارسات الأمن الأساسية التي ينبغي على كل ناشط اتباعها."
     },
     "signal": {
-      "title": "أمان Signal",
+      "title": "أمن Signal",
       "description": "أمّن تطبيق مراسلة Signal الخاص بك من أجل اتصالات أكثر أماناً."
     },
     "protest": {
@@ -33,7 +33,7 @@
     },
     "doxxing": {
       "title": "الدفاع ضد doxxing",
-      "description": "احمِ نفسك من doxxing والتحرّش عبر الإنترنت."
+      "description": "احمِ نفسك من doxxing والتحرش عبر الإنترنت."
     },
     "travel": {
       "title": "أمن السفر والطيران",
@@ -41,11 +41,11 @@
     },
     "emergency": {
       "title": "التخطيط للطوارئ",
-      "description": "أنشئ شبكة دعم في حالات الطوارئ إذا اعتُقلت أو تعرّضت للتهديد."
+      "description": "أنشئ شبكة دعم طارئة في حال احتُجزت أو تعرضت للتهديد."
     },
     "secondary": {
       "title": "هاتف ثانوي",
-      "description": "جهّز هاتفاً إضافياً لأنشطة النضال والاحتجاجات."
+      "description": "اضبط هاتفاً إضافياً للنشاط الحقوقي والاحتجاجات."
     },
     "links": {
       "title": "إزالة تعقّب الروابط",
@@ -72,8 +72,8 @@
       "label": "أداة فحص تحديثات الأمان"
     },
     "tools": {
-      "title": "Tools we built",
-      "label": "Tools we built"
+      "title": "أدوات صنعناها",
+      "label": "أدوات صنعناها"
     },
     "resources": {
       "title": "المصادر",
@@ -97,40 +97,40 @@
     }
   },
   "hero": {
-    "title": "قوائم مراجعة الأمن الرقمي للناشطين",
-    "description": "خطوات بلغة بسيطة للأمان الرقمي. لأن حماية نفسك تساعد في الحفاظ على أمان مجتمعك بأكمله.",
+    "title": "قوائم الأمن الرقمي للناشطين",
+    "description": "خطوات بلغة بسيطة للأمن الرقمي. لأن حماية نفسك تساعد على حماية مجتمعك كله.",
     "primaryCta": "أساسيات الأمان الرقمي",
     "secondaryCta": "استضف حفل أمن"
   },
   "trustPoints": {
     "experienceTitle": "مبنيّ على التجربة",
-    "experienceDescription": "تستند أدلّتنا إلى عمل تنظيمي حقيقي وتغذية راجعة مباشرة من الناشطين. رغم أنّ كل حالة فريدة، نسعى لمشاركة رؤى عملية تساعد في اتخاذ قراراتك.",
+    "experienceDescription": "تستند أدلّتنا إلى عمل تنظيمي حقيقي وإلى ملاحظات مباشرة من الناشطين. رغم أن كل موقف فريد من نوعه، نسعى إلى مشاركة رؤى عملية تساعدك على اتخاذ قراراتك.",
     "updatedTitle": "يُحدَّث باستمرار",
-    "updatedDescription": "تُراجَع محتوياتنا بانتظام من قبل منظّمين يفهمون المخاوف الأمنية. نعمل على إبقاء المعلومات محدّثة مع تطوّر المخاطر والتقنيات."
+    "updatedDescription": "تُراجَع محتوياتنا بانتظام من قبل منظّمين يفهمون الهواجس الأمنية. نعمل على إبقاء المعلومات محدّثة مع تطوّر المخاطر والتقنيات."
   },
   "misconceptions": {
     "sectionTitle": "مفاهيم شائعة خاطئة",
-    "sectionDescription": "عندما نبدأ الحديث عن الأمن الرقمي، غالبًا ما نسمع هذه المخاوف. نعتقد أنّ للقصة تفاصيل أخرى.",
+    "sectionDescription": "حين نبدأ بالحديث عن الأمن الرقمي، كثيراً ما نسمع هذه المخاوف. نعتقد أن الأمر أعمق من ذلك.",
     "nothingToHideTitle": "\"ليس عندي ما أخفيه\"",
-    "nothingToHideDescription": "كلّما زاد انخراطك في أي عمل ضمن حركة اجتماعية، يمكن استخدام بياناتك لرسم خرائط شبكات الناشطين. أفضل وقت للبدء بحماية نفسك هو <b>قبل</b> أن تكون منخرطًا بعمق.",
+    "nothingToHideDescription": "كلما زاد انخراطك في أي عمل من أعمال الحركات الاجتماعية، ازداد استخدام بياناتك لرسم خرائط شبكات الناشطين. أفضل وقت للبدء بحماية نفسك هو <b>قبل</b> أن تصبح منخرطاً بعمق.",
     "alreadyKnowTitle": "\"إنّهم يعرفون كل شيء بالفعل\"",
-    "alreadyKnowDescription": "رغم أنّ جمع البيانات واسع الانتشار، يمكنك تقليل بصمتك الرقمية بشكل ملحوظ وحماية أنشطتك المستقبلية.",
-    "dontCareTitle": "\"لا يهتمّون بما أفعله\"",
-    "dontCareDescription": "المراقبة الجماعية تؤثّر على الجميع. يمكن استخدام بياناتك لرسم ملامح المجتمعات، أو التنبّؤ بالاحتجاجات، أو استهداف من تهتمّ لأمرهم. حماية اتصالاتك تساعد في حماية جميعنا."
+    "alreadyKnowDescription": "رغم أن جمع البيانات واسع الانتشار، يمكنك أن تقلّل بشكل ملحوظ من بصمتك الرقمية وتحمي أنشطتك المستقبلية.",
+    "dontCareTitle": "\"لا يهتمون بما أفعل\"",
+    "dontCareDescription": "المراقبة الجماعية تطال الجميع. يمكن استخدام بياناتك لرسم ملامح المجتمعات، أو التنبؤ بالاحتجاجات، أو استهداف من تحبّ. حماية اتصالاتك تساعد على حمايتنا جميعاً."
   },
   "featured": {
-    "sectionTitle": "ظهر في"
+    "sectionTitle": "ظهرنا في"
   },
   "homepage": {
     "checklistsHeading": "قوائم تحقق للأمن الرقمي والسلامة الجسدية",
     "browseAll": "شاهد جميع قوائم المراجعة",
-    "trustHeading": "أدلّة بسيطة لتبقينا أكثر أمانًا",
-    "trustDescription": "بنينا هذا الموقع لأنّ الأمن الرقمي لا ينبغي أن يكون مرهقًا. نتّبع مقاربة تقليل الأذى: ابدأ من حيث أنت وافعل ما تستطيع.",
+    "trustHeading": "أدلة بسيطة لتبقينا أكثر أماناً",
+    "trustDescription": "بنينا هذا لأن الأمن الرقمي لا ينبغي أن يكون مرهقاً. نتبع نهج تقليل الضرر: ابدأ من حيث أنت وافعل ما تستطيع.",
     "latestNewsHeading": "آخر أخبار المراقبة",
     "viewAllNews": "اطّلع على جميع الأخبار",
-    "toolsHeading": "Tools we built",
-    "toolsDescription": "Free tools we made to go along with the checklists, for the steps that are hard to finish on your own.",
-    "viewAllTools": "See all tools",
+    "toolsHeading": "أدوات صنعناها",
+    "toolsDescription": "أدوات مجانية صنعناها لترافق قوائم التحقق، للخطوات التي يصعب إنجازها بمفردك.",
+    "viewAllTools": "عرض جميع الأدوات",
     "recentUpdatesHeading": "آخر تحديثات الموقع",
     "viewAllUpdates": "اطّلع على جميع التحديثات",
     "noRecentChanges": "لا تتوفّر تغييرات حديثة"
@@ -140,9 +140,9 @@
     "suggest": "يمكنك استخدام ميزة الترجمة المدمجة في متصفّحك لترجمة هذه الصفحة."
   },
   "pageNotices": {
-    "translationUnreviewedTitle": "مُترجَم آلياً",
-    "translationUnreviewed": "تُرجمت هذه الصفحة تلقائيًا. فقط {approvalPercent}% منها راجعها إنسان حتى الآن. قد تحتوي بقية النصوص على أخطاء. <link>ساعدنا في مراجعة هذه الترجمة</link>.",
-    "nonUsThreatModel": "خارج الولايات المتحدة؟ بعض الأدوات المذكورة هنا، بما في ذلك تطبيقات المراسلة المشفّرة، غير قانونية في بلدان معيّنة. تحقق من قوانينك المحلية قبل اتباع هذه الإرشادات.",
+    "translationUnreviewedTitle": "مُترجَمة تلقائياً",
+    "translationUnreviewed": "تُرجمت هذه الصفحة تلقائياً. فقط {approvalPercent}% منها راجعه بشر حتى الآن. قد تحتوي بقية النصوص على أخطاء. <link>ساعدنا في مراجعة هذه الترجمة</link>.",
+    "nonUsThreatModel": "خارج الولايات المتحدة؟ بعض الأدوات هنا، بما في ذلك تطبيقات المراسلة المشفّرة، غير قانونية في بعض البلدان. تحقق من قوانينك المحلية قبل تطبيق هذه الإرشادات.",
     "dismiss": "تجاهل"
   },
   "languageDetection": {
@@ -171,14 +171,14 @@
   "footer": {
     "branding": {
       "title": "Activist Checklist - قائمة الناشط",
-      "description": "خطوات بلغة بسيطة للأمن الرقمي، لأنّ حماية نفسك تساعد في حماية مجتمعك بأكمله."
+      "description": "خطوات بلغة بسيطة للأمن الرقمي، لأن حماية نفسك تساعد على إبقاء مجتمعك بأكمله أكثر أماناً."
     },
     "stayUpdated": "ابقَ على اطّلاع",
     "sections": {
-      "navigation": "التصفّح",
+      "navigation": "التصفح",
       "topChecklists": "أفضل قوائم التحقق"
     },
-    "disclaimer": "تنبيه: نحن نقدّم معلومات وموارد، لا استشارات قانونية. استشر محاميًا بشأن حالتك المحدّدة.",
+    "disclaimer": "انتبه: نحن نقدّم معلومات وموارد، لا استشارة قانونية. استشر محامياً بشأن وضعك تحديداً.",
     "licenseNotice": "المحتوى متاح بموجب <cc>Creative Commons BY-SA</cc>. اطّلع على <sources>مصادرنا</sources>. الشيفرة المصدرية متاحة على <github>GitHub</github>.",
     "social": {
       "blueskyAriaLabel": "تابعنا على Bluesky",
@@ -192,7 +192,7 @@
   },
   "newsletter": {
     "subscribe": "اشتراك",
-    "successLong": "تمّ اشتراكك! هل تودّ إرسال رسالة إلى صديق على Signal لإخباره عن هذا المشروع؟",
+    "successLong": "تم اشتراكك! هل تريد أن ترسل رسالة إلى صديق على Signal لتُطلعه على هذا المشروع؟",
     "successShort": "شكراً لاشتراكك!",
     "placeholders": {
       "emailLong": "أدخل بريدك الإلكتروني",
@@ -200,8 +200,8 @@
     }
   },
   "inlineCta": {
-    "heading": "عندما تتغير تكتيكاتهم، تتغير نصائحنا أيضاً",
-    "description": "ICE والكاسات والمراقبة المؤسّسية يضيفون أدوات جديدة باستمرار. نحدّث هذه الأدلّة لمواكبتهم. اشترك لتعرف عندما يتغيّر شيء مهم.",
+    "heading": "عندما تتغيّر تكتيكاتهم، تتغيّر نصائحنا أيضاً",
+    "description": "تواصل ICE والشرطة والمراقبة المؤسسية إضافة أدوات جديدة. نحن نُحدّث هذه الأدلة لمواكبة ذلك. اشترك لتصلك التنبيهات عندما يتغيّر شيء مهم.",
     "buttonText": "اشترك",
     "emailAriaLabel": "البريد الإلكتروني",
     "privacyLink": "سياسة الخصوصية"
@@ -221,11 +221,11 @@
     "pressEnter": "اضغط على <kbd>↵</kbd> للبحث",
     "searching": "جارٍ البحث...",
     "noResults": "لم يُعثر على نتائج لـ \"{query}\"",
-    "untitled": "بدون عنوان",
+    "untitled": "بلا عنوان",
     "suggestion0": "أمان الهاتف احتجاج",
-    "suggestion1": "المراسلة الآمنة عبر Signal",
+    "suggestion1": "المراسلة الآمنة signal",
     "suggestion2": "تتبّع الموقع الجغرافي",
-    "suggestion3": "أمان passcode",
+    "suggestion3": "أمن passcode",
     "suggestion4": "الحماية عالية المخاطر"
   },
   "notFound": {
@@ -235,7 +235,7 @@
     "variations": {
       "goneUnderground": {
         "title": "اختفت في السرّية",
-        "message": "لقد اختفت هذه الصفحة! ربّما تنظّم شيئًا ما..."
+        "message": "هذه الصفحة اختفت! ربما تكون منشغلة بتنظيم شيء ما..."
       },
       "nothingToSee": {
         "title": "لا يوجد شيء لتراه هنا",
@@ -247,7 +247,7 @@
       },
       "securityCulture": {
         "title": "تمارس ثقافة أمنية جيّدة",
-        "message": "هذه الصفحة تستخدم التشفير من الطرف إلى الطرف... ربما بشكل مبالغ فيه قليلاً."
+        "message": "هذه الصفحة تستخدم التشفير من طرف إلى طرف... ربما بشكل مبالغ فيه قليلاً."
       },
       "whoseStreets": {
         "title": "لمن الشوارع؟",
@@ -259,14 +259,14 @@
       },
       "directAction": {
         "title": "فعل مباشر",
-        "message": "هذه الصفحة في الخارج تعطّل الأعمال المعتادة."
+        "message": "هذه الصفحة تعطّل سير الأعمال المعتاد."
       },
       "firedUp": {
-        "title": "مشتعلون",
+        "title": "ملتهبة حماساً",
         "message": "هذه الصفحة منشغلة بإشعال شرارة الثورة."
       },
       "mutualAid": {
-        "title": "محطّة العون المتبادل",
+        "title": "محطة عون متبادل",
         "message": "هذه الصفحة انتقلت للمساعدة في توزيع الموارد على المجتمع."
       },
       "beWater": {
@@ -280,8 +280,8 @@
     "mediumLabel": "تهديد متوسّط",
     "highLabel": "تهديد مرتفع",
     "everyoneDefault": "هذا القسم موجّه لأي شخص يقوم بعمل ناشط أو مناصرة.",
-    "mediumDefault": "هذا القسم موجّه لك إذا كنت في دور قيادي أو كنت تقوم بنشاط من المرجّح أن تستهدفه الدولة أو معارضوك.",
-    "highDefault": "هذا القسم موجّه لك إذا كنت في دور بارز أو كان نشاطك يتضمّن عملًا عالي المخاطر قد يؤدّي إلى عواقب خطيرة أو انتقام.",
+    "mediumDefault": "هذا القسم لك إذا كنت في دور قيادي أو كنت تقوم بنشاط من المرجّح أكثر أن تستهدفه الدولة أو خصومك.",
+    "highDefault": "هذا القسم لك إذا كنت في دور بارز أو إذا كان نشاطك ينطوي على عمل عالي المخاطر قد يؤدي إلى عواقب خطيرة أو انتقام.",
     "forYouIf": "هذا القسم موجّه لك إذا:",
     "forYou": "هذا القسم موجّه لـ:"
   },
@@ -303,40 +303,40 @@
   },
   "contact": {
     "title": "اتصل بنا",
-    "intro": "ملاحظاتك تساعد في جعل هذا المصدر أكثر فائدة وأمانًا للجميع. نرحّب باقتراحاتك بخصوص:",
+    "intro": "ملاحظاتك تساعد على جعل هذا المورد أكثر فائدة وأماناً للجميع. نرحّب بالاقتراحات المتعلقة بـ:",
     "suggestion1": "تصحيح أي معلومات غير دقيقة أو قديمة",
     "suggestion2": "جعل أدلّتنا أوضح وأسهل للفهم",
     "suggestion3": "تحسين توصيات الأمان",
-    "suggestion4": "اقتراح مواضيع جديدة ينبغي أن نغطّيها",
+    "suggestion4": "اقتراح مواضيع جديدة ينبغي تغطيتها",
     "sendMessage": "أرسل لنا رسالة",
     "recommended": "(مُوصى به)",
     "successMessage": "تمّ إرسال الرسالة بنجاح! سنعود إليك قريبًا.",
     "otherWays": "طرق أخرى للوصول إلينا",
     "githubTitle": "ملاحظات عامّة (GitHub)",
-    "githubDescription": "إذا كنت لا تمانع المشاركة علنًا، يمكنك إرسال ملاحظاتك وأسئلتك وطلبات الميزات عبر مستودعنا على GitHub.",
-    "githubLink": "زيارة مستودع GitHub ←",
+    "githubDescription": "إذا كنت لا تمانع المشاركة علناً، يمكنك إرسال الملاحظات والأسئلة وطلبات الميزات عبر مستودعنا على GitHub.",
+    "githubLink": "زيارة مستودع GitHub →",
     "emailTitle": "بريد إلكتروني مُشفَّر",
-    "emailDescription": "تستخدم Proton Mail؟ ستُشفَّر رسائلك تلقائيًا. أما مع مزوّدي البريد الآخرين، يمكنك استخدام مفتاح PGP الخاص بنا. أو يمكنك ببساطة مراسلة هذا العنوان دون تشفير.",
-    "pgpLink": "عرض مفتاح PGP ←"
+    "emailDescription": "تستخدم Proton Mail؟ ستُشفَّر رسائلك تلقائياً. لمزوّدين آخرين، يمكنك استخدام مفتاح PGP الخاص بنا. أو يمكنك ببساطة مراسلة هذا العنوان دون تشفير.",
+    "pgpLink": "عرض مفتاح PGP →"
   },
   "contactForm": {
     "messageLabel": "رسالتك",
     "messagePlaceholder": "اكتب رسالتك...",
-    "charactersRemaining": "{count} حرفًا متبقّية",
+    "charactersRemaining": "تبقّى {count} حرفاً",
     "responseQuestion": "هل تودّ الحصول على ردّ؟",
     "emailLabel": "البريد الإلكتروني",
     "emailPlaceholder": "أدخل عنوان بريدك الإلكتروني",
-    "emailNote": "ملاحظة بشأن ردود البريد الإلكتروني: ما لم تستخدم Proton Mail، يمكن لمزوّد بريدك الإلكتروني قراءة أي ردود نرسلها على رسالتك.",
+    "emailNote": "ملاحظة حول الردود عبر البريد الإلكتروني: ما لم تستخدم Proton Mail، يمكن لمزوّد بريدك الإلكتروني قراءة أي ردود نرسلها على رسالتك.",
     "signalUsernameLabel": "اسم المستخدم في Signal",
     "signalUsernamePlaceholder": "اسم_المستخدم.12",
     "signalUsernameExample": "@snowden.04",
-    "signalUsernameHelp": "اسم المستخدم مختلف عن اسم العرض. تجد اسم المستخدم في Signal < أيقونة المستخدم (أعلى اليمين) < Settings. سيكون قرب الأعلى، تحت رقم هاتفك مباشرة.",
+    "signalUsernameHelp": "اسم المستخدم يختلف عن الاسم الظاهر. تجد اسم المستخدم في Signal > أيقونة المستخدم (أعلى اليمين) > Settings. سيظهر بالقرب من الأعلى، أسفل رقم هاتفك مباشرةً.",
     "signalPhoneLabel": "رقم هاتف Signal",
     "signalPhonePlaceholder": "أدخل رقم هاتفك على Signal",
     "sending": "جارٍ الإرسال...",
     "sendMessage": "إرسال رسالة",
     "privacyLabel": "الخصوصية:",
-    "privacyText": "رسالتك مُشفَّرة بأمان وتُرسل إلى حساب Proton Mail الخاص بنا. لا نجمع أي معلومات شخصية عنك.",
+    "privacyText": "رسالتك مشفّرة بأمان وتُرسَل إلى حسابنا على Proton Mail. لا نجمع أي معلومات شخصية عنك.",
     "errorMessage": "فشل إرسال الرسالة. حاول مرّة أخرى لاحقًا.",
     "responseNone": "لا حاجة لردّ (تبقى رسالتك مجهولة الهوية)",
     "responseSignalUsername": "الردّ عبر Signal (اسم المستخدم)",
@@ -350,7 +350,7 @@
     "inputPlaceholder": "اكتب سؤالك...",
     "sendButton": "إرسال",
     "dialogTitle": "أرسل لنا رسالة",
-    "successMessage": "شكرًا على ملاحظاتك! سنراجعها ونستخدمها لتحسين الأدلّة. إذا وجدت الموقع مفيدًا، ساعدنا في نشر الخبر!"
+    "successMessage": "شكراً على ملاحظاتك! سنراجعها ونستفيد منها لتحسين الأدلة. إذا وجدت الموقع مفيداً، ساعدنا في نشر الكلمة!"
   },
   "relatedGuides": {
     "headingBlock": "واصل التعلّم مع هذه الأدلّة ذات الصلة",
@@ -365,10 +365,10 @@
   "news": {
     "title": "أخبار المراقبة",
     "description": "آخر الأخبار حول المراقبة من قبل الدولة والتهديدات التي تواجه الحركات الاجتماعية.",
-    "tipInvitation": "هل لديك خبر ترى أنّه ينبغي تضمينه؟",
+    "tipInvitation": "لديك خبر ترى أنه يجب تضمينه؟",
     "tipLink": "أرسل لنا تنبيهاً",
     "tipSuffix": "وساعد في إبقاء مجتمعنا مطلعًا.",
-    "noItems": "لم يُعثر على أي أخبار.",
+    "noItems": "لم يُعثر على أخبار.",
     "paywallBypassNotice": "يتجاوز هذا الرابط جدار الدفع.",
     "seeOriginal": "عرض المصدر الأصلي"
   },
@@ -377,29 +377,29 @@
     "description": "سجلّ التغييرات التي طرأت على قوائم التحقق والصفحات والموارد في الموقع.",
     "last30Days": "آخر 30 يوماً",
     "previousChanges": "التغييرات السابقة",
-    "noEntries": "لم يُعثر على أي إدخالات في سجلّ التغييرات.",
+    "noEntries": "لم يُعثر على مدخلات في سجل التغييرات.",
     "majorUpdate": "تحديث كبير"
   },
   "updates": {
-    "metaTitle": "هل لا يزال جهازك يتلقّى تحديثات الأمان؟ | Activist Checklist",
-    "metaDescription": "تحقّق مما إذا كان هاتفك أو لوحك أو ساعتك أو حاسوبك المحمول لا يزال يتلقّى تحديثات الأمان. الأجهزة القديمة تتراكم فيها ثغرات معروفة علنًا ويسهل اختراقها إذا صُودرت أو استُهدفت.",
-    "title": "هل لا يزال جهازك يتلقّى تحديثات الأمان؟",
-    "intro": "إذا كان جهازك لا يستخدم أحدث نظام تشغيل، يمكن للمخترقين والكاسات اختراقه والوصول إلى جميع بياناتك.",
+    "metaTitle": "هل لا يزال جهازك يتلقى تحديثات الأمن؟ | Activist Checklist",
+    "metaDescription": "تحقق مما إذا كان هاتفك أو جهازك اللوحي أو ساعتك أو حاسوبك المحمول لا يزال يتلقى تحديثات الأمن. الأجهزة القديمة تتراكم فيها ثغرات معروفة علنياً، ما يجعل اختراقها أسهل إذا صُودرت أو استُهدفت.",
+    "title": "هل لا يزال جهازك يتلقى تحديثات الأمن؟",
+    "intro": "إذا كان جهازك لا يستخدم أحدث نظام تشغيل، فبإمكان القراصنة والشرطة اختراقه والوصول إلى كل بياناتك.",
     "searchLabel": "اكتب موديل جهازك",
     "searchHelpAriaLabel": "مساعدة في العثور على موديل جهازك",
-    "searchHelp": "تحتاج مساعدة للعثور عليه؟ اختر نظام التشغيل الخاص بك أعلاه للحصول على إرشادات.",
+    "searchHelp": "بحاجة لمساعدة في إيجاده؟ اختر نظام التشغيل أعلاه للحصول على إرشادات.",
     "searchPlaceholder": "مثلاً iPhone 12 Pro، Pixel 7، Windows 10",
     "searchAriaLabel": "ابحث عن جهازك أو نظام تشغيلك",
     "clearAriaLabel": "مسح البحث",
     "editSelectionAriaLabel": "تغيير الجهاز، العودة إلى البحث",
     "noMatches": "لا توجد نتائج في قائمتنا.",
-    "noMatchesHelp": "جرّب اسم الشركة المصنّعة (مثلاً \"Galaxy A14\" بدلاً من مجرّد \"A14\").",
-    "noMatchesSupported": "نتابع حاليًا Apple وGoogle وSamsung وMotorola وOnePlus وNokia، بالإضافة إلى iOS وiPadOS وmacOS وAndroid وWindows.",
-    "noMatchesWindowsLaptop": "شركات تصنيع أجهزة Windows المحمولة لا تعلن متى تتوقّف عن تقديم تحديثات الأمان، لذا فحص <b>طراز</b> الحاسوب المحمول لن يخبرك. تحقّق من <b>إصدار</b> Windows بدلاً من ذلك. فهو ما يحدّد ما إذا كنت لا تزال تتلقّى تحديثات.",
+    "noMatchesHelp": "جرّب استخدام اسم الشركة المصنّعة (مثلاً \"Galaxy A14\" بدلاً من \"A14\" فقط).",
+    "noMatchesSupported": "نحن حالياً نتابع أجهزة Apple وGoogle وSamsung وMotorola وOnePlus وNokia، بالإضافة إلى iOS وiPadOS وmacOS وAndroid وWindows.",
+    "noMatchesWindowsLaptop": "لا تُعلن الشركات المصنّعة لحواسيب Windows المحمولة عن توقّف تقديم تحديثات الأمن، لذا فإن التحقق من <b>طراز</b> الحاسوب المحمول لن يخبرك بذلك. تحقق من <b>إصدار</b> Windows بدلاً من ذلك. هذا هو ما يحدد ما إذا كنت لا تزال تتلقى تحديثات.",
     "noMatchesWindowsPathLabel": "كيفية التحقّق من إصدار Windows:",
     "loading": "جارٍ تحميل قائمة الأجهزة...",
-    "loadError": "تعذّر تحميل قائمة الأجهزة. <retryLink>حاول مجدّدًا</retryLink> أو تحقّق من <link>endoflife.date</link> مباشرة.",
-    "snapshotStaleBanner": "قد تكون قائمة الأجهزة لدينا غير محدثة. آخر تحديث في {date}. <link>تحقق من endoflife.date مباشرة</link>",
+    "loadError": "لم نتمكن من تحميل قائمة الأجهزة. <retryLink>حاول مجدداً</retryLink> أو تحقق من <link>endoflife.date</link> مباشرةً.",
+    "snapshotStaleBanner": "قد تكون قائمة الأجهزة لدينا قديمة. آخر تحديث في {date}. <link>تحقق من endoflife.date مباشرةً</link>",
     "releasedYearHint": "صدر {year}",
     "categoryPill": {
       "phone": "هاتف",
@@ -430,9 +430,9 @@
       "motorola": "Motorola",
       "oneplus": "OnePlus",
       "nokia": "Nokia",
-      "android": "أندرويد",
+      "android": "أندرويد (Android)",
       "androidOs": "Android (نظام التشغيل فقط)",
-      "windows": "Windows"
+      "windows": "ويندوز (Windows)"
     },
     "breadcrumb": {
       "ariaLabel": "الفئة المختارة، اضغط للتغيير",
@@ -440,8 +440,8 @@
     },
     "findYourModel": {
       "label": "كيفية العثور على موديل جهازك:",
-      "labelWindows": "كيفية التحقّق من إصدار Windows لديك:",
-      "iphone": "<settings>تطبيق Settings</settings> على شاشتك الرئيسية ← General ← About ← Model Name",
+      "labelWindows": "طريقة التحقق من إصدار Windows لديك:",
+      "iphone": "<settings>تطبيق Settings</settings> على الشاشة الرئيسية ← General ← About ← Model Name",
       "ipad": "<settings>تطبيق الإعدادات</settings> في الشاشة الرئيسية ← عام ← حول ← اسم الطراز",
       "iphoneIpad": "<settings>تطبيق الإعدادات</settings> في الشاشة الرئيسية ← عام ← حول ← اسم الطراز",
       "appleWatch": "تطبيق Watch على iPhone ← My Watch ← عام ← حول ← الطراز",
@@ -454,17 +454,17 @@
       "android": "<settings>تطبيق Settings</settings> على هاتفك ← About phone ← Model number",
       "androidOs": "<settings>تطبيق Settings</settings> على هاتفك ← About phone ← Android version",
       "windows": "اضغط على مفتاح Windows + R ← اكتب <code>winver</code> ← Enter",
-      "windowsCaveat": "لا تُعلن الشركات المصنّعة لأجهزة Windows المحمولة متى تتوقف عن تقديم تحديثات الأمان، لذا فإن التحقق من <b>طراز</b> الجهاز لن يفيدك. تحقّق من <b>إصدار</b> Windows بدلاً من ذلك. فهو ما يحدد ما إذا كنت لا تزال تتلقى التحديثات."
+      "windowsCaveat": "لا تعلن شركات تصنيع أجهزة Windows المحمولة عن وقت إيقاف تقديم تحديثات الأمان، لذا فإن التحقق من <b>طراز</b> الجهاز لن يخبرك بذلك. تحقق من <b>إصدار</b> Windows بدلاً من ذلك. هذا هو ما يحدد ما إذا كنت لا تزال تتلقى التحديثات."
     },
     "otherInfo": {
       "title": "أجهزة أخرى",
-      "body": "نتابع حاليًا أجهزة Apple وGoogle وSamsung وMotorola وOnePlus وNokia، بالإضافة إلى iOS وiPadOS وmacOS وAndroid وWindows. لأي جهاز آخر، <link>ابحث عبر الإنترنت</link> عن \"هل لا يزال [طراز الجهاز] يتلقّى تحديثات الأمان\"."
+      "body": "نتابع حالياً أجهزة Apple وGoogle وSamsung وMotorola وOnePlus وNokia، بالإضافة إلى iOS وiPadOS وmacOS وAndroid وWindows. لأي جهاز آخر، <link>ابحث عبر الإنترنت</link> عن \"هل لا يزال [طراز الجهاز] يتلقى تحديثات الأمن.\""
     },
     "result": {
       "checkAnother": "التحقّق من جهاز آخر",
       "source": "المصدر: <link>endoflife.date</link>",
       "settingsPath": {
-        "ios": "<settings>تطبيق Settings</settings> على شاشتك الرئيسية ← General ← Software Update ← Update Now",
+        "ios": "<settings>تطبيق Settings</settings> على الشاشة الرئيسية ← General ← Software Update ← Update Now",
         "ipados": "<settings>تطبيق الإعدادات</settings> في الشاشة الرئيسية ← عام ← تحديث البرامج ← تحديث الآن",
         "macos": "<apple>قائمة Apple</apple> في شريط القوائم العلوي ← إعدادات النظام ← عام ← تحديث البرنامج ← التحديث الآن",
         "android": "<settings>تطبيق Settings</settings> على هاتفك ← System ← Software update ← Check for updates",
@@ -473,27 +473,27 @@
         "oneplus": "<settings>تطبيق Settings</settings> على هاتفك ← System ← System updates ← Check for updates"
       },
       "osVersionPath": {
-        "ios": "<settings>تطبيق Settings</settings> على شاشتك الرئيسية ← General ← About ← Software Version",
+        "ios": "<settings>تطبيق Settings</settings> على الشاشة الرئيسية ← General ← About ← Software Version",
         "ipados": "<settings>تطبيق الإعدادات</settings> في الشاشة الرئيسية ← عام ← حول ← إصدار البرنامج",
         "macos": "<apple>قائمة Apple</apple> في شريط القوائم العلوي ← حول هذا الـ Mac",
         "android": "<settings>تطبيق Settings</settings> على هاتفك ← About phone ← Android version",
         "windows": "اضغط مفتاح Windows ‏+ R ← اكتب <code>winver</code> ← Enter",
         "watchos": "تطبيق Watch على هاتف iPhone الخاص بك ← My Watch ← General ← About ← Version"
       },
-      "deviceSupportedTitle": "{label} سيستمرّ بتلقّي تحديثات الأمان.",
+      "deviceSupportedTitle": "سيستمر {label} في تلقّي تحديثات الأمن.",
       "deviceSupportedSubtitleUntil": "من المتوقع استمرار التحديثات حتى <b>{date}</b>.",
       "deviceSupportedSubtitleRecent": "لم يُعلن بعد عن تاريخ انتهاء الدعم.",
-      "deviceUnsupportedTitle": "{label} لم يعد يتلقى التحديثات الأمنية.",
-      "deviceUnsupportedTitleAgoMonths": "{label} توقّف عن تلقّي تحديثات <nowrap>الأمان <mark>{months, plural, zero {منذ 0 شهر} one {منذ شهر واحد} two {منذ شهرين} few {منذ # أشهر} many {منذ # شهرًا} other {منذ # شهر}}</mark></nowrap>.",
-      "deviceUnsupportedTitleAgoYears": "{label} توقّف عن تلقّي تحديثات <nowrap>الأمان <mark>{years, plural, zero {منذ 0 سنة} one {منذ سنة واحدة} two {منذ سنتين} few {منذ # سنوات} many {منذ # سنة} other {منذ # سنة}}</mark></nowrap>.",
+      "deviceUnsupportedTitle": "لم يعد {label} يتلقى تحديثات الأمن.",
+      "deviceUnsupportedTitleAgoMonths": "توقّف {label} عن تلقّي <nowrap>تحديثات الأمن <mark>{months, plural, zero {منذ أقل من شهر} one {منذ شهر واحد} two {منذ شهرين} few {منذ # أشهر} many {منذ # شهراً} other {منذ # شهر}}</mark></nowrap>.",
+      "deviceUnsupportedTitleAgoYears": "توقّف {label} عن تلقّي <nowrap>تحديثات الأمن <mark>{years, plural, zero {منذ أقل من سنة} one {منذ سنة واحدة} two {منذ سنتين} few {منذ # سنوات} many {منذ # سنة} other {منذ # سنة}}</mark></nowrap>.",
       "deviceUnsupportedSubtitleEnded": "انتهى دعم الأمن في <b>{date}</b>.",
-      "deviceUnsupportedSubtitleUnmaintained": "{manufacturer} توقّف عن إصدار تحديثات الأمان.",
+      "deviceUnsupportedSubtitleUnmaintained": "توقفت {manufacturer} عن إصدار تحديثات الأمن.",
       "deviceUnsupportedSubtitleAge": "صدر {age}. لا يوجد تاريخ منشور لانتهاء الدعم ولا يبدو أنّ {manufacturer} يُصدر تحديثات.",
       "manufacturerFallback": "الشركة المصنِّعة",
       "manufacturerFallbackLower": "الشركة المصنِّعة",
-      "ageYearsAgo": "{years, plural, =0 {هذه السنة} =1 {قبل سنة} other {قبل # سنوات}}",
-      "deviceUncertainTitle": "لا يمكننا التأكيد ما إذا كان {label} سيستمرّ بتلقّي تحديثات.",
-      "deviceUncertainSubtitle": "صدر {age}. {manufacturer} لم ينشر تاريخ انتهاء الدعم، والأجهزة بهذا القِدَم قد تظلّ أو لا تظلّ تتلقّى تحديثات.",
+      "ageYearsAgo": "{years, plural, =0 {هذا العام} =1 {منذ سنة واحدة} zero {منذ # سنة} one {منذ سنة} two {منذ سنتين} few {منذ # سنوات} many {منذ # سنة} other {منذ # سنة}}",
+      "deviceUncertainTitle": "لا يمكننا تأكيد ما إذا كان {label} سيستمر في تلقّي التحديثات.",
+      "deviceUncertainSubtitle": "صدر {age}. لم تنشر {manufacturer} تاريخاً لانتهاء الدعم، والأجهزة بهذا العمر قد تتلقى تحديثات أو لا.",
       "deviceUncertainCheck": "راجع صفحة دعم الشركة المصنّعة: <link></link>.",
       "manufacturerSupport": {
         "apple": {
@@ -522,15 +522,15 @@
         }
       },
       "osConfirmedShort": "{label} سيستمر في تلقّي التحديثات الأمنية.",
-      "osConfirmedShortYears": "{label} سيستمرّ بتلقّي تحديثات <nowrap>الأمان <mark>لمدّة {years, plural, zero {0 سنة إضافية} one {سنة إضافية واحدة} two {سنتين إضافيتين} few {# سنوات إضافية} many {# سنة إضافية} other {# سنة إضافية}}</mark></nowrap>.",
-      "osConfirmedShortMonths": "{label} سيستمرّ بتلقّي تحديثات <nowrap>الأمان <mark>لمدّة {months, plural, zero {0 شهر إضافي} one {شهر إضافي واحد} two {شهرين إضافيين} few {# أشهر إضافية} many {# شهرًا إضافيًا} other {# شهر إضافي}}</mark></nowrap>.",
+      "osConfirmedShortYears": "سيستمر {label} في تلقّي <nowrap>تحديثات الأمن <mark>لمدة {years, plural, zero {أقل من سنة إضافية} one {سنة إضافية واحدة} two {سنتين إضافيتين} few {# سنوات إضافية} many {# سنة إضافية} other {# سنة إضافية}}</mark></nowrap>.",
+      "osConfirmedShortMonths": "سيستمر {label} في تلقّي <nowrap>تحديثات الأمن <mark>لمدة {months, plural, zero {أقل من شهر إضافي} one {شهر إضافي واحد} two {شهرين إضافيين} few {# أشهر إضافية} many {# شهراً إضافياً} other {# شهر إضافي}}</mark></nowrap>.",
       "osConfirmedSubtitleUntil": "من المتوقع أن تستمر التحديثات حتى <b>{date}</b>.",
       "osEolSoon": {
-        "titleMonths": "سيفقد {label} تحديثات الأمان <nowrap><mark>خلال حوالي {months, plural, =1 {شهر واحد} zero {أقل من شهر} one {شهر} two {شهرين} few {# أشهر} many {# شهراً} other {# شهر}}</mark></nowrap>.",
-        "titleSoon": "{label} سيفقد التحديثات الأمنية <nowrap><mark>قريبًا</mark></nowrap>.",
+        "titleMonths": "سيفقد {label} <nowrap>تحديثات الأمن <mark>خلال حوالي {months, plural, zero {أقل من شهر} =1 {شهر واحد} one {شهر واحد} two {شهرين} few {# أشهر} many {# شهراً} other {# شهر}}</mark></nowrap>.",
+        "titleSoon": "سيفقد {label} <nowrap>تحديثات <mark>الأمن قريباً</mark></nowrap>.",
         "subtitleDate": "من المتوقّع انتهاء التحديثات في <b>{date}</b>."
       },
-      "osEoasNote": "نقل المزوّد هذا الإصدار إلى وضع تحديثات الأمان فقط. خطّط للترقية عندما يكون ذلك مناسبًا.",
+      "osEoasNote": "نقل المزوّد هذا الإصدار إلى تحديثات أمن فقط. خطّط للترقية عندما يكون ذلك مناسباً.",
       "osUnsupportedTitle": "لم يعد {label} يتلقّى تحديثات الأمان.",
       "osUnsupportedSubtitleEnded": "انتهى الدعم في <b>{date}</b>.",
       "osUpgradeAdvice": {
@@ -540,7 +540,7 @@
         "android": "حدّث إلى نسخة أحدث من Android.",
         "windows": "ترقّى إلى Windows 11."
       },
-      "osCheckDeviceHint": "أو أدخل طراز جهازك في المربّع أعلاه لترى ما إذا كان لا يزال قادرًا على تلقّي تحديثات الأمان.",
+      "osCheckDeviceHint": "أو أدخل طراز جهازك في المربع أعلاه لترى ما إذا كان لا يزال قادراً على تلقّي تحديثات الأمن.",
       "latestOsReminderTitle": "تأكّد من أنّك محدَّث",
       "latestOsReminderWithVersion": "تأكّد من أنّك تشغّل {os} {version}.",
       "latestOsReminderFamilyLatest": "تأكّد من أنّك تشغّل أحدث إصدار من {os} (حاليًا {version}).",
@@ -549,18 +549,18 @@
         "ios": "iOS",
         "ipados": "iPadOS",
         "macos": "macOS",
-        "android": "أندرويد",
-        "windows": "Windows"
+        "android": "أندرويد (Android)",
+        "windows": "ويندوز (Windows)"
       },
       "deviceMaxOsWarningTitle": "ملاحظة بشأن نظام تشغيل جهازك",
-      "deviceMaxOsWarning": "جهاز {label} يدعم فقط حتى {os} {maxVersion}. {os} {maxVersion} سيتوقّف عن تلقّي تحديثات الأمان قبل {os} {latestVersion}. الأجهزة الأحدث ستستمرّ بتلقّي التحديثات لفترة أطول.",
-      "deviceMaxOsWarningWithDate": "جهاز {label} يدعم فقط حتى {os} {maxVersion}، ومن المتوقّع أن يتوقّف عن تلقّي تحديثات الأمان في حدود {eolDate}. الأجهزة الأحدث القادرة على تشغيل {os} {latestVersion} ستستمرّ بتلقّي التحديثات لفترة أطول.",
-      "deviceMaxOsEolWarning": "جهاز {label} يدعم بحدّ أقصى {os} {maxVersion}، الذي انتهى دعمه رسميًا. قد لا تزال تتلقّى تحديثات عرَضية، لكن اعتبر هذا الجهاز منخفض الثقة للأعمال الحسّاسة وخطّط لاستبداله.",
-      "deviceUpgradePlan": "إذا كان الأمن طويل الأمد مهمًا لعملك، خطّط لترقية العتاد.",
+      "deviceMaxOsWarning": "يدعم {label} الخاص بك حتى {os} {maxVersion} فقط. سيتوقف {os} {maxVersion} عن تلقّي تحديثات الأمن قبل {os} {latestVersion}. ستستمر الأجهزة الأحدث في تلقّي التحديثات لفترة أطول.",
+      "deviceMaxOsWarningWithDate": "يدعم {label} الخاص بك حتى {os} {maxVersion} فقط، والذي يُتوقّع أن يتوقف عن تلقّي تحديثات الأمن حوالي {eolDate}. ستستمر الأجهزة الأحدث القادرة على تشغيل {os} {latestVersion} في تلقّي التحديثات لفترة أطول.",
+      "deviceMaxOsEolWarning": "يصل {label} الخاص بك كحد أقصى إلى {os} {maxVersion}، الذي انتهى دعمه رسمياً. قد لا تزال تتلقى تحديثات متفرقة أحياناً، لكن تعامل مع هذا الجهاز على أنه ذو ثقة منخفضة للعمل الحساس وخطّط لاستبداله.",
+      "deviceUpgradePlan": "إذا كان الأمن على المدى الطويل يهم عملك، خطّط لترقية الجهاز.",
       "threatModelHeader": "لماذا يهمّ هذا",
-      "threatModel": "كل أسبوع دون تحديث، تصبح المزيد من طرق اختراق جهازك معرفة عامّة. إذا صادرت الكاسات هاتفك في <protestLink>احتجاج</protestLink> أو عند <borderLink>عبور حدود</borderLink> (أو استهدفك أحدهم بـ<spywareLink>برنامج تجسّس</spywareLink>)، فتلك الثغرات المعروفة هي ما سيستخدمونه للدخول وقراءة كل شيء عليه.  ",
-      "threatModelSoft": "إلى أن تتأكّد، تعامل مع هذا الجهاز على أنّه قد يكون قديمًا للأعمال الحسّاسة.",
-      "viewEssentialsCta": "اطّلع على أساسيات الأمن الرقمي لدينا ←",
+      "threatModel": "مع كل أسبوع بدون تحديث، تصبح المزيد من طرق اختراق جهازك معرفة عامة. إذا صادرت الشرطة هاتفك في <protestLink>احتجاج</protestLink> أو عند <borderLink>عبور حدود</borderLink> (أو إذا استهدفك أحدهم بـ<spywareLink>spyware</spywareLink>) فهذه الثغرات المعروفة هي ما سيستخدمونه للدخول وقراءة كل شيء عليه.  ",
+      "threatModelSoft": "إلى أن تتأكد، تعامل مع هذا الجهاز على أنه قد يكون قديماً بالنسبة للعمل الحساس.",
+      "viewEssentialsCta": "اطّلع على أساسيات الأمن الرقمي لدينا →",
       "essentialsNextSteps": {
         "title": "خطوات إضافية سهلة المتابعة لحماية بياناتك وأجهزتك"
       },
@@ -569,32 +569,32 @@
         "manufacturerLine": "{manufacturer} · صدر في {date}",
         "manufacturerLineNoDate": "{manufacturer}",
         "manufacturer": {
-          "apple": "Apple",
+          "apple": "أبل (Apple)",
           "google": "Google",
           "samsung": "Samsung",
           "microsoft": "Microsoft",
-          "motorola": "موتورولا",
-          "oneplus": "OnePlus",
-          "nokia": "نوكيا"
+          "motorola": "موتورولا (Motorola)",
+          "oneplus": "ون بلس (OnePlus)",
+          "nokia": "نوكيا (Nokia)"
         }
       },
       "eolSoon": {
         "titleMonths": "{label} سيفقد تحديثات <nowrap>الأمن <mark>خلال حوالي {months, plural, zero {0 شهر} =1 {شهر واحد} one {شهر واحد} two {شهرين} few {# أشهر} many {# شهرًا} other {# شهر}}</mark></nowrap>.",
-        "titleSoon": "{label} سيفقد تحديثات <nowrap>الأمان <mark>قريباً</mark></nowrap>.",
+        "titleSoon": "سيفقد {label} تحديثات الأمان <nowrap><mark>قريبًا</mark></nowrap>.",
         "subtitleDate": "من المتوقع أن تنتهي التحديثات في <b>{date}</b>.",
         "actionHeading": "ما الذي يجب فعله",
-        "action": "ابدأ بالتخطيط للاستبدال الآن. بمجرّد توقّف التحديثات، يبدأ جهازك بتراكم ثغرات معروفة علنًا."
+        "action": "ابدأ التخطيط لاستبداله الآن. بمجرد توقّف التحديثات، يبدأ جهازك بتراكم ثغرات معروفة علنياً."
       },
       "buyingGuidance": {
         "heading": "عندما تستبدله",
-        "yearsPattern": "معظم {deviceLabel} تحصل على تحديثات أمان لمدّة {min}-{max} سنوات من تاريخ إصدارها.",
+        "yearsPattern": "تحصل معظم {deviceLabel} على تحديثات أمن لمدة {min}-{max} سنة من تاريخ إصدارها.",
         "deviceLabel": {
           "phone": "الهواتف",
           "laptop": "الحواسيب المحمولة",
           "tablet": "الألواح",
           "watch": "الساعات الذكية"
         },
-        "checkBeforeBuying": "إذا كنت تشتري جهازًا مستعملاً، ابحث عن الطراز هنا أولاً لترى إلى متى سيستمرّ في تلقّي التحديثات."
+        "checkBeforeBuying": "إذا كنت ستشتري جهازاً مستعملاً، ابحث عن الطراز هنا أولاً لترى إلى متى سيستمر في تلقّي التحديثات."
       },
       "ctaReplace": {
         "phone": "نقترح الحصول على هاتف جديد.",
@@ -613,18 +613,18 @@
         "generic": "ابدأ التخطيط لجهازك القادم."
       },
       "deviceConfirmedShort": "{label} سيستمر في تلقّي التحديثات الأمنية.",
-      "deviceConfirmedShortYears": "سيستمر {label} في تلقي تحديثات الأمان <nowrap>لمدة <mark>{years, plural, zero {أقل من سنة} one {سنة إضافية واحدة} two {سنتين إضافيتين} few {# سنوات إضافية} many {# سنة إضافية} other {# سنة إضافية}}</mark></nowrap>.",
-      "deviceConfirmedShortMonths": "سيستمر {label} في تلقي تحديثات الأمان <nowrap>لمدة <mark>{months, plural, zero {أقل من شهر} one {شهر إضافي واحد} two {شهرين إضافيين} few {# أشهر إضافية} many {# شهرًا إضافيًا} other {# شهر إضافي}}</mark></nowrap>.",
-      "deviceConfirmedShortApproxYears": "{label} سيستمرّ بتلقّي تحديثات <nowrap>الأمان <mark>لمدّة {years, plural, zero {حوالي 0 سنة إضافية} one {حوالي سنة إضافية واحدة} two {حوالي سنتين إضافيتين} few {حوالي # سنوات إضافية} many {حوالي # سنة إضافية} other {حوالي # سنة إضافية}}</mark></nowrap>.",
-      "deviceConfirmedShortApproxMonths": "{label} سيستمرّ بتلقّي تحديثات <nowrap>الأمان <mark>لمدّة {months, plural, zero {حوالي 0 شهر إضافي} one {حوالي شهر إضافي واحد} two {حوالي شهرين إضافيين} few {حوالي # أشهر إضافية} many {حوالي # شهرًا إضافيًا} other {حوالي # شهر إضافي}}</mark></nowrap>.",
+      "deviceConfirmedShortYears": "سيستمر {label} في تلقي تحديثات الأمان <nowrap>لمدة <mark>{years, plural, zero {# سنة} one {سنة إضافية} two {سنتين إضافيتين} few {# سنوات إضافية} many {# سنة إضافية} other {# سنة إضافية}}</mark></nowrap>.",
+      "deviceConfirmedShortMonths": "سيستمر {label} في تلقي تحديثات الأمان <nowrap>لمدة <mark>{months, plural, zero {# شهر} one {شهر إضافي} two {شهرين إضافيين} few {# أشهر إضافية} many {# شهرًا إضافيًا} other {# شهر إضافي}}</mark></nowrap>.",
+      "deviceConfirmedShortApproxYears": "سيستمر {label} في تلقّي <nowrap>تحديثات الأمن <mark>لمدة {years, plural, zero {أقل من سنة إضافية تقريباً} one {حوالي سنة إضافية واحدة} two {حوالي سنتين إضافيتين} few {حوالي # سنوات إضافية} many {حوالي # سنة إضافية} other {حوالي # سنة إضافية}}</mark></nowrap>.",
+      "deviceConfirmedShortApproxMonths": "سيستمر {label} في تلقّي <nowrap>تحديثات الأمن <mark>لمدة {months, plural, zero {أقل من شهر إضافي تقريباً} one {حوالي شهر إضافي واحد} two {حوالي شهرين إضافيين} few {حوالي # أشهر إضافية} many {حوالي # شهراً إضافياً} other {حوالي # شهر إضافي}}</mark></nowrap>.",
       "appleEstimate": {
-        "intro": "Apple لا تنشر تواريخ انتهاء الدعم، لكن {deviceLabel} تتلقّى عادةً من {min} إلى {max} سنوات من تحديثات الأمان منذ الإطلاق."
+        "intro": "لا تنشر Apple تواريخ انتهاء الدعم، لكن {deviceLabel} عادةً ما تتلقى تحديثات أمن لمدة {min} إلى {max} سنة من الإطلاق."
       },
       "osCheckStep": {
         "headingForOs": "أي نسخة من {os} تستخدم؟",
         "headingForOsRelease": "أي نسخة من {label} تستخدم؟",
         "headingGeneric": "أي إصدار يعمل على جهازك؟",
-        "headingUpdatesAvailable": "هل تتوفر أي تحديثات لجهاز {device}؟",
+        "headingUpdatesAvailable": "هل هناك أي تحديثات متاحة لـ {device}؟",
         "headingUpdatesAvailableForRelease": "هل هناك أي تحديثات متاحة لـ {label}؟",
         "subheadingHelp": "افتحه على جهازك للتحقّق:",
         "subheadingUpdatesHelp": "تحقّق من التحديثات على جهازك:",
@@ -633,7 +633,7 @@
         "optionOlderShort": "أقدم من {version}",
         "optionOlderVersion": "أقدم من {version}",
         "optionBetweenShort": "بين {major}.0.0 و {previousVersion}",
-        "optionThisVersion": "أستخدم هذا الإصدار",
+        "optionThisVersion": "أنا أستخدم هذا الإصدار",
         "optionNoUpdatesAvailable": "لا أرى أي تحديثات متوفّرة",
         "optionNoUpdatesAvailableByOs": {
           "windows": "تقول \"You're up to date\"",
@@ -652,9 +652,9 @@
       },
       "osNeedsUpdate": {
         "heading": "نظام تشغيلك يحتاج تحديثًا",
-        "headingMaybe": "قد يحتاج نظام التشغيل لديك إلى تحديث",
-        "body": "حدّث إلى أحدث إصدار للحصول على أحدث التحديثات الأمنية.",
-        "newerMajorAvailable": "{os} {latestMajor} متاح الآن. أنت مصحّح بالكامل على {os} {currentMajor}، لكن هذا الإصدار قد استُبدل، والإصلاحات للثغرات المُستغَلّة بنشاط تنزل على الإصدار الأحدث أولاً.",
+        "headingMaybe": "قد يكون نظام تشغيلك بحاجة إلى تحديث",
+        "body": "حدّث إلى أحدث إصدار للحصول على آخر تحديثات الأمن.",
+        "newerMajorAvailable": "{os} {latestMajor} متاح الآن. أنت مُحدَّث بالكامل على {os} {currentMajor}، لكن ذلك الإصدار قد استُبدل، والإصلاحات للثغرات المستغَلَّة فعلياً تصل إلى الإصدار الأحدث أولاً.",
         "howToHeading": "كيف تحدّث:",
         "didUpdateButton": "انتهيت، لقد حدّثت",
         "noUpdatesAvailableButton": "لا توجد تحديثات متوفّرة وأنا أستخدم نسخة أقدم من {os} {major}",
@@ -664,80 +664,80 @@
       "finalSuccess": {
         "heading": "أنت على أحدث إصدار.",
         "deviceCheck": "{label} سيستمر في تلقّي التحديثات الأمنية.",
-        "deviceCheckUntil": "{label} يتلقّى تحديثات الأمان حتى {date}.",
+        "deviceCheckUntil": "يتلقى {label} تحديثات أمن حتى {date}.",
         "osCheck": "{os} على أحدث نسخة ({version}).",
         "osCheckCodename": "{os} {version} ({codename}) هي أحدث نسخة.",
         "osCheckDeviceMax": "{os} {version} هو الإصدار الأحدث الذي يمكن لهذا الجهاز تشغيله.",
         "osCheckDeviceMaxCodename": "{os} {version} ({codename}) هو الإصدار الأحدث الذي يمكن لهذا الجهاز تشغيله.",
         "osCheckNoVersion": "نظام التشغيل محدّث.",
-        "osLatestUpdates": "لديك آخر تحديثات الأمان مثبَّتة لـ {label}.",
-        "osLatestUpdatesWithVersion": "لديك آخر تحديثات الأمان مثبَّتة ({os} {version}).",
-        "checkPhoneNext": "تحقّق من هاتفك بعد ذلك",
-        "checkLaptopNext": "تحقّق من حاسوبك المحمول بعد ذلك",
+        "osLatestUpdates": "لديك أحدث تحديثات الأمن مثبّتة لـ {label}.",
+        "osLatestUpdatesWithVersion": "لديك أحدث تحديثات الأمن مثبّتة ({os} {version}).",
+        "checkPhoneNext": "تحقق من هاتفك تالياً",
+        "checkLaptopNext": "تحقق من حاسوبك المحمول تالياً",
         "checkAnotherDevice": "تحقّق من جهاز آخر"
       }
     },
-    "footer": "مدعوم من <eolLink>endoflife.date</eolLink> و<sofaLink>SOFA</sofaLink> · حُدِّث في {date}."
+    "footer": "مدعوم بواسطة <eolLink>endoflife.date</eolLink> و<sofaLink>SOFA</sofaLink> · حُدِّث في {date}."
   },
   "tools": {
-    "metaTitle": "Tools we built | Activist Checklist",
-    "metaDescription": "Tools we built to go with our checklists: map your risks before an action, lock down your social media, and check if your phone still gets security updates.",
-    "documentTitle": "Tools we built | Activist Checklist",
-    "title": "Tools we built",
-    "intro": "Four tools we built to go along with the checklists. Each one covers a step that is hard to finish from written instructions alone.",
+    "metaTitle": "أدوات صنعناها | Activist Checklist",
+    "metaDescription": "أدوات صنعناها لترافق قوائم التحقق: ارسم خرائط مخاطرك قبل عمل ما، أحكم إغلاق حساباتك على وسائل التواصل الاجتماعي، وتحقق مما إذا كان هاتفك لا يزال يتلقى تحديثات الأمن.",
+    "documentTitle": "أدوات صنعناها | Activist Checklist",
+    "title": "أدوات صنعناها",
+    "intro": "أربع أدوات صنعناها لترافق قوائم التحقق. كل واحدة تغطي خطوة يصعب إنجازها من التعليمات المكتوبة وحدها.",
     "items": {
       "riskMapper": {
-        "eyebrow": "Plan an action",
+        "eyebrow": "خطّط لعمل",
         "name": "Risk Mapper",
-        "short": "Map out the risks in your work and precautions you can take.",
-        "lede": "Work out what could go wrong before an action, and decide what your group will do about it.",
-        "bullet1": "Everyone adds the risks they are worried about. Then you drag each one onto a grid: how likely is it, and how bad would it be?",
-        "bullet2": "For the risks that land in the top right, you write down two things. How to make it less likely, and how to limit the harm if it happens anyway.",
-        "bullet3": "Share it with your group over an end-to-end encrypted link, or export a PDF for the people who were not at the meeting.",
-        "cta": "Open Risk Mapper",
-        "shotAlt": "Risk Mapper mid-session, with risks placed on a grid of how likely they are and how bad they would be."
+        "short": "ارسم خريطة للمخاطر في عملك والاحتياطات التي يمكنك اتخاذها.",
+        "lede": "استكشف ما قد يحدث خطأً قبل أي عمل، وقرّر ما ستفعله مجموعتك حيال ذلك.",
+        "bullet1": "يُضيف كل شخص المخاطر التي يقلق منها. ثم تسحب كل واحدة إلى شبكة: ما مدى احتمال حدوثها، وما مدى سوئها؟",
+        "bullet2": "بالنسبة للمخاطر التي تقع في أعلى اليمين، تكتب أمرين. كيف تجعلها أقل احتمالاً، وكيف تحدّ من الضرر إذا حدثت رغم ذلك.",
+        "bullet3": "شاركها مع مجموعتك عبر رابط مشفّر من طرف إلى طرف، أو صدِّرها بصيغة PDF للأشخاص الذين لم يحضروا الاجتماع.",
+        "cta": "افتح Risk Mapper",
+        "shotAlt": "Risk Mapper في منتصف جلسة، مع مخاطر موضوعة على شبكة تبيّن مدى احتمالها ومدى سوء تأثيرها."
       },
       "socialScrub": {
-        "eyebrow": "Lock down your profiles",
+        "eyebrow": "أحكم إغلاق ملفاتك الشخصية",
         "name": "Social Scrub",
-        "short": "Lock down your social media accounts, one at a time.",
-        "lede": "Walks you through the same eight privacy steps on every social media account you have.",
-        "bullet1": "Pick your platforms from a list of 130 sites, including the ones you forgot about. Add any we missed.",
-        "bullet2": "For each account: delete it or keep it, change your display name and username, remove your photo, take your location and employer out of your bio, and lock down your privacy settings.",
-        "bullet3": "It remembers where you left off, so you can do a few accounts at a time.",
-        "cta": "Open Social Scrub",
-        "secondaryCta": "Doxxing defense guide",
-        "shotAlt": "A sample profile before and after a scrub. The name, photo, username, bio, friends list and location are all changed or hidden."
+        "short": "أحكم إغلاق حساباتك على وسائل التواصل الاجتماعي، حساباً تلو الآخر.",
+        "lede": "يرشدك عبر خطوات الخصوصية الثماني نفسها على كل حساب لديك على وسائل التواصل الاجتماعي.",
+        "bullet1": "اختر منصاتك من قائمة تضم 130 موقعاً، بما فيها تلك التي نسيتها. أضف أي موقع فاتنا.",
+        "bullet2": "لكل حساب: احذفه أو احتفظ به، غيّر اسمك الظاهر واسم المستخدم، أزل صورتك، أخرج موقعك وصاحب عملك من سيرتك، وأحكم إغلاق إعدادات الخصوصية.",
+        "bullet3": "يتذكّر أين توقّفت، حتى تستطيع القيام ببضعة حسابات في كل مرة.",
+        "cta": "افتح Social Scrub",
+        "secondaryCta": "دليل الدفاع ضد doxxing",
+        "shotAlt": "ملف شخصي نموذجي قبل وبعد التنظيف. الاسم والصورة واسم المستخدم والسيرة وقائمة الأصدقاء والموقع كلها مغيّرة أو مخفية."
       },
       "updates": {
-        "eyebrow": "Check your device",
-        "name": "مدقّق تحديثات الأمان",
-        "short": "Check whether your phone still gets security updates.",
-        "lede": "Find out whether your phone, tablet, or laptop is still getting security updates.",
-        "bullet1": "Type in your model. If you do not know it, the page shows you where to find it in your settings.",
-        "bullet2": "Once a device stops getting updates, every new security hole in it stays open. That makes it much easier for spyware, a hacker, or police forensics tools to get in.",
-        "bullet3": "Covers Apple, Google, Samsung, Motorola, OnePlus, and Nokia devices, plus iOS, Android, macOS, and Windows.",
-        "cta": "Check my device",
-        "shotAlt": "The update checker reporting that a searched phone stopped getting security updates, with advice on what to do about it."
+        "eyebrow": "افحص جهازك",
+        "name": "فاحص تحديثات الأمان",
+        "short": "تحقق مما إذا كان هاتفك لا يزال يتلقى تحديثات الأمن.",
+        "lede": "اكتشف ما إذا كان هاتفك أو جهازك اللوحي أو حاسوبك المحمول لا يزال يتلقى تحديثات الأمن.",
+        "bullet1": "اكتب طراز جهازك. إذا لم تكن تعرفه، تُظهر لك الصفحة أين تجده في إعداداتك.",
+        "bullet2": "بمجرد أن يتوقف الجهاز عن تلقّي التحديثات، تبقى كل ثغرة أمنية جديدة فيه مفتوحة. وهذا يجعل من الأسهل بكثير لبرامج spyware أو مخترق أو أدوات تحليل جنائي للشرطة أن تدخل.",
+        "bullet3": "يغطي أجهزة Apple وGoogle وSamsung وMotorola وOnePlus وNokia، بالإضافة إلى iOS وAndroid وmacOS وWindows.",
+        "cta": "افحص جهازي",
+        "shotAlt": "فاحص التحديثات يُبلغ أن هاتفاً تم البحث عنه توقّف عن تلقّي تحديثات الأمن، مع نصائح حول ما يجب فعله."
       },
       "autoDelete": {
-        "eyebrow": "Delete old AI chats",
-        "name": "AI chat auto-delete",
-        "short": "Delete your old Claude chats on a schedule.",
-        "lede": "A Chrome extension that deletes your old Claude conversations on a schedule you set.",
-        "bullet1": "You pick how long to keep them. Anything older than 30 days is the default.",
-        "bullet2": "Star the chats you want to keep and it leaves them alone. It can ask you first, or run on its own.",
-        "bullet3": "It records how many chats it deleted, not which ones. Nothing gets sent to us.",
-        "cta": "Add to Chrome",
-        "shotAlt": "The extension set to delete chats older than 30 days every week, with the bar it shows on claude.ai when deletions are waiting."
+        "eyebrow": "احذف محادثات الذكاء الاصطناعي القديمة",
+        "name": "حذف تلقائي لمحادثات الذكاء الاصطناعي",
+        "short": "احذف محادثاتك القديمة على Claude وفق جدول زمني.",
+        "lede": "إضافة لـ Chrome تحذف محادثاتك القديمة على Claude وفق جدول زمني تحدّده.",
+        "bullet1": "أنت تختار كم من الوقت تحتفظ بها. أي شيء أقدم من 30 يوماً هو الافتراضي.",
+        "bullet2": "ضع نجمة على المحادثات التي تريد الاحتفاظ بها وسيتركها بمفردها. يمكنه أن يسألك أولاً، أو يعمل بمفرده.",
+        "bullet3": "يسجّل كم محادثة حذف، لا أيها. لا يُرسَل أي شيء إلينا.",
+        "cta": "أضف إلى Chrome",
+        "shotAlt": "الإضافة مضبوطة لحذف المحادثات الأقدم من 30 يوماً كل أسبوع، مع الشريط الذي تعرضه على claude.ai عندما تكون هناك عمليات حذف في الانتظار."
       }
     },
     "closing": {
-      "title": "Not sure which one you need?",
-      "body": "Each of these comes out of one of our checklists. Start with the checklist and it will point you to the tool when you get to that step.",
-      "primaryCta": "أساسيات الأمان الرقمي",
-      "secondaryCta": "قائمة التحقق للدفاع ضد الـ doxxing",
-      "openSource": "All four are <repos>open source</repos>. If one is broken, or you need something we have not built yet, <contact>let us know</contact>."
+      "title": "لست متأكداً أي أداة تحتاج؟",
+      "body": "كل واحدة من هذه تنبع من إحدى قوائم التحقق لدينا. ابدأ بقائمة التحقق وستوجّهك إلى الأداة عندما تصل إلى تلك الخطوة.",
+      "primaryCta": "أساسيات الأمن الرقمي",
+      "secondaryCta": "قائمة الدفاع ضد التشهير doxxing",
+      "openSource": "جميعها الأربع <repos>مفتوحة المصدر</repos>. إذا كانت إحداها معطلة، أو تحتاج إلى شيء لم نبنه بعد، <contact>أخبرنا</contact>."
     }
   }
 }
