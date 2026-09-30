@@ -36,6 +36,7 @@ export function DarkModeToggle({ className } = {}) {
   }
 
   const CurrentIcon = resolvedTheme === "dark" ? Moon : Sun
+  const currentThemeLabel = THEMES.find(({ value }) => value === theme)?.label ?? theme
 
   return (
     <DropdownMenu>
@@ -44,7 +45,7 @@ export function DarkModeToggle({ className } = {}) {
           variant="ghost"
           size="icon"
           className={className}
-          aria-label={t("themeSwitcher.ariaLabel", {theme: theme})}
+          aria-label={t("themeSwitcher.ariaLabel", { theme: currentThemeLabel })}
           title={t("themeSwitcher.title")}
         >
           <CurrentIcon className="h-[1.2rem] w-[1.2rem]" aria-hidden="true" />
