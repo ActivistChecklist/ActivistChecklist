@@ -45,5 +45,14 @@
             "height": 100,
             "width": 115
         }
+    },
+    {
+        "name": "National Lawyers Guild",
+        "image": {
+            "light": "/images/org-logos/NLG-logo-light.png",
+            "dark": "/images/org-logos/NLG-logo-dark.png",
+            "height": 129,
+            "width": 130
+        }
     }
 ]
