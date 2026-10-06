@@ -297,8 +297,8 @@ importers:
         specifier: '>=4.3.1 <5'
         version: 4.3.2
       lucide-react:
-        specifier: ^1.49.0
-        version: 1.49.0(@types/react@19.3.0)(react@19.3.0)
+        specifier: ^1.51.0
+        version: 1.51.0(@types/react@19.3.0)(react@19.3.0)
       mongodb:
         specifier: ^7.7.0
         version: 7.7.0(socks@2.8.9)
@@ -427,8 +427,8 @@ importers:
         specifier: ^3.13.0
         version: 3.13.0
       satori:
-        specifier: ^0.34.0
-        version: 0.34.1
+        specifier: ^0.35.0
+        version: 0.35.0
       sharp:
         specifier: '>=0.35.0'
         version: 0.35.5(@types/node@26.6.4)
@@ -3670,8 +3670,8 @@ packages:
     resolution: {integrity: sha512-jumlc0BIUrS3qJGgIkWZsyfAM7NCWiBcCDhnd+3NNM5KbBmLTgHVfWBcg6W+rLUsIpzpERPsvwUP7CckAQSOoA==}
     engines: {node: '>=12'}
 
-  lucide-react@1.49.0:
-    resolution: {integrity: sha512-ApfaNM4/7jBrVopqLJ84Jz8TMQ1Q1JeZ1PmKh25aeS3E1FTVcMkSh1bEQB7dfzdIrwXRP8p3z4AJjTIHHb5IIA==}
+  lucide-react@1.51.0:
+    resolution: {integrity: sha512-9929jimol5y7VbXUlVKcgURMSeIxFJB7dtWCkRAaNnF7KiCRkSkhmqWPUmAmUFYPezNawFk6qvz3Mu0gEnfI4g==}
     peerDependencies:
       '@types/react': '*'
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
@@ -4466,8 +4466,8 @@ packages:
   safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
 
-  satori@0.34.1:
-    resolution: {integrity: sha512-e5iTsxjpZoLZsqvz1laUtMb0cQ371qmx86xAThYtecQ012MdtcSHSMtS30m+FYDwK3wImi01B5nGhVc04SrFMA==}
+  satori@0.35.0:
+    resolution: {integrity: sha512-YyoP7axF2T93XOWXQXLH4t+cvLgZ+MeYV/xruXJfPa/czpcRqaG41/8Bz3mzgYj/7NxdrqJOx3YtzWy1MLtG5g==}
     engines: {node: '>=16'}
 
   sax@1.6.1:
@@ -5120,7 +5120,7 @@ snapshots:
     dependencies:
       '@annotorious/react': 3.8.9(openseadragon@6.1.1)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@recogito/react-text-annotator': 3.4.10(openseadragon@6.1.1)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      lucide-react: 1.49.0(@types/react@19.3.0)(react@19.3.0)
+      lucide-react: 1.51.0(@types/react@19.3.0)(react@19.3.0)
       mongodb: 7.7.0(socks@2.8.9)
       next: 16.3.3(@types/node@26.6.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       openseadragon: 6.1.1
@@ -8101,7 +8101,7 @@ snapshots:
 
   lru-cache@7.18.3: {}
 
-  lucide-react@1.49.0(@types/react@19.3.0)(react@19.3.0):
+  lucide-react@1.51.0(@types/react@19.3.0)(react@19.3.0):
     dependencies:
       react: 19.3.0
     optionalDependencies:
@@ -9321,7 +9321,7 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  satori@0.34.1:
+  satori@0.35.0:
     dependencies:
       '@shuding/opentype.js': 1.4.0-beta.0
       css-background-parser: 0.1.0
