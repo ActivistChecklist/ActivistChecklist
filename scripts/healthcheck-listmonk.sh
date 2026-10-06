@@ -28,7 +28,11 @@
 #   systemctl --user list-timers
 #   journalctl --user -u red-item-<id>.service
 # Those generated units are Type=oneshot, which is why launch-listmonk.sh has to
-# put PM2 in its own systemd scope - see the note in that file.
+# run listmonk in its own systemd unit - see the note in that file.
+#
+# Green means listmonk was up when we arrived. A run that had to restart it pings
+# FAIL even when the restart worked, and so does a checkout that has stopped
+# syncing from main. See scripts/lib/listmonk-health-verdict.sh for why.
 #
 # Required env (see .env.production on the newsletter server):
 #   LISTMONK_HEALTHCHECK_PING_URL — Healthchecks.io ping URL
@@ -45,6 +49,7 @@
 #   LISTMONK_LAUNCH_TIMEOUT        — seconds to allow the launcher (default 90)
 #   LISTMONK_START_ATTEMPTS        — post-start probes (default 6)
 #   LISTMONK_START_RETRY_SLEEP     — seconds between probes (default 5)
+#   LISTMONK_REPO_MAX_AGE_HOURS    — fail when the last git fetch is older (default 6, 0 disables)
 #   LOG_DIR / LOG_LINES_KEEP       — shared server log settings
 #
 set -euo pipefail
@@ -57,6 +62,8 @@ source "$SCRIPT_DIR/load-env.sh"
 source "$SCRIPT_DIR/log.sh"
 # shellcheck disable=SC1091
 source "$SCRIPT_DIR/lib/listmonk-roundtrip.sh"
+# shellcheck disable=SC1091
+source "$SCRIPT_DIR/lib/listmonk-health-verdict.sh"
 
 init_scripts_file_log "$(resolve_server_log_dir "$PROJECT_DIR")" "healthcheck-listmonk.log" "$(resolve_server_log_lines_keep)"
 
@@ -226,24 +233,31 @@ if [[ "$restarted" == true ]]; then
   run_roundtrip "post-restart"
 fi
 
-# Green requires liveness AND a round trip that did not fail. INCONCLUSIVE and
-# SKIPPED stay green: they carry no evidence of an outage, and flapping the alert
-# on a rate limit trains people to ignore it.
-service_online=false
-if [[ "$liveness_ok" == true ]]; then
-  case "$ROUNDTRIP_VERDICT" in
-    PASS | INCONCLUSIVE | SKIPPED) service_online=true ;;
-  esac
-fi
+# The checkout this script runs from is only as current as sync-repo.sh keeps it.
+# `date -r` reads a file's mtime on both GNU and BSD.
+fetch_head="$(git -C "$PROJECT_DIR" rev-parse --git-path FETCH_HEAD 2>/dev/null || true)"
+[[ -n "$fetch_head" && "$fetch_head" != /* ]] && fetch_head="$PROJECT_DIR/$fetch_head"
+fetch_mtime=""
+[[ -n "$fetch_head" && -e "$fetch_head" ]] && fetch_mtime="$(date -r "$fetch_head" +%s 2>/dev/null || true)"
+repo_stale="$(repo_is_stale "$fetch_mtime" "$(date +%s)" "${LISTMONK_REPO_MAX_AGE_HOURS:-6}")"
+repo_rev="$(git -C "$PROJECT_DIR" rev-parse --short HEAD 2>/dev/null || echo unknown)"
 
-status_line="liveness=$liveness_ok roundtrip=$ROUNDTRIP_VERDICT restarted=$restarted"
+verdict="$(health_verdict "$needs_restart" "$liveness_ok" "$ROUNDTRIP_VERDICT" "$repo_stale")"
+status_line="verdict=$verdict liveness=$liveness_ok roundtrip=$ROUNDTRIP_VERDICT restarted=$restarted repo_stale=$repo_stale rev=$repo_rev"
 
-if [[ "$service_online" == true ]]; then
+case "$verdict" in
+  OK) reason="" ;;
+  RECOVERED) reason="listmonk was down on arrival and had to be restarted" ;;
+  STALE) reason="server checkout has not fetched in ${LISTMONK_REPO_MAX_AGE_HOURS:-6}h - is sync-repo.sh scheduled?" ;;
+  *) reason="listmonk is down" ;;
+esac
+
+if [[ "$verdict" == OK ]]; then
   hc_post "${PING_URL%/}" "healthcheck-listmonk ok $(date -u +"%Y-%m-%dT%H:%M:%SZ") url=$HEALTH_URL $status_line"
   [[ -n "$PING_URL" ]] && echo "Health check ping sent ($status_line)" || echo "No LISTMONK_HEALTHCHECK_PING_URL set; ping skipped ($status_line)"
 else
-  hc_post "${PING_URL%/}/fail" "healthcheck-listmonk failed $(date -u +"%Y-%m-%dT%H:%M:%SZ") url=$HEALTH_URL $status_line"
-  [[ -n "$PING_URL" ]] && echo "Sent fail ping - listmonk is down ($status_line)" || echo "listmonk is down ($status_line; no ping URL configured)"
+  hc_post "${PING_URL%/}/fail" "healthcheck-listmonk failed $(date -u +"%Y-%m-%dT%H:%M:%SZ") $reason url=$HEALTH_URL $status_line"
+  [[ -n "$PING_URL" ]] && echo "Sent fail ping - $reason ($status_line)" || echo "$reason ($status_line; no ping URL configured)"
   echo "=== Check complete ==="
   exit 1
 fi
