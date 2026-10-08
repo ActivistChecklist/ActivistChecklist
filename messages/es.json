@@ -19,6 +19,15 @@
       "title": "Fundamentos de seguridad",
       "description": "Prácticas básicas de seguridad que toda persona activista debería seguir."
     },
+    "search": {
+      "dialogTitle": "Search the site",
+      "dialogDescription": "Use the search bar to find relevant content across the site.",
+      "placeholder": "Buscar...",
+      "searching": "Buscando...",
+      "popularHeading": "Búsquedas populares",
+      "topGuidesHeading": "Guías principales",
+      "pressEnter": "Press {kbd} to search"
+    },
     "signal": {
       "title": "Seguridad en Signal",
       "description": "Asegura la app de mensajería Signal para tener comunicaciones más seguras."
