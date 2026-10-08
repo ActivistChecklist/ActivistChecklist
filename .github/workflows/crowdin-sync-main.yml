@@ -12,17 +12,17 @@ on:
     branches: [main]
     # Keep in sync with `files[].source` in crowdin.yml
     paths:
-      - "content/en/**/*.mdx"
-      - "messages/en.json"
+      - 'content/en/**/*.mdx'
+      - 'messages/en.json'
 
   workflow_dispatch:
     inputs:
       delay_minutes:
-        description: "Extra minutes after the fixed buffer (0 = buffer only)"
-        default: "0"
+        description: 'Extra minutes after the fixed buffer (0 = buffer only)'
+        default: '0'
         type: string
       head_sha:
-        description: "Optional commit SHA (default — branch HEAD)"
+        description: 'Optional commit SHA (default — branch HEAD)'
         required: false
         type: string
 

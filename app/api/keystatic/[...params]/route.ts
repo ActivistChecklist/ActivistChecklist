@@ -14,7 +14,7 @@ function notFoundRouteHandler() {
 function missingSecretsResponse() {
   return new Response(
     'Keystatic is not configured (set KEYSTATIC_GITHUB_CLIENT_ID, KEYSTATIC_GITHUB_CLIENT_SECRET, KEYSTATIC_SECRET on the host).',
-    { status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8' } }
+    { status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8' } },
   );
 }
 
@@ -24,7 +24,7 @@ function hasGithubKeystaticSecrets() {
   return Boolean(
     env['KEYSTATIC_GITHUB_CLIENT_ID'] &&
     env['KEYSTATIC_GITHUB_CLIENT_SECRET'] &&
-    env['KEYSTATIC_SECRET']
+    env['KEYSTATIC_SECRET'],
   );
 }
 

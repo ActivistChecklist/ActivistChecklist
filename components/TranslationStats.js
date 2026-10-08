@@ -10,12 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 function ProgressBar({ value, tooltip }) {
   const bar = (
@@ -26,7 +21,9 @@ function ProgressBar({ value, tooltip }) {
           style={{ width: `${value}%` }}
         />
       </div>
-      <span className="w-full text-left sm:w-10 sm:text-right tabular-nums text-sm leading-none sm:leading-normal">{value}%</span>
+      <span className="w-full text-left sm:w-10 sm:text-right tabular-nums text-sm leading-none sm:leading-normal">
+        {value}%
+      </span>
     </div>
   );
 
@@ -69,38 +66,48 @@ export function TranslationStats() {
   }
 
   if (state === 'error' || languages.length === 0) {
-    return (
-      <p className="mt-6 text-sm text-muted-foreground">Translation stats unavailable.</p>
-    );
+    return <p className="mt-6 text-sm text-muted-foreground">Translation stats unavailable.</p>;
   }
 
   return (
     <TooltipProvider delayDuration={0}>
-    <div className="not-prose mt-6">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="bg-muted/50 text-muted-foreground font-medium normal-case text-sm">Language</TableHead>
-            <TableHead className="bg-muted/50 text-muted-foreground font-medium normal-case text-sm w-[38%]">Automatically translated</TableHead>
-            <TableHead className="bg-muted/50 text-muted-foreground font-medium normal-case text-sm w-[38%]">Human reviewed</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {languages.map((lang) => (
-            <TableRow key={lang.id}>
-              <TableCell className="font-medium">{lang.name}</TableCell>
-              <TableCell className=""><ProgressBar value={lang.translated} /></TableCell>
-              <TableCell className="">
-                <ProgressBar
-                  value={lang.approved}
-                  tooltip={lang.approved < 100 ? 'This translation needs human review. Join our Crowdin project to help.' : null}
-                />
-              </TableCell>
+      <div className="not-prose mt-6">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="bg-muted/50 text-muted-foreground font-medium normal-case text-sm">
+                Language
+              </TableHead>
+              <TableHead className="bg-muted/50 text-muted-foreground font-medium normal-case text-sm w-[38%]">
+                Automatically translated
+              </TableHead>
+              <TableHead className="bg-muted/50 text-muted-foreground font-medium normal-case text-sm w-[38%]">
+                Human reviewed
+              </TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+          </TableHeader>
+          <TableBody>
+            {languages.map((lang) => (
+              <TableRow key={lang.id}>
+                <TableCell className="font-medium">{lang.name}</TableCell>
+                <TableCell className="">
+                  <ProgressBar value={lang.translated} />
+                </TableCell>
+                <TableCell className="">
+                  <ProgressBar
+                    value={lang.approved}
+                    tooltip={
+                      lang.approved < 100
+                        ? 'This translation needs human review. Join our Crowdin project to help.'
+                        : null
+                    }
+                  />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </TooltipProvider>
   );
 }

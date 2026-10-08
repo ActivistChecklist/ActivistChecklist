@@ -39,9 +39,7 @@ describe('canonicalUrl', () => {
 
 describe('resolveDescription', () => {
   it('prefers seoDescription', () => {
-    expect(
-      resolveDescription({ seoDescription: 'A', excerpt: 'B', summary: 'C' })
-    ).toBe('A');
+    expect(resolveDescription({ seoDescription: 'A', excerpt: 'B', summary: 'C' })).toBe('A');
   });
 
   it('falls back through excerpt → summary → description → fallback', () => {
@@ -95,10 +93,7 @@ describe('extractChecklistItemSlugsFromMdx', () => {
       <ChecklistItem slug="location" />
       <ChecklistItem slug="signal-disappearing" />
     `;
-    expect(extractChecklistItemSlugsFromMdx(mdx)).toEqual([
-      'signal-disappearing',
-      'location',
-    ]);
+    expect(extractChecklistItemSlugsFromMdx(mdx)).toEqual(['signal-disappearing', 'location']);
   });
 
   it('returns empty array for empty/null input', () => {
@@ -118,7 +113,7 @@ describe('checklistItemStepText', () => {
 
   it('strips markdown link syntax', () => {
     expect(checklistItemStepText('Generate a [random PIN](https://x.com).')).toBe(
-      'Generate a random PIN.'
+      'Generate a random PIN.',
     );
   });
 
@@ -130,7 +125,9 @@ describe('checklistItemStepText', () => {
   it('strips nested/adversarial tag patterns to stable (no residual <script>)', () => {
     // Defense-in-depth: a single regex pass would leave a residual <script>.
     expect(checklistItemStepText('<scr<Alert />ipt>')).not.toMatch(/<script/i);
-    expect(checklistItemStepText('<scr<Alert />ipt>alert(1)</scr<Alert />ipt>')).not.toMatch(/<script/i);
+    expect(checklistItemStepText('<scr<Alert />ipt>alert(1)</scr<Alert />ipt>')).not.toMatch(
+      /<script/i,
+    );
   });
 });
 
@@ -173,9 +170,7 @@ describe('buildBreadcrumb', () => {
   });
 
   it('returns null for the home page', () => {
-    expect(
-      buildBreadcrumb({ baseUrl: BASE, locale: 'en', slug: '', title: 'Home' })
-    ).toBeNull();
+    expect(buildBreadcrumb({ baseUrl: BASE, locale: 'en', slug: '', title: 'Home' })).toBeNull();
   });
 });
 
@@ -243,7 +238,8 @@ describe('buildHowTo', () => {
   const itemsBySlug = {
     'signal-disappearing': {
       frontmatter: { title: 'Turn on disappearing messages' },
-      content: 'Disappearing messages auto-delete after a set time. This protects past conversations.',
+      content:
+        'Disappearing messages auto-delete after a set time. This protects past conversations.',
     },
     'screen-lock': {
       frontmatter: { title: 'Enable screen lock' },
@@ -278,7 +274,7 @@ describe('buildHowTo', () => {
         frontmatter: {},
         checklistItemSlugs: [],
         checklistItemsBySlug: {},
-      })
+      }),
     ).toBeNull();
   });
 
@@ -319,7 +315,12 @@ describe('buildContentPageGraph', () => {
       baseUrl: BASE,
       locale: 'en',
       slug: 'signal',
-      frontmatter: { title: 'Signal', seoDescription: 'X', firstPublished: '2025-01-01', lastUpdated: '2026-01-01' },
+      frontmatter: {
+        title: 'Signal',
+        seoDescription: 'X',
+        firstPublished: '2025-01-01',
+        lastUpdated: '2026-01-01',
+      },
     });
     expect(g['@context']).toBe('https://schema.org');
     const types = g['@graph'].map((n) => n['@type']);
@@ -333,7 +334,11 @@ describe('buildContentPageGraph', () => {
       locale: 'en',
       slug: 'signal',
       frontmatter: { title: 'Signal' },
-      howTo: { '@type': 'HowTo', name: 'Signal', step: [{ '@type': 'HowToStep', position: 1, name: 'x' }] },
+      howTo: {
+        '@type': 'HowTo',
+        name: 'Signal',
+        step: [{ '@type': 'HowToStep', position: 1, name: 'x' }],
+      },
     });
     expect(g['@graph'].some((n) => n['@type'] === 'HowTo')).toBe(true);
   });

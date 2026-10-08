@@ -1,48 +1,48 @@
 'use client';
 
-import { useState, useEffect } from 'react'
-import { useDebug } from '../../contexts/DebugContext'
-import { usePathname, useSearchParams } from 'next/navigation'
-import dynamic from 'next/dynamic'
+import { useState, useEffect } from 'react';
+import { useDebug } from '../../contexts/DebugContext';
+import { usePathname, useSearchParams } from 'next/navigation';
+import dynamic from 'next/dynamic';
 
 const ReactJson = dynamic(() => import('react-json-view'), {
-  ssr: false
-})
+  ssr: false,
+});
 
 export default function Debug() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [activeTab, setActiveTab] = useState('router')
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
-  const { debugData } = useDebug()
-  const [isMounted, setIsMounted] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('router');
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const { debugData } = useDebug();
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true)
-  }, [])
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleEscape = (event) => {
       if (event.key === 'Escape') {
-        setIsOpen(false)
+        setIsOpen(false);
       }
-    }
+    };
 
     if (isOpen) {
-      document.addEventListener('keydown', handleEscape)
+      document.addEventListener('keydown', handleEscape);
     }
 
     return () => {
-      document.removeEventListener('keydown', handleEscape)
-    }
-  }, [isOpen])
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isOpen]);
 
-  if (!isMounted || process.env.NODE_ENV !== 'development') return null
+  if (!isMounted || process.env.NODE_ENV !== 'development') return null;
 
   const routerState = {
     pathname,
     query: Object.fromEntries(searchParams?.entries() || []),
-  }
+  };
 
   return (
     <>
@@ -74,5 +74,5 @@ export default function Debug() {
         </div>
       )}
     </>
-  )
+  );
 }

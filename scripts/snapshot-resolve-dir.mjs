@@ -50,8 +50,5 @@ export function resolveSnapshotDir(arg) {
     }
   }
 
-  throw new Error(
-    `Not a directory: ${arg}\n` +
-      `  Tried: ${candidates.join(', ')}`
-  );
+  throw new Error(`Not a directory: ${arg}\n` + `  Tried: ${candidates.join(', ')}`);
 }

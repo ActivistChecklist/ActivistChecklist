@@ -34,8 +34,7 @@ export default function Link({ href, children, target: targetProp, rel: relProp,
 
   if (isExternalHref(href)) {
     const target = targetProp ?? defaultExternalTarget(href);
-    const rel =
-      relProp ?? (target === '_blank' ? 'noopener noreferrer' : undefined);
+    const rel = relProp ?? (target === '_blank' ? 'noopener noreferrer' : undefined);
     return (
       <a href={resolvedHref} target={target} rel={rel} {...props}>
         {children}

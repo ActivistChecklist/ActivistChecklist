@@ -1,10 +1,10 @@
 'use client';
-import Link from '@/components/Link'
-import { CompactNewsletterSubscribe } from "@/components/NewsletterSubscribe"
-import { footerConfig } from '@/config/navigation'
-import { useTranslations } from 'next-intl'
-import { createIntlTranslator, translateNavigationItem } from '@/lib/navigation-i18n'
-import { SiTorbrowser } from 'react-icons/si'
+import Link from '@/components/Link';
+import { CompactNewsletterSubscribe } from '@/components/NewsletterSubscribe';
+import { footerConfig } from '@/config/navigation';
+import { useTranslations } from 'next-intl';
+import { createIntlTranslator, translateNavigationItem } from '@/lib/navigation-i18n';
+import { SiTorbrowser } from 'react-icons/si';
 
 export function Footer() {
   const t = useTranslations();
@@ -34,21 +34,24 @@ export function Footer() {
     <footer className="not-annotatable print:hidden bg-gray-900 text-gray-400">
       <div className="diagonal-edge diagonal-edge-above bg-background" />
       <div className="container max-w-6xl mx-auto px-4 md:px-8 pt-12 pb-12">
-
         {/* Main columns */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-8 mb-8">
           <div className="col-span-full md:col-span-3">
             <h2 className="text-2xl font-bold text-gray-100 mb-4">{t('footer.branding.title')}</h2>
             <p className="mb-4 max-w-lg">{t('footer.branding.description')}</p>
             <div className="mb-6">
-              <h3 className="text-sm font-semibold text-gray-500 tracking-wider uppercase mb-2">{t('footer.stayUpdated')}</h3>
+              <h3 className="text-sm font-semibold text-gray-500 tracking-wider uppercase mb-2">
+                {t('footer.stayUpdated')}
+              </h3>
               <CompactNewsletterSubscribe />
             </div>
           </div>
 
           {translatedSections.map((section, index) => (
             <div key={index}>
-              <h3 className="text-sm font-semibold text-gray-500 tracking-wider uppercase mb-4">{section.title}</h3>
+              <h3 className="text-sm font-semibold text-gray-500 tracking-wider uppercase mb-4">
+                {section.title}
+              </h3>
               <ul className="space-y-2">
                 {section.items.map((item) => (
                   <li key={item.key}>
@@ -69,17 +72,26 @@ export function Footer() {
           <p>
             {t.rich('footer.licenseNotice', {
               cc: (chunks) => (
-                <Link href="https://creativecommons.org/licenses/by-sa/4.0/" className="hover:text-white underline underline-offset-2 transition-colors">
+                <Link
+                  href="https://creativecommons.org/licenses/by-sa/4.0/"
+                  className="hover:text-white underline underline-offset-2 transition-colors"
+                >
                   {chunks}
                 </Link>
               ),
               sources: (chunks) => (
-                <Link href="/about/#sources" className="hover:text-white underline underline-offset-2 transition-colors">
+                <Link
+                  href="/about/#sources"
+                  className="hover:text-white underline underline-offset-2 transition-colors"
+                >
                   {chunks}
                 </Link>
               ),
               github: (chunks) => (
-                <Link href="https://github.com/ActivistChecklist/ActivistChecklist" className="hover:text-white underline underline-offset-2 transition-colors">
+                <Link
+                  href="https://github.com/ActivistChecklist/ActivistChecklist"
+                  className="hover:text-white underline underline-offset-2 transition-colors"
+                >
                   {chunks}
                 </Link>
               ),
@@ -117,10 +129,9 @@ export function Footer() {
             </div>
           </div>
         </div>
-
       </div>
     </footer>
-  )
+  );
 }
 
-export default Footer
+export default Footer;

@@ -8,7 +8,7 @@ import DraftPreviewBanner from '@/components/layout/DraftPreviewBanner';
  */
 export default async function SlugLayout({
   children,
-  params
+  params,
 }: {
   children: ReactNode;
   params: Promise<{ locale: string; slug: string[] }>;

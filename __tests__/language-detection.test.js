@@ -31,39 +31,47 @@ describe('language detection helpers', () => {
 
   describe('shouldShowLanguageBanner', () => {
     it('shows banner only on default locale when not dismissed and locale detected', () => {
-      expect(shouldShowLanguageBanner({
-        currentLocale: 'en',
-        defaultLocale: 'en',
-        dismissed: false,
-        detectedLocale: 'es',
-      })).toBe(true);
+      expect(
+        shouldShowLanguageBanner({
+          currentLocale: 'en',
+          defaultLocale: 'en',
+          dismissed: false,
+          detectedLocale: 'es',
+        }),
+      ).toBe(true);
     });
 
     it('hides banner on non-default locale routes', () => {
-      expect(shouldShowLanguageBanner({
-        currentLocale: 'es',
-        defaultLocale: 'en',
-        dismissed: false,
-        detectedLocale: 'es',
-      })).toBe(false);
+      expect(
+        shouldShowLanguageBanner({
+          currentLocale: 'es',
+          defaultLocale: 'en',
+          dismissed: false,
+          detectedLocale: 'es',
+        }),
+      ).toBe(false);
     });
 
     it('hides banner when dismissed', () => {
-      expect(shouldShowLanguageBanner({
-        currentLocale: 'en',
-        defaultLocale: 'en',
-        dismissed: true,
-        detectedLocale: 'es',
-      })).toBe(false);
+      expect(
+        shouldShowLanguageBanner({
+          currentLocale: 'en',
+          defaultLocale: 'en',
+          dismissed: true,
+          detectedLocale: 'es',
+        }),
+      ).toBe(false);
     });
 
     it('hides banner when no locale was detected', () => {
-      expect(shouldShowLanguageBanner({
-        currentLocale: 'en',
-        defaultLocale: 'en',
-        dismissed: false,
-        detectedLocale: null,
-      })).toBe(false);
+      expect(
+        shouldShowLanguageBanner({
+          currentLocale: 'en',
+          defaultLocale: 'en',
+          dismissed: false,
+          detectedLocale: null,
+        }),
+      ).toBe(false);
     });
   });
 });

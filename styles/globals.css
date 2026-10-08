@@ -223,14 +223,16 @@
   /* skbeuloff: 175 89% 28% */
   /* paynes gray 196 39% 32% */
   /* intl orange: 18 88% 50% */
-} 
+}
 
 @layer base {
   :root {
     /* Font Variables - Community Font Combination */
-    --font-heading: 'Libre Franklin', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    --font-body: 'Source Sans 3', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    
+    --font-heading:
+      'Libre Franklin', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-body:
+      'Source Sans 3', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
     --proton: 251 100% 64.7%;
     --intercept: 247 100% 66%; /* passes accessibility */
     --intercept2: 247 100% 65.5%; /* passes accessibility */
@@ -306,7 +308,7 @@
     --warning-foreground: 38 92% 95%;
     --info: 220 90% 50%;
     --info-foreground: 220 90% 95%;
-    
+
     /* Text variants - darker for better readability */
     --text-error: 0 84.2% 45%;
     --text-warning: 38 92% 40%;
@@ -369,7 +371,7 @@
     --info-foreground: 220 90% 100%;
     --success: 142 76% 35%;
     --success-foreground: 142 76% 100%;
-    
+
     /* Text variants - lighter for dark mode readability */
     --text-error: 0 84.2% 70%;
     --text-warning: 38 92% 65%;
@@ -406,7 +408,10 @@
 
   .search-dialog a {
     @apply underline underline-offset-4 decoration-muted-foreground/70 hover:decoration-2 transition-colors;
-    &:hover { color: hsl(var(--link)); text-decoration-color: hsl(var(--link)); }
+    &:hover {
+      color: hsl(var(--link));
+      text-decoration-color: hsl(var(--link));
+    }
   }
 
   /* Inline markdown (outside prose) should keep standard link styling */
@@ -418,7 +423,10 @@
   /* Muted links that stay muted until hover - override prose styling */
   .muted-links a:not(.button) {
     @apply text-muted-foreground! underline! underline-offset-4! decoration-muted-foreground/70! hover:decoration-2! transition-colors!;
-    &:hover { color: hsl(var(--link)) !important; text-decoration-color: hsl(var(--link)) !important; }
+    &:hover {
+      color: hsl(var(--link)) !important;
+      text-decoration-color: hsl(var(--link)) !important;
+    }
   }
 
   /* Primary button hover in dark mode — inset shadow works on both solid and gradient backgrounds */
@@ -483,86 +491,100 @@
 }
 
 @layer base {
+  /* Print styles */
+  @media print {
+    /* Reset page margins */
+    @page {
+      margin: 0.9cm;
+    }
 
-    /* Print styles */
-    @media print {
-      /* Reset page margins */
-      @page {
-        margin: 0.9cm;
-      }
-      
-      /* Reduce overall text size for printing without affecting layout */
-      html, body {
-        /* Use scale transform to reduce text size without affecting layout units */
-        font-size: 16px !important; /* Keep the default font size */
-      }
-      
-      /* Target text elements only for size reduction */
-      p, li, td, th {
-        font-size: 9pt !important; /* This reduces just the text size */
-        line-height: 1.3 !important; /* Adjust line height for readability */
-      }
+    /* Reduce overall text size for printing without affecting layout */
+    html,
+    body {
+      /* Use scale transform to reduce text size without affecting layout units */
+      font-size: 16px !important; /* Keep the default font size */
+    }
 
-      /* Hide navigation and interactive elements */
-      nav, 
-      .no-print,
-      [role="navigation"] {
-        display: none !important;
-      }
+    /* Target text elements only for size reduction */
+    p,
+    li,
+    td,
+    th {
+      font-size: 9pt !important; /* This reduces just the text size */
+      line-height: 1.3 !important; /* Adjust line height for readability */
+    }
 
-      /* Avoid orphans and widows */
-      p, li, tr {
-        orphans: 3;
-        widows: 3;
-      }
+    /* Hide navigation and interactive elements */
+    nav,
+    .no-print,
+    [role='navigation'] {
+      display: none !important;
+    }
 
-      /* Optimize links for print */
-      a {
-        text-decoration: none;
-        color: #000 !important;
-      }
+    /* Avoid orphans and widows */
+    p,
+    li,
+    tr {
+      orphans: 3;
+      widows: 3;
+    }
 
-      /* Show URLs for links (except for internal anchor links) */
-      a[href^="http"]:after {
-        content: " (" attr(href) ")";
-        font-size: 90%;
-        font-style: italic;
-      }
+    /* Optimize links for print */
+    a {
+      text-decoration: none;
+      color: #000 !important;
+    }
 
-      /* Adjust colors for better print readability */
-      /* * {
+    /* Show URLs for links (except for internal anchor links) */
+    a[href^='http']:after {
+      content: ' (' attr(href) ')';
+      font-size: 90%;
+      font-style: italic;
+    }
+
+    /* Adjust colors for better print readability */
+    /* * {
         background-color: transparent !important;
         color: #000 !important;
         text-shadow: none !important;
         box-shadow: none !important;
       } */
 
-      /* Make images and tables fit within page */
-      img, table {
-        max-width: 100% !important;
-      }
-
-      /* Improve table readability */
-      table {
-        border-collapse: collapse !important;
-      }
-      
-      th, td {
-        border: 1px solid #ccc !important;
-      }
-      
-      /* Optimize sections and blockquotes */
-      blockquote {
-        border-left: 3px solid #ccc !important;
-        padding: 0.5em 1em !important;
-        margin: 1em 0 !important;
-      }
+    /* Make images and tables fit within page */
+    img,
+    table {
+      max-width: 100% !important;
     }
-  
+
+    /* Improve table readability */
+    table {
+      border-collapse: collapse !important;
+    }
+
+    th,
+    td {
+      border: 1px solid #ccc !important;
+    }
+
+    /* Optimize sections and blockquotes */
+    blockquote {
+      border-left: 3px solid #ccc !important;
+      padding: 0.5em 1em !important;
+      margin: 1em 0 !important;
+    }
+  }
+
   /* Block elements spacing for PageFind indexing */
-  h1, h2, h3, h4, h5, h6, p, section {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  section {
     &::after {
-      content: " ";
+      content: ' ';
       display: inline;
       visibility: hidden;
       width: 0;
@@ -570,7 +592,7 @@
       overflow: hidden;
     }
   }
-  
+
   h1 {
     @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-6;
   }
@@ -578,35 +600,36 @@
   .text-shadow-white {
     /* -webkit-text-stroke: 2px white;
     text-stroke: 2px white; */
-    text-shadow: 0 0 1px hsl(var(--background)),
-                 0 0 2px hsl(var(--background)),
-                 0 0 4px hsl(var(--background)),
-                 0 0 4px hsl(var(--background)),
-                 0 0 4px hsl(var(--background)),
-                 0 0 4px hsl(var(--background)),
-                 0 0 4px hsl(var(--background)),
-                 0 0 4px hsl(var(--background)),
-                 0 0 4px hsl(var(--background)),
-                 0 0 8px hsl(var(--background)),
-                 0 0 8px hsl(var(--background)),
-                 0 0 8px hsl(var(--background)),
-                 0 0 8px hsl(var(--background)),
-                 0 0 8px hsl(var(--background)),
-                 0 0 8px hsl(var(--background)),
-                 0 0 16px hsl(var(--background)),
-                 0 0 30px hsl(var(--background)),
-                 0 0 60px hsl(var(--background)),
-                 0 0 90px hsl(var(--background)),
-                 0 24px 48px hsl(var(--background)),
-                 0 -24px 48px hsl(var(--background)),
-                 24px 0 48px hsl(var(--background)),
-                 -24px 0 48px hsl(var(--background)),
-                 0 48px 96px hsl(var(--background)),
-                 0 -48px 96px hsl(var(--background)),
-                 48px 0 96px hsl(var(--background)),
-                 -48px 0 96px hsl(var(--background)),
-                 0 96px 192px hsl(var(--background) / 0.95),
-                 0 128px 256px hsl(var(--background) / 0.9);
+    text-shadow:
+      0 0 1px hsl(var(--background)),
+      0 0 2px hsl(var(--background)),
+      0 0 4px hsl(var(--background)),
+      0 0 4px hsl(var(--background)),
+      0 0 4px hsl(var(--background)),
+      0 0 4px hsl(var(--background)),
+      0 0 4px hsl(var(--background)),
+      0 0 4px hsl(var(--background)),
+      0 0 4px hsl(var(--background)),
+      0 0 8px hsl(var(--background)),
+      0 0 8px hsl(var(--background)),
+      0 0 8px hsl(var(--background)),
+      0 0 8px hsl(var(--background)),
+      0 0 8px hsl(var(--background)),
+      0 0 8px hsl(var(--background)),
+      0 0 16px hsl(var(--background)),
+      0 0 30px hsl(var(--background)),
+      0 0 60px hsl(var(--background)),
+      0 0 90px hsl(var(--background)),
+      0 24px 48px hsl(var(--background)),
+      0 -24px 48px hsl(var(--background)),
+      24px 0 48px hsl(var(--background)),
+      -24px 0 48px hsl(var(--background)),
+      0 48px 96px hsl(var(--background)),
+      0 -48px 96px hsl(var(--background)),
+      48px 0 96px hsl(var(--background)),
+      -48px 0 96px hsl(var(--background)),
+      0 96px 192px hsl(var(--background) / 0.95),
+      0 128px 256px hsl(var(--background) / 0.9);
   }
 
   h2 {
@@ -625,7 +648,7 @@
 
     h2::before {
       display: block;
-      content: " ";
+      content: ' ';
       position: absolute;
       top: 2.1rem;
       left: 0;
@@ -644,7 +667,9 @@
     }
 
     /* Paragraphs and Lists */
-    p, ul, ol {
+    p,
+    ul,
+    ol {
       @apply mt-3 first:mt-0 text-pretty;
     }
 
@@ -652,7 +677,7 @@
     ul {
       @apply ml-6 list-disc [&>li]:mt-2;
     }
-    
+
     ol {
       @apply ml-6 list-decimal [&>li]:mt-2;
     }
@@ -672,17 +697,16 @@
       @apply mt-6 border-l-4 bg-border/20 p-4 pl-6 mr-4 md:mr-36;
     }
 
-
     /* Images */
     img {
       @apply w-auto block border border-muted-foreground/20 rounded-lg my-4;
     }
-    
+
     /* Override prose img margins for floated images */
     img.float-left {
       @apply ml-0! mr-6!;
     }
-    
+
     img.float-right {
       @apply mr-0! ml-6!;
     }
@@ -713,7 +737,7 @@
     /* Tables */
     table {
       @apply w-full;
-      
+
       td:first-child,
       th:first-child {
         @apply font-bold;
@@ -721,7 +745,8 @@
     }
 
     .equal-column-widths {
-      td, th {
+      td,
+      th {
         @apply w-1/2;
       }
     }
@@ -753,7 +778,6 @@
     }
   }
 }
-
 
 @layer base {
   :not(.checklist-item *) > .how-to-container {

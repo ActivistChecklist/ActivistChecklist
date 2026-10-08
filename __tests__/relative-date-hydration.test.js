@@ -21,9 +21,7 @@ describe('formatStableContentDate is independent of the clock', () => {
   test('matches the >30-day form of formatRelativeDate, so old entries do not flicker', () => {
     const old = '2025-03-05';
     const now = at('2026-08-29T12:00:00Z');
-    expect(formatStableContentDate(old, 'en-US')).toBe(
-      formatRelativeDate(old, 'en-US', now)
-    );
+    expect(formatStableContentDate(old, 'en-US')).toBe(formatRelativeDate(old, 'en-US', now));
   });
 
   test.each([null, undefined, '', 'nonsense'])('returns empty for %p', (input) => {
@@ -84,7 +82,7 @@ describe('the hydration mismatch this fixes', () => {
     // useRelativeDate seeds its state with this on both server and first client
     // render; the relative wording is applied only afterwards, in an effect.
     expect(formatStableContentDate(articleDate, 'en-US')).toBe(
-      formatStableContentDate(articleDate, 'en-US')
+      formatStableContentDate(articleDate, 'en-US'),
     );
   });
 

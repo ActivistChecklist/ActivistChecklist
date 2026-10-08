@@ -3,10 +3,10 @@
 // would have broken outright once a future Vite major makes configLoader:
 // 'native' the default. The extension is the whole fix; adding "type": "module"
 // to package.json would have flipped every other .js in the repo to ESM.
-import { configDefaults, defineConfig } from 'vitest/config'
-import path from 'path'
+import { configDefaults, defineConfig } from 'vitest/config';
+import path from 'path';
 
-const isGitHubActions = process.env.GITHUB_ACTIONS === 'true'
+const isGitHubActions = process.env.GITHUB_ACTIONS === 'true';
 
 export default defineConfig({
   test: {
@@ -23,4 +23,4 @@ export default defineConfig({
       '@': path.resolve(import.meta.dirname),
     },
   },
-})
+});

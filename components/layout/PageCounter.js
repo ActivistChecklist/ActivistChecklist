@@ -7,11 +7,11 @@ const PageCounter = () => {
     const sendPageView = async () => {
       await sendAnalytics();
     };
-    
+
     return initializeOnLoad(sendPageView);
   }, []); // Run once when component mounts
 
   return null; // This component doesn't render anything
 };
 
-export default PageCounter; 
+export default PageCounter;

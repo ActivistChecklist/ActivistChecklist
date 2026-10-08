@@ -5,12 +5,7 @@ import { cn } from '@/lib/utils';
 /**
  * Renders a structured table from MDX (thead/tbody cell strings rendered as Markdown).
  */
-export function ContentTable({
-  table,
-  caption,
-  className,
-  ...props
-}) {
+export function ContentTable({ table, caption, className, ...props }) {
   if (!table || !table.thead || !table.tbody) {
     return null;
   }

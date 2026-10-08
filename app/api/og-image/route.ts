@@ -3,7 +3,16 @@ export const dynamic = 'force-static';
 import { NextRequest, NextResponse } from 'next/server';
 
 // Pages that should use the default OG image
-const USE_DEFAULT_OG_IMAGE = ['home', '', 'privacy', 'contact', 'resources', 'about', 'checklists', 'flyer'];
+const USE_DEFAULT_OG_IMAGE = [
+  'home',
+  '',
+  'privacy',
+  'contact',
+  'resources',
+  'about',
+  'checklists',
+  'flyer',
+];
 
 export async function GET(request: NextRequest) {
   // Only available in development

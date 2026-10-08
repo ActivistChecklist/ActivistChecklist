@@ -1,6 +1,9 @@
 import dotenv from 'dotenv';
 import { REVIEW_COMMENTS_COLLECTIONS } from '@activistchecklist/react-review-comments/server/collections';
-import { collection, ensureAnnotationSchema } from '@activistchecklist/react-review-comments/server/db';
+import {
+  collection,
+  ensureAnnotationSchema,
+} from '@activistchecklist/react-review-comments/server/db';
 
 dotenv.config();
 

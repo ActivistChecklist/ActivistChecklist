@@ -1,8 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
-import { cn } from "@/lib/utils";
-import { useIsMobile } from "@/hooks/use-mobile";
-import Link from "@/components/Link";
+import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
+import Link from '@/components/Link';
 
 /**
  * ImageEmbed — <ImageEmbed src="/path/to/img.jpg" alt="...">Caption text</ImageEmbed>
@@ -33,32 +33,41 @@ export const ImageEmbed = ({
       // eslint-disable-next-line @next/next/no-img-element
       <img src={src} alt={alt || ''} loading="lazy" className={className} {...props} />
     );
-    return link ? (
-      <Link href={typeof link === 'string' ? link : '#'}>{img}</Link>
-    ) : img;
+    return link ? <Link href={typeof link === 'string' ? link : '#'}>{img}</Link> : img;
   }
 
   const isNatural = size === 'natural';
 
   const getSizeClass = () => {
     switch (size) {
-      case 'xs':      return 'max-w-48 sm:max-w-[16rem]';
-      case 'small':   return 'max-w-xs sm:max-w-sm';
-      case 'medium':  return 'max-w-sm sm:max-w-md';
-      case 'large':   return 'max-w-md sm:max-w-2xl';
-      case 'full':    return 'max-w-full';
-      case 'natural': return '';
-      default:        return 'max-w-sm sm:max-w-md';
+      case 'xs':
+        return 'max-w-48 sm:max-w-[16rem]';
+      case 'small':
+        return 'max-w-xs sm:max-w-sm';
+      case 'medium':
+        return 'max-w-sm sm:max-w-md';
+      case 'large':
+        return 'max-w-md sm:max-w-2xl';
+      case 'full':
+        return 'max-w-full';
+      case 'natural':
+        return '';
+      default:
+        return 'max-w-sm sm:max-w-md';
     }
   };
 
   const getAlignmentClass = () => {
     if (isMobile) return 'mx-auto block';
     switch (alignment) {
-      case 'left':  return 'float-left mr-6 mb-4 mt-2';
-      case 'right': return 'float-right ml-6 mb-4 mt-2';
-      case 'full':  return 'w-full block';
-      default:      return 'mx-auto block';
+      case 'left':
+        return 'float-left mr-6 mb-4 mt-2';
+      case 'right':
+        return 'float-right ml-6 mb-4 mt-2';
+      case 'full':
+        return 'w-full block';
+      default:
+        return 'mx-auto block';
     }
   };
 
@@ -88,7 +97,9 @@ export const ImageEmbed = ({
     <Link href={typeof link === 'string' ? link : '#'} className="block">
       {imageElement}
     </Link>
-  ) : imageElement;
+  ) : (
+    imageElement
+  );
 
   const captionClasses =
     'mt-2 block w-full max-w-full text-center text-sm text-muted-foreground prose-sm max-w-none muted-links px-2 sm:px-0';

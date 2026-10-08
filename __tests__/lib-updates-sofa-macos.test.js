@@ -19,7 +19,9 @@ describe('inferMacProductLine', () => {
   });
 
   it('matches the most specific prefix (longer wins)', () => {
-    expect(inferMacProductLine('MacBook Pro (14-inch, M4, Nov 2024)').productId).toBe('macbook-pro');
+    expect(inferMacProductLine('MacBook Pro (14-inch, M4, Nov 2024)').productId).toBe(
+      'macbook-pro',
+    );
     expect(inferMacProductLine('MacBook Air (M2, 2022)').productId).toBe('macbook-air');
     expect(inferMacProductLine('iMac Pro (2017)').productId).toBe('imac-pro');
     expect(inferMacProductLine('iMac (24-inch, M3, 2023)').productId).toBe('imac');
@@ -34,8 +36,12 @@ describe('inferMacProductLine', () => {
   });
 
   it('attaches the canonical Apple support URL to each line', () => {
-    expect(inferMacProductLine('MacBook Pro (M4, 2024)').endoflifeUrl).toMatch(/support\.apple\.com/);
-    expect(inferMacProductLine('Mac Studio (M4 Max, 2025)').endoflifeUrl).toMatch(/support\.apple\.com/);
+    expect(inferMacProductLine('MacBook Pro (M4, 2024)').endoflifeUrl).toMatch(
+      /support\.apple\.com/,
+    );
+    expect(inferMacProductLine('Mac Studio (M4 Max, 2025)').endoflifeUrl).toMatch(
+      /support\.apple\.com/,
+    );
   });
 });
 
@@ -53,13 +59,19 @@ describe('parseReleaseDateFromMarketingName', () => {
   });
 
   it('parses month + year (Apple uses Nov for late-fall launches)', () => {
-    expect(parseReleaseDateFromMarketingName('MacBook Pro (14-inch, M3, Nov 2023)')).toBe('2023-11-01');
-    expect(parseReleaseDateFromMarketingName('MacBook Pro (14-inch, M4 Max, Nov 2024)')).toBe('2024-11-01');
+    expect(parseReleaseDateFromMarketingName('MacBook Pro (14-inch, M3, Nov 2023)')).toBe(
+      '2023-11-01',
+    );
+    expect(parseReleaseDateFromMarketingName('MacBook Pro (14-inch, M4 Max, Nov 2024)')).toBe(
+      '2024-11-01',
+    );
   });
 
   it('parses Apple seasonal labels (Early/Mid/Late)', () => {
     expect(parseReleaseDateFromMarketingName('Mac mini (Late 2014)')).toBe('2014-10-01');
-    expect(parseReleaseDateFromMarketingName('MacBook Air (11-inch, Early 2015)')).toBe('2015-03-01');
+    expect(parseReleaseDateFromMarketingName('MacBook Air (11-inch, Early 2015)')).toBe(
+      '2015-03-01',
+    );
     expect(parseReleaseDateFromMarketingName('Mac Pro (Mid 2010)')).toBe('2010-06-01');
   });
 
@@ -70,7 +82,9 @@ describe('parseReleaseDateFromMarketingName', () => {
 
   it('prefers month over plain year when both are present', () => {
     // Real SOFA name with Nov 2024 — should pick Nov, not the year alone.
-    expect(parseReleaseDateFromMarketingName('MacBook Pro (16-inch, M4 Pro, Nov 2024)')).toBe('2024-11-01');
+    expect(parseReleaseDateFromMarketingName('MacBook Pro (16-inch, M4 Pro, Nov 2024)')).toBe(
+      '2024-11-01',
+    );
   });
 });
 
@@ -184,19 +198,23 @@ describe('deriveMacProductsFromSofa', () => {
 
 describe('sofaTrackingFloor', () => {
   it('returns the oldest macOS major any model supports', () => {
-    expect(sofaTrackingFloor({
-      a: { OSVersions: [27, 26] },
-      b: { OSVersions: [27, 26, 15, 14, 13, 12] },
-    })).toBe(12);
+    expect(
+      sofaTrackingFloor({
+        a: { OSVersions: [27, 26] },
+        b: { OSVersions: [27, 26, 15, 14, 13, 12] },
+      }),
+    ).toBe(12);
   });
 
   it('ignores models with missing or unusable OSVersions', () => {
-    expect(sofaTrackingFloor({
-      a: { OSVersions: [26] },
-      b: {},
-      c: { OSVersions: 'nope' },
-      d: null,
-    })).toBe(26);
+    expect(
+      sofaTrackingFloor({
+        a: { OSVersions: [26] },
+        b: {},
+        c: { OSVersions: 'nope' },
+        d: null,
+      }),
+    ).toBe(26);
   });
 
   it('returns null for empty / non-object input', () => {
@@ -207,7 +225,7 @@ describe('sofaTrackingFloor', () => {
 });
 
 describe('estimateReleaseDate', () => {
-  const macosDates = { '26': '2025-09-15', '15': '2024-09-16', '12': '2021-10-25' };
+  const macosDates = { 26: '2025-09-15', 15: '2024-09-16', 12: '2021-10-25' };
 
   it('dates a model to the release of the oldest macOS it can boot', () => {
     expect(estimateReleaseDate(26, 12, macosDates)).toBe('2025-09-15');
@@ -233,12 +251,15 @@ describe('estimateReleaseDate', () => {
 });
 
 describe('deriveMacProductsFromSofa — undated models', () => {
-  const macosReleaseDates = { '26': '2025-09-15', '15': '2024-09-16', '12': '2021-10-25' };
+  const macosReleaseDates = { 26: '2025-09-15', 15: '2024-09-16', 12: '2021-10-25' };
 
   const models = {
     'Mac17,5': { MarketingName: 'MacBook Neo', OSVersions: [27, 26] },
     'Mac17,2': { MarketingName: 'MacBook Pro 14-inch (M5)', OSVersions: [27, 26] },
-    'Mac15,3': { MarketingName: 'MacBook Pro (14-inch, M3, Nov 2023)', OSVersions: [27, 26, 15, 14, 13, 12] },
+    'Mac15,3': {
+      MarketingName: 'MacBook Pro (14-inch, M3, Nov 2023)',
+      OSVersions: [27, 26, 15, 14, 13, 12],
+    },
     'iMacPro1,1': { MarketingName: 'iMac Pro', OSVersions: [15, 14, 13, 12] },
   };
 
@@ -252,8 +273,9 @@ describe('deriveMacProductsFromSofa — undated models', () => {
 
   it('never flags a date parsed from the marketing name', () => {
     const products = deriveMacProductsFromSofa(models, { macosReleaseDates });
-    const m3 = products.find((p) => p.id === 'macbook-pro').releases
-      .find((r) => r.id === 'mac15-3');
+    const m3 = products
+      .find((p) => p.id === 'macbook-pro')
+      .releases.find((r) => r.id === 'mac15-3');
     expect(m3.releaseDate).toBe('2023-11-01');
     expect(m3.releaseDateIsEstimate).toBeUndefined();
   });
@@ -268,7 +290,10 @@ describe('deriveMacProductsFromSofa — undated models', () => {
   it('honours an explicit trackingFloor over one computed from the map', () => {
     // The real fetcher passes the RAW SOFA floor because the map it hands in has
     // the legacy file merged into it, whose old majors would sink the computed one.
-    const withLegacy = { ...models, 'MacBookAir6,1': { MarketingName: 'MacBook Air (11-inch, Mid 2013)', OSVersions: [11] } };
+    const withLegacy = {
+      ...models,
+      'MacBookAir6,1': { MarketingName: 'MacBook Air (11-inch, Mid 2013)', OSVersions: [11] },
+    };
     const guessed = deriveMacProductsFromSofa(withLegacy, { macosReleaseDates });
     expect(guessed.find((p) => p.id === 'imac-pro').releases[0].releaseDate).toBe('2021-10-25');
 

@@ -8,7 +8,7 @@ import {
   FileText,
   GitBranch,
   GitCompare,
-  Hand
+  Hand,
 } from 'lucide-react';
 import { FaGithub } from 'react-icons/fa6';
 
@@ -18,10 +18,7 @@ import { getGuide, getPage } from '@/lib/content';
 import { getPreviewVsDefaultFileStatus } from '@/lib/github-preview-diff-status.mjs';
 import { keystaticItemEditPath } from '@/lib/keystatic-admin-url';
 import { githubBlobUrl } from '@/lib/github-web-url';
-import {
-  getCanonicalGithubRepo,
-  getGithubRepoForContentFetch
-} from '@/lib/preview-github-repo';
+import { getCanonicalGithubRepo, getGithubRepoForContentFetch } from '@/lib/preview-github-repo';
 
 type Props = {
   locale: string;
@@ -55,26 +52,25 @@ const DIFF_BADGE = {
     Icon: GitCompare,
     label: 'This file has been modified on the current branch',
     className:
-      'border border-amber-600/35 bg-amber-200/90 text-amber-950 dark:border-amber-500/30 dark:bg-amber-900/45 dark:text-amber-50'
+      'border border-amber-600/35 bg-amber-200/90 text-amber-950 dark:border-amber-500/30 dark:bg-amber-900/45 dark:text-amber-50',
   },
   unchanged: {
     Icon: Check,
     label: 'No modifications to this file on this branch',
     className:
-      'border border-emerald-600/25 bg-emerald-100/95 text-emerald-950 dark:border-emerald-500/25 dark:bg-emerald-950/35 dark:text-emerald-50'
+      'border border-emerald-600/25 bg-emerald-100/95 text-emerald-950 dark:border-emerald-500/25 dark:bg-emerald-950/35 dark:text-emerald-50',
   },
   new: {
     Icon: FilePlus,
     label: 'New file on this branch (not on default)',
     className:
-      'border border-sky-600/25 bg-sky-100/95 text-sky-950 dark:border-sky-500/25 dark:bg-sky-950/35 dark:text-sky-50'
+      'border border-sky-600/25 bg-sky-100/95 text-sky-950 dark:border-sky-500/25 dark:bg-sky-950/35 dark:text-sky-50',
   },
   unknown: {
     Icon: CircleHelp,
     label: 'Could not compare to default (API, rate limit, or missing file)',
-    className:
-      'border border-border bg-muted/80 text-muted-foreground dark:bg-muted/50'
-  }
+    className: 'border border-border bg-muted/80 text-muted-foreground dark:bg-muted/50',
+  },
 };
 
 /**
@@ -95,25 +91,20 @@ export default async function DraftPreviewBanner({ locale, slug }: Props) {
   const previewRepo = await getGithubRepoForContentFetch();
   const canonicalRepo = getCanonicalGithubRepo();
   const isForkPreview =
-    previewRepo.owner !== canonicalRepo.owner ||
-    previewRepo.name !== canonicalRepo.name;
+    previewRepo.owner !== canonicalRepo.owner || previewRepo.name !== canonicalRepo.name;
   const repoLabel = `${previewRepo.owner}/${previewRepo.name}`;
 
   const relativePath = relativeMdxPathForSlug(slug, locale);
-  const contentPath =
-    relativePath != null ? `content/${locale}/${relativePath}` : null;
+  const contentPath = relativePath != null ? `content/${locale}/${relativePath}` : null;
   const githubUrl =
-    branch && relativePath
-      ? githubBlobUrl(branch, locale, relativePath, previewRepo)
-      : null;
+    branch && relativePath ? githubBlobUrl(branch, locale, relativePath, previewRepo) : null;
   const ksParts = relativePath ? keystaticPartsFromRelativePath(relativePath) : null;
   const keystaticUrl =
     branch && ksParts
       ? keystaticItemEditPath(branch, ksParts.collectionKey, ksParts.itemSlug)
       : null;
 
-  const breadcrumbTitle =
-    branch && contentPath ? `${branch} › ${contentPath}` : null;
+  const breadcrumbTitle = branch && contentPath ? `${branch} › ${contentPath}` : null;
 
   let diffStatus = 'unknown';
   if (branch && relativePath) {
@@ -156,10 +147,7 @@ export default async function DraftPreviewBanner({ locale, slug }: Props) {
                   aria-hidden
                 />
                 <span className="shrink-0">{branch}</span>
-                <span
-                  className="select-none text-amber-600/70 dark:text-amber-400/55"
-                  aria-hidden
-                >
+                <span className="select-none text-amber-600/70 dark:text-amber-400/55" aria-hidden>
                   ›
                 </span>
                 <FileText
@@ -176,8 +164,7 @@ export default async function DraftPreviewBanner({ locale, slug }: Props) {
               <BadgeIcon className="h-3 w-3 shrink-0" aria-hidden />
               <span className="sr-only">{badge.label}</span>
               <span aria-hidden className="min-w-0">
-                {diffStatus === 'changed' &&
-                  'This file has been edited on the current branch'}
+                {diffStatus === 'changed' && 'This file has been edited on the current branch'}
                 {diffStatus === 'unchanged' && 'No changes on this branch'}
                 {diffStatus === 'new' && 'New on this branch vs default'}
                 {diffStatus === 'unknown' && 'Compare unavailable'}

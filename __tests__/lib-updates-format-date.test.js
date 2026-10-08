@@ -7,8 +7,12 @@ import { formatMonthYear } from '../lib/updates/format-date';
 // to subsequent Date formatting; the explicit-timeZone test below covers the same
 // contract without depending on that, in case a future runtime caches the default.
 const ORIGINAL_TZ = process.env.TZ;
-beforeAll(() => { process.env.TZ = 'America/New_York'; });
-afterAll(() => { process.env.TZ = ORIGINAL_TZ; });
+beforeAll(() => {
+  process.env.TZ = 'America/New_York';
+});
+afterAll(() => {
+  process.env.TZ = ORIGINAL_TZ;
+});
 
 describe('formatMonthYear', () => {
   it('keeps the stored month for a viewer west of UTC', () => {
@@ -23,7 +27,9 @@ describe('formatMonthYear', () => {
     // New-York-formatted copy of the same instant lands in the previous month,
     // which is exactly what the helper must not do.
     const localised = new Date('2024-11-01').toLocaleDateString('en-US', {
-      month: 'long', year: 'numeric', timeZone: 'America/New_York',
+      month: 'long',
+      year: 'numeric',
+      timeZone: 'America/New_York',
     });
     expect(localised).toBe('October 2024');
     expect(formatMonthYear('2024-11-01', 'en-US')).not.toBe(localised);

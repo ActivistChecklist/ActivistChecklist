@@ -20,9 +20,5 @@ export const useChecklistItems = () => useContext(ChecklistItemsContext);
  * know about it.
  */
 export function ChecklistItemsProvider({ items = {}, children }) {
-  return (
-    <ChecklistItemsContext.Provider value={items}>
-      {children}
-    </ChecklistItemsContext.Provider>
-  );
+  return <ChecklistItemsContext.Provider value={items}>{children}</ChecklistItemsContext.Provider>;
 }

@@ -27,18 +27,18 @@ const MONTH_RE =
 const DATE_RES = [
   /\b\d{4}-\d{2}-\d{2}\b/g,
   /\b\d{1,2}\/\d{1,2}\/\d{2,4}\b/g,
-  new RegExp(`\\b${MONTH_RE}\\b`, 'gi')
+  new RegExp(`\\b${MONTH_RE}\\b`, 'gi'),
 ];
 
-const ASSET_EXT = /\.(png|jpe?g|gif|webp|svg|ico|css|js|mjs|map|woff2?|ttf|eot|pdf|xml|txt|json|webmanifest)$/i;
+const ASSET_EXT =
+  /\.(png|jpe?g|gif|webp|svg|ico|css|js|mjs|map|woff2?|ttf|eot|pdf|xml|txt|json|webmanifest)$/i;
 
 /** Max time for each page fetch. */
 const FETCH_TIMEOUT_MS = 90_000;
 
 function getSnapshotPageConcurrency() {
   const raw = process.env.SNAPSHOT_PAGE_CONCURRENCY;
-  const n =
-    raw === undefined || raw === '' ? 3 : parseInt(String(raw), 10);
+  const n = raw === undefined || raw === '' ? 3 : parseInt(String(raw), 10);
   if (!Number.isFinite(n) || n < 1) {
     return 1;
   }
@@ -64,7 +64,7 @@ export function compareNormalizedDirNames(absPath1, absPath2) {
     dir1: `1-before-${h1}`,
     dir2: `2-after-${h2}`,
     hash1: h1,
-    hash2: h2
+    hash2: h2,
   };
 }
 
@@ -89,7 +89,7 @@ export function compareNormalizedDirNamesFromLabels(label1, label2) {
     dir1: `1-${slug1}`,
     dir2: `2-${slug2}`,
     hash1: slug1,
-    hash2: slug2
+    hash2: slug2,
   };
 }
 
@@ -187,7 +187,7 @@ function englishOnlyFetchFromPathname(pathname) {
   return {
     skip: false,
     fetchPath: path,
-    dedupeKey: dedupeKeyForFetchPath(path)
+    dedupeKey: dedupeKeyForFetchPath(path),
   };
 }
 
@@ -215,8 +215,7 @@ function writeSnapshotProgress(done, total, pathLabel, startedAt) {
   } else if (done >= total && total > 0) {
     eta = 'done';
   }
-  const label =
-    pathLabel.length > 40 ? `…${pathLabel.slice(-38)}` : pathLabel || '—';
+  const label = pathLabel.length > 40 ? `…${pathLabel.slice(-38)}` : pathLabel || '—';
   const numW = String(total).length;
   const line = `${bar} ${String(done).padStart(numW)}/${total} ${pct}%  ETA ${eta}  ${label}`;
   process.stdout.write(`\r\x1b[K${line}`);
@@ -279,7 +278,7 @@ async function snapshotFetchOnePage(port, item, outSubdir) {
   try {
     response = await fetch(pageUrl, {
       redirect: 'follow',
-      signal: AbortSignal.timeout(FETCH_TIMEOUT_MS)
+      signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
     });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
@@ -330,7 +329,7 @@ export async function normalizeOneStaticDir(absRoot, outSubdir) {
 
   const child = spawn(bin, [absRoot, '-p', String(port), '-s', '-a', '127.0.0.1'], {
     stdio: 'ignore',
-    cwd: ROOT
+    cwd: ROOT,
   });
 
   try {
@@ -393,7 +392,7 @@ export async function normalizeOneStaticDir(absRoot, outSubdir) {
       }
 
       await Promise.all(
-        Array.from({ length: Math.min(concurrency, items.length) }, () => worker())
+        Array.from({ length: Math.min(concurrency, items.length) }, () => worker()),
       );
     }
 

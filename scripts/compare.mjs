@@ -26,7 +26,7 @@ import {
   isValidStaticCache,
   moveBuildOutputToCache,
   staticBuildCacheDir,
-  symlinkDir
+  symlinkDir,
 } from './snapshot-build-cache.mjs';
 import {
   addDetachedWorktree,
@@ -34,7 +34,7 @@ import {
   linkNodeModulesFromMain,
   listOutBackups,
   removeWorktree,
-  snapshotBuildEnv
+  snapshotBuildEnv,
 } from './snapshot-worktree.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -47,7 +47,7 @@ function verifyRef(ref) {
   try {
     execFileSync('git', ['rev-parse', '--verify', `${ref}^{commit}`], {
       cwd: ROOT,
-      stdio: 'pipe'
+      stdio: 'pipe',
     });
   } catch {
     throw new Error(`Not a valid ref: ${ref}`);
@@ -110,7 +110,7 @@ async function promptLabels(ref1, ref2, nameA, nameB, noPrompt) {
   if (noPrompt) {
     return {
       label1: nameA || ref1,
-      label2: nameB || ref2
+      label2: nameB || ref2,
     };
   }
   if (nameA && nameB) {
@@ -121,14 +121,11 @@ async function promptLabels(ref1, ref2, nameA, nameB, noPrompt) {
     let label1 = nameA;
     let label2 = nameB;
     if (!label1) {
-      label1 =
-        (await rl.question(`Label for first snapshot (${ref1}) [${ref1}]: `)).trim() ||
-        ref1;
+      label1 = (await rl.question(`Label for first snapshot (${ref1}) [${ref1}]: `)).trim() || ref1;
     }
     if (!label2) {
       label2 =
-        (await rl.question(`Label for second snapshot (${ref2}) [${ref2}]: `)).trim() ||
-        ref2;
+        (await rl.question(`Label for second snapshot (${ref2}) [${ref2}]: `)).trim() || ref2;
     }
     return { label1, label2 };
   } finally {
@@ -237,7 +234,7 @@ try {
   console.log('\n📄 Normalizing + diff…');
   const { diffRelative } = await runSnapshotCompare(static1, static2, {
     labels: [label1, label2],
-    outDir
+    outDir,
   });
 
   diffFileRel = diffRelative;

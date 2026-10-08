@@ -32,14 +32,9 @@ function normalizeToEnCanonicalPath(dedupeKey) {
 function buildHreflangAlternateRefs(dedupeKey) {
   const enPath = normalizeToEnCanonicalPath(dedupeKey);
   const enUrl =
-    enPath === '/'
-      ? `${SITE_URL}/`
-      : `${SITE_URL}${enPath.endsWith('/') ? enPath : `${enPath}/`}`;
+    enPath === '/' ? `${SITE_URL}/` : `${SITE_URL}${enPath.endsWith('/') ? enPath : `${enPath}/`}`;
 
-  const esUrl =
-    enPath === '/'
-      ? `${SITE_URL}/es/`
-      : `${SITE_URL}/es${enPath.replace(/\/$/, '')}/`;
+  const esUrl = enPath === '/' ? `${SITE_URL}/es/` : `${SITE_URL}/es${enPath.replace(/\/$/, '')}/`;
 
   return [
     { href: enUrl, hreflang: 'en', hrefIsAbsolute: true },

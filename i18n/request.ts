@@ -21,14 +21,13 @@ function deepMerge(base: Record<string, any>, override: Record<string, any>): Re
 
 export default getRequestConfig(async ({ requestLocale }) => {
   const requested = await requestLocale;
-  const locale = hasLocale(routing.locales, requested)
-    ? requested
-    : routing.defaultLocale;
+  const locale = hasLocale(routing.locales, requested) ? requested : routing.defaultLocale;
 
   const englishMessages = (await import('@/messages/en.json')).default;
-  const localeMessages = locale === 'en'
-    ? englishMessages
-    : deepMerge(englishMessages, (await import(`@/messages/${locale}.json`)).default);
+  const localeMessages =
+    locale === 'en'
+      ? englishMessages
+      : deepMerge(englishMessages, (await import(`@/messages/${locale}.json`)).default);
 
   return {
     locale,

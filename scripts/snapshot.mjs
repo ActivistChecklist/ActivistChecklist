@@ -21,7 +21,7 @@ import {
   isSnapshotCacheDisabled,
   isValidStaticCache,
   moveBuildOutputToCache,
-  staticBuildCacheDir
+  staticBuildCacheDir,
 } from './snapshot-build-cache.mjs';
 import {
   addDetachedWorktree,
@@ -30,7 +30,7 @@ import {
   linkNodeModulesFromMain,
   listOutBackups,
   removeWorktree,
-  snapshotBuildEnv
+  snapshotBuildEnv,
 } from './snapshot-worktree.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));

@@ -29,10 +29,7 @@ import {
   gfmStrikethroughToMarkdown,
 } from 'mdast-util-gfm-strikethrough';
 import { gfmTable } from 'micromark-extension-gfm-table';
-import {
-  gfmTableFromMarkdown,
-  gfmTableToMarkdown,
-} from 'mdast-util-gfm-table';
+import { gfmTableFromMarkdown, gfmTableToMarkdown } from 'mdast-util-gfm-table';
 
 // ── MDAST config — identical to Keystatic's ui.tsx ───────────────────────────
 
@@ -86,7 +83,16 @@ const COLLECTION_SCHEMAS = [
   },
   {
     match: '/news/',
-    order: ['title', 'date', 'url', 'source', 'tags', 'imageOverride', 'firstPublished', 'lastUpdated'],
+    order: [
+      'title',
+      'date',
+      'url',
+      'source',
+      'tags',
+      'imageOverride',
+      'firstPublished',
+      'lastUpdated',
+    ],
     defaults: {},
   },
   {
@@ -130,7 +136,7 @@ function reserializeFrontmatter(raw, filePath) {
   }
 
   // Add missing schema defaults and reorder keys to match Keystatic's field order
-  const schema = COLLECTION_SCHEMAS.find(s => filePath.includes(s.match));
+  const schema = COLLECTION_SCHEMAS.find((s) => filePath.includes(s.match));
   if (schema) {
     for (const [k, v] of Object.entries(schema.defaults)) {
       if (!(k in data)) data[k] = v;
@@ -177,8 +183,8 @@ function normalizeTree(node) {
   if (node.type === 'listItem') {
     node.spread =
       node.children.length === 2 &&
-        node.children[0].type === 'paragraph' &&
-        node.children[1].type === 'list'
+      node.children[0].type === 'paragraph' &&
+      node.children[1].type === 'list'
         ? false
         : undefined;
   }
@@ -242,7 +248,10 @@ function parseArgs(argv) {
   return args;
 }
 
-function die(msg) { console.error(msg); process.exit(1); }
+function die(msg) {
+  console.error(msg);
+  process.exit(1);
+}
 
 // ── Main ─────────────────────────────────────────────────────────────────────
 
@@ -260,8 +269,11 @@ async function main() {
     }
   }
 
-  let scanned = 0, changed = 0, skipped = 0;
-  const changedList = [], skippedList = [];
+  let scanned = 0,
+    changed = 0,
+    skipped = 0;
+  const changedList = [],
+    skippedList = [];
 
   for (const filePath of files) {
     scanned++;
@@ -280,11 +292,11 @@ async function main() {
     }
   }
 
-  const rel = f => path.relative(process.cwd(), f);
+  const rel = (f) => path.relative(process.cwd(), f);
   if (args.check) {
     if (changed) {
       console.error(`Would change ${changed}/${scanned} file(s):`);
-      changedList.forEach(f => console.error(`  ${rel(f)}`));
+      changedList.forEach((f) => console.error(`  ${rel(f)}`));
       process.exitCode = 1;
     } else {
       console.log(`No changes needed (${scanned} file(s) scanned).`);
@@ -294,8 +306,11 @@ async function main() {
   }
   if (skipped) {
     console.log(`Skipped ${skipped}:`);
-    skippedList.forEach(s => console.log(`  ${rel(s.file)} — ${s.reason}`));
+    skippedList.forEach((s) => console.log(`  ${rel(s.file)} — ${s.reason}`));
   }
 }
 
-main().catch(err => { console.error(err); process.exitCode = 1; });
+main().catch((err) => {
+  console.error(err);
+  process.exitCode = 1;
+});

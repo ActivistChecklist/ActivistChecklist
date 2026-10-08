@@ -36,8 +36,7 @@ const c = {
   white: '\x1b[97m',
 };
 
-const TOKEN =
-  process.env.CROWDIN_TRANSLATION_STATUS_API_KEY || process.env.CROWDIN_PERSONAL_TOKEN;
+const TOKEN = process.env.CROWDIN_TRANSLATION_STATUS_API_KEY || process.env.CROWDIN_PERSONAL_TOKEN;
 const PROJECT_ID = process.env.CROWDIN_PROJECT_ID;
 const BASE_URL = 'https://api.crowdin.com/api/v2';
 /** App locale to match against project targetLanguageIds (e.g. es matches es-ES). */
@@ -174,15 +173,12 @@ function findCrowdinFile(repoPath, files) {
     return { file: candidates[0], how: 'suffix' };
   }
   if (candidates.length > 1) {
-    const exact = candidates.find(
-      (f) => normalizePath(f.path || '').replace(/^\/+/, '') === want,
-    );
+    const exact = candidates.find((f) => normalizePath(f.path || '').replace(/^\/+/, '') === want);
     if (exact) {
       return { file: exact, how: 'suffix-exact' };
     }
     candidates.sort(
-      (a, b) =>
-        normalizePath(a.path || '').length - normalizePath(b.path || '').length,
+      (a, b) => normalizePath(a.path || '').length - normalizePath(b.path || '').length,
     );
     return { file: candidates[0], how: 'suffix-shortest' };
   }
@@ -209,11 +205,7 @@ async function resolveCrowdinLanguageId() {
 
   const match = targets.find((tid) => {
     const s = String(tid).toLowerCase();
-    return (
-      s === lower ||
-      s.startsWith(`${lower}-`) ||
-      s.split('-')[0] === lower
-    );
+    return s === lower || s.startsWith(`${lower}-`) || s.split('-')[0] === lower;
   });
 
   if (match) {
@@ -381,9 +373,7 @@ async function run() {
       progRows.push(entry);
     }
 
-    const agg = aggregateProgressRows(
-      progRows.map((e) => ({ phrases: e.phrases })),
-    );
+    const agg = aggregateProgressRows(progRows.map((e) => ({ phrases: e.phrases })));
     const showUnreviewedNotice =
       agg.approvalPercent != null && agg.approvalPercent < UNREVIEWED_NOTICE_MAX_APPROVAL;
 

@@ -35,7 +35,9 @@ describe('applyReplacements does not corrupt JavaScript', () => {
   });
 
   test('does not swallow code following the URL', () => {
-    const out = rewrite('function f(){let r=`x https://nextjs.org/docs/messages/instant-unrendered-segment`;return 1}');
+    const out = rewrite(
+      'function f(){let r=`x https://nextjs.org/docs/messages/instant-unrendered-segment`;return 1}',
+    );
     expect(out).toContain('`;return 1}');
     expect(scriptSyntaxError(out)).toBeNull();
   });
@@ -51,14 +53,14 @@ describe('applyReplacements does not corrupt JavaScript', () => {
     (delim) => {
       const out = rewrite(`x=https://nextjs.org/docs/messages/slug${delim}y`);
       expect(out).toBe(`x=BLOCKEDNEXTJSDOCS${delim}y`);
-    }
+    },
   );
 });
 
 describe('applyReplacements still does its job', () => {
   test('replaces a plain docs URL', () => {
     expect(rewrite('see https://nextjs.org/docs/messages/foo-bar now')).toBe(
-      'see BLOCKEDNEXTJSDOCS now'
+      'see BLOCKEDNEXTJSDOCS now',
     );
   });
 
@@ -78,12 +80,14 @@ describe('applyReplacements still does its job', () => {
 
   test('rewrites storyblok CDN images to local paths', () => {
     expect(rewrite('https://a.storyblok.com/f/123/abc-def/ghi-jkl/pic.png')).toBe(
-      '/images/pic.png'
+      '/images/pic.png',
     );
   });
 
   test('reports what it replaced', () => {
-    const { counts } = applyReplacements('https://nextjs.org/docs/messages/a and fonts.googleapis.com');
+    const { counts } = applyReplacements(
+      'https://nextjs.org/docs/messages/a and fonts.googleapis.com',
+    );
     expect([...counts.values()].reduce((a, b) => a + b, 0)).toBeGreaterThan(0);
   });
 

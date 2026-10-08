@@ -29,7 +29,7 @@ class PGPMailer {
     const encrypted = await openpgp.encrypt({
       message: await openpgp.createMessage({ text: message }),
       encryptionKeys: publicKey,
-      format: 'armored'
+      format: 'armored',
     });
 
     return encrypted;
@@ -44,7 +44,7 @@ class PGPMailer {
       from,
       to: [to],
       subject,
-      text: encryptedContent
+      text: encryptedContent,
     });
 
     return new Promise((resolve, reject) => {
@@ -53,28 +53,28 @@ class PGPMailer {
         path: '/emails',
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${this.resendApiKey}`,
+          Authorization: `Bearer ${this.resendApiKey}`,
           'Content-Type': 'application/json',
-          'Content-Length': Buffer.byteLength(postData)
-        }
+          'Content-Length': Buffer.byteLength(postData),
+        },
       };
 
       const req = https.request(options, (res) => {
         let data = '';
-        res.on('data', (chunk) => data += chunk);
+        res.on('data', (chunk) => (data += chunk));
         res.on('end', () => {
           const response = JSON.parse(data);
           if (res.statusCode >= 200 && res.statusCode < 300) {
             resolve({
               success: true,
               httpCode: res.statusCode,
-              response
+              response,
             });
           } else {
             resolve({
               success: false,
               httpCode: res.statusCode,
-              response
+              response,
             });
           }
         });
@@ -85,7 +85,7 @@ class PGPMailer {
         resolve({
           success: false,
           httpCode: 500,
-          response: { error: error.message }
+          response: { error: error.message },
         });
       });
 
@@ -101,83 +101,74 @@ const contactSchema = {
     type: 'object',
     required: ['message', 'responseType'],
     properties: {
-      message: { 
+      message: {
         type: 'string',
         maxLength: 5000,
-        minLength: 1
+        minLength: 1,
       },
-      responseType: { 
+      responseType: {
         type: 'string',
-        enum: ['none', 'email', 'signal_username', 'signal_phone']
+        enum: ['none', 'email', 'signal_username', 'signal_phone'],
       },
-      email: { 
-        anyOf: [
-          { type: 'null' },
-          { type: 'string' }
-        ]
+      email: {
+        anyOf: [{ type: 'null' }, { type: 'string' }],
       },
-      signalUsername: { 
-        anyOf: [
-          { type: 'null' },
-          { type: 'string' }
-        ]
+      signalUsername: {
+        anyOf: [{ type: 'null' }, { type: 'string' }],
       },
       signalPhone: {
-        anyOf: [
-          { type: 'null' },
-          { type: 'string' }
-        ]
+        anyOf: [{ type: 'null' }, { type: 'string' }],
       },
       pagePath: {
-        type: 'string'
-      }
+        type: 'string',
+      },
     },
     allOf: [
       {
         if: {
-          properties: { responseType: { const: 'email' } }
+          properties: { responseType: { const: 'email' } },
         },
         then: {
           required: ['email'],
           properties: {
-            email: { 
+            email: {
               type: 'string',
               format: 'email',
-              minLength: 1
-            }
-          }
-        }
+              minLength: 1,
+            },
+          },
+        },
       },
       {
         if: {
-          properties: { responseType: { const: 'signal_username' } }
+          properties: { responseType: { const: 'signal_username' } },
         },
         then: {
           required: ['signalUsername'],
           properties: {
-            signalUsername: { 
+            signalUsername: {
               type: 'string',
-              minLength: 5
-            }
-          }
-        }
+              minLength: 5,
+            },
+          },
+        },
       },
       {
         if: {
-          properties: { responseType: { const: 'signal_phone' } }
+          properties: { responseType: { const: 'signal_phone' } },
         },
         then: {
           required: ['signalPhone'],
           properties: {
-            signalPhone: { 
+            signalPhone: {
               type: 'string',
-              minLength: 5
-            }
-          }
-        }
-      }
-    ]
-  }
+              minLength: 5,
+            },
+          },
+        },
+      },
+    ],
+  },
 };
 
 async function handleContactForm(req, reply) {
@@ -197,11 +188,14 @@ async function handleContactForm(req, reply) {
         contactInfo = `## Response requested by Signal phone:\n${data.signalPhone || ''}`;
         break;
       default:
-        contactInfo = "## No response requested";
+        contactInfo = '## No response requested';
     }
 
     // Create subject preview from message
-    let preview = data.message.replace(/[\r\n\t]+/g, ' ').replace(/\s+/g, ' ').trim();
+    let preview = data.message
+      .replace(/[\r\n\t]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
     if (preview.length > 50) {
       preview = `${preview.substring(0, 47)}...`;
     }
@@ -213,7 +207,10 @@ async function handleContactForm(req, reply) {
 
     const config = {
       resendApiKey: process.env.RESEND_API_KEY,
-      publicKeyPath: path.join(__dirname, '../public/files/publickey.contact@activistchecklist.org.asc')
+      publicKeyPath: path.join(
+        __dirname,
+        '../public/files/publickey.contact@activistchecklist.org.asc',
+      ),
     };
 
     // Check for required environment variables
@@ -229,9 +226,10 @@ async function handleContactForm(req, reply) {
       encrypted = await mailer.encryptMessage(messageWithTime);
     } catch (error) {
       console.error('Encryption error:', error);
-      const message = process.env.NODE_ENV === 'production'
-        ? 'Something went wrong. Please try again later.'
-        : error.message;
+      const message =
+        process.env.NODE_ENV === 'production'
+          ? 'Something went wrong. Please try again later.'
+          : error.message;
       reply.code(500).send({ error: message });
       return;
     }
@@ -239,66 +237,74 @@ async function handleContactForm(req, reply) {
     // Send email
     try {
       const result = await mailer.sendEncryptedEmail(
-        "Activist Checklist Contact Form <contact@activistchecklist.org>",
-        "contact@activistchecklist.org",
+        'Activist Checklist Contact Form <contact@activistchecklist.org>',
+        'contact@activistchecklist.org',
         `Contact Form: ${preview}`,
-        encrypted
+        encrypted,
       );
 
       if (result.success) {
         return { success: true, message: 'Message sent successfully' };
       } else {
         console.error('Email send failed:', result.response);
-        const message = process.env.NODE_ENV === 'production'
-          ? 'Something went wrong. Please try again later.'
-          : (result.response?.error || JSON.stringify(result.response));
+        const message =
+          process.env.NODE_ENV === 'production'
+            ? 'Something went wrong. Please try again later.'
+            : result.response?.error || JSON.stringify(result.response);
         reply.code(result.httpCode || 500).send({ error: message });
       }
     } catch (error) {
       console.error('Email send error:', error);
-      const message = process.env.NODE_ENV === 'production'
-        ? 'Something went wrong. Please try again later.'
-        : error.message;
+      const message =
+        process.env.NODE_ENV === 'production'
+          ? 'Something went wrong. Please try again later.'
+          : error.message;
       reply.code(500).send({ error: message });
     }
   } catch (error) {
     // Handle validation errors specifically
     if (error.validation) {
-      const payload = process.env.NODE_ENV === 'production'
-        ? { error: 'Invalid form data' }
-        : {
-            error: 'Validation Error',
-            message: 'Invalid form data',
-            details: error.validation.map(err => ({
-              field: err.instancePath.replace('/', '') || 'form',
-              message: err.message
-            }))
-          };
+      const payload =
+        process.env.NODE_ENV === 'production'
+          ? { error: 'Invalid form data' }
+          : {
+              error: 'Validation Error',
+              message: 'Invalid form data',
+              details: error.validation.map((err) => ({
+                field: err.instancePath.replace('/', '') || 'form',
+                message: err.message,
+              })),
+            };
       reply.code(400).send(payload);
       return;
     }
 
     // Handle other errors
     console.error('Contact form error:', error);
-    const message = process.env.NODE_ENV === 'production'
-      ? 'Something went wrong. Please try again later.'
-      : error.message;
+    const message =
+      process.env.NODE_ENV === 'production'
+        ? 'Something went wrong. Please try again later.'
+        : error.message;
     reply.code(500).send({ error: message });
   }
 }
 
 // Fastify plugin
 async function contactRoutes(fastify, options) {
-  fastify.post('/contact', {
-    config: {
-      rateLimit: {
-        max: 5,
-        timeWindow: '15 minutes'
-      }
+  fastify.post(
+    '/contact',
+    {
+      config: {
+        rateLimit: {
+          max: 5,
+          timeWindow: '15 minutes',
+        },
+      },
+      schema: contactSchema,
+      bodyLimit: 10240, // 10KB limit
     },
-    schema: contactSchema,
-    bodyLimit: 10240, // 10KB limit
-  }, handleContactForm);
+    handleContactForm,
+  );
 }
 
-module.exports = contactRoutes; 
+module.exports = contactRoutes;
