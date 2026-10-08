@@ -113,7 +113,6 @@ jobs:
           NEXT_TELEMETRY_DISABLED: 1
         run: pnpm buildstatic
 
-
   # The merge gate. ALWAYS runs. Reports a real success/failure.
   merge_gate:
     name: merge_gate
