@@ -64,7 +64,15 @@ export default function HomePageContent({
           <div className="">
             <header
               className={cn(
-                'not-prose relative left-1/2 w-dvw max-w-none -translate-x-1/2',
+                /* Direction-agnostic full bleed. Symmetric negative inline
+                 margins that sum exactly to the container width, so the box
+                 is never over-constrained and `direction` cannot affect it.
+                 Avoid the left-1/2 + -translate-x-1/2 trick here: w-dvw is
+                 wider than the containing block, and CSS resolves that
+                 over-constraint by dropping margin-right in LTR but
+                 margin-left in RTL — flipping the static position the trick
+                 measures from, which threw the hero off-centre in Arabic. */
+                'not-prose relative w-dvw max-w-none mx-[calc(50%-50dvw)]',
                 'relative mb-16 -mt-8 pt-16 pb-32 px-4 overflow-hidden',
                 /* Flat brand band, identical in both themes: --brand and
                  --brand-foreground are the two tokens we never flip for dark mode.
@@ -75,10 +83,14 @@ export default function HomePageContent({
               )}
             >
               <div className="relative max-w-4xl mx-auto text-center">
-                <h1 className="text-5xl md:text-6xl font-heavy mb-6 text-balance text-brand-foreground">
+                {/* text-5xl/6xl ship line-height:1, which is too tight for
+                    Arabic — diacritics and descenders collide on a wrapped
+                    title. Loosen leading and open up the gap to the <p> for
+                    RTL only, so the Latin design is untouched. */}
+                <h1 className="text-5xl md:text-6xl font-heavy mb-6 rtl:leading-[1.35] rtl:mb-8 text-balance text-brand-foreground">
                   {t('hero.title')}
                 </h1>
-                <p className="text-xl md:text-2xl mb-10 text-brand-foreground max-w-2xl mx-auto">
+                <p className="text-xl md:text-2xl mb-10 rtl:leading-[1.8] text-brand-foreground max-w-2xl mx-auto">
                   {t('hero.description')}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -103,7 +115,7 @@ export default function HomePageContent({
                 </div>
                 {latestMajorBodyText && (
                   <div className="mt-8 text-brand-foreground [&_a]:text-inherit">
-                    <Sparkles className="h-4 w-4 inline mr-1" />
+                    <Sparkles className="h-4 w-4 inline me-1" />
                     <Markdown content={latestMajorBodyText} isProse={false} inlineOnly={true} />
                   </div>
                 )}
@@ -128,7 +140,7 @@ export default function HomePageContent({
               <Button asChild variant="outline" size="lg">
                 <Link href={SECURITY_CHECKLISTS.href} className="group">
                   {t('homepage.browseAll')}{' '}
-                  <ArrowRight className="ml-2 transition-transform duration-300 ease-out group-hover:translate-x-1" />
+                  <ArrowRight className="ms-2 transition-transform duration-300 ease-out group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
                 </Link>
               </Button>
             </div>
@@ -211,7 +223,7 @@ export default function HomePageContent({
               <Button asChild variant="outline" size="sm">
                 <Link href={NAV_ITEMS.CHANGELOG.href} className="group">
                   {t('homepage.viewAllUpdates')}{' '}
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 ease-out group-hover:translate-x-1" />
+                  <ArrowRight className="ms-2 h-4 w-4 transition-transform duration-300 ease-out group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
                 </Link>
               </Button>
             </div>

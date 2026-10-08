@@ -233,7 +233,7 @@ const Section = ({ slug, title, description, children }) => {
                       <RiskLevelBadge
                         level={sectionRiskLevel}
                         showLabel={mdUp}
-                        className="mr-0! shrink-0"
+                        className="me-0! shrink-0"
                       />
                     </span>
                   )}
@@ -294,7 +294,7 @@ const Section = ({ slug, title, description, children }) => {
               <div className="relative flex flex-col sm:block">
                 <h2
                   id={slug}
-                  className={showExpandAll ? (mdUp ? 'sm:pr-12 md:pr-[12.5rem]' : 'sm:pr-12') : ''}
+                  className={showExpandAll ? (mdUp ? 'sm:pe-12 md:pe-[12.5rem]' : 'sm:pe-12') : ''}
                 >
                   {title}
                 </h2>
@@ -304,7 +304,7 @@ const Section = ({ slug, title, description, children }) => {
                       type="button"
                       variant="defaultOutline"
                       size="sm"
-                      className="print:hidden max-sm:w-full sm:w-fit sm:absolute sm:bottom-0 sm:right-0 mt-2 sm:mt-0 sm:shrink-0"
+                      className="print:hidden max-sm:w-full sm:w-fit sm:absolute sm:bottom-0 sm:inset-e-0 mt-2 sm:mt-0 sm:shrink-0"
                       onClick={() => triggerExpand(!isExpanded)}
                     >
                       {expandTooltipLabel}
@@ -314,7 +314,7 @@ const Section = ({ slug, title, description, children }) => {
                       type="button"
                       variant="defaultOutline"
                       size="sm"
-                      className="print:hidden max-sm:w-full sm:absolute sm:bottom-0 sm:right-0 mt-2 sm:mt-0 sm:shrink-0 sm:flex sm:gap-2 sm:items-center"
+                      className="print:hidden max-sm:w-full sm:absolute sm:bottom-0 sm:inset-e-0 mt-2 sm:mt-0 sm:shrink-0 sm:flex sm:gap-2 sm:items-center"
                       onClick={() => triggerExpand(!isExpanded)}
                     >
                       {isExpanded ? (
@@ -331,7 +331,7 @@ const Section = ({ slug, title, description, children }) => {
                           type="button"
                           variant="defaultOutline"
                           size="icon"
-                          className="print:hidden max-sm:w-full sm:absolute sm:bottom-0 sm:right-0 mt-2 sm:mt-0 sm:h-8 sm:w-8 sm:shrink-0"
+                          className="print:hidden max-sm:w-full sm:absolute sm:bottom-0 sm:inset-e-0 mt-2 sm:mt-0 sm:h-8 sm:w-8 sm:shrink-0"
                           aria-label={
                             isExpanded
                               ? 'Collapse all checklist items in this section'

@@ -18,7 +18,7 @@ export const CollapsibleSection = ({ title, defaultOpen = false, className, chil
         )}
       >
         <ChevronRight
-          className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200"
+          className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 rtl:rotate-180"
           aria-hidden="true"
         />
         <span>{title}</span>

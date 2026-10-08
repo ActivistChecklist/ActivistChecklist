@@ -8,6 +8,7 @@ import {
 } from 'react-icons/io5';
 import Link from '@/components/Link';
 import { trackFileDownload } from '@/lib/download-tracker';
+import { cn } from '@/lib/utils';
 
 // Static registry of icons used in content. Add new icons here as needed.
 const ICON_REGISTRY = {
@@ -28,7 +29,8 @@ const DynamicIcon = ({ iconName, className, ...props }) => {
     );
     return null;
   }
-  return <IconComponent className={className} {...props} />;
+  const isDirectional = /Arrow(Forward|Back)/.test(formattedIconName);
+  return <IconComponent className={cn(isDirectional && 'rtl:rotate-180', className)} {...props} />;
 };
 
 export const ButtonEmbed = (props) => {
