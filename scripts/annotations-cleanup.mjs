@@ -1,6 +1,9 @@
 import dotenv from 'dotenv';
 import { REVIEW_COMMENTS_COLLECTIONS as C } from '@activistchecklist/react-review-comments/server/collections';
-import { collection, ensureAnnotationSchema } from '@activistchecklist/react-review-comments/server/db';
+import {
+  collection,
+  ensureAnnotationSchema,
+} from '@activistchecklist/react-review-comments/server/db';
 
 dotenv.config();
 
@@ -21,14 +24,18 @@ async function main() {
   const documents = await collection(C.documents);
   const threads = await collection(C.threads);
   const comments = await collection(C.comments);
-  const cutoff = new Date(Date.now() - (days * 24 * 60 * 60 * 1000));
+  const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
 
-  const oldDocs = await documents.find({ updated_at: { $lt: cutoff } }, { projection: { id: 1 } }).toArray();
+  const oldDocs = await documents
+    .find({ updated_at: { $lt: cutoff } }, { projection: { id: 1 } })
+    .toArray();
   const docIds = oldDocs.map((doc) => doc.id);
   let deletedThreads = 0;
   let deletedComments = 0;
   if (docIds.length > 0) {
-    const oldThreads = await threads.find({ document_id: { $in: docIds } }, { projection: { id: 1 } }).toArray();
+    const oldThreads = await threads
+      .find({ document_id: { $in: docIds } }, { projection: { id: 1 } })
+      .toArray();
     const threadIds = oldThreads.map((thread) => thread.id);
     if (threadIds.length > 0) {
       const commentDeleteResult = await comments.deleteMany({ thread_id: { $in: threadIds } });
@@ -39,7 +46,9 @@ async function main() {
   }
   const docDeleteResult = await documents.deleteMany({ updated_at: { $lt: cutoff } });
   const deletedDocuments = docDeleteResult.deletedCount || 0;
-  console.log(`Review comments cleanup complete. Deleted docs: ${deletedDocuments}, threads: ${deletedThreads}, comments: ${deletedComments}. TTL days: ${days}.`);
+  console.log(
+    `Review comments cleanup complete. Deleted docs: ${deletedDocuments}, threads: ${deletedThreads}, comments: ${deletedComments}. TTL days: ${days}.`,
+  );
 }
 
 main().catch((error) => {

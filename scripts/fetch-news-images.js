@@ -33,7 +33,10 @@ try {
 } catch (error) {
   const isVercel = process.env.VERCEL === '1';
   if (isVercel) {
-    console.warn('⚠️ Sharp not available on Vercel, image processing will be skipped:', error.message);
+    console.warn(
+      '⚠️ Sharp not available on Vercel, image processing will be skipped:',
+      error.message,
+    );
   } else {
     console.error('❌ Sharp is required but not available:', error.message);
     console.error('💡 Run: pnpm add sharp');
@@ -70,7 +73,7 @@ function walkDir(dir) {
 }
 
 function loadNewsItems() {
-  return walkDir(CONTENT_DIR).map(filePath => {
+  return walkDir(CONTENT_DIR).map((filePath) => {
     const raw = fs.readFileSync(filePath, 'utf-8');
     const { data: frontmatter } = matter(raw);
     const slug = path.basename(filePath, '.mdx');
@@ -97,7 +100,10 @@ function getImageSource(frontmatter) {
   }
 
   // External URL
-  if (typeof override === 'string' && (override.startsWith('http://') || override.startsWith('https://'))) {
+  if (
+    typeof override === 'string' &&
+    (override.startsWith('http://') || override.startsWith('https://'))
+  ) {
     return { type: 'url', value: override };
   }
 
@@ -113,21 +119,24 @@ async function getSocialGraphImage(url, quietMode = false) {
       url,
       timeout: 10000,
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'User-Agent':
+          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
         'Accept-Language': 'en-US,en;q=0.9',
-        'DNT': '1',
+        DNT: '1',
       },
     });
     if (error) {
       if (!quietMode) console.warn(`⚠️ OG scrape failed for ${url}:`, error);
       return null;
     }
-    return result?.ogImage?.[0]?.url
-      || result?.twitterImage?.[0]?.url
-      || result?.ogImageSecureUrl
-      || result?.ogImageUrl
-      || null;
+    return (
+      result?.ogImage?.[0]?.url ||
+      result?.twitterImage?.[0]?.url ||
+      result?.ogImageSecureUrl ||
+      result?.ogImageUrl ||
+      null
+    );
   } catch (err) {
     if (!quietMode) console.warn(`⚠️ OG scrape error for ${url}:`, err.message);
     return null;
@@ -156,7 +165,8 @@ async function processImageBuffer(imageBuffer, outputPath, quietMode = false) {
       const stripper = new MetadataStripper({ verbose: false });
       strippedBuffer = await stripper.stripImageMetadata(imageBuffer);
     } catch (err) {
-      if (!quietMode) console.warn(`⚠️ Advanced metadata stripping failed, using basic: ${err.message}`);
+      if (!quietMode)
+        console.warn(`⚠️ Advanced metadata stripping failed, using basic: ${err.message}`);
     }
   }
 
@@ -187,50 +197,54 @@ async function downloadAndProcess(imageUrl, outputPath, quietMode = false) {
       return;
     }
 
-    const request = https.get(imageUrl, {
-      timeout: 30000,
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
-        'Accept': 'image/*',
-        'Connection': 'close',
+    const request = https.get(
+      imageUrl,
+      {
+        timeout: 30000,
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+          Accept: 'image/*',
+          Connection: 'close',
+        },
       },
-    }, (response) => {
-      if (response.statusCode !== 200) {
-        reject(new Error(`HTTP ${response.statusCode}`));
-        return;
-      }
-      const contentType = response.headers['content-type'];
-      if (!contentType?.startsWith('image/')) {
-        reject(new Error('Invalid content type'));
-        return;
-      }
-      const contentLength = response.headers['content-length'];
-      if (contentLength && parseInt(contentLength) > MAX_FILE_SIZE) {
-        reject(new Error('File too large'));
-        return;
-      }
-
-      response.on('data', (chunk) => {
-        totalSize += chunk.length;
-        if (totalSize > MAX_FILE_SIZE) {
-          request.destroy();
-          reject(new Error('File too large during download'));
+      (response) => {
+        if (response.statusCode !== 200) {
+          reject(new Error(`HTTP ${response.statusCode}`));
           return;
         }
-        chunks.push(chunk);
-      });
-
-      response.on('end', async () => {
-        try {
-          await processImageBuffer(Buffer.concat(chunks), outputPath, quietMode);
-          resolve();
-        } catch (err) {
-          reject(new Error(`Image processing failed: ${err.message}`));
+        const contentType = response.headers['content-type'];
+        if (!contentType?.startsWith('image/')) {
+          reject(new Error('Invalid content type'));
+          return;
         }
-      });
+        const contentLength = response.headers['content-length'];
+        if (contentLength && parseInt(contentLength) > MAX_FILE_SIZE) {
+          reject(new Error('File too large'));
+          return;
+        }
 
-      response.on('error', reject);
-    });
+        response.on('data', (chunk) => {
+          totalSize += chunk.length;
+          if (totalSize > MAX_FILE_SIZE) {
+            request.destroy();
+            reject(new Error('File too large during download'));
+            return;
+          }
+          chunks.push(chunk);
+        });
+
+        response.on('end', async () => {
+          try {
+            await processImageBuffer(Buffer.concat(chunks), outputPath, quietMode);
+            resolve();
+          } catch (err) {
+            reject(new Error(`Image processing failed: ${err.message}`));
+          }
+        });
+
+        response.on('error', reject);
+      },
+    );
 
     request.on('error', reject);
     request.on('timeout', () => {
@@ -272,7 +286,10 @@ async function main() {
   const quietMode = args.includes('--quiet') || args.includes('-q');
   const slugOnly = parseSlugArg(args);
 
-  process.on('SIGINT', () => { log('🛑 Interrupted, exiting...', quietMode); process.exit(0); });
+  process.on('SIGINT', () => {
+    log('🛑 Interrupted, exiting...', quietMode);
+    process.exit(0);
+  });
 
   // Ensure output directory exists
   if (!fs.existsSync(NEWS_IMAGES_DIR)) {
@@ -284,7 +301,9 @@ async function main() {
   if (slugOnly) {
     items = items.filter((i) => i.slug === slugOnly);
     if (items.length === 0) {
-      console.error(`❌ No news item with slug "${slugOnly}" (expected an MDX under content/en/news/).`);
+      console.error(
+        `❌ No news item with slug "${slugOnly}" (expected an MDX under content/en/news/).`,
+      );
       process.exit(1);
     }
     log(`📰 Single-slug mode: ${slugOnly}`, quietMode);
@@ -294,7 +313,9 @@ async function main() {
 
   if (forceMode) log('🔄 Force mode — will re-process all images', quietMode);
 
-  let processed = 0, skipped = 0, errors = 0;
+  let processed = 0,
+    skipped = 0,
+    errors = 0;
   const missing = [];
 
   for (const { slug, frontmatter } of items) {
@@ -340,7 +361,7 @@ async function main() {
 
       // Polite delay between network requests
       if (source.type !== 'local') {
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       }
 
       if (testMode) {
@@ -366,7 +387,9 @@ async function main() {
       console.log(`   • ${slug}`);
       if (url) console.log(`     ${url}`);
     });
-    console.log('\nTo fix: add imageOverride to the MDX frontmatter, or set a working article URL.');
+    console.log(
+      '\nTo fix: add imageOverride to the MDX frontmatter, or set a working article URL.',
+    );
   }
 
   console.log('\n🎉 Done! Commit public/images/news/ along with any new MDX files.');
@@ -374,7 +397,7 @@ async function main() {
 }
 
 if (require.main === module) {
-  main().catch(err => {
+  main().catch((err) => {
     console.error('❌ Fatal error:', err.message);
     process.exit(1);
   });

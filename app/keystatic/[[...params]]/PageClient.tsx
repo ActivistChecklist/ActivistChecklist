@@ -15,7 +15,7 @@ export default function PageClient() {
       window.history.replaceState(
         null,
         '',
-        window.location.pathname.slice(0, -1) + window.location.search
+        window.location.pathname.slice(0, -1) + window.location.search,
       );
     }
   }, []);
@@ -27,4 +27,3 @@ export default function PageClient() {
     </>
   );
 }
-

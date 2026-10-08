@@ -36,13 +36,7 @@ module.exports = {
   trailingSlash: true,
   /** Use content dates from frontmatter when available; do not stamp every URL with build time. */
   autoLastmod: false,
-  exclude: [
-    '/api/*',
-    '/keystatic*',
-    '/preview*',
-    '/_next/*',
-    '/404*',
-  ],
+  exclude: ['/api/*', '/keystatic*', '/preview*', '/_next/*', '/404*'],
   transform: async (config, path) => {
     /** @type {string} */
     let loc = path.startsWith('/') ? path : `/${path}`;

@@ -4,11 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import chalk from 'chalk';
-import {
-  getAllGuides,
-  getAllPages,
-  getAllNewsItems,
-} from '../lib/content.js';
+import { getAllGuides, getAllPages, getAllNewsItems } from '../lib/content.js';
 import { LOCALES, DEFAULT_LOCALE } from '../lib/i18n-config.mjs';
 import { sectionStart, sectionEnd, subsection, detail } from './lib/build-cli.mjs';
 
@@ -78,11 +74,7 @@ function findActualExcerpt(haystackLoose = '', needleLoose = '') {
 }
 
 function toSearchProbe(value = '', maxWords = 12) {
-  const words = String(value)
-    .replace(/\s+/g, ' ')
-    .trim()
-    .split(' ')
-    .filter(Boolean);
+  const words = String(value).replace(/\s+/g, ' ').trim().split(' ').filter(Boolean);
   return words.slice(0, maxWords).join(' ');
 }
 
@@ -227,7 +219,7 @@ function getVerificationStringsFromParsed(parsed) {
     String(parsed?.frontmatter?.excerpt || parsed?.frontmatter?.preview || '').trim() || null;
   const body = bodyFromContent || fallback || null;
   const bodyProbe = body ? toSearchProbe(body) : null;
-  const bodyOrigin = bodyFromContent ? 'body_line' : (fallback ? 'frontmatter_fallback' : null);
+  const bodyOrigin = bodyFromContent ? 'body_line' : fallback ? 'frontmatter_fallback' : null;
   return { title, body, bodyProbe, bodyOrigin };
 }
 
@@ -266,7 +258,9 @@ function getSourceForLocale({ locale, collection, item }) {
 }
 
 function getByPath(obj, keyPath) {
-  return keyPath.split('.').reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), obj);
+  return keyPath
+    .split('.')
+    .reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), obj);
 }
 
 function getHomepageExpectedText(locale) {
@@ -276,11 +270,7 @@ function getHomepageExpectedText(locale) {
   try {
     const raw = fs.readFileSync(messagesPath, 'utf8');
     const messages = JSON.parse(raw);
-    const candidates = [
-      'homepage.checklistsHeading',
-      'hero.title',
-      'site.title',
-    ];
+    const candidates = ['homepage.checklistsHeading', 'hero.title', 'site.title'];
     for (const keyPath of candidates) {
       const value = getByPath(messages, keyPath);
       if (typeof value === 'string' && value.trim()) {
@@ -335,7 +325,9 @@ function run() {
         if (!assertFile(htmlPath, descriptor, failures)) continue;
 
         const source = getSourceForLocale({ locale, collection: spec.collection, item });
-        const { title, body, bodyProbe, bodyOrigin } = getVerificationStringsFromParsed(source.parsed);
+        const { title, body, bodyProbe, bodyOrigin } = getVerificationStringsFromParsed(
+          source.parsed,
+        );
         if (!title) {
           warnings.push(`${descriptor}: no title in ${path.relative(ROOT, source.source)}`);
         }
@@ -350,7 +342,7 @@ function run() {
             {
               sourcePath: source.source,
               sourceLine: source.parsed?.frontmatter?.title || null,
-            }
+            },
           );
         }
         if (body) {
@@ -364,10 +356,12 @@ function run() {
             {
               sourcePath: source.source,
               sourceLine: body,
-            }
+            },
           );
         } else {
-          warnings.push(`${descriptor}: no body string extracted from ${path.relative(ROOT, source.source)}`);
+          warnings.push(
+            `${descriptor}: no body string extracted from ${path.relative(ROOT, source.source)}`,
+          );
         }
 
         if (locale === DEFAULT_LOCALE) {
@@ -395,19 +389,15 @@ function run() {
     if (!exists(homePath)) continue;
     const expectedText = getHomepageExpectedText(locale);
     if (!expectedText) {
-      warnings.push(`${locale} homepage key-text check: could not read messages/${locale}.json key`);
+      warnings.push(
+        `${locale} homepage key-text check: could not read messages/${locale}.json key`,
+      );
       continue;
     }
-    assertContains(
-      homePath,
-      expectedText.text,
-      `${locale} homepage key-text check`,
-      failures,
-      {
-        sourcePath: expectedText.path,
-        sourceLine: `${expectedText.keyPath}: ${expectedText.text}`,
-      }
-    );
+    assertContains(homePath, expectedText.text, `${locale} homepage key-text check`, failures, {
+      sourcePath: expectedText.path,
+      sourceLine: `${expectedText.keyPath}: ${expectedText.text}`,
+    });
     stats.homepageKeyTextChecks += 1;
   }
 
@@ -420,7 +410,9 @@ function run() {
     for (const item of newsItems) {
       if (!hasNews) break;
       const source = getSourceForLocale({ locale, collection: 'news', item });
-      const { title, body, bodyProbe, bodyOrigin } = getVerificationStringsFromParsed(source.parsed);
+      const { title, body, bodyProbe, bodyOrigin } = getVerificationStringsFromParsed(
+        source.parsed,
+      );
       if (title) {
         stats.titleContentChecks += 1;
         assertContains(
@@ -431,7 +423,7 @@ function run() {
           {
             sourcePath: source.source,
             sourceLine: source.parsed?.frontmatter?.title || null,
-          }
+          },
         );
       }
       if (body) {
@@ -445,7 +437,7 @@ function run() {
           {
             sourcePath: source.source,
             sourceLine: body,
-          }
+          },
         );
       }
     }
@@ -456,7 +448,9 @@ function run() {
   // 4) Structural sanity and count checks.
   const htmlFiles = collectAllHtmlFiles(OUT_DIR);
   if (htmlFiles.length < CONTENT_FLOOR) {
-    failures.push(`HTML count too low: found ${htmlFiles.length}, expected at least ${CONTENT_FLOOR}`);
+    failures.push(
+      `HTML count too low: found ${htmlFiles.length}, expected at least ${CONTENT_FLOOR}`,
+    );
   }
 
   const localeCounts = {};
@@ -542,10 +536,7 @@ function run() {
     process.exit(1);
   }
 
-  const okLines = [
-    `HTML files: ${htmlFiles.length}`,
-    `Routes & content checks completed`,
-  ];
+  const okLines = [`HTML files: ${htmlFiles.length}`, `Routes & content checks completed`];
   if (warnings.length > 0) {
     okLines.push(`Warnings: ${warnings.length} (non-fatal — see above)`);
   }
@@ -571,7 +562,9 @@ function printContentMiss(issue, level, index) {
     console.log(`        ${keyColor('src line:')}${valueColor(` ${issue.sourceLine}`)}`);
   }
   console.log(`        ${keyColor('expected:')}${chalk.cyan(` ${expected || '-'}`)}`);
-  console.log(`        ${keyColor('actual:  ')}${chalk.magenta(` ${actual || '(no nearby text found)'}`)}`);
+  console.log(
+    `        ${keyColor('actual:  ')}${chalk.magenta(` ${actual || '(no nearby text found)'}`)}`,
+  );
   if (marker) {
     console.log(`        ${keyColor('diff:    ')}${chalk.green(marker)}`);
   }

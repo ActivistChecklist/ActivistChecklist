@@ -48,7 +48,10 @@ describe('parsePlatformHeader', () => {
 
   it('is case-insensitive on the leading "On"', () => {
     expect(parsePlatformHeader('on iphone')).toEqual({ key: 'iphone', displayLabel: 'iphone' });
-    expect(parsePlatformHeader('  On Android  ')).toEqual({ key: 'android', displayLabel: 'Android' });
+    expect(parsePlatformHeader('  On Android  ')).toEqual({
+      key: 'android',
+      displayLabel: 'Android',
+    });
   });
 });
 
@@ -69,19 +72,11 @@ describe('detectPlatformKey', () => {
 
 describe('splitOnChevron', () => {
   it('splits on whitespace-flanked chevrons', () => {
-    expect(splitOnChevron('Settings > Privacy > Lock')).toEqual([
-      'Settings',
-      'Privacy',
-      'Lock',
-    ]);
+    expect(splitOnChevron('Settings > Privacy > Lock')).toEqual(['Settings', 'Privacy', 'Lock']);
   });
 
   it('splits on whitespace-flanked unicode arrows', () => {
-    expect(splitOnChevron('Settings → Privacy → Lock')).toEqual([
-      'Settings',
-      'Privacy',
-      'Lock',
-    ]);
+    expect(splitOnChevron('Settings → Privacy → Lock')).toEqual(['Settings', 'Privacy', 'Lock']);
   });
 
   it('splits on a mix of > and → in the same run', () => {

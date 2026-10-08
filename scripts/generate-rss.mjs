@@ -14,21 +14,22 @@ const ROOT = path.resolve(__dirname, '..');
 const { getAllChangelogEntries, getAllNewsItems } = await import('../lib/content.js');
 
 const SITE_URL = 'https://activistchecklist.org';
-const DEFAULT_AUTHOR = { name: 'Activist Checklist', email: 'contact@activistchecklist.org', link: SITE_URL };
+const DEFAULT_AUTHOR = {
+  name: 'Activist Checklist',
+  email: 'contact@activistchecklist.org',
+  link: SITE_URL,
+};
 
 function absolutizeMarkdownLinks(markdown = '') {
   return String(markdown).replace(
     /\[([^\]]+)\]\((\/[^)\s]*)\)/g,
-    (_match, text, href) => `[${text}](${SITE_URL}${href})`
+    (_match, text, href) => `[${text}](${SITE_URL}${href})`,
   );
 }
 
 async function renderMarkdownToHtml(markdown = '') {
   const withAbsoluteLinks = absolutizeMarkdownLinks(markdown);
-  const file = await remark()
-    .use(remarkGfm)
-    .use(remarkHtml)
-    .process(withAbsoluteLinks);
+  const file = await remark().use(remarkGfm).use(remarkHtml).process(withAbsoluteLinks);
   return String(file).trim();
 }
 
@@ -84,13 +85,17 @@ async function generateChangelogRSS() {
     const slug = entry.slug;
     const date = new Date(entry.frontmatter.date);
     const entryMarkdown = entry.content.trim() || 'Site update';
-    await addMarkdownFeedItem(feed, {
-      title: slug,
-      id: `${SITE_URL}/changelog#${slug}`,
-      link: `${SITE_URL}/changelog#${slug}`,
-      author: [DEFAULT_AUTHOR],
-      date,
-    }, entryMarkdown);
+    await addMarkdownFeedItem(
+      feed,
+      {
+        title: slug,
+        id: `${SITE_URL}/changelog#${slug}`,
+        link: `${SITE_URL}/changelog#${slug}`,
+        author: [DEFAULT_AUTHOR],
+        date,
+      },
+      entryMarkdown,
+    );
   }
 
   writeFeed(feed, 'changelog.xml');
@@ -117,18 +122,27 @@ async function generateNewsRSS() {
     const rssArticleUrl = applyPaywallBypassHref(canonicalArticleUrl);
     const source = fm.source || null;
 
-    const tags = fm.tags ? String(fm.tags).split(',').map((t) => t.trim()).filter(Boolean) : [];
+    const tags = fm.tags
+      ? String(fm.tags)
+          .split(',')
+          .map((t) => t.trim())
+          .filter(Boolean)
+      : [];
     let descriptionMarkdown = '';
     if (tags.length > 0) descriptionMarkdown += `**Tags:** ${tags.join(', ')}`;
     descriptionMarkdown += `${descriptionMarkdown ? '\n\n' : ''}[View the article here →](${rssArticleUrl})`;
     if (item.content.trim()) descriptionMarkdown += `\n\n${item.content.trim()}`;
-    await addMarkdownFeedItem(feed, {
-      title: fm.title || 'News Item',
-      id: canonicalArticleUrl,
-      link: rssArticleUrl,
-      author: [{ ...DEFAULT_AUTHOR, name: source || DEFAULT_AUTHOR.name }],
-      date,
-    }, descriptionMarkdown);
+    await addMarkdownFeedItem(
+      feed,
+      {
+        title: fm.title || 'News Item',
+        id: canonicalArticleUrl,
+        link: rssArticleUrl,
+        author: [{ ...DEFAULT_AUTHOR, name: source || DEFAULT_AUTHOR.name }],
+        date,
+      },
+      descriptionMarkdown,
+    );
   }
 
   writeFeed(feed, 'news.xml');
@@ -148,13 +162,13 @@ if (feedType === 'news') {
   sectionEnd(true, [`News feed: ${newsCount} item(s)`, 'changelog.xml skipped (news-only run)']);
 } else if (feedType === 'changelog') {
   changelogCount = await generateChangelogRSS();
-  sectionEnd(true, [`Changelog feed: ${changelogCount} entry(ies)`, 'news.xml skipped (changelog-only run)']);
+  sectionEnd(true, [
+    `Changelog feed: ${changelogCount} entry(ies)`,
+    'news.xml skipped (changelog-only run)',
+  ]);
 } else {
   [changelogCount, newsCount] = await Promise.all([generateChangelogRSS(), generateNewsRSS()]);
-  sectionEnd(true, [
-    `Changelog: ${changelogCount} entry(ies)`,
-    `News: ${newsCount} item(s)`,
-  ]);
+  sectionEnd(true, [`Changelog: ${changelogCount} entry(ies)`, `News: ${newsCount} item(s)`]);
 }
 
 export { generateChangelogRSS, generateNewsRSS };

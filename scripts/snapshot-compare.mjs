@@ -12,16 +12,12 @@ import fs from 'fs';
 import path from 'path';
 import { pathToFileURL } from 'url';
 import { execSync } from 'child_process';
-import {
-  resolveSnapshotDirs,
-  REPO_ROOT,
-  usageSnapshotTwoDirs
-} from './snapshot-resolve-dir.mjs';
+import { resolveSnapshotDirs, REPO_ROOT, usageSnapshotTwoDirs } from './snapshot-resolve-dir.mjs';
 import {
   getTimestamp,
   compareNormalizedDirNames,
   compareNormalizedDirNamesFromLabels,
-  normalizeOneStaticDir
+  normalizeOneStaticDir,
 } from './snapshot-normalize-lib.mjs';
 
 const ROOT = REPO_ROOT;
@@ -39,8 +35,7 @@ export async function runSnapshotCompare(abs1, abs2, options = {}) {
   const { labels = null, outDir: outDirOpt, stamp: stampOpt } = options;
 
   const stamp = stampOpt || getTimestamp();
-  const outDir =
-    outDirOpt || path.join(ROOT, 'buildbackups', `snapshot-compare-${stamp}`);
+  const outDir = outDirOpt || path.join(ROOT, 'buildbackups', `snapshot-compare-${stamp}`);
 
   let dir1;
   let dir2;
@@ -66,9 +61,7 @@ export async function runSnapshotCompare(abs1, abs2, options = {}) {
 
   fs.mkdirSync(outDir, { recursive: true });
 
-  console.log(
-    `📎 ${path.relative(ROOT, abs1)}\n   ↔ ${path.relative(ROOT, abs2)}`
-  );
+  console.log(`📎 ${path.relative(ROOT, abs1)}\n   ↔ ${path.relative(ROOT, abs2)}`);
   console.log(`📂 Output base: ${path.relative(ROOT, outDir)}`);
 
   console.log('📄 Normalizing (1/2)…');
@@ -84,7 +77,7 @@ export async function runSnapshotCompare(abs1, abs2, options = {}) {
     diffText = execSync(`diff -ruN -x '.DS_Store' "${norm1}" "${norm2}"`, {
       encoding: 'utf8',
       cwd: ROOT,
-      maxBuffer: 64 * 1024 * 1024
+      maxBuffer: 64 * 1024 * 1024,
     });
   } catch (e) {
     if (e.status === 1) {
@@ -101,8 +94,7 @@ export async function runSnapshotCompare(abs1, abs2, options = {}) {
   return { diffRelative, outDir };
 }
 
-const isMain =
-  import.meta.url === pathToFileURL(path.resolve(process.argv[1] || '')).href;
+const isMain = import.meta.url === pathToFileURL(path.resolve(process.argv[1] || '')).href;
 
 if (isMain) {
   const raw1 = process.argv[2];

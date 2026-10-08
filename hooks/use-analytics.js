@@ -1,5 +1,8 @@
 'use client';
-import { sendAnalytics as sendAnalyticsRaw, initializeOnLoad as initializeOnLoadRaw } from '@activistchecklist/umami-extra-privacy/client';
+import {
+  sendAnalytics as sendAnalyticsRaw,
+  initializeOnLoad as initializeOnLoadRaw,
+} from '@activistchecklist/umami-extra-privacy/client';
 import { debugLog } from '@/contexts/DebugContext';
 import { isProd } from '@/utils/core';
 

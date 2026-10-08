@@ -1,15 +1,15 @@
 'use client';
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { IoSearch, IoChevronForward } from "react-icons/io5";
+import { IoSearch, IoChevronForward } from 'react-icons/io5';
 import {
   Dialog,
   DialogContent,
   DialogTrigger,
   DialogTitle,
   DialogDescription,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { useDebug } from '@/contexts/DebugContext';
 import { cn } from '@/lib/utils';
 import Link from '@/components/Link';
@@ -62,11 +62,8 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
   const translateText = useMemo(() => createIntlTranslator(t), [t]);
 
   const popularQueries = useMemo(
-    () =>
-      Array.from({ length: SUGGESTION_COUNT }, (_, i) =>
-        t(`search.suggestion${i}`)
-      ),
-    [t]
+    () => Array.from({ length: SUGGESTION_COUNT }, (_, i) => t(`search.suggestion${i}`)),
+    [t],
   );
 
   const topGuidesForUi = useMemo(
@@ -75,11 +72,11 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
         const fields = getTranslatedNavItemFields(
           guide.key,
           { title: guide.title, description: guide.description },
-          translateText
+          translateText,
         );
         return { ...guide, title: fields.title, description: fields.description };
       }),
-    [translateText]
+    [translateText],
   );
 
   // Refs for tracking search queries
@@ -110,8 +107,8 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
           data: {
             query: queryToTrack,
             query_length: queryToTrack.length,
-            word_count: queryToTrack.split(/\s+/).length
-          }
+            word_count: queryToTrack.split(/\s+/).length,
+          },
         });
 
         lastTrackedQueryRef.current = queryToTrack;
@@ -136,8 +133,8 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
           query: pendingQuery,
           query_length: pendingQuery.length,
           word_count: pendingQuery.split(/\s+/).length,
-          cleanup_reason: 'dialog_closed'
-        }
+          cleanup_reason: 'dialog_closed',
+        },
       });
 
       lastTrackedQueryRef.current = pendingQuery;
@@ -158,9 +155,9 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
         );
         setPagefind(module.default || module);
       } catch (error) {
-        console.error("Error loading Pagefind:", error);
+        console.error('Error loading Pagefind:', error);
         setPagefind({
-          search: () => ({ results: [] })
+          search: () => ({ results: [] }),
         });
       }
     };
@@ -188,7 +185,7 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
             const maxResults = isCurrentPage ? MAX_CURRENT_PAGE_SUB_RESULTS : MAX_SUB_RESULTS;
 
             resultData.sub_results = resultData.sub_results
-              .filter(subResult => subResult.title !== resultData.meta?.title)
+              .filter((subResult) => subResult.title !== resultData.meta?.title)
               .slice(0, maxResults);
 
             // If no sub-results remain, set to undefined
@@ -197,12 +194,12 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
             }
           }
           return resultData;
-        })
+        }),
       );
       setResults(data);
       addDebugData('search_results', data);
     } catch (error) {
-      console.error("Search error:", error);
+      console.error('Search error:', error);
       setResults([]);
     } finally {
       setLoading(false);
@@ -251,7 +248,7 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
     const keywords = query.trim().split(/\s+/);
     let highlightedText = text;
 
-    keywords.forEach(keyword => {
+    keywords.forEach((keyword) => {
       // Match complete words that contain the keyword
       const regex = new RegExp(`\\w*${keyword}\\w*`, 'gi');
       highlightedText = highlightedText.replace(regex, '<mark>$&</mark>');
@@ -264,7 +261,7 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
     <Dialog open={open} onOpenChange={setOpen} className="search-dialog">
       <DialogTrigger asChild>
         {variant === 'searchbar' ? (
-          <div className={cn("relative w-full max-w-3xl mx-auto", className)}>
+          <div className={cn('relative w-full max-w-3xl mx-auto', className)}>
             <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
               <IoSearch className="h-5 w-5 text-muted-foreground" />
             </div>
@@ -281,20 +278,18 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
             variant="ghost"
             size="icon"
             onClick={() => setOpen(true)}
-            className={cn("h-9 w-9 hover:bg-muted", className)}
-            aria-label={t("search.dialogTitle")}
+            className={cn('h-9 w-9 hover:bg-muted', className)}
+            aria-label={t('search.dialogTitle')}
           >
             <IoSearch className="h-5 w-5" />
           </Button>
         )}
       </DialogTrigger>
 
-      <DialogContent className={cn("sm:max-w-3xl h-[80vh] flex flex-col p-0 gap-0")} {...props}>
+      <DialogContent className={cn('sm:max-w-3xl h-[80vh] flex flex-col p-0 gap-0')} {...props}>
         <div className="p-6 pb-4 border-b pr-14">
           <DialogTitle className="sr-only">{t('search.dialogTitle')}</DialogTitle>
-          <DialogDescription className="sr-only">
-            {t('search.dialogDescription')}
-          </DialogDescription>
+          <DialogDescription className="sr-only">{t('search.dialogDescription')}</DialogDescription>
           <div className="relative">
             <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
               <IoSearch className="h-5 w-5 text-muted-foreground" />
@@ -313,9 +308,7 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
         <div className="overflow-y-auto flex-1 p-8 pt-4">
           {/* Loading State */}
           {loading && (
-            <div className="text-center text-muted-foreground">
-              {t('search.searching')}
-            </div>
+            <div className="text-center text-muted-foreground">{t('search.searching')}</div>
           )}
 
           {/* Initial State - show when no query */}
@@ -328,11 +321,7 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {popularQueries.map((q, index) => (
-                      <SearchSuggestion
-                        key={index}
-                        query={q}
-                        onClick={setQuery}
-                      />
+                      <SearchSuggestion key={index} query={q} onClick={setQuery} />
                     ))}
                   </div>
                 </div>
@@ -400,7 +389,9 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
                         >
                           <div
                             className="text-primary group-hover:underline font-medium"
-                            dangerouslySetInnerHTML={{ __html: highlightKeywords(subResult.title, query) }}
+                            dangerouslySetInnerHTML={{
+                              __html: highlightKeywords(subResult.title, query),
+                            }}
                           />
                           <div
                             className="mt-1 text-muted-foreground"

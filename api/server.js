@@ -23,20 +23,17 @@ function counterLogSuffix(body) {
   return parts.length ? ` ${parts.join(' ')}` : '';
 }
 
-async function app (fastify, opts) {
+async function app(fastify, opts) {
   // Use the root logger here, not `request.log`: the child logger binds `reqId`,
   // and pino-pretty prints bindings on a second line after every message.
   fastify.addHook('onResponse', (request, reply, done) => {
     const pathOnly = request.url.split('?')[0];
-    const ms =
-      reply.elapsedTime != null ? `${Math.round(reply.elapsedTime)}ms` : '';
+    const ms = reply.elapsedTime != null ? `${Math.round(reply.elapsedTime)}ms` : '';
     let extra = '';
     if (pathOnly.endsWith('/counter')) {
       extra = counterLogSuffix(request.body);
     }
-    request.server.log.info(
-      `${request.method} ${pathOnly} ${reply.statusCode} ${ms}${extra}`
-    );
+    request.server.log.info(`${request.method} ${pathOnly} ${reply.statusCode} ${ms}${extra}`);
     done();
   });
 
@@ -45,10 +42,12 @@ async function app (fastify, opts) {
     max: 100,
     timeWindow: '1 minute',
     keyGenerator: (request) => {
-      return request.headers['x-forwarded-for']?.split(',')[0]?.trim()
-        || request.headers['x-real-ip']
-        || request.ip;
-    }
+      return (
+        request.headers['x-forwarded-for']?.split(',')[0]?.trim() ||
+        request.headers['x-real-ip'] ||
+        request.ip
+      );
+    },
   });
 
   // Register security plugins
@@ -57,47 +56,45 @@ async function app (fastify, opts) {
     // Since this is an API-only server, we can use strict CSP
     contentSecurityPolicy: {
       directives: {
-        defaultSrc: ["'none'"],  // Deny everything by default
+        defaultSrc: ["'none'"], // Deny everything by default
         mediaSrc: ["'self'"],
-        frameAncestors: ["'none'"],  // Prevent embedding in iframes
-      }
+        frameAncestors: ["'none'"], // Prevent embedding in iframes
+      },
     },
     crossOriginEmbedderPolicy: true,
     crossOriginOpenerPolicy: true,
-    crossOriginResourcePolicy: { policy: "same-site" },
+    crossOriginResourcePolicy: { policy: 'same-site' },
     hsts: {
-      maxAge: 15552000,  // 180 days
+      maxAge: 15552000, // 180 days
       includeSubDomains: true,
-      preload: true
-    }
+      preload: true,
+    },
   });
 
   // Register CORS plugin
   await fastify.register(cors, {
-    origin: [
-      'https://activistchecklist.org',
-      'http://localhost:3000',
-      'https://localhost:3000',
-    ],
+    origin: ['https://activistchecklist.org', 'http://localhost:3000', 'https://localhost:3000'],
     methods: ['GET', 'POST', 'OPTIONS'],
     allowedHeaders: ['Content-Type'],
-    credentials: true
+    credentials: true,
   });
 
   // Register all routes under /api prefix
-  fastify.register(async function (fastify, opts) {
-    // Tester route
-    fastify.get('/hello', async (request, reply) => {
-      return { message: 'Hello World' }; // Automatically serialized to JSON
-    });
+  fastify.register(
+    async function (fastify, opts) {
+      // Tester route
+      fastify.get('/hello', async (request, reply) => {
+        return { message: 'Hello World' }; // Automatically serialized to JSON
+      });
 
-    // Register routes
-    await fastify.register(contactRoutes);
-    await fastify.register(counterRoutes);
-    await fastify.register(subscribeRoutes);
-    await fastify.register(crowdinStatsRoutes);
-    
-  }, { prefix: '/api-server' });
+      // Register routes
+      await fastify.register(contactRoutes);
+      await fastify.register(counterRoutes);
+      await fastify.register(subscribeRoutes);
+      await fastify.register(crowdinStatsRoutes);
+    },
+    { prefix: '/api-server' },
+  );
 }
 
 module.exports = app;
@@ -105,5 +102,5 @@ module.exports = app;
 // Passed to Fastify(). fastify-cli only merges this with `fastify start --options`.
 // Do not set `logger` here: CLI merges would lose pino-pretty; api/start.js sets logger: true.
 module.exports.options = {
-  disableRequestLogging: true
+  disableRequestLogging: true,
 };

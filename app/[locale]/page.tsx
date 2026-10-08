@@ -10,7 +10,9 @@ import JsonLd from '@/components/JsonLd';
 import { buildHomePageGraph } from '@/lib/structured-data';
 
 function getMessageValue(messages, keyPath) {
-  return keyPath.split('.').reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), messages);
+  return keyPath
+    .split('.')
+    .reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), messages);
 }
 
 export async function generateMetadata({ params }) {
@@ -29,8 +31,7 @@ export async function generateMetadata({ params }) {
     'Plain language steps for digital security, because protecting yourself helps keep your whole community safer.';
 
   const baseUrl = getBaseUrl();
-  const canonical =
-    locale === DEFAULT_LOCALE ? `${baseUrl}/` : `${baseUrl}/${locale}/`;
+  const canonical = locale === DEFAULT_LOCALE ? `${baseUrl}/` : `${baseUrl}/${locale}/`;
   const ogImageUrl = `${baseUrl}${getOgImagePathForSlug('')}`;
 
   return {

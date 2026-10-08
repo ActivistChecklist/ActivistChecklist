@@ -10,14 +10,14 @@ import { execFileSync, execSync } from 'child_process';
 export function gitRevParse(repoRoot, refish) {
   return execSync(`git rev-parse ${refish}^{commit}`, {
     cwd: repoRoot,
-    encoding: 'utf8'
+    encoding: 'utf8',
   }).trim();
 }
 
 export function gitShortSha(repoRoot, fullSha) {
   return execSync(`git rev-parse --short ${fullSha}`, {
     cwd: repoRoot,
-    encoding: 'utf8'
+    encoding: 'utf8',
   }).trim();
 }
 
@@ -53,12 +53,12 @@ export function addDetachedWorktree(repoRoot, refish, prefix) {
   if (fs.existsSync(wtPath)) {
     execFileSync('git', ['worktree', 'remove', '--force', wtPath], {
       cwd: repoRoot,
-      stdio: 'inherit'
+      stdio: 'inherit',
     });
   }
   execFileSync('git', ['worktree', 'add', '--detach', wtPath, commit], {
     cwd: repoRoot,
-    stdio: 'inherit'
+    stdio: 'inherit',
   });
   return { path: wtPath, commit, short };
 }
@@ -72,9 +72,7 @@ export function linkNodeModulesFromMain(repoRoot, worktreePath) {
   const src = path.join(repoRoot, 'node_modules');
   const dest = path.join(worktreePath, 'node_modules');
   if (!fs.existsSync(src)) {
-    throw new Error(
-      'Repo root has no node_modules — run `pnpm install` in the main clone first.'
-    );
+    throw new Error('Repo root has no node_modules — run `pnpm install` in the main clone first.');
   }
   if (fs.existsSync(dest)) {
     fs.rmSync(dest, { recursive: true, force: true });
@@ -94,7 +92,7 @@ export function removeWorktree(repoRoot, wtPath) {
   try {
     execFileSync('git', ['worktree', 'remove', '--force', wtPath], {
       cwd: repoRoot,
-      stdio: 'inherit'
+      stdio: 'inherit',
     });
   } catch {
     fs.rmSync(wtPath, { recursive: true, force: true });

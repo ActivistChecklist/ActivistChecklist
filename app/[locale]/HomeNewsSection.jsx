@@ -7,9 +7,7 @@ import { HOMEPAGE_NEWS_LIMIT } from '@/config/homepage';
  * HomePageContent client boundary (which was dropping the serialized array).
  */
 export default async function HomeNewsSection({ locale }) {
-  const newsItems = getAllNewsItems(locale)
-    .map(toNewsListItem)
-    .slice(0, HOMEPAGE_NEWS_LIMIT);
+  const newsItems = getAllNewsItems(locale).map(toNewsListItem).slice(0, HOMEPAGE_NEWS_LIMIT);
 
   return <NewsBlock newsItems={newsItems} />;
 }

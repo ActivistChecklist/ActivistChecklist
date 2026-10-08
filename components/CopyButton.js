@@ -5,12 +5,7 @@ import { IoCopyOutline, IoCheckmarkSharp } from 'react-icons/io5';
 import { useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import styles from './CopyButton.module.css';
 
 /**

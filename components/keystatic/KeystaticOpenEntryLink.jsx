@@ -49,8 +49,7 @@ export default function KeystaticOpenEntryLink({
   const fromPreset = preset ? PRESETS[preset] : null;
   const ariaLabel = ariaLabelProp ?? fromPreset?.['aria-label'] ?? DEFAULT_ARIA;
   const title = titleProp ?? fromPreset?.title ?? DEFAULT_TITLE;
-  const pos =
-    positionClassName[position] ?? positionClassName.inline;
+  const pos = positionClassName[position] ?? positionClassName.inline;
 
   return (
     <a

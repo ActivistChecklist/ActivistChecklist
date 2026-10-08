@@ -18,8 +18,14 @@ export default function FeatureLogo({ logo }) {
 
   // url is optional: some orgs are listed without linking to a specific page
   return (
-    <div className='flex justify-center items-center py-3 md:py-2'>
-      {logo.url ? <a href={logo.url} target="_blank">{image}</a> : image}
+    <div className="flex justify-center items-center py-3 md:py-2">
+      {logo.url ? (
+        <a href={logo.url} target="_blank">
+          {image}
+        </a>
+      ) : (
+        image
+      )}
     </div>
   );
-};
+}

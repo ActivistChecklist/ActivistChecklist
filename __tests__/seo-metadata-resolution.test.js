@@ -22,19 +22,13 @@ function resolveTitle(frontmatter) {
 
 function resolveDescription(frontmatter) {
   const fm = frontmatter || {};
-  return (
-    fm.seoDescription ||
-    fm.excerpt ||
-    fm.summary ||
-    fm.description ||
-    DEFAULT_DESCRIPTION
-  );
+  return fm.seoDescription || fm.excerpt || fm.summary || fm.description || DEFAULT_DESCRIPTION;
 }
 
 describe('title resolution', () => {
   it('uses seoTitle verbatim when set', () => {
     expect(resolveTitle({ seoTitle: 'Signal Security Checklist for Activists (2026)' })).toBe(
-      'Signal Security Checklist for Activists (2026)'
+      'Signal Security Checklist for Activists (2026)',
     );
   });
   it('seoTitle takes priority over title', () => {
@@ -42,7 +36,7 @@ describe('title resolution', () => {
   });
   it('falls back to suffixed title pattern when no seoTitle', () => {
     expect(resolveTitle({ title: 'Security Essentials' })).toBe(
-      `Security Essentials${TITLE_SUFFIX}`
+      `Security Essentials${TITLE_SUFFIX}`,
     );
   });
   it('falls back to a generic title with no frontmatter title', () => {
@@ -58,7 +52,7 @@ describe('description resolution', () => {
         excerpt: 'B',
         summary: 'C',
         description: 'D',
-      })
+      }),
     ).toBe('A');
   });
   it('falls back to excerpt → summary → description', () => {

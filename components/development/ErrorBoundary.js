@@ -11,7 +11,7 @@ class ErrorBoundary extends React.Component {
     this.setState({
       hasError: true,
       error,
-      errorInfo
+      errorInfo,
     });
     // You can also log error messages to an error reporting service here
   }
@@ -31,7 +31,7 @@ class ErrorBoundary extends React.Component {
       );
     }
 
-    return this.props.children; 
+    return this.props.children;
   }
 }
 

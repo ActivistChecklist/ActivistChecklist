@@ -5,9 +5,9 @@
  * Fetches NTP time, the latest RSS headline, and the latest Monero block as
  * datestamp proofs. Builds a message, signs it with GPG, and writes it to
  * public/files/canary.txt.
- * 
+ *
  * Reference: https://sij.law/warrant-canaries/
- * 
+ *
  * Credit: Adapted from: https://sij.ai/sij/sw1tch/src/branch/main/sw1tch/canary.py
  *
  * Requires:
@@ -120,7 +120,9 @@ function queryNtp(server, timeoutMs = 8000) {
     packet[0] = 0x1b; // LI=0, VN=3, Mode=3 (client)
 
     const cleanup = () => {
-      try { client.close(); } catch {}
+      try {
+        client.close();
+      } catch {}
     };
 
     const timer = setTimeout(() => {
@@ -353,14 +355,18 @@ async function signWithGpg(message) {
   await fs.writeFile(TEMP_MESSAGE_FILE, message.replace(/\s+$/, '') + '\n', { encoding: 'utf8' });
 
   const signedPath = `${TEMP_MESSAGE_FILE}.asc`;
-  try { await fs.unlink(signedPath); } catch {}
+  try {
+    await fs.unlink(signedPath);
+  } catch {}
 
   try {
     console.log(`Signing with GPG key ${GPG_KEY_ID}...`);
     const { stdout: gpgStdout } = await execFileAsync('gpg', [
-      '--batch', '--yes',
+      '--batch',
+      '--yes',
       '--clearsign',
-      '--default-key', GPG_KEY_ID,
+      '--default-key',
+      GPG_KEY_ID,
       TEMP_MESSAGE_FILE,
     ]);
 
@@ -387,8 +393,12 @@ async function signWithGpg(message) {
     }
     return null;
   } finally {
-    try { await fs.unlink(TEMP_MESSAGE_FILE); } catch {}
-    try { await fs.unlink(signedPath); } catch {}
+    try {
+      await fs.unlink(TEMP_MESSAGE_FILE);
+    } catch {}
+    try {
+      await fs.unlink(signedPath);
+    } catch {}
     // Flush gpg-agent cache so the passphrase doesn't linger in memory
     // after signing. Best-effort: failure here doesn't affect the canary.
     try {

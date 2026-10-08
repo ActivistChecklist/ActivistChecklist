@@ -6,15 +6,11 @@
  */
 
 import path from 'path';
-import {
-  resolveSnapshotDirs,
-  REPO_ROOT,
-  usageSnapshotTwoDirs
-} from './snapshot-resolve-dir.mjs';
+import { resolveSnapshotDirs, REPO_ROOT, usageSnapshotTwoDirs } from './snapshot-resolve-dir.mjs';
 import {
   getTimestamp,
   compareNormalizedDirNames,
-  normalizeOneStaticDir
+  normalizeOneStaticDir,
 } from './snapshot-normalize-lib.mjs';
 
 const ROOT = REPO_ROOT;

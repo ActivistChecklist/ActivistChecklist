@@ -19,7 +19,7 @@ export async function generateMetadata({ params }) {
 // Build a map from slug to nav item for easy lookup
 function buildSlugToNavItem() {
   const map = {};
-  Object.values(NAV_ITEMS).forEach(item => {
+  Object.values(NAV_ITEMS).forEach((item) => {
     if (item.href && item.icon) {
       // Extract slug from href (e.g., "/security-essentials" -> "security-essentials")
       const slug = item.href.replace(/^\/+|\/+$/g, '');
@@ -30,7 +30,7 @@ function buildSlugToNavItem() {
 }
 
 // Get the top 8 slugs for categorization
-const TOP_8_SLUGS = SECURITY_CHECKLISTS.items.map(item => item.href.replace(/^\/+|\/+$/g, ''));
+const TOP_8_SLUGS = SECURITY_CHECKLISTS.items.map((item) => item.href.replace(/^\/+|\/+$/g, ''));
 
 export default async function ChecklistsPage({ params }) {
   const { locale } = await params;
@@ -38,9 +38,7 @@ export default async function ChecklistsPage({ params }) {
   const t = await getTranslations();
 
   const allGuides = getAllGuides(locale);
-  const slugToGuide = new Map(
-    allGuides.map((g) => [g.frontmatter.slug || g.slug, g])
-  );
+  const slugToGuide = new Map(allGuides.map((g) => [g.frontmatter.slug || g.slug, g]));
 
   const SLUG_TO_NAV_ITEM = buildSlugToNavItem();
 
@@ -71,23 +69,25 @@ export default async function ChecklistsPage({ params }) {
   return (
     <Layout searchable={false} sidebarType={null} fullWidthMain={true}>
       <div className="">
-        <h1 className="page-title">
-          {t('checklists.title')}
-        </h1>
+        <h1 className="page-title">{t('checklists.title')}</h1>
 
         <PageNotices />
 
         {/* Top 8 Checklists */}
         <section className="mb-12">
-          <h2 className="text-xl font-semibold mb-4 text-muted-foreground">{t('checklists.featured')}</h2>
+          <h2 className="text-xl font-semibold mb-4 text-muted-foreground">
+            {t('checklists.featured')}
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {SECURITY_CHECKLISTS.items.map((guideItem, index) => {
               const slug = guideItem.href.replace(/^\/+|\/+$/g, '');
               const guide = slugToGuide.get(slug);
-              const copy = guide ? guideToCardCopy(guide) : {
-                title: guideItem.title,
-                description: guideItem.description,
-              };
+              const copy = guide
+                ? guideToCardCopy(guide)
+                : {
+                    title: guideItem.title,
+                    description: guideItem.description,
+                  };
               return (
                 <GuideCard
                   key={index}
@@ -108,7 +108,9 @@ export default async function ChecklistsPage({ params }) {
         {/* Other Checklists */}
         {otherGuideItems.length > 0 && (
           <section>
-            <h2 className="text-xl font-semibold mb-4 text-muted-foreground">{t('checklists.more')}</h2>
+            <h2 className="text-xl font-semibold mb-4 text-muted-foreground">
+              {t('checklists.more')}
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {otherGuideItems.map((guideItem, index) => (
                 <GuideCard key={index} guideItem={guideItem} size="large" />

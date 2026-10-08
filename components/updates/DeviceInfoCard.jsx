@@ -37,9 +37,10 @@ export default function DeviceInfoCard({ product, release, onReset, onEdit }) {
   // An estimated date (inferred from the oldest OS the model runs, for Macs whose
   // marketing name carries no year) is good enough to sort by and not good enough
   // to print. Fall through to the no-date subtitle rather than state a guess.
-  const dateText = release.releaseDate && !release.releaseDateIsEstimate
-    ? formatMonthYear(release.releaseDate, locale)
-    : null;
+  const dateText =
+    release.releaseDate && !release.releaseDateIsEstimate
+      ? formatMonthYear(release.releaseDate, locale)
+      : null;
   const subtitle = dateText
     ? t('updates.result.deviceInfo.manufacturerLine', { manufacturer, date: dateText })
     : manufacturer
@@ -84,15 +85,15 @@ export default function DeviceInfoCard({ product, release, onReset, onEdit }) {
         'group flex items-center gap-3 rounded-lg border-2 border-muted-foreground/50 bg-background px-4 py-4 shadow-sm transition-colors sm:py-5',
         // hover gets a subtle primary-tinted bg in addition to the primary
         // border, mirroring the L1 platform-card hover state for consistency.
-        onEdit ? 'cursor-pointer hover:border-primary hover:bg-primary/5 focus:outline-hidden focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20' : null
+        onEdit
+          ? 'cursor-pointer hover:border-primary hover:bg-primary/5 focus:outline-hidden focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20'
+          : null,
       )}
     >
       <Icon className="h-7 w-7 shrink-0 text-foreground/80" aria-hidden="true" />
       <div className="min-w-0 flex-1">
         <p className="truncate text-base font-semibold text-foreground sm:text-lg">{label}</p>
-        {subtitle ? (
-          <p className="truncate text-xs text-muted-foreground">{subtitle}</p>
-        ) : null}
+        {subtitle ? <p className="truncate text-xs text-muted-foreground">{subtitle}</p> : null}
       </div>
       {onReset ? (
         <button
@@ -108,7 +109,7 @@ export default function DeviceInfoCard({ product, release, onReset, onEdit }) {
             // Fill primary as soon as the user moves the mouse over the parent panel,
             // so the destructive action surfaces even before the cursor reaches the button.
             'group-hover:bg-primary group-hover:text-primary-foreground',
-            'focus-visible:bg-primary focus-visible:text-primary-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/40'
+            'focus-visible:bg-primary focus-visible:text-primary-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/40',
           )}
         >
           {t('updates.result.startOver')}

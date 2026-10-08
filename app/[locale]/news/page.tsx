@@ -6,7 +6,7 @@ import PageNotices from '@/components/layout/PageNotices';
 import NewsItem from '@/components/NewsItem';
 import RSSButton from '@/components/ui/RSSButton';
 import Link from '@/components/Link';
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
 export const metadata = {
   title: 'Surveillance News - Activist Checklist',
@@ -16,7 +16,7 @@ export const metadata = {
 function groupNewsByYear(items) {
   const groups = {};
 
-  items.forEach(item => {
+  items.forEach((item) => {
     const itemDate = new Date(item.date || item.first_published_at || item.created_at);
     const year = itemDate.getFullYear();
 
@@ -33,14 +33,11 @@ function YearSection({ year, items }) {
   if (!items.length) return null;
 
   return (
-    <section className={cn("pb-12")}>
+    <section className={cn('pb-12')}>
       <h2 className="text-2xl font-bold pb-4 text-foreground">{year}</h2>
       <div className="space-y-4">
         {items.map((item) => (
-          <NewsItem
-            key={item.slug}
-            entry={item}
-          />
+          <NewsItem key={item.slug} entry={item} />
         ))}
       </div>
     </section>
@@ -55,7 +52,7 @@ export default async function NewsPage({ params }) {
   const newsItems = getAllNewsItems(locale).map((item) => toNewsListItem(item));
   const grouped = groupNewsByYear(newsItems);
   const sortedYears = Object.keys(grouped)
-    .map(year => parseInt(year))
+    .map((year) => parseInt(year))
     .sort((a, b) => b - a);
 
   return (
@@ -65,9 +62,7 @@ export default async function NewsPage({ params }) {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
               <h1 className="page-title">{t('news.title')}</h1>
-              <p className="text-lg text-muted-foreground">
-                {t('news.description')}
-              </p>
+              <p className="text-lg text-muted-foreground">{t('news.description')}</p>
             </div>
             <RSSButton
               href="/rss/news.xml"
@@ -84,13 +79,10 @@ export default async function NewsPage({ params }) {
         <div className="mb-8 p-4 bg-muted rounded-lg border border-primary/40">
           <p className="text-sm text-muted-foreground">
             {t('news.tipInvitation')}{' '}
-            <Link
-              href="/contact/"
-              className="link text-sm"
-            >
+            <Link href="/contact/" className="link text-sm">
               {t('news.tipLink')}
-            </Link>
-            {' '}{t('news.tipSuffix')}
+            </Link>{' '}
+            {t('news.tipSuffix')}
           </p>
         </div>
 
@@ -100,12 +92,8 @@ export default async function NewsPage({ params }) {
           </div>
         ) : (
           <div className="space-y-0">
-            {sortedYears.map(year => (
-              <YearSection
-                key={year}
-                year={year}
-                items={grouped[year]}
-              />
+            {sortedYears.map((year) => (
+              <YearSection key={year} year={year} items={grouped[year]} />
             ))}
           </div>
         )}

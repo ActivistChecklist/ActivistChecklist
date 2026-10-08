@@ -35,7 +35,8 @@ function rotateBackups() {
     return 0;
   }
 
-  const backups = fs.readdirSync(BACKUP_DIR)
+  const backups = fs
+    .readdirSync(BACKUP_DIR)
     .filter((item) => item.startsWith('out-'))
     .map((item) => ({
       name: item,
@@ -82,7 +83,9 @@ function createBackup() {
     const removed = rotateBackups();
     sectionEnd(true, [
       `Backup: ${backupName}`,
-      removed > 0 ? `Rotated: removed ${removed} old out-* backup(s)` : `Rotation: under ${MAX_BACKUPS} out-* backups`,
+      removed > 0
+        ? `Rotated: removed ${removed} old out-* backup(s)`
+        : `Rotation: under ${MAX_BACKUPS} out-* backups`,
     ]);
   } catch (error) {
     sectionEnd(false, [`Backup failed: ${error.message}`]);

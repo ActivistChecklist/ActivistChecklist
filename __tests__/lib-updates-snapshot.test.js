@@ -24,7 +24,7 @@ describe('platformGroupForFamily', () => {
     '%s → android',
     (family) => {
       expect(platformGroupForFamily(family)).toBe('android');
-    }
+    },
   );
   it('unknown family → other', () => {
     expect(platformGroupForFamily('beepboop')).toBe('other');
@@ -111,22 +111,37 @@ describe('normalizeProduct', () => {
   it('preserves http and https URLs', () => {
     expect(
       normalizeProduct({
-        id: 'p', label: 'P', kind: 'device', family: 'apple', formFactor: 'phone',
-        endoflifeUrl: 'http://example.com', releases: [],
-      }).endoflifeUrl
+        id: 'p',
+        label: 'P',
+        kind: 'device',
+        family: 'apple',
+        formFactor: 'phone',
+        endoflifeUrl: 'http://example.com',
+        releases: [],
+      }).endoflifeUrl,
     ).toBe('http://example.com');
     expect(
       normalizeProduct({
-        id: 'p', label: 'P', kind: 'device', family: 'apple', formFactor: 'phone',
-        endoflifeUrl: 'https://endoflife.date/iphone', releases: [],
-      }).endoflifeUrl
+        id: 'p',
+        label: 'P',
+        kind: 'device',
+        family: 'apple',
+        formFactor: 'phone',
+        endoflifeUrl: 'https://endoflife.date/iphone',
+        releases: [],
+      }).endoflifeUrl,
     ).toBe('https://endoflife.date/iphone');
   });
 
   it('aliases default to empty array', () => {
     const p = normalizeProduct({
-      id: 'p', label: 'P', kind: 'device', family: 'apple', formFactor: 'phone',
-      endoflifeUrl: 'https://x.example', releases: [],
+      id: 'p',
+      label: 'P',
+      kind: 'device',
+      family: 'apple',
+      formFactor: 'phone',
+      endoflifeUrl: 'https://x.example',
+      releases: [],
     });
     expect(p.aliases).toEqual([]);
   });
@@ -167,34 +182,74 @@ const FIXTURE = normalizeSnapshot({
   source: 'https://endoflife.date/api/v1/',
   products: [
     {
-      id: 'iphone', label: 'Apple iPhone', kind: 'device', family: 'apple', formFactor: 'phone',
+      id: 'iphone',
+      label: 'Apple iPhone',
+      kind: 'device',
+      family: 'apple',
+      formFactor: 'phone',
       endoflifeUrl: 'https://endoflife.date/iphone',
       releases: [
         { id: '12-pro', label: '12 Pro', releaseDate: '2020-10-23', supportedOsRange: '14 - 26' },
-        { id: '7', label: '7', releaseDate: '2016-09-16', isEol: true, eolFrom: '2023-09-12', supportedOsRange: '10 - 15' },
+        {
+          id: '7',
+          label: '7',
+          releaseDate: '2016-09-16',
+          isEol: true,
+          eolFrom: '2023-09-12',
+          supportedOsRange: '10 - 15',
+        },
       ],
     },
     {
-      id: 'ios', label: 'Apple iOS', kind: 'os', family: 'apple', formFactor: 'os',
+      id: 'ios',
+      label: 'Apple iOS',
+      kind: 'os',
+      family: 'apple',
+      formFactor: 'os',
       endoflifeUrl: 'https://endoflife.date/ios',
       releases: [
         { id: '26', label: '26', releaseDate: '2025-09-15', latestVersion: '26.4.2' },
-        { id: '18', label: '18', releaseDate: '2024-09-16', isEol: true, eolFrom: '2026-04-22', latestVersion: '18.7.8' },
-        { id: '15', label: '15', releaseDate: '2021-09-20', isEol: true, eolFrom: '2025-03-31', latestVersion: '15.8.7' },
+        {
+          id: '18',
+          label: '18',
+          releaseDate: '2024-09-16',
+          isEol: true,
+          eolFrom: '2026-04-22',
+          latestVersion: '18.7.8',
+        },
+        {
+          id: '15',
+          label: '15',
+          releaseDate: '2021-09-20',
+          isEol: true,
+          eolFrom: '2025-03-31',
+          latestVersion: '15.8.7',
+        },
       ],
     },
     {
-      id: 'macos', label: 'Apple macOS', kind: 'os', family: 'apple', formFactor: 'os',
+      id: 'macos',
+      label: 'Apple macOS',
+      kind: 'os',
+      family: 'apple',
+      formFactor: 'os',
       endoflifeUrl: 'https://endoflife.date/macos',
-      releases: [
-        { id: '26', label: '26', releaseDate: '2025-09-15', latestVersion: '26.0.1' },
-      ],
+      releases: [{ id: '26', label: '26', releaseDate: '2025-09-15', latestVersion: '26.0.1' }],
     },
     {
-      id: 'macbook-pro', label: 'Apple MacBook Pro', kind: 'device', family: 'apple', formFactor: 'laptop',
+      id: 'macbook-pro',
+      label: 'Apple MacBook Pro',
+      kind: 'device',
+      family: 'apple',
+      formFactor: 'laptop',
       endoflifeUrl: 'https://support.apple.com/HT201624',
       releases: [
-        { id: '14in-2024-m4', label: 'MacBook Pro 14-inch (2024, M4)', releaseDate: '2024-11-08', supportedOsRange: '26' },
+        {
+          id: '14in-2024-m4',
+          label: 'MacBook Pro 14-inch (2024, M4)',
+          releaseDate: '2024-11-08',
+          supportedOsRange: '26',
+        },
       ],
     },
   ],
@@ -250,8 +305,13 @@ describe('latestSupportedOsRelease', () => {
 
   it('returns null when all releases are EOL', () => {
     const allEol = normalizeProduct({
-      id: 'ancient', label: 'Ancient', kind: 'os', family: 'apple', formFactor: 'os',
-      endoflifeUrl: 'https://x', releases: [
+      id: 'ancient',
+      label: 'Ancient',
+      kind: 'os',
+      family: 'apple',
+      formFactor: 'os',
+      endoflifeUrl: 'https://x',
+      releases: [
         { id: '10', label: '10', releaseDate: '2010-01-01', isEol: true },
         { id: '11', label: '11', releaseDate: '2011-01-01', isEol: true },
       ],

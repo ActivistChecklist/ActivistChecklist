@@ -15,7 +15,10 @@ import { useEffect } from 'react';
  * Only runs when review comments are enabled (internal reviewer builds), so it
  * adds no traffic for public visitors.
  */
-export default function ReviewCommentsDbStatusLogger({ enabled, apiBase = '/api/review-comments' }) {
+export default function ReviewCommentsDbStatusLogger({
+  enabled,
+  apiBase = '/api/review-comments',
+}) {
   useEffect(() => {
     if (!enabled) {
       return undefined;
@@ -43,7 +46,7 @@ export default function ReviewCommentsDbStatusLogger({ enabled, apiBase = '/api/
         if (!response.ok || payload?.dbOffline) {
           console.warn(
             '[review-comments] Comments backend is unavailable; comments will not load.',
-            { status: response.status, code: payload?.code ?? null }
+            { status: response.status, code: payload?.code ?? null },
           );
         }
       })

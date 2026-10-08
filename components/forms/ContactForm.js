@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import { Button } from "@/components/ui/button";
-import { useForm } from "react-hook-form";
+import { Button } from '@/components/ui/button';
+import { useForm } from 'react-hook-form';
 import { useAnalytics } from '@/hooks/use-analytics';
 import { useTranslations } from 'next-intl';
 import {
@@ -12,13 +12,13 @@ import {
   FormLabel,
   FormMessage,
   FormDescription,
-} from "@/components/ui/form";
-import { Badge } from "@/components/ui/badge";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/components/ui/input";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { cn } from "@/lib/utils";
-import { Loader2 } from "lucide-react";
+} from '@/components/ui/form';
+import { Badge } from '@/components/ui/badge';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Input } from '@/components/ui/input';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { cn } from '@/lib/utils';
+import { Loader2 } from 'lucide-react';
 import { Alert } from '@/components/ui/alert';
 import { MAX_CHARS, RESPONSE_OPTIONS, formSchema } from './contactFormSchema';
 
@@ -37,20 +37,20 @@ const ContactForm = ({ successMessage, context = 'default' }) => {
 
   const form = useForm({
     resolver: zodResolver(formSchema),
-    mode: "onTouched",
+    mode: 'onTouched',
     defaultValues: {
-      message: "",
-      responseType: "none",
-      email: "",
-      signalUsername: "",
-      signalPhone: "",
+      message: '',
+      responseType: 'none',
+      email: '',
+      signalUsername: '',
+      signalPhone: '',
     },
   });
 
   const { isSubmitting } = form.formState;
-  const messageLength = form.watch("message")?.length || 0;
+  const messageLength = form.watch('message')?.length || 0;
   const remainingChars = MAX_CHARS - messageLength;
-  const responseType = form.watch("responseType");
+  const responseType = form.watch('responseType');
 
   const resetForm = () => {
     form.reset();
@@ -68,7 +68,7 @@ const ContactForm = ({ successMessage, context = 'default' }) => {
           data: {
             context,
             response_type: data.responseType,
-          }
+          },
         });
       }
 
@@ -80,7 +80,7 @@ const ContactForm = ({ successMessage, context = 'default' }) => {
         body: JSON.stringify({
           ...data,
           pagePath: typeof window !== 'undefined' ? window.location.pathname : '',
-        })
+        }),
       });
 
       const responseData = await response.json();
@@ -104,14 +104,9 @@ const ContactForm = ({ successMessage, context = 'default' }) => {
   return (
     <div className="max-w-2xl mx-auto">
       {status.message && (
-        <Alert
-          variant={status.type === 'success' ? 'success' : 'error'}
-          className="mb-4"
-        >
+        <Alert variant={status.type === 'success' ? 'success' : 'error'} className="mb-4">
           <div>
-            <p>
-              {status.message}
-            </p>
+            <p>{status.message}</p>
           </div>
         </Alert>
       )}
@@ -131,14 +126,14 @@ const ContactForm = ({ successMessage, context = 'default' }) => {
                       onBlur={field.onBlur}
                       rows={6}
                       className={cn(
-                        "w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent",
-                        "ring-offset-background",
-                        "placeholder:text-muted-foreground",
-                        "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                        'w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent',
+                        'ring-offset-background',
+                        'placeholder:text-muted-foreground',
+                        'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
                         form.formState.errors.message && [
-                          "border-destructive",
-                          "focus-visible:ring-destructive",
-                        ]
+                          'border-destructive',
+                          'focus-visible:ring-destructive',
+                        ],
                       )}
                       placeholder={t('contactForm.messagePlaceholder')}
                     />
@@ -171,8 +166,8 @@ const ContactForm = ({ successMessage, context = 'default' }) => {
                           <label
                             htmlFor={`r${index + 1}`}
                             className={cn(
-                              "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
-                              "flex items-center gap-2"
+                              'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
+                              'flex items-center gap-2',
                             )}
                           >
                             {t(RESPONSE_LABEL_KEYS[option.value])}
@@ -203,15 +198,13 @@ const ContactForm = ({ successMessage, context = 'default' }) => {
                         onBlur={field.onBlur}
                         className={cn(
                           form.formState.errors.email && [
-                            "border-destructive",
-                            "focus-visible:ring-destructive",
-                          ]
+                            'border-destructive',
+                            'focus-visible:ring-destructive',
+                          ],
                         )}
                       />
                     </FormControl>
-                    <FormDescription>
-                      {t('contactForm.emailNote')}
-                    </FormDescription>
+                    <FormDescription>{t('contactForm.emailNote')}</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -237,18 +230,21 @@ const ContactForm = ({ successMessage, context = 'default' }) => {
                             field.onChange(cleanedValue);
                           }}
                           className={cn(
-                            "pl-7",
+                            'pl-7',
                             form.formState.errors.signalUsername && [
-                              "border-destructive",
-                              "focus-visible:ring-destructive",
-                            ]
+                              'border-destructive',
+                              'focus-visible:ring-destructive',
+                            ],
                           )}
                         />
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">@</span>
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+                          @
+                        </span>
                       </div>
                     </FormControl>
                     <FormDescription>
-                      Example: <code>{t('contactForm.signalUsernameExample')}</code> — {t('contactForm.signalUsernameHelp')}
+                      Example: <code>{t('contactForm.signalUsernameExample')}</code> —{' '}
+                      {t('contactForm.signalUsernameHelp')}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -270,9 +266,9 @@ const ContactForm = ({ successMessage, context = 'default' }) => {
                         onBlur={field.onBlur}
                         className={cn(
                           form.formState.errors.signalPhone && [
-                            "border-destructive",
-                            "focus-visible:ring-destructive",
-                          ]
+                            'border-destructive',
+                            'focus-visible:ring-destructive',
+                          ],
                         )}
                       />
                     </FormControl>

@@ -11,7 +11,7 @@ on:
       - main
   workflow_dispatch:
   schedule:
-    - cron: "25 2 * * 1"
+    - cron: '25 2 * * 1'
 
 concurrency:
   group: codeql-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -78,4 +78,4 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4.38.2
         with:
-          category: "/language:${{ matrix.name }}"
+          category: '/language:${{ matrix.name }}'

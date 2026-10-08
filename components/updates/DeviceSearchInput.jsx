@@ -6,12 +6,7 @@ import { HelpCircle, Search, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { buildFuse, buildSearchIndex, searchIndex } from '@/lib/updates/search';
 import { iconForFamily } from '@/lib/updates/family-icons';
 import { looksLikeWindowsLaptopQuery } from '@/lib/updates/no-match-hints';
@@ -140,9 +135,7 @@ function NoMatchesContent({ query }) {
           ),
         })}
       </p>
-      <p className="text-xs text-muted-foreground">
-        {t('updates.noMatchesSupported')}
-      </p>
+      <p className="text-xs text-muted-foreground">{t('updates.noMatchesSupported')}</p>
     </div>
   );
 }
@@ -242,7 +235,7 @@ export default function DeviceSearchInput({
 
   const results = useMemo(
     () => searchIndex(rows, fuse, searchQuery, priorityProductIds),
-    [rows, fuse, searchQuery, priorityProductIds]
+    [rows, fuse, searchQuery, priorityProductIds],
   );
 
   const hasPriority = Array.isArray(priorityProductIds) && priorityProductIds.length > 0;
@@ -334,7 +327,7 @@ export default function DeviceSearchInput({
                 aria-label={t('updates.searchHelpAriaLabel')}
                 className={cn(
                   'inline-flex h-5 w-5 cursor-pointer items-center justify-center rounded-full text-muted-foreground transition-colors',
-                  'hover:bg-muted hover:text-foreground focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/40'
+                  'hover:bg-muted hover:text-foreground focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/40',
                 )}
               >
                 <HelpCircle className="h-4 w-4" aria-hidden="true" />
@@ -363,7 +356,7 @@ export default function DeviceSearchInput({
           <div
             className={cn(
               'flex items-center gap-2 rounded-lg border-2 border-input bg-background px-4 py-4 shadow-sm transition-colors sm:py-5',
-              'focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20'
+              'focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20',
             )}
           >
             <Search className="h-6 w-6 shrink-0 text-muted-foreground" aria-hidden="true" />
@@ -389,7 +382,7 @@ export default function DeviceSearchInput({
             ) : null}
           </div>
 
-          {(showResults || showNoMatches) ? (
+          {showResults || showNoMatches ? (
             <div className="absolute left-0 right-0 top-full z-20 mt-2 overflow-hidden rounded-lg border border-border bg-popover shadow-lg">
               {showResults ? (
                 <>
@@ -406,7 +399,7 @@ export default function DeviceSearchInput({
                         onSelect={() => handleSelect(item)}
                         className={cn(
                           'flex cursor-pointer items-center justify-between gap-3 px-4 py-3 text-sm',
-                          'aria-selected:bg-muted aria-selected:text-foreground'
+                          'aria-selected:bg-muted aria-selected:text-foreground',
                         )}
                       >
                         <span className="flex min-w-0 items-center gap-2">
