@@ -1,22 +1,22 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import { ChevronDown, Check, Link2 } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
+import { Checkbox } from '@/components/ui/checkbox';
 import { MDXRemote } from 'next-mdx-remote';
 import Markdown from '../Markdown';
-import { Recommendations } from '@/components/guides/Recommendations'
-import { IoInformationCircleOutline } from "react-icons/io5";
-import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Recommendations } from '@/components/guides/Recommendations';
+import { IoInformationCircleOutline } from 'react-icons/io5';
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { useAnalytics } from '@/hooks/use-analytics';
 import { useTranslations } from 'next-intl';
 import { migrateLegacyChecklistKeysForSlug } from '@/lib/checklist-storage-migrate';
 
 const TITLE_BADGE_VARIANTS = {
-  important: "destructive",
+  important: 'destructive',
 };
 
 const InfoItemIcon = () => {
@@ -28,24 +28,20 @@ const InfoItemIcon = () => {
           <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
             <IoInformationCircleOutline
               className={cn(
-                "h-[1.7rem] w-[1.7rem]",
-                "text-primary",
-                "transition-colors duration-300"
+                'h-[1.7rem] w-[1.7rem]',
+                'text-primary',
+                'transition-colors duration-300',
               )}
             />
           </div>
         </TooltipTrigger>
-        <TooltipContent
-          side="top"
-          sideOffset={5}
-          className="z-100"
-        >
+        <TooltipContent side="top" sideOffset={5} className="z-100">
           {t('checklistItem.informationalItem')}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );
-}
+};
 
 const CopyLinkButton = ({ slug, onCopy }) => {
   const t = useTranslations();
@@ -63,18 +59,18 @@ const CopyLinkButton = ({ slug, onCopy }) => {
     e.stopPropagation();
     const pathWithSearch = `${window.location.pathname}${window.location.search}`;
     const url = `${window.location.origin}${pathWithSearch}#${slug}`;
-    window.history.replaceState(null, "", `${pathWithSearch}#${slug}`);
+    window.history.replaceState(null, '', `${pathWithSearch}#${slug}`);
 
     try {
       await navigator.clipboard.writeText(url);
       setLinkCopied(true);
       setTooltipOpen(true);
-      
+
       // Call the parent's copy handler if provided
       if (onCopy) {
         onCopy(url);
       }
-      
+
       // Reset after 2 seconds
       setTimeout(() => {
         setLinkCopied(false);
@@ -93,27 +89,27 @@ const CopyLinkButton = ({ slug, onCopy }) => {
             href={linkHref}
             onClick={handleCopy}
             className={cn(
-              "relative inline-flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center rounded-md align-middle transition-colors duration-200",
-              "hover:bg-neutral-200/60",
-              "text-neutral-500 hover:text-neutral-700",
-              "no-underline",
-              "print:hidden",
-              linkCopied && "text-green-600"
+              'relative inline-flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center rounded-md align-middle transition-colors duration-200',
+              'hover:bg-neutral-200/60',
+              'text-neutral-500 hover:text-neutral-700',
+              'no-underline',
+              'print:hidden',
+              linkCopied && 'text-green-600',
             )}
             aria-label={t('checklistItem.copyLink')}
           >
             <Link2
               aria-hidden
               className={cn(
-                "absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-200",
-                linkCopied && "opacity-0"
+                'absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-200',
+                linkCopied && 'opacity-0',
               )}
             />
             <Check
               aria-hidden
               className={cn(
-                "absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 text-green-600 transition-opacity duration-200",
-                linkCopied ? "opacity-100" : "opacity-0"
+                'absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 text-green-600 transition-opacity duration-200',
+                linkCopied ? 'opacity-100' : 'opacity-0',
               )}
             />
           </a>
@@ -124,7 +120,7 @@ const CopyLinkButton = ({ slug, onCopy }) => {
       </Tooltip>
     </TooltipProvider>
   );
-}
+};
 
 /**
  * ChecklistItem — MDX-backed item (props from frontmatter + serialized body).
@@ -153,7 +149,6 @@ const ChecklistItem = ({
   defaultExpanded = false,
   alwaysExpanded = false,
 }) => {
-
   const [isExpanded, setIsExpanded] = useState(defaultExpanded || alwaysExpanded);
   const [isChecked, setIsChecked] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
@@ -193,7 +188,7 @@ const ChecklistItem = ({
     }, 50);
     return () => clearTimeout(timer);
   }, []);
-  
+
   useEffect(() => {
     migrateLegacyChecklistKeysForSlug(itemSlug);
 
@@ -242,13 +237,13 @@ const ChecklistItem = ({
     if (alwaysExpanded) return;
     const newExpandedState = !isExpanded;
     setExpandedWithStorage(newExpandedState);
-    
+
     if (newExpandedState && !hasTrackedExpansion.current) {
       trackEvent({
         name: 'checklist_item_expanded',
         data: {
           item_id: itemSlug,
-        }
+        },
       });
       hasTrackedExpansion.current = true;
     }
@@ -263,21 +258,20 @@ const ChecklistItem = ({
         name: 'checklist_item_checked',
         data: {
           item_id: itemSlug,
-        }
+        },
       });
 
       // If requested, collapse after a delay to show completion state briefly
       if (shouldCollapseAfterDelay && expanded && !alwaysExpanded) {
-
         // Scroll to keep the collapsed item visible at the top with buffer
         if (cardRef.current) {
           const headerHeight = 80; // Approximate header/nav height buffer
           const cardTop = cardRef.current.getBoundingClientRect().top + window.scrollY;
           const targetScrollPosition = cardTop - headerHeight;
-          
+
           window.scrollTo({
             top: Math.max(0, targetScrollPosition),
-            behavior: 'smooth'
+            behavior: 'smooth',
           });
         }
 
@@ -299,7 +293,7 @@ const ChecklistItem = ({
       name: 'checklist_item_link_copied',
       data: {
         item_id: itemSlug,
-      }
+      },
     });
   };
 
@@ -307,41 +301,36 @@ const ChecklistItem = ({
     <Card
       ref={cardRef}
       className={cn(
-        "checklist-item",
-        "transform mb-0 shadow-none bg-none rounded-none border-muted border-b-0 border-e-0 border-s-0 border-t",
-        "hover:z-20 relative",
-        !expanded && !isChecked && "hover:bg-muted/40",
-        expanded && "mb-4 rounded-lg border-transparent",
-        expanded && "bg-muted",
-        "[transition:margin_300ms,border-radius_300ms,border_300ms,box-shadow_300ms]"
+        'checklist-item',
+        'transform mb-0 shadow-none bg-none rounded-none border-muted border-b-0 border-e-0 border-s-0 border-t',
+        'hover:z-20 relative',
+        !expanded && !isChecked && 'hover:bg-muted/40',
+        expanded && 'mb-4 rounded-lg border-transparent',
+        expanded && 'bg-muted',
+        '[transition:margin_300ms,border-radius_300ms,border_300ms,box-shadow_300ms]',
       )}
     >
       <CardHeader
         className={cn(
-          "p-3 ps-3 md:ps-5",
-          !alwaysExpanded && "cursor-pointer",
-          expanded && "rounded-t-lg"
+          'p-3 ps-3 md:ps-5',
+          !alwaysExpanded && 'cursor-pointer',
+          expanded && 'rounded-t-lg',
         )}
         aria-expanded={alwaysExpanded ? undefined : expanded}
         onClick={alwaysExpanded ? undefined : toggleExpanded}
         onClickCapture={handleLinkClick}
       >
         <div className="flex gap-3 items-start">
-          <div
-            className={cn(
-              "w-5 h-5 shrink-0 relative",
-              itemWhy ? "mt-1" : "mt-0.5"
-            )}
-          >
+          <div className={cn('w-5 h-5 shrink-0 relative', itemWhy ? 'mt-1' : 'mt-0.5')}>
             {itemType === 'info' ? (
               <InfoItemIcon />
             ) : (
               <div onClick={(e) => e.stopPropagation()}>
-                <Checkbox 
+                <Checkbox
                   checked={isChecked}
                   onCheckedChange={handleCheckboxChange}
                   className={cn(
-                    "h-5 w-5 cursor-pointer rounded-sm transition-colors duration-300 border-2",
+                    'h-5 w-5 cursor-pointer rounded-sm transition-colors duration-300 border-2',
                   )}
                 />
               </div>
@@ -350,16 +339,13 @@ const ChecklistItem = ({
 
           <div className="min-w-0 flex-1 flex flex-col gap-2">
             <div
-              className={cn(
-                "flex gap-3",
-                itemWhy ? "items-start" : "items-start sm:items-center"
-              )}
+              className={cn('flex gap-3', itemWhy ? 'items-start' : 'items-start sm:items-center')}
             >
               <div className="min-w-0 flex-1 flex flex-col gap-1">
-                <CardTitle 
+                <CardTitle
                   className={cn(
-                    "min-w-0",
-                    isChecked && "text-muted-foreground",
+                    'min-w-0',
+                    isChecked && 'text-muted-foreground',
                     isChecked && `opacity-${checkedOpacity}`,
                   )}
                 >
@@ -379,8 +365,8 @@ const ChecklistItem = ({
                               key={index}
                               variant={variant}
                               className={cn(
-                                "text-xs inline me-2 align-middle",
-                                isChecked && "opacity-50"
+                                'text-xs inline me-2 align-middle',
+                                isChecked && 'opacity-50',
                               )}
                             >
                               {t('checklistItem.importantBadge')}
@@ -392,24 +378,19 @@ const ChecklistItem = ({
                     {itemTitle}
                     <span
                       className={cn(
-                        "inline-flex h-7 shrink-0 items-center justify-center align-middle ms-2 print:hidden",
-                        expanded ? "w-7" : "w-px"
+                        'inline-flex h-7 shrink-0 items-center justify-center align-middle ms-2 print:hidden',
+                        expanded ? 'w-7' : 'w-px',
                       )}
                       aria-hidden={!expanded}
                     >
-                      {expanded && (
-                        <CopyLinkButton
-                          slug={itemSlug}
-                          onCopy={handleLinkCopy}
-                        />
-                      )}
+                      {expanded && <CopyLinkButton slug={itemSlug} onCopy={handleLinkCopy} />}
                     </span>
                   </h3>
                 </CardTitle>
 
-                <CardDescription 
+                <CardDescription
                   className={cn(
-                    isChecked && "text-muted-foreground",
+                    isChecked && 'text-muted-foreground',
                     isChecked && `opacity-${checkedOpacity}`,
                   )}
                 >
@@ -420,19 +401,19 @@ const ChecklistItem = ({
               {!alwaysExpanded && (
                 <span
                   className={cn(
-                    "hidden sm:inline-flex shrink-0 items-center justify-center",
-                    "h-8 w-8 mt-1 rounded-full bg-transparent p-1 hover:bg-primary/15",
-                    "text-muted-foreground hover:text-primary",
-                    expanded && "text-primary",
-                    "transition-[background-color,color] duration-300 ease-out",
-                    "print:hidden",
+                    'hidden sm:inline-flex shrink-0 items-center justify-center',
+                    'h-8 w-8 mt-1 rounded-full bg-transparent p-1 hover:bg-primary/15',
+                    'text-muted-foreground hover:text-primary',
+                    expanded && 'text-primary',
+                    'transition-[background-color,color] duration-300 ease-out',
+                    'print:hidden',
                     isChecked && `opacity-${checkedOpacity}`,
                   )}
                 >
                   <span
                     className={cn(
-                      "inline-flex size-6 origin-center items-center justify-center transition-transform duration-300 ease-out",
-                      expanded && "rotate-180",
+                      'inline-flex size-6 origin-center items-center justify-center transition-transform duration-300 ease-out',
+                      expanded && 'rotate-180',
                     )}
                   >
                     <ChevronDown aria-hidden className="h-6 w-6" />
@@ -449,18 +430,18 @@ const ChecklistItem = ({
                 aria-expanded={expanded}
                 aria-controls={`checklist-body-${itemSlug}`}
                 className={cn(
-                  "flex h-9 w-full justify-start gap-2 px-2 sm:hidden",
-                  "-ms-2",
-                  "text-muted-foreground hover:bg-primary/10 hover:text-muted-foreground",
-                  "print:hidden",
-                  enableTransitions ? "transition-colors duration-300" : "transition-none",
+                  'flex h-9 w-full justify-start gap-2 px-2 sm:hidden',
+                  '-ms-2',
+                  'text-muted-foreground hover:bg-primary/10 hover:text-muted-foreground',
+                  'print:hidden',
+                  enableTransitions ? 'transition-colors duration-300' : 'transition-none',
                   isChecked && `opacity-${checkedOpacity}`,
                 )}
               >
                 <span
                   className={cn(
-                    "inline-flex shrink-0 origin-center transition-transform duration-300 ease-out",
-                    expanded && "rotate-180",
+                    'inline-flex shrink-0 origin-center transition-transform duration-300 ease-out',
+                    expanded && 'rotate-180',
                   )}
                 >
                   <ChevronDown aria-hidden className="h-4 w-4" />
@@ -471,72 +452,80 @@ const ChecklistItem = ({
           </div>
         </div>
       </CardHeader>
-      
+
       <div
         id={`checklist-body-${itemSlug}`}
         className={cn(
-          "grid mt-2",
-          enableTransitions ? "transition-all duration-300" : "transition-none",
-          expanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
+          'grid mt-2',
+          enableTransitions ? 'transition-all duration-300' : 'transition-none',
+          expanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
           isChecked && `opacity-${checkedOpacity}`,
         )}
       >
-      <div className="overflow-hidden">
-        <div className="ms-4 md:ms-9 ps-0 mb-6">
-          <CardContent className={cn(
-            "py-0 pt-0 ps-0 md:ps-4 pe-4 md:pe-6",
-            "prose prose-slate max-w-none",
-            isChecked && "text-muted-foreground"
-          )}>
-            <Recommendations items={[
-              {
-                type: "do",
-                content: itemTools
-              },
-              {
-                type: "dont",
-                content: itemStop
-              }
-            ]} />
-            {serializedBody && (
-              <MDXRemote {...serializedBody} components={bodyComponents} />
-            )}
+        <div className="overflow-hidden">
+          <div className="ms-4 md:ms-9 ps-0 mb-6">
+            <CardContent
+              className={cn(
+                'py-0 pt-0 ps-0 md:ps-4 pe-4 md:pe-6',
+                'prose prose-slate max-w-none',
+                isChecked && 'text-muted-foreground',
+              )}
+            >
+              <Recommendations
+                items={[
+                  {
+                    type: 'do',
+                    content: itemTools,
+                  },
+                  {
+                    type: 'dont',
+                    content: itemStop,
+                  },
+                ]}
+              />
+              {serializedBody && <MDXRemote {...serializedBody} components={bodyComponents} />}
 
-            {/* Mark as done button row */}
-            {itemType !== 'info' && (
-              <div className={cn(
-                "pt-4 border-muted-foreground/20",
-                "flex flex-col sm:flex-row items-start sm:items-center gap-3",
-                "w-full"
-              )}>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleCheckboxChange(!isChecked, !isChecked); // Collapse after delay only when marking as done
-                  }}
+              {/* Mark as done button row */}
+              {itemType !== 'info' && (
+                <div
                   className={cn(
-                    "flex items-center justify-center sm:justify-start gap-3 transition-all duration-300",
-                    "w-full sm:w-auto sm:min-w-[140px] py-3 sm:py-2",
-                    // Primary outline styling for unchecked state
-                    !isChecked && "border-primary text-primary hover:bg-primary/10 hover:text-primary hover:border-primary",
-                    // Primary filled styling for checked state
-                    isChecked && "bg-primary text-primary-foreground border-primary hover:bg-primary/90 hover:border-primary hover:text-primary-foreground"
+                    'pt-4 border-muted-foreground/20',
+                    'flex flex-col sm:flex-row items-start sm:items-center gap-3',
+                    'w-full',
                   )}
                 >
-                  <Check className={cn(
-                    "h-4 w-4 transition-all duration-300 font-bold stroke-3",
-                    // Unchecked state - primary checkmark
-                    !isChecked && "text-primary",
-                    // Checked state - primary-foreground checkmark
-                    isChecked && "text-primary-foreground"
-                  )} />
-                  {isChecked ? t('checklistItem.completed') : t('checklistItem.markAsDone')}
-                </Button>
-              </div>
-            )}
-          </CardContent>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleCheckboxChange(!isChecked, !isChecked); // Collapse after delay only when marking as done
+                    }}
+                    className={cn(
+                      'flex items-center justify-center sm:justify-start gap-3 transition-all duration-300',
+                      'w-full sm:w-auto sm:min-w-[140px] py-3 sm:py-2',
+                      // Primary outline styling for unchecked state
+                      !isChecked &&
+                        'border-primary text-primary hover:bg-primary/10 hover:text-primary hover:border-primary',
+                      // Primary filled styling for checked state
+                      isChecked &&
+                        'bg-primary text-primary-foreground border-primary hover:bg-primary/90 hover:border-primary hover:text-primary-foreground',
+                    )}
+                  >
+                    <Check
+                      className={cn(
+                        'h-4 w-4 transition-all duration-300 font-bold stroke-3',
+                        // Unchecked state - primary checkmark
+                        !isChecked && 'text-primary',
+                        // Checked state - primary-foreground checkmark
+                        isChecked && 'text-primary-foreground',
+                      )}
+                    />
+                    {isChecked ? t('checklistItem.completed') : t('checklistItem.markAsDone')}
+                  </Button>
+                </div>
+              )}
+            </CardContent>
           </div>
         </div>
       </div>

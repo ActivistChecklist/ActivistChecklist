@@ -177,22 +177,10 @@
     "about": {
       "label": "About",
       "href": "/about/",
-      "items": [
-        "about",
-        "contribute",
-        "changelog",
-        "contact",
-        "privacy"
-      ]
+      "items": ["about", "contribute", "changelog", "contact", "privacy"]
     }
   },
-  "mainNav": [
-    "home",
-    "checklists",
-    "news",
-    "resources",
-    "about"
-  ],
+  "mainNav": ["home", "checklists", "news", "resources", "about"],
   "footer": {
     "sections": [
       {
@@ -215,11 +203,7 @@
         "fromMenu": "checklists"
       }
     ],
-    "social": [
-      "bluesky",
-      "mastodon",
-      "github"
-    ]
+    "social": ["bluesky", "mastodon", "github"]
   },
   "social": {
     "bluesky": {

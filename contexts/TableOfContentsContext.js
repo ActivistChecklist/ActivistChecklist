@@ -23,15 +23,12 @@ function computeNextActiveId(headers, tocLeadScrollTargetId) {
       element: document.getElementById(header.id),
     }))
     .filter((header) => header.element)
-    .sort(
-      (a, b) =>
-        a.element.getBoundingClientRect().top - b.element.getBoundingClientRect().top
-    );
+    .sort((a, b) => a.element.getBoundingClientRect().top - b.element.getBoundingClientRect().top);
 
   if (visibleHeaders.length === 0) return undefined;
 
   const nextHeader = visibleHeaders.find(
-    (header) => header.element.getBoundingClientRect().top > NAV_HEIGHT
+    (header) => header.element.getBoundingClientRect().top > NAV_HEIGHT,
   );
 
   const activeHeader = nextHeader
@@ -109,9 +106,7 @@ export function TableOfContentsProvider({ children }) {
   };
 
   return (
-    <TableOfContentsContext.Provider value={value}>
-      {children}
-    </TableOfContentsContext.Provider>
+    <TableOfContentsContext.Provider value={value}>{children}</TableOfContentsContext.Provider>
   );
 }
 

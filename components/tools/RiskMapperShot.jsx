@@ -6,8 +6,7 @@ import { Check, Star } from 'lucide-react';
  */
 
 const CARD = 'bg-white dark:bg-[#101015]';
-const HEAD_CELL =
-  'bg-[#FAFAFC] text-[#3F3F46] dark:bg-[#17171C] dark:text-[#C9D1E0]';
+const HEAD_CELL = 'bg-[#FAFAFC] text-[#3F3F46] dark:bg-[#17171C] dark:text-[#C9D1E0]';
 const CHIP_BASE =
   'rounded-md border border-l-[3px] bg-white px-1.5 py-1 text-[11px] leading-snug text-[#0B081B] shadow-xs dark:bg-[#1A1A21] dark:text-[#E7ECF7] sm:px-2 sm:text-xs';
 
@@ -44,7 +43,9 @@ function RowLabel({ children }) {
     <div
       className={`${HEAD_CELL} flex items-center justify-center border-t border-r border-[#E8E8EE] dark:border-[#26262E]`}
     >
-      <span className="[writing-mode:vertical-rl] rotate-180 text-[10px] font-bold">{children}</span>
+      <span className="[writing-mode:vertical-rl] rotate-180 text-[10px] font-bold">
+        {children}
+      </span>
     </div>
   );
 }
@@ -83,13 +84,19 @@ export default function RiskMapperShot() {
         <StepBar step="STEP 2">Drag the risks into the matrix</StepBar>
         <div className="grid grid-cols-[1.5rem_repeat(3,minmax(0,1fr))] sm:grid-cols-[1.75rem_repeat(3,minmax(0,1fr))]">
           <div className={`${HEAD_CELL} border-r border-[#E8E8EE] dark:border-[#26262E]`} />
-          <div className={`${HEAD_CELL} border-r border-[#E8E8EE] px-1 py-1.5 text-center text-[10px] font-bold dark:border-[#26262E] sm:text-[11px]`}>
+          <div
+            className={`${HEAD_CELL} border-r border-[#E8E8EE] px-1 py-1.5 text-center text-[10px] font-bold dark:border-[#26262E] sm:text-[11px]`}
+          >
             Low impact
           </div>
-          <div className={`${HEAD_CELL} border-r border-[#E8E8EE] px-1 py-1.5 text-center text-[10px] font-bold dark:border-[#26262E] sm:text-[11px]`}>
+          <div
+            className={`${HEAD_CELL} border-r border-[#E8E8EE] px-1 py-1.5 text-center text-[10px] font-bold dark:border-[#26262E] sm:text-[11px]`}
+          >
             Medium impact
           </div>
-          <div className={`${HEAD_CELL} px-1 py-1.5 text-center text-[10px] font-bold sm:text-[11px]`}>
+          <div
+            className={`${HEAD_CELL} px-1 py-1.5 text-center text-[10px] font-bold sm:text-[11px]`}
+          >
             High impact
           </div>
 
@@ -127,10 +134,14 @@ export default function RiskMapperShot() {
       <div className="mt-3 hidden overflow-hidden rounded-md border border-[#DEDDE4] dark:border-[#26262E] sm:block">
         <StepBar step="STEP 3">Star what you&rsquo;ll act on</StepBar>
         <div className="grid grid-cols-[1.1fr_1.2fr_1.2fr] text-[10px] sm:text-[11px]">
-          <div className={`${HEAD_CELL} border-r border-[#ECECF1] px-2 py-1.5 font-bold dark:border-[#26262E]`}>
+          <div
+            className={`${HEAD_CELL} border-r border-[#ECECF1] px-2 py-1.5 font-bold dark:border-[#26262E]`}
+          >
             Risk
           </div>
-          <div className={`${HEAD_CELL} border-r border-[#ECECF1] px-2 py-1.5 font-bold dark:border-[#26262E]`}>
+          <div
+            className={`${HEAD_CELL} border-r border-[#ECECF1] px-2 py-1.5 font-bold dark:border-[#26262E]`}
+          >
             Make it less likely
           </div>
           <div className={`${HEAD_CELL} px-2 py-1.5 font-bold`}>Limit the harm</div>

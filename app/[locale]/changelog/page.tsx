@@ -6,11 +6,12 @@ import PageNotices from '@/components/layout/PageNotices';
 import ChangeLogEntry from '@/components/ChangeLogEntry';
 import ChangeLogTimelineMarker from '@/components/ChangeLogTimelineMarker';
 import RSSButton from '@/components/ui/RSSButton';
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
 export const metadata = {
   title: 'Recent Site Updates - Activist Checklist',
-  description: 'Complete changelog of updates and improvements to Activist Checklist digital security guides.',
+  description:
+    'Complete changelog of updates and improvements to Activist Checklist digital security guides.',
   alternates: {
     types: {
       'application/rss+xml': '/rss/changelog.xml',
@@ -30,7 +31,7 @@ function groupEntriesByTime(entries) {
     previousYears: {},
   };
 
-  entries.forEach(entry => {
+  entries.forEach((entry) => {
     const entryDate = new Date(entry.first_published_at || entry.created_at);
     const entryYear = entryDate.getFullYear();
 
@@ -53,7 +54,7 @@ function TimelineSection({ title, entries, isFirst = false }) {
   if (!entries.length) return null;
 
   return (
-    <section className={cn("mb-12", !isFirst && "border-t pt-8")}>
+    <section className={cn('mb-12', !isFirst && 'border-t pt-8')}>
       <h2 className="text-2xl font-bold mb-6 text-foreground">{title}</h2>
       <div className="relative">
         {entries.map((entry, index) => (
@@ -82,7 +83,7 @@ export default async function ChangelogPage({ params }) {
   const changelogEntries = getAllChangelogEntries(locale).map(toChangelogListEntry);
   const grouped = groupEntriesByTime(changelogEntries);
   const sortedYears = Object.keys(grouped.previousYears)
-    .map(year => parseInt(year))
+    .map((year) => parseInt(year))
     .sort((a, b) => b - a);
 
   return (
@@ -117,12 +118,9 @@ export default async function ChangelogPage({ params }) {
               isFirst={true}
             />
 
-            <TimelineSection
-              title={currentYear.toString()}
-              entries={grouped.thisYear}
-            />
+            <TimelineSection title={currentYear.toString()} entries={grouped.thisYear} />
 
-            {sortedYears.map(year => (
+            {sortedYears.map((year) => (
               <TimelineSection
                 key={year}
                 title={year.toString()}

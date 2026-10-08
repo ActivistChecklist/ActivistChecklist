@@ -2,7 +2,7 @@
 import React from 'react';
 import ChangeLogEntry from './ChangeLogEntry';
 import ChangeLogTimelineMarker from './ChangeLogTimelineMarker';
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
 
 const ChangeLogRecentEntries = ({ entries = [] }) => {
@@ -10,9 +10,7 @@ const ChangeLogRecentEntries = ({ entries = [] }) => {
   if (!entries.length) {
     return (
       <div className="changelog-recent-entries">
-        <div className="text-sm text-muted-foreground italic">
-          {t('homepage.noRecentChanges')}
-        </div>
+        <div className="text-sm text-muted-foreground italic">{t('homepage.noRecentChanges')}</div>
       </div>
     );
   }

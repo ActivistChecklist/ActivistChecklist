@@ -32,11 +32,7 @@ loadEnvConfig(process.cwd(), process.env.NODE_ENV !== 'production');
 import { deriveMacProductsFromSofa, sofaTrackingFloor } from '../lib/updates/sofa-macos.js';
 import { normalizeSnapshot } from '../lib/updates/snapshot.js';
 import { auditSnapshotOsCaps, formatOsCapFinding } from '../lib/updates/os-cap-audit.js';
-import {
-  diffSofaWatchlist,
-  mergeLegacyAndSofa,
-  stripDocKeys,
-} from '../lib/updates/mac-data.js';
+import { diffSofaWatchlist, mergeLegacyAndSofa, stripDocKeys } from '../lib/updates/mac-data.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(__dirname, '..');
@@ -55,23 +51,23 @@ const SCHEMA_VERSION = 1;
 
 const PRODUCTS = [
   // Devices
-  { id: 'iphone',                family: 'apple',     formFactor: 'phone' },
-  { id: 'ipad',                  family: 'apple',     formFactor: 'tablet' },
-  { id: 'apple-watch',           family: 'apple',     formFactor: 'watch' },
-  { id: 'pixel',                 family: 'google',    formFactor: 'phone' },
-  { id: 'pixel-watch',           family: 'google',    formFactor: 'watch' },
-  { id: 'samsung-mobile',        family: 'samsung',   formFactor: 'phone' },
-  { id: 'samsung-galaxy-tab',    family: 'samsung',   formFactor: 'tablet' },
-  { id: 'samsung-galaxy-watch',  family: 'samsung',   formFactor: 'watch' },
-  { id: 'motorola-mobility',     family: 'motorola',  formFactor: 'phone' },
-  { id: 'oneplus',               family: 'oneplus',   formFactor: 'phone' },
-  { id: 'nokia',                 family: 'nokia',     formFactor: 'phone' },
+  { id: 'iphone', family: 'apple', formFactor: 'phone' },
+  { id: 'ipad', family: 'apple', formFactor: 'tablet' },
+  { id: 'apple-watch', family: 'apple', formFactor: 'watch' },
+  { id: 'pixel', family: 'google', formFactor: 'phone' },
+  { id: 'pixel-watch', family: 'google', formFactor: 'watch' },
+  { id: 'samsung-mobile', family: 'samsung', formFactor: 'phone' },
+  { id: 'samsung-galaxy-tab', family: 'samsung', formFactor: 'tablet' },
+  { id: 'samsung-galaxy-watch', family: 'samsung', formFactor: 'watch' },
+  { id: 'motorola-mobility', family: 'motorola', formFactor: 'phone' },
+  { id: 'oneplus', family: 'oneplus', formFactor: 'phone' },
+  { id: 'nokia', family: 'nokia', formFactor: 'phone' },
   // Operating systems
-  { id: 'ios',                   family: 'apple',     formFactor: 'os' },
-  { id: 'ipados',                family: 'apple',     formFactor: 'os' },
-  { id: 'macos',                 family: 'apple',     formFactor: 'os' },
-  { id: 'android',               family: 'google',    formFactor: 'os' },
-  { id: 'windows',               family: 'microsoft', formFactor: 'os' },
+  { id: 'ios', family: 'apple', formFactor: 'os' },
+  { id: 'ipados', family: 'apple', formFactor: 'os' },
+  { id: 'macos', family: 'apple', formFactor: 'os' },
+  { id: 'android', family: 'google', formFactor: 'os' },
+  { id: 'windows', family: 'microsoft', formFactor: 'os' },
 ];
 
 // Fields under release.custom that hold the OS-version cross-reference range.
@@ -123,7 +119,7 @@ async function withRetry(label, fn) {
       if (attempt === RETRY_ATTEMPTS || !isRetryable(err)) break;
       const delay = RETRY_BASE_DELAY_MS * 2 ** (attempt - 1);
       console.error(
-        `    ${label}: attempt ${attempt}/${RETRY_ATTEMPTS} failed (${err.message}); retrying in ${delay}ms`
+        `    ${label}: attempt ${attempt}/${RETRY_ATTEMPTS} failed (${err.message}); retrying in ${delay}ms`,
       );
       await sleep(delay);
     }
@@ -238,7 +234,9 @@ function transformProduct(raw, meta) {
   const releases = [];
   for (const release of raw.releases || []) {
     if (isWindows && !filterWindowsRelease(release)) continue;
-    const transformed = transformRelease(release, { kind: meta.formFactor === 'os' ? 'os' : 'device' });
+    const transformed = transformRelease(release, {
+      kind: meta.formFactor === 'os' ? 'os' : 'device',
+    });
     if (transformed) releases.push(transformed);
   }
 
@@ -262,10 +260,10 @@ function transformProduct(raw, meta) {
 async function pingHealthcheck(success, error) {
   const url = process.env.HEALTHCHECK_EOL_PING_URL;
   if (!url) {
-    console.log("No HEALTHCHECK_EOL_PING_URL found. Skipping healthcheck ping.")
+    console.log('No HEALTHCHECK_EOL_PING_URL found. Skipping healthcheck ping.');
     return;
   }
-  const log_message = success ? "Pinging healthcheck. Success!" : "Pinging healthcheck. Error!";
+  const log_message = success ? 'Pinging healthcheck. Success!' : 'Pinging healthcheck. Error!';
   console.log(log_message);
   try {
     const target = success ? url : `${url}/fail`;
@@ -299,9 +297,9 @@ async function resolveOutputPath() {
   } catch {
     throw new Error(
       `EOL_SNAPSHOT_PATH points into ${dir}, which does not exist.\n` +
-      `   Expected an existing docroot. If you are running locally, unset ` +
-      `EOL_SNAPSHOT_PATH (or leave NODE_ENV unset so .env.production.local is skipped) ` +
-      `and the snapshot will go to ${DEFAULT_OUTPUT}.`
+        `   Expected an existing docroot. If you are running locally, unset ` +
+        `EOL_SNAPSHOT_PATH (or leave NODE_ENV unset so .env.production.local is skipped) ` +
+        `and the snapshot will go to ${DEFAULT_OUTPUT}.`,
     );
   }
   return { outputPath, mayCreateDir: false };
@@ -470,7 +468,7 @@ async function main() {
   const macosReleaseDates = Object.fromEntries(
     (macosProduct?.releases || [])
       .filter((r) => r.releaseDate)
-      .map((r) => [String(parseFloat(r.id)), r.releaseDate])
+      .map((r) => [String(parseFloat(r.id)), r.releaseDate]),
   );
 
   const legacyModels = await readLegacyMacModels();
@@ -486,14 +484,14 @@ async function main() {
       // weekly GH Action open a tracking issue with resolution steps.
       console.error(
         `⚠️  SOFA dropped ${dropped.length} watched model(s): ${dropped.join(', ')}.\n` +
-        `   Move each one to data/legacy-mac-models.json (with an Apple support\n` +
-        `   page citation) and remove from data/sofa-watchlist.json.`
+          `   Move each one to data/legacy-mac-models.json (with an Apple support\n` +
+          `   page citation) and remove from data/sofa-watchlist.json.`,
       );
     }
     if (novel.length > 0) {
       console.log(
         `ℹ️  ${novel.length} SOFA model(s) not in watchlist: ${novel.join(', ')}.\n` +
-        `   Add to data/sofa-watchlist.json if you want drop-detection on them.`
+          `   Add to data/sofa-watchlist.json if you want drop-detection on them.`,
       );
     }
     const merged = mergeLegacyAndSofa(legacyModels, sofaModels);
@@ -503,13 +501,14 @@ async function main() {
       macosReleaseDates,
       trackingFloor: sofaTrackingFloor(sofaModels),
     });
-    const legacyOnly = sofaIds.length === 0
-      ? Object.keys(stripDocKeys(legacyModels)).length
-      : Object.keys(stripDocKeys(legacyModels)).filter((id) => !sofaIds.includes(id)).length;
+    const legacyOnly =
+      sofaIds.length === 0
+        ? Object.keys(stripDocKeys(legacyModels)).length
+        : Object.keys(stripDocKeys(legacyModels)).filter((id) => !sofaIds.includes(id)).length;
     macSource = 'SOFA';
     console.log(
       `Fetched SOFA Mac data: ${sofaIds.length} SOFA identifiers + ${legacyOnly} legacy-only ` +
-      `→ ${macProducts.length} product lines`
+        `→ ${macProducts.length} product lines`,
     );
   } catch (err) {
     console.error(`SOFA fetch failed: ${err.message}; using legacy-only data + previous snapshot`);
@@ -556,18 +555,21 @@ async function main() {
   if (capFindings.length > 0) {
     console.error(
       `⚠️  ${capFindings.length} product line(s) look one major behind upstream:\n` +
-      capFindings.map((f) => `   - ${formatOsCapFinding(f)}`).join('\n') + '\n' +
-      `   A line still shipping hardware should have a model that runs the newest OS.\n` +
-      `   Check the product's \`custom.supported*Versions\` fields on endoflife.date and\n` +
-      `   open a PR there if they are stale. The site suppresses its max-OS warning and\n` +
-      `   widens the OS picker for these lines until the ceiling catches up.`
+        capFindings.map((f) => `   - ${formatOsCapFinding(f)}`).join('\n') +
+        '\n' +
+        `   A line still shipping hardware should have a model that runs the newest OS.\n` +
+        `   Check the product's \`custom.supported*Versions\` fields on endoflife.date and\n` +
+        `   open a PR there if they are stale. The site suppresses its max-OS warning and\n` +
+        `   widens the OS picker for these lines until the ceiling catches up.`,
     );
   }
 
   const json = JSON.stringify(snapshot, null, 2);
 
   if (dryRun) {
-    console.log(`(dry run) ${json.length} bytes; ${products.length} products; would write to ${outputPath}`);
+    console.log(
+      `(dry run) ${json.length} bytes; ${products.length} products; would write to ${outputPath}`,
+    );
     return;
   }
 
@@ -579,7 +581,9 @@ async function main() {
   const newHash = stableSnapshotHash(snapshot);
   const oldHash = previous ? stableSnapshotHash(previous) : null;
   if (oldHash && newHash === oldHash) {
-    console.log(`Snapshot content unchanged (hash ${newHash.slice(0, 12)}); skipping write to ${outputPath}`);
+    console.log(
+      `Snapshot content unchanged (hash ${newHash.slice(0, 12)}); skipping write to ${outputPath}`,
+    );
     await pingHealthcheck(true);
     return;
   }

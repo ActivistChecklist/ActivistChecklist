@@ -15,19 +15,39 @@ import {
  */
 function iosSnapshot({ iphoneCeiling = '26', newestIphoneDate = '2026-03-11' } = {}) {
   return normalizeSnapshot({
-    schemaVersion: 1, generatedAt: '2026-09-21T00:00:00Z', source: 'x',
+    schemaVersion: 1,
+    generatedAt: '2026-09-21T00:00:00Z',
+    source: 'x',
     products: [
       {
-        id: 'iphone', label: 'Apple iPhone', kind: 'device', family: 'apple', formFactor: 'phone',
+        id: 'iphone',
+        label: 'Apple iPhone',
+        kind: 'device',
+        family: 'apple',
+        formFactor: 'phone',
         endoflifeUrl: 'https://x',
         releases: [
-          { id: '17e', label: '17e', releaseDate: newestIphoneDate, supportedOsRange: iphoneCeiling },
-          { id: '15', label: '15', releaseDate: '2023-09-22', supportedOsRange: `17 - ${iphoneCeiling}` },
+          {
+            id: '17e',
+            label: '17e',
+            releaseDate: newestIphoneDate,
+            supportedOsRange: iphoneCeiling,
+          },
+          {
+            id: '15',
+            label: '15',
+            releaseDate: '2023-09-22',
+            supportedOsRange: `17 - ${iphoneCeiling}`,
+          },
           { id: '8', label: '8', releaseDate: '2017-09-22', supportedOsRange: '11 - 16' },
         ],
       },
       {
-        id: 'ios', label: 'Apple iOS', kind: 'os', family: 'apple', formFactor: 'os',
+        id: 'ios',
+        label: 'Apple iOS',
+        kind: 'os',
+        family: 'apple',
+        formFactor: 'os',
         endoflifeUrl: 'https://x',
         releases: [
           { id: '27', label: '27', releaseDate: '2026-09-14', latestVersion: '27' },
@@ -69,15 +89,32 @@ describe('auditProductOsCap', () => {
   it('returns null for a line more than one major behind (genuinely discontinued)', () => {
     // The 12" MacBook: last model 2017, real ceiling of macOS 13. Nothing stale here.
     const snap = normalizeSnapshot({
-      schemaVersion: 1, generatedAt: '2026-09-21T00:00:00Z', source: 'x',
+      schemaVersion: 1,
+      generatedAt: '2026-09-21T00:00:00Z',
+      source: 'x',
       products: [
         {
-          id: 'macbook', label: 'Apple MacBook', kind: 'device', family: 'apple', formFactor: 'laptop',
+          id: 'macbook',
+          label: 'Apple MacBook',
+          kind: 'device',
+          family: 'apple',
+          formFactor: 'laptop',
           endoflifeUrl: 'https://x',
-          releases: [{ id: 'macbook10-1', label: 'MacBook (2017)', releaseDate: '2017-06-05', supportedOsRange: '10.12 - 13' }],
+          releases: [
+            {
+              id: 'macbook10-1',
+              label: 'MacBook (2017)',
+              releaseDate: '2017-06-05',
+              supportedOsRange: '10.12 - 13',
+            },
+          ],
         },
         {
-          id: 'macos', label: 'Apple macOS', kind: 'os', family: 'apple', formFactor: 'os',
+          id: 'macos',
+          label: 'Apple macOS',
+          kind: 'os',
+          family: 'apple',
+          formFactor: 'os',
           endoflifeUrl: 'https://x',
           releases: [
             { id: '27', label: '27', releaseDate: '2026-09-14' },
@@ -93,15 +130,25 @@ describe('auditProductOsCap', () => {
 
   it('returns null for lines that publish no OS ceiling at all (Samsung, Motorola)', () => {
     const snap = normalizeSnapshot({
-      schemaVersion: 1, generatedAt: '2026-09-21T00:00:00Z', source: 'x',
+      schemaVersion: 1,
+      generatedAt: '2026-09-21T00:00:00Z',
+      source: 'x',
       products: [
         {
-          id: 'samsung-mobile', label: 'Samsung Mobile', kind: 'device', family: 'samsung', formFactor: 'phone',
+          id: 'samsung-mobile',
+          label: 'Samsung Mobile',
+          kind: 'device',
+          family: 'samsung',
+          formFactor: 'phone',
           endoflifeUrl: 'https://x',
           releases: [{ id: 'galaxy-s26', label: 'Galaxy S26', releaseDate: '2026-09-04' }],
         },
         {
-          id: 'android', label: 'Android', kind: 'os', family: 'google', formFactor: 'os',
+          id: 'android',
+          label: 'Android',
+          kind: 'os',
+          family: 'google',
+          formFactor: 'os',
           endoflifeUrl: 'https://x',
           releases: [{ id: '17', label: '17', releaseDate: '2026-06-10' }],
         },
@@ -114,15 +161,32 @@ describe('auditProductOsCap', () => {
   it('walks release order rather than major arithmetic, so 10.15 → 11 is adjacent', () => {
     // 11 - 1 = 10, which never matches a ceiling of 10.15. Position does.
     const snap = normalizeSnapshot({
-      schemaVersion: 1, generatedAt: '2021-01-01T00:00:00Z', source: 'x',
+      schemaVersion: 1,
+      generatedAt: '2021-01-01T00:00:00Z',
+      source: 'x',
       products: [
         {
-          id: 'macbook-pro', label: 'MacBook Pro', kind: 'device', family: 'apple', formFactor: 'laptop',
+          id: 'macbook-pro',
+          label: 'MacBook Pro',
+          kind: 'device',
+          family: 'apple',
+          formFactor: 'laptop',
           endoflifeUrl: 'https://x',
-          releases: [{ id: 'mbp-2020', label: 'MacBook Pro (2020)', releaseDate: '2020-05-04', supportedOsRange: '10.15' }],
+          releases: [
+            {
+              id: 'mbp-2020',
+              label: 'MacBook Pro (2020)',
+              releaseDate: '2020-05-04',
+              supportedOsRange: '10.15',
+            },
+          ],
         },
         {
-          id: 'macos', label: 'Apple macOS', kind: 'os', family: 'apple', formFactor: 'os',
+          id: 'macos',
+          label: 'Apple macOS',
+          kind: 'os',
+          family: 'apple',
+          formFactor: 'os',
           endoflifeUrl: 'https://x',
           releases: [
             { id: '11', label: '11', releaseDate: '2020-11-12' },
@@ -175,7 +239,9 @@ describe('isReleaseOsCapSuspect', () => {
   it('is false for releases with no range at all', () => {
     const snap = iosSnapshot();
     const iphone = snap.products.find((p) => p.id === 'iphone');
-    expect(isReleaseOsCapSuspect(snap, iphone, { ...iphone.releases[0], supportedOsRange: null })).toBe(false);
+    expect(
+      isReleaseOsCapSuspect(snap, iphone, { ...iphone.releases[0], supportedOsRange: null }),
+    ).toBe(false);
     expect(isReleaseOsCapSuspect(snap, iphone, null)).toBe(false);
   });
 });

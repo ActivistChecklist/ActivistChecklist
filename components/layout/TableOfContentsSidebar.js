@@ -1,21 +1,22 @@
-"use client"
+'use client';
 
 import React, { useEffect } from 'react';
 import { useTableOfContents } from '@/contexts/TableOfContentsContext';
 import { cn } from '@/lib/utils';
-import {
-  SidebarGroup,
-  SidebarMenu,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar";
+import { SidebarGroup, SidebarMenu, SidebarMenuItem } from '@/components/ui/sidebar';
 
 // This function can be used both client and server side
 export function extractHeaders(content, enableH3 = true) {
   if (!content) return [];
-  
+
   const headerElements = content.querySelectorAll(enableH3 ? 'h2, h3' : 'h2');
-  const headersData = Array.from(headerElements).map(header => ({
-    id: header.id || header.innerText.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, ''),
+  const headersData = Array.from(headerElements).map((header) => ({
+    id:
+      header.id ||
+      header.innerText
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/-+$/, ''),
     text: header.innerText,
     level: parseInt(header.tagName[1]),
   }));
@@ -50,8 +51,7 @@ export function TableOfContentsSidebar({ initialHeaders = [], tocDepth = 2, tocP
   }, [setHeaders, initialHeaders, includeH3]);
 
   useEffect(() => {
-    const lead =
-      includeH3 && tocPageTitle?.trim() ? 'main-content' : null;
+    const lead = includeH3 && tocPageTitle?.trim() ? 'main-content' : null;
     setTocLeadScrollTargetId(lead);
     return () => setTocLeadScrollTargetId(null);
   }, [includeH3, tocPageTitle, setTocLeadScrollTargetId]);
@@ -81,40 +81,38 @@ export function TableOfContentsSidebar({ initialHeaders = [], tocDepth = 2, tocP
     <div
       className={cn(
         'sticky top-20 max-w-80 max-h-[calc(100vh-6rem)] overflow-y-auto overflow-x-hidden',
-        '[scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden'
+        '[scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden',
       )}
     >
-    <SidebarGroup className="max-w-80">
-      <SidebarMenu className="">
-        <h5 className="flex items-center gap-2 font-bold mb-4">
-          On this page
-        </h5>
-        {headersToRender.map((header) => {
-          const linkId = header.scrollTargetId ?? header.id;
-          return (
-          <SidebarMenuItem key={header.id} className="overflow-visible">
-              <a
-                href={`#${linkId}`}
-                className={cn(
-                  "block py-1 text-sm text-pretty",
-                  "ps-3 border-s-2",
-                  header.level === 3 && "ms-4",
-                  activeId === linkId
-                    ? "text-link border-link font-bold"
-                    : "text-muted-foreground border-transparent hover:text-foreground hover:border-muted-foreground"
-                )}
-                onClick={(e) => {
-                  document.getElementById(linkId)?.scrollIntoView();
-                  setActiveId(linkId);
-                }}
-              >
-                {header.text}
-              </a>
-          </SidebarMenuItem>
-          );
-        })}
-      </SidebarMenu>
-    </SidebarGroup>
+      <SidebarGroup className="max-w-80">
+        <SidebarMenu className="">
+          <h5 className="flex items-center gap-2 font-bold mb-4">On this page</h5>
+          {headersToRender.map((header) => {
+            const linkId = header.scrollTargetId ?? header.id;
+            return (
+              <SidebarMenuItem key={header.id} className="overflow-visible">
+                <a
+                  href={`#${linkId}`}
+                  className={cn(
+                    'block py-1 text-sm text-pretty',
+                    'ps-3 border-s-2',
+                    header.level === 3 && 'ms-4',
+                    activeId === linkId
+                      ? 'text-link border-link font-bold'
+                      : 'text-muted-foreground border-transparent hover:text-foreground hover:border-muted-foreground',
+                  )}
+                  onClick={(e) => {
+                    document.getElementById(linkId)?.scrollIntoView();
+                    setActiveId(linkId);
+                  }}
+                >
+                  {header.text}
+                </a>
+              </SidebarMenuItem>
+            );
+          })}
+        </SidebarMenu>
+      </SidebarGroup>
     </div>
   );
-} 
+}

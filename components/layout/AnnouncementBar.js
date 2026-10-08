@@ -90,8 +90,7 @@ const AnnouncementBar = () => {
     'inline-flex items-center px-3 py-1 rounded-md text-sm font-medium transition-colors';
   const btnClass = `${btnBase} ${theme.button.background} ${theme.button.text} hover:opacity-90`;
   const secondaryBtnClass = `${btnBase} ${theme.buttonOutline ?? 'border border-primary-foreground/80 bg-transparent text-primary-foreground hover:bg-primary-foreground/15'}`;
-  const hasSecondary =
-    announcement.secondaryButtonText && announcement.secondaryButtonUrl;
+  const hasSecondary = announcement.secondaryButtonText && announcement.secondaryButtonUrl;
 
   const useTransition = !(shouldShow && skipTransition.current);
 
@@ -102,9 +101,7 @@ const AnnouncementBar = () => {
         maxHeight: shouldShow ? `${height}px` : '0px',
         opacity: shouldShow ? 1 : 0,
         overflow: 'hidden',
-        transition: useTransition
-          ? 'max-height 300ms ease-out, opacity 200ms ease-out'
-          : 'none',
+        transition: useTransition ? 'max-height 300ms ease-out, opacity 200ms ease-out' : 'none',
       }}
     >
       <div ref={innerRef} className={`${theme.background} ${theme.text}`}>
@@ -138,10 +135,7 @@ const AnnouncementBar = () => {
                   {announcement.buttonText}
                 </Link>
                 {hasSecondary && (
-                  <Link
-                    href={announcement.secondaryButtonUrl}
-                    className={secondaryBtnClass}
-                  >
+                  <Link href={announcement.secondaryButtonUrl} className={secondaryBtnClass}>
                     {announcement.secondaryButtonText}
                   </Link>
                 )}
@@ -154,9 +148,7 @@ const AnnouncementBar = () => {
             <div className="text-sm font-medium text-center flex-1 flex items-center justify-center gap-3">
               {Icon && <Icon size={18} className="shrink-0" />}
               <span>
-                {announcement.title && (
-                  <span className="font-bold mr-1">{announcement.title}</span>
-                )}
+                {announcement.title && <span className="font-bold mr-1">{announcement.title}</span>}
                 {announcement.message}
               </span>
               {announcement.buttonText && announcement.buttonUrl && (
@@ -165,10 +157,7 @@ const AnnouncementBar = () => {
                     {announcement.buttonText}
                   </Link>
                   {hasSecondary && (
-                    <Link
-                      href={announcement.secondaryButtonUrl}
-                      className={secondaryBtnClass}
-                    >
+                    <Link href={announcement.secondaryButtonUrl} className={secondaryBtnClass}>
                       {announcement.secondaryButtonText}
                     </Link>
                   )}

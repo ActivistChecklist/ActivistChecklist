@@ -32,7 +32,7 @@ export default function PageNotices({ initialNotices = [] }) {
     if (process.env.NODE_ENV !== 'development') return;
 
     window.__pageNotice = (id, message, type = 'warning') => {
-      setDevNotices(prev => [...prev.filter(n => n.id !== id), { id, message, type }]);
+      setDevNotices((prev) => [...prev.filter((n) => n.id !== id), { id, message, type }]);
       console.log(`[PageNotices] Added notice: "${id}"`);
     };
     window.__clearPageNotices = () => {
@@ -41,9 +41,9 @@ export default function PageNotices({ initialNotices = [] }) {
     };
     console.log(
       '%c[PageNotices] Dev API ready:\n' +
-      "  window.__pageNotice('my-id', 'Message', 'warning'|'info')\n" +
-      '  window.__clearPageNotices()',
-      'color: #888; font-size: 11px'
+        "  window.__pageNotice('my-id', 'Message', 'warning'|'info')\n" +
+        '  window.__clearPageNotices()',
+      'color: #888; font-size: 11px',
     );
 
     return () => {
@@ -65,7 +65,7 @@ export default function PageNotices({ initialNotices = [] }) {
           dismissLabel={t('pageNotices.dismiss')}
         />
       )}
-      {allNotices.map(n => (
+      {allNotices.map((n) => (
         <Notice key={n.id} type={n.type} message={n.message} />
       ))}
     </div>

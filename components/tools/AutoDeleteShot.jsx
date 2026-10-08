@@ -9,13 +9,11 @@ import { Check, Trash2 } from 'lucide-react';
  * extension's real light and dark variants.
  */
 
-const CARD =
-  'rounded-xl border border-[#E2E8F0] bg-white dark:border-[#334155] dark:bg-[#1E293B]';
+const CARD = 'rounded-xl border border-[#E2E8F0] bg-white dark:border-[#334155] dark:bg-[#1E293B]';
 const LABEL = 'text-[11px] font-semibold text-[#334155] dark:text-[#CBD5E1] sm:text-xs';
 const PILL_OFF =
   'rounded-md border border-[#E2E8F0] bg-[#F1F5F9] px-2.5 py-1.5 text-[11px] font-semibold text-[#475569] dark:border-[#334155] dark:bg-[#0F172A] dark:text-[#94A3B8]';
-const PILL_ON =
-  'rounded-md bg-[#0D9488] px-2.5 py-1.5 text-[11px] font-bold text-white';
+const PILL_ON = 'rounded-md bg-[#0D9488] px-2.5 py-1.5 text-[11px] font-bold text-white';
 
 function CheckedBox() {
   return (

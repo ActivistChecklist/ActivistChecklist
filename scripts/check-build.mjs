@@ -2,12 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import chalk from 'chalk';
-import {
-  sectionStart,
-  sectionEnd,
-  detail,
-  subsection,
-} from './lib/build-cli.mjs';
+import { sectionStart, sectionEnd, detail, subsection } from './lib/build-cli.mjs';
 import {
   REPLACEMENTS,
   applyReplacements as applyReplacementsCore,
@@ -77,7 +72,7 @@ function readAndTransformFile(filePath) {
 
 function isExcepted(forbiddenString, filePath) {
   return FORBIDDEN_STRING_EXCEPTIONS.some(
-    ex => ex.string === forbiddenString && filePath.includes(ex.filePattern)
+    (ex) => ex.string === forbiddenString && filePath.includes(ex.filePattern),
   );
 }
 
@@ -93,7 +88,7 @@ function checkForbiddenStrings(content, filePath) {
       fileFindings.push({
         file: filePath,
         string: forbiddenString,
-        context
+        context,
       });
       index = content.indexOf(forbiddenString, index + 1);
     }

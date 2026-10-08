@@ -119,7 +119,9 @@ export default function SocialScrubShot() {
                 className="h-8 w-8 shrink-0 rounded-full object-cover"
               />
               <span className="flex min-w-0 flex-col">
-                <span className="truncate text-[11px] font-bold text-[#F3F5F9]">Luke Skywalker</span>
+                <span className="truncate text-[11px] font-bold text-[#F3F5F9]">
+                  Luke Skywalker
+                </span>
                 <span className="truncate text-[10px] text-[#8A93A5]">@lukeskywalker</span>
               </span>
             </div>

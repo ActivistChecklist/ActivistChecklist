@@ -78,7 +78,7 @@
 }
 
 .riskLevelBody ul li::before {
-  content: "→ ";
+  content: '→ ';
   @apply absolute left-0 font-normal;
 }
 

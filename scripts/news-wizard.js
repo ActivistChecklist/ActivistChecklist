@@ -32,14 +32,23 @@ function printGhIdentityBanner(auth) {
   const login = auth.login || '(unknown login)';
   const bannerLabel =
     typeof chalk?.bgCyan?.black?.bold === 'function' ? chalk.bgCyan.black.bold('  gh  ') : '  gh  ';
-  const bannerText = typeof chalk?.bold === 'function' ? chalk.bold('  Pull requests will be created as:') : '  Pull requests will be created as:';
+  const bannerText =
+    typeof chalk?.bold === 'function'
+      ? chalk.bold('  Pull requests will be created as:')
+      : '  Pull requests will be created as:';
   const spacer = typeof chalk?.bold === 'function' ? chalk.bold('      ') : '      ';
   const loginStyled = typeof chalk?.green?.bold === 'function' ? chalk.green.bold(login) : login;
   const nameStyled =
-    auth.name && typeof chalk?.gray === 'function' ? chalk.gray(`  (${auth.name})`) : auth.name ? `  (${auth.name})` : '';
+    auth.name && typeof chalk?.gray === 'function'
+      ? chalk.gray(`  (${auth.name})`)
+      : auth.name
+        ? `  (${auth.name})`
+        : '';
   const profilePrefix = typeof chalk?.gray === 'function' ? chalk.gray('      ') : '      ';
   const profileStyled =
-    typeof chalk?.cyan?.underline === 'function' ? chalk.cyan.underline(auth.profileUrl || '') : auth.profileUrl || '';
+    typeof chalk?.cyan?.underline === 'function'
+      ? chalk.cyan.underline(auth.profileUrl || '')
+      : auth.profileUrl || '';
   console.log('');
   console.log(bannerLabel + bannerText);
   console.log(spacer + loginStyled + nameStyled);
@@ -160,10 +169,7 @@ function pickTitle(result) {
 function titleFromUrlPath(articleUrl) {
   try {
     const pathname = new URL(articleUrl).pathname || '';
-    const part = pathname
-      .split('/')
-      .filter(Boolean)
-      .pop();
+    const part = pathname.split('/').filter(Boolean).pop();
     if (!part) return null;
     const cleaned = decodeURIComponent(part)
       .replace(/\.[a-z0-9]+$/i, '')
@@ -178,13 +184,15 @@ function titleFromUrlPath(articleUrl) {
 }
 
 function decodeHtmlEntities(text) {
-  return String(text || '')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    // Decode ampersands last to avoid turning '&amp;lt;' into '<' in one pass.
-    .replace(/&amp;/g, '&');
+  return (
+    String(text || '')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      // Decode ampersands last to avoid turning '&amp;lt;' into '<' in one pass.
+      .replace(/&amp;/g, '&')
+  );
 }
 
 function parseHtmlMetadata(html) {
@@ -215,8 +223,10 @@ function parseHtmlMetadata(html) {
     if (lcProp === 'twitter:title' && !out.twitterTitle) out.twitterTitle = content;
     if (lcProp === 'og:site_name' && !out.ogSiteName) out.ogSiteName = content;
     if (lcProp === 'article:publisher' && !out.articlePublisher) out.articlePublisher = content;
-    if (lcProp === 'article:published_time' && !out.articlePublishedTime) out.articlePublishedTime = content;
-    if (lcProp === 'article:modified_time' && !out.articleModifiedTime) out.articleModifiedTime = content;
+    if (lcProp === 'article:published_time' && !out.articlePublishedTime)
+      out.articlePublishedTime = content;
+    if (lcProp === 'article:modified_time' && !out.articleModifiedTime)
+      out.articleModifiedTime = content;
   }
   return out;
 }
@@ -270,7 +280,9 @@ async function fetchOg(url) {
         fallbackErr?.message ||
         fallbackErr?.error ||
         (typeof fallbackErr === 'object' ? JSON.stringify(fallbackErr) : String(fallbackErr));
-      throw new Error(`Open Graph fetch failed: ${ogDetail}. Fallback metadata fetch failed: ${fallbackDetail}`);
+      throw new Error(
+        `Open Graph fetch failed: ${ogDetail}. Fallback metadata fetch failed: ${fallbackDetail}`,
+      );
     }
   }
 }
@@ -371,7 +383,7 @@ async function resolveTagsWithTypoHints(rawTags, getRl) {
     if (suggestion) {
       const line = await promptLine(
         getRl(),
-        `Did you mean "${suggestion}" instead of "${tag}"? [Y/n]: `
+        `Did you mean "${suggestion}" instead of "${tag}"? [Y/n]: `,
       );
       const a = String(line || '')
         .trim()
@@ -475,14 +487,16 @@ function parsePrUrlFromCreateOutput(text) {
 async function maybeCreatePullRequest(getRl, { branchName, articleTitle, articleUrl }) {
   const ghInstalled = tryGh(['--version']);
   if (!ghInstalled.ok) {
-    console.log('\n💡 Install GitHub CLI (`gh`) and run `gh auth login` to open a pull request from this wizard.');
+    console.log(
+      '\n💡 Install GitHub CLI (`gh`) and run `gh auth login` to open a pull request from this wizard.',
+    );
     return;
   }
 
   const auth = getGhSessionInfo();
   if (!auth.ok) {
     console.log(
-      '\n💡 GitHub CLI is not logged in. Run `gh auth login`, then re-run or open a PR manually from the pushed branch.'
+      '\n💡 GitHub CLI is not logged in. Run `gh auth login`, then re-run or open a PR manually from the pushed branch.',
     );
     return;
   }
@@ -490,7 +504,7 @@ async function maybeCreatePullRequest(getRl, { branchName, articleTitle, article
   printGhIdentityBanner(auth);
   const line = await promptLine(
     getRl(),
-    'Create a pull request into main and enable auto-merge when checks pass? [Y/n]: '
+    'Create a pull request into main and enable auto-merge when checks pass? [Y/n]: ',
   );
   const answer = String(line || '').trim();
   const yes = answer === '' || /^y(es)?$/i.test(answer);
@@ -502,19 +516,8 @@ async function maybeCreatePullRequest(getRl, { branchName, articleTitle, article
   const prTitle = `Adding news: ${articleTitle}`;
   const prBody = `Add news item.\n\nArticle: ${articleUrl}\n`;
   const create = tryGh(
-    [
-      'pr',
-      'create',
-      '--base',
-      'main',
-      '--head',
-      branchName,
-      '--title',
-      prTitle,
-      '--body',
-      prBody,
-    ],
-    { stdio: ['ignore', 'pipe', 'inherit'] }
+    ['pr', 'create', '--base', 'main', '--head', branchName, '--title', prTitle, '--body', prBody],
+    { stdio: ['ignore', 'pipe', 'inherit'] },
   );
   if (!create.ok) {
     console.error('\n❌ gh pr create failed. Open a PR manually from branch:', branchName);
@@ -540,13 +543,12 @@ async function maybeCreatePullRequest(getRl, { branchName, articleTitle, article
   }
 
   console.log(`\n✅ Created: ${prUrl}`);
-  const merge = tryGh(
-    ['pr', 'merge', prUrl, '--auto', '--squash', '--subject', prTitle],
-    { stdio: 'inherit' }
-  );
+  const merge = tryGh(['pr', 'merge', prUrl, '--auto', '--squash', '--subject', prTitle], {
+    stdio: 'inherit',
+  });
   if (!merge.ok) {
     console.warn(
-      '\n⚠️  Could not enable auto-merge (repo settings or permissions). You can enable it on the PR in GitHub.'
+      '\n⚠️  Could not enable auto-merge (repo settings or permissions). You can enable it on the PR in GitHub.',
     );
   } else {
     console.log('Auto-merge enabled (squash); the PR will merge when required checks pass.');
@@ -600,16 +602,20 @@ function transactionalCommitToContentBranch({ slug, mdxBody, articleTitle }) {
     console.log(`Created in worktree: ${mdxRel}`);
 
     console.log('Running fetch-news for this slug in worktree…');
-    execFileSync(process.execPath, [path.join(worktreeDir, 'scripts', 'fetch-news-images.js'), `--slug=${slug}`, '--quiet'], {
-      stdio: 'inherit',
-      cwd: worktreeDir,
-    });
+    execFileSync(
+      process.execPath,
+      [path.join(worktreeDir, 'scripts', 'fetch-news-images.js'), `--slug=${slug}`, '--quiet'],
+      {
+        stdio: 'inherit',
+        cwd: worktreeDir,
+      },
+    );
 
     const imageExists = fs.existsSync(path.join(worktreeDir, imageRel));
     if (!imageExists) {
       console.warn(
         '\n⚠️  WARNING: No image was saved in worktree. Commit will include MDX only.\n' +
-          `   Expected: ${imageRel}\n`
+          `   Expected: ${imageRel}\n`,
       );
     } else {
       console.log(`Image OK in worktree: ${imageRel}\n`);
@@ -624,16 +630,16 @@ function transactionalCommitToContentBranch({ slug, mdxBody, articleTitle }) {
       NODE_PATH: process.env.NODE_PATH
         ? `${repoNodeModules}${path.delimiter}${process.env.NODE_PATH}`
         : repoNodeModules,
-      PATH: process.env.PATH
-        ? `${repoBin}${path.delimiter}${process.env.PATH}`
-        : repoBin,
+      PATH: process.env.PATH ? `${repoBin}${path.delimiter}${process.env.PATH}` : repoBin,
     };
     git(['-C', worktreeDir, 'commit', '-m', articleTitle], {
       stdio: 'inherit',
       env: commitEnv,
     });
     console.log(`Pushing branch: ${branchName}`);
-    git(['-C', worktreeDir, 'push', '-u', 'origin', `HEAD:refs/heads/${branchName}`], { stdio: 'inherit' });
+    git(['-C', worktreeDir, 'push', '-u', 'origin', `HEAD:refs/heads/${branchName}`], {
+      stdio: 'inherit',
+    });
     return branchName;
   } catch (error) {
     throw error;
@@ -658,7 +664,7 @@ function transactionalCommitToContentBranch({ slug, mdxBody, articleTitle }) {
 function normalizeWizardYamlDates(yamlDocument) {
   return yamlDocument.replace(
     /^(\s*(?:date|firstPublished|lastUpdated):\s*)'(\d{4}-\d{2}-\d{2})'$/gm,
-    '$1$2'
+    '$1$2',
   );
 }
 
@@ -701,21 +707,26 @@ async function main() {
 
     const title = flagTitle || pickTitle(og) || titleFromUrlPath(articleUrl);
     if (!title) {
-      throw new Error('Could not determine title (no og:title). Pass --title="…" to set it manually.');
+      throw new Error(
+        'Could not determine title (no og:title). Pass --title="…" to set it manually.',
+      );
     }
 
     let published = flagDate || parsePublishedDate(og);
     if (!published) {
       published = todayIsoLocal();
-      console.warn('⚠️  Could not determine published date from metadata. Using today; pass --date=YYYY-MM-DD to override.');
+      console.warn(
+        '⚠️  Could not determine published date from metadata. Using today; pass --date=YYYY-MM-DD to override.',
+      );
     }
 
     const ogSiteName = og.ogSiteName ? String(og.ogSiteName).trim() : '';
-    const publisherHint = [
-      ogSiteName,
-      og.ogArticlePublisher && String(og.ogArticlePublisher).trim(),
-      og.articlePublisher && String(og.articlePublisher).trim(),
-    ].find(Boolean) || '';
+    const publisherHint =
+      [
+        ogSiteName,
+        og.ogArticlePublisher && String(og.ogArticlePublisher).trim(),
+        og.articlePublisher && String(og.articlePublisher).trim(),
+      ].find(Boolean) || '';
     const sourceField = pickSourceDisplayName(articleUrl, publisherHint, explicitSource);
 
     const baseSlug = slugify(title);

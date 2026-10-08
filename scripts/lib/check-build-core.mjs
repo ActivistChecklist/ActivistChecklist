@@ -10,22 +10,22 @@ export const REPLACEMENTS = [
   // Replace storyblock CDN images with local images
   {
     pattern: /@?https?:\/\/[a-z-]+\.storyblok\.com\/f\/\d+\/[\w-]+\/[\w-]+\//g,
-    replacement: '/images/'
+    replacement: '/images/',
   },
   // Make sure that none of their scripts call their API ever
   {
     pattern: /storyblok\.com/g,
-    replacement: 'BLOCKEDSTORYBLOK'
+    replacement: 'BLOCKEDSTORYBLOK',
   },
   // Comes from Stroyblok
   {
     pattern: /cdn\.jsdelivr\.net/g,
-    replacement: 'BLOCKEDJSDELIVR'
+    replacement: 'BLOCKEDJSDELIVR',
   },
   // Google fonts
   {
     pattern: /fonts\.googleapis\.com/g,
-    replacement: 'BLOCKEDGOOGLE'
+    replacement: 'BLOCKEDGOOGLE',
   },
   // Next.js documentation URLs (error messages in bundled code).
   //
@@ -38,7 +38,7 @@ export const REPLACEMENTS = [
   // shipped bundle. An allow-list can never consume a delimiter.
   {
     pattern: /https?:\/\/nextjs\.org\/docs\/messages\/[a-zA-Z0-9._~\/-]+/g,
-    replacement: 'BLOCKEDNEXTJSDOCS'
+    replacement: 'BLOCKEDNEXTJSDOCS',
   },
   // Catch-all for docs URLs whose slug is interpolated at runtime, e.g.
   //   `Read more: https://nextjs.org/docs/messages/${cond ? "a" : "b"}`
@@ -46,8 +46,8 @@ export const REPLACEMENTS = [
   // A fixed literal like this can never consume a delimiter.
   {
     pattern: /nextjs\.org/g,
-    replacement: 'BLOCKEDNEXTJS'
-  }
+    replacement: 'BLOCKEDNEXTJS',
+  },
 ];
 
 export function applyReplacements(content) {
@@ -97,8 +97,8 @@ export function assertStillParses(filePath, before, after) {
   if (err !== null) {
     throw new Error(
       `check-build corrupted ${filePath}: ${err}\n` +
-      'A replacement pattern consumed more than it should have. Fix the ' +
-      'pattern in REPLACEMENTS rather than disabling this check.'
+        'A replacement pattern consumed more than it should have. Fix the ' +
+        'pattern in REPLACEMENTS rather than disabling this check.',
     );
   }
 }

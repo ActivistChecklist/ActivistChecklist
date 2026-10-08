@@ -1,6 +1,11 @@
 import React from 'react';
-import { Button } from "@/components/ui/button";
-import { IoArrowForwardOutline, IoCloudDownloadOutline, IoDocumentsOutline, IoOpenOutline } from 'react-icons/io5';
+import { Button } from '@/components/ui/button';
+import {
+  IoArrowForwardOutline,
+  IoCloudDownloadOutline,
+  IoDocumentsOutline,
+  IoOpenOutline,
+} from 'react-icons/io5';
 import Link from '@/components/Link';
 import { trackFileDownload } from '@/lib/download-tracker';
 import { cn } from '@/lib/utils';
@@ -19,16 +24,13 @@ const DynamicIcon = ({ iconName, className, ...props }) => {
   const formattedIconName = iconName.startsWith('Io') ? iconName : `Io${iconName}`;
   const IconComponent = ICON_REGISTRY[formattedIconName];
   if (!IconComponent) {
-    console.warn(`Icon "${formattedIconName}" not in ButtonEmbed registry. Add it to ICON_REGISTRY in ButtonEmbed.js`);
+    console.warn(
+      `Icon "${formattedIconName}" not in ButtonEmbed registry. Add it to ICON_REGISTRY in ButtonEmbed.js`,
+    );
     return null;
   }
   const isDirectional = /Arrow(Forward|Back)/.test(formattedIconName);
-  return (
-    <IconComponent
-      className={cn(isDirectional && 'rtl:rotate-180', className)}
-      {...props}
-    />
-  );
+  return <IconComponent className={cn(isDirectional && 'rtl:rotate-180', className)} {...props} />;
 };
 
 export const ButtonEmbed = (props) => {
@@ -53,7 +55,7 @@ export const ButtonEmbed = (props) => {
 
   const iconElement = icon ? <DynamicIcon iconName={icon} /> : null;
   const position = iconPosition || 'left';
-  
+
   // Handle alignment classes for the container
   const getAlignmentClass = () => {
     switch (alignment) {
@@ -68,13 +70,13 @@ export const ButtonEmbed = (props) => {
     }
   };
 
-   // Handle download tracking
-   const handleClick = async (e) => {
+  // Handle download tracking
+  const handleClick = async (e) => {
     if (download && title) {
       await trackFileDownload(title);
     }
   };
-  
+
   const inner = (
     <>
       {iconElement && position === 'left' && iconElement}
@@ -85,12 +87,7 @@ export const ButtonEmbed = (props) => {
 
   return (
     <div className={getAlignmentClass()}>
-      <Button
-        asChild
-        variant={variant || 'default'}
-        size={size || 'default'}
-        className={className}
-      >
+      <Button asChild variant={variant || 'default'} size={size || 'default'} className={className}>
         <Link
           href={href}
           onClick={handleClick}

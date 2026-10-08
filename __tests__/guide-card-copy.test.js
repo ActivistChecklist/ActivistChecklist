@@ -17,7 +17,7 @@ describe('guideToCardCopy', () => {
     expect(
       guideToCardCopy({
         frontmatter: { title: 'T', summary: 'Short summary' },
-      }).description
+      }).description,
     ).toBe('Short summary');
   });
 });

@@ -3,11 +3,7 @@
 import React from 'react';
 import { ChevronRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import {
-  Collapsible,
-  CollapsibleTrigger,
-  CollapsibleContent,
-} from '@/components/ui/collapsible';
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible';
 import { cn } from '@/lib/utils';
 import { buildFaqPage } from '@/lib/structured-data';
 import { serializeJsonLd } from '@/lib/structured-data';
@@ -76,7 +72,9 @@ export function FAQ({ title, children }) {
 
   return (
     <section className="my-8" aria-labelledby={headingId}>
-      <h2 id={headingId} className="mt-8 mb-4">{resolvedTitle}</h2>
+      <h2 id={headingId} className="mt-8 mb-4">
+        {resolvedTitle}
+      </h2>
       <div className="not-prose">{children}</div>
       {wrapped && (
         <script

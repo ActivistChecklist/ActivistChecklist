@@ -24,22 +24,39 @@ function release(overrides) {
 
 function deviceProduct(overrides = {}) {
   return normalizeProduct({
-    id: 'iphone', label: 'Apple iPhone', kind: 'device', family: 'apple', formFactor: 'phone',
-    endoflifeUrl: 'https://x', releases: [], ...overrides,
+    id: 'iphone',
+    label: 'Apple iPhone',
+    kind: 'device',
+    family: 'apple',
+    formFactor: 'phone',
+    endoflifeUrl: 'https://x',
+    releases: [],
+    ...overrides,
   });
 }
 
 function osProduct(overrides = {}) {
   return normalizeProduct({
-    id: 'ios', label: 'Apple iOS', kind: 'os', family: 'apple', formFactor: 'os',
-    endoflifeUrl: 'https://x', releases: [], ...overrides,
+    id: 'ios',
+    label: 'Apple iOS',
+    kind: 'os',
+    family: 'apple',
+    formFactor: 'os',
+    endoflifeUrl: 'https://x',
+    releases: [],
+    ...overrides,
   });
 }
 
 describe('classifyResult — OS variants', () => {
   it('os-supported when not EOL', () => {
     const product = osProduct();
-    const r = release({ id: '26', label: '26', releaseDate: '2025-09-15', latestVersion: '26.4.2' });
+    const r = release({
+      id: '26',
+      label: '26',
+      releaseDate: '2025-09-15',
+      latestVersion: '26.4.2',
+    });
     expect(classifyResult({ product, release: r }, { now: NOW }).variant).toBe('os-supported');
   });
 
@@ -148,22 +165,46 @@ describe('classifyResult — supportedOsRange cross-reference', () => {
   // can navigate from device → osProduct → latestSupportedOsRelease.
   function makeSnapshot() {
     return normalizeSnapshot({
-      schemaVersion: 1, generatedAt: '2026-05-03T00:00:00Z', source: 'x',
+      schemaVersion: 1,
+      generatedAt: '2026-05-03T00:00:00Z',
+      source: 'x',
       products: [
         {
-          id: 'iphone', label: 'Apple iPhone', kind: 'device', family: 'apple', formFactor: 'phone',
-          endoflifeUrl: 'https://x', releases: [
+          id: 'iphone',
+          label: 'Apple iPhone',
+          kind: 'device',
+          family: 'apple',
+          formFactor: 'phone',
+          endoflifeUrl: 'https://x',
+          releases: [
             { id: '13', label: '13', releaseDate: '2021-09-24', supportedOsRange: '15 - 26' },
             { id: '11', label: '11', releaseDate: '2019-09-20', supportedOsRange: '13 - 26' },
             { id: '8', label: '8', releaseDate: '2017-09-22', supportedOsRange: '11 - 16' },
           ],
         },
         {
-          id: 'ios', label: 'Apple iOS', kind: 'os', family: 'apple', formFactor: 'os',
-          endoflifeUrl: 'https://x', releases: [
+          id: 'ios',
+          label: 'Apple iOS',
+          kind: 'os',
+          family: 'apple',
+          formFactor: 'os',
+          endoflifeUrl: 'https://x',
+          releases: [
             { id: '26', label: '26', releaseDate: '2025-09-15' },
-            { id: '18', label: '18', releaseDate: '2024-09-16', isEol: true, eolFrom: '2026-04-22' },
-            { id: '16', label: '16', releaseDate: '2022-09-12', isEol: true, eolFrom: '2025-09-15' },
+            {
+              id: '18',
+              label: '18',
+              releaseDate: '2024-09-16',
+              isEol: true,
+              eolFrom: '2026-04-22',
+            },
+            {
+              id: '16',
+              label: '16',
+              releaseDate: '2022-09-12',
+              isEol: true,
+              eolFrom: '2025-09-15',
+            },
           ],
         },
       ],
@@ -195,7 +236,12 @@ describe('classifyResult — supportedOsRange cross-reference', () => {
     const snap = makeSnapshot();
     const product = snap.products.find((p) => p.id === 'iphone');
     // Strip the explicit eolFrom so we test the cross-reference path specifically.
-    const r = { ...product.releases.find((x) => x.id === '8'), isEol: false, eolFrom: null, isMaintained: true };
+    const r = {
+      ...product.releases.find((x) => x.id === '8'),
+      isEol: false,
+      eolFrom: null,
+      isMaintained: true,
+    };
     const c = classifyResult({ product, release: r }, { now: NOW, snapshot: snap });
     // Max iOS 16 is itself EOL → device is definitively EOL via the OS chain,
     // no need to fall through to the age heuristic.
@@ -228,15 +274,32 @@ describe('classifyResult — supportedOsRange cross-reference', () => {
     // 15 still has updates). Without this rule, the age heuristic would have
     // misclassified it as device-eol just for being old.
     const snap = normalizeSnapshot({
-      schemaVersion: 1, generatedAt: '2026-05-03T00:00:00Z', source: 'x',
+      schemaVersion: 1,
+      generatedAt: '2026-05-03T00:00:00Z',
+      source: 'x',
       products: [
         {
-          id: 'macbook-pro', label: 'Apple MacBook Pro', kind: 'device', family: 'apple', formFactor: 'laptop',
+          id: 'macbook-pro',
+          label: 'Apple MacBook Pro',
+          kind: 'device',
+          family: 'apple',
+          formFactor: 'laptop',
           endoflifeUrl: 'https://x',
-          releases: [{ id: '13in-2018', label: '13-inch 2018', releaseDate: '2018-07-12', supportedOsRange: '15' }],
+          releases: [
+            {
+              id: '13in-2018',
+              label: '13-inch 2018',
+              releaseDate: '2018-07-12',
+              supportedOsRange: '15',
+            },
+          ],
         },
         {
-          id: 'macos', label: 'Apple macOS', kind: 'os', family: 'apple', formFactor: 'os',
+          id: 'macos',
+          label: 'Apple macOS',
+          kind: 'os',
+          family: 'apple',
+          formFactor: 'os',
           endoflifeUrl: 'https://x',
           releases: [
             { id: '26', label: '26', releaseDate: '2025-09-15' },
@@ -260,23 +323,58 @@ describe('classifyResult — supportedOsRange cross-reference', () => {
     // of Apple's regular "current + 2 prior" cadence when macOS 14 (Sonoma)
     // shipped in Sep 2023, two-and-a-half years earlier. Honest date wins.
     const snap = normalizeSnapshot({
-      schemaVersion: 1, generatedAt: '2026-05-03T00:00:00Z', source: 'x',
+      schemaVersion: 1,
+      generatedAt: '2026-05-03T00:00:00Z',
+      source: 'x',
       products: [
         {
-          id: 'macbook-air', label: 'Apple MacBook Air', kind: 'device', family: 'apple', formFactor: 'laptop',
+          id: 'macbook-air',
+          label: 'Apple MacBook Air',
+          kind: 'device',
+          family: 'apple',
+          formFactor: 'laptop',
           endoflifeUrl: 'https://x',
-          releases: [{ id: 'mba-2013', label: '13-inch Mid 2013', releaseDate: '2013-06-01', supportedOsRange: '11' }],
+          releases: [
+            {
+              id: 'mba-2013',
+              label: '13-inch Mid 2013',
+              releaseDate: '2013-06-01',
+              supportedOsRange: '11',
+            },
+          ],
         },
         {
-          id: 'macos', label: 'Apple macOS', kind: 'os', family: 'apple', formFactor: 'os',
+          id: 'macos',
+          label: 'Apple macOS',
+          kind: 'os',
+          family: 'apple',
+          formFactor: 'os',
           endoflifeUrl: 'https://x',
           releases: [
             { id: '26', label: '26', releaseDate: '2025-09-15' },
             { id: '15', label: '15', releaseDate: '2024-09-15' },
             { id: '14', label: '14', releaseDate: '2023-09-26' }, // bumped Big Sur to N-3
-            { id: '13', label: '13', releaseDate: '2022-10-24', isEol: true, eolFrom: '2025-09-15' },
-            { id: '12', label: '12', releaseDate: '2021-10-25', isEol: true, eolFrom: '2024-09-16' },
-            { id: '11', label: '11', releaseDate: '2020-11-12', isEol: true, eolFrom: '2026-02-02' },
+            {
+              id: '13',
+              label: '13',
+              releaseDate: '2022-10-24',
+              isEol: true,
+              eolFrom: '2025-09-15',
+            },
+            {
+              id: '12',
+              label: '12',
+              releaseDate: '2021-10-25',
+              isEol: true,
+              eolFrom: '2024-09-16',
+            },
+            {
+              id: '11',
+              label: '11',
+              releaseDate: '2020-11-12',
+              isEol: true,
+              eolFrom: '2026-02-02',
+            },
           ],
         },
       ],
@@ -296,19 +394,37 @@ describe('classifyResult — supportedOsRange cross-reference', () => {
     // In that case the cadence heuristic returns null and we keep using the
     // published eolFrom — the existing behaviour.
     const snap = normalizeSnapshot({
-      schemaVersion: 1, generatedAt: '2026-05-03T00:00:00Z', source: 'x',
+      schemaVersion: 1,
+      generatedAt: '2026-05-03T00:00:00Z',
+      source: 'x',
       products: [
         {
-          id: 'macbook-pro', label: 'Apple MacBook Pro', kind: 'device', family: 'apple', formFactor: 'laptop',
+          id: 'macbook-pro',
+          label: 'Apple MacBook Pro',
+          kind: 'device',
+          family: 'apple',
+          formFactor: 'laptop',
           endoflifeUrl: 'https://x',
-          releases: [{ id: 'mbp', label: 'MBP', releaseDate: '2018-07-12', supportedOsRange: '13' }],
+          releases: [
+            { id: 'mbp', label: 'MBP', releaseDate: '2018-07-12', supportedOsRange: '13' },
+          ],
         },
         {
-          id: 'macos', label: 'Apple macOS', kind: 'os', family: 'apple', formFactor: 'os',
+          id: 'macos',
+          label: 'Apple macOS',
+          kind: 'os',
+          family: 'apple',
+          formFactor: 'os',
           endoflifeUrl: 'https://x',
           releases: [
             { id: '14', label: '14', releaseDate: '2023-09-26' },
-            { id: '13', label: '13', releaseDate: '2022-10-24', isEol: true, eolFrom: '2025-09-15' },
+            {
+              id: '13',
+              label: '13',
+              releaseDate: '2022-10-24',
+              isEol: true,
+              eolFrom: '2025-09-15',
+            },
           ],
         },
       ],
@@ -325,15 +441,32 @@ describe('classifyResult — supportedOsRange cross-reference', () => {
   it('older Mac whose max OS is approaching EOL → device-eol-soon via device-max-os-soon', () => {
     // Hypothetical 2018 MacBook Pro pinned to macOS 13, eolFrom 6 months out.
     const snap = normalizeSnapshot({
-      schemaVersion: 1, generatedAt: '2026-05-03T00:00:00Z', source: 'x',
+      schemaVersion: 1,
+      generatedAt: '2026-05-03T00:00:00Z',
+      source: 'x',
       products: [
         {
-          id: 'macbook-pro', label: 'Apple MacBook Pro', kind: 'device', family: 'apple', formFactor: 'laptop',
+          id: 'macbook-pro',
+          label: 'Apple MacBook Pro',
+          kind: 'device',
+          family: 'apple',
+          formFactor: 'laptop',
           endoflifeUrl: 'https://x',
-          releases: [{ id: '13in-2017', label: '13-inch 2017', releaseDate: '2017-06-05', supportedOsRange: '13' }],
+          releases: [
+            {
+              id: '13in-2017',
+              label: '13-inch 2017',
+              releaseDate: '2017-06-05',
+              supportedOsRange: '13',
+            },
+          ],
         },
         {
-          id: 'macos', label: 'Apple macOS', kind: 'os', family: 'apple', formFactor: 'os',
+          id: 'macos',
+          label: 'Apple macOS',
+          kind: 'os',
+          family: 'apple',
+          formFactor: 'os',
           endoflifeUrl: 'https://x',
           releases: [
             { id: '26', label: '26', releaseDate: '2025-09-15' },
@@ -354,14 +487,26 @@ describe('classifyResult — supportedOsRange cross-reference', () => {
 describe('classifyResult — eol-soon warning state', () => {
   function deviceProductLocal(overrides = {}) {
     return normalizeProduct({
-      id: 'pixel', label: 'Google Pixel', kind: 'device', family: 'google', formFactor: 'phone',
-      endoflifeUrl: 'https://x', releases: [], ...overrides,
+      id: 'pixel',
+      label: 'Google Pixel',
+      kind: 'device',
+      family: 'google',
+      formFactor: 'phone',
+      endoflifeUrl: 'https://x',
+      releases: [],
+      ...overrides,
     });
   }
   function osProductLocal(overrides = {}) {
     return normalizeProduct({
-      id: 'macos', label: 'Apple macOS', kind: 'os', family: 'apple', formFactor: 'os',
-      endoflifeUrl: 'https://x', releases: [], ...overrides,
+      id: 'macos',
+      label: 'Apple macOS',
+      kind: 'os',
+      family: 'apple',
+      formFactor: 'os',
+      endoflifeUrl: 'https://x',
+      releases: [],
+      ...overrides,
     });
   }
 
@@ -382,14 +527,22 @@ describe('classifyResult — eol-soon warning state', () => {
   it('device with eolFrom 2 years out → still device-supported', () => {
     const product = deviceProductLocal();
     const r = normalizeRelease({
-      id: 'pixel-9', label: 'Pixel 9', releaseDate: '2024-08-22', eolFrom: '2028-08-01',
+      id: 'pixel-9',
+      label: 'Pixel 9',
+      releaseDate: '2024-08-22',
+      eolFrom: '2028-08-01',
     });
     expect(classifyResult({ product, release: r }, { now: NOW }).variant).toBe('device-supported');
   });
 
   it('os with eolFrom 4 months out → os-eol-soon', () => {
     const product = osProductLocal();
-    const r = normalizeRelease({ id: '14', label: '14', releaseDate: '2023-09-26', eolFrom: '2026-09-15' });
+    const r = normalizeRelease({
+      id: '14',
+      label: '14',
+      releaseDate: '2023-09-26',
+      eolFrom: '2026-09-15',
+    });
     const c = classifyResult({ product, release: r }, { now: NOW });
     expect(c.variant).toBe('os-eol-soon');
   });
@@ -397,19 +550,43 @@ describe('classifyResult — eol-soon warning state', () => {
   it('Mac whose top macOS reaches EOL within 9 months → device-eol-soon', () => {
     // Build a snapshot so the cross-reference path can find the OS major and read its eolFrom.
     const snap = normalizeSnapshot({
-      schemaVersion: 1, generatedAt: '2026-05-03T00:00:00Z', source: 'x',
+      schemaVersion: 1,
+      generatedAt: '2026-05-03T00:00:00Z',
+      source: 'x',
       products: [
         {
-          id: 'macbook-pro', label: 'Apple MacBook Pro', kind: 'device', family: 'apple', formFactor: 'laptop',
-          endoflifeUrl: 'https://x', releases: [
+          id: 'macbook-pro',
+          label: 'Apple MacBook Pro',
+          kind: 'device',
+          family: 'apple',
+          formFactor: 'laptop',
+          endoflifeUrl: 'https://x',
+          releases: [
             // 2018 MBP — Apple still ships macOS 15 to it but 15 will EOL soon.
-            { id: '13in-2018', label: 'MacBook Pro 13-inch (2018)', releaseDate: '2018-07-12', supportedOsRange: '15' },
+            {
+              id: '13in-2018',
+              label: 'MacBook Pro 13-inch (2018)',
+              releaseDate: '2018-07-12',
+              supportedOsRange: '15',
+            },
           ],
         },
         {
-          id: 'macos', label: 'Apple macOS', kind: 'os', family: 'apple', formFactor: 'os',
-          endoflifeUrl: 'https://x', releases: [
-            { id: '15', label: 'macOS 15 (Sequoia)', releaseDate: '2024-09-16', latestVersion: '15.7.5', codename: 'Sequoia', eolFrom: '2026-12-01' },
+          id: 'macos',
+          label: 'Apple macOS',
+          kind: 'os',
+          family: 'apple',
+          formFactor: 'os',
+          endoflifeUrl: 'https://x',
+          releases: [
+            {
+              id: '15',
+              label: 'macOS 15 (Sequoia)',
+              releaseDate: '2024-09-16',
+              latestVersion: '15.7.5',
+              codename: 'Sequoia',
+              eolFrom: '2026-12-01',
+            },
           ],
         },
       ],
@@ -425,7 +602,10 @@ describe('classifyResult — eol-soon warning state', () => {
   it('eolFrom in the past stays device-eol, never device-eol-soon', () => {
     const product = deviceProductLocal();
     const r = normalizeRelease({
-      id: 'pixel-old', label: 'Old', releaseDate: '2020-01-01', eolFrom: '2026-04-30',
+      id: 'pixel-old',
+      label: 'Old',
+      releaseDate: '2020-01-01',
+      eolFrom: '2026-04-30',
     });
     const c = classifyResult({ product, release: r }, { now: NOW });
     expect(c.variant).toBe('device-eol');
@@ -435,7 +615,10 @@ describe('classifyResult — eol-soon warning state', () => {
   it('eolFrom 1 month away → device-eol-soon (well inside the warning window)', () => {
     const product = deviceProductLocal();
     const r = normalizeRelease({
-      id: 'p', label: 'P', releaseDate: '2022-01-01', eolFrom: '2026-06-03',
+      id: 'p',
+      label: 'P',
+      releaseDate: '2022-01-01',
+      eolFrom: '2026-06-03',
     });
     expect(classifyResult({ product, release: r }, { now: NOW }).variant).toBe('device-eol-soon');
   });
@@ -444,7 +627,10 @@ describe('classifyResult — eol-soon warning state', () => {
     const product = deviceProductLocal();
     // ~9 months from 2026-05-03 ≈ 2027-02-01. The 9-month cutoff is months ≤ 9, so this lands inside.
     const r = normalizeRelease({
-      id: 'p', label: 'P', releaseDate: '2024-02-01', eolFrom: '2027-01-25',
+      id: 'p',
+      label: 'P',
+      releaseDate: '2024-02-01',
+      eolFrom: '2027-01-25',
     });
     expect(classifyResult({ product, release: r }, { now: NOW }).variant).toBe('device-eol-soon');
   });
@@ -452,7 +638,10 @@ describe('classifyResult — eol-soon warning state', () => {
   it('eolFrom well past 9 months away → device-supported', () => {
     const product = deviceProductLocal();
     const r = normalizeRelease({
-      id: 'p', label: 'P', releaseDate: '2024-02-01', eolFrom: '2027-06-01',
+      id: 'p',
+      label: 'P',
+      releaseDate: '2024-02-01',
+      eolFrom: '2027-06-01',
     });
     expect(classifyResult({ product, release: r }, { now: NOW }).variant).toBe('device-supported');
   });
@@ -462,7 +651,11 @@ describe('classifyResult — eol-soon warning state', () => {
     // Edge case: a release with eolFrom in the warning window AND isMaintained=false.
     // Rule 2 (unmaintained) fires before rule 4 (eolFrom future) → device-eol.
     const r = normalizeRelease({
-      id: 'p', label: 'P', releaseDate: '2022-01-01', eolFrom: '2026-09-01', isMaintained: false,
+      id: 'p',
+      label: 'P',
+      releaseDate: '2022-01-01',
+      eolFrom: '2026-09-01',
+      isMaintained: false,
     });
     expect(classifyResult({ product, release: r }, { now: NOW }).variant).toBe('device-eol');
   });
@@ -470,7 +663,11 @@ describe('classifyResult — eol-soon warning state', () => {
   it('explicit isEol=true with future eolFrom → device-eol (red beats yellow)', () => {
     const product = deviceProductLocal();
     const r = normalizeRelease({
-      id: 'p', label: 'P', releaseDate: '2022-01-01', eolFrom: '2026-09-01', isEol: true,
+      id: 'p',
+      label: 'P',
+      releaseDate: '2022-01-01',
+      eolFrom: '2026-09-01',
+      isEol: true,
     });
     expect(classifyResult({ product, release: r }, { now: NOW }).variant).toBe('device-eol');
   });
@@ -479,8 +676,13 @@ describe('classifyResult — eol-soon warning state', () => {
 describe('effectiveOsDropDate', () => {
   function macosProduct(releases) {
     return normalizeProduct({
-      id: 'macos', label: 'Apple macOS', kind: 'os', family: 'apple', formFactor: 'os',
-      endoflifeUrl: 'https://x', releases,
+      id: 'macos',
+      label: 'Apple macOS',
+      kind: 'os',
+      family: 'apple',
+      formFactor: 'os',
+      endoflifeUrl: 'https://x',
+      releases,
     });
   }
 
@@ -533,26 +735,59 @@ describe('effectiveOsDropDate', () => {
 describe('effectiveDeviceEolFrom', () => {
   function snap() {
     return normalizeSnapshot({
-      schemaVersion: 1, generatedAt: '2026-05-03T00:00:00Z', source: 'x',
+      schemaVersion: 1,
+      generatedAt: '2026-05-03T00:00:00Z',
+      source: 'x',
       products: [
         {
-          id: 'macbook-pro', label: 'Apple MacBook Pro', kind: 'device', family: 'apple', formFactor: 'laptop',
-          endoflifeUrl: 'https://x', releases: [
-            { id: 'mbp-2018', label: 'MBP 2018', releaseDate: '2018-07-12', supportedOsRange: '15' },
-            { id: 'mbp-direct', label: 'MBP direct EOL', releaseDate: '2020-01-01', eolFrom: '2027-01-01', supportedOsRange: '15' },
+          id: 'macbook-pro',
+          label: 'Apple MacBook Pro',
+          kind: 'device',
+          family: 'apple',
+          formFactor: 'laptop',
+          endoflifeUrl: 'https://x',
+          releases: [
+            {
+              id: 'mbp-2018',
+              label: 'MBP 2018',
+              releaseDate: '2018-07-12',
+              supportedOsRange: '15',
+            },
+            {
+              id: 'mbp-direct',
+              label: 'MBP direct EOL',
+              releaseDate: '2020-01-01',
+              eolFrom: '2027-01-01',
+              supportedOsRange: '15',
+            },
           ],
         },
         {
-          id: 'macos', label: 'Apple macOS', kind: 'os', family: 'apple', formFactor: 'os',
-          endoflifeUrl: 'https://x', releases: [
-            { id: '15', label: 'macOS 15', releaseDate: '2024-09-16', latestVersion: '15.7.5', codename: 'Sequoia', eolFrom: '2027-09-15' },
+          id: 'macos',
+          label: 'Apple macOS',
+          kind: 'os',
+          family: 'apple',
+          formFactor: 'os',
+          endoflifeUrl: 'https://x',
+          releases: [
+            {
+              id: '15',
+              label: 'macOS 15',
+              releaseDate: '2024-09-16',
+              latestVersion: '15.7.5',
+              codename: 'Sequoia',
+              eolFrom: '2027-09-15',
+            },
           ],
         },
         {
-          id: 'apple-watch', label: 'Apple Watch', kind: 'device', family: 'apple', formFactor: 'watch',
-          endoflifeUrl: 'https://x', releases: [
-            { id: 'aw1', label: 'Series 1', releaseDate: '2016-09-16' },
-          ],
+          id: 'apple-watch',
+          label: 'Apple Watch',
+          kind: 'device',
+          family: 'apple',
+          formFactor: 'watch',
+          endoflifeUrl: 'https://x',
+          releases: [{ id: 'aw1', label: 'Series 1', releaseDate: '2016-09-16' }],
         },
       ],
     });
@@ -595,46 +830,87 @@ describe('buildLatestOsReminder', () => {
   // Build a snapshot mirroring the real shape so the helper has full context to navigate.
   function makeSnapshot() {
     return normalizeSnapshot({
-      schemaVersion: 1, generatedAt: '2026-05-03T00:00:00Z', source: 'x',
+      schemaVersion: 1,
+      generatedAt: '2026-05-03T00:00:00Z',
+      source: 'x',
       products: [
         {
-          id: 'iphone', label: 'Apple iPhone', kind: 'device', family: 'apple', formFactor: 'phone',
-          endoflifeUrl: 'https://x', releases: [
-            { id: '12-pro', label: '12 Pro', releaseDate: '2020-10-23', supportedOsRange: '14 - 26' },
+          id: 'iphone',
+          label: 'Apple iPhone',
+          kind: 'device',
+          family: 'apple',
+          formFactor: 'phone',
+          endoflifeUrl: 'https://x',
+          releases: [
+            {
+              id: '12-pro',
+              label: '12 Pro',
+              releaseDate: '2020-10-23',
+              supportedOsRange: '14 - 26',
+            },
             { id: '8', label: '8', releaseDate: '2017-09-22', supportedOsRange: '11 - 16' },
           ],
         },
         {
-          id: 'ios', label: 'Apple iOS', kind: 'os', family: 'apple', formFactor: 'os',
-          endoflifeUrl: 'https://x', releases: [
+          id: 'ios',
+          label: 'Apple iOS',
+          kind: 'os',
+          family: 'apple',
+          formFactor: 'os',
+          endoflifeUrl: 'https://x',
+          releases: [
             { id: '26', label: '26', releaseDate: '2025-09-15', latestVersion: '26.4.2' },
-            { id: '18', label: '18', releaseDate: '2024-09-16', isEol: true, latestVersion: '18.7.8' },
-            { id: '16', label: '16', releaseDate: '2022-09-12', isEol: true, latestVersion: '16.7.15' },
+            {
+              id: '18',
+              label: '18',
+              releaseDate: '2024-09-16',
+              isEol: true,
+              latestVersion: '18.7.8',
+            },
+            {
+              id: '16',
+              label: '16',
+              releaseDate: '2022-09-12',
+              isEol: true,
+              latestVersion: '16.7.15',
+            },
           ],
         },
         {
-          id: 'samsung-mobile', label: 'Samsung Mobile', kind: 'device', family: 'samsung', formFactor: 'phone',
-          endoflifeUrl: 'https://x', releases: [
-            { id: 'galaxy-s25', label: 'Galaxy S25', releaseDate: '2025-01-01' },
-          ],
+          id: 'samsung-mobile',
+          label: 'Samsung Mobile',
+          kind: 'device',
+          family: 'samsung',
+          formFactor: 'phone',
+          endoflifeUrl: 'https://x',
+          releases: [{ id: 'galaxy-s25', label: 'Galaxy S25', releaseDate: '2025-01-01' }],
         },
         {
-          id: 'android', label: 'Android', kind: 'os', family: 'google', formFactor: 'os',
-          endoflifeUrl: 'https://x', releases: [
-            { id: '16', label: '16', releaseDate: '2025-08-15', latestVersion: '16.0.0' },
-          ],
+          id: 'android',
+          label: 'Android',
+          kind: 'os',
+          family: 'google',
+          formFactor: 'os',
+          endoflifeUrl: 'https://x',
+          releases: [{ id: '16', label: '16', releaseDate: '2025-08-15', latestVersion: '16.0.0' }],
         },
         {
-          id: 'oneplus', label: 'OnePlus', kind: 'device', family: 'oneplus', formFactor: 'phone',
-          endoflifeUrl: 'https://x', releases: [
-            { id: '12', label: 'OnePlus 12', releaseDate: '2024-01-23' },
-          ],
+          id: 'oneplus',
+          label: 'OnePlus',
+          kind: 'device',
+          family: 'oneplus',
+          formFactor: 'phone',
+          endoflifeUrl: 'https://x',
+          releases: [{ id: '12', label: 'OnePlus 12', releaseDate: '2024-01-23' }],
         },
         {
-          id: 'apple-watch', label: 'Apple Watch', kind: 'device', family: 'apple', formFactor: 'watch',
-          endoflifeUrl: 'https://x', releases: [
-            { id: 'series-10', label: 'Series 10', releaseDate: '2024-09-20' },
-          ],
+          id: 'apple-watch',
+          label: 'Apple Watch',
+          kind: 'device',
+          family: 'apple',
+          formFactor: 'watch',
+          endoflifeUrl: 'https://x',
+          releases: [{ id: 'series-10', label: 'Series 10', releaseDate: '2024-09-20' }],
         },
       ],
     });
@@ -689,23 +965,54 @@ describe('buildLatestOsReminder', () => {
 describe('buildDeviceMaxOsWarning', () => {
   function makeSnapshot() {
     return normalizeSnapshot({
-      schemaVersion: 1, generatedAt: '2026-05-03T00:00:00Z', source: 'x',
+      schemaVersion: 1,
+      generatedAt: '2026-05-03T00:00:00Z',
+      source: 'x',
       products: [
         {
-          id: 'iphone', label: 'Apple iPhone', kind: 'device', family: 'apple', formFactor: 'phone',
-          endoflifeUrl: 'https://x', releases: [
-            { id: '12-pro', label: '12 Pro', releaseDate: '2020-10-23', supportedOsRange: '14 - 26' },
+          id: 'iphone',
+          label: 'Apple iPhone',
+          kind: 'device',
+          family: 'apple',
+          formFactor: 'phone',
+          endoflifeUrl: 'https://x',
+          releases: [
+            {
+              id: '12-pro',
+              label: '12 Pro',
+              releaseDate: '2020-10-23',
+              supportedOsRange: '14 - 26',
+            },
             { id: '8', label: '8', releaseDate: '2017-09-22', supportedOsRange: '11 - 16' },
             { id: '6', label: '6', releaseDate: '2014-09-19', supportedOsRange: '8 - 12' },
           ],
         },
         {
-          id: 'ios', label: 'Apple iOS', kind: 'os', family: 'apple', formFactor: 'os',
-          endoflifeUrl: 'https://x', releases: [
+          id: 'ios',
+          label: 'Apple iOS',
+          kind: 'os',
+          family: 'apple',
+          formFactor: 'os',
+          endoflifeUrl: 'https://x',
+          releases: [
             { id: '26', label: '26', releaseDate: '2025-09-15', latestVersion: '26.4.2' },
             { id: '18', label: '18', releaseDate: '2024-09-16', latestVersion: '18.7.8' },
-            { id: '16', label: '16', releaseDate: '2022-09-12', isEol: true, eolFrom: '2025-09-15', latestVersion: '16.7.15' },
-            { id: '12', label: '12', releaseDate: '2018-09-17', isEol: true, eolFrom: '2023-01-23', latestVersion: '12.5.8' },
+            {
+              id: '16',
+              label: '16',
+              releaseDate: '2022-09-12',
+              isEol: true,
+              eolFrom: '2025-09-15',
+              latestVersion: '16.7.15',
+            },
+            {
+              id: '12',
+              label: '12',
+              releaseDate: '2018-09-17',
+              isEol: true,
+              eolFrom: '2023-01-23',
+              latestVersion: '12.5.8',
+            },
           ],
         },
       ],
@@ -751,19 +1058,49 @@ describe('buildDeviceMaxOsWarning', () => {
   it('surfaces codenames on the warning so consumers can render "13 (Ventura)"', () => {
     // macOS-shaped snapshot: device caps at macOS 14 Sonoma; family latest is macOS 26 Tahoe.
     const snap = normalizeSnapshot({
-      schemaVersion: 1, generatedAt: '2026-05-03T00:00:00Z', source: 'x',
+      schemaVersion: 1,
+      generatedAt: '2026-05-03T00:00:00Z',
+      source: 'x',
       products: [
         {
-          id: 'macbook-pro', label: 'Apple MacBook Pro', kind: 'device', family: 'apple', formFactor: 'laptop',
-          endoflifeUrl: 'https://x', releases: [
-            { id: 'mbp-2018', label: 'MacBook Pro (2018)', releaseDate: '2018-07-12', supportedOsRange: '10.13 - 14' },
+          id: 'macbook-pro',
+          label: 'Apple MacBook Pro',
+          kind: 'device',
+          family: 'apple',
+          formFactor: 'laptop',
+          endoflifeUrl: 'https://x',
+          releases: [
+            {
+              id: 'mbp-2018',
+              label: 'MacBook Pro (2018)',
+              releaseDate: '2018-07-12',
+              supportedOsRange: '10.13 - 14',
+            },
           ],
         },
         {
-          id: 'macos', label: 'Apple macOS', kind: 'os', family: 'apple', formFactor: 'os',
-          endoflifeUrl: 'https://x', releases: [
-            { id: '26', label: 'macOS 26 (Tahoe)', releaseDate: '2025-09-15', latestVersion: '26.4.1', codename: 'Tahoe' },
-            { id: '14', label: 'macOS 14 (Sonoma)', releaseDate: '2023-09-26', latestVersion: '14.8.5', codename: 'Sonoma', eolFrom: '2026-09-01' },
+          id: 'macos',
+          label: 'Apple macOS',
+          kind: 'os',
+          family: 'apple',
+          formFactor: 'os',
+          endoflifeUrl: 'https://x',
+          releases: [
+            {
+              id: '26',
+              label: 'macOS 26 (Tahoe)',
+              releaseDate: '2025-09-15',
+              latestVersion: '26.4.1',
+              codename: 'Tahoe',
+            },
+            {
+              id: '14',
+              label: 'macOS 14 (Sonoma)',
+              releaseDate: '2023-09-26',
+              latestVersion: '14.8.5',
+              codename: 'Sonoma',
+              eolFrom: '2026-09-01',
+            },
           ],
         },
       ],
@@ -781,47 +1118,123 @@ describe('buildDeviceMaxOsWarning', () => {
 describe('buildOsCheckOptions', () => {
   function makeSnapshot() {
     return normalizeSnapshot({
-      schemaVersion: 1, generatedAt: '2026-05-03T00:00:00Z', source: 'x',
+      schemaVersion: 1,
+      generatedAt: '2026-05-03T00:00:00Z',
+      source: 'x',
       products: [
         {
-          id: 'iphone', label: 'Apple iPhone', kind: 'device', family: 'apple', formFactor: 'phone',
-          endoflifeUrl: 'https://x', releases: [
-            { id: '12-pro', label: '12 Pro', releaseDate: '2020-10-23', supportedOsRange: '14 - 26' },
+          id: 'iphone',
+          label: 'Apple iPhone',
+          kind: 'device',
+          family: 'apple',
+          formFactor: 'phone',
+          endoflifeUrl: 'https://x',
+          releases: [
+            {
+              id: '12-pro',
+              label: '12 Pro',
+              releaseDate: '2020-10-23',
+              supportedOsRange: '14 - 26',
+            },
             { id: '8', label: '8', releaseDate: '2017-09-22', supportedOsRange: '11 - 16' },
           ],
         },
         {
-          id: 'ios', label: 'Apple iOS', kind: 'os', family: 'apple', formFactor: 'os',
-          endoflifeUrl: 'https://x', releases: [
+          id: 'ios',
+          label: 'Apple iOS',
+          kind: 'os',
+          family: 'apple',
+          formFactor: 'os',
+          endoflifeUrl: 'https://x',
+          releases: [
             { id: '26', label: '26', releaseDate: '2025-09-15', latestVersion: '26.4.2' },
-            { id: '18', label: '18', releaseDate: '2024-09-16', isEol: true, latestVersion: '18.7.8' },
+            {
+              id: '18',
+              label: '18',
+              releaseDate: '2024-09-16',
+              isEol: true,
+              latestVersion: '18.7.8',
+            },
           ],
         },
         {
-          id: 'macbook-pro', label: 'Apple MacBook Pro', kind: 'device', family: 'apple', formFactor: 'laptop',
-          endoflifeUrl: 'https://x', releases: [
-            { id: 'mbp-2024', label: 'MacBook Pro (2024)', releaseDate: '2024-11-08', supportedOsRange: '26' },
-            { id: 'mbp-2017', label: 'MacBook Pro (2017)', releaseDate: '2017-06-05', supportedOsRange: '13' },
+          id: 'macbook-pro',
+          label: 'Apple MacBook Pro',
+          kind: 'device',
+          family: 'apple',
+          formFactor: 'laptop',
+          endoflifeUrl: 'https://x',
+          releases: [
+            {
+              id: 'mbp-2024',
+              label: 'MacBook Pro (2024)',
+              releaseDate: '2024-11-08',
+              supportedOsRange: '26',
+            },
+            {
+              id: 'mbp-2017',
+              label: 'MacBook Pro (2017)',
+              releaseDate: '2017-06-05',
+              supportedOsRange: '13',
+            },
           ],
         },
         {
-          id: 'macos', label: 'Apple macOS', kind: 'os', family: 'apple', formFactor: 'os',
-          endoflifeUrl: 'https://x', releases: [
-            { id: '26', label: 'macOS 26 (Tahoe)', releaseDate: '2025-09-15', latestVersion: '26.0.1', codename: 'Tahoe' },
-            { id: '15', label: 'macOS 15 (Sequoia)', releaseDate: '2024-09-16', latestVersion: '15.7.5', codename: 'Sequoia' },
-            { id: '14', label: 'macOS 14 (Sonoma)', releaseDate: '2023-09-26', latestVersion: '14.8.5', codename: 'Sonoma' },
-            { id: '13', label: 'macOS 13 (Ventura)', releaseDate: '2022-10-24', isEol: true, latestVersion: '13.7.8', codename: 'Ventura' },
+          id: 'macos',
+          label: 'Apple macOS',
+          kind: 'os',
+          family: 'apple',
+          formFactor: 'os',
+          endoflifeUrl: 'https://x',
+          releases: [
+            {
+              id: '26',
+              label: 'macOS 26 (Tahoe)',
+              releaseDate: '2025-09-15',
+              latestVersion: '26.0.1',
+              codename: 'Tahoe',
+            },
+            {
+              id: '15',
+              label: 'macOS 15 (Sequoia)',
+              releaseDate: '2024-09-16',
+              latestVersion: '15.7.5',
+              codename: 'Sequoia',
+            },
+            {
+              id: '14',
+              label: 'macOS 14 (Sonoma)',
+              releaseDate: '2023-09-26',
+              latestVersion: '14.8.5',
+              codename: 'Sonoma',
+            },
+            {
+              id: '13',
+              label: 'macOS 13 (Ventura)',
+              releaseDate: '2022-10-24',
+              isEol: true,
+              latestVersion: '13.7.8',
+              codename: 'Ventura',
+            },
           ],
         },
         {
-          id: 'samsung-mobile', label: 'Samsung Mobile', kind: 'device', family: 'samsung', formFactor: 'phone',
-          endoflifeUrl: 'https://x', releases: [
-            { id: 'galaxy-s25', label: 'Galaxy S25', releaseDate: '2025-01-01' },
-          ],
+          id: 'samsung-mobile',
+          label: 'Samsung Mobile',
+          kind: 'device',
+          family: 'samsung',
+          formFactor: 'phone',
+          endoflifeUrl: 'https://x',
+          releases: [{ id: 'galaxy-s25', label: 'Galaxy S25', releaseDate: '2025-01-01' }],
         },
         {
-          id: 'android', label: 'Android', kind: 'os', family: 'google', formFactor: 'os',
-          endoflifeUrl: 'https://x', releases: [
+          id: 'android',
+          label: 'Android',
+          kind: 'os',
+          family: 'google',
+          formFactor: 'os',
+          endoflifeUrl: 'https://x',
+          releases: [
             { id: '16', label: '16', releaseDate: '2025-08-15', latestVersion: '16.0.0' },
             { id: '15', label: '15', releaseDate: '2024-10-15', latestVersion: '15.0.2' },
           ],
@@ -835,9 +1248,7 @@ describe('buildOsCheckOptions', () => {
     const product = snap.products.find((p) => p.id === 'iphone');
     const r = product.releases.find((x) => x.id === '12-pro');
     const opts = buildOsCheckOptions(snap, product, r);
-    expect(opts).toEqual([
-      { major: 26, latestVersion: '26.4.2', codename: null, eolFrom: null },
-    ]);
+    expect(opts).toEqual([{ major: 26, latestVersion: '26.4.2', codename: null, eolFrom: null }]);
   });
 
   it('iPhone 8 (max iOS 16) returns nothing (16 is EOL, no non-EOL within range)', () => {
@@ -974,16 +1385,26 @@ describe('buildAppleSupportEstimate', () => {
 
   function appleProduct(formFactor) {
     return normalizeProduct({
-      id: 'iphone', label: 'Apple iPhone', kind: 'device', family: 'apple', formFactor,
-      endoflifeUrl: 'https://x', releases: [],
+      id: 'iphone',
+      label: 'Apple iPhone',
+      kind: 'device',
+      family: 'apple',
+      formFactor,
+      endoflifeUrl: 'https://x',
+      releases: [],
     });
   }
 
   it('returns null for non-Apple devices (Pixel, Samsung publish their own)', () => {
     const r = release({ releaseDate: '2024-01-01' });
     const pixel = normalizeProduct({
-      id: 'pixel', label: 'Google Pixel', kind: 'device', family: 'google', formFactor: 'phone',
-      endoflifeUrl: 'https://x', releases: [],
+      id: 'pixel',
+      label: 'Google Pixel',
+      kind: 'device',
+      family: 'google',
+      formFactor: 'phone',
+      endoflifeUrl: 'https://x',
+      releases: [],
     });
     expect(buildAppleSupportEstimate(pixel, r, now)).toBeNull();
   });
@@ -1003,7 +1424,7 @@ describe('buildAppleSupportEstimate', () => {
     expect(buildAppleSupportEstimate(appleProduct('os'), r, now)).toBeNull();
   });
 
-  it("iPhone released 8 months ago → years-about (7.5–8 window collapses when rounded)", () => {
+  it('iPhone released 8 months ago → years-about (7.5–8 window collapses when rounded)', () => {
     // Apple's narrow 7.5-8 phone window almost always rounds min and max to the
     // same integer, so the renderer needs the years-about case rather than
     // 'X to X' which reads awkwardly.
@@ -1050,8 +1471,13 @@ describe('buildAppleSupportEstimate', () => {
     // (Google publishes per-Pixel EOL dates, no estimate needed).
     const r = release({ releaseDate: '2024-01-01' });
     const pixel = normalizeProduct({
-      id: 'pixel', label: 'Google Pixel', kind: 'device', family: 'google', formFactor: 'phone',
-      endoflifeUrl: 'https://x', releases: [],
+      id: 'pixel',
+      label: 'Google Pixel',
+      kind: 'device',
+      family: 'google',
+      formFactor: 'phone',
+      endoflifeUrl: 'https://x',
+      releases: [],
     });
     expect(buildAppleSupportEstimate(pixel, r, now)).toBeNull();
   });
@@ -1178,19 +1604,34 @@ describe('stale OS ceiling (endoflife.date lag after a new major ships)', () => 
 
   function staleSnapshot(iphoneCeiling = '26') {
     return normalizeSnapshot({
-      schemaVersion: 1, generatedAt: '2026-09-21T00:00:00Z', source: 'x',
+      schemaVersion: 1,
+      generatedAt: '2026-09-21T00:00:00Z',
+      source: 'x',
       products: [
         {
-          id: 'iphone', label: 'Apple iPhone', kind: 'device', family: 'apple', formFactor: 'phone',
+          id: 'iphone',
+          label: 'Apple iPhone',
+          kind: 'device',
+          family: 'apple',
+          formFactor: 'phone',
           endoflifeUrl: 'https://x',
           releases: [
             { id: '17e', label: '17e', releaseDate: '2026-03-11', supportedOsRange: iphoneCeiling },
-            { id: '15', label: '15', releaseDate: '2023-09-22', supportedOsRange: `17 - ${iphoneCeiling}` },
+            {
+              id: '15',
+              label: '15',
+              releaseDate: '2023-09-22',
+              supportedOsRange: `17 - ${iphoneCeiling}`,
+            },
             { id: '8', label: '8', releaseDate: '2017-09-22', supportedOsRange: '11 - 16' },
           ],
         },
         {
-          id: 'ios', label: 'Apple iOS', kind: 'os', family: 'apple', formFactor: 'os',
+          id: 'ios',
+          label: 'Apple iOS',
+          kind: 'os',
+          family: 'apple',
+          formFactor: 'os',
           endoflifeUrl: 'https://x',
           releases: [
             { id: '27', label: '27', releaseDate: '2026-09-14', latestVersion: '27' },
@@ -1226,8 +1667,9 @@ describe('stale OS ceiling (endoflife.date lag after a new major ships)', () => 
   it('still classifies the device as supported', () => {
     const snap = staleSnapshot();
     const { product, release } = pick(snap, '15');
-    expect(classifyResult({ product, release }, { now: STALE_NOW, snapshot: snap }).variant)
-      .toBe('device-supported');
+    expect(classifyResult({ product, release }, { now: STALE_NOW, snapshot: snap }).variant).toBe(
+      'device-supported',
+    );
   });
 
   it('leaves a genuinely capped model in the same line untouched', () => {
@@ -1249,10 +1691,16 @@ describe('stale OS ceiling (endoflife.date lag after a new major ships)', () => 
     // iPhone 15 genuinely dropped at iOS 27: ceiling 26 is now one behind a line whose
     // newest model reads 27, so nothing is suspect and the warning must come back.
     const snap = normalizeSnapshot({
-      schemaVersion: 1, generatedAt: '2026-09-21T00:00:00Z', source: 'x',
+      schemaVersion: 1,
+      generatedAt: '2026-09-21T00:00:00Z',
+      source: 'x',
       products: [
         {
-          id: 'iphone', label: 'Apple iPhone', kind: 'device', family: 'apple', formFactor: 'phone',
+          id: 'iphone',
+          label: 'Apple iPhone',
+          kind: 'device',
+          family: 'apple',
+          formFactor: 'phone',
           endoflifeUrl: 'https://x',
           releases: [
             { id: '17e', label: '17e', releaseDate: '2026-03-11', supportedOsRange: '27' },
@@ -1260,7 +1708,11 @@ describe('stale OS ceiling (endoflife.date lag after a new major ships)', () => 
           ],
         },
         {
-          id: 'ios', label: 'Apple iOS', kind: 'os', family: 'apple', formFactor: 'os',
+          id: 'ios',
+          label: 'Apple iOS',
+          kind: 'os',
+          family: 'apple',
+          formFactor: 'os',
           endoflifeUrl: 'https://x',
           releases: [
             { id: '27', label: '27', releaseDate: '2026-09-14', latestVersion: '27' },
@@ -1272,7 +1724,9 @@ describe('stale OS ceiling (endoflife.date lag after a new major ships)', () => 
     const { product, release } = pick(snap, '15');
     expect(buildOsCheckOptions(snap, product, release).map((o) => o.major)).toEqual([26]);
     const reminder = buildLatestOsReminder(snap, product, release);
-    expect(buildDeviceMaxOsWarning(snap, product, release, reminder, STALE_NOW).kind).toBe('older-os');
+    expect(buildDeviceMaxOsWarning(snap, product, release, reminder, STALE_NOW).kind).toBe(
+      'older-os',
+    );
   });
 });
 

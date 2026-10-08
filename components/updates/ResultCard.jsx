@@ -42,8 +42,8 @@ const ESSENTIALS_HREF = '/essentials/';
 // Result-card stagger. Each delay is expressed as the previous step plus an offset so
 // the cumulative timing is obvious and easy to retune. Selecting a device shows the
 // device card immediately (no entry); subsequent boxes slide in on this beat.
-const STAGGER_FIRST_OFFSET = 300;   // first result box appears this long after selection
-const STAGGER_NEXT_OFFSET = 1000;   // each subsequent box waits this long after the previous
+const STAGGER_FIRST_OFFSET = 300; // first result box appears this long after selection
+const STAGGER_NEXT_OFFSET = 1000; // each subsequent box waits this long after the previous
 const STAGGER_FIRST_MS = STAGGER_FIRST_OFFSET;
 const STAGGER_SECOND_MS = STAGGER_FIRST_MS + STAGGER_NEXT_OFFSET;
 const STAGGER_THIRD_MS = STAGGER_SECOND_MS + STAGGER_NEXT_OFFSET;
@@ -89,9 +89,7 @@ const boldDateChunks = (chunks) => (
  * read as a free-floating badge instead of part of the sentence. NBSP alone
  * doesn't fix it because inline-block boundaries override nbsp's break-prevent.
  */
-const nowrapChunks = (chunks) => (
-  <span className="whitespace-nowrap">{chunks}</span>
-);
+const nowrapChunks = (chunks) => <span className="whitespace-nowrap">{chunks}</span>;
 
 /**
  * Map a classifyResult variant to the analytics patch-state value. Kept narrow on
@@ -152,7 +150,7 @@ function SlideInBox({ children, className }) {
         // 700ms feels deliberate — fast enough to not stall the user, slow enough that
         // the slide reads as a separate beat instead of a flash.
         'animate-in fade-in slide-in-from-bottom-2 duration-700',
-        className
+        className,
       )}
     >
       {children}
@@ -172,11 +170,7 @@ function DelayedSlideInBox({ delayMs, connectorTone = 'input', children }) {
   if (!ready) return null;
   return (
     <SlideInBox>
-      {connectorTone ? (
-        <ConnectedBox tone={connectorTone}>{children}</ConnectedBox>
-      ) : (
-        children
-      )}
+      {connectorTone ? <ConnectedBox tone={connectorTone}>{children}</ConnectedBox> : children}
     </SlideInBox>
   );
 }
@@ -258,7 +252,16 @@ const TONE_ICON_COLOR = {
   primary: 'text-primary',
 };
 
-function ResultBox({ tone, icon: IconProp, iconSize = 'lg', iconClassName, titleClassName, title, subtitle, children }) {
+function ResultBox({
+  tone,
+  icon: IconProp,
+  iconSize = 'lg',
+  iconClassName,
+  titleClassName,
+  title,
+  subtitle,
+  children,
+}) {
   // 'lg' (h-12) carries the result's emotional weight for top-level variants
   // (DeviceEol, OsSupported, etc.). 'md' (h-10) is used by FinalSuccessBox —
   // smaller than 'lg' so the icon doesn't dwarf the smaller checkmark on the
@@ -279,7 +282,12 @@ function ResultBox({ tone, icon: IconProp, iconSize = 'lg', iconClassName, title
           aria-hidden="true"
         />
         <div className="min-w-0 flex-1 space-y-2">
-          <h2 className={cn('text-2xl font-semibold leading-tight text-foreground sm:text-3xl', titleClassName)}>
+          <h2
+            className={cn(
+              'text-2xl font-semibold leading-tight text-foreground sm:text-3xl',
+              titleClassName,
+            )}
+          >
             {title}
           </h2>
           {subtitle ? <p className="text-base text-foreground/80">{subtitle}</p> : null}
@@ -326,7 +334,7 @@ function EssentialsPanel() {
           className={cn(
             'mt-3 inline-flex cursor-pointer items-center justify-center gap-2 rounded-md border-2 border-primary bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-opacity',
             'hover:opacity-90',
-            'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/40'
+            'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/40',
           )}
         >
           {t('updates.result.viewEssentialsCta')}
@@ -379,9 +387,7 @@ function ThreatModelBlock({ soft = false }) {
   const locale = useLocale();
   return (
     <div className="rounded-md border border-border bg-background/60 p-3">
-      <BlockHeading icon={ShieldAlert}>
-        {t('updates.result.threatModelHeader')}
-      </BlockHeading>
+      <BlockHeading icon={ShieldAlert}>{t('updates.result.threatModelHeader')}</BlockHeading>
       <p className="text-sm leading-relaxed text-foreground/90">
         {soft
           ? t('updates.result.threatModelSoft')
@@ -420,9 +426,7 @@ function BuyingGuidance({ family, formFactor }) {
   if (!spec) return null;
   return (
     <div className="rounded-md border border-border bg-background/60 p-3">
-      <BlockHeading icon={ShoppingCart}>
-        {t('updates.result.buyingGuidance.heading')}
-      </BlockHeading>
+      <BlockHeading icon={ShoppingCart}>{t('updates.result.buyingGuidance.heading')}</BlockHeading>
       <p className="text-sm leading-relaxed text-foreground/90">
         {t('updates.result.buyingGuidance.yearsPattern', {
           deviceLabel: t(`updates.result.buyingGuidance.deviceLabel.${spec.labelKey}`),
@@ -434,7 +438,6 @@ function BuyingGuidance({ family, formFactor }) {
     </div>
   );
 }
-
 
 /**
  * Resolve a path string from messages with graceful null when missing.
@@ -452,16 +455,13 @@ function BuyingGuidance({ family, formFactor }) {
 // scales the icon with the surrounding font size; mr-1 is the icon-to-label
 // gap. The whole label stays in `whitespace-nowrap` so it doesn't break
 // between the icon and its first word when the path wraps.
-const iconClassName =
-  'inline-block h-[1em] w-[1em] align-[-0.15em] mr-1 shrink-0';
+const iconClassName = 'inline-block h-[1em] w-[1em] align-[-0.15em] mr-1 shrink-0';
 
 function pathFromKey(t, key) {
   if (!t.has(key)) return null;
   return t.rich(key, {
     code: (chunks) => (
-      <code className="rounded bg-muted px-1 py-0.5 font-mono text-foreground">
-        {chunks}
-      </code>
+      <code className="rounded bg-muted px-1 py-0.5 font-mono text-foreground">{chunks}</code>
     ),
     apple: (chunks) => (
       <span className="whitespace-nowrap">
@@ -497,13 +497,17 @@ function manufacturerSubject(t, family, { lower = false } = {}) {
     const m = t(key);
     if (m && !m.startsWith('updates.result.deviceInfo.')) return m;
   }
-  return t(lower
-    ? 'updates.result.manufacturerFallbackLower'
-    : 'updates.result.manufacturerFallback');
+  return t(
+    lower ? 'updates.result.manufacturerFallbackLower' : 'updates.result.manufacturerFallback',
+  );
 }
 
-function osVersionPath(t, osId) { return pathFromKey(t, `updates.result.osVersionPath.${osId}`); }
-function osUpdatePath(t, osId) { return pathFromKey(t, `updates.result.settingsPath.${osId}`); }
+function osVersionPath(t, osId) {
+  return pathFromKey(t, `updates.result.osVersionPath.${osId}`);
+}
+function osUpdatePath(t, osId) {
+  return pathFromKey(t, `updates.result.settingsPath.${osId}`);
+}
 
 /**
  * Look up a short OS label ("iOS", "macOS", "Windows") for an OS product.
@@ -573,11 +577,12 @@ function DeviceConfirmedSummary({ product, release, displayLabel, classification
   //      typical-window estimate. Chip prefixes "about X more years".
   //   3. Neither: render the plain "still receiving security updates" title.
   const exactRemaining = formatTimeUntil(classification?.effectiveEolFrom);
-  const approxRemaining = !exactRemaining && appleEstimate
-    ? (appleEstimate.case === 'months-up-to'
+  const approxRemaining =
+    !exactRemaining && appleEstimate
+      ? appleEstimate.case === 'months-up-to'
         ? { months: appleEstimate.remainingMaxMonths }
-        : { years: appleEstimate.remainingMaxYears })
-    : null;
+        : { years: appleEstimate.remainingMaxYears }
+      : null;
   // Highlight chip styled to match the green confirmed-summary panel: bg-success
   // matches the icon, text-background inverts to the page colour to read well in
   // both themes. inline-block whitespace-nowrap keeps the phrase atomic.
@@ -623,9 +628,7 @@ function DeviceConfirmedSummary({ product, release, displayLabel, classification
     <div className="flex items-start gap-3 rounded-lg border-2 border-success/50 bg-success/5 p-4">
       <CheckCircle2 className="h-7 w-7 shrink-0 text-success" aria-hidden="true" />
       <div className="min-w-0 flex-1 space-y-1">
-        <p className="text-base font-medium text-foreground sm:text-lg">
-          {titleNode}
-        </p>
+        <p className="text-base font-medium text-foreground sm:text-lg">{titleNode}</p>
         {release.eolFrom ? (
           <p className="text-xs text-muted-foreground">
             {t.rich('updates.result.deviceSupportedSubtitleUntil', {
@@ -688,9 +691,9 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
   const hasPointVersions = options.some((o) => o.latestVersion);
 
   const heading = hasPointVersions
-    ? (osLabel
-        ? t('updates.result.osCheckStep.headingForOs', { os: osLabel })
-        : t('updates.result.osCheckStep.headingGeneric'))
+    ? osLabel
+      ? t('updates.result.osCheckStep.headingForOs', { os: osLabel })
+      : t('updates.result.osCheckStep.headingGeneric')
     : t('updates.result.osCheckStep.headingUpdatesAvailable', { device: deviceNoun });
 
   const subheading = hasPointVersions
@@ -698,14 +701,14 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
     : t('updates.result.osCheckStep.subheadingUpdatesHelp');
 
   const menuPath = osId
-    ? (hasPointVersions ? osVersionPath(t, osId) : osUpdatePath(t, osId))
+    ? hasPointVersions
+      ? osVersionPath(t, osId)
+      : osUpdatePath(t, osId)
     : null;
 
   return (
     <div className="rounded-lg border-2 border-primary/50 bg-primary/5 p-6">
-      <h3 className="text-xl font-semibold leading-tight text-foreground sm:text-2xl">
-        {heading}
-      </h3>
+      <h3 className="text-xl font-semibold leading-tight text-foreground sm:text-2xl">{heading}</h3>
 
       {osId && menuPath ? (
         <div className="mt-3 space-y-2">
@@ -715,119 +718,119 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
       ) : null}
 
       <div className="mt-5 space-y-4">
-        {options.length > 0 ? (() => {
-          // OSes with point versions (iOS / macOS / Windows) get a pair PER major
-          // — "Older than X.Y.Z" + "X.Y.Z" — so users can flag a stale patch
-          // within their current major. OSes without point versions (Android,
-          // where there's no global "latest patch" string) get a single binary
-          // pair anchored to the device's latest available major: "I'm on Android
-          // 16" → success, "Older than Android 16" → warning. This keeps the
-          // pick meaningful — picking an older major signals "you should update"
-          // rather than the previous one-button-per-major flow that called
-          // Android 14 fully patched alongside the latest.
-          const hasPointVersions = options.some((o) => o.latestVersion);
-          if (hasPointVersions) {
-            return options.map((opt, idx, arr) => {
-              // Each major gets a small heading so the buttons inside can stay
-              // short — long labels like "Between macOS 26.0.0 and 26.4.0 (Tahoe)"
-              // wrapped two lines on phones; the heading carries the OS + codename
-              // context once and the buttons just carry the version delta.
-              //
-              // Suppressed when there's only one major to pick from (e.g. an
-              // iPhone 12 Pro that can only run iOS 26): the picker heading
-              // ("Which version of iOS are you running?") already names the
-              // OS, so a sub-heading "iOS 26" above the only row is redundant.
-              const showHeader = arr.length > 1;
-              const headerLabel = opt.codename
-                ? `${osLabel || ''} ${opt.major} (${opt.codename})`
-                : `${osLabel || ''} ${opt.major}`;
-              const header = showHeader ? (
-                <p className="text-sm font-medium text-foreground/70">
-                  {headerLabel.trim()}
-                </p>
-              ) : null;
+        {options.length > 0 ? (
+          (() => {
+            // OSes with point versions (iOS / macOS / Windows) get a pair PER major
+            // — "Older than X.Y.Z" + "X.Y.Z" — so users can flag a stale patch
+            // within their current major. OSes without point versions (Android,
+            // where there's no global "latest patch" string) get a single binary
+            // pair anchored to the device's latest available major: "I'm on Android
+            // 16" → success, "Older than Android 16" → warning. This keeps the
+            // pick meaningful — picking an older major signals "you should update"
+            // rather than the previous one-button-per-major flow that called
+            // Android 14 fully patched alongside the latest.
+            const hasPointVersions = options.some((o) => o.latestVersion);
+            if (hasPointVersions) {
+              return options.map((opt, idx, arr) => {
+                // Each major gets a small heading so the buttons inside can stay
+                // short — long labels like "Between macOS 26.0.0 and 26.4.0 (Tahoe)"
+                // wrapped two lines on phones; the heading carries the OS + codename
+                // context once and the buttons just carry the version delta.
+                //
+                // Suppressed when there's only one major to pick from (e.g. an
+                // iPhone 12 Pro that can only run iOS 26): the picker heading
+                // ("Which version of iOS are you running?") already names the
+                // OS, so a sub-heading "iOS 26" above the only row is redundant.
+                const showHeader = arr.length > 1;
+                const headerLabel = opt.codename
+                  ? `${osLabel || ''} ${opt.major} (${opt.codename})`
+                  : `${osLabel || ''} ${opt.major}`;
+                const header = showHeader ? (
+                  <p className="text-sm font-medium text-foreground/70">{headerLabel.trim()}</p>
+                ) : null;
 
-              if (opt.latestVersion) {
-                // Non-bottom rows can be specific: 'Between {major}.0.0 and the
-                // previous patch'. The bottom row uses 'Older than {latest}'
-                // because anything older than its latest patch is also older
-                // than every supported major below — same catch-all behaviour
-                // as a single-row picker.
-                const isLastRow = idx === arr.length - 1;
-                const previousVersion = decrementPatchVersion(opt.latestVersion);
-                const useBetween = !isLastRow && previousVersion !== null;
-                const warningLabel = useBetween
-                  ? t('updates.result.osCheckStep.optionBetweenShort', {
-                      major: opt.major,
-                      previousVersion,
-                    })
-                  : t('updates.result.osCheckStep.optionOlderShort', {
-                      version: opt.latestVersion,
-                    });
+                if (opt.latestVersion) {
+                  // Non-bottom rows can be specific: 'Between {major}.0.0 and the
+                  // previous patch'. The bottom row uses 'Older than {latest}'
+                  // because anything older than its latest patch is also older
+                  // than every supported major below — same catch-all behaviour
+                  // as a single-row picker.
+                  const isLastRow = idx === arr.length - 1;
+                  const previousVersion = decrementPatchVersion(opt.latestVersion);
+                  const useBetween = !isLastRow && previousVersion !== null;
+                  const warningLabel = useBetween
+                    ? t('updates.result.osCheckStep.optionBetweenShort', {
+                        major: opt.major,
+                        previousVersion,
+                      })
+                    : t('updates.result.osCheckStep.optionOlderShort', {
+                        version: opt.latestVersion,
+                      });
+                  return (
+                    <div key={opt.major} className="space-y-1.5">
+                      {header}
+                      <div className="flex flex-wrap gap-2">
+                        <PickerButton
+                          icon={History}
+                          tone="warning"
+                          onClick={() => handlePickOlder(opt)}
+                          label={warningLabel}
+                        />
+                        <PickerButton
+                          icon={CheckCircle2}
+                          tone="success"
+                          onClick={() => handlePickLatest(opt)}
+                          label={t('updates.result.osCheckStep.optionLatestShort', {
+                            version: opt.latestVersion,
+                          })}
+                        />
+                      </div>
+                    </div>
+                  );
+                }
+                // Mixed case (some majors lack latestVersion) — single confirmation
+                // button. The heading carries the version label, so the button just
+                // affirms "I'm on this version".
                 return (
                   <div key={opt.major} className="space-y-1.5">
                     {header}
                     <div className="flex flex-wrap gap-2">
                       <PickerButton
-                        icon={History}
-                        tone="warning"
-                        onClick={() => handlePickOlder(opt)}
-                        label={warningLabel}
-                      />
-                      <PickerButton
                         icon={CheckCircle2}
                         tone="success"
                         onClick={() => handlePickLatest(opt)}
-                        label={t('updates.result.osCheckStep.optionLatestShort', {
-                          version: opt.latestVersion,
-                        })}
+                        label={t('updates.result.osCheckStep.optionThisVersion')}
                       />
                     </div>
                   </div>
                 );
-              }
-              // Mixed case (some majors lack latestVersion) — single confirmation
-              // button. The heading carries the version label, so the button just
-              // affirms "I'm on this version".
-              return (
-                <div key={opt.major} className="space-y-1.5">
-                  {header}
-                  <div className="flex flex-wrap gap-2">
-                    <PickerButton
-                      icon={CheckCircle2}
-                      tone="success"
-                      onClick={() => handlePickLatest(opt)}
-                      label={t('updates.result.osCheckStep.optionThisVersion')}
-                    />
-                  </div>
-                </div>
-              );
-            });
-          }
-          // Android-style: ask the patch-level question directly. options[0] is
-          // still passed through to the handlers so OsNeedsUpdateBox can compute
-          // its 'No updates available and I'm older than {os} {major}' button
-          // and the device-EOL escalation works the same way. Warning button
-          // ('I see updates available') leads, since that's the case that
-          // demands action — the success path requires no follow-up.
-          const latestOpt = options[0];
-          return (
-            <div className="flex flex-wrap gap-2">
-              <PickerButton
-                icon={History}
-                tone="warning"
-                onClick={() => handlePickOlder(latestOpt)}
-                label={t('updates.result.osCheckStep.optionUpdatesAvailable')}
-              />
-              <PickerButton
-                icon={CheckCircle2}
-                tone="success"
-                onClick={() => handlePickLatest(latestOpt)}
-                label={noUpdatesAvailableLabel(t, osId)}
-              />
-            </div>
-          );
-        })() : (
+              });
+            }
+            // Android-style: ask the patch-level question directly. options[0] is
+            // still passed through to the handlers so OsNeedsUpdateBox can compute
+            // its 'No updates available and I'm older than {os} {major}' button
+            // and the device-EOL escalation works the same way. Warning button
+            // ('I see updates available') leads, since that's the case that
+            // demands action — the success path requires no follow-up.
+            const latestOpt = options[0];
+            return (
+              <div className="flex flex-wrap gap-2">
+                <PickerButton
+                  icon={History}
+                  tone="warning"
+                  onClick={() => handlePickOlder(latestOpt)}
+                  label={t('updates.result.osCheckStep.optionUpdatesAvailable')}
+                />
+                <PickerButton
+                  icon={CheckCircle2}
+                  tone="success"
+                  onClick={() => handlePickLatest(latestOpt)}
+                  label={noUpdatesAvailableLabel(t, osId)}
+                />
+              </div>
+            );
+          })()
+        ) : (
           // No OS data — single confirmation button (e.g., OnePlus, watches without OS lookup).
           <PickerButton
             icon={CheckCircle2}
@@ -859,8 +862,10 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
  */
 function PickerButton({ onClick, label, tone = 'primary', icon: IconProp, filled = false }) {
   const outlineToneClasses = {
-    primary: 'border-primary text-primary hover:bg-primary hover:text-primary-foreground focus-visible:ring-primary/40',
-    success: 'border-success text-success hover:bg-success hover:text-success-foreground focus-visible:ring-success/40',
+    primary:
+      'border-primary text-primary hover:bg-primary hover:text-primary-foreground focus-visible:ring-primary/40',
+    success:
+      'border-success text-success hover:bg-success hover:text-success-foreground focus-visible:ring-success/40',
     // text-warning at the default --warning shade was barely readable on white
     // in light mode, and warning-foreground (light yellow) is poor contrast on
     // the yellow fill in either mode. Use Tailwind's amber palette directly so
@@ -868,8 +873,10 @@ function PickerButton({ onClick, label, tone = 'primary', icon: IconProp, filled
     // light-enough one for dark mode (amber-300). font-semibold gives an extra
     // bit of weight at the small button size. Hover fills warning yellow with
     // hard-coded black text — works in both themes.
-    warning: 'border-warning font-semibold text-amber-700 dark:text-amber-300 hover:bg-warning hover:text-black focus-visible:ring-warning/40',
-    destructive: 'border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground focus-visible:ring-destructive/40',
+    warning:
+      'border-warning font-semibold text-amber-700 dark:text-amber-300 hover:bg-warning hover:text-black focus-visible:ring-warning/40',
+    destructive:
+      'border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground focus-visible:ring-destructive/40',
     // 'ghost' is the deliberately-quiet sibling: invisible border and muted
     // text by default, only hinting at click-ability on hover/focus where the
     // outline appears. Used for fallback choices ("I'm not sure") that should
@@ -877,17 +884,22 @@ function PickerButton({ onClick, label, tone = 'primary', icon: IconProp, filled
     // user's eye. border-2 border-transparent keeps the layout box the same
     // size as the toned buttons so the "ghost → outline" reveal doesn't shift
     // anything else on the row.
-    ghost: 'border-transparent text-muted-foreground hover:border-muted-foreground/40 hover:text-foreground focus-visible:border-muted-foreground/40 focus-visible:text-foreground focus-visible:ring-muted-foreground/20',
+    ghost:
+      'border-transparent text-muted-foreground hover:border-muted-foreground/40 hover:text-foreground focus-visible:border-muted-foreground/40 focus-visible:text-foreground focus-visible:ring-muted-foreground/20',
   };
   // `filled` upgrades the button from outline-only to filled-tone with foreground text —
   // used when the button stands alone in its row (e.g. "Done, I've updated" with no
   // sibling) so it carries the recommended-action weight rather than reading as one of
   // several equal-weight choices.
   const filledToneClasses = {
-    primary: 'border-primary bg-primary text-primary-foreground hover:opacity-90 focus-visible:ring-primary/40',
-    success: 'border-success bg-success text-success-foreground hover:opacity-90 focus-visible:ring-success/40',
-    warning: 'border-warning bg-warning font-semibold text-black hover:opacity-90 focus-visible:ring-warning/40',
-    destructive: 'border-destructive bg-destructive text-destructive-foreground hover:opacity-90 focus-visible:ring-destructive/40',
+    primary:
+      'border-primary bg-primary text-primary-foreground hover:opacity-90 focus-visible:ring-primary/40',
+    success:
+      'border-success bg-success text-success-foreground hover:opacity-90 focus-visible:ring-success/40',
+    warning:
+      'border-warning bg-warning font-semibold text-black hover:opacity-90 focus-visible:ring-warning/40',
+    destructive:
+      'border-destructive bg-destructive text-destructive-foreground hover:opacity-90 focus-visible:ring-destructive/40',
   };
   const toneClasses = (filled ? filledToneClasses : outlineToneClasses)[tone] || '';
   return (
@@ -897,7 +909,7 @@ function PickerButton({ onClick, label, tone = 'primary', icon: IconProp, filled
       className={cn(
         'inline-flex cursor-pointer items-center justify-center gap-2 rounded-md border-2 px-4 py-2 text-sm font-medium transition-colors',
         'focus-visible:outline-hidden focus-visible:ring-2',
-        toneClasses
+        toneClasses,
       )}
     >
       {IconProp ? <IconProp className="h-4 w-4 shrink-0" aria-hidden="true" /> : null}
@@ -969,16 +981,20 @@ function FinalSuccessBox({ snapshot, product, release, displayLabel, pickedOptio
   // but calling it "the latest version" of iOS is simply false, and it reads as "you
   // have nothing left to do" to someone whose next step is new hardware.
   const familyLatest = product.kind === 'os' ? null : latestSupportedOsRelease(osProduct);
-  const isFamilyLatest = !familyLatest || !pickedOption
-    || parseFloat(familyLatest.id) <= pickedOption.major;
+  const isFamilyLatest =
+    !familyLatest || !pickedOption || parseFloat(familyLatest.id) <= pickedOption.major;
 
   let osLine;
   if (pickedOption && osLabel) {
     // For OSes without point versions (Android), the major IS the version they confirm.
     const versionLabel = pickedOption.latestVersion || String(pickedOption.major);
     const key = pickedOption.codename
-      ? (isFamilyLatest ? 'osCheckCodename' : 'osCheckDeviceMaxCodename')
-      : (isFamilyLatest ? 'osCheck' : 'osCheckDeviceMax');
+      ? isFamilyLatest
+        ? 'osCheckCodename'
+        : 'osCheckDeviceMaxCodename'
+      : isFamilyLatest
+        ? 'osCheck'
+        : 'osCheckDeviceMax';
     osLine = t(`updates.result.finalSuccess.${key}`, {
       os: osLabel,
       version: versionLabel,
@@ -1042,7 +1058,7 @@ function OsNeedsUpdateBox({
   // Prefer the dedicated update-path copy; fall back to the version-finding path so
   // we never end up with a "How to update:" heading sitting above empty space when a
   // settingsPath translation is missing for the resolved OS id.
-  const updatePath = osId ? (osUpdatePath(t, osId) || osVersionPath(t, osId)) : null;
+  const updatePath = osId ? osUpdatePath(t, osId) || osVersionPath(t, osId) : null;
 
   const osLabel = shortOsLabel(t, osProduct);
 
@@ -1082,9 +1098,7 @@ function OsNeedsUpdateBox({
           <h2 className="text-2xl font-semibold leading-tight text-foreground sm:text-3xl">
             {heading}
           </h2>
-          <p className="text-base text-foreground/80">
-            {t('updates.result.osNeedsUpdate.body')}
-          </p>
+          <p className="text-base text-foreground/80">{t('updates.result.osNeedsUpdate.body')}</p>
 
           {/* Name the gap when the user is a whole major behind rather than a few
               patches. "Update to the latest version" is not actionable enough when the
@@ -1200,13 +1214,14 @@ function DeviceSupported({ snapshot, product, release, classification, onReset }
   // Tone of the step block, used to colour the connector between the step block and
   // the max-OS warning below. 'pick' is the primary picker box; needs-update is the
   // amber warning; success is the green final box; stuck-on-old-os is destructive.
-  const stepTone = step === 'pick'
-    ? 'primary'
-    : step === 'needs-update' || step === 'needs-update-uncertain'
-      ? 'warning'
-      : step === 'stuck-on-old-os'
-        ? 'destructive'
-        : 'success';
+  const stepTone =
+    step === 'pick'
+      ? 'primary'
+      : step === 'needs-update' || step === 'needs-update-uncertain'
+        ? 'warning'
+        : step === 'stuck-on-old-os'
+          ? 'destructive'
+          : 'success';
 
   // Show the EssentialsPanel once the user has reached a final state. For
   // devices we can't enumerate OS versions for (Apple Watch / OnePlus /
@@ -1234,9 +1249,18 @@ function DeviceSupported({ snapshot, product, release, classification, onReset }
         <SlideInBox>
           <ConnectedBox tone="input">
             {isEolSoon ? (
-              <DeviceEolSoonHeader product={product} release={release} classification={classification} />
+              <DeviceEolSoonHeader
+                product={product}
+                release={release}
+                classification={classification}
+              />
             ) : (
-              <DeviceConfirmedSummary product={product} release={release} displayLabel={displayLabel} classification={classification} />
+              <DeviceConfirmedSummary
+                product={product}
+                release={release}
+                displayLabel={displayLabel}
+                classification={classification}
+              />
             )}
           </ConnectedBox>
         </SlideInBox>
@@ -1363,9 +1387,7 @@ function DeviceMaxOsWarning({ snapshot, product, release }) {
         {t('updates.result.deviceMaxOsWarningTitle')}
       </p>
       <p className="mt-1 text-sm text-foreground/90">{message}</p>
-      <p className="mt-2 text-sm text-foreground/80">
-        {t('updates.result.deviceUpgradePlan')}
-      </p>
+      <p className="mt-2 text-sm text-foreground/80">{t('updates.result.deviceUpgradePlan')}</p>
     </div>
   );
 }
@@ -1389,40 +1411,40 @@ function DeviceUncertain({ snapshot, product, release, classification, onReset }
 
   return (
     <>
-    <DelayedSlideInBox delayMs={STAGGER_FIRST_MS}>
-      <ResultBox
-        tone="amber"
-        icon={AlertTriangle}
-        title={t('updates.result.deviceUncertainTitle', { label: displayLabel })}
-        subtitle={t('updates.result.deviceUncertainSubtitle', {
-          label: displayLabel,
-          age: ageText,
-          manufacturer: manufacturerSubject(t, product.family),
-        })}
-      >
-        {supportInfo ? (
-          <p className="text-sm text-foreground/90">
-            {t.rich('updates.result.deviceUncertainCheck', {
-              link: () => (
-                <a
-                  href={supportInfo.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary underline"
-                >
-                  {supportInfo.label}
-                </a>
-              ),
-            })}
-          </p>
-        ) : null}
-        <ThreatModelBlock soft />
-        <ResultActions product={product} onReset={onReset} />
-      </ResultBox>
-    </DelayedSlideInBox>
-    <DelayedSlideInBox delayMs={ESSENTIALS_DELAY_MS} connectorTone="warning">
-      <EssentialsPanel />
-    </DelayedSlideInBox>
+      <DelayedSlideInBox delayMs={STAGGER_FIRST_MS}>
+        <ResultBox
+          tone="amber"
+          icon={AlertTriangle}
+          title={t('updates.result.deviceUncertainTitle', { label: displayLabel })}
+          subtitle={t('updates.result.deviceUncertainSubtitle', {
+            label: displayLabel,
+            age: ageText,
+            manufacturer: manufacturerSubject(t, product.family),
+          })}
+        >
+          {supportInfo ? (
+            <p className="text-sm text-foreground/90">
+              {t.rich('updates.result.deviceUncertainCheck', {
+                link: () => (
+                  <a
+                    href={supportInfo.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary underline"
+                  >
+                    {supportInfo.label}
+                  </a>
+                ),
+              })}
+            </p>
+          ) : null}
+          <ThreatModelBlock soft />
+          <ResultActions product={product} onReset={onReset} />
+        </ResultBox>
+      </DelayedSlideInBox>
+      <DelayedSlideInBox delayMs={ESSENTIALS_DELAY_MS} connectorTone="warning">
+        <EssentialsPanel />
+      </DelayedSlideInBox>
     </>
   );
 }
@@ -1454,18 +1476,19 @@ function DeviceEolSoonHeader({ product, release, classification }) {
       {chunks}
     </mark>
   );
-  const title = months != null && months > 0
-    ? t.rich('updates.result.eolSoon.titleMonths', {
-        label: displayLabel,
-        months,
-        nowrap: nowrapChunks,
-        mark: markChunks,
-      })
-    : t.rich('updates.result.eolSoon.titleSoon', {
-        label: displayLabel,
-        nowrap: nowrapChunks,
-        mark: markChunks,
-      });
+  const title =
+    months != null && months > 0
+      ? t.rich('updates.result.eolSoon.titleMonths', {
+          label: displayLabel,
+          months,
+          nowrap: nowrapChunks,
+          mark: markChunks,
+        })
+      : t.rich('updates.result.eolSoon.titleSoon', {
+          label: displayLabel,
+          nowrap: nowrapChunks,
+          mark: markChunks,
+        });
 
   const subtitle = eolDate
     ? t.rich('updates.result.eolSoon.subtitleDate', {
@@ -1570,12 +1593,7 @@ function DeviceEolBox({ product, release, classification, onReset }) {
   }
 
   return (
-    <ResultBox
-      tone="red"
-      icon={XCircle}
-      title={title}
-      subtitle={subtitle}
-    >
+    <ResultBox tone="red" icon={XCircle} title={title} subtitle={subtitle}>
       <PrescriptionLine formFactor={product.formFactor} urgency="replace" />
       <ThreatModelBlock />
       <BuyingGuidance family={product.family} formFactor={product.formFactor} />
@@ -1639,9 +1657,19 @@ function OsConfirmedSummary({ product, release, displayLabel, classification }) 
 
   let titleNode;
   if (isEolSoon) {
-    titleNode = months != null && months > 0
-      ? t.rich('updates.result.osEolSoon.titleMonths', { label: displayLabel, months, nowrap: nowrapChunks, mark: warningChipChunks })
-      : t.rich('updates.result.osEolSoon.titleSoon', { label: displayLabel, nowrap: nowrapChunks, mark: warningChipChunks });
+    titleNode =
+      months != null && months > 0
+        ? t.rich('updates.result.osEolSoon.titleMonths', {
+            label: displayLabel,
+            months,
+            nowrap: nowrapChunks,
+            mark: warningChipChunks,
+          })
+        : t.rich('updates.result.osEolSoon.titleSoon', {
+            label: displayLabel,
+            nowrap: nowrapChunks,
+            mark: warningChipChunks,
+          });
   } else if (exactRemaining?.years) {
     titleNode = t.rich('updates.result.osConfirmedShortYears', {
       label: displayLabel,
@@ -1660,17 +1688,18 @@ function OsConfirmedSummary({ product, release, displayLabel, classification }) 
     titleNode = t('updates.result.osConfirmedShort', { label: displayLabel });
   }
 
-  const subtitle = isEolSoon && eolDate
-    ? t.rich('updates.result.osEolSoon.subtitleDate', {
-        date: formatMonthYear(eolDate, locale),
-        b: boldDateChunks,
-      })
-    : (release.eolFrom && !isEolSoon
+  const subtitle =
+    isEolSoon && eolDate
+      ? t.rich('updates.result.osEolSoon.subtitleDate', {
+          date: formatMonthYear(eolDate, locale),
+          b: boldDateChunks,
+        })
+      : release.eolFrom && !isEolSoon
         ? t.rich('updates.result.osConfirmedSubtitleUntil', {
             date: formatMonthYear(release.eolFrom, locale),
             b: boldDateChunks,
           })
-        : null);
+        : null;
 
   return (
     <div className={cn('flex items-start gap-3 rounded-lg border-2 p-4', ringClass)}>
@@ -1679,9 +1708,7 @@ function OsConfirmedSummary({ product, release, displayLabel, classification }) 
         <p className="text-base font-medium text-foreground sm:text-lg">{titleNode}</p>
         {subtitle ? <p className="text-xs text-muted-foreground">{subtitle}</p> : null}
         {release.isEoas && !release.isEol ? (
-          <p className="pt-0.5 text-xs text-muted-foreground">
-            {t('updates.result.osEoasNote')}
-          </p>
+          <p className="pt-0.5 text-xs text-muted-foreground">{t('updates.result.osEoasNote')}</p>
         ) : null}
       </div>
     </div>
@@ -1701,7 +1728,14 @@ function OsConfirmedSummary({ product, release, displayLabel, classification }) 
  *
  *   Plus an "I'm not sure" muted link beneath either.
  */
-function OsPatchPickerStep({ product, release, displayLabel, onPickLatest, onPickOlder, onPickUnknown }) {
+function OsPatchPickerStep({
+  product,
+  release,
+  displayLabel,
+  onPickLatest,
+  onPickOlder,
+  onPickUnknown,
+}) {
   const t = useTranslations();
   const locale = useLocale();
   const { trackEvent } = useAnalytics();
@@ -1713,9 +1747,7 @@ function OsPatchPickerStep({ product, release, displayLabel, onPickLatest, onPic
   // question, which points them at Settings → Windows Update where they can
   // actually see whether anything is pending.
   const hasPatchVersion = !!release.latestVersion && product.id !== 'windows';
-  const menuPath = hasPatchVersion
-    ? osVersionPath(t, product.id)
-    : osUpdatePath(t, product.id);
+  const menuPath = hasPatchVersion ? osVersionPath(t, product.id) : osUpdatePath(t, product.id);
 
   function handlePickLatest() {
     trackEvent({ name: 'update_os_version_clicked', data: { version_age: 'latest' } });
@@ -1736,9 +1768,7 @@ function OsPatchPickerStep({ product, release, displayLabel, onPickLatest, onPic
 
   return (
     <div className="rounded-lg border-2 border-primary/50 bg-primary/5 p-6">
-      <h3 className="text-xl font-semibold leading-tight text-foreground sm:text-2xl">
-        {heading}
-      </h3>
+      <h3 className="text-xl font-semibold leading-tight text-foreground sm:text-2xl">{heading}</h3>
 
       {menuPath ? (
         <div className="mt-3 space-y-2">
@@ -1755,13 +1785,17 @@ function OsPatchPickerStep({ product, release, displayLabel, onPickLatest, onPic
                 icon={History}
                 tone="warning"
                 onClick={handlePickOlder}
-                label={t('updates.result.osCheckStep.optionOlderVersion', { version: release.latestVersion })}
+                label={t('updates.result.osCheckStep.optionOlderVersion', {
+                  version: release.latestVersion,
+                })}
               />
               <PickerButton
                 icon={CheckCircle2}
                 tone="success"
                 onClick={handlePickLatest}
-                label={t('updates.result.osCheckStep.optionLatestVersion', { version: release.latestVersion })}
+                label={t('updates.result.osCheckStep.optionLatestVersion', {
+                  version: release.latestVersion,
+                })}
               />
             </>
           ) : (
@@ -1851,16 +1885,25 @@ function OsResultFlow({ snapshot, product, release, classification, onReset }) {
   const showFirst = useDelayedMount(STAGGER_FIRST_MS);
   const showSecond = useDelayedMount(STAGGER_SECOND_MS);
 
-  function pickLatest() { setStep('success'); }
-  function pickOlder() { setStep('needs-update'); }
-  function pickUnknown() { setStep('needs-update-uncertain'); }
-  function didUpdate() { setStep('success'); }
+  function pickLatest() {
+    setStep('success');
+  }
+  function pickOlder() {
+    setStep('needs-update');
+  }
+  function pickUnknown() {
+    setStep('needs-update-uncertain');
+  }
+  function didUpdate() {
+    setStep('success');
+  }
 
-  const stepTone = step === 'pick'
-    ? 'primary'
-    : step === 'needs-update' || step === 'needs-update-uncertain'
-      ? 'warning'
-      : 'success';
+  const stepTone =
+    step === 'pick'
+      ? 'primary'
+      : step === 'needs-update' || step === 'needs-update-uncertain'
+        ? 'warning'
+        : 'success';
 
   const isFinalStep = step === 'success';
   const showEssentials = isFinalStep;
@@ -1939,37 +1982,33 @@ function OsEol({ product, release, onReset }) {
 
   return (
     <>
-    <DelayedSlideInBox delayMs={STAGGER_FIRST_MS}>
-      <ResultBox
-        tone="red"
-        icon={XCircle}
-        title={t('updates.result.osUnsupportedTitle', { label: displayLabel })}
-        subtitle={
-          release.eolFrom
-            ? t.rich('updates.result.osUnsupportedSubtitleEnded', {
-                date: formatMonthYear(release.eolFrom, locale),
-                b: boldDateChunks,
-              })
-            : null
-        }
-      >
-        {advice ? (
-          <div className="space-y-2">
-            <p className="text-xl font-bold leading-snug text-foreground sm:text-2xl">
-              {advice}
-            </p>
-            <p className="text-sm text-foreground/90">
-              {t('updates.result.osCheckDeviceHint')}
-            </p>
-          </div>
-        ) : null}
-        <ThreatModelBlock />
-        <ResultActions product={product} onReset={onReset} />
-      </ResultBox>
-    </DelayedSlideInBox>
-    <DelayedSlideInBox delayMs={ESSENTIALS_DELAY_MS} connectorTone="destructive">
-      <EssentialsPanel />
-    </DelayedSlideInBox>
+      <DelayedSlideInBox delayMs={STAGGER_FIRST_MS}>
+        <ResultBox
+          tone="red"
+          icon={XCircle}
+          title={t('updates.result.osUnsupportedTitle', { label: displayLabel })}
+          subtitle={
+            release.eolFrom
+              ? t.rich('updates.result.osUnsupportedSubtitleEnded', {
+                  date: formatMonthYear(release.eolFrom, locale),
+                  b: boldDateChunks,
+                })
+              : null
+          }
+        >
+          {advice ? (
+            <div className="space-y-2">
+              <p className="text-xl font-bold leading-snug text-foreground sm:text-2xl">{advice}</p>
+              <p className="text-sm text-foreground/90">{t('updates.result.osCheckDeviceHint')}</p>
+            </div>
+          ) : null}
+          <ThreatModelBlock />
+          <ResultActions product={product} onReset={onReset} />
+        </ResultBox>
+      </DelayedSlideInBox>
+      <DelayedSlideInBox delayMs={ESSENTIALS_DELAY_MS} connectorTone="destructive">
+        <EssentialsPanel />
+      </DelayedSlideInBox>
     </>
   );
 }

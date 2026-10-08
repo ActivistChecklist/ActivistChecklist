@@ -78,19 +78,13 @@ export function NewsletterSubscribeForm({ onSuccess, context = 'form' }) {
   return (
     <div className="w-full max-w-md mx-auto">
       {status === 'error' && (
-        <Alert 
-          variant="error" 
-          className="mb-4 newsletter-alert"
-        >
+        <Alert variant="error" className="mb-4 newsletter-alert">
           {error}
         </Alert>
       )}
 
       {status === 'success' && !showForm && (
-        <Alert 
-          variant="success" 
-          className="mb-4 newsletter-alert"
-        >
+        <Alert variant="success" className="mb-4 newsletter-alert">
           {t('newsletter.successLong')}
         </Alert>
       )}
@@ -108,10 +102,7 @@ export function NewsletterSubscribeForm({ onSuccess, context = 'form' }) {
               disabled={status === 'loading'}
               className="flex-1"
             />
-            <Button 
-              type="submit"
-              disabled={status === 'loading'}
-            >
+            <Button type="submit" disabled={status === 'loading'}>
               {status === 'loading' ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
@@ -143,19 +134,13 @@ export function CompactNewsletterSubscribe({ context = 'footer' } = {}) {
   return (
     <div className="space-y-2">
       {status === 'error' && (
-        <Alert 
-          variant="error" 
-          className="text-sm newsletter-alert"
-        >
+        <Alert variant="error" className="text-sm newsletter-alert">
           {error}
         </Alert>
       )}
 
       {status === 'success' && !showForm && (
-        <Alert 
-          variant="success" 
-          className="text-sm newsletter-alert"
-        >
+        <Alert variant="success" className="text-sm newsletter-alert">
           {t('newsletter.successShort')}
         </Alert>
       )}
@@ -172,7 +157,7 @@ export function CompactNewsletterSubscribe({ context = 'footer' } = {}) {
             disabled={status === 'loading'}
             className="max-w-xs"
           />
-          <Button 
+          <Button
             type="submit"
             disabled={status === 'loading'}
             aria-label={t('newsletter.subscribe')}

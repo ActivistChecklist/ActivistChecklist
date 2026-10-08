@@ -220,7 +220,7 @@ function main() {
   // Deduplicate findings (same broken path reported from multiple files is fine, but same path+file is noise)
   const dedup = (entries) => {
     const seen = new Set();
-    return entries.filter(e => {
+    return entries.filter((e) => {
       const key = `${e.sourceFile}::${e.path}`;
       if (seen.has(key)) return false;
       seen.add(key);
@@ -245,7 +245,7 @@ function main() {
       console.error(chalk.red(`     ${brokenPath}`));
       if (isTranslationDuplicateGroup(files)) {
         console.error(
-          chalk.gray(`        (${files.length} locale build(s) — same route, pages omitted)`)
+          chalk.gray(`        (${files.length} locale build(s) — same route, pages omitted)`),
         );
         continue;
       }
@@ -269,7 +269,7 @@ function main() {
       console.error(chalk.red(`     ${brokenPath}`));
       if (isTranslationDuplicateGroup(files)) {
         console.error(
-          chalk.gray(`        (${files.length} locale build(s) — same route, pages omitted)`)
+          chalk.gray(`        (${files.length} locale build(s) — same route, pages omitted)`),
         );
         continue;
       }

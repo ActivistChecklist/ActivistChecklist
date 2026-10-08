@@ -27,12 +27,8 @@ const FONT_PRELOADS = {
     '/fonts/libre-franklin-v20-latin-600.woff2',
     '/fonts/libre-franklin-v20-latin-700.woff2',
   ],
-  ar: [
-    '/fonts/rubik-v31-arabic-wght-normal.woff2',
-    '/fonts/rubik-v31-latin-wght-normal.woff2',
-  ],
+  ar: ['/fonts/rubik-v31-arabic-wght-normal.woff2', '/fonts/rubik-v31-latin-wght-normal.woff2'],
 } as const;
-
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));

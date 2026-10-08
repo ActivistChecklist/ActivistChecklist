@@ -4,9 +4,7 @@
 import { describe, it, expect } from 'vitest';
 
 function resolveButtonHref({ href, url }) {
-  const raw =
-    (typeof href === 'string' ? href : null) ??
-    (typeof url === 'string' ? url : null);
+  const raw = (typeof href === 'string' ? href : null) ?? (typeof url === 'string' ? url : null);
   return raw || '#';
 }
 

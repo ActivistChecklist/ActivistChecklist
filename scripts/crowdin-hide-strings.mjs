@@ -29,38 +29,40 @@
  *   }
  */
 
-import { readFileSync, readdirSync, statSync } from "fs";
-import { join, extname, basename } from "path";
+import { readFileSync, readdirSync, statSync } from 'fs';
+import { join, extname, basename } from 'path';
 
 // Load .env file if present (Node 22+ built-in)
-try { process.loadEnvFile(); } catch { }
+try {
+  process.loadEnvFile();
+} catch {}
 
 // --- Colors ---
 const c = {
-  reset: "\x1b[0m",
-  bold: "\x1b[1m",
-  dim: "\x1b[2m",
-  green: "\x1b[32m",
-  yellow: "\x1b[33m",
-  blue: "\x1b[34m",
-  magenta: "\x1b[35m",
-  cyan: "\x1b[36m",
-  red: "\x1b[31m",
-  gray: "\x1b[90m",
-  white: "\x1b[97m",
-  bgGreen: "\x1b[42m",
-  bgYellow: "\x1b[43m",
-  bgBlue: "\x1b[44m",
+  reset: '\x1b[0m',
+  bold: '\x1b[1m',
+  dim: '\x1b[2m',
+  green: '\x1b[32m',
+  yellow: '\x1b[33m',
+  blue: '\x1b[34m',
+  magenta: '\x1b[35m',
+  cyan: '\x1b[36m',
+  red: '\x1b[31m',
+  gray: '\x1b[90m',
+  white: '\x1b[97m',
+  bgGreen: '\x1b[42m',
+  bgYellow: '\x1b[43m',
+  bgBlue: '\x1b[44m',
 };
 
 // --- Config ---
 const TOKEN = process.env.CROWDIN_PERSONAL_TOKEN;
 const PROJECT_ID = process.env.CROWDIN_PROJECT_ID;
-const CONTENT_DIR = "./content/en"; // adjust if your source dir is different
-const DRY_RUN = !process.argv.includes("--apply");
+const CONTENT_DIR = './content/en'; // adjust if your source dir is different
+const DRY_RUN = !process.argv.includes('--apply');
 // Read-only audit: run Pass 2's lookups and tally what --apply would delete, without deleting.
-const COUNT_TRANSLATIONS = process.argv.includes("--count-translations");
-const BASE_URL = "https://api.crowdin.com/api/v2";
+const COUNT_TRANSLATIONS = process.argv.includes('--count-translations');
+const BASE_URL = 'https://api.crowdin.com/api/v2';
 
 if (!TOKEN || !PROJECT_ID) {
   console.error(`
@@ -81,35 +83,35 @@ Example:
 // Frontmatter scalar fields whose values should not be translated
 // Keep in sync with Keystatic / MDX frontmatter: when you add a non-copy field there, add its key here too.
 const UNTRANSLATABLE_FRONTMATTER_SCALARS = [
-  "slug",           // URL identifiers
-  "type",           // enum: major, minor, info, etc.
-  "date",           // ISO dates
-  "firstPublished", // ISO dates
-  "lastUpdated",    // ISO dates
-  "image",          // file paths
-  "imageOverride",  // file paths
-  "url",            // external URLs
-  "source",         // publication/author attribution
-  "tags",           // comma-separated tag identifiers
-  "showToc",        // boolean: layout / “On this page” sidebar (pages)
-  "tocDepth",       // 2 or 3: which heading levels appear in the left TOC
-  "hideInlineCta",  // boolean: suppress auto-inserted inline newsletter CTA
+  'slug', // URL identifiers
+  'type', // enum: major, minor, info, etc.
+  'date', // ISO dates
+  'firstPublished', // ISO dates
+  'lastUpdated', // ISO dates
+  'image', // file paths
+  'imageOverride', // file paths
+  'url', // external URLs
+  'source', // publication/author attribution
+  'tags', // comma-separated tag identifiers
+  'showToc', // boolean: layout / “On this page” sidebar (pages)
+  'tocDepth', // 2 or 3: which heading levels appear in the left TOC
+  'hideInlineCta', // boolean: suppress auto-inserted inline newsletter CTA
 ];
 
 // JSX attributes whose values should not be translated
 const UNTRANSLATABLE_ATTRIBUTES = [
-  "slug", // ChecklistItem, Section - references to other content
-  "type", // Alert - info, warning, success, default, error
-  "size", // Button, ImageEmbed - xs, sm, md, lg, xl
-  "level", // RiskLevel - everyone, medium, high
-  "mode", // RiskLevel - single_line, for_you, for_you_if
-  "alignment", // ImageEmbed, Button - left, center, right
-  "target", // links - _self, _blank
-  "variant", // Button - outline, solid, etc.
-  "icon", // Button - icon names like IoCloudDownloadOutline
-  "href", // URLs and internal paths
-  "src", // image/video source paths
-  "className", // CSS class names
+  'slug', // ChecklistItem, Section - references to other content
+  'type', // Alert - info, warning, success, default, error
+  'size', // Button, ImageEmbed - xs, sm, md, lg, xl
+  'level', // RiskLevel - everyone, medium, high
+  'mode', // RiskLevel - single_line, for_you, for_you_if
+  'alignment', // ImageEmbed, Button - left, center, right
+  'target', // links - _self, _blank
+  'variant', // Button - outline, solid, etc.
+  'icon', // Button - icon names like IoCloudDownloadOutline
+  'href', // URLs and internal paths
+  'src', // image/video source paths
+  'className', // CSS class names
 ];
 
 function walkDir(dir) {
@@ -118,7 +120,7 @@ function walkDir(dir) {
     const full = join(dir, entry);
     if (statSync(full).isDirectory()) {
       files = files.concat(walkDir(full));
-    } else if (extname(full) === ".mdx" || extname(full) === ".md") {
+    } else if (extname(full) === '.mdx' || extname(full) === '.md') {
       files.push(full);
     }
   }
@@ -131,18 +133,21 @@ function extractUntranslatableStrings(contentDir) {
 
   // Build regex for all untranslatable attributes
   // Match attr="value" and attr='value' in JSX/HTML attributes
-  const attrPattern = UNTRANSLATABLE_ATTRIBUTES.join("|");
-  const attrRegex = new RegExp(`\\b(${attrPattern})=["']([^"']+)["']`, "g");
+  const attrPattern = UNTRANSLATABLE_ATTRIBUTES.join('|');
+  const attrRegex = new RegExp(`\\b(${attrPattern})=["']([^"']+)["']`, 'g');
 
   // Frontmatter array patterns (relatedGuides, titleBadges, etc.)
   const frontmatterArrayRegex = /^(relatedGuides|titleBadges):\s*\n((?:\s+-\s+.+\n?)+)/gm;
   const arrayItemRegex = /^\s+-\s+(.+)$/gm;
 
-  const scalarFieldPattern = UNTRANSLATABLE_FRONTMATTER_SCALARS.join("|");
-  const frontmatterScalarRegex = new RegExp(`^(${scalarFieldPattern}):\\s*["']?(.+?)["']?\\s*$`, "gm");
+  const scalarFieldPattern = UNTRANSLATABLE_FRONTMATTER_SCALARS.join('|');
+  const frontmatterScalarRegex = new RegExp(
+    `^(${scalarFieldPattern}):\\s*["']?(.+?)["']?\\s*$`,
+    'gm',
+  );
 
   for (const file of files) {
-    const content = readFileSync(file, "utf-8");
+    const content = readFileSync(file, 'utf-8');
     const fileName = basename(file, extname(file));
 
     // Extract JSX attribute values
@@ -163,7 +168,7 @@ function extractUntranslatableStrings(contentDir) {
     while ((scalarMatch = frontmatterScalarRegex.exec(content)) !== null) {
       const fieldName = scalarMatch[1];
       const value = scalarMatch[2].trim();
-      if (value && !value.startsWith("#")) {
+      if (value && !value.startsWith('#')) {
         if (!strings.has(value)) {
           strings.set(value, new Set());
         }
@@ -181,7 +186,7 @@ function extractUntranslatableStrings(contentDir) {
       let itemMatch;
       while ((itemMatch = arrayItemRegex.exec(arrayContent)) !== null) {
         const value = itemMatch[1].trim();
-        if (value && !value.startsWith("#")) {
+        if (value && !value.startsWith('#')) {
           if (!strings.has(value)) {
             strings.set(value, new Set());
           }
@@ -196,24 +201,28 @@ function extractUntranslatableStrings(contentDir) {
 
 // --- Step 2: Crowdin API helpers ---
 
-async function crowdinFetch(path, { method = "GET", body } = {}) {
+async function crowdinFetch(path, { method = 'GET', body } = {}) {
   const url = `${BASE_URL}${path}`;
   const headers = {
     Authorization: `Bearer ${TOKEN}`,
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   };
 
   while (true) {
-    const res = await fetch(url, { method, headers, body: body ? JSON.stringify(body) : undefined });
+    const res = await fetch(url, {
+      method,
+      headers,
+      body: body ? JSON.stringify(body) : undefined,
+    });
 
     if (res.status === 429) {
-      const retryAfter = parseFloat(res.headers.get("Retry-After") || "1");
+      const retryAfter = parseFloat(res.headers.get('Retry-After') || '1');
       console.log(`  ${c.yellow}Rate limited — waiting ${retryAfter}s...${c.reset}`);
       await new Promise((r) => setTimeout(r, retryAfter * 1000));
       continue;
     }
 
-    if (method === "DELETE" && (res.status === 204 || res.status === 404)) return null;
+    if (method === 'DELETE' && (res.status === 204 || res.status === 404)) return null;
     if (!res.ok) {
       const text = await res.text();
       throw new Error(`Crowdin API ${res.status}: ${text}`);
@@ -223,8 +232,8 @@ async function crowdinFetch(path, { method = "GET", body } = {}) {
 }
 
 const crowdinGet = (path) => crowdinFetch(path);
-const crowdinPatch = (path, data) => crowdinFetch(path, { method: "PATCH", body: data });
-const crowdinDelete = (path) => crowdinFetch(path, { method: "DELETE" });
+const crowdinPatch = (path, data) => crowdinFetch(path, { method: 'PATCH', body: data });
+const crowdinDelete = (path) => crowdinFetch(path, { method: 'DELETE' });
 
 // --- Step 3: Find and hide strings / clear translations in Crowdin ---
 
@@ -245,7 +254,7 @@ async function getDefaultBranchId() {
   const list = data.data || [];
   if (list.length === 0) return null;
   const names = list.map((b) => b.data?.name);
-  for (const prefer of ["main", "master"]) {
+  for (const prefer of ['main', 'master']) {
     const idx = names.indexOf(prefer);
     if (idx !== -1) return list[idx].data.id;
   }
@@ -258,7 +267,7 @@ async function paginateFiles(querySuffix) {
   const limit = 500;
   while (true) {
     const data = await crowdinGet(
-      `/projects/${PROJECT_ID}/files?limit=${limit}&offset=${offset}${querySuffix}`
+      `/projects/${PROJECT_ID}/files?limit=${limit}&offset=${offset}${querySuffix}`,
     );
     for (const item of data.data || []) {
       const row = item.data;
@@ -288,21 +297,21 @@ async function listAllProjectFiles(branchId) {
   if (branchId) {
     merge(await paginateFiles(`&branchId=${branchId}&recursion=1`));
   }
-  merge(await paginateFiles(""));
+  merge(await paginateFiles(''));
   return [...byId.values()];
 }
 
 function normalizeCrowdinPath(crowdinPath) {
-  return String(crowdinPath || "")
-    .replace(/\\/g, "/")
-    .replace(/\/+/g, "/")
-    .replace(/^\/+/, "");
+  return String(crowdinPath || '')
+    .replace(/\\/g, '/')
+    .replace(/\/+/g, '/')
+    .replace(/^\/+/, '');
 }
 
 /** Crowdin path for files we scan for untranslatable JSX (CONTENT_DIR). */
 function isMdxContentEnFile(crowdinPath) {
   const p = normalizeCrowdinPath(crowdinPath);
-  if (!p.endsWith(".mdx")) return false;
+  if (!p.endsWith('.mdx')) return false;
   return /(^|\/)content\/en\//.test(p);
 }
 
@@ -331,7 +340,7 @@ async function getTargetLanguages() {
 // Fetch existing translations for a string in a given language. Read-only.
 async function fetchTranslationsForString(stringId, languageId) {
   const data = await crowdinGet(
-    `/projects/${PROJECT_ID}/translations?stringId=${stringId}&languageId=${languageId}&limit=100`
+    `/projects/${PROJECT_ID}/translations?stringId=${stringId}&languageId=${languageId}&limit=100`,
   );
   return data.data.map((t) => t.data);
 }
@@ -377,29 +386,35 @@ function formatSource(sourcesSet) {
   for (const [attr, files] of Object.entries(byAttr)) {
     const uniqueFiles = [...new Set(files)];
     if (uniqueFiles.length <= 2) {
-      parts.push(`${attr} in ${uniqueFiles.join(", ")}`);
+      parts.push(`${attr} in ${uniqueFiles.join(', ')}`);
     } else {
-      parts.push(`${attr} in ${uniqueFiles.slice(0, 2).join(", ")} +${uniqueFiles.length - 2}`);
+      parts.push(`${attr} in ${uniqueFiles.slice(0, 2).join(', ')} +${uniqueFiles.length - 2}`);
     }
   }
-  return parts.join(" | ");
+  return parts.join(' | ');
 }
 
 async function run() {
   console.log(`\n${c.bold}${c.cyan}=== Crowdin Untranslatable String Hider ===${c.reset}\n`);
 
   // Extract untranslatable strings from source
-  console.log(`${c.blue}Scanning${c.reset} ${c.white}${CONTENT_DIR}${c.reset} for untranslatable attribute values...`);
-  console.log(`${c.gray}JSX attributes: ${UNTRANSLATABLE_ATTRIBUTES.join(", ")}${c.reset}`);
-  console.log(`${c.gray}Frontmatter scalars: ${UNTRANSLATABLE_FRONTMATTER_SCALARS.join(", ")}${c.reset}\n`);
+  console.log(
+    `${c.blue}Scanning${c.reset} ${c.white}${CONTENT_DIR}${c.reset} for untranslatable attribute values...`,
+  );
+  console.log(`${c.gray}JSX attributes: ${UNTRANSLATABLE_ATTRIBUTES.join(', ')}${c.reset}`);
+  console.log(
+    `${c.gray}Frontmatter scalars: ${UNTRANSLATABLE_FRONTMATTER_SCALARS.join(', ')}${c.reset}\n`,
+  );
 
   const stringsMap = extractUntranslatableStrings(CONTENT_DIR);
   const untranslatableValues = new Set(stringsMap.keys());
 
-  console.log(`${c.green}Found${c.reset} ${c.bold}${untranslatableValues.size}${c.reset} unique untranslatable values.\n`);
+  console.log(
+    `${c.green}Found${c.reset} ${c.bold}${untranslatableValues.size}${c.reset} unique untranslatable values.\n`,
+  );
 
   // Show a sample of what was found (grouped by type for clarity)
-  if (process.argv.includes("--verbose")) {
+  if (process.argv.includes('--verbose')) {
     console.log(`${c.bold}Extracted values:${c.reset}`);
     let count = 0;
     for (const [value, sources] of stringsMap) {
@@ -420,9 +435,13 @@ async function run() {
   const fileIdToPath = new Map(projectFiles.map((f) => [f.id, f.path]));
 
   // Fetch all strings from Crowdin
-  console.log(`${c.blue}Fetching${c.reset} strings from Crowdin project ${c.white}${PROJECT_ID}${c.reset}...`);
+  console.log(
+    `${c.blue}Fetching${c.reset} strings from Crowdin project ${c.white}${PROJECT_ID}${c.reset}...`,
+  );
   const allStrings = await getAllStrings(branchId);
-  console.log(`${c.green}Found${c.reset} ${c.bold}${allStrings.length}${c.reset} total strings in project.\n`);
+  console.log(
+    `${c.green}Found${c.reset} ${c.bold}${allStrings.length}${c.reset} total strings in project.\n`,
+  );
 
   // Categorize Crowdin strings: only MDX under content/en/ + matching text (see file header).
   const toHide = [];
@@ -447,8 +466,7 @@ async function run() {
       // Do not unhide every hidden string when hideThis is false (e.g. path detection bugs);
       // only: (1) obsolete — text no longer extracted from MDX, or (2) JSON file collision.
       const obsolete = !untranslatableValues.has(text);
-      const messagesCollision =
-        untranslatableValues.has(text) && isMessagesEnJsonFile(sourcePath);
+      const messagesCollision = untranslatableValues.has(text) && isMessagesEnJsonFile(sourcePath);
       if (obsolete || messagesCollision) {
         toUnhide.push({ id, text, fileId });
       }
@@ -463,16 +481,24 @@ async function run() {
 
   console.log(`${c.bold}Summary:${c.reset}`);
   console.log(`  ${c.gray}Matched in Crowdin:${c.reset}  ${c.bold}${totalFound}${c.reset}`);
-  console.log(`  ${c.gray}Already hidden:${c.reset}      ${c.green}${alreadyHidden.length}${c.reset}`);
-  console.log(`  ${c.gray}Need to hide:${c.reset}        ${toHide.length > 0 ? c.yellow : c.green}${toHide.length}${c.reset}`);
-  console.log(`  ${c.gray}Need to unhide:${c.reset}      ${toUnhide.length > 0 ? c.magenta : c.green}${toUnhide.length}${c.reset}`);
+  console.log(
+    `  ${c.gray}Already hidden:${c.reset}      ${c.green}${alreadyHidden.length}${c.reset}`,
+  );
+  console.log(
+    `  ${c.gray}Need to hide:${c.reset}        ${toHide.length > 0 ? c.yellow : c.green}${toHide.length}${c.reset}`,
+  );
+  console.log(
+    `  ${c.gray}Need to unhide:${c.reset}      ${toUnhide.length > 0 ? c.magenta : c.green}${toUnhide.length}${c.reset}`,
+  );
   console.log(`  ${c.gray}Not in Crowdin:${c.reset}      ${c.dim}${notInCrowdin}${c.reset}\n`);
 
   const allMatched = [...toHide, ...alreadyHidden];
 
   // --- Unhide strings (obsolete MDX match, or non-MDX source such as messages/en.json) ---
   if (toUnhide.length > 0) {
-    console.log(`${c.bold}${DRY_RUN ? "Would unhide" : "Unhiding"} ${toUnhide.length} string(s) that should stay visible/translatable:${c.reset}\n`);
+    console.log(
+      `${c.bold}${DRY_RUN ? 'Would unhide' : 'Unhiding'} ${toUnhide.length} string(s) that should stay visible/translatable:${c.reset}\n`,
+    );
 
     for (const { id, text } of toUnhide) {
       if (DRY_RUN) {
@@ -480,11 +506,13 @@ async function run() {
       } else {
         try {
           await crowdinPatch(`/projects/${PROJECT_ID}/strings/${id}`, [
-            { op: "replace", path: "/isHidden", value: false },
+            { op: 'replace', path: '/isHidden', value: false },
           ]);
           console.log(`  ${c.magenta}✓${c.reset} ${c.white}"${text}"${c.reset}`);
         } catch (err) {
-          console.log(`  ${c.red}✗${c.reset} ${c.white}"${text}"${c.reset} ${c.red}— ${err.message}${c.reset}`);
+          console.log(
+            `  ${c.red}✗${c.reset} ${c.white}"${text}"${c.reset} ${c.red}— ${err.message}${c.reset}`,
+          );
         }
       }
     }
@@ -494,21 +522,29 @@ async function run() {
 
   // --- Hide strings that should be hidden ---
   if (toHide.length > 0) {
-    console.log(`${c.bold}${DRY_RUN ? "Would hide" : "Hiding"} ${toHide.length} strings:${c.reset}\n`);
+    console.log(
+      `${c.bold}${DRY_RUN ? 'Would hide' : 'Hiding'} ${toHide.length} strings:${c.reset}\n`,
+    );
 
     for (const { id, text } of toHide) {
-      const sourceInfo = stringsMap.has(text) ? formatSource(stringsMap.get(text)) : "";
+      const sourceInfo = stringsMap.has(text) ? formatSource(stringsMap.get(text)) : '';
 
       if (DRY_RUN) {
-        console.log(`  ${c.yellow}○${c.reset} ${c.white}"${text}"${c.reset} ${c.gray}← ${sourceInfo}${c.reset}`);
+        console.log(
+          `  ${c.yellow}○${c.reset} ${c.white}"${text}"${c.reset} ${c.gray}← ${sourceInfo}${c.reset}`,
+        );
       } else {
         try {
           await crowdinPatch(`/projects/${PROJECT_ID}/strings/${id}`, [
-            { op: "replace", path: "/isHidden", value: true },
+            { op: 'replace', path: '/isHidden', value: true },
           ]);
-          console.log(`  ${c.green}✓${c.reset} ${c.white}"${text}"${c.reset} ${c.gray}← ${sourceInfo}${c.reset}`);
+          console.log(
+            `  ${c.green}✓${c.reset} ${c.white}"${text}"${c.reset} ${c.gray}← ${sourceInfo}${c.reset}`,
+          );
         } catch (err) {
-          console.log(`  ${c.red}✗${c.reset} ${c.white}"${text}"${c.reset} ${c.red}— ${err.message}${c.reset}`);
+          console.log(
+            `  ${c.red}✗${c.reset} ${c.white}"${text}"${c.reset} ${c.red}— ${err.message}${c.reset}`,
+          );
         }
       }
     }
@@ -524,14 +560,18 @@ async function run() {
   console.log();
 
   // --- Pass 2: Clear any existing translations for all matched strings ---
-  console.log(`${c.bold}${DRY_RUN ? "Would clear" : "Clearing"} translations for ${allMatched.length} matched strings across all languages:${c.reset}\n`);
+  console.log(
+    `${c.bold}${DRY_RUN ? 'Would clear' : 'Clearing'} translations for ${allMatched.length} matched strings across all languages:${c.reset}\n`,
+  );
 
   if (DRY_RUN && !COUNT_TRANSLATIONS) {
-    console.log(`  ${c.gray}(skipped in dry run — run with --apply to clear translations, or --count-translations to audit first)${c.reset}\n`);
+    console.log(
+      `  ${c.gray}(skipped in dry run — run with --apply to clear translations, or --count-translations to audit first)${c.reset}\n`,
+    );
   } else if (DRY_RUN) {
     // Audit only: same lookups as the clear pass, no deletes.
     const languages = await getTargetLanguages();
-    console.log(`  ${c.gray}Target languages: ${languages.join(", ")}${c.reset}\n`);
+    console.log(`  ${c.gray}Target languages: ${languages.join(', ')}${c.reset}\n`);
 
     let totalFound = 0;
     const perLanguage = new Map();
@@ -548,7 +588,9 @@ async function run() {
               perString.set(text, (perString.get(text) || 0) + translations.length);
             }
           } catch (err) {
-            console.log(`  ${c.red}✗${c.reset} [${lang}] ${c.white}"${text}"${c.reset} ${c.red}— ${err.message}${c.reset}`);
+            console.log(
+              `  ${c.red}✗${c.reset} [${lang}] ${c.white}"${text}"${c.reset} ${c.red}— ${err.message}${c.reset}`,
+            );
           }
         });
       }
@@ -556,9 +598,13 @@ async function run() {
     await runConcurrent(8, countTasks);
 
     if (totalFound === 0) {
-      console.log(`  ${c.green}No existing translations found — --apply would delete nothing.${c.reset}\n`);
+      console.log(
+        `  ${c.green}No existing translations found — --apply would delete nothing.${c.reset}\n`,
+      );
     } else {
-      console.log(`  ${c.yellow}${c.bold}${totalFound} translation(s) would be DELETED by --apply.${c.reset}\n`);
+      console.log(
+        `  ${c.yellow}${c.bold}${totalFound} translation(s) would be DELETED by --apply.${c.reset}\n`,
+      );
       console.log(`  ${c.bold}By language:${c.reset}`);
       for (const [lang, n] of [...perLanguage].sort((a, b) => b[1] - a[1])) {
         console.log(`    ${c.cyan}${lang}${c.reset}  ${n}`);
@@ -571,7 +617,7 @@ async function run() {
     }
   } else {
     const languages = await getTargetLanguages();
-    console.log(`  ${c.gray}Target languages: ${languages.join(", ")}${c.reset}\n`);
+    console.log(`  ${c.gray}Target languages: ${languages.join(', ')}${c.reset}\n`);
 
     let totalCleared = 0;
     const clearTasks = [];
@@ -581,11 +627,15 @@ async function run() {
           try {
             const count = await clearTranslationsForString(id, lang);
             if (count > 0) {
-              console.log(`  ${c.green}✓${c.reset} [${lang}] cleared ${count} translation(s) for ${c.white}"${text}"${c.reset}`);
+              console.log(
+                `  ${c.green}✓${c.reset} [${lang}] cleared ${count} translation(s) for ${c.white}"${text}"${c.reset}`,
+              );
               totalCleared += count;
             }
           } catch (err) {
-            console.log(`  ${c.red}✗${c.reset} [${lang}] ${c.white}"${text}"${c.reset} ${c.red}— ${err.message}${c.reset}`);
+            console.log(
+              `  ${c.red}✗${c.reset} [${lang}] ${c.white}"${text}"${c.reset} ${c.red}— ${err.message}${c.reset}`,
+            );
           }
         });
       }
@@ -595,18 +645,24 @@ async function run() {
     if (totalCleared === 0) {
       console.log(`  ${c.gray}No existing translations found to clear.${c.reset}\n`);
     } else {
-      console.log(`\n${c.green}${c.bold}✓ Cleared ${totalCleared} translation(s) total.${c.reset}\n`);
+      console.log(
+        `\n${c.green}${c.bold}✓ Cleared ${totalCleared} translation(s) total.${c.reset}\n`,
+      );
     }
   }
 
   if (DRY_RUN) {
-    console.log(`${c.yellow}${c.bold}Dry run complete.${c.reset} Run with ${c.cyan}--apply${c.reset} to hide strings and clear translations.\n`);
+    console.log(
+      `${c.yellow}${c.bold}Dry run complete.${c.reset} Run with ${c.cyan}--apply${c.reset} to hide strings and clear translations.\n`,
+    );
   } else {
-    console.log(`${c.green}${c.bold}✓ Done!${c.reset} Hidden ${c.bold}${toHide.length}${c.reset} strings, cleared existing translations.\n`);
+    console.log(
+      `${c.green}${c.bold}✓ Done!${c.reset} Hidden ${c.bold}${toHide.length}${c.reset} strings, cleared existing translations.\n`,
+    );
   }
 }
 
 run().catch((err) => {
-  console.error("Fatal error:", err.message);
+  console.error('Fatal error:', err.message);
   process.exit(1);
 });

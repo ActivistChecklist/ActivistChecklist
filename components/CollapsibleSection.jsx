@@ -2,19 +2,10 @@
 
 import * as React from 'react';
 import { ChevronRight } from 'lucide-react';
-import {
-  Collapsible,
-  CollapsibleTrigger,
-  CollapsibleContent,
-} from '@/components/ui/collapsible';
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible';
 import { cn } from '@/lib/utils';
 
-export const CollapsibleSection = ({
-  title,
-  defaultOpen = false,
-  className,
-  children,
-}) => {
+export const CollapsibleSection = ({ title, defaultOpen = false, className, children }) => {
   return (
     <Collapsible defaultOpen={defaultOpen} className={cn('my-4', className)}>
       <CollapsibleTrigger

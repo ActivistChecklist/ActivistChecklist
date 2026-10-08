@@ -32,7 +32,7 @@ function degradedResponse(request, { code = null } = {}) {
       dbOffline: true,
       code,
     },
-    { status: request.method === 'GET' ? 200 : 503 }
+    { status: request.method === 'GET' ? 200 : 503 },
   );
 }
 
@@ -47,7 +47,7 @@ async function handler(request, context) {
     // messages quote the connection string back, which carries credentials.
     if (isDbConfigurationError(error)) {
       console.warn(
-        '[review-comments] REVIEW_COMMENTS_MONGODB_URL is missing or malformed; serving degraded response.'
+        '[review-comments] REVIEW_COMMENTS_MONGODB_URL is missing or malformed; serving degraded response.',
       );
       return degradedResponse(request, { code: 'INVALID_CONNECTION_STRING' });
     }
@@ -67,7 +67,7 @@ async function handler(request, context) {
     // non-sensitive fields — never the raw error or connection string, which
     // can contain credentials.
     console.warn(
-      `[review-comments] MongoDB unreachable (${code || 'unknown'}${hostname ? ` ${hostname}` : ''}); serving degraded response.`
+      `[review-comments] MongoDB unreachable (${code || 'unknown'}${hostname ? ` ${hostname}` : ''}); serving degraded response.`,
     );
 
     return degradedResponse(request, { code: code || null });

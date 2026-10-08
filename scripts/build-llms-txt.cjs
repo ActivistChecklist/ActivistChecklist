@@ -59,8 +59,8 @@ function stripMdxToPlainText(s) {
   if (!s) return '';
   return stripBracketContent(String(s))
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // markdown links → text
-    .replace(/`([^`]+)`/g, '$1')             // inline code
-    .replace(/[*_]+/g, '')                   // emphasis markers
+    .replace(/`([^`]+)`/g, '$1') // inline code
+    .replace(/[*_]+/g, '') // emphasis markers
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -88,21 +88,14 @@ function firstSentence(body, maxChars = 160) {
 function resolveEntryDescription({ frontmatter, body }) {
   const fm = frontmatter || {};
   return (
-    fm.seoDescription ||
-    fm.excerpt ||
-    fm.summary ||
-    fm.description ||
-    firstSentence(body) ||
-    ''
+    fm.seoDescription || fm.excerpt || fm.summary || fm.description || firstSentence(body) || ''
   );
 }
 
 /** Build a URL for a guide/page from its slug and locale. */
 function buildUrl(siteUrl, locale, slug) {
   const base = siteUrl.replace(/\/+$/, '');
-  return locale === 'en'
-    ? `${base}/${slug}/`
-    : `${base}/${locale}/${slug}/`;
+  return locale === 'en' ? `${base}/${slug}/` : `${base}/${locale}/${slug}/`;
 }
 
 /** Build a URL for a checklist-item under its parent guide. */
@@ -245,13 +238,13 @@ function readLocale(locale) {
   }
 
   const guidesLoc = new Map(
-    listMdxDir(path.join(CONTENT_ROOT, locale, 'guides')).map((x) => [x.slug, x])
+    listMdxDir(path.join(CONTENT_ROOT, locale, 'guides')).map((x) => [x.slug, x]),
   );
   const pagesLoc = new Map(
-    listMdxDir(path.join(CONTENT_ROOT, locale, 'pages')).map((x) => [x.slug, x])
+    listMdxDir(path.join(CONTENT_ROOT, locale, 'pages')).map((x) => [x.slug, x]),
   );
   const itemsLoc = new Map(
-    listMdxDir(path.join(CONTENT_ROOT, locale, 'checklist-items')).map((x) => [x.slug, x])
+    listMdxDir(path.join(CONTENT_ROOT, locale, 'checklist-items')).map((x) => [x.slug, x]),
   );
 
   return {
@@ -294,7 +287,7 @@ function main() {
 
   // eslint-disable-next-line no-console
   console.log(
-    `llms.txt built — en: ${en.guides.length} guides, ${en.pages.length} pages, ${en.checklistItems.length} items`
+    `llms.txt built — en: ${en.guides.length} guides, ${en.pages.length} pages, ${en.checklistItems.length} items`,
   );
 }
 

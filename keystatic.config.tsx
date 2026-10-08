@@ -120,7 +120,9 @@ const buttonComponent = block({
         }}
       >
         {props.value.title || 'Button'}
-        {props.value.href && <span style={{ color: '#64748b', marginLeft: 6 }}>→ {props.value.href}</span>}
+        {props.value.href && (
+          <span style={{ color: '#64748b', marginLeft: 6 }}>→ {props.value.href}</span>
+        )}
       </div>
     );
   },
@@ -249,7 +251,8 @@ const styledSpanComponent = mark({
   schema: {
     className: fields.text({
       label: 'CSS classes',
-      description: 'Tailwind utilities, e.g. text-error font-bold or bg-destructive! text-destructive-foreground!',
+      description:
+        'Tailwind utilities, e.g. text-error font-bold or bg-destructive! text-destructive-foreground!',
       multiline: true,
     }),
   },
@@ -302,7 +305,10 @@ const sectionComponent = wrapper({
   description: 'Guide section that groups checklist items',
   schema: {
     title: fields.text({ label: 'Section Title', validation: { isRequired: true } }),
-    slug: fields.text({ label: 'Section Slug (used for URL anchors)', validation: { isRequired: true } }),
+    slug: fields.text({
+      label: 'Section Slug (used for URL anchors)',
+      validation: { isRequired: true },
+    }),
   },
   ContentView(props) {
     return (
@@ -313,7 +319,11 @@ const sectionComponent = wrapper({
           style={{ fontWeight: 800, fontSize: 18 }}
         >
           {props.value.title || 'Untitled Section'}
-          {props.value.slug && <span style={{ fontSize: 12, color: '#94a3b8', marginLeft: 8 }}>#{props.value.slug}</span>}
+          {props.value.slug && (
+            <span style={{ fontSize: 12, color: '#94a3b8', marginLeft: 8 }}>
+              #{props.value.slug}
+            </span>
+          )}
         </div>
         {props.children}
       </div>
@@ -526,7 +536,8 @@ export default config({
         }),
         disableAfterDate: fields.text({
           label: 'Auto-hide after date',
-          description: 'Optional. YYYY-MM-DD format. The announcement will stop showing after this date.',
+          description:
+            'Optional. YYYY-MM-DD format. The announcement will stop showing after this date.',
         }),
       },
     }),
@@ -568,14 +579,15 @@ export default config({
             label: 'Related Guide',
             collection: 'guides',
           }),
-          { label: 'Related Guides', itemLabel: (props) => props.value || 'Select guide...' }
+          { label: 'Related Guides', itemLabel: (props) => props.value || 'Select guide...' },
         ),
         firstPublished: fields.date({ label: 'First Published' }),
         lastUpdated: fields.date({ label: 'Last Updated' }),
         // Untranslatable: sync UNTRANSLATABLE_FRONTMATTER_SCALARS in scripts/crowdin-hide-strings.mjs
         tocDepth: fields.select({
           label: 'Left TOC depth',
-          description: 'Which heading levels appear in “On this page” (2 = ## only, 3 = ## and ###).',
+          description:
+            'Which heading levels appear in “On this page” (2 = ## only, 3 = ## and ###).',
           options: [
             { label: '2 — ## only', value: '2' },
             { label: '3 — ## and ###', value: '3' },
@@ -603,7 +615,6 @@ export default config({
         }),
       },
     }),
-
 
     // ── Checklist Items ─────────────────────────────────────────────────────
     checklistItems: collection({
@@ -658,7 +669,6 @@ export default config({
       },
     }),
 
-
     // ── Pages ───────────────────────────────────────────────────────────────
     pages: collection({
       label: 'Pages',
@@ -683,7 +693,8 @@ export default config({
         }),
         image: fields.image({
           label: 'Open Graph Image (optional)',
-          description: 'Relative path or full URL for OpenGraph/Twitter image (e.g. /images/content/foo.jpg).',
+          description:
+            'Relative path or full URL for OpenGraph/Twitter image (e.g. /images/content/foo.jpg).',
           directory: 'public/images/content',
           publicPath: '/images/content/',
         }),
@@ -692,7 +703,7 @@ export default config({
             label: 'Related Guide',
             collection: 'guides',
           }),
-          { label: 'Related Guides', itemLabel: (props) => props.value || 'Select guide...' }
+          { label: 'Related Guides', itemLabel: (props) => props.value || 'Select guide...' },
         ),
         firstPublished: fields.date({ label: 'First Published' }),
         lastUpdated: fields.date({ label: 'Last Updated' }),
@@ -737,7 +748,10 @@ export default config({
         date: fields.date({ label: 'Date', validation: { isRequired: true } }),
         url: fields.url({ label: 'Article URL' }),
         source: fields.text({ label: 'Source Publication' }),
-        tags: fields.text({ label: 'Tags', description: 'Comma-separated (e.g. ice, surveillance, phones)' }),
+        tags: fields.text({
+          label: 'Tags',
+          description: 'Comma-separated (e.g. ice, surveillance, phones)',
+        }),
         imageOverride: fields.image({
           label: 'Image Override',
           description: 'Overrides the auto-fetched open graph image',
@@ -763,7 +777,10 @@ export default config({
       format: { contentField: 'body' },
       columns: ['type', 'date'],
       schema: {
-        date: fields.text({ label: 'Date (YYYY-MM-DD)', validation: { isRequired: true, length: { min: 10, max: 10 } } }),
+        date: fields.text({
+          label: 'Date (YYYY-MM-DD)',
+          validation: { isRequired: true, length: { min: 10, max: 10 } },
+        }),
         type: fields.select({
           label: 'Type',
           options: [

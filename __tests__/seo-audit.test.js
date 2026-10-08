@@ -66,7 +66,11 @@ describe('evaluatePage', () => {
     const tooShort = evaluatePage({
       kind: 'page',
       slug: 'x',
-      frontmatter: { seoDescription: 'short', firstPublished: '2025-01-01', lastUpdated: '2026-01-01' },
+      frontmatter: {
+        seoDescription: 'short',
+        firstPublished: '2025-01-01',
+        lastUpdated: '2026-01-01',
+      },
       body: '',
     });
     expect(msgs(tooShort).some((m) => /seoDescription is \d+ chars; aim/.test(m))).toBe(true);
@@ -205,9 +209,7 @@ describe('formatReport', () => {
   it('lists each problem and duplicate', () => {
     const out = formatReport({
       clean: 1,
-      problems: [
-        { kind: 'guide', slug: 'signal', findings: [{ severity: 'warn', message: 'X' }] },
-      ],
+      problems: [{ kind: 'guide', slug: 'signal', findings: [{ severity: 'warn', message: 'X' }] }],
       duplicates: [{ desc: 'dup', files: ['pages/a.mdx', 'pages/b.mdx'] }],
     });
     expect(out).toContain('content/en/guides/signal.mdx');

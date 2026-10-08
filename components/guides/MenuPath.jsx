@@ -5,12 +5,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { SiApple } from 'react-icons/si';
 import { FaWindows, FaAndroid } from 'react-icons/fa6';
 import { cn } from '@/lib/utils';
-import {
-  getArrow,
-  isRtlLocale,
-  parsePlatformHeader,
-  splitOnChevron,
-} from '@/lib/menu-path';
+import { getArrow, isRtlLocale, parsePlatformHeader, splitOnChevron } from '@/lib/menu-path';
 
 const PLATFORM_ICONS = {
   iphone: SiApple,
@@ -47,7 +42,7 @@ function renderTextWithArrows(text, arrow, separatorLabel, keyPrefix) {
           <span className="text-muted-foreground" aria-hidden="true">
             {arrow}
           </span>
-        </span>
+        </span>,
       );
       out.push(' ');
     }
@@ -61,7 +56,11 @@ function trimEdgeWhitespace(nodes) {
   while (out.length && typeof out[0] === 'string' && out[0].trim() === '') {
     out = out.slice(1);
   }
-  while (out.length && typeof out[out.length - 1] === 'string' && out[out.length - 1].trim() === '') {
+  while (
+    out.length &&
+    typeof out[out.length - 1] === 'string' &&
+    out[out.length - 1].trim() === ''
+  ) {
     out = out.slice(0, -1);
   }
   if (out.length && typeof out[0] === 'string') {
@@ -132,26 +131,18 @@ export default function MenuPath({ children, className, inline = false }) {
   const stepWeight = '[&_strong]:font-semibold [&_b]:font-semibold';
 
   if (inline) {
-    return (
-      <span className={cn('menu-path-inline', stepWeight, className)}>
-        {body}
-      </span>
-    );
+    return <span className={cn('menu-path-inline', stepWeight, className)}>{body}</span>;
   }
 
   return (
     <div className={cn('menu-path mt-5 first:mt-0 last:mb-0', className)}>
       {header && (
         <div className="flex items-center gap-1.5 mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          {PlatformIcon && (
-            <PlatformIcon className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
-          )}
+          {PlatformIcon && <PlatformIcon className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />}
           <span>{header.label}</span>
         </div>
       )}
-      <div className={cn('menu-path-steps text-foreground', stepWeight)}>
-        {body}
-      </div>
+      <div className={cn('menu-path-steps text-foreground', stepWeight)}>{body}</div>
     </div>
   );
 }

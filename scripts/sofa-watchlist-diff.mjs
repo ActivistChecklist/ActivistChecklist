@@ -62,7 +62,7 @@ async function readWatchlist() {
   if (!parsed || !Array.isArray(parsed.expected)) {
     throw new Error(
       `Invalid sofa-watchlist schema at ${SOFA_WATCHLIST_PATH}: ` +
-      `'expected' must be an array (got ${typeof parsed?.expected}).`
+        `'expected' must be an array (got ${typeof parsed?.expected}).`,
     );
   }
   return parsed.expected;

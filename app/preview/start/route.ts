@@ -3,10 +3,7 @@ import { redirect } from 'next/navigation';
 import { NextResponse } from 'next/server';
 
 import { getCanonicalGithubRepo } from '@/lib/preview-github-repo';
-import {
-  parseOwnerRepoParam,
-  validatePreviewForkRepo
-} from '@/lib/preview-fork-validation';
+import { parseOwnerRepoParam, validatePreviewForkRepo } from '@/lib/preview-fork-validation';
 
 /**
  * `new URL(req.url)` requires an absolute URL; in some runtimes `req.url` is path-only.
@@ -34,7 +31,7 @@ function canonicalPreviewSearch(
   origin: string,
   branch: string,
   to: string,
-  repo: string | null
+  repo: string | null,
 ): string {
   const u = new URL('/preview/start', origin);
   u.searchParams.set('branch', branch);
@@ -73,7 +70,7 @@ const cookieBase = {
   path: '/',
   sameSite: 'lax' as const,
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production'
+  secure: process.env.NODE_ENV === 'production',
 };
 
 /**

@@ -44,7 +44,12 @@ const ConcernCard = ({ title, description }) => (
   </Card>
 );
 
-export default function HomePageContent({ children, changelogEntries = [], latestMajorBodyText = null, locale = 'en' }) {
+export default function HomePageContent({
+  children,
+  changelogEntries = [],
+  latestMajorBodyText = null,
+  locale = 'en',
+}) {
   const t = useTranslations();
   const currentLocale = useLocale() || locale;
   const baseUrl = getBaseUrl();
@@ -57,8 +62,9 @@ export default function HomePageContent({ children, changelogEntries = [], lates
         <div className="max-w-6xl mx-auto px-4 py-8 -my-6 container">
           {/* Hero Section */}
           <div className="">
-            <header className={cn(
-              /* Direction-agnostic full bleed. Symmetric negative inline
+            <header
+              className={cn(
+                /* Direction-agnostic full bleed. Symmetric negative inline
                  margins that sum exactly to the container width, so the box
                  is never over-constrained and `direction` cannot affect it.
                  Avoid the left-1/2 + -translate-x-1/2 trick here: w-dvw is
@@ -66,15 +72,16 @@ export default function HomePageContent({ children, changelogEntries = [], lates
                  over-constraint by dropping margin-right in LTR but
                  margin-left in RTL — flipping the static position the trick
                  measures from, which threw the hero off-centre in Arabic. */
-              "not-prose relative w-dvw max-w-none mx-[calc(50%-50dvw)]",
-              "relative mb-16 -mt-8 pt-16 pb-32 px-4 overflow-hidden",
-              /* Flat brand band, identical in both themes: --brand and
+                'not-prose relative w-dvw max-w-none mx-[calc(50%-50dvw)]',
+                'relative mb-16 -mt-8 pt-16 pb-32 px-4 overflow-hidden',
+                /* Flat brand band, identical in both themes: --brand and
                  --brand-foreground are the two tokens we never flip for dark mode.
                  Every piece of text on it is full brand-foreground rather than a
                  faded one, because white at 85% over this purple drops to 4.1:1
                  and the body copy is under 24px. */
-              "bg-brand text-brand-foreground"
-            )}>
+                'bg-brand text-brand-foreground',
+              )}
+            >
               <div className="relative max-w-4xl mx-auto text-center">
                 {/* text-5xl/6xl ship line-height:1, which is too tight for
                     Arabic — diacritics and descenders collide on a wrapped
@@ -87,7 +94,12 @@ export default function HomePageContent({ children, changelogEntries = [], lates
                   {t('hero.description')}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button asChild variant="default" size="xl" className="group transition-all bg-brand-foreground text-brand hover:bg-brand-foreground/90">
+                  <Button
+                    asChild
+                    variant="default"
+                    size="xl"
+                    className="group transition-all bg-brand-foreground text-brand hover:bg-brand-foreground/90"
+                  >
                     <Link href={NAV_ITEMS.ESSENTIALS.href} className="block group">
                       {t('hero.primaryCta')}
                     </Link>
@@ -127,7 +139,8 @@ export default function HomePageContent({ children, changelogEntries = [], lates
             <div className="mt-8 text-center">
               <Button asChild variant="outline" size="lg">
                 <Link href={SECURITY_CHECKLISTS.href} className="group">
-                  {t('homepage.browseAll')} <ArrowRight className="ms-2 transition-transform duration-300 ease-out group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
+                  {t('homepage.browseAll')}{' '}
+                  <ArrowRight className="ms-2 transition-transform duration-300 ease-out group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
                 </Link>
               </Button>
             </div>
@@ -137,12 +150,24 @@ export default function HomePageContent({ children, changelogEntries = [], lates
           <section className="mb-16 bg-linear-to-br from-muted via-muted to-accent/5 p-5 sm:p-6 md:p-8 rounded-lg">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12">
               <div className="space-y-4 md:space-y-6">
-                <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-linear-to-br from-primary to-primary/70 bg-clip-text text-transparent">{t('homepage.trustHeading')}</h2>
-                <p className="text-lg sm:text-xl text-muted-foreground">{t('homepage.trustDescription')}</p>
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-linear-to-br from-primary to-primary/70 bg-clip-text text-transparent">
+                  {t('homepage.trustHeading')}
+                </h2>
+                <p className="text-lg sm:text-xl text-muted-foreground">
+                  {t('homepage.trustDescription')}
+                </p>
               </div>
               <div className="space-y-0">
-                <TrustPoint icon={Users} title={t('trustPoints.experienceTitle')} description={t('trustPoints.experienceDescription')} />
-                <TrustPoint icon={Shield} title={t('trustPoints.updatedTitle')} description={t('trustPoints.updatedDescription')} />
+                <TrustPoint
+                  icon={Users}
+                  title={t('trustPoints.experienceTitle')}
+                  description={t('trustPoints.experienceDescription')}
+                />
+                <TrustPoint
+                  icon={Shield}
+                  title={t('trustPoints.updatedTitle')}
+                  description={t('trustPoints.updatedDescription')}
+                />
               </div>
             </div>
           </section>
@@ -150,19 +175,27 @@ export default function HomePageContent({ children, changelogEntries = [], lates
           {/* Common Misconceptions */}
           <section className="mb-16">
             <h2 className="text-2xl font-bold mb-6">{t('misconceptions.sectionTitle')}</h2>
-            <p className="text-lg text-muted-foreground mb-8">{t('misconceptions.sectionDescription')}</p>
+            <p className="text-lg text-muted-foreground mb-8">
+              {t('misconceptions.sectionDescription')}
+            </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <ConcernCard
                 title={t('misconceptions.nothingToHideTitle')}
-                description={t.rich('misconceptions.nothingToHideDescription', { b: (chunks) => <b>{chunks}</b> })}
+                description={t.rich('misconceptions.nothingToHideDescription', {
+                  b: (chunks) => <b>{chunks}</b>,
+                })}
               />
               <ConcernCard
                 title={t('misconceptions.alreadyKnowTitle')}
-                description={t.rich('misconceptions.alreadyKnowDescription', { b: (chunks) => <b>{chunks}</b> })}
+                description={t.rich('misconceptions.alreadyKnowDescription', {
+                  b: (chunks) => <b>{chunks}</b>,
+                })}
               />
               <ConcernCard
                 title={t('misconceptions.dontCareTitle')}
-                description={t.rich('misconceptions.dontCareDescription', { b: (chunks) => <b>{chunks}</b> })}
+                description={t.rich('misconceptions.dontCareDescription', {
+                  b: (chunks) => <b>{chunks}</b>,
+                })}
               />
             </div>
           </section>
@@ -177,9 +210,9 @@ export default function HomePageContent({ children, changelogEntries = [], lates
           <section className="mb-16">
             <h2 className="text-2xl font-bold mb-6">{t('featured.sectionTitle')}</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {FEATURE_LOGOS.map((logo, index) => 
+              {FEATURE_LOGOS.map((logo, index) => (
                 <FeatureLogo key={index} logo={logo} />
-              )}
+              ))}
             </div>
           </section>
 
@@ -189,7 +222,8 @@ export default function HomePageContent({ children, changelogEntries = [], lates
               <h2 className="text-2xl font-bold">{t('homepage.recentUpdatesHeading')}</h2>
               <Button asChild variant="outline" size="sm">
                 <Link href={NAV_ITEMS.CHANGELOG.href} className="group">
-                  {t('homepage.viewAllUpdates')} <ArrowRight className="ms-2 h-4 w-4 transition-transform duration-300 ease-out group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
+                  {t('homepage.viewAllUpdates')}{' '}
+                  <ArrowRight className="ms-2 h-4 w-4 transition-transform duration-300 ease-out group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
                 </Link>
               </Button>
             </div>

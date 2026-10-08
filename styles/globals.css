@@ -190,7 +190,14 @@
     font-style: normal;
     font-weight: 300 900;
     src: url('/fonts/rubik-v31-arabic-wght-normal.woff2') format('woff2');
-    unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1;
+    unicode-range:
+      U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E,
+      U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB,
+      U+10E60-10E7E, U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22,
+      U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49,
+      U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F,
+      U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E,
+      U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1;
   }
   @font-face {
     font-display: swap;
@@ -198,7 +205,14 @@
     font-style: italic;
     font-weight: 300 900;
     src: url('/fonts/rubik-v31-arabic-wght-italic.woff2') format('woff2');
-    unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1;
+    unicode-range:
+      U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E,
+      U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB,
+      U+10E60-10E7E, U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22,
+      U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49,
+      U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F,
+      U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E,
+      U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1;
   }
   @font-face {
     font-display: swap;
@@ -206,7 +220,9 @@
     font-style: normal;
     font-weight: 300 900;
     src: url('/fonts/rubik-v31-latin-wght-normal.woff2') format('woff2');
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    unicode-range:
+      U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+      U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
   }
   @font-face {
     font-display: swap;
@@ -214,7 +230,9 @@
     font-style: italic;
     font-weight: 300 900;
     src: url('/fonts/rubik-v31-latin-wght-italic.woff2') format('woff2');
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    unicode-range:
+      U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+      U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
   }
   @font-face {
     font-display: swap;
@@ -222,7 +240,10 @@
     font-style: normal;
     font-weight: 300 900;
     src: url('/fonts/rubik-v31-latin-ext-wght-normal.woff2') format('woff2');
-    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    unicode-range:
+      U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+      U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+      U+A720-A7FF;
   }
   @font-face {
     font-display: swap;
@@ -230,7 +251,10 @@
     font-style: italic;
     font-weight: 300 900;
     src: url('/fonts/rubik-v31-latin-ext-wght-italic.woff2') format('woff2');
-    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    unicode-range:
+      U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+      U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+      U+A720-A7FF;
   }
 
   html,
@@ -266,16 +290,19 @@
   * {
     box-sizing: border-box;
   }
-} 
+}
 
 @layer base {
   :root {
     /* Font Variables - Community Font Combination.
        --font-body carries the full fallback chain that used to be inlined on
        html/body, so pointing body at the token changes nothing for en/es. */
-    --font-heading: 'Libre Franklin', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    --font-body: 'Source Sans 3', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", system-ui, sans-serif;
-  
+    --font-heading:
+      'Libre Franklin', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-body:
+      'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+      Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', system-ui, sans-serif;
+
     --brand: 247 100% 65.5%;
     /* Deliberately not redefined in .dark. A brand band keeps the same
        saturated purple and white type in both themes. */
@@ -338,7 +365,7 @@
     --warning-foreground: 38 92% 95%;
     --info: 220 90% 50%;
     --info-foreground: 220 90% 95%;
-    
+
     /* Text variants - darker for better readability */
     --text-error: 0 84.2% 45%;
     --text-warning: 38 92% 40%;
@@ -401,7 +428,7 @@
     --info-foreground: 220 90% 100%;
     --success: 142 76% 35%;
     --success-foreground: 142 76% 100%;
-    
+
     /* Text variants - lighter for dark mode readability */
     --text-error: 0 84.2% 70%;
     --text-warning: 38 92% 65%;
@@ -434,8 +461,10 @@
      serves both roles here; the 300-900 variable axis carries the hierarchy
      that Libre Franklin vs Source Sans 3 carries in Latin. */
   :root:lang(ar) {
-    --font-heading: 'Rubik', 'Geeza Pro', 'Noto Sans Arabic', 'Segoe UI', Tahoma, system-ui, sans-serif;
-    --font-body: 'Rubik', 'Geeza Pro', 'Noto Sans Arabic', 'Segoe UI', Tahoma, system-ui, sans-serif;
+    --font-heading:
+      'Rubik', 'Geeza Pro', 'Noto Sans Arabic', 'Segoe UI', Tahoma, system-ui, sans-serif;
+    --font-body:
+      'Rubik', 'Geeza Pro', 'Noto Sans Arabic', 'Segoe UI', Tahoma, system-ui, sans-serif;
   }
 }
 
@@ -455,7 +484,10 @@
 
   .search-dialog a {
     @apply underline underline-offset-4 decoration-muted-foreground/70 hover:decoration-2 transition-colors;
-    &:hover { color: hsl(var(--link)); text-decoration-color: hsl(var(--link)); }
+    &:hover {
+      color: hsl(var(--link));
+      text-decoration-color: hsl(var(--link));
+    }
   }
 
   /* Inline markdown (outside prose) should keep standard link styling */
@@ -467,7 +499,10 @@
   /* Muted links that stay muted until hover - override prose styling */
   .muted-links a:not(.button) {
     @apply text-muted-foreground! underline! underline-offset-4! decoration-muted-foreground/70! hover:decoration-2! transition-colors!;
-    &:hover { color: hsl(var(--link)) !important; text-decoration-color: hsl(var(--link)) !important; }
+    &:hover {
+      color: hsl(var(--link)) !important;
+      text-decoration-color: hsl(var(--link)) !important;
+    }
   }
 
   /* Primary button hover in dark mode — inset shadow works on both solid and gradient backgrounds */
@@ -532,86 +567,100 @@
 }
 
 @layer base {
+  /* Print styles */
+  @media print {
+    /* Reset page margins */
+    @page {
+      margin: 0.9cm;
+    }
 
-    /* Print styles */
-    @media print {
-      /* Reset page margins */
-      @page {
-        margin: 0.9cm;
-      }
-      
-      /* Reduce overall text size for printing without affecting layout */
-      html, body {
-        /* Use scale transform to reduce text size without affecting layout units */
-        font-size: 16px !important; /* Keep the default font size */
-      }
-      
-      /* Target text elements only for size reduction */
-      p, li, td, th {
-        font-size: 9pt !important; /* This reduces just the text size */
-        line-height: 1.3 !important; /* Adjust line height for readability */
-      }
+    /* Reduce overall text size for printing without affecting layout */
+    html,
+    body {
+      /* Use scale transform to reduce text size without affecting layout units */
+      font-size: 16px !important; /* Keep the default font size */
+    }
 
-      /* Hide navigation and interactive elements */
-      nav, 
-      .no-print,
-      [role="navigation"] {
-        display: none !important;
-      }
+    /* Target text elements only for size reduction */
+    p,
+    li,
+    td,
+    th {
+      font-size: 9pt !important; /* This reduces just the text size */
+      line-height: 1.3 !important; /* Adjust line height for readability */
+    }
 
-      /* Avoid orphans and widows */
-      p, li, tr {
-        orphans: 3;
-        widows: 3;
-      }
+    /* Hide navigation and interactive elements */
+    nav,
+    .no-print,
+    [role='navigation'] {
+      display: none !important;
+    }
 
-      /* Optimize links for print */
-      a {
-        text-decoration: none;
-        color: #000 !important;
-      }
+    /* Avoid orphans and widows */
+    p,
+    li,
+    tr {
+      orphans: 3;
+      widows: 3;
+    }
 
-      /* Show URLs for links (except for internal anchor links) */
-      a[href^="http"]:after {
-        content: " (" attr(href) ")";
-        font-size: 90%;
-        font-style: italic;
-      }
+    /* Optimize links for print */
+    a {
+      text-decoration: none;
+      color: #000 !important;
+    }
 
-      /* Adjust colors for better print readability */
-      /* * {
+    /* Show URLs for links (except for internal anchor links) */
+    a[href^='http']:after {
+      content: ' (' attr(href) ')';
+      font-size: 90%;
+      font-style: italic;
+    }
+
+    /* Adjust colors for better print readability */
+    /* * {
         background-color: transparent !important;
         color: #000 !important;
         text-shadow: none !important;
         box-shadow: none !important;
       } */
 
-      /* Make images and tables fit within page */
-      img, table {
-        max-width: 100% !important;
-      }
-
-      /* Improve table readability */
-      table {
-        border-collapse: collapse !important;
-      }
-      
-      th, td {
-        border: 1px solid #ccc !important;
-      }
-      
-      /* Optimize sections and blockquotes */
-      blockquote {
-        border-inline-start: 3px solid #ccc !important;
-        padding: 0.5em 1em !important;
-        margin: 1em 0 !important;
-      }
+    /* Make images and tables fit within page */
+    img,
+    table {
+      max-width: 100% !important;
     }
-  
+
+    /* Improve table readability */
+    table {
+      border-collapse: collapse !important;
+    }
+
+    th,
+    td {
+      border: 1px solid #ccc !important;
+    }
+
+    /* Optimize sections and blockquotes */
+    blockquote {
+      border-inline-start: 3px solid #ccc !important;
+      padding: 0.5em 1em !important;
+      margin: 1em 0 !important;
+    }
+  }
+
   /* Block elements spacing for PageFind indexing */
-  h1, h2, h3, h4, h5, h6, p, section {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  section {
     &::after {
-      content: " ";
+      content: ' ';
       display: inline;
       visibility: hidden;
       width: 0;
@@ -619,7 +668,7 @@
       overflow: hidden;
     }
   }
-  
+
   h1 {
     @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-6;
   }
@@ -627,35 +676,36 @@
   .text-shadow-white {
     /* -webkit-text-stroke: 2px white;
     text-stroke: 2px white; */
-    text-shadow: 0 0 1px hsl(var(--background)),
-                 0 0 2px hsl(var(--background)),
-                 0 0 4px hsl(var(--background)),
-                 0 0 4px hsl(var(--background)),
-                 0 0 4px hsl(var(--background)),
-                 0 0 4px hsl(var(--background)),
-                 0 0 4px hsl(var(--background)),
-                 0 0 4px hsl(var(--background)),
-                 0 0 4px hsl(var(--background)),
-                 0 0 8px hsl(var(--background)),
-                 0 0 8px hsl(var(--background)),
-                 0 0 8px hsl(var(--background)),
-                 0 0 8px hsl(var(--background)),
-                 0 0 8px hsl(var(--background)),
-                 0 0 8px hsl(var(--background)),
-                 0 0 16px hsl(var(--background)),
-                 0 0 30px hsl(var(--background)),
-                 0 0 60px hsl(var(--background)),
-                 0 0 90px hsl(var(--background)),
-                 0 24px 48px hsl(var(--background)),
-                 0 -24px 48px hsl(var(--background)),
-                 24px 0 48px hsl(var(--background)),
-                 -24px 0 48px hsl(var(--background)),
-                 0 48px 96px hsl(var(--background)),
-                 0 -48px 96px hsl(var(--background)),
-                 48px 0 96px hsl(var(--background)),
-                 -48px 0 96px hsl(var(--background)),
-                 0 96px 192px hsl(var(--background) / 0.95),
-                 0 128px 256px hsl(var(--background) / 0.9);
+    text-shadow:
+      0 0 1px hsl(var(--background)),
+      0 0 2px hsl(var(--background)),
+      0 0 4px hsl(var(--background)),
+      0 0 4px hsl(var(--background)),
+      0 0 4px hsl(var(--background)),
+      0 0 4px hsl(var(--background)),
+      0 0 4px hsl(var(--background)),
+      0 0 4px hsl(var(--background)),
+      0 0 4px hsl(var(--background)),
+      0 0 8px hsl(var(--background)),
+      0 0 8px hsl(var(--background)),
+      0 0 8px hsl(var(--background)),
+      0 0 8px hsl(var(--background)),
+      0 0 8px hsl(var(--background)),
+      0 0 8px hsl(var(--background)),
+      0 0 16px hsl(var(--background)),
+      0 0 30px hsl(var(--background)),
+      0 0 60px hsl(var(--background)),
+      0 0 90px hsl(var(--background)),
+      0 24px 48px hsl(var(--background)),
+      0 -24px 48px hsl(var(--background)),
+      24px 0 48px hsl(var(--background)),
+      -24px 0 48px hsl(var(--background)),
+      0 48px 96px hsl(var(--background)),
+      0 -48px 96px hsl(var(--background)),
+      48px 0 96px hsl(var(--background)),
+      -48px 0 96px hsl(var(--background)),
+      0 96px 192px hsl(var(--background) / 0.95),
+      0 128px 256px hsl(var(--background) / 0.9);
   }
 
   h2 {
@@ -674,7 +724,7 @@
 
     h2::before {
       display: block;
-      content: " ";
+      content: ' ';
       position: absolute;
       top: 2.1rem;
       inset-inline: 0;
@@ -692,7 +742,9 @@
     }
 
     /* Paragraphs and Lists */
-    p, ul, ol {
+    p,
+    ul,
+    ol {
       @apply mt-3 first:mt-0 text-pretty;
     }
 
@@ -700,7 +752,7 @@
     ul {
       @apply ms-6 list-disc [&>li]:mt-2;
     }
-    
+
     ol {
       @apply ms-6 list-decimal [&>li]:mt-2;
     }
@@ -720,17 +772,16 @@
       @apply mt-6 border-s-4 bg-border/20 p-4 ps-6 me-4 md:me-36;
     }
 
-
     /* Images */
     img {
       @apply w-auto block border border-muted-foreground/20 rounded-lg my-4;
     }
-    
+
     /* Override prose img margins for floated images */
     img.float-start {
       @apply ms-0! me-6!;
     }
-    
+
     img.float-end {
       @apply me-0! ms-6!;
     }
@@ -773,7 +824,7 @@
     /* Tables */
     table {
       @apply w-full;
-      
+
       td:first-child,
       th:first-child {
         @apply font-bold;
@@ -781,7 +832,8 @@
     }
 
     .equal-column-widths {
-      td, th {
+      td,
+      th {
         @apply w-1/2;
       }
     }
@@ -813,7 +865,6 @@
     }
   }
 }
-
 
 @layer base {
   :not(.checklist-item *) > .how-to-container {

@@ -20,21 +20,13 @@ import {
   extractChecklistItems,
   serializeFrontmatter,
 } from '@/lib/content';
-import {
-  resolveChecklistItem,
-  resolveGuide,
-  resolvePage,
-} from '@/lib/content-draft';
+import { resolveChecklistItem, resolveGuide, resolvePage } from '@/lib/content-draft';
 import { getBaseUrl } from '@/lib/utils';
 import { getOgImagePathForSlug } from '@/lib/og-image';
 import { LOCALES, DEFAULT_LOCALE } from '@/lib/i18n-config';
 import { getOpenGraphLocale } from '@/lib/rtl';
 import JsonLd from '@/components/JsonLd';
-import {
-  buildContentPageGraph,
-  buildHowTo,
-  TOP_GUIDE_SLUGS,
-} from '@/lib/structured-data';
+import { buildContentPageGraph, buildHowTo, TOP_GUIDE_SLUGS } from '@/lib/structured-data';
 
 const DEFAULT_DESCRIPTION =
   'Plain language steps for digital security, because protecting yourself helps keep your whole community safer. Built by activists, for activists with field-tested, community-verified guides.';
@@ -73,14 +65,9 @@ function buildContentNotices({ locale, isFallback, slug, t }) {
       message: t('translationFallback.message'),
     });
   }
-  if (
-    !isFallback &&
-    slug !== 'contribute' &&
-    shouldShowTranslationUnreviewedNotice(slug, locale)
-  ) {
+  if (!isFallback && slug !== 'contribute' && shouldShowTranslationUnreviewedNotice(slug, locale)) {
     const routeStatus = getRouteTranslationStatus(slug, locale);
-    const approvalPercent =
-      routeStatus?.approvalPercent != null ? routeStatus.approvalPercent : 0;
+    const approvalPercent = routeStatus?.approvalPercent != null ? routeStatus.approvalPercent : 0;
     notices.push({
       id: 'translation-unreviewed',
       type: 'warning',
@@ -158,7 +145,8 @@ export async function generateMetadata({ params }) {
     alternates[loc] = loc === DEFAULT_LOCALE ? `${baseUrl}/${slug}/` : `${baseUrl}/${loc}/${slug}/`;
   });
 
-  const canonical = locale === DEFAULT_LOCALE ? `${baseUrl}/${slug}/` : `${baseUrl}/${locale}/${slug}/`;
+  const canonical =
+    locale === DEFAULT_LOCALE ? `${baseUrl}/${slug}/` : `${baseUrl}/${locale}/${slug}/`;
   const openGraphLocale = getOpenGraphLocale(locale);
   const openGraphAlternateLocales = Object.keys(LOCALES)
     .filter((loc) => loc !== locale)
@@ -208,8 +196,7 @@ export default async function SlugPage({ params }) {
     const firstSectionIndex = content.indexOf('<Section');
     const introContent =
       firstSectionIndex === -1 ? content : content.slice(0, firstSectionIndex).trim();
-    const sectionContent =
-      firstSectionIndex === -1 ? '' : content.slice(firstSectionIndex).trim();
+    const sectionContent = firstSectionIndex === -1 ? '' : content.slice(firstSectionIndex).trim();
 
     const serializedIntro = introContent ? await serializeMdx(introContent) : null;
 
@@ -249,14 +236,18 @@ export default async function SlugPage({ params }) {
         } else {
           console.warn(`Checklist item not found: "${itemSlug}" (referenced in guide "${slug}")`);
         }
-      })
+      }),
     );
 
     // Generate OG image at build time
     let ogImagePath = null;
     try {
       const { generateOgImageForRoute } = await import('@/lib/og-image');
-      ogImagePath = await generateOgImageForRoute({ title: frontmatter.title, pageType: 'guide', slug });
+      ogImagePath = await generateOgImageForRoute({
+        title: frontmatter.title,
+        pageType: 'guide',
+        slug,
+      });
     } catch (err) {
       console.warn(`OG image skipped for guide "${slug}":`, err.message);
     }
@@ -336,7 +327,7 @@ export default async function SlugPage({ params }) {
         } catch (err) {
           console.warn(`Failed to serialize checklist item "${itemSlug}":`, err.message);
         }
-      })
+      }),
     );
 
     // Generate OG image at build time

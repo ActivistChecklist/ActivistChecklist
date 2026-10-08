@@ -8,24 +8,31 @@ let cache = null; // { data, fetchedAt }
 
 function fetchJson(url) {
   return new Promise((resolve, reject) => {
-    const req = https.get(url, { timeout: 10000, headers: { Accept: 'application/json' } }, (res) => {
-      if (res.statusCode !== 200) {
-        reject(new Error(`HTTP ${res.statusCode}`));
-        return;
-      }
-      const chunks = [];
-      res.on('data', (chunk) => chunks.push(chunk));
-      res.on('end', () => {
-        try {
-          resolve(JSON.parse(Buffer.concat(chunks).toString('utf-8')));
-        } catch {
-          reject(new Error('Invalid JSON'));
+    const req = https.get(
+      url,
+      { timeout: 10000, headers: { Accept: 'application/json' } },
+      (res) => {
+        if (res.statusCode !== 200) {
+          reject(new Error(`HTTP ${res.statusCode}`));
+          return;
         }
-      });
-      res.on('error', reject);
-    });
+        const chunks = [];
+        res.on('data', (chunk) => chunks.push(chunk));
+        res.on('end', () => {
+          try {
+            resolve(JSON.parse(Buffer.concat(chunks).toString('utf-8')));
+          } catch {
+            reject(new Error('Invalid JSON'));
+          }
+        });
+        res.on('error', reject);
+      },
+    );
     req.on('error', reject);
-    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
+    req.on('timeout', () => {
+      req.destroy();
+      reject(new Error('Request timeout'));
+    });
   });
 }
 
@@ -46,7 +53,11 @@ function parseProgress(raw) {
 async function getStats() {
   const now = Date.now();
   if (cache && now - cache.fetchedAt < CACHE_TTL_MS) {
-    return { languages: cache.data, fetchedAt: new Date(cache.fetchedAt).toISOString(), cached: true };
+    return {
+      languages: cache.data,
+      fetchedAt: new Date(cache.fetchedAt).toISOString(),
+      cached: true,
+    };
   }
   const raw = await fetchJson(STATS_URL);
   const languages = parseProgress(raw);
@@ -55,25 +66,34 @@ async function getStats() {
 }
 
 async function crowdinStatsPlugin(fastify) {
-  fastify.get('/crowdin-stats', {
-    config: {
-      rateLimit: { max: 60, timeWindow: '1 minute' },
+  fastify.get(
+    '/crowdin-stats',
+    {
+      config: {
+        rateLimit: { max: 60, timeWindow: '1 minute' },
+      },
     },
-  }, async (request, reply) => {
-    try {
-      const stats = await getStats();
-      reply.header('Cache-Control', 'public, max-age=3600');
-      return stats;
-    } catch (err) {
-      fastify.log.error(`crowdin-stats fetch failed: ${err.message}`);
-      if (cache) {
+    async (request, reply) => {
+      try {
+        const stats = await getStats();
         reply.header('Cache-Control', 'public, max-age=3600');
-        return { languages: cache.data, fetchedAt: new Date(cache.fetchedAt).toISOString(), cached: true, stale: true };
+        return stats;
+      } catch (err) {
+        fastify.log.error(`crowdin-stats fetch failed: ${err.message}`);
+        if (cache) {
+          reply.header('Cache-Control', 'public, max-age=3600');
+          return {
+            languages: cache.data,
+            fetchedAt: new Date(cache.fetchedAt).toISOString(),
+            cached: true,
+            stale: true,
+          };
+        }
+        reply.status(503);
+        return { error: 'Translation stats temporarily unavailable' };
       }
-      reply.status(503);
-      return { error: 'Translation stats temporarily unavailable' };
-    }
-  });
+    },
+  );
 }
 
 module.exports = crowdinStatsPlugin;

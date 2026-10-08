@@ -17,7 +17,7 @@ export default function PreviewForkSync() {
     }
     fetch('/api/preview/sync-repo', {
       method: 'POST',
-      credentials: 'same-origin'
+      credentials: 'same-origin',
     }).catch(() => {});
   }, []);
 

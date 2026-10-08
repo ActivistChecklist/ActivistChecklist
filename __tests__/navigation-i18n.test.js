@@ -64,7 +64,7 @@ describe('getTranslatedNavItemFields', () => {
     const out = getTranslatedNavItemFields(
       'police-door-poster',
       { title: 'Police poster', description: 'Desc' },
-      translateText
+      translateText,
     );
     expect(out.title).toBe('Póster policía');
     expect(out.description).toBe('Desc');
@@ -75,7 +75,7 @@ describe('getTranslatedNavItemFields', () => {
     const out = getTranslatedNavItemFields(
       'unknown-guide',
       { title: 'T', description: 'D' },
-      translateText
+      translateText,
     );
     expect(out.title).toBe('T');
     expect(out.description).toBe('D');
@@ -102,9 +102,7 @@ describe('createIntlTranslator', () => {
 
   it('returns fallback for a missing key even though next-intl does not throw', () => {
     const translateText = createIntlTranslator(makeNextIntlLikeT({}));
-    expect(translateText('navItems.vpn.title', 'VPNs for activists')).toBe(
-      'VPNs for activists',
-    );
+    expect(translateText('navItems.vpn.title', 'VPNs for activists')).toBe('VPNs for activists');
   });
 
   it('never leaks the raw key path into the output', () => {
