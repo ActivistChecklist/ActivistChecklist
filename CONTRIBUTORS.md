@@ -42,6 +42,23 @@ pnpm dev
 
 **Keystatic CMS:** Uses local filesystem storage by default (no OAuth required). Optional GitHub-backed storage and preview config is documented in `.env.template`.
 
+### Formatting
+
+Code is formatted with [Prettier](https://prettier.io/) using the repo's `.prettierrc`. You don't have to do anything special: `pnpm install` sets up a pre-commit hook that formats the files you commit, and CI runs `pnpm format:check` on every PR. If that check fails, run `pnpm format` and commit the result.
+
+If your editor formats on save, point it at the repo's config so it doesn't reformat whole files:
+
+- **VS Code:** install the recommended extensions when prompted (Prettier and EditorConfig). Also **trust the workspace**. In Restricted Mode the Prettier extension ignores `.prettierrc` and formats with its own defaults, which rewrites every quote and line in the file.
+- **Other editors:** use the Prettier plugin for your editor, and turn on EditorConfig support if it isn't built in.
+
+MDX content, Markdown, and `messages/` are not run through Prettier (see `.prettierignore`).
+
+To keep `git blame` useful across the bulk reformat commit, run this once in your clone:
+
+```bash
+git config blame.ignoreRevsFile .git-blame-ignore-revs
+```
+
 ## Repository layout
 
 ```

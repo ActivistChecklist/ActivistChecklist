@@ -418,7 +418,7 @@ importers:
         specifier: '>=8.5.23'
         version: 8.5.29
       prettier:
-        specifier: ^3.9.9
+        specifier: 3.9.9
         version: 3.9.9
       react-json-view:
         specifier: ^1.21.3

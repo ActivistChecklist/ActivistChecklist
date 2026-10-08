@@ -5,9 +5,9 @@ on:
     branches:
       - main
     paths:
-      - ".github/labels.yml"
-      - ".github/workflows/label-sync.yml"
-      - ".coderabbit.yaml"
+      - '.github/labels.yml'
+      - '.github/workflows/label-sync.yml'
+      - '.coderabbit.yaml'
   workflow_dispatch:
 
 permissions:
@@ -25,8 +25,12 @@ jobs:
           const fs = require("fs");
           const labelsText = fs.readFileSync(".github/labels.yml", "utf8");
           const rabbitText = fs.readFileSync(".coderabbit.yaml", "utf8");
-          const labels = [...labelsText.matchAll(/^- name:\s*"([^"]+)"/gm)].map((m) => m[1]).sort();
-          const rabbitLabels = [...rabbitText.matchAll(/^\s*-\s*label:\s*"([^"]+)"/gm)].map((m) => m[1]).sort();
+          const labels = [...labelsText.matchAll(/^- name:\s*["\x27]([^"\x27]+)["\x27]/gm)].map((m) => m[1]).sort();
+          const rabbitLabels = [...rabbitText.matchAll(/^\s*-\s*label:\s*["\x27]([^"\x27]+)["\x27]/gm)].map((m) => m[1]).sort();
+          if (!labels.length || !rabbitLabels.length) {
+            console.error("Found no labels; the patterns above no longer match the files.");
+            process.exit(1);
+          }
           const missingInRabbit = labels.filter((name) => !rabbitLabels.includes(name));
           const missingInLabels = rabbitLabels.filter((name) => !labels.includes(name));
           if (missingInRabbit.length || missingInLabels.length) {
