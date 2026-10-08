@@ -19,6 +19,15 @@
       "title": "أساسيات الأمان",
       "description": "ممارسات الأمن الأساسية التي ينبغي على كل ناشط اتباعها."
     },
+    "search": {
+      "dialogTitle": "Search the site",
+      "dialogDescription": "Use the search bar to find relevant content across the site.",
+      "placeholder": "البحث...",
+      "searching": "جارٍ البحث...",
+      "popularHeading": "عمليات بحث شائعة",
+      "topGuidesHeading": "أفضل الأدلّة",
+      "pressEnter": "Press {kbd} to search"
+    },
     "signal": {
       "title": "أمن Signal",
       "description": "أمّن تطبيق مراسلة Signal الخاص بك من أجل اتصالات أكثر أماناً."
