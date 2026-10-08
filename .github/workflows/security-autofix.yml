@@ -1,0 +1,278 @@
+# Daily sweep for security alerts that Dependabot does not fix on its own.
+#
+# Dependabot fixes a transitive vulnerability by bumping the PARENT to a release
+# that already depends on a patched version. It never does a lockfile-only bump,
+# and it will not write a pnpm override. So when the parent has no such release,
+# the alert just sits open forever with no PR. On 2026-09-03 ten alerts had piled
+# up that way. This closes that gap.
+#
+# There is no `dependabot_alert` workflow trigger, so this polls on a schedule.
+#
+# The only output is ONE pull request, on a fixed branch that every run
+# refreshes in place. It never opens issues. It used to open one whenever a fix
+# needed an override, deduped on the exact advisory set, so every newly
+# published advisory added another near-identical issue on top of the last one
+# (#687, #690, #691, #695 in five days). Anything this cannot fix stays visible
+# in the Dependabot alerts tab, which is the one list that does not duplicate.
+#
+# Two outcomes:
+#
+#   - `pnpm update <pkg>` clears at least one advisory and tests + the static
+#     build pass → opens (or refreshes) the PR. Partial fixes count: if it
+#     clears 2 of 4, you get a PR for the 2.
+#   - otherwise → nothing. That covers a parent's range capping us below the
+#     fix (needs a hand-written override, see pnpm-workspace.yaml), advisories
+#     with no patched release, and a bump that breaks tests or the build (the
+#     run goes red, which GitHub already notifies about).
+#
+# Runs daily at 07:00 UTC, after Dependabot's own daily scan. Manual
+# `workflow_dispatch` included. Note that GitHub disables scheduled workflows
+# after 60 days without repository activity.
+
+name: Security autofix
+
+on:
+  schedule:
+    - cron: '0 7 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-autofix
+  cancel-in-progress: false
+
+jobs:
+  autofix:
+    if: github.repository == 'ActivistChecklist/ActivistChecklist'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6.1.0
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm run install:ci
+
+      # ── What is currently vulnerable ──────────────────────────────────────
+      - name: Audit
+        id: audit
+        run: |
+          pnpm audit --json > audit-before.json || true
+          node <<'EOF' >> "$GITHUB_OUTPUT"
+            const fs = require('fs');
+            let report = {};
+            try {
+              report = JSON.parse(fs.readFileSync('audit-before.json', 'utf8'));
+            } catch {
+              // pnpm emits nothing parseable when the registry is unreachable.
+              // Treat that as "nothing to do" rather than inventing an update.
+              console.log('packages=');
+              console.log('ids=');
+              process.exit(0);
+            }
+            const advisories = Object.values(report.advisories || {});
+            // An advisory with no patched release cannot be fixed by any
+            // update, so do not name its package (braces and sprintf-js had
+            // `patched_versions: null` on 2026-10-06).
+            const fixable = advisories.filter(
+              (a) => a.patched_versions && a.patched_versions !== '<0.0.0'
+            );
+            const packages = [...new Set(fixable.map((a) => a.module_name))].sort();
+            const ids = [...new Set(advisories.map((a) => a.github_advisory_id))].sort();
+            console.log(`packages=${packages.join(' ')}`);
+            console.log(`ids=${ids.join(' ')}`);
+          EOF
+          echo '----- advisories -----'
+          node -e 'const r=JSON.parse(require("fs").readFileSync("audit-before.json","utf8"));for(const a of Object.values(r.advisories||{}))console.log(a.module_name,a.severity,a.github_advisory_id,a.vulnerable_versions,"-> fixed",a.patched_versions)' || true
+
+      - name: Nothing to do
+        if: steps.audit.outputs.packages == ''
+        run: echo 'No fixable advisories. Exiting.'
+
+      # ── Try the in-range update ───────────────────────────────────────────
+      # Deliberately NOT `pnpm audit --fix`: its "update" method runs a broad
+      # update and rewrites ranges in package.json (verified 2026-09-03 --
+      # it bumped satori while fixing zero vulnerabilities). `pnpm update
+      # <pkg>` stays inside the existing ranges.
+      #
+      # No `--depth Infinity` any more. pnpm 12's Rust CLI parses --depth as an
+      # integer and dies on "Infinity"; unlimited depth is now the default, so
+      # the flag is simply gone. Note the behaviour underneath it also changed:
+      # pnpm 11 moved only the named entries, while pnpm 12 re-resolves the
+      # whole graph and carries along any other entry its parent's range
+      # already allowed. Verified 2026-09-19 on 12.4.1 -- `pnpm update` with a
+      # package name that is not in the tree at all still bumped @keystar/ui
+      # 0.9.6 -> 0.10.0. So expect a wider lockfile diff than the named
+      # packages, and read it before merging; the PR body says the same.
+      #
+      # Direct dependencies are included. For a name we declare ourselves,
+      # `pnpm update <name>` moves the direct copy and raises its specifier
+      # floor in package.json (^16.3.3 → ^16.3.8) without leaving the range.
+      # That is the fix for a vulnerable direct dependency, and the guard below
+      # rejects anything wider. What it cannot reach is a transitive copy that
+      # shares the name (we once carried next@15 under @activistchecklist/
+      # react-review-comments next to our own next@16): that copy stays
+      # vulnerable, the re-audit says so, and it needs a scoped override.
+      # Never pass `name@<major>` here: `pnpm update 'next@15'` rewrote our
+      # direct ^16.3.3 to ^15.5.25, a DOWNGRADE (verified on pnpm 11.4.0 and
+      # 12.4.1).
+      - name: Update vulnerable packages within range
+        if: steps.audit.outputs.packages != ''
+        env:
+          PACKAGES: ${{ steps.audit.outputs.packages }}
+        run: |
+          echo "Updating: $PACKAGES"
+          # Word splitting is deliberate here: PACKAGES is a package list.
+          # shellcheck disable=SC2086
+          pnpm update $PACKAGES
+
+      # The update must stay inside our declared ranges. The only package.json
+      # change allowed is a specifier for one of the names we passed, in the
+      # same major. If this trips, pnpm's behaviour changed upstream and this
+      # workflow should stop rather than open a PR that quietly widens or
+      # downgrades a dependency.
+      - name: Assert update stayed in range
+        if: steps.audit.outputs.packages != ''
+        env:
+          PACKAGES: ${{ steps.audit.outputs.packages }}
+        run: |
+          git diff --exit-code -- pnpm-workspace.yaml
+          node <<'EOF'
+            const fs = require('fs');
+            const { execSync } = require('child_process');
+            const before = JSON.parse(execSync('git show HEAD:package.json').toString());
+            const after = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            const allowed = new Set(process.env.PACKAGES.split(' '));
+            const fields = ['dependencies', 'devDependencies', 'optionalDependencies', 'peerDependencies'];
+            const major = (spec) => (String(spec ?? '').match(/\d+/) || [])[0];
+            const problems = [];
+            for (const field of fields) {
+              const a = before[field] || {};
+              const b = after[field] || {};
+              for (const name of new Set([...Object.keys(a), ...Object.keys(b)])) {
+                if (a[name] === b[name]) continue;
+                if (!allowed.has(name) || major(a[name]) === undefined || major(a[name]) !== major(b[name])) {
+                  problems.push(`${field}.${name}: ${a[name]} -> ${b[name]}`);
+                }
+              }
+            }
+            const strip = (pkg) => JSON.stringify({ ...pkg, ...Object.fromEntries(fields.map((f) => [f, null])) });
+            if (strip(before) !== strip(after)) problems.push('a non-dependency field in package.json changed');
+            if (problems.length) {
+              console.error('pnpm update left the declared ranges:\n' + problems.join('\n'));
+              process.exit(1);
+            }
+          EOF
+
+      - name: Re-audit
+        id: reaudit
+        if: steps.audit.outputs.packages != ''
+        env:
+          BEFORE_IDS: ${{ steps.audit.outputs.ids }}
+        run: |
+          pnpm audit --json > audit-after.json || true
+          node <<'EOF' >> "$GITHUB_OUTPUT"
+            const fs = require('fs');
+            const { execSync } = require('child_process');
+            let advisories = [];
+            try {
+              const report = JSON.parse(fs.readFileSync('audit-after.json', 'utf8'));
+              advisories = Object.values(report.advisories || {});
+            } catch {
+              // Unparseable means we cannot prove anything was cleared, so
+              // claim nothing and open no PR.
+              console.log('cleared_count=0');
+              process.exit(0);
+            }
+            const before = new Set((process.env.BEFORE_IDS || '').split(' ').filter(Boolean));
+            const after = new Set(advisories.map((a) => a.github_advisory_id));
+            const cleared = [...before].filter((id) => !after.has(id)).sort();
+            const added = [...after].filter((id) => !before.has(id)).sort();
+            const changed =
+              execSync('git status --porcelain -- pnpm-lock.yaml package.json').toString().trim() !== '';
+
+            // Only worth a PR if it fixed something and broke nothing new.
+            const worthIt = changed && cleared.length > 0 && added.length === 0;
+            console.log(`cleared_count=${worthIt ? cleared.length : 0}`);
+            if (added.length) console.error(`Update introduced advisories, not opening a PR: ${added.join(' ')}`);
+
+            // One advisory can appear twice when a package has two live majors
+            // (fast-uri did), so list each id once.
+            const describe = (list) => {
+              const byId = new Map();
+              for (const a of list) if (!byId.has(a.github_advisory_id)) byId.set(a.github_advisory_id, a);
+              return byId;
+            };
+            const line = (a) => {
+              const fix = a.patched_versions && a.patched_versions !== '<0.0.0'
+                ? `fixed in \`${a.patched_versions}\``
+                : 'no fix released';
+              return `- \`${a.module_name}\` ${a.severity}, [${a.github_advisory_id}](https://github.com/advisories/${a.github_advisory_id}), ${fix}`;
+            };
+            const beforeById = describe(Object.values(
+              JSON.parse(fs.readFileSync('audit-before.json', 'utf8')).advisories || {}
+            ));
+            const remaining = [...describe(advisories).values()].map(line);
+            console.log('cleared_list<<CLEARED_EOF');
+            console.log(cleared.map((id) => line(beforeById.get(id))).join('\n'));
+            console.log('CLEARED_EOF');
+            console.log('remaining_list<<REMAINING_EOF');
+            console.log(remaining.length ? remaining.join('\n') : 'None. `pnpm audit` is clean on this branch.');
+            console.log('REMAINING_EOF');
+          EOF
+
+      # ── It fixed something. Verify, then PR. ──────────────────────────────
+      - name: Unit tests
+        if: steps.reaudit.outputs.cleared_count != '0' && steps.reaudit.outputs.cleared_count != ''
+        run: pnpm test
+
+      - name: Static export build
+        if: steps.reaudit.outputs.cleared_count != '0' && steps.reaudit.outputs.cleared_count != ''
+        run: pnpm buildstatic
+
+      # Fixed branch name, so a later run updates this PR instead of opening
+      # another. If nothing on the branch differs from main any more, the action
+      # closes the PR and deletes the branch.
+      - name: Open PR
+        if: steps.reaudit.outputs.cleared_count != '0' && steps.reaudit.outputs.cleared_count != ''
+        uses: peter-evans/create-pull-request@v8
+        with:
+          # A PAT, not GITHUB_TOKEN: PRs opened with GITHUB_TOKEN do not trigger
+          # other workflows, so pr-checks.yml would never run on them.
+          token: ${{ secrets.SECURITY_AUTOFIX_TOKEN }}
+          add-paths: |
+            pnpm-lock.yaml
+            package.json
+          commit-message: 'Security: update ${{ steps.audit.outputs.packages }}'
+          title: 'Security: update ${{ steps.audit.outputs.packages }}'
+          body: |
+            The daily security sweep ran `pnpm update ${{ steps.audit.outputs.packages }}`. Every change stays inside the ranges we already declare: for a transitive package only the lockfile moves, and for a direct dependency the specifier floor rises within the same major.
+
+            **Cleared (${{ steps.reaudit.outputs.cleared_count }}):**
+
+            ${{ steps.reaudit.outputs.cleared_list }}
+
+            **Still open after this PR:**
+
+            ${{ steps.reaudit.outputs.remaining_list }}
+
+            Anything still open could not be fixed in range: usually a parent caps us below the fix (needs a hand-written override in `pnpm-workspace.yaml`), or no patched release exists. Those stay in the Dependabot alerts tab; this workflow will not open issues for them.
+
+            Unit tests pass and `pnpm buildstatic` succeeds on this branch. Worth a skim of the lockfile diff anyway, and expect it to be wider than the packages named above: pnpm 12 re-resolves the whole graph on an update, so unrelated entries their parents' ranges already allowed come along too.
+
+            *Opened automatically by `.github/workflows/security-autofix.yml`. Later runs update this PR in place rather than opening another.*
+          branch: security/lockfile-autofix
+          delete-branch: true
+          labels: security 🔐

@@ -26,6 +26,14 @@ function isSnapshotStale(snapshot) {
   return ageMs > STALE_THRESHOLD_DAYS * 24 * 60 * 60 * 1000;
 }
 
+/**
+ * Deliberately NOT lib/updates/format-date.js, which forces UTC.
+ *
+ * `generatedAt` is a real timestamp rather than a calendar date, and "Updated
+ * <date>" is about when the reader's copy was refreshed, so their local day is the
+ * right answer. The UTC helper exists for the snapshot's date-only fields, where
+ * local rendering silently shifted every date back a month west of UTC.
+ */
 function formatStaleDate(iso) {
   if (!iso) return '';
   const d = new Date(iso);
@@ -215,8 +223,8 @@ export default function UpdatesPage() {
     // result + EssentialsPanel stack expands. Works for mobile and desktop —
     // the viewport-height baseline is always at least dropdown-height + chrome.
     <div className="min-h-screen space-y-6">
-      <PageNotices initialNotices={pageNotices} />
       <PageHero />
+      <PageNotices initialNotices={pageNotices} />
 
       {found ? null : (
         <FamilyCategorySelector value={category} onChange={handleCategoryChange} />

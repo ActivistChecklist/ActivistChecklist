@@ -171,6 +171,36 @@ while :; do
   fi
   # Docroot folder for server-only large files (see .rsync-exclude); not from git or out/.
   mkdir -p "$DEPLOY_TARGET/large-assets"
+
+  # Publish in two passes so the docroot is never a new _next/ tree next to old
+  # page HTML.
+  #
+  # rsync walks in byte order and "_next" (0x5F) sorts before every lowercase
+  # page directory (0x61+), so a single --delete pass replaced the chunks and
+  # deleted the old ones seconds-to-tens-of-seconds before it rewrote, say,
+  # proton/index.html — en/, es/, files/ and images/ all copy in between, and a
+  # new build id changes every HTML file, so none of that is a no-op. Anyone
+  # loading a page in that window got the previous build's HTML pointing at
+  # chunks that were already gone: the page rendered, then died on hydration
+  # with a ChunkLoadError.
+  #
+  # Pass 1 lays the new build down beside the old one. Nothing is removed, so
+  # old and new HTML both still have chunks to load. Pass 2 removes what the new
+  # build no longer references, by which point every page on disk is new. It
+  # transfers nothing, so it is quick.
+  log "Publishing pass 1/2 (add and update, no deletes) → $DEPLOY_TARGET"
+  rsync -a "${RSYNC_EXCLUDE[@]}" "$REPO_DIR/out/" "$DEPLOY_TARGET/"
+
+  # A page fetched in the closing moments of pass 1 still has to come back for
+  # its chunks. Hold briefly so those requests land before pass 2 deletes the
+  # old ones. Set DEPLOY_SETTLE_SECONDS=0 to skip.
+  settle="${DEPLOY_SETTLE_SECONDS:-5}"
+  if [[ "$settle" != "0" ]]; then
+    log "Settling ${settle}s so in-flight page loads can finish fetching chunks"
+    sleep "$settle"
+  fi
+
+  log "Publishing pass 2/2 (prune files the new build dropped) → $DEPLOY_TARGET"
   rsync -a --delete "${RSYNC_EXCLUDE[@]}" "$REPO_DIR/out/" "$DEPLOY_TARGET/"
 
   # Post-deploy smoke checks (informational only; deploy already published).

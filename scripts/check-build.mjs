@@ -8,37 +8,13 @@ import {
   detail,
   subsection,
 } from './lib/build-cli.mjs';
+import {
+  REPLACEMENTS,
+  applyReplacements as applyReplacementsCore,
+  assertStillParses,
+} from './lib/check-build-core.mjs';
 
 const OUTPUT_DIR = 'out';
-
-// Define all find/replace patterns
-const REPLACEMENTS = [
-  // Replace storyblock CDN images with local images
-  {
-    pattern: /@?https?:\/\/[a-z-]+\.storyblok\.com\/f\/\d+\/[\w-]+\/[\w-]+\//g,
-    replacement: '/images/'
-  },
-  // Make sure that none of their scripts call their API ever
-  {
-    pattern: /storyblok\.com/g,
-    replacement: 'BLOCKEDSTORYBLOK'
-  },
-  // Comes from Stroyblok
-  {
-    pattern: /cdn\.jsdelivr\.net/g,
-    replacement: 'BLOCKEDJSDELIVR'
-  },
-  // Google fonts
-  {
-    pattern: /fonts\.googleapis\.com/g,
-    replacement: 'BLOCKEDGOOGLE'
-  },
-  // Next.js documentation URLs (error messages in bundled code)
-  {
-    pattern: /https?:\/\/nextjs\.org\/docs\/messages\/[^\s"'<>()]+/g,
-    replacement: 'BLOCKEDNEXTJSDOCS'
-  }
-];
 
 const FORBIDDEN_STRINGS = [
   '://localhost',
@@ -80,15 +56,9 @@ function getContext(content, matchIndex, matchLength) {
 }
 
 function applyReplacements(content) {
-  let newContent = content;
-  for (const { pattern, replacement } of REPLACEMENTS) {
-    const matches = content.match(pattern) || [];
-    const count = matches.length;
-    if (count > 0) {
-      const key = pattern.toString();
-      replacementStats.set(key, (replacementStats.get(key) || 0) + count);
-    }
-    newContent = newContent.replace(pattern, replacement);
+  const { content: newContent, counts } = applyReplacementsCore(content);
+  for (const [key, n] of counts) {
+    replacementStats.set(key, (replacementStats.get(key) || 0) + n);
   }
   return newContent;
 }
@@ -98,6 +68,7 @@ function readAndTransformFile(filePath) {
   const transformedContent = applyReplacements(content);
 
   if (transformedContent !== content) {
+    assertStillParses(filePath, content, transformedContent);
     fs.writeFileSync(filePath, transformedContent);
   }
 

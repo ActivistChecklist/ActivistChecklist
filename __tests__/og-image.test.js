@@ -129,6 +129,8 @@ describe('OG Image Configuration', () => {
       expect(getOgImagePathForSlug('')).toBe('/images/og-image.png');
       expect(getOgImagePathForSlug('flyer')).toBe('/images/og-image.png');
       expect(getOgImagePathForSlug('protest')).toBe('/images/og/protest.png');
+      // Built by app/[locale]/tools/page.tsx, not the MDX render path
+      expect(getOgImagePathForSlug('tools')).toBe('/images/og/tools.png');
       expect(getOgImagePathForSlug('nested/slug')).toBe('/images/og/nested-slug.png');
     });
   });

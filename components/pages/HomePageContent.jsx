@@ -1,14 +1,18 @@
 'use client';
 
 import React from 'react';
-import { Shield, Users, ArrowRight, Sparkles, Check } from 'lucide-react';
+import { Shield, Users, ArrowRight, Sparkles } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
+import PageNotices from '@/components/layout/PageNotices';
 import { Card, CardHeader, CardFooter, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { cn, getBaseUrl } from '@/lib/utils';
 import { NAV_ITEMS, SECURITY_CHECKLISTS } from '@/config/navigation';
+import FEATURE_LOGOS from '@/config/featured.json';
+import FeatureLogo from '@/components/FeatureLogo';
 import ChangeLogRecentEntries from '@/components/ChangeLogRecentEntries';
 import GuideCard from '@/components/GuideCard';
+import HomeToolsSection from '@/components/HomeToolsSection';
 import Markdown from '@/components/Markdown';
 import { useTranslations } from 'next-intl';
 import { useLocale } from 'next-intl';
@@ -63,29 +67,27 @@ export default function HomePageContent({ children, changelogEntries = [], lates
                  margin-left in RTL — flipping the static position the trick
                  measures from, which threw the hero off-centre in Arabic. */
               "not-prose relative w-dvw max-w-none mx-[calc(50%-50dvw)]",
-              "mb-16 -mt-8 py-16 px-4 overflow-hidden",
-              /* v4: use bg-radial / bg-linear-to-* so from/via/to populate --tw-gradient-stops */
-              "bg-radial-[ellipse_at_top] from-primary/20 via-background to-background",
-              /* absolute, not fixed: the header is already full-bleed, and
-                 without a transform on it a fixed pseudo-element would
-                 escape to tint the whole viewport instead of just the hero. */
-              "before:content-[''] before:absolute before:inset-0 before:bg-linear-to-r before:from-primary/10 before:via-accent/5 before:to-primary/10 before:opacity-70 before:pointer-events-none"
+              "relative mb-16 -mt-8 pt-16 pb-32 px-4 overflow-hidden",
+              /* Flat brand band, identical in both themes: --brand and
+                 --brand-foreground are the two tokens we never flip for dark mode.
+                 Every piece of text on it is full brand-foreground rather than a
+                 faded one, because white at 85% over this purple drops to 4.1:1
+                 and the body copy is under 24px. */
+              "bg-brand text-brand-foreground"
             )}>
-
               <div className="relative max-w-4xl mx-auto text-center">
                 {/* text-5xl/6xl ship line-height:1, which is too tight for
                     Arabic — diacritics and descenders collide on a wrapped
-                    title and get clipped by bg-clip-text. Loosen leading and
-                    open up the gap to the <p> for RTL only, so the Latin
-                    design is untouched. */}
-                <h1 className="text-5xl md:text-6xl font-heavy mb-6 rtl:leading-[1.35] rtl:mb-8 bg-linear-to-br from-primary via-primary to-primary/70 bg-clip-text text-transparent text-balance">
+                    title. Loosen leading and open up the gap to the <p> for
+                    RTL only, so the Latin design is untouched. */}
+                <h1 className="text-5xl md:text-6xl font-heavy mb-6 rtl:leading-[1.35] rtl:mb-8 text-balance text-brand-foreground">
                   {t('hero.title')}
                 </h1>
-                <p className="text-xl md:text-2xl mb-10 rtl:leading-[1.8] text-muted-foreground max-w-2xl mx-auto">
+                <p className="text-xl md:text-2xl mb-10 rtl:leading-[1.8] text-brand-foreground max-w-2xl mx-auto">
                   {t('hero.description')}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button asChild variant="default" size="xl" className="group bg-linear-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary transition-all">
+                  <Button asChild variant="default" size="xl" className="group transition-all bg-brand-foreground text-brand hover:bg-brand-foreground/90">
                     <Link href={NAV_ITEMS.ESSENTIALS.href} className="block group">
                       {t('hero.primaryCta')}
                     </Link>
@@ -94,20 +96,25 @@ export default function HomePageContent({ children, changelogEntries = [], lates
                     asChild
                     variant="outline"
                     size="xl"
-                    className="border-primary/30 bg-background/90 text-foreground hover:bg-background hover:border-primary/50 shadow-xs"
+                    className="border-2 border-brand-foreground/70 bg-transparent text-brand-foreground hover:bg-brand-foreground/10 shadow-xs"
                   >
                     <Link href={NAV_ITEMS.PARTY.href}>{t('hero.secondaryCta')}</Link>
                   </Button>
                 </div>
                 {latestMajorBodyText && (
-                  <div className="mt-8 text-muted-foreground">
+                  <div className="mt-8 text-brand-foreground [&_a]:text-inherit">
                     <Sparkles className="h-4 w-4 inline me-1" />
                     <Markdown content={latestMajorBodyText} isProse={false} inlineOnly={true} />
                   </div>
                 )}
               </div>
+              {/* Mirrored so the hero slants the opposite way to the footer
+                  rather than running parallel to it. */}
+              <div className="diagonal-edge diagonal-edge-below absolute bottom-0 left-0 scale-x-[-1] bg-background" />
             </header>
           </div>
+
+          <PageNotices />
 
           {/* Quick Action Guides */}
           <section className="mb-16">
@@ -163,8 +170,21 @@ export default function HomePageContent({ children, changelogEntries = [], lates
           {/* Latest News — loaded in server component HomeNewsSection (see app/[locale]/page.tsx) */}
           {children}
 
-          {/* Recent Updates */}
+          {/* Tools */}
+          <HomeToolsSection />
+
+          {/* Featured In - orgs that have linked to us */}
           <section className="mb-16">
+            <h2 className="text-2xl font-bold mb-6">{t('featured.sectionTitle')}</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {FEATURE_LOGOS.map((logo, index) => 
+                <FeatureLogo key={index} logo={logo} />
+              )}
+            </div>
+          </section>
+
+          {/* Recent Updates */}
+          <section>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold">{t('homepage.recentUpdatesHeading')}</h2>
               <Button asChild variant="outline" size="sm">

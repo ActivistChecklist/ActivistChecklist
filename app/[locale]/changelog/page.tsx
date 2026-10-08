@@ -2,6 +2,7 @@
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { getAllChangelogEntries, toChangelogListEntry } from '@/lib/content';
 import Layout from '@/components/layout/Layout';
+import PageNotices from '@/components/layout/PageNotices';
 import ChangeLogEntry from '@/components/ChangeLogEntry';
 import ChangeLogTimelineMarker from '@/components/ChangeLogTimelineMarker';
 import RSSButton from '@/components/ui/RSSButton';
@@ -101,6 +102,8 @@ export default async function ChangelogPage({ params }) {
             />
           </div>
         </header>
+
+        <PageNotices />
 
         {changelogEntries.length === 0 ? (
           <div className="text-center py-12">

@@ -1,17 +1,11 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
 import { buildDisplayLabel } from '@/lib/updates/search';
 import { iconForFamily } from '@/lib/updates/family-icons';
-
-function formatMonthYear(iso, locale = 'en-US') {
-  if (!iso) return '';
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return iso;
-  return d.toLocaleDateString(locale, { month: 'long', year: 'numeric' });
-}
+import { formatMonthYear } from '@/lib/updates/format-date';
 
 /**
  * Compact info card showing the picked device/OS with its brand icon, display name,
@@ -26,6 +20,9 @@ function formatMonthYear(iso, locale = 'en-US') {
  */
 export default function DeviceInfoCard({ product, release, onReset, onEdit }) {
   const t = useTranslations();
+  // Was hardcoded to en-US here while ResultCard already localized the same date.
+  // Pass the page locale so /es/ readers get a Spanish month name either way.
+  const locale = useLocale();
   const Icon = iconForFamily(product.family);
   const label = buildDisplayLabel(product, release);
 
@@ -37,7 +34,12 @@ export default function DeviceInfoCard({ product, release, onReset, onEdit }) {
     /* fall through */
   }
 
-  const dateText = release.releaseDate ? formatMonthYear(release.releaseDate) : null;
+  // An estimated date (inferred from the oldest OS the model runs, for Macs whose
+  // marketing name carries no year) is good enough to sort by and not good enough
+  // to print. Fall through to the no-date subtitle rather than state a guess.
+  const dateText = release.releaseDate && !release.releaseDateIsEstimate
+    ? formatMonthYear(release.releaseDate, locale)
+    : null;
   const subtitle = dateText
     ? t('updates.result.deviceInfo.manufacturerLine', { manufacturer, date: dateText })
     : manufacturer

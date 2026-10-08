@@ -2,13 +2,13 @@
 import React from 'react';
 import Markdown from '@/components/Markdown';
 import Link from '@/components/Link';
-import { cn, formatRelativeDate } from '@/lib/utils';
+import { cn } from '@/lib/utils';
+import { useRelativeDate } from '@/hooks/use-relative-date';
 import Image from 'next/image';
 import { IoNewspaperOutline } from 'react-icons/io5';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { isPaywallBypassActiveForUrl } from '@/lib/paywall-bypass-url';
-import { useLocale, useTranslations } from 'next-intl';
-import { getIntlLocale } from '@/lib/i18n-config';
+import { useTranslations } from 'next-intl';
 
 function PaywallBypassNotice({ originalUrl }) {
   const t = useTranslations();
@@ -31,8 +31,9 @@ function PaywallBypassNotice({ originalUrl }) {
 
 const NewsItem = ({ entry }) => {
   const isMobile = useIsMobile();
-  const locale = useLocale();
-  const dateLocale = getIntlLocale(locale);
+  // Must run before the early return below (Rules of Hooks), and must be given a
+  // value that does not depend on the current time: see useRelativeDate.
+  const relativeDate = useRelativeDate(entry?.date);
 
   if (!entry) {
     return null;
@@ -45,7 +46,6 @@ const NewsItem = ({ entry }) => {
     ? { exists: true, src: imagePath }
     : { exists: false, src: null };
 
-  const dateString = date || new Date().toISOString();
   const hasUrl = !!originalUrl;
   const showBypassNotice = hasUrl && isPaywallBypassActiveForUrl(originalUrl);
 
@@ -53,7 +53,7 @@ const NewsItem = ({ entry }) => {
   const MetaRow = () => (
     <div className="text-sm text-muted-foreground mb-2">
       <div className="flex flex-wrap items-center gap-1">
-        <span>{formatRelativeDate(dateString, dateLocale)}</span>
+        <span>{relativeDate}</span>
         {tags && tags.length > 0 && (
           <>
             <span>•</span>

@@ -1,0 +1,22 @@
+# Prettier also skips everything in .gitignore.
+
+# Prose. Keystatic writes the MDX, Crowdin owns every non-English copy, and
+# Prettier rewrites Markdown syntax (bullets, emphasis) in ways that churn diffs.
+content/
+*.md
+*.mdx
+
+# Crowdin writes the translated files; en.json is the only one we edit.
+messages/
+
+# Generated or vendored. components/ui/ is copied from shadcn and keeps its style.
+components/ui/
+public/
+pnpm-lock.yaml
+
+# Rewritten by tools in their own style; formatting them would flip back and forth.
+next-env.d.ts
+tsconfig.json
+pnpm-workspace.yaml
+data/sofa-watchlist.json
+diff.json

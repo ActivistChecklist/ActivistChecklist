@@ -29,7 +29,9 @@ const { loadEnvConfig } = pkg;
 // both export NODE_ENV=production) see the production env file.
 loadEnvConfig(process.cwd(), process.env.NODE_ENV !== 'production');
 
-import { deriveMacProductsFromSofa } from '../lib/updates/sofa-macos.js';
+import { deriveMacProductsFromSofa, sofaTrackingFloor } from '../lib/updates/sofa-macos.js';
+import { normalizeSnapshot } from '../lib/updates/snapshot.js';
+import { auditSnapshotOsCaps, formatOsCapFinding } from '../lib/updates/os-cap-audit.js';
 import {
   diffSofaWatchlist,
   mergeLegacyAndSofa,
@@ -46,6 +48,8 @@ const API_BASE = 'https://endoflife.date/api/v1/products';
 const SOFA_URL = 'https://sofafeed.macadmins.io/v2/macos_data_feed.json';
 const USER_AGENT = 'ActivistChecklist/1.0 (+https://activistchecklist.org)';
 const REQUEST_TIMEOUT_MS = 30_000;
+const RETRY_ATTEMPTS = 3;
+const RETRY_BASE_DELAY_MS = 500;
 
 const SCHEMA_VERSION = 1;
 
@@ -80,15 +84,54 @@ const SUPPORTED_OS_RANGE_KEYS = [
 ];
 
 class FetchError extends Error {
-  constructor(message, { cause, productId } = {}) {
+  constructor(message, { cause, productId, status } = {}) {
     super(message);
     this.name = 'FetchError';
     this.cause = cause;
     this.productId = productId;
+    // HTTP status when the request completed; undefined for network-level
+    // failures and timeouts. Drives isRetryable().
+    this.status = status;
   }
 }
 
-async function fetchProduct(id) {
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+/**
+ * A 404 or a malformed payload will not fix itself, so retrying just wastes
+ * requests against a free public service. Network failures, timeouts, 429s and
+ * 5xx are worth another go.
+ */
+function isRetryable(err) {
+  if (err?.status != null) return err.status === 429 || err.status >= 500;
+  return true;
+}
+
+/**
+ * Retries `fn` on transient failures with exponential backoff. Without this a
+ * single blip permanently degraded one product to last snapshot's data for the
+ * whole build, which is how `iphone` (first in PRODUCTS, so it pays the
+ * cold-connection cost) kept going stale.
+ */
+async function withRetry(label, fn) {
+  let lastErr;
+  for (let attempt = 1; attempt <= RETRY_ATTEMPTS; attempt += 1) {
+    try {
+      return await fn();
+    } catch (err) {
+      lastErr = err;
+      if (attempt === RETRY_ATTEMPTS || !isRetryable(err)) break;
+      const delay = RETRY_BASE_DELAY_MS * 2 ** (attempt - 1);
+      console.error(
+        `    ${label}: attempt ${attempt}/${RETRY_ATTEMPTS} failed (${err.message}); retrying in ${delay}ms`
+      );
+      await sleep(delay);
+    }
+  }
+  throw lastErr;
+}
+
+async function fetchProductOnce(id) {
   const url = `${API_BASE}/${id}`;
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
@@ -98,11 +141,18 @@ async function fetchProduct(id) {
       signal: controller.signal,
     });
     if (!res.ok) {
-      throw new FetchError(`HTTP ${res.status} for ${id}`, { productId: id });
+      throw new FetchError(`HTTP ${res.status} for ${id}`, {
+        productId: id,
+        status: res.status,
+      });
     }
     const json = await res.json();
     if (!json?.result) {
-      throw new FetchError(`Missing result field for ${id}`, { productId: id });
+      // Reachable but wrong shape: retrying will not change the answer.
+      throw new FetchError(`Missing result field for ${id}`, {
+        productId: id,
+        status: res.status,
+      });
     }
     return json.result;
   } catch (err) {
@@ -111,6 +161,10 @@ async function fetchProduct(id) {
   } finally {
     clearTimeout(timeout);
   }
+}
+
+function fetchProduct(id) {
+  return withRetry(id, () => fetchProductOnce(id));
 }
 
 /**
@@ -339,7 +393,7 @@ const MAC_PRODUCT_IDS = [
  * SecurityReleases) is huge and we don't use it. Returned shape is the raw
  * Models object; deriveMacProductsFromSofa turns it into our product structure.
  */
-async function fetchSofaModels() {
+async function fetchSofaModelsOnce() {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
   try {
@@ -348,16 +402,21 @@ async function fetchSofaModels() {
       signal: controller.signal,
     });
     if (!res.ok) {
-      throw new Error(`HTTP ${res.status} for SOFA feed`);
+      throw new FetchError(`HTTP ${res.status} for SOFA feed`, { status: res.status });
     }
     const json = await res.json();
     if (!json?.Models || typeof json.Models !== 'object') {
-      throw new Error('SOFA feed missing Models map');
+      // Reachable but wrong shape: retrying will not change the answer.
+      throw new FetchError('SOFA feed missing Models map', { status: 200 });
     }
     return json.Models;
   } finally {
     clearTimeout(timeout);
   }
+}
+
+function fetchSofaModels() {
+  return withRetry('SOFA feed', () => fetchSofaModelsOnce());
 }
 
 async function main() {
@@ -404,6 +463,16 @@ async function main() {
   // expect to see; any expected entry missing from SOFA fires a drop alert
   // (move it to the legacy file). Any SOFA entry not in the watchlist is logged
   // as informational (add it to the watchlist when you want drop-detection).
+  // SOFA gives us no hardware release dates, and Apple's M5 marketing names no
+  // longer carry a year. Hand the macOS majors we just fetched to the derivation so
+  // an undated model can fall back to "no earlier than the oldest macOS it boots".
+  const macosProduct = products.find((p) => p.id === 'macos');
+  const macosReleaseDates = Object.fromEntries(
+    (macosProduct?.releases || [])
+      .filter((r) => r.releaseDate)
+      .map((r) => [String(parseFloat(r.id)), r.releaseDate])
+  );
+
   const legacyModels = await readLegacyMacModels();
   const watchlist = await readSofaWatchlist();
   let macProducts = [];
@@ -428,7 +497,12 @@ async function main() {
       );
     }
     const merged = mergeLegacyAndSofa(legacyModels, sofaModels);
-    macProducts = deriveMacProductsFromSofa(merged);
+    // Floor measured on the raw feed, before the legacy file's pre-window majors
+    // are merged in — see deriveMacProductsFromSofa.
+    macProducts = deriveMacProductsFromSofa(merged, {
+      macosReleaseDates,
+      trackingFloor: sofaTrackingFloor(sofaModels),
+    });
     const legacyOnly = sofaIds.length === 0
       ? Object.keys(stripDocKeys(legacyModels)).length
       : Object.keys(stripDocKeys(legacyModels)).filter((id) => !sofaIds.includes(id)).length;
@@ -441,7 +515,7 @@ async function main() {
     console.error(`SOFA fetch failed: ${err.message}; using legacy-only data + previous snapshot`);
     // Even when SOFA is unreachable the legacy file still gives us 2013-era
     // coverage, which is better than the empty set.
-    macProducts = deriveMacProductsFromSofa(stripDocKeys(legacyModels));
+    macProducts = deriveMacProductsFromSofa(stripDocKeys(legacyModels), { macosReleaseDates });
     const fromPrevious = MAC_PRODUCT_IDS.map((id) => previousById.get(id)).filter(Boolean);
     const legacyIds = new Set(macProducts.map((p) => p.id));
     for (const stale of fromPrevious) {
@@ -468,6 +542,27 @@ async function main() {
     source: 'https://endoflife.date/api/v1/',
     products,
   };
+
+  // endoflife.date's per-device OS ceiling lives in a hand-maintained `custom`
+  // field that lags the OS product when a new major ships. The /updates page
+  // treats that ceiling as ground truth, so a lag makes us tell people on current
+  // hardware that their device has hit its OS ceiling. The UI now degrades
+  // gracefully on its own (lib/updates/os-cap-audit.js), but a finding here means
+  // upstream needs a nudge — so say so loudly rather than sitting on it.
+  //
+  // Not fatal: shipping a build with a detected-and-handled lag beats shipping no
+  // build at all, and the condition clears itself when upstream catches up.
+  const capFindings = auditSnapshotOsCaps(normalizeSnapshot(snapshot));
+  if (capFindings.length > 0) {
+    console.error(
+      `⚠️  ${capFindings.length} product line(s) look one major behind upstream:\n` +
+      capFindings.map((f) => `   - ${formatOsCapFinding(f)}`).join('\n') + '\n' +
+      `   A line still shipping hardware should have a model that runs the newest OS.\n` +
+      `   Check the product's \`custom.supported*Versions\` fields on endoflife.date and\n` +
+      `   open a PR there if they are stale. The site suppresses its max-OS warning and\n` +
+      `   widens the OS picker for these lines until the ceiling catches up.`
+    );
+  }
 
   const json = JSON.stringify(snapshot, null, 2);
 

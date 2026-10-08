@@ -58,6 +58,8 @@ const TOKEN = process.env.CROWDIN_PERSONAL_TOKEN;
 const PROJECT_ID = process.env.CROWDIN_PROJECT_ID;
 const CONTENT_DIR = "./content/en"; // adjust if your source dir is different
 const DRY_RUN = !process.argv.includes("--apply");
+// Read-only audit: run Pass 2's lookups and tally what --apply would delete, without deleting.
+const COUNT_TRANSLATIONS = process.argv.includes("--count-translations");
 const BASE_URL = "https://api.crowdin.com/api/v2";
 
 if (!TOKEN || !PROJECT_ID) {
@@ -326,13 +328,18 @@ async function getTargetLanguages() {
   return data.data.targetLanguageIds || [];
 }
 
-// Fetch and delete all existing translations for a string in a given language.
-// Returns count of deleted translations.
-async function clearTranslationsForString(stringId, languageId) {
+// Fetch existing translations for a string in a given language. Read-only.
+async function fetchTranslationsForString(stringId, languageId) {
   const data = await crowdinGet(
     `/projects/${PROJECT_ID}/translations?stringId=${stringId}&languageId=${languageId}&limit=100`
   );
-  const translations = data.data.map((t) => t.data);
+  return data.data.map((t) => t.data);
+}
+
+// Delete all existing translations for a string in a given language.
+// Returns count of deleted translations.
+async function clearTranslationsForString(stringId, languageId) {
+  const translations = await fetchTranslationsForString(stringId, languageId);
   for (const translation of translations) {
     await crowdinDelete(`/projects/${PROJECT_ID}/translations/${translation.id}`);
   }
@@ -519,8 +526,49 @@ async function run() {
   // --- Pass 2: Clear any existing translations for all matched strings ---
   console.log(`${c.bold}${DRY_RUN ? "Would clear" : "Clearing"} translations for ${allMatched.length} matched strings across all languages:${c.reset}\n`);
 
-  if (DRY_RUN) {
-    console.log(`  ${c.gray}(skipped in dry run — run with --apply to clear translations)${c.reset}\n`);
+  if (DRY_RUN && !COUNT_TRANSLATIONS) {
+    console.log(`  ${c.gray}(skipped in dry run — run with --apply to clear translations, or --count-translations to audit first)${c.reset}\n`);
+  } else if (DRY_RUN) {
+    // Audit only: same lookups as the clear pass, no deletes.
+    const languages = await getTargetLanguages();
+    console.log(`  ${c.gray}Target languages: ${languages.join(", ")}${c.reset}\n`);
+
+    let totalFound = 0;
+    const perLanguage = new Map();
+    const perString = new Map();
+    const countTasks = [];
+    for (const lang of languages) {
+      for (const { id, text } of allMatched) {
+        countTasks.push(async () => {
+          try {
+            const translations = await fetchTranslationsForString(id, lang);
+            if (translations.length > 0) {
+              totalFound += translations.length;
+              perLanguage.set(lang, (perLanguage.get(lang) || 0) + translations.length);
+              perString.set(text, (perString.get(text) || 0) + translations.length);
+            }
+          } catch (err) {
+            console.log(`  ${c.red}✗${c.reset} [${lang}] ${c.white}"${text}"${c.reset} ${c.red}— ${err.message}${c.reset}`);
+          }
+        });
+      }
+    }
+    await runConcurrent(8, countTasks);
+
+    if (totalFound === 0) {
+      console.log(`  ${c.green}No existing translations found — --apply would delete nothing.${c.reset}\n`);
+    } else {
+      console.log(`  ${c.yellow}${c.bold}${totalFound} translation(s) would be DELETED by --apply.${c.reset}\n`);
+      console.log(`  ${c.bold}By language:${c.reset}`);
+      for (const [lang, n] of [...perLanguage].sort((a, b) => b[1] - a[1])) {
+        console.log(`    ${c.cyan}${lang}${c.reset}  ${n}`);
+      }
+      console.log(`\n  ${c.bold}Affected source strings:${c.reset}`);
+      for (const [text, n] of [...perString].sort((a, b) => b[1] - a[1])) {
+        console.log(`    ${c.white}"${text}"${c.reset} ${c.gray}— ${n}${c.reset}`);
+      }
+      console.log();
+    }
   } else {
     const languages = await getTargetLanguages();
     console.log(`  ${c.gray}Target languages: ${languages.join(", ")}${c.reset}\n`);

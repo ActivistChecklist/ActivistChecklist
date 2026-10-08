@@ -1,29 +1,21 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { IoWarning, IoInformationCircle } from 'react-icons/io5';
+import { useTranslations } from 'next-intl';
 import styles from '@/styles/PageNotices.module.css';
-
-const ICONS = {
-  warning: IoWarning,
-  info: IoInformationCircle,
-};
-
-function Notice({ type = 'warning', message }) {
-  const Icon = ICONS[type] ?? ICONS.warning;
-  return (
-    <div className={`${styles.notice} ${styles[type]}`}>
-      <div className={styles.iconCol}>
-        <Icon className={styles.icon} aria-hidden />
-      </div>
-      <div className={styles.textCol}>{message}</div>
-    </div>
-  );
-}
+import Notice from './Notice';
+import { useNonUsNotice } from '@/hooks/use-non-us-notice';
 
 /**
- * PageNotices — page-level status notices rendered above article content.
+ * PageNotices — page-level status notices rendered below the page title.
  * Distinct from inline <Alert>: no left-border accent, feels like page metadata.
+ *
+ * Every page-level notice belongs here so they stack in one place rather than
+ * appearing above and below the title. Notices passed by the page come in via
+ * initialNotices; the non-US threat-model notice is built in, because it is
+ * client-detected and applies to every page. It renders hidden and is only
+ * revealed by useNonUsNotice once JS confirms a non-US timezone, so it is
+ * absent from the server-rendered HTML and for visitors without JS.
  *
  * @param {Array<{ id: string, type: 'warning'|'info', message: string|ReactNode }>} initialNotices
  *
@@ -32,7 +24,9 @@ function Notice({ type = 'warning', message }) {
  *   window.__clearPageNotices()                               — remove all dev-added notices
  */
 export default function PageNotices({ initialNotices = [] }) {
+  const t = useTranslations();
   const [devNotices, setDevNotices] = useState([]);
+  const { show: showNonUs, dismiss: dismissNonUs } = useNonUsNotice();
 
   useEffect(() => {
     if (process.env.NODE_ENV !== 'development') return;
@@ -59,10 +53,18 @@ export default function PageNotices({ initialNotices = [] }) {
   }, []);
 
   const allNotices = [...initialNotices, ...devNotices];
-  if (allNotices.length === 0) return null;
+  if (allNotices.length === 0 && !showNonUs) return null;
 
   return (
     <div className={styles.container} role="status" aria-label="Page notices">
+      {showNonUs && (
+        <Notice
+          type="warning"
+          message={t('pageNotices.nonUsThreatModel')}
+          onDismiss={dismissNonUs}
+          dismissLabel={t('pageNotices.dismiss')}
+        />
+      )}
       {allNotices.map(n => (
         <Notice key={n.id} type={n.type} message={n.message} />
       ))}

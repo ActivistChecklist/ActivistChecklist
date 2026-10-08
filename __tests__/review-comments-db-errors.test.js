@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import {
   isDbConnectivityError,
+  isDbConfigurationError,
   describeDbConnectivityError,
 } from '../lib/review-comments/db-errors'
 
@@ -103,5 +104,76 @@ describe('describeDbConnectivityError', () => {
 
   it('never returns undefined for empty input', () => {
     expect(describeDbConnectivityError(null)).toEqual({})
+  })
+})
+
+// The real incident: REVIEW_COMMENTS_MONGODB_URL was pasted from Railway's
+// dashboard with the display backticks attached, so `new MongoClient(url)`
+// threw synchronously and every review-comments request 500'd with an empty
+// body. The error opens no socket, so it is not a connectivity failure.
+function backtickedUrlParseError() {
+  return Object.assign(
+    new Error(
+      'Invalid scheme, expected connection string to start with "mongodb://" or "mongodb+srv://"'
+    ),
+    { name: 'MongoParseError' }
+  )
+}
+
+describe('isDbConfigurationError', () => {
+  it('detects the MongoParseError from a quoted connection string', () => {
+    expect(isDbConfigurationError(backtickedUrlParseError())).toBe(true)
+  })
+
+  it('detects a parse error by name even with an unfamiliar message', () => {
+    const err = Object.assign(new Error('something new upstream'), { name: 'MongoParseError' })
+    expect(isDbConfigurationError(err)).toBe(true)
+  })
+
+  it('detects the missing-connection-string error', () => {
+    expect(isDbConfigurationError(new Error('Missing REVIEW_COMMENTS_MONGODB_URL'))).toBe(true)
+  })
+
+  it('finds a parse error nested in the cause chain', () => {
+    const wrapper = Object.assign(new Error('request failed'), {
+      cause: backtickedUrlParseError(),
+    })
+    expect(isDbConfigurationError(wrapper)).toBe(true)
+  })
+
+  it('does NOT flag a network failure as a configuration error', () => {
+    expect(isDbConfigurationError(railwayEnotfoundError())).toBe(false)
+  })
+
+  it('does NOT flag a genuine application bug', () => {
+    expect(isDbConfigurationError(new TypeError('Cannot read properties of undefined'))).toBe(false)
+  })
+
+  it('returns false for null / undefined / non-object input', () => {
+    expect(isDbConfigurationError(null)).toBe(false)
+    expect(isDbConfigurationError(undefined)).toBe(false)
+    expect(isDbConfigurationError('MongoParseError')).toBe(false)
+  })
+
+  it('does not loop forever on a self-referential cause chain', () => {
+    const err = new Error('boom')
+    err.cause = err
+    expect(isDbConfigurationError(err)).toBe(false)
+  })
+})
+
+describe('connectivity vs configuration are distinguishable', () => {
+  // The route logs a different line for each, so a parse error must not be
+  // mistaken for an unreachable host (which sends you debugging the network).
+  it('a parse error is configuration-only', () => {
+    const err = backtickedUrlParseError()
+    expect(isDbConfigurationError(err)).toBe(true)
+    expect(isDbConnectivityError(err)).toBe(false)
+  })
+
+  it('a DNS failure is connectivity-only', () => {
+    const err = railwayEnotfoundError()
+    expect(isDbConnectivityError(err)).toBe(true)
+    expect(isDbConfigurationError(err)).toBe(false)
   })
 })

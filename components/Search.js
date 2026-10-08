@@ -25,7 +25,7 @@ const TOP_GUIDES = SECURITY_CHECKLISTS.items.slice(0, 4);
 const SUGGESTION_COUNT = 5;
 
 const SearchSuggestion = ({ query, onClick }) => (
-  <button 
+  <button
     onClick={() => onClick(query)}
     className="px-3 py-1.5 text-sm bg-muted hover:bg-muted/80 rounded-md transition-colors"
   >
@@ -34,7 +34,7 @@ const SearchSuggestion = ({ query, onClick }) => (
 );
 
 const GuideCard = ({ href, icon: Icon, title, description, onClose }) => (
-  <Link 
+  <Link
     href={href}
     onClick={onClose}
     className="flex items-center text-start gap-4 hover:bg-muted p-3 rounded-md transition-colors group"
@@ -90,19 +90,19 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
   // Track search query with generous timeout
   const trackSearchQuery = (searchQuery) => {
     if (!searchQuery.trim()) return;
-    
+
     // Clear any existing timeout
     if (searchTrackingTimeoutRef.current) {
       clearTimeout(searchTrackingTimeoutRef.current);
     }
-    
+
     // Update pending query
     pendingQueryRef.current = searchQuery.trim();
-    
+
     // Set generous timeout (5 seconds) to track after user stops typing
     searchTrackingTimeoutRef.current = setTimeout(() => {
       const queryToTrack = pendingQueryRef.current;
-      
+
       // Only track if it's different from what we last tracked and not empty
       if (queryToTrack && queryToTrack !== lastTrackedQueryRef.current) {
         trackEvent({
@@ -113,7 +113,7 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
             word_count: queryToTrack.split(/\s+/).length
           }
         });
-        
+
         lastTrackedQueryRef.current = queryToTrack;
         addDebugData('search_tracked', { query: queryToTrack });
       }
@@ -126,7 +126,7 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
       clearTimeout(searchTrackingTimeoutRef.current);
       searchTrackingTimeoutRef.current = null;
     }
-    
+
     // Track any pending query before cleanup
     const pendingQuery = pendingQueryRef.current;
     if (pendingQuery && pendingQuery !== lastTrackedQueryRef.current) {
@@ -139,11 +139,11 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
           cleanup_reason: 'dialog_closed'
         }
       });
-      
+
       lastTrackedQueryRef.current = pendingQuery;
       addDebugData('search_tracked_cleanup', { query: pendingQuery });
     }
-    
+
     // Reset refs
     pendingQueryRef.current = '';
   };
@@ -159,8 +159,8 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
         setPagefind(module.default || module);
       } catch (error) {
         console.error("Error loading Pagefind:", error);
-        setPagefind({ 
-          search: () => ({ results: [] }) 
+        setPagefind({
+          search: () => ({ results: [] })
         });
       }
     };
@@ -178,7 +178,7 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
     try {
       const search = await pagefind.debouncedSearch(searchQuery);
       const currentPath = window.location.pathname;
-      
+
       const data = await Promise.all(
         search.results.map(async (result) => {
           const resultData = await result.data();
@@ -186,11 +186,11 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
           if (resultData.sub_results) {
             const isCurrentPage = resultData.url === currentPath;
             const maxResults = isCurrentPage ? MAX_CURRENT_PAGE_SUB_RESULTS : MAX_SUB_RESULTS;
-            
+
             resultData.sub_results = resultData.sub_results
               .filter(subResult => subResult.title !== resultData.meta?.title)
               .slice(0, maxResults);
-              
+
             // If no sub-results remain, set to undefined
             if (resultData.sub_results.length === 0) {
               delete resultData.sub_results;
@@ -250,13 +250,13 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
     if (!query.trim()) return text;
     const keywords = query.trim().split(/\s+/);
     let highlightedText = text;
-    
+
     keywords.forEach(keyword => {
       // Match complete words that contain the keyword
       const regex = new RegExp(`\\w*${keyword}\\w*`, 'gi');
       highlightedText = highlightedText.replace(regex, '<mark>$&</mark>');
     });
-    
+
     return highlightedText;
   };
 
@@ -282,6 +282,7 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
             size="icon"
             onClick={() => setOpen(true)}
             className={cn("h-9 w-9 hover:bg-muted", className)}
+            aria-label={t("search.dialogTitle")}
           >
             <IoSearch className="h-5 w-5" />
           </Button>
@@ -373,7 +374,7 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
               {results.map((result, index) => (
                 <div key={index} className="py-2 first:pt-0 last:pb-0">
                   {/* Main Result */}
-                  <a 
+                  <a
                     href={result.url}
                     className="block hover:bg-muted rounded-md group transition-colors p-3 -mx-3"
                     onClick={() => setOpen(false)}
@@ -381,7 +382,7 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
                     <div className="text-lg font-semibold text-primary group-hover:underline">
                       {result.meta?.title || t('search.untitled')}
                     </div>
-                    <div 
+                    <div
                       className="mt-2 text-muted-foreground"
                       dangerouslySetInnerHTML={createMarkup(result.excerpt)}
                     />
@@ -397,11 +398,11 @@ const Search = ({ variant = 'searchbar', className, ...props }) => {
                           className="block text-sm ps-10 relative before:content-['\2937'] before:absolute before:inset-s-4 before:top-2 before:text-primary before:text-lg rtl:before:scale-x-[-1] hover:bg-muted rounded-md group transition-colors p-3 -mx-3"
                           onClick={() => setOpen(false)}
                         >
-                          <div 
+                          <div
                             className="text-primary group-hover:underline font-medium"
                             dangerouslySetInnerHTML={{ __html: highlightKeywords(subResult.title, query) }}
                           />
-                          <div 
+                          <div
                             className="mt-1 text-muted-foreground"
                             dangerouslySetInnerHTML={createMarkup(subResult.excerpt)}
                           />

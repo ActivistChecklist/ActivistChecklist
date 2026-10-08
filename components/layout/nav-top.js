@@ -270,9 +270,10 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                   </NavigationMenuList>
                 </NavigationMenu>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center md:gap-2">
                 <Search variant="button" />
                 <LanguageSwitcher />
+                <DarkModeToggle className="h-9 w-9 hover:bg-muted" />
               </div>
             </div>
           </div>

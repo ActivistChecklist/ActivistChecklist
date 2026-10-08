@@ -26,9 +26,11 @@ function RowIcon({ family }) {
 // (so we don't double-print "MacBook Pro 14-inch (2024) … released 2024").
 // Lighter colour reads as supporting metadata.
 const YEAR_TOKEN_RE = /\b(19|20)\d{2}\b/;
-function ReleaseYearHint({ displayLabel, releaseDate }) {
+function ReleaseYearHint({ displayLabel, releaseDate, releaseDateIsEstimate }) {
   const t = useTranslations();
-  if (!releaseDate) return null;
+  // Estimated dates (Macs whose marketing name carries no year) rank the row but
+  // must not be shown as the release year.
+  if (!releaseDate || releaseDateIsEstimate) return null;
   if (YEAR_TOKEN_RE.test(displayLabel)) return null;
   const year = new Date(releaseDate).getUTCFullYear();
   if (!Number.isFinite(year)) return null;
@@ -415,6 +417,7 @@ export default function DeviceSearchInput({
                           <ReleaseYearHint
                             displayLabel={item.displayLabel}
                             releaseDate={item.releaseDate}
+                            releaseDateIsEstimate={item.releaseDateIsEstimate}
                           />
                           <CategoryPill formFactor={item.formFactor} kind={item.kind} />
                         </span>

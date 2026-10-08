@@ -2,6 +2,7 @@
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { getAllNewsItems, toNewsListItem } from '@/lib/content';
 import Layout from '@/components/layout/Layout';
+import PageNotices from '@/components/layout/PageNotices';
 import NewsItem from '@/components/NewsItem';
 import RSSButton from '@/components/ui/RSSButton';
 import Link from '@/components/Link';
@@ -76,6 +77,8 @@ export default async function NewsPage({ params }) {
             />
           </div>
         </header>
+
+        <PageNotices />
 
         {/* News Submission Invitation */}
         <div className="mb-8 p-4 bg-muted rounded-lg border border-primary/40">

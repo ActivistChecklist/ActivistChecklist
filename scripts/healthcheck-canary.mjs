@@ -12,10 +12,25 @@
  * Usage:
  *   pnpm healthcheck-canary
  *
- * Example cron (run every Monday at 14:00 UTC). The two --env-file-if-exists
- * flags mean the same line works on the server (.env.production) and in dev
- * (.env), and cron does not need nvm/pnpm on PATH:
- *   0 14 * * 1 cd /path/to/repo && /path/to/node --env-file-if-exists=.env --env-file-if-exists=.env.production scripts/healthcheck-canary.mjs >> /path/to/logs/healthcheck-canary.log 2>&1
+ * The two --env-file-if-exists flags (see the healthcheck-canary package script)
+ * mean the same command works on the server (.env.production) and in dev (.env).
+ *
+ * Scheduling: run it weekly. May First no longer honours user crontabs on these
+ * hosts, so the job is defined in the control panel, which generates
+ * ~/.config/systemd/user/red-item-<id>.{service,timer}. Schedule it as:
+ *   /path/to/repo/scripts/run-with-repo-node.sh run healthcheck-canary
+ *
+ * IMPORTANT (systemd): the control panel pastes the command straight into
+ * ExecStart, which is NOT a shell - it execs argv[0] directly. A crontab-style
+ * `cd /path/to/repo && node ...` therefore fails instantly with 203/EXEC,
+ * looking for an executable named `cd`; `&&`, `;`, globs and `>>` redirects are
+ * equally dead. Always schedule a single script that cds itself, which is what
+ * run-with-repo-node.sh does (it also bootstraps nvm, absent from the unit PATH).
+ * This exact mistake silently broke this check for two weeks in Sept 2026 - the
+ * timer fired on schedule and the job failed before reaching any code here, so
+ * the only symptom was healthchecks.io going quiet. Verify with:
+ *   systemctl --user list-timers
+ *   journalctl --user -u red-item-<id>.service
  */
 
 import { readFile } from 'node:fs/promises';
@@ -36,8 +51,24 @@ if (!PING_URL) {
   process.exit(2);
 }
 
+// A Healthchecks ping URL is a credential, and this script's output is captured
+// to a log file, so logging the raw URL persisted it in cleartext. Log only the
+// endpoint being pinged.
+function pingLabel(endpoint) {
+  return `canary ping${endpoint ? ` /${endpoint}` : ''}`;
+}
+
+// A thrown fetch error can carry the request URL in its message depending on the
+// runtime and failure mode. Strip any occurrence before it reaches a log file.
+function safeErrorMessage(err) {
+  const message = String(err?.message ?? err ?? 'unknown error');
+  if (!PING_URL) return message;
+  return message.split(PING_URL).join('[REDACTED]');
+}
+
 async function ping(endpoint, body) {
   const url = endpoint ? `${PING_URL}/${endpoint}` : PING_URL;
+  const label = pingLabel(endpoint);
   try {
     const res = await fetch(url, {
       method: 'POST',
@@ -46,13 +77,13 @@ async function ping(endpoint, body) {
       signal: AbortSignal.timeout(10000),
     });
     if (!res.ok) {
-      console.error(`Ping to ${url} returned ${res.status} ${res.statusText}`);
-       return false;
-     }
-     console.log(`Pinged ${url}`);
-     return true;
+      console.error(`${label} returned ${res.status} ${res.statusText}`);
+      return false;
+    }
+    console.log(`${label} ok`);
+    return true;
   } catch (err) {
-    console.error(`Ping to ${url} failed: ${err.message}`);
+    console.error(`${label} failed: ${safeErrorMessage(err)}`);
     return false;
   }
 }
