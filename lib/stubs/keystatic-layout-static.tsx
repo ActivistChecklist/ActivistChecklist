@@ -4,10 +4,6 @@
  */
 import { notFound } from 'next/navigation';
 
-export default function KeystaticLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function KeystaticLayout({ children }: { children: React.ReactNode }) {
   notFound();
 }

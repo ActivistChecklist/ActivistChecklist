@@ -1,5 +1,5 @@
 'use client';
-import { createContext, useContext, useState, useCallback, useEffect } from 'react'
+import { createContext, useContext, useState, useCallback, useEffect } from 'react';
 
 let globalDebugUpdate = () => {}; // Initialize with no-op function
 
@@ -12,7 +12,7 @@ export function DebugProvider({ children }) {
   const [debugData, setDebugData] = useState({});
 
   const addDebugData = useCallback((key, value) => {
-    setDebugData(prev => ({
+    setDebugData((prev) => ({
       ...prev,
       [key]: value,
     }));
@@ -24,9 +24,7 @@ export function DebugProvider({ children }) {
   }, [addDebugData]);
 
   return (
-    <DebugContext.Provider value={{ debugData, addDebugData }}>
-      {children}
-    </DebugContext.Provider>
+    <DebugContext.Provider value={{ debugData, addDebugData }}>{children}</DebugContext.Provider>
   );
 }
 
@@ -35,4 +33,4 @@ export const debugLog = (key, value) => {
   globalDebugUpdate(key, value);
 };
 
-export const useDebug = () => useContext(DebugContext); 
+export const useDebug = () => useContext(DebugContext);

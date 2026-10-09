@@ -20,7 +20,10 @@ const STATIC_EXPORT_STUBS = [
   [/app[\\/]keystatic[\\/]\[\[\.\.\.params\]\][\\/]page\.tsx$/, 'keystatic-page-static.tsx'],
   [/app[\\/]preview[\\/]start[\\/]route\.ts$/, 'preview-start-static.ts'],
   [/app[\\/]preview[\\/]end[\\/]route\.ts$/, 'preview-end-static.ts'],
-  [/packages[\\/]react-review-comments[\\/]src[\\/]ReviewCommentsShell\.tsx$/, 'annotation-shell-static.jsx'],
+  [
+    /packages[\\/]react-review-comments[\\/]src[\\/]ReviewCommentsShell\.tsx$/,
+    'annotation-shell-static.jsx',
+  ],
 ];
 
 const baseConfig = {
@@ -74,8 +77,8 @@ const baseConfig = {
           new webpack.NormalModuleReplacementPlugin(
             // Match `.../app/...` on POSIX or Windows (same as original `/[\\/]app…/` patterns).
             new RegExp(`[\\\\/]${pathRe.source}`),
-            path.join(stubDir, file)
-          )
+            path.join(stubDir, file),
+          ),
         );
       }
     }
@@ -106,17 +109,18 @@ if (linkedRoot) {
 // i18n is handled by App Router [locale] dynamic segment + next-intl.
 // Static export generates /en/ and /es/ directories; .htaccess rewrites bare URLs to /en/.
 
-const nextConfig = process.env.NODE_ENV === 'development'
-  ? {
-    ...baseConfig,
-    rewrites: async () => ([
-      {
-        source: '/api-server/:path*',
-        destination: 'http://localhost:4321/api-server/:path*'
+const nextConfig =
+  process.env.NODE_ENV === 'development'
+    ? {
+        ...baseConfig,
+        rewrites: async () => [
+          {
+            source: '/api-server/:path*',
+            destination: 'http://localhost:4321/api-server/:path*',
+          },
+        ],
       }
-    ])
-  }
-  : baseConfig;
+    : baseConfig;
 
 const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 module.exports = withNextIntl(nextConfig);

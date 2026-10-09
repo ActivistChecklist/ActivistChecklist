@@ -95,11 +95,7 @@ function buildLastmodByPath() {
   const checklistsMax = maxIsoDate(guideDates);
   if (checklistsMax) map.set('/checklists/', checklistsMax);
 
-  const allForHome = [
-    ...map.values(),
-    ...changelogDates,
-    ...newsDates,
-  ];
+  const allForHome = [...map.values(), ...changelogDates, ...newsDates];
   const homeMax = maxIsoDate(allForHome);
   if (homeMax) {
     map.set('/', homeMax);

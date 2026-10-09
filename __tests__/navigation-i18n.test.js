@@ -64,7 +64,7 @@ describe('getTranslatedNavItemFields', () => {
     const out = getTranslatedNavItemFields(
       'police-door-poster',
       { title: 'Police poster', description: 'Desc' },
-      translateText
+      translateText,
     );
     expect(out.title).toBe('Póster policía');
     expect(out.description).toBe('Desc');
@@ -75,7 +75,7 @@ describe('getTranslatedNavItemFields', () => {
     const out = getTranslatedNavItemFields(
       'unknown-guide',
       { title: 'T', description: 'D' },
-      translateText
+      translateText,
     );
     expect(out.title).toBe('T');
     expect(out.description).toBe('D');

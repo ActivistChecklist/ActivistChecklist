@@ -12,7 +12,7 @@ import InlineCta from '@/components/InlineCta';
 import { useLayout } from '@/contexts/LayoutContext';
 import { getGuideIcon } from '@/config/icons';
 import RelatedGuides from '@/components/RelatedGuides';
-import { LOCALES } from "@/lib/i18n-config";
+import { LOCALES } from '@/lib/i18n-config';
 import { formatContentDate } from '@/lib/utils';
 import PageNotices from '@/components/layout/PageNotices';
 import AnswerCapsule from '@/components/AnswerCapsule';
@@ -86,9 +86,7 @@ export default function Guide({
         <div className="absolute top-1.5 bottom-1.5 right-3 aspect-square flex items-center justify-center pointer-events-none print:hidden">
           <GuideIcon className="h-5/6 w-5/6 text-primary/15 dark:text-primary/40" />
         </div>
-        <h1 className="relative mb-3 print:mb-0">
-          {frontmatter.title}
-        </h1>
+        <h1 className="relative mb-3 print:mb-0">{frontmatter.title}</h1>
         {metaBarItems.length > 0 && (
           <div className="relative flex flex-wrap items-center gap-y-2 gap-x-6 text-sm text-muted-foreground print:mb-0">
             {metaBarItems.map((item, index) => (
@@ -122,9 +120,7 @@ export default function Guide({
           {serializedBodyAfterCta && (
             <MDXRemote {...serializedBodyAfterCta} components={mdxComponents} />
           )}
-          {relatedGuideSlugs.length > 0 && (
-            <RelatedGuides isBlock guideSlugs={relatedGuideSlugs} />
-          )}
+          {relatedGuideSlugs.length > 0 && <RelatedGuides isBlock guideSlugs={relatedGuideSlugs} />}
           <FeedbackCTA />
         </div>
       </div>

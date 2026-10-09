@@ -26,7 +26,7 @@ export default function BrowserFrame({ label, url, children, className, bodyClas
       className={cn(
         'overflow-hidden rounded-xl border border-[#dcdce3] bg-[#f1f1f4] shadow-lg',
         'dark:border-[#33333c] dark:bg-[#212128]',
-        className
+        className,
       )}
     >
       <div aria-hidden="true">

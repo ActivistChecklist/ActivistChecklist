@@ -6,41 +6,64 @@ import { buildSearchIndex, buildFuse, searchIndex, tidyReleaseLabel } from '../l
 const NOW = new Date('2026-05-03T00:00:00Z');
 
 const SNAP = normalizeSnapshot({
-  schemaVersion: 1, generatedAt: '2026-05-03T00:00:00Z', source: 'x',
+  schemaVersion: 1,
+  generatedAt: '2026-05-03T00:00:00Z',
+  source: 'x',
   products: [
     {
-      id: 'iphone', label: 'Apple iPhone', kind: 'device', family: 'apple', formFactor: 'phone',
-      endoflifeUrl: 'https://x', releases: [
+      id: 'iphone',
+      label: 'Apple iPhone',
+      kind: 'device',
+      family: 'apple',
+      formFactor: 'phone',
+      endoflifeUrl: 'https://x',
+      releases: [
         { id: '17-pro', label: '17 Pro', releaseDate: '2025-09-19' },
         { id: '12-pro', label: '12 Pro', releaseDate: '2020-10-23' },
         { id: '6', label: '6', releaseDate: '2014-09-19', isEol: true },
       ],
     },
     {
-      id: 'pixel', label: 'Google Pixel', kind: 'device', family: 'google', formFactor: 'phone',
-      endoflifeUrl: 'https://x', releases: [
-        { id: '10', label: 'Pixel 10', releaseDate: '2025-08-28' },
-      ],
+      id: 'pixel',
+      label: 'Google Pixel',
+      kind: 'device',
+      family: 'google',
+      formFactor: 'phone',
+      endoflifeUrl: 'https://x',
+      releases: [{ id: '10', label: 'Pixel 10', releaseDate: '2025-08-28' }],
     },
     {
-      id: 'macbook-pro', label: 'Apple MacBook Pro', kind: 'device', family: 'apple', formFactor: 'laptop',
-      endoflifeUrl: 'https://x', releases: [
+      id: 'macbook-pro',
+      label: 'Apple MacBook Pro',
+      kind: 'device',
+      family: 'apple',
+      formFactor: 'laptop',
+      endoflifeUrl: 'https://x',
+      releases: [
         { id: '14in-2024-m4', label: 'MacBook Pro 14-inch (2024, M4)', releaseDate: '2024-11-08' },
         { id: '15in-2018', label: 'MacBook Pro 15-inch (2018)', releaseDate: '2018-07-12' },
       ],
     },
     {
-      id: 'windows', label: 'Microsoft Windows', kind: 'os', family: 'microsoft', formFactor: 'os',
-      endoflifeUrl: 'https://x', releases: [
+      id: 'windows',
+      label: 'Microsoft Windows',
+      kind: 'os',
+      family: 'microsoft',
+      formFactor: 'os',
+      endoflifeUrl: 'https://x',
+      releases: [
         { id: '11-24h2-w', label: '11 24H2 (W)', releaseDate: '2024-10-01' },
         { id: '10-22h2', label: '10 22H2', releaseDate: '2022-10-18', isEol: true },
       ],
     },
     {
-      id: 'ios', label: 'Apple iOS', kind: 'os', family: 'apple', formFactor: 'os',
-      endoflifeUrl: 'https://x', releases: [
-        { id: '26', label: '26', releaseDate: '2025-09-15' },
-      ],
+      id: 'ios',
+      label: 'Apple iOS',
+      kind: 'os',
+      family: 'apple',
+      formFactor: 'os',
+      endoflifeUrl: 'https://x',
+      releases: [{ id: '26', label: '26', releaseDate: '2025-09-15' }],
     },
   ],
 });
@@ -164,16 +187,43 @@ describe('searchIndex', () => {
     // DeviceSearchInput overrides cmdk's auto-scroll by resetting scrollTop
     // in a rAF-deferred effect after each query change.
     const richSnap = normalizeSnapshot({
-      schemaVersion: 1, generatedAt: '2026-05-03T00:00:00Z', source: 'x',
+      schemaVersion: 1,
+      generatedAt: '2026-05-03T00:00:00Z',
+      source: 'x',
       products: [
         {
-          id: 'macbook-pro', label: 'Apple MacBook Pro', kind: 'device', family: 'apple', formFactor: 'laptop',
-          endoflifeUrl: 'https://x', releases: [
-            { id: 'mbp-m1-2020', label: 'MacBook Pro (13-inch, M1, 2020)', releaseDate: '2020-11-17' },
-            { id: 'mbp-m4-2024', label: 'MacBook Pro (14-inch, M4, Nov 2024)', releaseDate: '2024-11-08' },
-            { id: 'mbp-m3-2023', label: 'MacBook Pro (14-inch, M3, Nov 2023)', releaseDate: '2023-11-07' },
-            { id: 'mbp-m2-2022', label: 'MacBook Pro (13-inch, M2, 2022)', releaseDate: '2022-06-24' },
-            { id: 'mbp-m1pro-2021', label: 'MacBook Pro (14-inch, M1 Pro, 2021)', releaseDate: '2021-10-26' },
+          id: 'macbook-pro',
+          label: 'Apple MacBook Pro',
+          kind: 'device',
+          family: 'apple',
+          formFactor: 'laptop',
+          endoflifeUrl: 'https://x',
+          releases: [
+            {
+              id: 'mbp-m1-2020',
+              label: 'MacBook Pro (13-inch, M1, 2020)',
+              releaseDate: '2020-11-17',
+            },
+            {
+              id: 'mbp-m4-2024',
+              label: 'MacBook Pro (14-inch, M4, Nov 2024)',
+              releaseDate: '2024-11-08',
+            },
+            {
+              id: 'mbp-m3-2023',
+              label: 'MacBook Pro (14-inch, M3, Nov 2023)',
+              releaseDate: '2023-11-07',
+            },
+            {
+              id: 'mbp-m2-2022',
+              label: 'MacBook Pro (13-inch, M2, 2022)',
+              releaseDate: '2022-06-24',
+            },
+            {
+              id: 'mbp-m1pro-2021',
+              label: 'MacBook Pro (14-inch, M1 Pro, 2021)',
+              releaseDate: '2021-10-26',
+            },
           ],
         },
       ],
@@ -203,7 +253,7 @@ describe('tidyReleaseLabel', () => {
     expect(tidyReleaseLabel('windows', '11 24H2')).toBe('11 24H2');
   });
 
-  it("converts Android single-quoted codenames to parens", () => {
+  it('converts Android single-quoted codenames to parens', () => {
     expect(tidyReleaseLabel('android', "16 'Baklava'")).toBe('16 (Baklava)');
     expect(tidyReleaseLabel('android', "15 'Vanilla Ice Cream'")).toBe('15 (Vanilla Ice Cream)');
     expect(tidyReleaseLabel('android', "13 'Tiramisu'")).toBe('13 (Tiramisu)');

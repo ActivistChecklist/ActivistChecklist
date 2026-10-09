@@ -42,9 +42,7 @@ const NewsItem = ({ entry }) => {
   const { date, source, url: originalUrl, title, imagePath, tags, commentText } = entry;
   const displaySource = source?.name || source || null;
 
-  const imageInfo = imagePath
-    ? { exists: true, src: imagePath }
-    : { exists: false, src: null };
+  const imageInfo = imagePath ? { exists: true, src: imagePath } : { exists: false, src: null };
 
   const hasUrl = !!originalUrl;
   const showBypassNotice = hasUrl && isPaywallBypassActiveForUrl(originalUrl);
@@ -58,7 +56,10 @@ const NewsItem = ({ entry }) => {
           <>
             <span>•</span>
             {tags.map((tag, index) => (
-              <span key={index} className="bg-muted text-muted-foreground px-2 py-1 rounded text-xs whitespace-nowrap">
+              <span
+                key={index}
+                className="bg-muted text-muted-foreground px-2 py-1 rounded text-xs whitespace-nowrap"
+              >
                 {tag}
               </span>
             ))}
@@ -99,10 +100,7 @@ const NewsItem = ({ entry }) => {
             {/* Image */}
             <div className="shrink-0">
               {hasUrl ? (
-                <Link
-                  href={originalUrl}
-                  onClick={(e) => e.stopPropagation()}
-                >
+                <Link href={originalUrl} onClick={(e) => e.stopPropagation()}>
                   <div className="w-32 h-20 bg-muted rounded-lg overflow-hidden flex items-center justify-center relative">
                     {imageInfo.exists ? (
                       <Image
@@ -194,10 +192,7 @@ const NewsItem = ({ entry }) => {
           {/* Image */}
           <div className="shrink-0">
             {hasUrl ? (
-              <Link
-                href={originalUrl}
-                onClick={(e) => e.stopPropagation()}
-              >
+              <Link href={originalUrl} onClick={(e) => e.stopPropagation()}>
                 <div className="w-48 h-28 bg-muted rounded-lg overflow-hidden flex items-center justify-center relative">
                   {imageInfo.exists ? (
                     <Image

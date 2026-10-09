@@ -9,7 +9,6 @@
   @apply py-3;
 }
 
-
 .alert svg {
   @apply h-6 w-6;
 }
@@ -29,7 +28,6 @@
 .alertContentWithIcon {
   @apply pl-7;
 }
-
 
 .alertDescription {
   @apply [&_p]:leading-relaxed;

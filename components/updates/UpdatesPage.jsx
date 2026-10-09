@@ -195,23 +195,25 @@ export default function UpdatesPage() {
   // unreviewed notice and other site-wide warnings) rather than a one-off
   // banner stuck at the bottom.
   const pageNotices = isSnapshotStale(snapshot)
-    ? [{
-        id: 'updates-snapshot-stale',
-        type: 'warning',
-        message: t.rich('updates.snapshotStaleBanner', {
-          date: formatStaleDate(snapshot.generatedAt),
-          link: (chunks) => (
-            <a
-              href="https://endoflife.date"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary underline"
-            >
-              {chunks}
-            </a>
-          ),
-        }),
-      }]
+    ? [
+        {
+          id: 'updates-snapshot-stale',
+          type: 'warning',
+          message: t.rich('updates.snapshotStaleBanner', {
+            date: formatStaleDate(snapshot.generatedAt),
+            link: (chunks) => (
+              <a
+                href="https://endoflife.date"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary underline"
+              >
+                {chunks}
+              </a>
+            ),
+          }),
+        },
+      ]
     : [];
 
   return (
@@ -226,9 +228,7 @@ export default function UpdatesPage() {
       <PageHero />
       <PageNotices initialNotices={pageNotices} />
 
-      {found ? null : (
-        <FamilyCategorySelector value={category} onChange={handleCategoryChange} />
-      )}
+      {found ? null : <FamilyCategorySelector value={category} onChange={handleCategoryChange} />}
 
       {/* When a device is selected, group the device card and result block in a
           single space-y-0 stack so the connector arrows inside ResultCard can sit
@@ -276,12 +276,7 @@ export default function UpdatesPage() {
  */
 function LoadingSkeleton({ label }) {
   return (
-    <div
-      role="status"
-      aria-busy="true"
-      aria-label={label}
-      className="space-y-6 animate-pulse"
-    >
+    <div role="status" aria-busy="true" aria-label={label} className="space-y-6 animate-pulse">
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4" aria-hidden="true">
         {Array.from({ length: 4 }).map((_, i) => (
           <div

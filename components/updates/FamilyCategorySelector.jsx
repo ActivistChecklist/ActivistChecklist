@@ -13,8 +13,7 @@ import { PLATFORM_GROUP_ICON, BRAND_ICON } from '@/lib/updates/family-icons';
 // centres on x-height; h-[1em] scales with surrounding font size; mr-1 is the
 // icon-to-label gap. Mirrored in components/updates/ResultCard.jsx — keep them
 // in sync if you tweak one.
-const inlineIconClassName =
-  'inline-block h-[1em] w-[1em] align-[-0.15em] mr-1 shrink-0';
+const inlineIconClassName = 'inline-block h-[1em] w-[1em] align-[-0.15em] mr-1 shrink-0';
 
 const PLATFORMS = ['apple', 'android', 'windows', 'other'];
 
@@ -71,13 +70,7 @@ export default function FamilyCategorySelector({ value, onChange }) {
     // shove the search input around.
     <div className="sm:min-h-[8rem]">
       {step === 'l1' ? <L1 onPick={pickPlatform} /> : null}
-      {step === 'l2' ? (
-        <L2
-          platform={platform}
-          onPick={pickSubCategory}
-          onBack={backToL1}
-        />
-      ) : null}
+      {step === 'l2' ? <L2 platform={platform} onPick={pickSubCategory} onBack={backToL1} /> : null}
       {step === 'l3' ? (
         <L3
           platform={platform}
@@ -93,10 +86,7 @@ export default function FamilyCategorySelector({ value, onChange }) {
 function L1({ onPick }) {
   const t = useTranslations();
   return (
-    <div
-      key="l1"
-      className="animate-in fade-in slide-in-from-left-2 duration-500 space-y-3"
-    >
+    <div key="l1" className="animate-in fade-in slide-in-from-left-2 duration-500 space-y-3">
       <p className="block text-sm font-medium text-foreground">
         {t('updates.platform.helpPrompt')}
       </p>
@@ -110,10 +100,13 @@ function L1({ onPick }) {
               onClick={() => onPick(p)}
               className={cn(
                 'group flex flex-col items-center gap-2 rounded-lg border-2 border-border bg-background p-4 text-center transition-colors',
-                'hover:border-primary hover:bg-primary/5 focus:outline-hidden focus:ring-2 focus:ring-primary/40'
+                'hover:border-primary hover:bg-primary/5 focus:outline-hidden focus:ring-2 focus:ring-primary/40',
               )}
             >
-              <Icon className="h-8 w-8 text-foreground/80 group-hover:text-primary" aria-hidden="true" />
+              <Icon
+                className="h-8 w-8 text-foreground/80 group-hover:text-primary"
+                aria-hidden="true"
+              />
               <div className="text-base font-semibold text-foreground">
                 {t(`updates.platform.${p}`)}
               </div>
@@ -166,11 +159,14 @@ function L2({ platform, onPick, onBack }) {
                 onClick={() => onPick(sc)}
                 className={cn(
                   'group flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2.5 text-left transition-colors',
-                  'hover:border-primary hover:bg-primary/5 focus:outline-hidden focus:ring-2 focus:ring-primary/40'
+                  'hover:border-primary hover:bg-primary/5 focus:outline-hidden focus:ring-2 focus:ring-primary/40',
                 )}
               >
                 {Icon ? (
-                  <Icon className="h-5 w-5 shrink-0 text-foreground/70 group-hover:text-primary" aria-hidden="true" />
+                  <Icon
+                    className="h-5 w-5 shrink-0 text-foreground/70 group-hover:text-primary"
+                    aria-hidden="true"
+                  />
                 ) : null}
                 <span className="text-sm font-medium text-foreground">
                   {t(`updates.subCategory.${sc.labelKey}`)}
@@ -187,9 +183,7 @@ function L2({ platform, onPick, onBack }) {
 function L3({ platform, subCategory, onClickPlatform, onClear }) {
   const t = useTranslations();
   const platformLabel = t(`updates.platform.${platform}`);
-  const subLabel = subCategory?.labelKey
-    ? t(`updates.subCategory.${subCategory.labelKey}`)
-    : '';
+  const subLabel = subCategory?.labelKey ? t(`updates.subCategory.${subCategory.labelKey}`) : '';
   const Icon = BRAND_ICON[subCategory?.family];
   const isWindows = platform === 'windows';
 
@@ -204,9 +198,7 @@ function L3({ platform, subCategory, onClickPlatform, onClear }) {
     if (t.has(key)) {
       findHint = t.rich(key, {
         code: (chunks) => (
-          <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-foreground">
-            {chunks}
-          </code>
+          <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-foreground">{chunks}</code>
         ),
         apple: (chunks) => (
           <span className="whitespace-nowrap">
@@ -283,9 +275,7 @@ function L3({ platform, subCategory, onClickPlatform, onClear }) {
             <Info className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
             {hintLabel}
           </div>
-          <p className="mt-1 text-sm font-medium text-foreground sm:text-base">
-            {findHint}
-          </p>
+          <p className="mt-1 text-sm font-medium text-foreground sm:text-base">{findHint}</p>
           {isWindows ? (
             <p className="mt-2 border-t border-border/60 pt-2 text-xs leading-relaxed text-muted-foreground">
               {t.rich('updates.findYourModel.windowsCaveat', {

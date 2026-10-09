@@ -5,11 +5,7 @@ import { notFound } from 'next/navigation';
 import { showKeystaticUI } from '../../keystatic.config';
 import englishMessages from '@/messages/en.json';
 
-export default function KeystaticLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function KeystaticLayout({ children }: { children: React.ReactNode }) {
   if (!showKeystaticUI) {
     notFound();
   }

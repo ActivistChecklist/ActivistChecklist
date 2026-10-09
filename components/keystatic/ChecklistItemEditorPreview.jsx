@@ -61,7 +61,8 @@ export default function ChecklistItemEditorPreview({ slug: slugProp }) {
         }
       })
       .catch((err) => {
-        if (!cancelled) setState({ status: 'error', data: null, error: err.message || String(err) });
+        if (!cancelled)
+          setState({ status: 'error', data: null, error: err.message || String(err) });
       });
 
     return () => {
@@ -70,9 +71,7 @@ export default function ChecklistItemEditorPreview({ slug: slugProp }) {
   }, [slug]);
 
   if (!slug) {
-    return (
-      <span style={{ color: '#94a3b8' }}>Select a checklist item…</span>
-    );
+    return <span style={{ color: '#94a3b8' }}>Select a checklist item…</span>;
   }
 
   if (state.status === 'loading' || state.status === 'idle') {
@@ -89,9 +88,7 @@ export default function ChecklistItemEditorPreview({ slug: slugProp }) {
 
   // Ready but no payload (e.g. race while Keystatic saves, or non-JSON 200)
   if (!state.data) {
-    return (
-      <span style={{ color: '#64748b', fontSize: 12 }}>Loading preview…</span>
-    );
+    return <span style={{ color: '#64748b', fontSize: 12 }}>Loading preview…</span>;
   }
 
   const fm = state.data.frontmatter ?? {};
@@ -101,7 +98,10 @@ export default function ChecklistItemEditorPreview({ slug: slugProp }) {
     <SectionContext.Provider value={sectionContextValue}>
       <div className="keystatic-checklist-preview text-[13px] leading-snug [&_.prose]:max-w-none">
         <div className="mb-1 flex justify-end">
-          <KeystaticOpenEntryLink href={editHref} preset={KEYSTATIC_OPEN_ENTRY_PRESET.checklistItem} />
+          <KeystaticOpenEntryLink
+            href={editHref}
+            preset={KEYSTATIC_OPEN_ENTRY_PRESET.checklistItem}
+          />
         </div>
         <ChecklistItemComponent
           slug={slug}

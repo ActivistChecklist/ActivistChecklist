@@ -1,0 +1,7 @@
+# Commits that only reformat code. `git blame` skips these when run with
+#   git config blame.ignoreRevsFile .git-blame-ignore-revs
+# GitHub's blame view reads this file automatically.
+# Add the full SHA of the commit as it landed on main (squash merges get a new one).
+
+# Prettier reformat of the codebase (#704)
+85fb756bc2d8c379bbc2fde8fc92e12df8e4859a

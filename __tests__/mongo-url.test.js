@@ -6,8 +6,7 @@ import {
   DEFAULT_SERVER_SELECTION_TIMEOUT_MS,
 } from '../lib/review-comments/mongo-url';
 
-const timeoutOf = (url) =>
-  new URL(url).searchParams.get('serverSelectionTimeoutMS');
+const timeoutOf = (url) => new URL(url).searchParams.get('serverSelectionTimeoutMS');
 
 describe('withServerSelectionTimeout', () => {
   test('adds the timeout to a plain connection string', () => {
@@ -21,9 +20,7 @@ describe('withServerSelectionTimeout', () => {
   });
 
   test('preserves credentials and existing query params on an srv URL', () => {
-    const out = withServerSelectionTimeout(
-      'mongodb+srv://user:pass@host/db?retryWrites=true'
-    );
+    const out = withServerSelectionTimeout('mongodb+srv://user:pass@host/db?retryWrites=true');
     const u = new URL(out);
     expect(u.username).toBe('user');
     expect(u.password).toBe('pass');
@@ -58,9 +55,7 @@ describe('withServerSelectionTimeout', () => {
   });
 
   test('ignores non-mongodb schemes', () => {
-    expect(withServerSelectionTimeout('https://example.com/db')).toBe(
-      'https://example.com/db'
-    );
+    expect(withServerSelectionTimeout('https://example.com/db')).toBe('https://example.com/db');
   });
 
   test('is idempotent', () => {
@@ -74,7 +69,7 @@ describe('applyMongoTimeoutToEnv', () => {
     const env = { REVIEW_COMMENTS_MONGODB_URL: 'mongodb://localhost:27017/reviews' };
     applyMongoTimeoutToEnv(env);
     expect(timeoutOf(env.REVIEW_COMMENTS_MONGODB_URL)).toBe(
-      String(DEFAULT_SERVER_SELECTION_TIMEOUT_MS)
+      String(DEFAULT_SERVER_SELECTION_TIMEOUT_MS),
     );
   });
 
@@ -98,7 +93,7 @@ describe('stripEnclosingQuotes', () => {
   // and the value was pasted into another service's variable with them attached.
   test('unwraps the backticks Railway renders around a value', () => {
     expect(stripEnclosingQuotes('`mongodb://mongo:pw@mongodb.railway.internal:27017`')).toBe(
-      'mongodb://mongo:pw@mongodb.railway.internal:27017'
+      'mongodb://mongo:pw@mongodb.railway.internal:27017',
     );
   });
 

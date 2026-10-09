@@ -59,11 +59,11 @@ const SUSPICIOUS_PATTERNS = [
 
 function remarkStripEsm() {
   return (tree) => {
-    const esmNodes = tree.children.filter(n => n.type === 'mdxjsEsm');
+    const esmNodes = tree.children.filter((n) => n.type === 'mdxjsEsm');
     if (esmNodes.length > 0) {
       throw new Error(
         `Found ${esmNodes.length} ESM import/export statement(s). ` +
-        `MDX content must not contain import or export statements.`
+          `MDX content must not contain import or export statements.`,
       );
     }
   };
@@ -77,9 +77,7 @@ function remarkRejectExpressions() {
         // But reject complex JS expressions
         const value = node.value || '';
         if (value.includes('(') || value.includes('import') || value.includes('require')) {
-          throw new Error(
-            `Potentially dangerous JS expression found: {${value.slice(0, 80)}}`
-          );
+          throw new Error(`Potentially dangerous JS expression found: {${value.slice(0, 80)}}`);
         }
       }
       if (node.children) node.children.forEach(visit);
@@ -92,10 +90,7 @@ function remarkValidateComponents() {
   return (tree) => {
     const violations = [];
     const visit = (node) => {
-      if (
-        node.type === 'mdxJsxFlowElement' ||
-        node.type === 'mdxJsxTextElement'
-      ) {
+      if (node.type === 'mdxJsxFlowElement' || node.type === 'mdxJsxTextElement') {
         const name = node.name;
         if (name && !ALLOWED_COMPONENTS.has(name) && !ALLOWED_HTML_ELEMENTS.has(name)) {
           violations.push(`Unregistered component: <${name}>`);
@@ -201,7 +196,7 @@ async function main() {
   let files;
 
   if (args.length > 0) {
-    files = args.map(f => path.resolve(f));
+    files = args.map((f) => path.resolve(f));
   } else {
     files = findMdxFiles(CONTENT_DIR);
   }

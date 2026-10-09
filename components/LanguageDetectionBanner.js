@@ -30,7 +30,7 @@ export default function LanguageDetectionBanner() {
     const detected = getDetectedLocaleFromNavigatorLanguage(
       navigator.language,
       DEFAULT_LOCALE,
-      availableLocales
+      availableLocales,
     );
     if (detected) {
       setDetectedLocale(detected);

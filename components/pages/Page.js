@@ -7,7 +7,7 @@ import { mdxComponents } from '@/lib/mdx-components';
 import { useLayout } from '@/contexts/LayoutContext';
 import { MetaBar, getDateMetaItem } from '@/components/ui/meta-bar';
 import RelatedGuides from '@/components/RelatedGuides';
-import { LOCALES } from "@/lib/i18n-config";
+import { LOCALES } from '@/lib/i18n-config';
 import PageNotices from '@/components/layout/PageNotices';
 import AnswerCapsule from '@/components/AnswerCapsule';
 
@@ -31,12 +31,7 @@ function parseRelatedGuides(value) {
  * Unlike guides, pages do not get the auto-inserted newsletter CTA. A page can
  * still include a manual <InlineCta /> in its MDX body.
  */
-export default function Page({
-  frontmatter,
-  serializedBody,
-  locale,
-  notices = [],
-}) {
+export default function Page({ frontmatter, serializedBody, locale, notices = [] }) {
   const t = useTranslations();
   const intlLocale = useLocale() || locale || 'en';
   const dateLocale = LOCALES[intlLocale]?.intlLocale || 'en-US';
@@ -58,13 +53,9 @@ export default function Page({
       {metaBarItems.length > 0 && <MetaBar items={metaBarItems} />}
       <AnswerCapsule text={frontmatter.answerCapsule} />
       <div className="prose prose-slate max-w-none">
-        {serializedBody && (
-          <MDXRemote {...serializedBody} components={mdxComponents} />
-        )}
+        {serializedBody && <MDXRemote {...serializedBody} components={mdxComponents} />}
       </div>
-      {relatedGuideSlugs.length > 0 && (
-        <RelatedGuides isBlock guideSlugs={relatedGuideSlugs} />
-      )}
+      {relatedGuideSlugs.length > 0 && <RelatedGuides isBlock guideSlugs={relatedGuideSlugs} />}
     </>
   );
 }

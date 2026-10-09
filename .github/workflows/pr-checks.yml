@@ -74,6 +74,10 @@ jobs:
       - name: Internal paths (trailing slashes)
         run: pnpm lint:paths
 
+      # On failure, run `pnpm format` locally and commit the result.
+      - name: Formatting (Prettier)
+        run: pnpm format:check
+
   pr_build:
     needs: detect_changes
     if: ${{ !startsWith(github.head_ref, 'l10n_') && needs.detect_changes.outputs.runtime_changed == 'true' }}
@@ -112,7 +116,6 @@ jobs:
           BUILD_MODE: static
           NEXT_TELEMETRY_DISABLED: 1
         run: pnpm buildstatic
-
 
   # The merge gate. ALWAYS runs. Reports a real success/failure.
   merge_gate:

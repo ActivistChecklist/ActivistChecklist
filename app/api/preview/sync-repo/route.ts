@@ -8,7 +8,7 @@ const cookieBase = {
   path: '/',
   sameSite: 'lax' as const,
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production'
+  secure: process.env.NODE_ENV === 'production',
 };
 
 /**
@@ -27,11 +27,7 @@ export async function POST() {
 
   let effective;
   try {
-    effective = await resolveEffectiveRepoForViewer(
-      token,
-      canonical.owner,
-      canonical.name
-    );
+    effective = await resolveEffectiveRepoForViewer(token, canonical.owner, canonical.name);
   } catch {
     return new Response(null, { status: 204 });
   }

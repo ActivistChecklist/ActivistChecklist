@@ -89,7 +89,7 @@ describe('shouldShowNonUsNotice', () => {
     'fails safe and shows when the timezone is undetectable (%p)',
     (timezone) => {
       expect(shouldShowNonUsNotice({ dismissed: false, timezone })).toBe(true);
-    }
+    },
   );
 
   test('fails safe with no arguments at all', () => {

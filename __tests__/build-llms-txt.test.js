@@ -27,10 +27,10 @@ describe('buildUrl', () => {
 describe('buildChecklistItemUrl', () => {
   it('appends item slug as a hash to parent guide URL', () => {
     expect(buildChecklistItemUrl(SITE, 'en', 'essentials', 'password-manager')).toBe(
-      `${SITE}/essentials/#password-manager`
+      `${SITE}/essentials/#password-manager`,
     );
     expect(buildChecklistItemUrl(SITE, 'es', 'essentials', 'password-manager')).toBe(
-      `${SITE}/es/essentials/#password-manager`
+      `${SITE}/es/essentials/#password-manager`,
     );
   });
 });
@@ -50,7 +50,10 @@ describe('buildItemParentMap', () => {
   it('assigns each item to the alphabetically-first guide that references it', () => {
     const guides = [
       { slug: 'zeta', content: '<ChecklistItem slug="signal" />' },
-      { slug: 'alpha', content: '<ChecklistItem slug="signal" /><ChecklistItem slug="location" />' },
+      {
+        slug: 'alpha',
+        content: '<ChecklistItem slug="signal" /><ChecklistItem slug="location" />',
+      },
     ];
     const map = buildItemParentMap(guides);
     expect(map.get('signal')).toBe('alpha');
@@ -71,14 +74,16 @@ describe('stripMdxToPlainText', () => {
   it('strips nested/adversarial tag patterns to stable (no residual <script>)', () => {
     // A single regex pass would leave a residual <script>. Loop must continue.
     expect(stripMdxToPlainText('<scr<Alert />ipt>')).not.toMatch(/<script/i);
-    expect(stripMdxToPlainText('<scr<Alert />ipt>alert(1)</scr<Alert />ipt>')).not.toMatch(/<script/i);
+    expect(stripMdxToPlainText('<scr<Alert />ipt>alert(1)</scr<Alert />ipt>')).not.toMatch(
+      /<script/i,
+    );
   });
 });
 
 describe('firstSentence', () => {
   it('takes the first sentence terminator after >20 chars', () => {
     expect(firstSentence('This is a long enough sentence. Second one.')).toBe(
-      'This is a long enough sentence.'
+      'This is a long enough sentence.',
     );
   });
   it('truncates with ellipsis when no terminator found', () => {
@@ -95,7 +100,7 @@ describe('resolveEntryDescription', () => {
       resolveEntryDescription({
         frontmatter: { seoDescription: 'A', excerpt: 'B' },
         body: 'C',
-      })
+      }),
     ).toBe('A');
   });
   it('falls back to body sentence', () => {
@@ -103,7 +108,7 @@ describe('resolveEntryDescription', () => {
       resolveEntryDescription({
         frontmatter: {},
         body: 'This is a description of the page. Etc.',
-      })
+      }),
     ).toBe('This is a description of the page.');
   });
 });
@@ -111,7 +116,7 @@ describe('resolveEntryDescription', () => {
 describe('formatListEntry', () => {
   it('renders title, url, description', () => {
     expect(formatListEntry('Signal', '/signal/', 'Lock down Signal.')).toBe(
-      '- [Signal](/signal/): Lock down Signal.'
+      '- [Signal](/signal/): Lock down Signal.',
     );
   });
   it('omits trailing colon when description is empty', () => {
@@ -185,4 +190,3 @@ describe('buildLlmsTxt', () => {
     expect(out).not.toContain('## Checklist items');
   });
 });
-

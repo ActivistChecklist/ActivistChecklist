@@ -38,7 +38,10 @@ const CONTENT_ROOT = path.join(process.cwd(), 'content', 'en');
 // ─── Pure rule evaluators (exported for tests) ─────────────────
 
 function wordCount(s) {
-  return String(s || '').trim().split(/\s+/).filter(Boolean).length;
+  return String(s || '')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length;
 }
 
 function hasFaqBlock(body) {
@@ -189,8 +192,7 @@ function formatReport({ clean, problems, duplicates }) {
     lines.push(`✓  ${clean} pages clean — no issues`);
     return lines.join('\n');
   }
-  const totalIssues =
-    problems.reduce((acc, p) => acc + p.findings.length, 0) + duplicates.length;
+  const totalIssues = problems.reduce((acc, p) => acc + p.findings.length, 0) + duplicates.length;
   lines.push(`✓  ${clean} pages clean`);
   lines.push(`⚠  ${totalIssues} issues across ${problems.length} pages`);
   lines.push('');

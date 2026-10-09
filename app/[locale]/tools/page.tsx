@@ -69,13 +69,13 @@ function ToolRow({ tool, tinted, reversed, t }) {
     <section
       className={cn(
         'rounded-lg px-1 py-8 sm:p-8',
-        tinted && 'bg-muted px-5 dark:border dark:border-border'
+        tinted && 'bg-muted px-5 dark:border dark:border-border',
       )}
     >
       <div
         className={cn(
           'flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-12',
-          reversed && 'lg:flex-row-reverse'
+          reversed && 'lg:flex-row-reverse',
         )}
       >
         <div className="lg:w-[37%] lg:shrink-0">
