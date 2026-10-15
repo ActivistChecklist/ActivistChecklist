@@ -36,7 +36,7 @@ export default async function ChecklistsPage({ params }) {
   }
 
   return (
-    <Layout searchable={false} sidebarType={null} fullWidthMain={true}>
+    <Layout searchable={false} sidebarType="toc">
       <h1 className="page-title">{t('checklists.title')}</h1>
       <p className="text-lg text-muted-foreground mb-10 max-w-2xl">
         {t.rich('checklists.intro', {

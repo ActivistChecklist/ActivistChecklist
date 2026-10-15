@@ -130,8 +130,7 @@
     },
     "party": {
       "title": "Host a security party",
-      "label": "Host a security party",
-      "description": "A template agenda for getting your group through the checklists together."
+      "label": "Host a security party"
     },
     "proton": {
       "title": "How to use Proton safely",
@@ -413,6 +412,7 @@
   "checklists": {
     "title": "Checklists",
     "intro": "Every checklist and explainer, grouped by situation. New here? Start with <link>Security Essentials</link>.",
+    "onThisPage": "On this page",
     "documentTitle": "Checklists | Activist Checklist"
   },
   "checklistSections": {
@@ -436,10 +436,12 @@
       "heading": "Organizing others",
       "scope": "Running actions and getting your group secure."
     },
+    "descriptions": {
+      "party": "A template agenda for getting your group through the checklists together."
+    },
     "allChecklists": "All {count, plural, one {# checklist} other {# checklists}}",
     "readMinutes": "{minutes} min read",
     "explainer": "Explainer",
-    "printable": "Printable",
     "howTo": "How-to guide",
     "readGuide": "Read the guide",
     "understandWhy": "Understand why",

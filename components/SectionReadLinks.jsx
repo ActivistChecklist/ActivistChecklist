@@ -1,9 +1,9 @@
 'use client';
 
-import { BookOpen, Printer } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from '@/components/Link';
 import { cn } from '@/lib/utils';
+import { READ_KIND_ICONS } from '@/config/icons';
 import { createIntlTranslator, getTranslatedNavItemFields } from '@/lib/navigation-i18n';
 
 /**
@@ -27,14 +27,14 @@ export default function SectionReadLinks({ items, readMinutes = {}, label, class
       {label && <li className="font-semibold">{label}</li>}
       {items.map((item) => {
         const { label: title } = getTranslatedNavItemFields(item.key, item, translateText);
-        const Icon = item.kind === 'printable' ? Printer : BookOpen;
+        const Icon = READ_KIND_ICONS[item.kind] || READ_KIND_ICONS.explainer;
         const minutes = readMinutes[item.key];
+        // Only reading material gets a label. A printable or tool says what it
+        // is through its icon and title ("Printable flyer").
         const meta =
-          item.kind === 'printable'
-            ? t('checklistSections.printable')
-            : minutes
-              ? t('checklistSections.readMinutes', { minutes })
-              : null;
+          item.kind === 'explainer' && minutes
+            ? t('checklistSections.readMinutes', { minutes })
+            : null;
         return (
           <li key={item.key}>
             <Link href={item.href} className="group inline-flex items-baseline gap-2">

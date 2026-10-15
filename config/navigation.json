@@ -137,7 +137,6 @@
     "party": {
       "label": "Host a security party",
       "href": "/party/",
-      "description": "A template agenda for getting your group through the checklists together.",
       "kind": "howto"
     },
     "signal-secure": {
@@ -164,7 +163,8 @@
     },
     "updates": {
       "label": "Security update checker",
-      "href": "/updates/"
+      "href": "/updates/",
+      "kind": "tool"
     },
     "tools": {
       "label": "Tools we built",
@@ -214,7 +214,7 @@
       "key": "basics",
       "items": ["essentials", "signal", "whatsapp"],
       "featured": ["essentials", "signal"],
-      "reads": ["vpn", "proton", "links", "signal-secure", "signal-ai"]
+      "reads": ["updates", "vpn", "proton", "links", "signal-secure", "signal-ai"]
     },
     {
       "key": "goingOut",

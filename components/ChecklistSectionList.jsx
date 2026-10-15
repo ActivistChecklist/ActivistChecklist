@@ -1,17 +1,15 @@
 'use client';
 
-import { BookOpen, PartyPopper, Printer } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import Link from '@/components/Link';
 import { CHECKLIST_SECTIONS } from '@/config/navigation';
+import { READ_KIND_ICONS } from '@/config/icons';
 import { LOCALES } from '@/lib/i18n-config';
 import { createIntlTranslator, getTranslatedNavItemFields } from '@/lib/navigation-i18n';
 import { cn, formatContentDate } from '@/lib/utils';
 
-const KIND_ICONS = { explainer: BookOpen, printable: Printer, howto: PartyPopper };
 const KIND_LABELS = {
   explainer: 'checklistSections.explainer',
-  printable: 'checklistSections.printable',
   howto: 'checklistSections.howTo',
 };
 
@@ -32,6 +30,20 @@ export default function ChecklistSectionList({ staleReviewDates = {}, readMinute
 
   return (
     <div className="space-y-12">
+      {/* Phones don't get the "On this page" sidebar (it starts at md), so they
+          get the section links here instead, using the short section names. */}
+      <nav aria-label={t('checklists.onThisPage')} className="md:hidden">
+        <p className="font-bold mb-2">{t('checklists.onThisPage')}</p>
+        <ul className="flex flex-wrap gap-x-5 gap-y-1">
+          {CHECKLIST_SECTIONS.map((section) => (
+            <li key={section.key}>
+              <a href={`#${section.key}`} className="link">
+                {t(`checklistSections.${section.key}.title`)}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
       {CHECKLIST_SECTIONS.map((section) => {
         const featuredKeys = new Set(section.featured.map((item) => item.key));
         const rows = [
@@ -41,8 +53,10 @@ export default function ChecklistSectionList({ staleReviewDates = {}, readMinute
           ...section.reads,
         ];
         return (
-          <section key={section.key} id={section.key} className="scroll-mt-20">
-            <h2 className="text-2xl font-bold mb-1">
+          <section key={section.key}>
+            {/* The id sits on the heading so the "On this page" sidebar links
+                to the same anchors the menu and breadcrumbs use. */}
+            <h2 id={section.key} className="text-2xl font-bold mb-1">
               {t(`checklistSections.${section.key}.heading`)}
             </h2>
             <p className="text-muted-foreground mb-4">
@@ -52,7 +66,11 @@ export default function ChecklistSectionList({ staleReviewDates = {}, readMinute
               {rows.map((item) => {
                 const fields = getTranslatedNavItemFields(item.key, item, translateText);
                 const isChecklist = !item.kind;
-                const Icon = isChecklist ? item.icon : KIND_ICONS[item.kind];
+                const isHowTo = item.kind === 'howto';
+                const Icon = item.icon || READ_KIND_ICONS[item.kind];
+                const description = isHowTo
+                  ? t(`checklistSections.descriptions.${item.key}`)
+                  : fields.description;
                 const staleDate = staleReviewDates[item.key];
                 const meta = isChecklist
                   ? staleDate &&
@@ -63,7 +81,7 @@ export default function ChecklistSectionList({ staleReviewDates = {}, readMinute
                       }),
                     })
                   : [
-                      t(KIND_LABELS[item.kind]),
+                      KIND_LABELS[item.kind] && t(KIND_LABELS[item.kind]),
                       readMinutes[item.key] &&
                         t('checklistSections.readMinutes', { minutes: readMinutes[item.key] }),
                     ]
@@ -79,7 +97,7 @@ export default function ChecklistSectionList({ staleReviewDates = {}, readMinute
                         <Icon
                           className={cn(
                             'mt-1 h-5 w-5',
-                            isChecklist ? 'text-primary' : 'text-success',
+                            isChecklist || isHowTo ? 'text-primary' : 'text-success',
                             isChecklist && !featuredKeys.has(item.key) && 'text-muted-foreground',
                           )}
                           aria-hidden="true"
@@ -89,9 +107,7 @@ export default function ChecklistSectionList({ staleReviewDates = {}, readMinute
                         <div className="text-lg font-semibold group-hover:text-link">
                           {isChecklist ? fields.title : fields.label || fields.title}
                         </div>
-                        {fields.description && (
-                          <p className="text-muted-foreground">{fields.description}</p>
-                        )}
+                        {description && <p className="text-muted-foreground">{description}</p>}
                       </div>
                       {meta && (
                         <div className="col-start-2 text-sm text-muted-foreground sm:col-start-3 sm:pt-1 sm:text-right">

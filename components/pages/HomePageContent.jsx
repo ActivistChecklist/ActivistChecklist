@@ -47,6 +47,7 @@ export default function HomePageContent({
   changelogEntries = [],
   latestMajorBodyText = null,
   readMinutes = {},
+  estimatedTimes = {},
   locale = 'en',
 }) {
   const t = useTranslations();
@@ -115,7 +116,7 @@ export default function HomePageContent({
 
           <PageNotices />
 
-          <HomeChecklistSections readMinutes={readMinutes} />
+          <HomeChecklistSections readMinutes={readMinutes} estimatedTimes={estimatedTimes} />
 
           {/* Why Trust Us Section */}
           <section className="mb-16 bg-linear-to-br from-muted via-muted to-accent/5 p-5 sm:p-6 md:p-8 rounded-lg">

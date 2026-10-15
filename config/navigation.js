@@ -1,6 +1,6 @@
 import { IoArrowForward, IoLogoGithub, IoLogoMastodon } from 'react-icons/io5';
 import { SiBluesky } from 'react-icons/si';
-import { GUIDE_ICONS } from './icons';
+import { GUIDE_ICONS, PAGE_ICONS } from './icons';
 import navData from './navigation.json';
 
 // --- Resolve helpers ---
@@ -80,12 +80,19 @@ export const SECURITY_CHECKLISTS = resolveMenu('checklists');
  * a bold row in the menu (a how-to can be featured too); `reads` are the
  * explainers and printables listed under them. See lib/checklist-sections.js.
  */
+// Pages featured in a section (the security party) get an icon here only, so
+// other menus that list the same page (Resources) keep their plain rows.
+function resolveSectionItem(key) {
+  const item = resolveItem(key);
+  return PAGE_ICONS[key] ? { ...item, icon: PAGE_ICONS[key] } : item;
+}
+
 export const CHECKLIST_SECTIONS = navData.checklistSections.map((section) => ({
   key: section.key,
   href: `${navData.menus.checklists.href}#${section.key}`,
-  items: section.items.map(resolveItem),
-  featured: section.featured.map(resolveItem),
-  reads: section.reads.map(resolveItem),
+  items: section.items.map(resolveSectionItem),
+  featured: section.featured.map(resolveSectionItem),
+  reads: section.reads.map(resolveSectionItem),
 }));
 
 /** Raw section keys, for the pure helpers in lib/checklist-sections.js. */

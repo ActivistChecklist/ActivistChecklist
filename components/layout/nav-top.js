@@ -214,7 +214,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                                     'grid w-[400px] gap-3 p-4',
                                     item.columns === 2
                                       ? 'md:w-[500px] md:grid-cols-2'
-                                      : 'md:w-[200px]',
+                                      : 'md:w-[260px]',
                                   )}
                                 >
                                   {item.items.map((subItem) => (

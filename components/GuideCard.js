@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import Link from '@/components/Link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Clock } from 'lucide-react';
 import {
   Card,
   CardHeader,
@@ -18,7 +18,8 @@ import { createIntlTranslator, getTranslatedNavItemFields } from '@/lib/navigati
 const GuideCard = ({ guideItem, size = 'medium' }) => {
   const t = useTranslations();
   const translateText = createIntlTranslator(t);
-  const { href, icon, iconKey, title, description, copyFromContent, ctaLabel } = guideItem;
+  const { href, icon, iconKey, title, description, copyFromContent, ctaLabel, duration } =
+    guideItem;
   const { title: displayTitle, description: displayDescription } = copyFromContent
     ? { title, description }
     : getTranslatedNavItemFields(guideItem.key ?? iconKey, { title, description }, translateText);
@@ -37,6 +38,13 @@ const GuideCard = ({ guideItem, size = 'medium' }) => {
           </CardHeader>
           <CardContent className="relative pb-4 flex-1 pt-0 pr-32">
             <CardDescription className="text-lg">{displayDescription}</CardDescription>
+            {/* Same clock and size as the "Takes about" line in the guide header. */}
+            {duration && (
+              <div className="mt-3 flex items-center gap-1.5 text-sm text-muted-foreground">
+                <Clock className="h-4 w-4 shrink-0" aria-hidden="true" />
+                {duration}
+              </div>
+            )}
           </CardContent>
           <CardFooter className="relative mt-auto pt-0">
             <span className="text-primary font-medium inline-flex items-center text-base">

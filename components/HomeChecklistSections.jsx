@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowRight, PartyPopper } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from '@/components/Link';
 import GuideCard from '@/components/GuideCard';
@@ -17,7 +17,7 @@ import { createIntlTranslator, getTranslatedNavItemFields } from '@/lib/navigati
  * guides that carry the traffic keep their weight. Explainers sit underneath
  * as plain links.
  */
-export default function HomeChecklistSections({ readMinutes = {} }) {
+export default function HomeChecklistSections({ readMinutes = {}, estimatedTimes = {} }) {
   const t = useTranslations();
   const translateText = createIntlTranslator(t);
 
@@ -49,7 +49,11 @@ export default function HomeChecklistSections({ readMinutes = {} }) {
               <div className="space-y-5 min-w-0">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {section.featured.map((item) => (
-                    <GuideCard key={item.key} guideItem={toCardItem(item, t)} size="large" />
+                    <GuideCard
+                      key={item.key}
+                      guideItem={toCardItem(item, t, estimatedTimes, readMinutes)}
+                      size="large"
+                    />
                   ))}
                   {/* An odd number of cards would leave a gap; the section's
                       smaller checklists fill it instead. */}
@@ -99,8 +103,17 @@ export default function HomeChecklistSections({ readMinutes = {} }) {
   );
 }
 
-/** GuideCard expects a checklist; a featured how-to gets its own icon and button text. */
-function toCardItem(item, t) {
-  if (item.kind !== 'howto') return item;
-  return { ...item, icon: PartyPopper, ctaLabel: t('checklistSections.readGuide') };
+/**
+ * Adds the time each card shows: the guide's own estimate, or reading time for
+ * a featured how-to, which also gets its own description and button text.
+ */
+function toCardItem(item, t, estimatedTimes, readMinutes) {
+  if (item.kind !== 'howto') return { ...item, duration: estimatedTimes[item.key] };
+  const minutes = readMinutes[item.key];
+  return {
+    ...item,
+    duration: minutes ? t('checklistSections.readMinutes', { minutes }) : undefined,
+    description: t(`checklistSections.descriptions.${item.key}`),
+    ctaLabel: t('checklistSections.readGuide'),
+  };
 }

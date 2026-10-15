@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { setRequestLocale } from 'next-intl/server';
-import { getAllChangelogEntries, toChangelogListEntry } from '@/lib/content';
+import { getAllChangelogEntries, getAllGuides, toChangelogListEntry } from '@/lib/content';
 import HomePageContent from '@/components/pages/HomePageContent';
 import HomeNewsSection from './HomeNewsSection';
 import { DEFAULT_LOCALE } from '@/lib/i18n-config';
@@ -73,6 +73,12 @@ export default async function HomePage({ params }) {
         changelogEntries={changelogEntries.slice(0, 5)}
         latestMajorBodyText={latestMajor?.bodyText ?? null}
         readMinutes={getSectionReadMinutes(locale)}
+        estimatedTimes={Object.fromEntries(
+          getAllGuides(locale).map((g) => [
+            g.frontmatter.slug || g.slug,
+            g.frontmatter.estimatedTime,
+          ]),
+        )}
         locale={locale}
       >
         <HomeNewsSection locale={locale} />

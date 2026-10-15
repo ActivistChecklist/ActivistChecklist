@@ -14,8 +14,9 @@ import {
   IoNotifications,
   IoLockClosed,
   IoHandRight,
+  IoCafe,
 } from 'react-icons/io5';
-import { Landmark } from 'lucide-react';
+import { BookOpen, Landmark, Printer, Smartphone } from 'lucide-react';
 import React from 'react';
 
 const svgProps = {
@@ -72,6 +73,23 @@ export const GUIDE_ICONS = {
   doxxing: IoLockClosedThick,
   action: IoHandRight,
   ice: IoVideocam,
+};
+
+// Pages (not guides) that appear next to checklists, like the security party
+// how-to featured in the "Organizing others" section. Kept out of GUIDE_ICONS
+// so OG images and guide-only lookups don't pick them up.
+export const PAGE_ICONS = {
+  party: IoCafe,
+};
+
+// Small outline icons for the explainers, printables, and tools listed under
+// each checklist section. Lighter than the guide icons on purpose: they mark a
+// second kind of thing and shouldn't compete with the checklists.
+// Smartphone matches the update checker's icon in config/tools.js.
+export const READ_KIND_ICONS = {
+  explainer: BookOpen,
+  printable: Printer,
+  tool: Smartphone,
 };
 
 // Default icon for pages without a specific icon (shield)

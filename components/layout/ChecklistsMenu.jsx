@@ -1,14 +1,12 @@
 'use client';
 
-import { BookOpen, PartyPopper, Printer } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from '@/components/Link';
 import { NavigationMenuLink } from '@/components/ui/navigation-menu';
 import { CHECKLIST_SECTIONS, isSubItemActive } from '@/config/navigation';
+import { READ_KIND_ICONS } from '@/config/icons';
 import { cn } from '@/lib/utils';
 import { createIntlTranslator, getTranslatedNavItemFields } from '@/lib/navigation-i18n';
-
-const READ_ICONS = { printable: Printer, howto: PartyPopper };
 
 // Radix needs NavigationMenuLink around desktop links so the dropdown closes on
 // navigation; the mobile sheet uses plain links.
@@ -22,9 +20,10 @@ function PlainLink({ children }) {
 
 /**
  * Every checklist, grouped by section, for the desktop Checklists dropdown and
- * the mobile menu. Featured checklists get an icon and full weight; the rest
- * are plain. Explainers follow under a small "Read" list with the same green
- * icon they use on the homepage.
+ * the mobile menu. Built for scanning: every row has the same icon slot, so
+ * all text starts on one edge, and every row has the same weight and color.
+ * Order carries the emphasis (featured first), and explainers are told apart
+ * only by their green icon, after a hairline.
  *
  * @param {'desktop' | 'mobile'} variant
  */
@@ -39,73 +38,57 @@ export default function ChecklistsMenu({ variant = 'desktop', pathname, footerLi
     return item.kind ? fields.label || fields.title : fields.title;
   };
 
+  const row = (item, Icon, iconClassName) => (
+    <li key={item.key}>
+      <Wrap>
+        <Link
+          href={item.href}
+          className={cn(
+            'flex items-center gap-2.5 rounded-md px-2 py-1.5 text-sm font-medium transition-colors hover:bg-muted hover:text-link focus:bg-muted focus:text-link',
+            isDesktop && 'whitespace-nowrap',
+            isSubItemActive(item, pathname) && 'bg-muted text-link',
+          )}
+        >
+          {Icon && <Icon className={cn('h-4 w-4 shrink-0', iconClassName)} aria-hidden="true" />}
+          {titleOf(item)}
+        </Link>
+      </Wrap>
+    </li>
+  );
+
   return (
-    <div className={cn(isDesktop && 'w-[560px] lg:w-[880px] p-4')}>
-      <div className={cn('grid gap-6', isDesktop && 'grid-cols-2 lg:grid-cols-4')}>
+    <div className={cn(isDesktop && 'w-[620px] p-4')}>
+      <div className={cn('grid gap-x-6 gap-y-6', isDesktop && 'grid-cols-2')}>
         {CHECKLIST_SECTIONS.map((section) => {
           const featuredKeys = new Set(section.featured.map((item) => item.key));
-          const howTos = section.featured.filter((item) => item.kind);
+          // A featured how-to (the security party) sits with the featured checklists.
           const checklists = [
             ...section.items.filter((item) => featuredKeys.has(item.key)),
+            ...section.featured.filter((item) => item.kind),
             ...section.items.filter((item) => !featuredKeys.has(item.key)),
           ];
           // Two per section keeps the menu scannable; /checklists/ lists them all.
-          const reads = [...howTos, ...section.reads].slice(0, 2);
+          const reads = section.reads.slice(0, 2);
           return (
-            <div key={section.key} className={cn(!isDesktop && 'pl-2')}>
+            <div key={section.key}>
               <Wrap>
                 <Link
                   href={section.href}
-                  className="block mb-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground hover:text-link"
+                  className="block px-2 mb-1 text-sm font-semibold uppercase tracking-wider text-muted-foreground hover:text-link"
                 >
                   {t(`checklistSections.${section.key}.title`)}
                 </Link>
               </Wrap>
-              <ul className="space-y-0.5">
-                {checklists.map((item) => {
-                  const featured = featuredKeys.has(item.key);
-                  return (
-                    <li key={item.key}>
-                      <Wrap>
-                        <Link
-                          href={item.href}
-                          className={cn(
-                            'flex items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors hover:bg-muted hover:text-link focus:bg-muted focus:text-link',
-                            featured ? 'font-medium' : 'text-muted-foreground',
-                            isSubItemActive(item, pathname) && 'bg-muted text-link',
-                          )}
-                        >
-                          {featured && item.icon && (
-                            <item.icon className="h-4 w-4 shrink-0" aria-hidden="true" />
-                          )}
-                          {titleOf(item)}
-                        </Link>
-                      </Wrap>
-                    </li>
-                  );
-                })}
-              </ul>
+              <ul>{checklists.map((item) => row(item, item.icon, 'text-primary'))}</ul>
               {reads.length > 0 && (
-                <ul className="mt-2 space-y-0.5">
-                  {reads.map((item) => {
-                    const Icon = READ_ICONS[item.kind] || BookOpen;
-                    return (
-                      <li key={item.key}>
-                        <Wrap>
-                          <Link
-                            href={item.href}
-                            className="flex items-start gap-2 rounded-md px-2 py-1.5 text-sm transition-colors hover:bg-muted hover:text-link focus:bg-muted focus:text-link"
-                          >
-                            <Icon
-                              className="mt-0.5 h-4 w-4 shrink-0 text-success"
-                              aria-hidden="true"
-                            />
-                            {titleOf(item)}
-                          </Link>
-                        </Wrap>
-                      </li>
-                    );
-                  })}
+                <ul className="mt-2 border-t border-border pt-2">
+                  {reads.map((item) =>
+                    row(
+                      item,
+                      READ_KIND_ICONS[item.kind] || READ_KIND_ICONS.explainer,
+                      'text-success',
+                    ),
+                  )}
                 </ul>
               )}
             </div>
