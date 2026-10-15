@@ -103,6 +103,51 @@
     "privacy": {
       "title": "Privacy",
       "label": "Privacy"
+    },
+    "whatsapp": {
+      "title": "WhatsApp security",
+      "description": "Configure WhatsApp to protect your messages, groups, and contacts."
+    },
+    "spyware": {
+      "title": "Spyware protection",
+      "description": "Protect yourself from spyware and surveillance software."
+    },
+    "action": {
+      "title": "Prepare for a direct action",
+      "description": "Digital security for direct actions and civil disobedience."
+    },
+    "organizing": {
+      "title": "Action organizer checklist",
+      "description": "For movement organizers and coordinators."
+    },
+    "research": {
+      "title": "Action research & scouting",
+      "description": "How to conduct research and browse the web anonymously."
+    },
+    "federal": {
+      "title": "Federal workers",
+      "description": "Digital security guidance for federal employees."
+    },
+    "party": {
+      "title": "Host a security party",
+      "label": "Host a security party",
+      "description": "A template agenda for getting your group through the checklists together."
+    },
+    "proton": {
+      "title": "How to use Proton safely",
+      "label": "How to use Proton safely"
+    },
+    "lockdown": {
+      "title": "Lockdown Mode trade-offs",
+      "label": "Lockdown Mode trade-offs"
+    },
+    "signalSecure": {
+      "title": "Is Signal secure?",
+      "label": "Is Signal secure?"
+    },
+    "signalAi": {
+      "title": "Is Apple Intelligence reading my Signal messages?",
+      "label": "Is Apple Intelligence reading my Signal messages?"
     }
   },
   "hero": {
@@ -367,9 +412,38 @@
   },
   "checklists": {
     "title": "Checklists",
-    "featured": "Featured Checklists",
-    "more": "More Checklists",
+    "intro": "Every checklist and explainer, grouped by situation. New here? Start with <link>Security Essentials</link>.",
     "documentTitle": "Checklists | Activist Checklist"
+  },
+  "checklistSections": {
+    "basics": {
+      "title": "The basics",
+      "heading": "Everyone should do these",
+      "scope": "Baseline protection for your phone, accounts, and group chats."
+    },
+    "goingOut": {
+      "title": "Going out",
+      "heading": "Going out: protests, ICE watch, actions, travel",
+      "scope": "Anywhere police or border agents could take your phone."
+    },
+    "targeted": {
+      "title": "Being targeted",
+      "heading": "Protect yourself from being targeted",
+      "scope": "Doxxing, harassment, investigations, or agents at your door."
+    },
+    "organizing": {
+      "title": "Organizing others",
+      "heading": "Organizing others",
+      "scope": "Running actions and getting your group secure."
+    },
+    "allChecklists": "All {count, plural, one {# checklist} other {# checklists}}",
+    "readMinutes": "{minutes} min read",
+    "explainer": "Explainer",
+    "printable": "Printable",
+    "howTo": "How-to guide",
+    "readGuide": "Read the guide",
+    "understandWhy": "Understand why",
+    "lastReviewed": "Last reviewed {date}"
   },
   "news": {
     "title": "Surveillance News",

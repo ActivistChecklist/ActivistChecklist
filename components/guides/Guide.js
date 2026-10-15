@@ -12,6 +12,26 @@ import InlineCta from '@/components/InlineCta';
 import { useLayout } from '@/contexts/LayoutContext';
 import { getGuideIcon } from '@/config/icons';
 import RelatedGuides from '@/components/RelatedGuides';
+import SectionReadLinks from '@/components/SectionReadLinks';
+import Link from '@/components/Link';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
+import {
+  CHECKLIST_SECTIONS,
+  CHECKLIST_SECTION_KEYS,
+  NAV_ITEM_DATA,
+  SECURITY_CHECKLISTS,
+} from '@/config/navigation';
+import {
+  findPairedExplainer,
+  findSectionForGuide,
+  getNextInSection,
+} from '@/lib/checklist-sections';
 import { LOCALES } from '@/lib/i18n-config';
 import { formatContentDate } from '@/lib/utils';
 import PageNotices from '@/components/layout/PageNotices';
@@ -45,6 +65,7 @@ export default function Guide({
   slug,
   locale,
   notices = [],
+  readMinutes = {},
 }) {
   const t = useTranslations();
   // Prefer locale from NextIntlClientProvider (set by the locale layout), fall back to prop
@@ -59,7 +80,22 @@ export default function Guide({
   }, []);
 
   const GuideIcon = getGuideIcon(slug);
-  const relatedGuideSlugs = parseRelatedGuides(frontmatter.relatedGuides);
+  const curatedRelated = parseRelatedGuides(frontmatter.relatedGuides);
+
+  // Section wayfinding: a breadcrumb back to the guide's section, one
+  // "Understand why" explainer near the top, and the section's explainers at
+  // the end. Editors' relatedGuides win; without them, suggest the next
+  // checklists in the same section.
+  const sectionKeys = findSectionForGuide(CHECKLIST_SECTION_KEYS, slug);
+  const section = sectionKeys && CHECKLIST_SECTIONS.find((s) => s.key === sectionKeys.key);
+  const pairedKey = findPairedExplainer(NAV_ITEM_DATA, slug);
+  const pairedExplainer = CHECKLIST_SECTIONS.flatMap((s) => s.reads).find(
+    (item) => item.key === pairedKey,
+  );
+  const relatedGuideSlugs = curatedRelated.length
+    ? curatedRelated
+    : getNextInSection(sectionKeys, slug, 2);
+  const endReads = (section?.reads || []).filter((item) => item.key !== pairedKey);
 
   const metaBarItems = [];
 
@@ -86,6 +122,23 @@ export default function Guide({
         <div className="absolute top-1.5 bottom-1.5 right-3 aspect-square flex items-center justify-center pointer-events-none print:hidden">
           <GuideIcon className="h-5/6 w-5/6 text-primary/15 dark:text-primary/40" />
         </div>
+        {section && (
+          <Breadcrumb className="relative mb-3 print:hidden">
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link href={SECURITY_CHECKLISTS.href}>{t('checklists.title')}</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link href={section.href}>{t(`checklistSections.${section.key}.title`)}</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        )}
         <h1 className="relative mb-3 print:mb-0">{frontmatter.title}</h1>
         {metaBarItems.length > 0 && (
           <div className="relative flex flex-wrap items-center gap-y-2 gap-x-6 text-sm text-muted-foreground print:mb-0">
@@ -104,6 +157,15 @@ export default function Guide({
 
       <PageNotices initialNotices={notices} />
 
+      {pairedExplainer && (
+        <SectionReadLinks
+          label={t('checklistSections.understandWhy')}
+          items={[pairedExplainer]}
+          readMinutes={readMinutes}
+          className="mb-6 print:hidden"
+        />
+      )}
+
       {/* Body */}
       <div className="mx-auto">
         <div className="relative">
@@ -120,7 +182,14 @@ export default function Guide({
           {serializedBodyAfterCta && (
             <MDXRemote {...serializedBodyAfterCta} components={mdxComponents} />
           )}
-          {relatedGuideSlugs.length > 0 && <RelatedGuides isBlock guideSlugs={relatedGuideSlugs} />}
+          {relatedGuideSlugs.length > 0 && (
+            <RelatedGuides
+              isBlock
+              guideSlugs={relatedGuideSlugs}
+              reads={endReads}
+              readMinutes={readMinutes}
+            />
+          )}
           <FeedbackCTA />
         </div>
       </div>

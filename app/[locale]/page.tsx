@@ -8,6 +8,7 @@ import { getBaseUrl } from '@/lib/utils';
 import { getOgImagePathForSlug } from '@/lib/og-image';
 import JsonLd from '@/components/JsonLd';
 import { buildHomePageGraph } from '@/lib/structured-data';
+import { getSectionReadMinutes } from '@/lib/section-reads';
 
 function getMessageValue(messages, keyPath) {
   return keyPath
@@ -71,6 +72,7 @@ export default async function HomePage({ params }) {
       <HomePageContent
         changelogEntries={changelogEntries.slice(0, 5)}
         latestMajorBodyText={latestMajor?.bodyText ?? null}
+        readMinutes={getSectionReadMinutes(locale)}
         locale={locale}
       >
         <HomeNewsSection locale={locale} />

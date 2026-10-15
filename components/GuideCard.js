@@ -18,7 +18,7 @@ import { createIntlTranslator, getTranslatedNavItemFields } from '@/lib/navigati
 const GuideCard = ({ guideItem, size = 'medium' }) => {
   const t = useTranslations();
   const translateText = createIntlTranslator(t);
-  const { href, icon, iconKey, title, description, copyFromContent } = guideItem;
+  const { href, icon, iconKey, title, description, copyFromContent, ctaLabel } = guideItem;
   const { title: displayTitle, description: displayDescription } = copyFromContent
     ? { title, description }
     : getTranslatedNavItemFields(guideItem.key ?? iconKey, { title, description }, translateText);
@@ -40,7 +40,7 @@ const GuideCard = ({ guideItem, size = 'medium' }) => {
           </CardContent>
           <CardFooter className="relative mt-auto pt-0">
             <span className="text-primary font-medium inline-flex items-center text-base">
-              {t('common.viewChecklist')}{' '}
+              {ctaLabel || t('common.viewChecklist')}{' '}
               <ArrowRight className="ml-2 transition-transform duration-300 ease-out group-hover:translate-x-1" />
             </span>
           </CardFooter>
@@ -65,7 +65,7 @@ const GuideCard = ({ guideItem, size = 'medium' }) => {
         </CardContent>
         <CardFooter className="py-3 px-4 pt-0 mt-auto">
           <span className="text-primary font-medium inline-flex items-center text-sm">
-            {t('common.viewChecklist')}{' '}
+            {ctaLabel || t('common.viewChecklist')}{' '}
             <ArrowRight className="ml-2 transition-transform duration-300 ease-out group-hover:translate-x-1" />
           </span>
         </CardFooter>

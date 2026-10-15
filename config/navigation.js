@@ -21,6 +21,7 @@ function resolveItem(key) {
     title: raw.label,
     href: raw.href,
     ...(raw.description && { description: raw.description }),
+    ...(raw.kind && { kind: raw.kind }),
     ...(icon && { icon }),
   };
 }
@@ -72,6 +73,26 @@ export const NAV_ITEMS = Object.fromEntries(
 );
 
 export const SECURITY_CHECKLISTS = resolveMenu('checklists');
+
+/**
+ * The four groups every checklist, explainer, and printable sits in. `items`
+ * are the section's checklists; `featured` get full cards on the homepage and
+ * a bold row in the menu (a how-to can be featured too); `reads` are the
+ * explainers and printables listed under them. See lib/checklist-sections.js.
+ */
+export const CHECKLIST_SECTIONS = navData.checklistSections.map((section) => ({
+  key: section.key,
+  href: `${navData.menus.checklists.href}#${section.key}`,
+  items: section.items.map(resolveItem),
+  featured: section.featured.map(resolveItem),
+  reads: section.reads.map(resolveItem),
+}));
+
+/** Raw section keys, for the pure helpers in lib/checklist-sections.js. */
+export const CHECKLIST_SECTION_KEYS = navData.checklistSections;
+
+/** Raw navigation items, for `findPairedExplainer`. */
+export const NAV_ITEM_DATA = navData.items;
 export const RESOURCES_SECTION = resolveMenu('resources');
 export const ABOUT_SECTION = resolveMenu('about');
 
