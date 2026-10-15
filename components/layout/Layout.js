@@ -9,10 +9,7 @@ import { SidebarProvider } from '@/components/ui/sidebar';
 import { ThemeProvider } from '@/components/layout/ThemeProvider';
 import { TableOfContentsProvider } from '@/contexts/TableOfContentsContext';
 import { ChecklistProgressProvider } from '@/contexts/ChecklistProgressContext';
-import {
-  MobileTableOfContents,
-  TableOfContentsSidebar,
-} from '@/components/layout/TableOfContentsSidebar';
+import { TableOfContentsSidebar } from '@/components/layout/TableOfContentsSidebar';
 import { LayoutProvider, useLayout } from '@/contexts/LayoutContext';
 import SkipLink from './SkipLink';
 import PageCounter from './PageCounter';
@@ -73,9 +70,6 @@ const LayoutContent = ({
                             />
                           )}
                         </aside>
-                      )}
-                      {sidebarType === 'toc' && (
-                        <MobileTableOfContents tocDepth={tocDepth} tocPageTitle={tocPageTitle} />
                       )}
                       <main
                         id="main-content"

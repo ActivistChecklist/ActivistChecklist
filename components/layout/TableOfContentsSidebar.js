@@ -1,14 +1,14 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
-import { ChevronUp, CircleCheck, TableOfContents } from 'lucide-react';
+import React, { useEffect } from 'react';
+import { ChevronDown, CircleCheck, TableOfContents } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useTableOfContents } from '@/contexts/TableOfContentsContext';
 import { useAllSectionProgress } from '@/contexts/ChecklistProgressContext';
 import SectionProgressBar from '@/components/guides/SectionProgressBar';
 import { cn } from '@/lib/utils';
 import { SidebarGroup, SidebarMenu, SidebarMenuItem } from '@/components/ui/sidebar';
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 // This function can be used both client and server side
 export function extractHeaders(content, enableH3 = true) {
@@ -196,79 +196,41 @@ export function TableOfContentsSidebar({ initialHeaders = [], tocDepth = 2, tocP
 }
 
 /**
- * Phone and small-tablet version of the TOC: a pill pinned to the bottom of
- * the screen naming the current section, which opens the full list in a
- * bottom sheet. The desktop sidebar is hidden below `md`, so this fills in.
- * Headers come from context, which TableOfContentsSidebar fills even while
- * it is hidden.
+ * Phone and small-tablet version of the TOC: a collapsed "On this page" box
+ * near the top of the content, like Wikipedia's. The desktop sidebar is
+ * hidden below `md`, so this fills in. Headers come from context, which
+ * TableOfContentsSidebar fills even while it is hidden.
+ *
+ * The box renders before headers arrive so it doesn't shift the page when
+ * they do. It has no h2/h3 of its own, which would end up in the TOC.
  */
-export function MobileTableOfContents({ tocDepth = 2, tocPageTitle }) {
-  const { headers, activeId, setActiveId } = useTableOfContents();
+export function MobileTableOfContents({ className }) {
+  const { headers, setActiveId } = useTableOfContents();
   const t = useTranslations();
-  const [open, setOpen] = useState(false);
-  /** Where to scroll once the sheet has closed and released its scroll lock. */
-  const pendingTargetRef = useRef(null);
-
-  const entries = buildTocEntries(headers, Number(tocDepth) >= 3, tocPageTitle);
-  if (entries.length === 0) return null;
-
-  const activeEntry = entries.find((entry) => (entry.scrollTargetId ?? entry.id) === activeId);
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <div
-        className={cn(
-          'print:hidden md:hidden not-annotatable',
-          'fixed inset-x-0 z-40 flex justify-center px-4 pointer-events-none',
-          'bottom-[max(1rem,env(safe-area-inset-bottom))]',
-        )}
-      >
-        <SheetTrigger
-          className={cn(
-            'pointer-events-auto flex max-w-full min-w-0 items-center gap-2 rounded-full border px-4 py-2.5',
-            'bg-background/95 text-foreground shadow-lg backdrop-blur-sm supports-backdrop-filter:bg-background/90',
-            'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring',
-          )}
-        >
-          <TableOfContents className="size-4 shrink-0 text-muted-foreground" aria-hidden />
-          <span className="shrink-0 text-sm font-semibold">{t('tableOfContents.title')}</span>
-          {activeEntry && (
-            <span className="min-w-0 truncate text-sm text-muted-foreground">
-              <span aria-hidden>· </span>
-              {activeEntry.text}
-            </span>
-          )}
-          <ChevronUp className="size-4 shrink-0 text-muted-foreground" aria-hidden />
-        </SheetTrigger>
-      </div>
-      <SheetContent
-        side="bottom"
-        aria-describedby={undefined}
-        className="not-annotatable max-h-[80vh] overflow-y-auto rounded-t-xl px-4 pt-5 pb-[max(1.5rem,env(safe-area-inset-bottom))]"
-        onCloseAutoFocus={(e) => {
-          const target = pendingTargetRef.current;
-          if (!target) return;
-          pendingTargetRef.current = null;
-          // Keep focus from jumping back to the pill, which would undo the scroll.
-          e.preventDefault();
-          requestAnimationFrame(() => {
-            document.getElementById(target)?.scrollIntoView();
-            window.history.pushState(null, '', `#${target}`);
-          });
-        }}
-      >
-        <SheetTitle className="mb-4 text-base font-bold">{t('tableOfContents.title')}</SheetTitle>
+    <Collapsible
+      className={cn('not-annotatable md:hidden print:hidden mb-6 rounded-lg border', className)}
+      data-pagefind-ignore
+    >
+      <CollapsibleTrigger className="group flex w-full items-center gap-2 px-4 py-3 text-left font-semibold">
+        <TableOfContents className="size-4 shrink-0 text-muted-foreground" aria-hidden />
+        <span className="flex-1">{t('tableOfContents.title')}</span>
+        <ChevronDown
+          className="size-4 shrink-0 text-muted-foreground transition-transform group-data-[state=open]:rotate-180"
+          aria-hidden
+        />
+      </CollapsibleTrigger>
+      <CollapsibleContent className="px-4 pb-3">
         <TocList
-          entries={entries}
+          entries={headers}
           linkClassName="py-2"
           onNavigate={(e, linkId) => {
-            e.preventDefault();
-            pendingTargetRef.current = linkId;
+            document.getElementById(linkId)?.scrollIntoView();
             setActiveId(linkId);
-            setOpen(false);
           }}
         />
-      </SheetContent>
-    </Sheet>
+      </CollapsibleContent>
+    </Collapsible>
   );
 }
