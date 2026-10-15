@@ -306,7 +306,7 @@
   },
   "sectionProgress": {
     "count": "{done}/{total}",
-    "label": "{done} of {total} complete"
+    "label": "{done} de {total} completos"
   },
   "copyButton": {
     "copy": "Copiar",
