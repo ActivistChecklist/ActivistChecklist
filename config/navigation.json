@@ -191,17 +191,7 @@
     "resources": {
       "label": "Resources",
       "href": "/resources/",
-      "items": [
-        "tools",
-        "vpn",
-        "updates",
-        "party",
-        "links",
-        "police-door-poster",
-        "flyer",
-        "movies",
-        "resources"
-      ]
+      "items": ["tools", "links", "movies", "resources"]
     },
     "about": {
       "label": "About",
