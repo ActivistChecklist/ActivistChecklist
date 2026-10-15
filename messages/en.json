@@ -308,6 +308,9 @@
     "count": "{done}/{total}",
     "label": "{done} of {total} complete"
   },
+  "tableOfContents": {
+    "title": "On this page"
+  },
   "copyButton": {
     "copy": "Copy",
     "copyText": "Copy text",
