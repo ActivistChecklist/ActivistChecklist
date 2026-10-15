@@ -1,7 +1,11 @@
 'use client';
 
 import React, { useEffect } from 'react';
+import { CircleCheck } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useTableOfContents } from '@/contexts/TableOfContentsContext';
+import { useAllSectionProgress } from '@/contexts/ChecklistProgressContext';
+import SectionProgressBar from '@/components/guides/SectionProgressBar';
 import { cn } from '@/lib/utils';
 import { SidebarGroup, SidebarMenu, SidebarMenuItem } from '@/components/ui/sidebar';
 
@@ -31,9 +35,27 @@ export function extractHeaders(content, enableH3 = true) {
   return headersData;
 }
 
+/**
+ * Row label that keeps the same size whether or not it is bold. An invisible
+ * bold copy shares the grid cell, so turning active never re-wraps the text or
+ * pushes the rows below it.
+ */
+function TocLabel({ text, isActive, className }) {
+  return (
+    <span className={cn('grid', className)}>
+      <span className={cn('col-start-1 row-start-1', isActive && 'font-bold')}>{text}</span>
+      <span className="invisible col-start-1 row-start-1 font-bold" aria-hidden>
+        {text}
+      </span>
+    </span>
+  );
+}
+
 export function TableOfContentsSidebar({ initialHeaders = [], tocDepth = 2, tocPageTitle }) {
   const { headers, setHeaders, activeId, setActiveId, setTocLeadScrollTargetId } =
     useTableOfContents();
+  const sectionProgress = useAllSectionProgress();
+  const t = useTranslations();
 
   const includeH3 = Number(tocDepth) >= 3;
 
@@ -89,6 +111,8 @@ export function TableOfContentsSidebar({ initialHeaders = [], tocDepth = 2, tocP
           <h5 className="flex items-center gap-2 font-bold mb-4">On this page</h5>
           {headersToRender.map((header) => {
             const linkId = header.scrollTargetId ?? header.id;
+            const isActive = activeId === linkId;
+            const progress = sectionProgress[header.id];
             return (
               <SidebarMenuItem key={header.id} className="overflow-visible">
                 <a
@@ -97,16 +121,53 @@ export function TableOfContentsSidebar({ initialHeaders = [], tocDepth = 2, tocP
                     'block py-1 text-sm text-pretty',
                     'pl-3 border-l-2',
                     header.level === 3 && 'ml-4',
-                    activeId === linkId
-                      ? 'text-link border-link font-bold'
-                      : 'text-muted-foreground border-transparent hover:text-foreground hover:border-muted-foreground',
+                    !isActive &&
+                      'text-muted-foreground border-transparent hover:text-foreground hover:border-muted-foreground',
+                    isActive &&
+                      (progress?.complete
+                        ? 'text-success border-success'
+                        : 'text-link border-link'),
                   )}
                   onClick={(e) => {
                     document.getElementById(linkId)?.scrollIntoView();
                     setActiveId(linkId);
                   }}
                 >
-                  {header.text}
+                  {progress ? (
+                    <>
+                      <span className="flex items-start gap-1.5">
+                        <TocLabel text={header.text} isActive={isActive} className="min-w-0" />
+                        {progress.complete && (
+                          <CircleCheck
+                            className="mt-0.5 size-4 shrink-0 text-success motion-safe:animate-success-icon-pop"
+                            aria-hidden
+                          />
+                        )}
+                      </span>
+                      <span className="mt-1.5 mb-1 flex items-center gap-2">
+                        <SectionProgressBar progress={progress} className="flex-1" />
+                        {/* Slot is always laid out so the bar keeps its width when the row turns active */}
+                        <span
+                          className={cn(
+                            'w-[5ch] shrink-0 text-right text-xs tabular-nums leading-none',
+                            progress.complete ? 'text-success' : 'text-muted-foreground',
+                            !isActive && 'invisible',
+                          )}
+                          aria-hidden
+                        >
+                          {t('sectionProgress.count', {
+                            done: progress.done,
+                            total: progress.total,
+                          })}
+                        </span>
+                      </span>
+                      <span className="sr-only">
+                        {t('sectionProgress.label', { done: progress.done, total: progress.total })}
+                      </span>
+                    </>
+                  ) : (
+                    <TocLabel text={header.text} isActive={isActive} />
+                  )}
                 </a>
               </SidebarMenuItem>
             );

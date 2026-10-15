@@ -304,6 +304,10 @@
     "collapse": "Collapse",
     "importantBadge": "Important"
   },
+  "sectionProgress": {
+    "count": "{done}/{total}",
+    "label": "{done} of {total} complete"
+  },
   "copyButton": {
     "copy": "Copy",
     "copyText": "Copy text",
