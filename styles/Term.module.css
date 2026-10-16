@@ -17,10 +17,8 @@
 }
 
 .def[popover] {
-  position: absolute;
-  position-area: block-end span-inline-end;
-  position-try-fallbacks: flip-block, flip-inline;
   padding: 1rem;
+  border: 1px solid hsl(var(--brand-gray-10));
   border-radius: 12px;
   box-shadow:
     0 10px 15px rgba(60, 60, 60, 0.2),
@@ -48,6 +46,31 @@
     .def[popover]:popover-open {
       opacity: 0;
       transform: translateY(8px);
+    }
+  }
+
+  @media (max-width: 639px) {
+    .def[popover]:not(:popover-open) {
+      opacity: 1;
+      transform: translateY(100%);
+    }
+
+    .def::backdrop {
+      transition:
+        background-color 0.3s ease,
+        overlay 0.3s allow-discrete,
+        display 0.3s allow-discrete;
+    }
+
+    @starting-style {
+      .def[popover]:popover-open {
+        opacity: 1;
+        transform: translateY(100%);
+      }
+
+      .def[popover]:popover-open::backdrop {
+        background: transparent;
+      }
     }
   }
 }
@@ -90,5 +113,37 @@
 
   .defClose:hover .closeIcon {
     color: hsl(var(--brand-gray-100));
+  }
+}
+
+@media (min-width: 640px) {
+  .def[popover] {
+    position: absolute;
+    position-area: block-end span-inline-end;
+    position-try-fallbacks: flip-block, flip-inline;
+  }
+
+  .def::backdrop {
+    background: transparent;
+  }
+}
+
+@media (max-width: 639px) {
+  .def[popover] {
+    position: fixed;
+    inset: auto 0 0 0;
+    width: 100%;
+    border-radius: 16 16 0 0;
+    border-bottom: 0;
+    padding-bottom: 1.5rem;
+  }
+
+  .def::backdrop {
+    background: color-mix(in srgb, hsl(var(--brand-gray-100)) 30%, transparent);
+  }
+
+  /* disable background scrolling when the popup is open */
+  :root:has(.def[popover]:popover-open) {
+    overflow: hidden;
   }
 }
