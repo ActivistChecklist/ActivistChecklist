@@ -1,0 +1,94 @@
+@reference "./globals.css";
+
+.term {
+  display: inline-flex;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: hsl(var(--brand));
+  text-underline-offset: 4px;
+  padding: 0 0.05em;
+}
+
+.termIcon {
+  color: hsl(var(--brand));
+  margin-left: 3px;
+  margin-top: 2px;
+}
+
+.def[popover] {
+  position: absolute;
+  position-area: block-end span-inline-end;
+  position-try-fallbacks: flip-block, flip-inline;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow:
+    0 10px 15px rgba(60, 60, 60, 0.2),
+    0 2px 6px rgb(60, 60, 60, 0.4);
+  background-color: hsl(var(--background));
+  width: min(20rem, calc(100vw - 2rem));
+  margin-top: 0.2rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .def[popover] {
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s cubic-bezier(0.2, 0.85, 0.25, 1),
+      overlay 0.3s allow-discrete,
+      display 0.3s allow-discrete;
+  }
+
+  .def[popover]:not(:popover-open) {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  @starting-style {
+    .def[popover]:popover-open {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+}
+
+.defHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.defClose {
+  cursor: pointer;
+  height: 44px;
+  width: 44px;
+  margin: -0.7rem -0.7rem 0 0;
+}
+
+.closeIcon {
+  color: hsl(var(--brand-gray-70));
+  margin: auto;
+}
+
+.defBody {
+  display: block;
+  margin-top: 0.5rem;
+  font-weight: normal;
+}
+
+@media (hover: hover) {
+  .term:hover {
+    background: color-mix(in srgb, hsl(var(--brand)) 12%, transparent);
+    border-radius: 4px;
+  }
+
+  .defClose:hover {
+    color: hsl(var(--fg));
+    background-color: hsl(var(--brand-gray-10));
+    border-radius: 50%;
+  }
+
+  .defClose:hover .closeIcon {
+    color: hsl(var(--brand-gray-100));
+  }
+}
