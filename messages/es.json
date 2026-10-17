@@ -292,7 +292,8 @@
     "mediumDefault": "Esta sección es para ti si tienes un rol de liderazgo o haces un activismo con más probabilidad de ser atacado por el Estado o tu oposición.",
     "highDefault": "Esta sección es para ti si ocupas un rol de alto perfil o tu activismo implica trabajo de alto riesgo que podría traer consecuencias graves o represalias.",
     "forYouIf": "Esta sección es para ti si:",
-    "forYou": "Esta sección es para:"
+    "forYou": "Esta sección es para:",
+    "whoIsThisFor": "Who is this section for?"
   },
   "checklistItem": {
     "informationalItem": "Elemento informativo",
@@ -307,6 +308,9 @@
   "sectionProgress": {
     "count": "{done}/{total}",
     "label": "{done} de {total} completos"
+  },
+  "tableOfContents": {
+    "title": "On this page"
   },
   "copyButton": {
     "copy": "Copiar",
