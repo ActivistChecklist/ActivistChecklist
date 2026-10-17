@@ -292,7 +292,8 @@
     "mediumDefault": "هذا القسم موجّه لك إذا كنت في موقع قيادي أو إذا كنت تمارس نشاطاً من المرجّح أكثر أن يُستهدَف من قِبَل الدولة أو خصومك.",
     "highDefault": "هذا القسم موجّه لك إذا كنت في موقع بارز، أو إذا كان نشاطك يتضمّن عملاً عالي المخاطر قد يترتّب عليه عواقب أو انتقام جسيم.",
     "forYouIf": "هذا القسم موجّه لك إذا:",
-    "forYou": "هذا القسم موجّه لـ:"
+    "forYou": "هذا القسم موجّه لـ:",
+    "whoIsThisFor": "Who is this section for?"
   },
   "checklistItem": {
     "informationalItem": "عنصر للمعلومات",
@@ -307,6 +308,9 @@
   "sectionProgress": {
     "count": "{done}/{total}",
     "label": "{done} of {total} complete"
+  },
+  "tableOfContents": {
+    "title": "On this page"
   },
   "copyButton": {
     "copy": "نسخ",
