@@ -10,6 +10,7 @@ import RelatedGuides from '@/components/RelatedGuides';
 import { LOCALES } from '@/lib/i18n-config';
 import PageNotices from '@/components/layout/PageNotices';
 import AnswerCapsule from '@/components/AnswerCapsule';
+import { MobileTableOfContents } from '@/components/layout/TableOfContentsSidebar';
 
 function parseRelatedGuides(value) {
   if (Array.isArray(value)) return value.filter(Boolean);
@@ -51,6 +52,7 @@ export default function Page({ frontmatter, serializedBody, locale, notices = []
       <h1 className="mb-6">{frontmatter.title}</h1>
       <PageNotices initialNotices={notices} />
       {metaBarItems.length > 0 && <MetaBar items={metaBarItems} />}
+      {frontmatter.showToc === true && <MobileTableOfContents />}
       <AnswerCapsule text={frontmatter.answerCapsule} />
       <div className="prose prose-slate max-w-none">
         {serializedBody && <MDXRemote {...serializedBody} components={mdxComponents} />}
