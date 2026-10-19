@@ -9,15 +9,15 @@ describe('toApacheRedirectLine', () => {
   });
 
   it('uses 302 for temporary redirects', () => {
-    expect(
-      toApacheRedirectLine({ source: '/a', destination: '/b', permanent: false }),
-    ).toBe('Redirect 302 /a /b');
+    expect(toApacheRedirectLine({ source: '/a', destination: '/b', permanent: false })).toBe(
+      'Redirect 302 /a /b',
+    );
   });
 
   it('turns a /:path* pair into an Apache path prefix', () => {
-    expect(
-      toApacheRedirectLine({ source: '/es/files/:path*', destination: '/files/:path*' }),
-    ).toBe('Redirect 301 /es/files /files');
+    expect(toApacheRedirectLine({ source: '/es/files/:path*', destination: '/files/:path*' })).toBe(
+      'Redirect 301 /es/files /files',
+    );
   });
 
   it('rejects a prefix on only one side', () => {

@@ -85,7 +85,8 @@ function NotFoundInner() {
       );
       // Give analytics a moment to send, but never hold the visitor up for long.
       await Promise.race([Promise.all([tracked, redirected]), sleep(1000)]);
-      if (!cancelled) window.location.replace(target + window.location.search + window.location.hash);
+      if (!cancelled)
+        window.location.replace(target + window.location.search + window.location.hash);
     })();
 
     return () => {
