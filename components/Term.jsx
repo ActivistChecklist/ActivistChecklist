@@ -23,7 +23,7 @@ export default function Term({ slug, children }) {
 
       <span popover="auto" id={popupId} data-pagefind-ignore="all" className={styles.def}>
         <span className={styles.defHead}>
-          <span id={'term-' + popupId} className="font-bold">
+          <span id={'term-' + popupId} className={styles.defTitle}>
             {t('definitions.' + slug + '.term')}
           </span>
           <button

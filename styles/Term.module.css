@@ -17,13 +17,11 @@
 }
 
 .def[popover] {
+  @apply shadow-lg;
   padding: 1rem;
   border: 1px solid hsl(var(--border));
   border-radius: 12px;
-  box-shadow:
-    0 10px 15px color-mix(in srgb, hsl(var(--brand-gray-100)) 10%, transparent),
-    0 2px 6px color-mix(in srgb, hsl(var(--brand-gray-100)) 20%, transparent);
-  background-color: hsl(var(--background));
+  background-color: hsl(var(--popover));
   width: min(20rem, calc(100vw - 2rem));
   margin-top: 0.2rem;
 }
@@ -81,6 +79,11 @@
   align-items: flex-start;
 }
 
+.defTitle {
+  font-weight: bold;
+  color: hsl(var(--popover-foreground));
+}
+
 .defClose {
   cursor: pointer;
   height: 44px;
@@ -89,7 +92,7 @@
 }
 
 .closeIcon {
-  color: hsl(var(--gray-500));
+  color: hsl(var(--muted-foreground));
   margin: auto;
 }
 
@@ -97,16 +100,17 @@
   display: block;
   margin-top: 0.5rem;
   font-weight: normal;
+  color: hsl(var(--popover-foreground));
 }
 
 @media (hover: hover) {
   .term:hover {
-    background: color-mix(in srgb, hsl(var(--primary)) 12%, transparent);
+    background: hsl(var(--muted));
     border-radius: 4px;
   }
 
   .defClose:hover {
-    background-color: hsl(var(--gray-100));
+    background-color: hsl(var(--muted));
     border-radius: 50%;
   }
 
@@ -138,7 +142,7 @@
   }
 
   .def::backdrop {
-    background: color-mix(in srgb, hsl(var(--brand-gray-100)) 30%, transparent);
+    @apply bg-black/50;
   }
 
   /* disable background scrolling when the popup is open */
