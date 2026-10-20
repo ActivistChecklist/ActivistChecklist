@@ -191,7 +191,7 @@
     "resources": {
       "label": "Resources",
       "href": "/resources/",
-      "items": ["tools", "links", "movies", "resources"]
+      "items": ["tools", "links", "flyer", "movies", "resources"]
     },
     "about": {
       "label": "About",
@@ -222,7 +222,7 @@
       "key": "organizing",
       "items": ["organizing", "research"],
       "featured": ["party"],
-      "reads": ["flyer"]
+      "reads": []
     }
   ],
   "mainNav": ["home", "checklists", "news", "resources", "about"],
