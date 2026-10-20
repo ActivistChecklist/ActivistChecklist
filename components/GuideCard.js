@@ -30,13 +30,20 @@ const GuideCard = ({ guideItem, size = 'medium' }) => {
     return (
       <Link href={href} className="block group">
         <Card className="relative h-full overflow-hidden rounded-lg border border-primary/15 shadow-xs transition-all duration-200 hover:shadow-xl hover:scale-[1.01] hover:border-primary/40 flex flex-col bg-linear-to-br from-card via-card to-primary/15 dark:to-primary/45">
-          <div className="absolute top-1/2 right-2 -translate-y-1/2 w-36 h-36 flex items-center justify-center pointer-events-none">
-            <Icon className="h-28 w-28 text-primary/9 dark:text-primary/35" strokeWidth={0.9} />
+          {/* Watermark icon. From md up (two cards per row) it sits large on
+              the right with the text kept clear of it. Below md the card is
+              full width, so it shrinks into the top-right corner and only the
+              title steps around it; the description gets the full width. */}
+          <div className="absolute top-3 right-3 w-11 h-11 md:top-1/2 md:right-2 md:-translate-y-1/2 md:w-36 md:h-36 flex items-center justify-center pointer-events-none">
+            <Icon
+              className="h-10 w-10 md:h-28 md:w-28 text-primary/15 md:text-primary/9 dark:text-primary/35"
+              strokeWidth={0.9}
+            />
           </div>
-          <CardHeader className="relative py-4 pb-2">
+          <CardHeader className="relative py-4 pb-2 pr-16 md:pr-6">
             <CardTitle className="text-2xl">{displayTitle}</CardTitle>
           </CardHeader>
-          <CardContent className="relative pb-4 flex-1 pt-0 pr-32">
+          <CardContent className="relative pb-4 flex-1 pt-0 md:pr-32">
             <CardDescription className="text-lg">{displayDescription}</CardDescription>
             {/* Same clock and size as the "Takes about" line in the guide header. */}
             {duration && (

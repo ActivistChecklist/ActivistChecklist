@@ -102,7 +102,7 @@ export default function HomePageContent({
                   </Button>
                 </div>
                 {latestMajorBodyText && (
-                  <div className="mt-8 text-brand-foreground [&_a]:text-inherit">
+                  <div className="mt-8 mx-auto max-w-3xl px-4 text-brand-foreground [&_a]:text-inherit">
                     <Sparkles className="h-4 w-4 inline mr-1" />
                     <Markdown content={latestMajorBodyText} isProse={false} inlineOnly={true} />
                   </div>

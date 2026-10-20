@@ -98,7 +98,6 @@ export default function ChecklistSectionList({ staleReviewDates = {}, readMinute
                           className={cn(
                             'mt-1 h-5 w-5',
                             isChecklist || isHowTo ? 'text-primary' : 'text-success',
-                            isChecklist && !featuredKeys.has(item.key) && 'text-muted-foreground',
                           )}
                           aria-hidden="true"
                         />
