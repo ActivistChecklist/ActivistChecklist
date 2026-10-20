@@ -105,28 +105,28 @@
       "label": "Privacidad"
     },
     "whatsapp": {
-      "title": "WhatsApp security",
-      "description": "Configure WhatsApp to protect your messages, groups, and contacts."
+      "title": "Seguridad en WhatsApp",
+      "description": "Configura WhatsApp para proteger tus mensajes, grupos y contactos."
     },
     "spyware": {
-      "title": "Spyware protection",
-      "description": "Protect yourself from spyware and surveillance software."
+      "title": "Protección contra spyware",
+      "description": "Protégete del spyware y los programas de vigilancia."
     },
     "action": {
-      "title": "Prepare for a direct action",
-      "description": "Digital security for direct actions and civil disobedience."
+      "title": "Prepárate para una acción directa",
+      "description": "Seguridad digital para acciones directas y desobediencia civil."
     },
     "organizing": {
-      "title": "Action organizer checklist",
-      "description": "For movement organizers and coordinators."
+      "title": "Checklist para organizadores de acciones",
+      "description": "Para organizadores y coordinadores de movimientos."
     },
     "research": {
-      "title": "Action research & scouting",
-      "description": "How to conduct research and browse the web anonymously."
+      "title": "Investigación y reconocimiento para acciones",
+      "description": "Cómo investigar y navegar por la web de forma anónima."
     },
     "federal": {
-      "title": "Federal workers",
-      "description": "Digital security guidance for federal employees."
+      "title": "Trabajadores federales",
+      "description": "Guía de seguridad digital para empleados federales."
     },
     "party": {
       "title": "Organiza una security party",
@@ -137,8 +137,8 @@
       "label": "Cómo usar Proton de forma segura"
     },
     "lockdown": {
-      "title": "Lockdown Mode trade-offs",
-      "label": "Lockdown Mode trade-offs"
+      "title": "Ventajas y desventajas del Modo de aislamiento",
+      "label": "Ventajas y desventajas del Modo de aislamiento"
     },
     "signalSecure": {
       "title": "¿Es Signal seguro?",
@@ -418,40 +418,40 @@
   },
   "checklists": {
     "title": "Listas",
-    "intro": "Every checklist and explainer, grouped by situation. New here? Start with <link>Security Essentials</link>.",
+    "intro": "Cada checklist y explicación, agrupados por situación. ¿Nuevx por aquí? Empieza con <link>Lo esencial de seguridad</link>.",
     "documentTitle": "Listas | Activist Checklist"
   },
   "checklistSections": {
     "basics": {
-      "title": "The basics",
-      "heading": "Everyone should do these",
-      "scope": "Baseline protection for your phone, accounts, and group chats."
+      "title": "Lo básico",
+      "heading": "Esto deberíamos hacerlo todes",
+      "scope": "Protección básica para tu teléfono, cuentas y chats grupales."
     },
     "goingOut": {
-      "title": "Going out",
-      "heading": "Going out: protests, ICE watch, actions, travel",
-      "scope": "Anywhere police or border agents could take your phone."
+      "title": "Al salir",
+      "heading": "Al salir: protestas, ICE watch, acciones, viajes",
+      "scope": "Cualquier lugar donde los cops o agentes fronterizos puedan quitarte el teléfono."
     },
     "targeted": {
-      "title": "Being targeted",
-      "heading": "Protect yourself from being targeted",
-      "scope": "Doxxing, harassment, investigations, or agents at your door."
+      "title": "Si te están apuntando",
+      "heading": "Protégete de ser blanco de ataques",
+      "scope": "Doxxing, acoso, investigaciones o agentes en tu puerta."
     },
     "organizing": {
-      "title": "Organizing others",
-      "heading": "Organizing others",
-      "scope": "Running actions and getting your group secure."
+      "title": "Organizar a otres",
+      "heading": "Organizar a otres",
+      "scope": "Realizar acciones y asegurar a tu grupo."
     },
     "descriptions": {
-      "party": "A template agenda for getting your group through the checklists together."
+      "party": "Una agenda modelo para recorrer los checklists en grupo."
     },
-    "allChecklists": "All {count, plural, one {# checklist} other {# checklists}}",
-    "readMinutes": "{minutes} min read",
-    "explainer": "Explainer",
-    "howTo": "How-to guide",
-    "readGuide": "Read the guide",
-    "understandWhy": "Understand why",
-    "lastReviewed": "Last reviewed {date}"
+    "allChecklists": "Los {count, plural, one {# checklist} other {# checklists}}",
+    "readMinutes": "{minutes} min de lectura",
+    "explainer": "Explicación",
+    "howTo": "Guía práctica",
+    "readGuide": "Leer la guía",
+    "understandWhy": "Entiende por qué",
+    "lastReviewed": "Última revisión: {date}"
   },
   "news": {
     "title": "Noticias sobre vigilancia",
