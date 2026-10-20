@@ -2,7 +2,7 @@ import styles from '@/styles/Term.module.css';
 import { useTranslations } from 'next-intl';
 import { useId } from 'react';
 import { FaQuestionCircle } from 'react-icons/fa';
-import { IoClose } from 'react-icons/io5';
+import { IoCloseOutline } from 'react-icons/io5';
 
 export default function Term({ slug, children }) {
   const t = useTranslations();
@@ -32,7 +32,7 @@ export default function Term({ slug, children }) {
             popoverTargetAction="hide"
             className={styles.defClose}
           >
-            <IoClose className={styles.closeIcon} size={20} />
+            <IoCloseOutline className={styles.closeIcon} size={20} />
           </button>
         </span>
         <span id={'def-' + popupId} className={styles.defBody}>
