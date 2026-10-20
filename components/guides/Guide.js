@@ -24,6 +24,7 @@ import { LOCALES } from '@/lib/i18n-config';
 import { formatContentDate } from '@/lib/utils';
 import PageNotices from '@/components/layout/PageNotices';
 import AnswerCapsule from '@/components/AnswerCapsule';
+import { MobileTableOfContents } from '@/components/layout/TableOfContentsSidebar';
 
 function parseRelatedGuides(value) {
   if (Array.isArray(value)) return value.filter(Boolean);
@@ -128,6 +129,7 @@ export default function Guide({
       </div>
 
       <PageNotices initialNotices={notices} />
+      <MobileTableOfContents />
 
       {pairedExplainer && (
         <SectionReadLinks

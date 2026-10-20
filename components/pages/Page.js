@@ -13,6 +13,7 @@ import AnswerCapsule from '@/components/AnswerCapsule';
 import SectionBreadcrumb from '@/components/SectionBreadcrumb';
 import { CHECKLIST_SECTIONS, CHECKLIST_SECTION_KEYS, NAV_ITEM_DATA } from '@/config/navigation';
 import { findSectionForPage } from '@/lib/checklist-sections';
+import { MobileTableOfContents } from '@/components/layout/TableOfContentsSidebar';
 
 function parseRelatedGuides(value) {
   if (Array.isArray(value)) return value.filter(Boolean);
@@ -59,6 +60,7 @@ export default function Page({ frontmatter, serializedBody, locale, slug, notice
       <h1 className="mb-6">{frontmatter.title}</h1>
       <PageNotices initialNotices={notices} />
       {metaBarItems.length > 0 && <MetaBar items={metaBarItems} />}
+      {frontmatter.showToc === true && <MobileTableOfContents />}
       <AnswerCapsule text={frontmatter.answerCapsule} />
       <div className="prose prose-slate max-w-none">
         {serializedBody && <MDXRemote {...serializedBody} components={mdxComponents} />}

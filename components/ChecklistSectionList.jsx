@@ -2,6 +2,7 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 import Link from '@/components/Link';
+import { MobileTableOfContents } from '@/components/layout/TableOfContentsSidebar';
 import { CHECKLIST_SECTIONS } from '@/config/navigation';
 import { READ_KIND_ICONS } from '@/config/icons';
 import { LOCALES } from '@/lib/i18n-config';
@@ -30,20 +31,9 @@ export default function ChecklistSectionList({ staleReviewDates = {}, readMinute
 
   return (
     <div className="space-y-12">
-      {/* Phones don't get the "On this page" sidebar (it starts at md), so they
-          get the section links here instead, using the short section names. */}
-      <nav aria-label={t('checklists.onThisPage')} className="md:hidden">
-        <p className="font-bold mb-2">{t('checklists.onThisPage')}</p>
-        <ul className="flex flex-wrap gap-x-5 gap-y-1">
-          {CHECKLIST_SECTIONS.map((section) => (
-            <li key={section.key}>
-              <a href={`#${section.key}`} className="link">
-                {t(`checklistSections.${section.key}.title`)}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      {/* Phones don't get the sidebar (it starts at md); this is the same
+          collapsible "On this page" box guides use. */}
+      <MobileTableOfContents />
       {CHECKLIST_SECTIONS.map((section) => {
         const featuredKeys = new Set(section.featured.map((item) => item.key));
         const rows = [
