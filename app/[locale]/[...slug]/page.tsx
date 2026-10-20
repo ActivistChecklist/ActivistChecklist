@@ -359,6 +359,7 @@ export default async function SlugPage({ params }) {
             frontmatter={fm}
             serializedBody={serializedBody}
             locale={locale}
+            slug={slug}
             notices={pageNotices}
           />
         </ChecklistItemsProvider>

@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   findPairedExplainer,
   findSectionForGuide,
+  findSectionForPage,
   getNextInSection,
   isOlderThanMonths,
   readingMinutes,
@@ -42,6 +43,37 @@ describe('findSectionForGuide', () => {
 
   it('ignores featured non-checklists, so a how-to has no section', () => {
     expect(findSectionForGuide(SECTIONS, 'party')).toBeNull();
+  });
+});
+
+describe('findSectionForPage', () => {
+  const sections = [
+    { key: 'basics', featured: [], reads: ['vpn'] },
+    { key: 'targeted', featured: [], reads: ['police-door-poster'] },
+    { key: 'organizing', featured: ['party'], reads: [] },
+  ];
+  const items = {
+    vpn: { href: '/vpn/' },
+    'police-door-poster': { href: '/police/' },
+    party: { href: '/party/' },
+    about: { href: '/about/' },
+  };
+
+  it('finds a page listed in reads', () => {
+    expect(findSectionForPage(sections, items, 'vpn').key).toBe('basics');
+  });
+
+  it('matches by URL slug when the item key differs', () => {
+    expect(findSectionForPage(sections, items, 'police').key).toBe('targeted');
+  });
+
+  it('finds a featured how-to', () => {
+    expect(findSectionForPage(sections, items, 'party').key).toBe('organizing');
+  });
+
+  it('returns null for pages in no section or unknown slugs', () => {
+    expect(findSectionForPage(sections, items, 'about')).toBeNull();
+    expect(findSectionForPage(sections, items, 'nope')).toBeNull();
   });
 });
 

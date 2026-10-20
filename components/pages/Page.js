@@ -10,6 +10,9 @@ import RelatedGuides from '@/components/RelatedGuides';
 import { LOCALES } from '@/lib/i18n-config';
 import PageNotices from '@/components/layout/PageNotices';
 import AnswerCapsule from '@/components/AnswerCapsule';
+import SectionBreadcrumb from '@/components/SectionBreadcrumb';
+import { CHECKLIST_SECTIONS, CHECKLIST_SECTION_KEYS, NAV_ITEM_DATA } from '@/config/navigation';
+import { findSectionForPage } from '@/lib/checklist-sections';
 
 function parseRelatedGuides(value) {
   if (Array.isArray(value)) return value.filter(Boolean);
@@ -31,7 +34,7 @@ function parseRelatedGuides(value) {
  * Unlike guides, pages do not get the auto-inserted newsletter CTA. A page can
  * still include a manual <InlineCta /> in its MDX body.
  */
-export default function Page({ frontmatter, serializedBody, locale, notices = [] }) {
+export default function Page({ frontmatter, serializedBody, locale, slug, notices = [] }) {
   const t = useTranslations();
   const intlLocale = useLocale() || locale || 'en';
   const dateLocale = LOCALES[intlLocale]?.intlLocale || 'en-US';
@@ -45,9 +48,14 @@ export default function Page({ frontmatter, serializedBody, locale, notices = []
     getDateMetaItem(frontmatter.lastUpdated, t('meta.lastUpdatedOn'), dateLocale),
   ].filter(Boolean);
   const relatedGuideSlugs = parseRelatedGuides(frontmatter.relatedGuides);
+  // Explainers, how-tos, and printables listed in a checklist section get the
+  // same breadcrumb back to it that guides do.
+  const sectionKeys = slug && findSectionForPage(CHECKLIST_SECTION_KEYS, NAV_ITEM_DATA, slug);
+  const section = sectionKeys && CHECKLIST_SECTIONS.find((s) => s.key === sectionKeys.key);
 
   return (
     <>
+      <SectionBreadcrumb section={section} className="mb-3" />
       <h1 className="mb-6">{frontmatter.title}</h1>
       <PageNotices initialNotices={notices} />
       {metaBarItems.length > 0 && <MetaBar items={metaBarItems} />}

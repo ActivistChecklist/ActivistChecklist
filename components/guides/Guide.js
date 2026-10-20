@@ -13,20 +13,8 @@ import { useLayout } from '@/contexts/LayoutContext';
 import { getGuideIcon } from '@/config/icons';
 import RelatedGuides from '@/components/RelatedGuides';
 import SectionReadLinks from '@/components/SectionReadLinks';
-import Link from '@/components/Link';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import {
-  CHECKLIST_SECTIONS,
-  CHECKLIST_SECTION_KEYS,
-  NAV_ITEM_DATA,
-  SECURITY_CHECKLISTS,
-} from '@/config/navigation';
+import SectionBreadcrumb from '@/components/SectionBreadcrumb';
+import { CHECKLIST_SECTIONS, CHECKLIST_SECTION_KEYS, NAV_ITEM_DATA } from '@/config/navigation';
 import {
   findPairedExplainer,
   findSectionForGuide,
@@ -122,23 +110,7 @@ export default function Guide({
         <div className="absolute top-1.5 bottom-1.5 right-3 aspect-square flex items-center justify-center pointer-events-none print:hidden">
           <GuideIcon className="h-5/6 w-5/6 text-primary/15 dark:text-primary/40" />
         </div>
-        {section && (
-          <Breadcrumb className="relative mb-3 print:hidden">
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link href={SECURITY_CHECKLISTS.href}>{t('checklists.title')}</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link href={section.href}>{t(`checklistSections.${section.key}.title`)}</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        )}
+        <SectionBreadcrumb section={section} className="relative mb-3" />
         <h1 className="relative mb-3 print:mb-0">{frontmatter.title}</h1>
         {metaBarItems.length > 0 && (
           <div className="relative flex flex-wrap items-center gap-y-2 gap-x-6 text-sm text-muted-foreground print:mb-0">
