@@ -83,7 +83,9 @@
     },
     "vpn": {
       "label": "VPNs for activists",
-      "href": "/vpn/"
+      "href": "/vpn/",
+      "kind": "explainer",
+      "pairsWith": "essentials"
     },
     "movies": {
       "label": "Movies, books, & podcasts",
@@ -95,7 +97,8 @@
     },
     "police-door-poster": {
       "label": "\"Police at the door\" poster",
-      "href": "/police/"
+      "href": "/police/",
+      "kind": "printable"
     },
     "about": {
       "label": "About",
@@ -123,19 +126,45 @@
     },
     "flyer": {
       "label": "Printable flyer",
-      "href": "/flyer/"
+      "href": "/flyer/",
+      "kind": "printable"
     },
     "links": {
       "label": "Remove link tracking",
-      "href": "/links/"
+      "href": "/links/",
+      "kind": "explainer"
     },
     "party": {
       "label": "Host a security party",
-      "href": "/party/"
+      "href": "/party/",
+      "kind": "howto"
+    },
+    "signal-secure": {
+      "label": "Is Signal secure?",
+      "href": "/signal-secure/",
+      "kind": "explainer",
+      "pairsWith": "signal"
+    },
+    "signal-ai": {
+      "label": "Is Apple Intelligence reading my Signal messages?",
+      "href": "/signal-ai/",
+      "kind": "explainer"
+    },
+    "lockdown": {
+      "label": "Lockdown Mode trade-offs",
+      "href": "/lockdown/",
+      "kind": "explainer",
+      "pairsWith": "spyware"
+    },
+    "proton": {
+      "label": "How to use Proton safely",
+      "href": "/proton/",
+      "kind": "explainer"
     },
     "updates": {
       "label": "Security update checker",
-      "href": "/updates/"
+      "href": "/updates/",
+      "kind": "tool"
     },
     "tools": {
       "label": "Tools we built",
@@ -162,17 +191,7 @@
     "resources": {
       "label": "Resources",
       "href": "/resources/",
-      "items": [
-        "tools",
-        "vpn",
-        "updates",
-        "party",
-        "links",
-        "police-door-poster",
-        "flyer",
-        "movies",
-        "resources"
-      ]
+      "items": ["tools", "links", "flyer", "movies", "resources"]
     },
     "about": {
       "label": "About",
@@ -180,6 +199,32 @@
       "items": ["about", "contribute", "changelog", "contact", "privacy"]
     }
   },
+  "checklistSections": [
+    {
+      "key": "basics",
+      "items": ["essentials", "signal", "whatsapp"],
+      "featured": ["essentials", "signal"],
+      "reads": ["updates", "vpn", "proton", "links", "signal-secure", "signal-ai"]
+    },
+    {
+      "key": "goingOut",
+      "items": ["protest", "ice", "travel", "secondary", "action"],
+      "featured": ["protest", "ice", "travel", "secondary"],
+      "reads": []
+    },
+    {
+      "key": "targeted",
+      "items": ["doxxing", "emergency", "spyware", "federal"],
+      "featured": ["doxxing", "emergency"],
+      "reads": ["lockdown", "police-door-poster"]
+    },
+    {
+      "key": "organizing",
+      "items": ["organizing", "research"],
+      "featured": ["party"],
+      "reads": []
+    }
+  ],
   "mainNav": ["home", "checklists", "news", "resources", "about"],
   "footer": {
     "sections": [

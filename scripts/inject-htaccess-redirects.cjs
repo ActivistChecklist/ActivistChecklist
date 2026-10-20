@@ -12,23 +12,18 @@
 const fs = require('fs');
 const path = require('path');
 
-const { REDIRECTS } = require(path.join(__dirname, '..', 'lib', 'redirects.config.cjs'));
+const { REDIRECTS, toApacheRedirectLine } = require(
+  path.join(__dirname, '..', 'lib', 'redirects.config.cjs'),
+);
 
 const BEGIN = '### BEGIN GENERATED REDIRECTS (from lib/redirects.config.cjs) ###';
 const END = '### END GENERATED REDIRECTS ###';
-
-function apacheRedirectLines() {
-  return REDIRECTS.map(({ source, destination, permanent = true }) => {
-    const code = permanent ? '301' : '302';
-    return `Redirect ${code} ${source} ${destination}`;
-  });
-}
 
 function inject(filePath) {
   const resolved = path.resolve(filePath);
   let content = fs.readFileSync(resolved, 'utf8');
 
-  const inner = apacheRedirectLines().join('\n');
+  const inner = REDIRECTS.map(toApacheRedirectLine).join('\n');
   const block = `${BEGIN}\n${inner}\n${END}`;
 
   const escapedBegin = BEGIN.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
