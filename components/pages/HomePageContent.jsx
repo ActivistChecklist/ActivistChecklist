@@ -144,6 +144,16 @@ export default function HomePageContent({
             </div>
           </section>
 
+          {/* Featured In - orgs that have linked to us */}
+          <section className="mb-16">
+            <h2 className="text-2xl font-bold mb-6">{t('featured.sectionTitle')}</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {FEATURE_LOGOS.map((logo, index) => (
+                <FeatureLogo key={index} logo={logo} />
+              ))}
+            </div>
+          </section>
+
           {/* Common Misconceptions */}
           <section className="mb-16">
             <h2 className="text-2xl font-bold mb-6">{t('misconceptions.sectionTitle')}</h2>
@@ -177,16 +187,6 @@ export default function HomePageContent({
 
           {/* Tools */}
           <HomeToolsSection />
-
-          {/* Featured In - orgs that have linked to us */}
-          <section className="mb-16">
-            <h2 className="text-2xl font-bold mb-6">{t('featured.sectionTitle')}</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {FEATURE_LOGOS.map((logo, index) => (
-                <FeatureLogo key={index} logo={logo} />
-              ))}
-            </div>
-          </section>
 
           {/* Recent Updates */}
           <section>
