@@ -32,7 +32,7 @@ if [ "$BUILD_MODE" = "static" ]; then
   node scripts/inject-htaccess-redirects.cjs out/.htaccess
 
   # Copy English content to root so bare URLs (e.g. /about/) work on any static server.
-  # Spanish stays at /es/. The .htaccess rewrite is a fallback for Apache.
+  # Other locales stay at /es/, /fr/. The .htaccess rewrite is a fallback for Apache.
   cp -a out/en/* out/
 
   find out -name '.DS_Store' -delete 2>/dev/null || true
