@@ -349,12 +349,19 @@ async function run() {
 
     for (const { slug, repoPaths } of routeSources) {
       const progRows = [];
+      // A source with no Crowdin file or progress row means we can't vouch for the route,
+      // even if the files we do have are fully approved.
+      let incomplete = false;
       for (const repoPath of repoPaths) {
         const fileId = fileIdByRepoPath.get(repoPath);
-        if (fileId == null) continue;
+        if (fileId == null) {
+          incomplete = true;
+          continue;
+        }
         const prog = progressByFileId.get(fileId);
         if (!prog) {
           missingProgress.add(repoPath);
+          incomplete = true;
           continue;
         }
         progRows.push({ phrases: prog.phrases });
@@ -363,10 +370,11 @@ async function run() {
       const agg = aggregateProgressRows(progRows);
       routes[slug] ??= {};
       routes[slug][locale] = {
-        translationPercent: agg.translationPercent,
-        approvalPercent: agg.approvalPercent,
+        translationPercent: incomplete ? null : agg.translationPercent,
+        approvalPercent: incomplete ? null : agg.approvalPercent,
         showUnreviewedNotice:
-          agg.approvalPercent != null && agg.approvalPercent < UNREVIEWED_NOTICE_MAX_APPROVAL,
+          incomplete ||
+          (agg.approvalPercent != null && agg.approvalPercent < UNREVIEWED_NOTICE_MAX_APPROVAL),
       };
     }
   }
