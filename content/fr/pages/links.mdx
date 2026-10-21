@@ -1,0 +1,134 @@
+---
+title: Why we need to remove everything after the '?' in links
+seoDescription: Sharing a link with a tracking code de-anonymizes everyone you share it with. How to spot tracking parameters and strip them before you post in Signal.
+answerCapsule: |
+  When you share a link with a tracking parameter, the platform can associate everyone who clicks with you in its records. For activist groups in Signal, this could contribute to a de-anonymization map that might be subpoenaed later. Take 5 seconds to delete the part after the ? before you share, and remind others when they forget. Brave or uBlock can do this automatically.
+relatedGuides:
+  - essentials
+  - signal
+firstPublished: 2025-10-21
+lastUpdated: 2026-03-11
+image: /images/content/dont-make-me-tap-the-sign-share.jpg
+---
+
+<Alert type="success">
+  **Takeaway:** If you remove everything after the ? in links that you share, you'll help keep other people in your groups from being associated with you and each other (this is problematic because it can reduce anonymity for activism).
+</Alert>
+
+## Short version
+
+<ImageEmbed src="/images/content/link-sharing-dont-make-me-tap-the-sign.jpg" alt="Simpsons meme screenshot with a bus driver saying &#x22;don't make me tap the sign&#x22; - The sign says &#x22;Remove everything after the question mark in URLs so we aren't all tracked when we click on it&#x22;" size="xs" alignment="right" />
+
+**The link-sharing situation:** Major social platforms (YouTube, Instagram, etc.) now add a ***unique code*** every time an individual clicks "copy link" on a post.
+
+**Background:**
+
+* Everyone who clicks on it will be linked together as an associated group on that website.
+* If you're sharing the link in an activist group (esp. on Signal) where some people are at risk of being targeted for their political activity, the website (Instagram, etc) will then know who is interacting with who.  This can de-anonymize people who are trying to protect their activist work.
+* These companies will eventually develop a copy of your group membership list.
+* These companies want this information to sell us ads, but the government can force a company to turn the data over and use it to target people who are resisting.
+
+**Best practice for your community:** Delete everything after the "?" before you share a link, regardless of where you share it.
+
+**Best protective practice for you:** Also keep an eye out for a "?" In links that are shared by others. Do NOT click on that link!! Long-press on your phone and copy the link. Paste it into your browser. Delete the tracking stuff after the question mark. THEN you can click on it.
+
+## Remind folks who forget
+
+Here's a sample message you can use if someone forgets.
+
+> <CopyButton />
+>
+> *Quick reminder: Please edit your message to remove the tracking code (everything after the "?"). This helps keep us all safer. [https://activistchecklist.org/links](https://activistchecklist.org/links)*
+
+## What you can do
+
+<Alert type="success">
+  **Make it automatic:** You can configure your browser to automatically remove all tracking links if you use [Brave](https://brave.com/) or the uBlock Origin plugin. You just need to enable a block list called "**AdGuard/uBO - URL Tracking Protection.**" You can do this in Brave by going to <MenuPath inline>**Settings** > **Shields** > **Content Filters** > **Filters**</MenuPath>. [Read more](https://shreyasminocha.me/blog/removing-tracking-query-params)
+</Alert>
+
+<HowTo title="How to remove the unique tracking code">
+  **To remove the tracking code BEFORE you post:**
+
+  1. Copy the link from a social media app
+  2. Paste it into the messaging app (Signal, etc)
+  3. Delete everything after the "?"
+  4. Press **Send**
+
+  **If you want to remove a tracking code AFTER you've already posted it:**
+
+  1. In Signal/WhatsApp/iMessage, long-press on a post until a menu appears.
+  2. Click **Edit**
+  3. Delete everything after the "?"
+  4. Press **Save**
+</HowTo>
+
+**Other tips:**
+
+* If you're on Brave browser or Firefox, you can right click and select "Copy clean link..." which will automatically remove these tracking codes.
+
+## Examples
+
+Which social media sites do this kind of tracking?
+
+<StyledSpan className="bg-destructive text-destructive-foreground font-bold">Delete the section in red before sharing or visiting the link</StyledSpan>
+
+***Instagram:***
+
+* **⚠️ Has tracking:**
+
+  `https://www.instagram.com/p/CX7K9mNvAa5/` <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-destructive! text-destructive-foreground! font-bold!">?igshid=MzRlODBiNWFlZA==</StyledSpan>
+* **✅ Tracking removed:**
+
+  <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-transparent! text-success!">https://www.instagram.com/p/CX7K9mNvAa5/</StyledSpan>
+
+**Facebook:**
+
+* **⚠️ Has tracking:**
+
+  `https://www.facebook.com/share/p/15BkR7qJ8M/` <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-destructive! text-destructive-foreground! font-bold!">?mibextid=oFDknk</StyledSpan>
+* **✅ Tracking removed:**
+
+  <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-transparent! text-success!">https://www.facebook.com/share/p/15BkR7qJ8M/</StyledSpan>
+
+**YouTube:**
+
+* **⚠️ Has tracking:**
+
+  `https://youtu.be/zX9Ke_VXnIA` <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-destructive! text-destructive-foreground! font-bold!">?si=YpziAaccKeIEab6z</StyledSpan>
+* **✅ Tracking removed:**
+
+  <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-transparent! text-success!">https://youtu.be/zX9Ke_VXnIA</StyledSpan>
+
+**Spotify:**
+
+* **⚠️ Has tracking:**
+
+  `https://open.spotify.com/track/1eSNRUK0HIwOFHwWRjHJEo` <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-destructive! text-destructive-foreground! font-bold!">?si=3f7e61d1a8c26b0a</StyledSpan>
+* **✅ Tracking removed:**
+
+  <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-transparent! text-success!">https://open.spotify.com/track/1eSNRUK0HIwOFHwWRjHJEo</StyledSpan>
+
+## Exceptions
+
+You can keep the ? stuff for some websites
+
+* ✅ **Zoom:**
+
+  <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-transparent! text-success!">https://us02web.zoom.us/j/68714384251?pwd=mT9pKvXcRwLz2nYqF83S</StyledSpan>
+* **✅  YouTube:** You can keep `?v=...` but remove `?si=...`
+
+  <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-transparent! text-success!">https://www.youtube.com/watch?v=zX9Ke_VXnIA</StyledSpan>
+
+## FAQ
+
+**Does this mean Signal is not safe?**
+
+Signal is as safe as we can get while still using a phone. This tracking isn't happening inside Signal. It's happening on the big tech platforms because they’ve thought of another way to track us so they can sell us ads.
+
+**What about ?utm_source= type tracking codes?**
+
+These don't matter as much. They don't track you uniquely or associate us together.
+
+**I deleted the tracking code part and now the link doesn't work. What should I do?**
+
+On some sites, the stuff after the ? is required for the link to work, which can make this process confusing. If you're not sure how to share the link safely, see if you can find similar content on a differnet site that doesn't have a tracking code.
