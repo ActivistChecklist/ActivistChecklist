@@ -106,7 +106,7 @@
 
 @media (hover: hover) {
   .term:hover {
-    background: hsl(var(--muted));
+    @apply bg-[hsl(var(--primary))]/10;
     border-radius: 4px;
   }
 
