@@ -1,8 +1,8 @@
 ---
-title: Is Signal secure? (Yes!)
-seoDescription: Is Signal secure for activist use? Yes. How the encryption works, what Signal can share with law enforcement, and the myths that get it wrong.
+title: Signal est-il sécurisé ? (Oui !)
+seoDescription: Signal est-il sécurisé pour les militant·es ? Oui. Comment fonctionne le chiffrement, ce que Signal peut transmettre aux flics, et les mythes qui se trompent.
 answerCapsule: |
-  Yes, Signal is secure for activist organizing. It's end-to-end encrypted, the code is open source and audited. When law enforcement subpoenas Signal, they get the account creation date and last connection date. They cannot get message contents or your contact list. The remaining risk is your device: a seized phone with a weak passcode exposes everything, regardless of how strong Signal itself is.
+  Oui, Signal est sécurisé pour l'organisation militante. Il est chiffré de bout en bout, et son code est open source et audité. Quand les flics envoient une réquisition judiciaire à Signal, ils obtiennent la date de création du compte et la date de dernière connexion. Ils ne peuvent pas obtenir le contenu des messages ni ta liste de contacts. Le risque qui reste, c'est ton appareil : un téléphone saisi avec un code d'accès faible expose tout, peu importe la solidité de Signal.
 relatedGuides:
   - signal
   - essentials
@@ -11,55 +11,55 @@ lastUpdated: 2026-04-03
 ---
 
 <Alert type="success">
-  **Takeaway:** Signal is safe to use. If you already use Signal for your activism, rest assured, your communications are private and secure.
+  **À retenir :** tu peux utiliser Signal en toute sécurité. Si tu utilises déjà Signal pour ton militantisme, rassure-toi : tes communications sont privées et sécurisées.
 </Alert>
 
 <Alert type="info">
-  **Using Signal securely:** This article is about whether Signal is trustworthy. For concrete steps to configure the app, use our [Signal Security Checklist](/signal/).
+  **Utiliser Signal de façon sécurisée :** cet article explique si on peut faire confiance à Signal. Pour des étapes concrètes pour configurer l'appli, utilise notre [Checklist de sécurité Signal](/signal/).
 </Alert>
 
-[Signal](https://signal.org/) is a secure, encrypted, messaging platform that is widely used by activists, journalists, human rights lawyers, and even government officials, for one-to-one or group communication including text, voice, and video.
+[Signal](https://signal.org/) est une plateforme de messagerie sécurisée et chiffrée, largement utilisée par des militant·es, des journalistes, des avocat·es des droits humains et même des membres du gouvernement, pour communiquer en tête-à-tête ou en groupe, par texte, appel vocal ou vidéo.
 
-### Signal is run by a nonprofit
+### Signal est géré par une association à but non lucratif
 
-The Signal app is owned by the Signal Technology Foundation, a US-based nonprofit, which receives funds through individual donations and grants.
+L'appli Signal appartient à la Signal Technology Foundation, une organisation à but non lucratif basée aux États-Unis, financée par des dons individuels et des subventions.
 
-You can browse the Signal Technology Foundation's tax filings, which detail revenues and expenses, [here](https://projects.propublica.org/nonprofits/organizations/824506840).
+Tu peux consulter les déclarations fiscales de la Signal Technology Foundation, qui détaillent ses recettes et ses dépenses, [ici](https://projects.propublica.org/nonprofits/organizations/824506840).
 
-### Communication over Signal is private
+### Les communications sur Signal sont privées
 
-When communicating over Signal, messages remain private. This privacy is made possible by **end-to-end technology**, meaning that as your conversations are passing through the internet, they're **indecipherable**, i.e. only you and the person(s) you're communicating with can read or listen to the contents of your communications.
+Quand tu communiques sur Signal, tes messages restent privés. Cette confidentialité repose sur la **technologie de bout en bout** : pendant que tes conversations transitent sur Internet, elles sont **indéchiffrables**, c'est-à-dire que seulement toi et la ou les personne(s) avec qui tu communiques pouvez lire ou écouter le contenu de vos échanges.
 
-If a government agency subpoenas Signal for data related to a Signal account based on your phone number, Signal can only respond with the following pieces of information, which are: the account ID, a cryptographic hash of your username, when the account was created, and when it was last used. If they subpoena based on your username, Signal is able to tie a username to a phone number and produce a response that includes the phone number. This is one of the reasons that Signal designed usernames to be ephemeral and give users the ability to switch up usernames based on the need. Otherwise, Signal knows **nothing else** about you.
+Si une agence gouvernementale envoie à Signal une réquisition judiciaire pour obtenir des données sur un compte Signal à partir de ton numéro de téléphone, Signal ne peut fournir que les informations suivantes : l'identifiant du compte, un hachage cryptographique de ton nom d'utilisateur, la date de création du compte et la date de sa dernière utilisation. Si la réquisition se base sur ton nom d'utilisateur, Signal peut relier ce nom d'utilisateur à un numéro de téléphone et fournir une réponse qui inclut ce numéro. C'est l'une des raisons pour lesquelles Signal a conçu les noms d'utilisateur pour être éphémères, et permet de les changer selon les besoins. À part ça, Signal ne sait **rien d'autre** sur toi.
 
-### The Signal application is open source
+### L'application Signal est open source
 
-If apps were cakes, open source means having access to the entire cake recipe, i.e. you know how the cake is made, and what ingredients are used. You can even suggest changes that you believe might improve the cake. Similarly, Signal's code base is made openly available for anyone to view, inspect, and suggest modifications. In fact, you can [view Signal's code here](https://github.com/signalapp). The way in which Signal protects the millions of messages that pass through the app is also [made publicly available](https://github.com/signalapp/libsignal).
+Si les applis étaient des gâteaux, l'open source, ce serait avoir accès à la recette complète : tu sais comment le gâteau est fait et quels ingrédients sont utilisés. Tu peux même proposer des modifications qui, selon toi, pourraient améliorer le gâteau. De la même façon, le code de Signal est accessible à tout le monde : chacun·e peut le consulter, l'examiner et proposer des modifications. D'ailleurs, tu peux [consulter le code de Signal ici](https://github.com/signalapp). La façon dont Signal protège les millions de messages qui passent par l'appli est aussi [rendue publique](https://github.com/signalapp/libsignal).
 
-This level of transparency makes it possible to trust Signal because we can see for ourselves that it works the way it says it does, and not just take its word for it.
+Ce niveau de transparence nous permet de faire confiance à Signal, parce qu'on peut vérifier par nous-mêmes que l'appli fonctionne comme elle le prétend, au lieu de simplement la croire sur parole.
 
 <Alert type="default">
-  **Side note:** In 2021, Signal introduced an anti-spam system after users reported a surge of spam from unknown contacts. To prevent spammers from studying the code and working around it, this one component was made closed source. Everything else remains open source. (See: [Signal's blog post](https://signal.org/blog/keeping-spam-off-signal/))
+  **À noter :** en 2021, Signal a mis en place un système anti-spam après que des utilisateur·ices ont signalé une vague de spams venant de contacts inconnus. Pour empêcher les spammeurs d'étudier le code et de le contourner, ce seul composant est passé en code source fermé. Tout le reste est toujours open source. (Voir : [l'article de blog de Signal](https://signal.org/blog/keeping-spam-off-signal/))
 </Alert>
 
-## The myth
+## Le mythe
 
-**Watch out:** A recurring claim that circulates on social media is that Signal is funded by the US government or the Central Intelligence Agency (CIA), implying that Signal is essentially a government operation and therefore not to be trusted.
+**Attention :** une rumeur qui revient souvent sur les réseaux sociaux prétend que Signal est financé par le gouvernement américain ou par la Central Intelligence Agency (CIA), sous-entendant que Signal serait en fait une opération gouvernementale et qu'il ne faudrait donc pas lui faire confiance.
 
-This claim is based on the fact that Signal [received funding](https://www.opentech.fund/projects-we-support/supported-projects/signal-open-whisper-systems/) from the Open Technology Fund (OTF) between 2012 and 2016. Signal has always openly acknowledged this funding. The OTF is a nonprofit that [receives most of its money from](https://www.opentech.fund/about/about-our-funding/) the US Agency for Global Media (USAGM), an independent US government agency whose job is to oversee international news broadcasters like Voice of America. OTF has funded a wide array of open source projects to support people with countering surveillance and censorship. USAGM itself is not an intelligence agency although it operates as part of broader US foreign policy efforts.
+Cette rumeur repose sur le fait que Signal [a reçu des financements](https://www.opentech.fund/projects-we-support/supported-projects/signal-open-whisper-systems/) de l'Open Technology Fund (OTF) entre 2012 et 2016. Signal a toujours reconnu ouvertement ces financements. L'OTF est une organisation à but non lucratif qui [reçoit l'essentiel de son argent](https://www.opentech.fund/about/about-our-funding/) de l'US Agency for Global Media (USAGM), une agence gouvernementale américaine indépendante chargée de superviser des médias internationaux comme Voice of America. L'OTF a financé un large éventail de projets open source pour aider les gens à contrer la surveillance et la censure. L'USAGM n'est pas une agence de renseignement, même si elle s'inscrit dans la politique étrangère américaine au sens large.
 
-It's always encouraged to question funding sources, particularly in activist spaces, and especially when investigating governance structures of organizations and assessing overall trust in them. However, jumping from "Signal got a grant from a USAGM-funded nonprofit" to "Signal is a CIA operation" can be considered a significant **logical leap**. By that same logic, one could accuse any journalist or NGO that receives a USAGM-funded grant of being a CIA asset.
+C'est toujours une bonne idée de s'interroger sur les sources de financement, surtout dans les milieux militants, et en particulier quand on examine la gouvernance d'une organisation et la confiance qu'on peut lui accorder. Mais passer de « Signal a reçu une subvention d'une organisation financée par l'USAGM » à « Signal est une opération de la CIA », c'est un sacré **raccourci logique**. Avec ce raisonnement, on pourrait accuser n'importe quel·le journaliste ou n'importe quelle ONG ayant reçu une subvention financée par l'USAGM d'être un agent de la CIA.
 
-Setting that aside, funding can influence many aspects of an organization but doesn't specifically determine the security of a messaging application. Assessing an app's security depends on how the encryption is designed, whether the code is publicly available for anyone to inspect, and whether independent security researchers have tested it and found it sound. Signal scores well on all three counts, and those factors are ultimately what matter for security.
+Cela dit, le financement peut influencer beaucoup d'aspects d'une organisation, mais il ne détermine pas en soi la sécurité d'une application de messagerie. La sécurité d'une appli dépend de la conception de son chiffrement, du fait que son code soit public et que tout le monde puisse l'examiner, et du fait que des chercheur·euses en sécurité indépendant·es l'aient testée et jugée solide. Signal coche ces trois cases, et au final, c'est ça qui compte pour la sécurité.
 
-### You need to secure your device
+### Tu dois sécuriser ton appareil
 
-Signal is widely regarded as one of the most secure messaging consumer platforms because it's transparently built and its security is publicly audited.
+Signal est largement considéré comme l'une des plateformes de messagerie grand public les plus sécurisées, parce qu'il est développé de manière transparente et que sa sécurité est auditée publiquement.
 
-That said, Signal is as secure as how you handle your device. If your device is seized, has a weak passcode, has face/fingerprint unlock enabled, or you [accidentally](https://micahflee.com/we-are-currently-clean-on-opsec-the-signalgate-saga/) add someone you don't trust to your Signal group, your communications will still be compromised, even though the app itself is working perfectly as intended.
+Cela dit, Signal n'est sécurisé que si ton appareil l'est aussi. Si ton appareil est saisi, s'il a un code d'accès faible, si le déverrouillage par reconnaissance faciale ou empreinte digitale est activé, ou si tu ajoutes [par erreur](https://micahflee.com/we-are-currently-clean-on-opsec-the-signalgate-saga/) quelqu'un en qui tu n'as pas confiance à ton groupe Signal, tes communications seront compromises, même si l'appli elle-même fonctionne parfaitement comme prévu.
 
-On newer iPhones, **Apple Intelligence** (and notification summaries) is a separate issue from whether Signal's encryption is sound. See [Is Apple Intelligence reading my Signal messages?](/signal-ai/).
+Sur les iPhone récents, **Apple Intelligence** (et les résumés de notifications) est une question distincte de la solidité du chiffrement de Signal. Voir [Apple Intelligence lit-elle mes messages Signal ?](/signal-ai/).
 
-We recommend you follow our [Signal Security Checklist](/signal/) and [Essentials Checklist](/essentials/) to help keep your Signal messages safe once they arrive on your device.
+On te recommande de suivre notre [Checklist de sécurité Signal](/signal/) et notre [Checklist des essentiels](/essentials/) pour protéger tes messages Signal une fois qu'ils sont arrivés sur ton appareil.
 
 <Button title="Checklist de sécurité Signal →" href="/signal/" target="_self" size="lg" />
