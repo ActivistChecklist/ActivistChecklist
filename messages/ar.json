@@ -105,28 +105,28 @@
       "label": "الخصوصية"
     },
     "whatsapp": {
-      "title": "WhatsApp security",
-      "description": "Configure WhatsApp to protect your messages, groups, and contacts."
+      "title": "أمان WhatsApp",
+      "description": "اضبط إعدادات WhatsApp لحماية رسائلك ومجموعاتك وجهات اتصالك."
     },
     "spyware": {
-      "title": "Spyware protection",
-      "description": "Protect yourself from spyware and surveillance software."
+      "title": "الحماية من برامج التجسس",
+      "description": "احمِ نفسك من برامج التجسس وبرامج المراقبة."
     },
     "action": {
-      "title": "Prepare for a direct action",
-      "description": "Digital security for direct actions and civil disobedience."
+      "title": "استعد لعمل مباشر",
+      "description": "الأمان الرقمي للعمل المباشر والعصيان المدني."
     },
     "organizing": {
-      "title": "Action organizer checklist",
-      "description": "For movement organizers and coordinators."
+      "title": "قائمة تحقق لمنظِّمي الفعاليات",
+      "description": "لمنظِّمي الحركات ومنسّقيها."
     },
     "research": {
-      "title": "Action research & scouting",
-      "description": "How to conduct research and browse the web anonymously."
+      "title": "البحث والاستطلاع قبل الفعاليات",
+      "description": "كيف تبحث وتتصفح الإنترنت بشكل مجهول."
     },
     "federal": {
-      "title": "Federal workers",
-      "description": "Digital security guidance for federal employees."
+      "title": "العاملون الفيدراليون",
+      "description": "إرشادات الأمان الرقمي للموظفين الفيدراليين."
     },
     "party": {
       "title": "استضف حفل أمن",
@@ -137,8 +137,8 @@
       "label": "كيفية استخدام Proton بأمان"
     },
     "lockdown": {
-      "title": "Lockdown Mode trade-offs",
-      "label": "Lockdown Mode trade-offs"
+      "title": "إيجابيات وسلبيات وضع المنع",
+      "label": "إيجابيات وسلبيات وضع المنع"
     },
     "signalSecure": {
       "title": "هل Signal آمن؟",
@@ -418,40 +418,40 @@
   },
   "checklists": {
     "title": "قوائم التدقيق",
-    "intro": "Every checklist and explainer, grouped by situation. New here? Start with <link>Security Essentials</link>.",
+    "intro": "كل قوائم التحقق والشروحات، مرتبة حسب الموقف. جديد هنا؟ ابدأ بـ<link>أساسيات الأمان</link>.",
     "documentTitle": "قوائم التدقيق | Activist Checklist"
   },
   "checklistSections": {
     "basics": {
-      "title": "The basics",
-      "heading": "Everyone should do these",
-      "scope": "Baseline protection for your phone, accounts, and group chats."
+      "title": "الأساسيات",
+      "heading": "على الجميع القيام بها",
+      "scope": "حماية أساسية لهاتفك وحساباتك ومحادثاتك الجماعية."
     },
     "goingOut": {
-      "title": "Going out",
-      "heading": "Going out: protests, ICE watch, actions, travel",
-      "scope": "Anywhere police or border agents could take your phone."
+      "title": "الخروج إلى الشارع",
+      "heading": "الخروج إلى الشارع: الاحتجاجات، مراقبة ICE، الفعاليات، السفر",
+      "scope": "أي مكان قد تأخذ فيه الشرطة أو عناصر الحدود هاتفك."
     },
     "targeted": {
-      "title": "Being targeted",
-      "heading": "Protect yourself from being targeted",
-      "scope": "Doxxing, harassment, investigations, or agents at your door."
+      "title": "عندما تكون مستهدفًا",
+      "heading": "احمِ نفسك من الاستهداف",
+      "scope": "الدوكسينغ وكشف معلوماتك الشخصية، أو التحرش، أو التحقيقات، أو عناصر الأمن على بابك."
     },
     "organizing": {
-      "title": "Organizing others",
-      "heading": "Organizing others",
-      "scope": "Running actions and getting your group secure."
+      "title": "تنظيم الآخرين",
+      "heading": "تنظيم الآخرين",
+      "scope": "إدارة الفعاليات وتأمين مجموعتك."
     },
     "descriptions": {
-      "party": "A template agenda for getting your group through the checklists together."
+      "party": "جدول أعمال نموذجي لمساعدة مجموعتك على المرور بقوائم التحقق معًا."
     },
-    "allChecklists": "All {count, plural, one {# checklist} other {# checklists}}",
-    "readMinutes": "{minutes} min read",
-    "explainer": "Explainer",
-    "howTo": "How-to guide",
-    "readGuide": "Read the guide",
-    "understandWhy": "Understand why",
-    "lastReviewed": "Last reviewed {date}"
+    "allChecklists": "{count, plural, zero {كل القوائم} one {القائمة الوحيدة} two {كلتا القائمتين} few {كل القوائم الـ#} many {كل القوائم الـ#} other {كل القوائم الـ#}}",
+    "readMinutes": "قراءة في {minutes} دقيقة",
+    "explainer": "شرح",
+    "howTo": "دليل عملي",
+    "readGuide": "اقرأ الدليل",
+    "understandWhy": "افهم السبب",
+    "lastReviewed": "آخر مراجعة: {date}"
   },
   "news": {
     "title": "أخبار المراقبة",
