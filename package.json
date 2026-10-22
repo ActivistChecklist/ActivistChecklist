@@ -27,7 +27,6 @@
     "keystatic:format-mdx": "node scripts/keystatic-format-mdx.mjs",
     "crowdin:hide-strings": "node scripts/crowdin-hide-strings.mjs",
     "crowdin:hide-strings:apply": "node scripts/crowdin-hide-strings.mjs --apply",
-    "crowdin:pre-translate": "node scripts/crowdin-pre-translate.mjs",
     "crowdin:translation-status": "node scripts/crowdin-translation-status.mjs",
     "prebuild": "(pnpm audit --audit-level high || true) && (pnpm fetch:eol || true)",
     "build": "NEXT_TELEMETRY_DISABLED=1 next build --webpack",
