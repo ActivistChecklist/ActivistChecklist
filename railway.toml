@@ -1,5 +1,9 @@
 # https://docs.railway.app/guides/config-as-code
 # Builder: Railpack + ./railpack.json (Node 22). Husky is skipped on Railway via scripts/prepare.js.
+# Node is pinned to an exact patch (22.23.4) in railpack.json and .nvmrc, the first 22.x with the
+# October 2026 TLS hostname-verification fixes. A bare "22" let builds keep an older 22.x. Raise
+# both together on each Node security release; the May First host resolves .nvmrc through nvm, so
+# `nvm install <version>` there before merging the bump or its scheduled jobs fail.
 # Optional service variable: RAILPACK_INSTALL_CMD=pnpm run install:ci (frozen lockfile, prefer-offline).
 # If the platform sets NODE_ENV=development during build, `next build` can fail (Html/document on /404);
 # package.json build forces NODE_ENV=production for the Next compile.
