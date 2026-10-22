@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "generatedAt": "2026-10-22T19:29:44.954Z",
+  "generatedAt": "2026-10-22T21:56:37.781Z",
   "thresholds": {
     "unreviewedNoticeMaxApprovalPercent": 80
   },
@@ -12,6 +12,11 @@
         "showUnreviewedNotice": true
       },
       "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -27,6 +32,11 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "emergency": {
@@ -36,6 +46,11 @@
         "showUnreviewedNotice": true
       },
       "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -51,6 +66,11 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "federal": {
@@ -60,6 +80,11 @@
         "showUnreviewedNotice": true
       },
       "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -75,6 +100,11 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "organizing": {
@@ -87,15 +117,25 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "protest": {
       "es": {
         "translationPercent": 100,
-        "approvalPercent": 16,
+        "approvalPercent": 15,
         "showUnreviewedNotice": true
       },
       "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -111,6 +151,11 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "secondary": {
@@ -120,6 +165,11 @@
         "showUnreviewedNotice": true
       },
       "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -135,16 +185,26 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "spyware": {
       "es": {
-        "translationPercent": 100,
-        "approvalPercent": 10,
+        "translationPercent": 98,
+        "approvalPercent": 9,
         "showUnreviewedNotice": true
       },
       "fr": {
-        "translationPercent": 98,
+        "translationPercent": 99,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 99,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
       }
@@ -159,17 +219,27 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "whatsapp": {
       "es": {
-        "translationPercent": 100,
-        "approvalPercent": 33,
+        "translationPercent": 99,
+        "approvalPercent": 36,
         "showUnreviewedNotice": true
       },
       "fr": {
-        "translationPercent": 90,
-        "approvalPercent": 20,
+        "translationPercent": 100,
+        "approvalPercent": 34,
+        "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
         "showUnreviewedNotice": true
       }
     },
@@ -180,6 +250,11 @@
         "showUnreviewedNotice": true
       },
       "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -195,6 +270,11 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "flyer": {
@@ -204,6 +284,11 @@
         "showUnreviewedNotice": true
       },
       "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -219,6 +304,11 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "lockdown": {
@@ -228,6 +318,11 @@
         "showUnreviewedNotice": true
       },
       "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -243,6 +338,11 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "onion": {
@@ -252,6 +352,11 @@
         "showUnreviewedNotice": true
       },
       "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -267,6 +372,11 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "police": {
@@ -276,6 +386,11 @@
         "showUnreviewedNotice": true
       },
       "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -291,6 +406,11 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "proton": {
@@ -300,6 +420,11 @@
         "showUnreviewedNotice": true
       },
       "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -315,6 +440,11 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "signal-ai": {
@@ -324,6 +454,11 @@
         "showUnreviewedNotice": true
       },
       "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -339,6 +474,11 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "vpn": {
@@ -348,6 +488,11 @@
         "showUnreviewedNotice": true
       },
       "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
