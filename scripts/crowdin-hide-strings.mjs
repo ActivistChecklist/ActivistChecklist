@@ -283,7 +283,7 @@ async function paginateFiles(querySuffix) {
 
 /**
  * Merge branch-scoped (recursive) and project-level file lists. Crowdin paths may include a
- * version-branch prefix (e.g. /main/content/en/...) — see crowdin-pre-translate.mjs findCrowdinFile.
+ * version-branch prefix (e.g. /main/content/en/...).
  */
 async function listAllProjectFiles(branchId) {
   const byId = new Map();
