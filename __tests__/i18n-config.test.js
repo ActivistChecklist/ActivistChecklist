@@ -14,6 +14,7 @@ describe('i18n locale metadata', () => {
     expect(LOCALES.en.name).toBe('English');
     expect(LOCALES.es.name).toBe('Español');
     expect(LOCALES.fr.name).toBe('Français');
+    expect(LOCALES.it.name).toBe('Italiano');
   });
 
   it('routes exactly the locales that have metadata', () => {
@@ -24,6 +25,7 @@ describe('i18n locale metadata', () => {
     expect(getIntlLocale('en')).toBe('en-US');
     expect(getIntlLocale('es')).toBe('es-MX');
     expect(getIntlLocale('fr')).toBe('fr-FR');
+    expect(getIntlLocale('it')).toBe('it-IT');
     expect(getIntlLocale('unknown')).toBe('en-US');
   });
 });
