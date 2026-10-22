@@ -1,0 +1,134 @@
+---
+title: Perché dobbiamo eliminare tutto quello che viene dopo il '?' nei link
+seoDescription: Condividere un link con un codice di tracciamento toglie l'anonimato a tutte le persone con cui lo condividi. Come riconoscere i parametri di tracciamento e toglierli prima di postare su Signal.
+answerCapsule: |
+  Quando condividi un link con un parametro di tracciamento, la piattaforma può collegare a te, nei suoi registri, chiunque ci clicchi sopra. Per i gruppi di attivist* su Signal, questo può contribuire a creare una mappa che ci toglie l'anonimato e che in futuro potrebbe finire in mano agli sbirri tramite un mandato. Prenditi 5 secondi per cancellare la parte dopo il ? prima di condividere, e ricordalo anche agli altri quando se ne dimenticano. Brave o uBlock possono farlo in automatico.
+relatedGuides:
+  - essentials
+  - signal
+firstPublished: 2025-10-21
+lastUpdated: 2026-03-11
+image: /images/content/dont-make-me-tap-the-sign-share.jpg
+---
+
+<Alert type="success">
+  **In breve:** Se elimini tutto quello che viene dopo il ? nei link che condividi, aiuti a evitare che le altre persone dei tuoi gruppi vengano associate a te e tra loro (è un problema perché può ridurre l'anonimato nell'attivismo).
+</Alert>
+
+## Versione breve
+
+<ImageEmbed src="/images/content/link-sharing-dont-make-me-tap-the-sign.jpg" alt="Screenshot del meme dei Simpson con un autista di autobus che dice &#x22;non costringermi a indicare il cartello&#x22; - Il cartello dice &#x22;Elimina tutto quello che viene dopo il punto interrogativo negli URL, così non veniamo tracciati tutti quando ci clicchiamo sopra&#x22;" size="xs" alignment="right" />
+
+**La situazione con la condivisione dei link:** Le principali piattaforme social (YouTube, Instagram, ecc.) ora aggiungono un ***codice unico*** ogni volta che qualcuno clicca su "copia link" in un post.
+
+**Contesto:**
+
+* Tutte le persone che ci cliccano sopra verranno collegate tra loro come un gruppo associato su quel sito.
+* Se condividi il link in un gruppo di attivistə (soprattutto su Signal) dove alcune persone rischiano di essere prese di mira per la loro attività politica, il sito (Instagram, ecc.) saprà chi interagisce con chi.  Questo può togliere l'anonimato a chi sta cercando di proteggere il proprio lavoro attivista.
+* Prima o poi queste aziende si ritroveranno con una copia dell'elenco delle persone del tuo gruppo.
+* Queste aziende vogliono queste informazioni per venderci pubblicità, ma il governo può costringerle a consegnare i dati e usarli per colpire chi fa resistenza.
+
+**La buona pratica per la tua comunità:** Elimina tutto quello che viene dopo il "?" prima di condividere un link, ovunque tu lo condivida.
+
+**La buona pratica per proteggere te:** Fai attenzione anche ai "?" nei link condivisi da altre persone. NON cliccare su quel link!! Tieni premuto sul telefono e copia il link. Incollalo nel browser. Elimina la roba di tracciamento dopo il punto interrogativo. SOLO ALLORA puoi cliccarci sopra.
+
+## Ricordalo a chi se ne dimentica
+
+Ecco un messaggio di esempio che puoi usare se qualcuno se ne dimentica.
+
+> <CopyButton />
+>
+> *Promemoria veloce: per favore modifica il tuo messaggio ed elimina il codice di tracciamento (tutto quello che viene dopo il "?"). Così siamo tuttə più al sicuro. [https://activistchecklist.org/links](https://activistchecklist.org/links)*
+
+## Cosa puoi fare
+
+<Alert type="success">
+  **Rendilo automatico:** se usi [Brave](https://brave.com/) o il plugin uBlock Origin, puoi impostare il browser in modo che rimuova automaticamente tutti i link di tracciamento. Ti basta attivare una lista di blocco che si chiama "**AdGuard/uBO - URL Tracking Protection.**" Su Brave puoi farlo andando in <MenuPath inline>**Impostazioni** > **Shields** > **Filtri dei contenuti** > **Filtri**</MenuPath>. [Per saperne di più](https://shreyasminocha.me/blog/removing-tracking-query-params)
+</Alert>
+
+<HowTo title="Come rimuovere il codice di tracciamento univoco">
+  **Per rimuovere il codice di tracciamento PRIMA di pubblicare:**
+
+  1. Copia il link da un'app social
+  2. Incollalo nell'app di messaggistica (Signal, ecc.)
+  3. Cancella tutto quello che viene dopo il "?"
+  4. Premi **Invia**
+
+  **Se vuoi rimuovere un codice di tracciamento DOPO averlo già pubblicato:**
+
+  1. In Signal/WhatsApp/iMessage, tieni premuto su un messaggio finché non compare un menu.
+  2. Tocca **Modifica**
+  3. Cancella tutto quello che viene dopo il "?"
+  4. Premi **Salva**
+</HowTo>
+
+**Altri consigli:**
+
+* Se usi Brave o Firefox, puoi cliccare con il tasto destro e selezionare "Copia link pulito...", che rimuove automaticamente questi codici di tracciamento.
+
+## Esempi
+
+Quali social fanno questo tipo di tracciamento?
+
+<StyledSpan className="bg-destructive text-destructive-foreground font-bold">Cancella la parte in rosso prima di condividere o aprire il link</StyledSpan>
+
+***Instagram:***
+
+* **⚠️ Con tracciamento:**
+
+  `https://www.instagram.com/p/CX7K9mNvAa5/` <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-destructive! text-destructive-foreground! font-bold!">?igshid=MzRlODBiNWFlZA==</StyledSpan>
+* **✅ Tracciamento rimosso:**
+
+  <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-transparent! text-success!">https://www.instagram.com/p/CX7K9mNvAa5/</StyledSpan>
+
+**Facebook:**
+
+* **⚠️ Con tracciamento:**
+
+  `https://www.facebook.com/share/p/15BkR7qJ8M/` <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-destructive! text-destructive-foreground! font-bold!">?mibextid=oFDknk</StyledSpan>
+* **✅ Tracciamento rimosso:**
+
+  <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-transparent! text-success!">https://www.facebook.com/share/p/15BkR7qJ8M/</StyledSpan>
+
+**YouTube:**
+
+* **⚠️ Con tracciamento:**
+
+  `https://youtu.be/zX9Ke_VXnIA` <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-destructive! text-destructive-foreground! font-bold!">?si=YpziAaccKeIEab6z</StyledSpan>
+* **✅ Tracciamento rimosso:**
+
+  <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-transparent! text-success!">https://youtu.be/zX9Ke_VXnIA</StyledSpan>
+
+**Spotify:**
+
+* **⚠️ Con tracciamento:**
+
+  `https://open.spotify.com/track/1eSNRUK0HIwOFHwWRjHJEo` <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-destructive! text-destructive-foreground! font-bold!">?si=3f7e61d1a8c26b0a</StyledSpan>
+* **✅ Tracciamento rimosso:**
+
+  <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-transparent! text-success!">https://open.spotify.com/track/1eSNRUK0HIwOFHwWRjHJEo</StyledSpan>
+
+## Eccezioni
+
+Per alcuni siti puoi lasciare la parte dopo il ? nel link
+
+* ✅ **Zoom:**
+
+  <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-transparent! text-success!">https://us02web.zoom.us/j/68714384251?pwd=mT9pKvXcRwLz2nYqF83S</StyledSpan>
+* **✅  YouTube:** Puoi lasciare `?v=...` ma togli `?si=...`
+
+  <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-transparent! text-success!">https://www.youtube.com/watch?v=zX9Ke_VXnIA</StyledSpan>
+
+## Domande frequenti
+
+**Quindi Signal non è sicuro?**
+
+Signal è il massimo della sicurezza che possiamo avere usando comunque un telefono. Questo tracciamento non avviene dentro Signal. Succede sulle grandi piattaforme tech perché si sono inventate un altro modo per tracciarci e venderci pubblicità.
+
+**E i codici di tracciamento tipo ?utm_source=?**
+
+Questi contano meno. Non ti identificano in modo univoco e non ci collegano tra di noi.
+
+**Ho cancellato la parte con il codice di tracciamento e ora il link non funziona. Cosa faccio?**
+
+Su alcuni siti, la roba dopo il ? serve perché il link funzioni, e questo può rendere il tutto un po' confuso. Se non sai bene come condividere il link in modo sicuro, prova a cercare contenuti simili su un altro sito che non usi codici di tracciamento.
