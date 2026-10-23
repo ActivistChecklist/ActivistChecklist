@@ -1,0 +1,153 @@
+@reference "./globals.css";
+
+.term {
+  display: inline-flex;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: hsl(var(--primary));
+  text-underline-offset: 4px;
+  padding: 0 0.05em;
+}
+
+.termIcon {
+  color: hsl(var(--primary));
+  margin-left: 3px;
+  margin-top: 2px;
+}
+
+.def[popover] {
+  @apply shadow-lg;
+  padding: 1rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 12px;
+  background-color: hsl(var(--popover));
+  width: min(20rem, calc(100vw - 2rem));
+  margin-top: 0.2rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .def[popover] {
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s cubic-bezier(0.2, 0.85, 0.25, 1),
+      overlay 0.3s allow-discrete,
+      display 0.3s allow-discrete;
+  }
+
+  .def[popover]:not(:popover-open) {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  @starting-style {
+    .def[popover]:popover-open {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+
+  @media (max-width: 639px) {
+    .def[popover]:not(:popover-open) {
+      opacity: 1;
+      transform: translateY(100%);
+    }
+
+    .def::backdrop {
+      transition:
+        background-color 0.3s ease,
+        overlay 0.3s allow-discrete,
+        display 0.3s allow-discrete;
+    }
+
+    @starting-style {
+      .def[popover]:popover-open {
+        opacity: 1;
+        transform: translateY(100%);
+      }
+
+      .def[popover]:popover-open::backdrop {
+        background: transparent;
+      }
+    }
+  }
+}
+
+.defHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.defTitle {
+  @apply text-lg;
+  font-weight: bold;
+  color: hsl(var(--popover-foreground));
+}
+
+.defClose {
+  cursor: pointer;
+  height: 44px;
+  width: 44px;
+  margin: -0.7rem -0.7rem 0 0;
+}
+
+.closeIcon {
+  color: hsl(var(--muted-foreground));
+  margin: auto;
+}
+
+.defBody {
+  display: block;
+  margin-top: 0.5rem;
+  font-weight: normal;
+  color: hsl(var(--popover-foreground));
+}
+
+@media (hover: hover) {
+  .term:hover {
+    @apply bg-[hsl(var(--primary))]/10;
+    border-radius: 4px;
+  }
+
+  .defClose:hover {
+    background-color: hsl(var(--muted));
+    border-radius: 50%;
+  }
+
+  .defClose:hover .closeIcon {
+    color: hsl(var(--foreground));
+  }
+}
+
+@media (min-width: 640px) {
+  .def[popover] {
+    position: absolute;
+    position-area: block-end span-inline-end;
+    position-try-fallbacks: flip-block, flip-inline;
+  }
+
+  .def::backdrop {
+    background: transparent;
+  }
+}
+
+@media (max-width: 639px) {
+  .def[popover] {
+    position: fixed;
+    inset: auto 0 0 0;
+    width: 100%;
+    border-radius: 16 16 0 0;
+    border-bottom: 0;
+    padding-bottom: 1.5rem;
+  }
+
+  .def::backdrop {
+    @apply bg-black/80;
+  }
+
+  /* disable background scrolling when the popup is open */
+  :root:has(.def[popover]:popover-open) {
+    overflow: hidden;
+  }
+}

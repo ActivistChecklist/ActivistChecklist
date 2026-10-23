@@ -830,5 +830,11 @@
       "secondaryCta": "Doxxing Defense Checklist",
       "openSource": "All four are <repos>open source</repos>. If one is broken, or you need something we have not built yet, <contact>let us know</contact>."
     }
+  },
+  "definitions": {
+    "data-broker": {
+      "term": "Data Broker",
+      "definition": "A company that collects personal information like your address, phone number, and relatives from public records and other sources, then sells it. Police, stalkers, and people trying to dox you can buy this data."
+    }
   }
 }
