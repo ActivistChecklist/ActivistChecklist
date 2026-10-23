@@ -113,7 +113,7 @@
     "fuse.js": "^7.5.0",
     "gray-matter": "^4.0.3",
     "js-yaml": "^4.3.2",
-    "lucide-react": "^1.59.0",
+    "lucide-react": "^1.60.0",
     "mongodb": "^7.7.0",
     "next": "^16.4.0",
     "next-intl": "^4.14.9",
@@ -158,12 +158,12 @@
     "prettier": "3.9.10",
     "react-json-view": "^1.21.3",
     "rss-parser": "^3.13.0",
-    "satori": "^0.62.0",
+    "satori": "^0.63.1",
     "sharp": "^0.35.5",
     "tailwindcss": "^4.3.3",
     "tsx": "^4.23.15",
     "typescript": "6.0.3",
-    "vite": "^8.3.4",
+    "vite": "^8.3.5",
     "vitest": "^5.0.5"
   },
   "packageManager": "pnpm@12.4.1+sha512.2e81e399d73fe8390dab25e06aa788ab7a5908248d2f5a370f82b481147a6a7a367bf8048f9a6fdb6460f21a66f0542dedb8b94ca2c8723596741920b1656d4c"
