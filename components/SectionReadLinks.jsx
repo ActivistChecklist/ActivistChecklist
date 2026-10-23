@@ -32,7 +32,7 @@ export default function SectionReadLinks({ items, readMinutes = {}, label, class
         // Only reading material gets a label. A printable or tool says what it
         // is through its icon and title ("Printable flyer").
         const meta =
-          item.kind === 'explainer' && minutes
+          (item.kind === 'explainer' || item.kind === 'howto') && minutes
             ? t('checklistSections.readMinutes', { minutes })
             : null;
         return (
