@@ -71,6 +71,12 @@ describe('findSectionForPage', () => {
     expect(findSectionForPage(sections, items, 'party').key).toBe('organizing');
   });
 
+  it('prefers the section that features a page over an earlier one that lists it in reads', () => {
+    const withPartyRead = [{ key: 'basics', featured: [], reads: ['vpn', 'party'] }, ...sections];
+    expect(findSectionForPage(withPartyRead, items, 'party').key).toBe('organizing');
+    expect(findSectionForPage(withPartyRead, items, 'vpn').key).toBe('basics');
+  });
+
   it('returns null for pages in no section or unknown slugs', () => {
     expect(findSectionForPage(sections, items, 'about')).toBeNull();
     expect(findSectionForPage(sections, items, 'nope')).toBeNull();

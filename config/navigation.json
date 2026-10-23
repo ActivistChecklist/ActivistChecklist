@@ -84,8 +84,7 @@
     "vpn": {
       "label": "VPNs for activists",
       "href": "/vpn/",
-      "kind": "explainer",
-      "pairsWith": "essentials"
+      "kind": "explainer"
     },
     "movies": {
       "label": "Movies, books, & podcasts",
@@ -204,7 +203,7 @@
       "key": "basics",
       "items": ["essentials", "signal", "whatsapp"],
       "featured": ["essentials", "signal"],
-      "reads": ["updates", "vpn", "proton", "links", "signal-secure", "signal-ai"]
+      "reads": ["updates", "vpn", "party", "proton", "links", "signal-secure", "signal-ai"]
     },
     {
       "key": "goingOut",
