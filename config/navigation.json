@@ -84,8 +84,7 @@
     "vpn": {
       "label": "VPNs for activists",
       "href": "/vpn/",
-      "kind": "explainer",
-      "pairsWith": "essentials"
+      "kind": "explainer"
     },
     "movies": {
       "label": "Movies, books, & podcasts",
