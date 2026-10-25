@@ -92,6 +92,9 @@
       "title": "Acerca de este sitio",
       "label": "Acerca de"
     },
+    "contribute": {
+      "title": "Contribute"
+    },
     "changelog": {
       "title": "Actualizaciones recientes del sitio",
       "label": "Actualizaciones recientes del sitio"
@@ -113,8 +116,8 @@
       "description": "Protégete del spyware y los programas de vigilancia."
     },
     "action": {
-      "title": "Prepárate para una acción directa",
-      "description": "Seguridad digital para acciones directas y desobediencia civil."
+      "title": "Prepare for an arrestable action",
+      "description": "Digital security for arrestable actions and civil disobedience."
     },
     "organizing": {
       "title": "Checklist para organizadores de acciones",
@@ -195,6 +198,7 @@
     "translationUnreviewedTitle": "Traducido automáticamente",
     "translationUnreviewed": "Esta página se tradujo automáticamente. Hasta ahora solo el {approvalPercent}% de la página fue revisado por una persona. El resto del texto puede tener errores. <link>Ayúdanos a revisar esta traducción</link>.",
     "nonUsThreatModel": "¿Fuera de EE. UU.? Algunas herramientas aquí, incluidas las apps de mensajería cifrada, son ilegales en ciertos países. Revisa las leyes locales antes de aplicar esta orientación.",
+    "staleGuide": "This guide is more than <b>{years, plural, one {# year} other {# years}}</b> old. Some of its advice may be out of date.",
     "dismiss": "Cerrar"
   },
   "languageDetection": {
@@ -216,7 +220,6 @@
   },
   "meta": {
     "lastUpdatedOn": "Última actualización",
-    "lastReviewedOn": "Última revisión",
     "takesAbout": "Toma unos",
     "viewLatestGuideAt": "Consulta la versión más reciente de esta guía en"
   },
@@ -428,8 +431,8 @@
       "scope": "Protección básica para tu teléfono, cuentas y chats grupales."
     },
     "goingOut": {
-      "title": "Al salir",
-      "heading": "Al salir: protestas, ICE watch, acciones, viajes",
+      "title": "Protests & travel",
+      "heading": "Protests & travel",
       "scope": "Cualquier lugar donde los cops o agentes fronterizos puedan quitarte el teléfono."
     },
     "targeted": {
