@@ -93,7 +93,7 @@
       "label": "À propos"
     },
     "contribute": {
-      "title": "Contribute"
+      "title": "Contribuer"
     },
     "changelog": {
       "title": "Mises à jour récentes du site",
@@ -116,8 +116,8 @@
       "description": "Protège-toi des logiciels espions et des logiciels de surveillance."
     },
     "action": {
-      "title": "Prepare for an arrestable action",
-      "description": "Digital security for arrestable actions and civil disobedience."
+      "title": "Se préparer à une action à risque d'arrestation",
+      "description": "Sécurité numérique pour les actions à risque d'arrestation et la désobéissance civile."
     },
     "organizing": {
       "title": "Checklist pour organiser une action",
@@ -198,7 +198,7 @@
     "translationUnreviewedTitle": "Traduction automatique",
     "translationUnreviewed": "Cette page a été traduite automatiquement. Seuls {approvalPercent} % de cette page ont été relus par des humains pour l'instant. Le reste peut contenir des erreurs. <link>Aide-nous à relire cette traduction</link>.",
     "nonUsThreatModel": "Tu n'es pas aux États-Unis ? Certains outils présentés ici, dont les messageries chiffrées, sont illégaux dans certains pays. Vérifie les lois locales avant de suivre ces conseils.",
-    "staleGuide": "This guide is more than <b>{years, plural, one {# year} other {# years}}</b> old. Some of its advice may be out of date.",
+    "staleGuide": "Ce guide a plus de <b>{years, plural, one {# an} other {# ans}}</b>. Certains de ses conseils sont peut-être dépassés.",
     "dismiss": "Ignorer"
   },
   "languageDetection": {
@@ -431,8 +431,8 @@
       "scope": "Une protection de base pour ton téléphone, tes comptes et tes discussions de groupe."
     },
     "goingOut": {
-      "title": "Protests & travel",
-      "heading": "Protests & travel",
+      "title": "Manifs et déplacements",
+      "heading": "Manifs et déplacements",
       "scope": "Partout où les flics ou les agents aux frontières pourraient prendre ton téléphone."
     },
     "targeted": {
