@@ -5,12 +5,9 @@ import PageNotices from '@/components/layout/PageNotices';
 import Link from '@/components/Link';
 import ChecklistSectionList from '@/components/ChecklistSectionList';
 import { getAllGuides } from '@/lib/content';
-import { isOlderThanMonths } from '@/lib/checklist-sections';
+import { staleReviewDate } from '@/lib/content-staleness';
 import { getSectionReadMinutes } from '@/lib/section-reads';
 import { NAV_ITEMS } from '@/config/navigation';
-
-/** A guide not reviewed in this long shows its review date on the index. */
-const STALE_AFTER_MONTHS = 12;
 
 export async function generateMetadata({ params }) {
   const { locale } = await params;
@@ -28,11 +25,8 @@ export default async function ChecklistsPage({ params }) {
 
   const staleReviewDates = {};
   for (const guide of getAllGuides(locale)) {
-    const { lastUpdated } = guide.frontmatter;
-    const date = lastUpdated instanceof Date ? lastUpdated.toISOString().slice(0, 10) : lastUpdated;
-    if (isOlderThanMonths(date, STALE_AFTER_MONTHS)) {
-      staleReviewDates[guide.frontmatter.slug || guide.slug] = date;
-    }
+    const date = staleReviewDate(guide.frontmatter.lastUpdated);
+    if (date) staleReviewDates[guide.frontmatter.slug || guide.slug] = date;
   }
 
   return (

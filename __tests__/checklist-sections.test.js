@@ -4,7 +4,6 @@ import {
   findSectionForGuide,
   findSectionForPage,
   getNextInSection,
-  isOlderThanMonths,
   readingMinutes,
   slugFromHref,
 } from '../lib/checklist-sections';
@@ -120,23 +119,6 @@ describe('readingMinutes', () => {
     const tags = '<ChecklistItem slug="a-very-long-slug" /> '.repeat(500);
     const links = '[x](https://example.com/a/b/c) '.repeat(10);
     expect(readingMinutes(tags + links)).toBe(1);
-  });
-});
-
-describe('isOlderThanMonths', () => {
-  const now = new Date('2026-10-15');
-
-  it('flags a date past the cutoff', () => {
-    expect(isOlderThanMonths('2025-02-24', 12, now)).toBe(true);
-  });
-
-  it('does not flag a recent date', () => {
-    expect(isOlderThanMonths('2026-01-28', 12, now)).toBe(false);
-  });
-
-  it('does not flag missing or invalid dates', () => {
-    expect(isOlderThanMonths(undefined, 12, now)).toBe(false);
-    expect(isOlderThanMonths('not a date', 12, now)).toBe(false);
   });
 });
 
