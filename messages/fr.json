@@ -92,6 +92,9 @@
       "title": "À propos du site",
       "label": "À propos"
     },
+    "contribute": {
+      "title": "Contribute"
+    },
     "changelog": {
       "title": "Mises à jour récentes du site",
       "label": "Mises à jour récentes du site"
@@ -113,8 +116,8 @@
       "description": "Protège-toi des logiciels espions et des logiciels de surveillance."
     },
     "action": {
-      "title": "Se préparer pour une action directe",
-      "description": "Sécurité numérique pour les actions directes et la désobéissance civile."
+      "title": "Prepare for an arrestable action",
+      "description": "Digital security for arrestable actions and civil disobedience."
     },
     "organizing": {
       "title": "Checklist pour organiser une action",
@@ -195,6 +198,7 @@
     "translationUnreviewedTitle": "Traduction automatique",
     "translationUnreviewed": "Cette page a été traduite automatiquement. Seuls {approvalPercent} % de cette page ont été relus par des humains pour l'instant. Le reste peut contenir des erreurs. <link>Aide-nous à relire cette traduction</link>.",
     "nonUsThreatModel": "Tu n'es pas aux États-Unis ? Certains outils présentés ici, dont les messageries chiffrées, sont illégaux dans certains pays. Vérifie les lois locales avant de suivre ces conseils.",
+    "staleGuide": "This guide is more than <b>{years, plural, one {# year} other {# years}}</b> old. Some of its advice may be out of date.",
     "dismiss": "Ignorer"
   },
   "languageDetection": {
@@ -216,7 +220,6 @@
   },
   "meta": {
     "lastUpdatedOn": "Dernière mise à jour le",
-    "lastReviewedOn": "Dernière relecture le",
     "takesAbout": "Durée : environ",
     "viewLatestGuideAt": "Consulte la dernière version du guide sur"
   },
@@ -428,8 +431,8 @@
       "scope": "Une protection de base pour ton téléphone, tes comptes et tes discussions de groupe."
     },
     "goingOut": {
-      "title": "Sur le terrain",
-      "heading": "Sur le terrain : manifs, veille ICE, actions, voyages",
+      "title": "Protests & travel",
+      "heading": "Protests & travel",
       "scope": "Partout où les flics ou les agents aux frontières pourraient prendre ton téléphone."
     },
     "targeted": {
