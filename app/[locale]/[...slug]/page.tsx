@@ -32,12 +32,27 @@ const DEFAULT_DESCRIPTION =
   'Plain language steps for digital security, because protecting yourself helps keep your whole community safer. Built by activists, for activists with field-tested, community-verified guides.';
 
 /**
+ * What the auto-generated OG card shows. Cards are English-only (the label and
+ * button are English), so every locale uses the English title. Otherwise each
+ * locale would ask for its own card and the share image would vary by language
+ * while still reading "Read Guide".
+ */
+async function getOgCard(slug, locale, frontmatter, pageType) {
+  if (locale === DEFAULT_LOCALE) return { title: frontmatter?.title, pageType };
+  const english =
+    pageType === 'guide'
+      ? await resolveGuide(slug, DEFAULT_LOCALE)
+      : await resolvePage(slug, DEFAULT_LOCALE);
+  return { title: english?.frontmatter?.title ?? frontmatter?.title, pageType };
+}
+
+/**
  * Resolve the OG image URL for a content page. Used by both generateMetadata
  * (for <meta>/og:image) and the page render path (for JSON-LD Article.image)
  * so the two agree. Precedence: frontmatter.image > frontmatter.imageOverride
- * > auto-generated /images/og/<slug>.png.
+ * > auto-generated /images/og/<slug>-<hash>.png for `ogCard`.
  */
-function resolveOgImageUrl(frontmatter, slug, baseUrl) {
+function resolveOgImageUrl(frontmatter, slug, baseUrl, ogCard) {
   const rawPageImage = frontmatter?.image || frontmatter?.imageOverride;
   const customOgImage = rawPageImage
     ? rawPageImage.startsWith('http://') || rawPageImage.startsWith('https://')
@@ -46,7 +61,7 @@ function resolveOgImageUrl(frontmatter, slug, baseUrl) {
         ? `${baseUrl}${rawPageImage}`
         : `${baseUrl}/${rawPageImage}`
     : undefined;
-  return customOgImage ?? `${baseUrl}${getOgImagePathForSlug(slug)}`;
+  return customOgImage ?? `${baseUrl}${getOgImagePathForSlug(slug, ogCard)}`;
 }
 
 /** Frontmatter `tocDepth`: 2 = ## in the left TOC, 3 = ## and ###. Default 2. */
@@ -137,7 +152,8 @@ export async function generateMetadata({ params }) {
     frontmatter?.summary ||
     frontmatter?.description ||
     DEFAULT_DESCRIPTION;
-  const ogImageUrl = resolveOgImageUrl(frontmatter, slug, baseUrl);
+  const ogCard = await getOgCard(slug, locale, frontmatter, guide ? 'guide' : 'page');
+  const ogImageUrl = resolveOgImageUrl(frontmatter, slug, baseUrl, ogCard);
 
   const hrefLangLocales = Object.keys(LOCALES);
   const alternates = {};
@@ -234,14 +250,10 @@ export default async function SlugPage({ params }) {
     );
 
     // Generate OG image at build time
-    let ogImagePath = null;
+    const ogCard = await getOgCard(slug, locale, frontmatter, 'guide');
     try {
       const { generateOgImageForRoute } = await import('@/lib/og-image');
-      ogImagePath = await generateOgImageForRoute({
-        title: frontmatter.title,
-        pageType: 'guide',
-        slug,
-      });
+      await generateOgImageForRoute({ ...ogCard, slug });
     } catch (err) {
       console.warn(`OG image skipped for guide "${slug}":`, err.message);
     }
@@ -250,7 +262,7 @@ export default async function SlugPage({ params }) {
 
     const guideFm = serializeFrontmatter(frontmatter);
 
-    const guideImageUrl = resolveOgImageUrl(guideFm, slug, baseUrl);
+    const guideImageUrl = resolveOgImageUrl(guideFm, slug, baseUrl, ogCard);
     const howToGraph = TOP_GUIDE_SLUGS.includes(slug)
       ? buildHowTo({
           baseUrl,
@@ -326,9 +338,10 @@ export default async function SlugPage({ params }) {
     );
 
     // Generate OG image at build time
+    const ogCard = await getOgCard(slug, locale, frontmatter, 'page');
     try {
       const { generateOgImageForRoute } = await import('@/lib/og-image');
-      await generateOgImageForRoute({ title: frontmatter.title, pageType: 'page', slug });
+      await generateOgImageForRoute({ ...ogCard, slug });
     } catch (err) {
       console.warn(`OG image skipped for page "${slug}":`, err.message);
     }
@@ -343,7 +356,7 @@ export default async function SlugPage({ params }) {
       locale,
       slug,
       frontmatter: fm,
-      imageUrl: resolveOgImageUrl(fm, slug, baseUrl),
+      imageUrl: resolveOgImageUrl(fm, slug, baseUrl, ogCard),
       howTo: null,
     });
 

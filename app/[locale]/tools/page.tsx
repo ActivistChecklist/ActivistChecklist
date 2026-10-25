@@ -37,7 +37,9 @@ export async function generateMetadata({ params }) {
   const canonical = locale === DEFAULT_LOCALE ? `${baseUrl}/tools/` : `${baseUrl}/${locale}/tools/`;
   const title = t('tools.metaTitle');
   const description = t('tools.metaDescription');
-  const ogImageUrl = `${baseUrl}${getOgImagePathForSlug('tools')}`;
+  // Same English card the page render generates, so the URL matches the file.
+  const tEn = await getTranslations({ locale: DEFAULT_LOCALE });
+  const ogImageUrl = `${baseUrl}${getOgImagePathForSlug('tools', { title: tEn('tools.title'), pageType: 'page' })}`;
 
   return {
     title,
