@@ -92,6 +92,9 @@
       "title": "Su questo sito",
       "label": "Chi siamo"
     },
+    "contribute": {
+      "title": "Contribute"
+    },
     "changelog": {
       "title": "Aggiornamenti recenti del sito",
       "label": "Aggiornamenti recenti del sito"
@@ -113,8 +116,8 @@
       "description": "Proteggiti dallo spyware e dai software di sorveglianza."
     },
     "action": {
-      "title": "Prepararsi per un'azione diretta",
-      "description": "Sicurezza digitale per azioni dirette e disobbedienza civile."
+      "title": "Prepare for an arrestable action",
+      "description": "Digital security for arrestable actions and civil disobedience."
     },
     "organizing": {
       "title": "Checklist per chi organizza azioni",
@@ -195,6 +198,7 @@
     "translationUnreviewedTitle": "Tradotto automaticamente",
     "translationUnreviewed": "Questa pagina è stata tradotta automaticamente. Finora solo il {approvalPercent}% della pagina è stato revisionato da una persona. Il resto del testo potrebbe contenere errori. <link>Aiutaci a revisionare questa traduzione</link>.",
     "nonUsThreatModel": "Non sei negli Stati Uniti? Alcuni strumenti indicati qui, comprese le app di messaggistica crittografata, sono illegali in certi paesi. Controlla le leggi del tuo paese prima di seguire questi consigli.",
+    "staleGuide": "This guide is more than <b>{years, plural, one {# year} other {# years}}</b> old. Some of its advice may be out of date.",
     "dismiss": "Chiudi"
   },
   "languageDetection": {
@@ -216,7 +220,6 @@
   },
   "meta": {
     "lastUpdatedOn": "Ultimo aggiornamento:",
-    "lastReviewedOn": "Ultima revisione:",
     "takesAbout": "Tempo stimato: circa",
     "viewLatestGuideAt": "Trovi la versione più recente della guida su"
   },
@@ -428,8 +431,8 @@
       "scope": "Protezione di base per telefono, account e chat di gruppo."
     },
     "goingOut": {
-      "title": "In giro",
-      "heading": "In giro: proteste, monitoraggio dell'ICE, azioni, viaggi",
+      "title": "Protests & travel",
+      "heading": "Protests & travel",
       "scope": "Ovunque gli sbirri o gli agenti di frontiera potrebbero prenderti il telefono."
     },
     "targeted": {
