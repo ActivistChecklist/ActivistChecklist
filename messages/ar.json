@@ -92,6 +92,9 @@
       "title": "عن هذا الموقع",
       "label": "من نحن"
     },
+    "contribute": {
+      "title": "Contribute"
+    },
     "changelog": {
       "title": "تحديثات الموقع الأخيرة",
       "label": "آخر تحديثات الموقع"
@@ -113,8 +116,8 @@
       "description": "احمِ نفسك من برامج التجسس وبرامج المراقبة."
     },
     "action": {
-      "title": "استعد لعمل مباشر",
-      "description": "الأمان الرقمي للعمل المباشر والعصيان المدني."
+      "title": "Prepare for an arrestable action",
+      "description": "Digital security for arrestable actions and civil disobedience."
     },
     "organizing": {
       "title": "قائمة تحقق لمنظِّمي الفعاليات",
@@ -195,6 +198,7 @@
     "translationUnreviewedTitle": "ترجمة آلية",
     "translationUnreviewed": "تمت ترجمة هذه الصفحة آليًا. تمت مراجعة {approvalPercent}% فقط من هذه الصفحة بشريًا حتى الآن. وقد تحتوي النصوص الأخرى على أخطاء. <link>ساعدنا في مراجعة هذه الترجمة</link>.",
     "nonUsThreatModel": "خارج الولايات المتحدة؟ بعض الأدوات هنا، بما في ذلك تطبيقات المراسلة المشفّرة، غير قانونية في بعض الدول. تحقق من قوانين بلدك قبل العمل بهذه الإرشادات.",
+    "staleGuide": "This guide is more than <b>{years, plural, one {# year} other {# years}}</b> old. Some of its advice may be out of date.",
     "dismiss": "تجاهل"
   },
   "languageDetection": {
@@ -216,7 +220,6 @@
   },
   "meta": {
     "lastUpdatedOn": "آخر تحديث في",
-    "lastReviewedOn": "آخر مراجعة في",
     "takesAbout": "يستغرق حوالي",
     "viewLatestGuideAt": "عرض أحدث نسخة من الدليل على"
   },
@@ -428,8 +431,8 @@
       "scope": "حماية أساسية لهاتفك وحساباتك ومحادثاتك الجماعية."
     },
     "goingOut": {
-      "title": "الخروج إلى الشارع",
-      "heading": "الخروج إلى الشارع: الاحتجاجات، مراقبة ICE، الفعاليات، السفر",
+      "title": "Protests & travel",
+      "heading": "Protests & travel",
       "scope": "أي مكان قد تأخذ فيه الشرطة أو عناصر الحدود هاتفك."
     },
     "targeted": {
