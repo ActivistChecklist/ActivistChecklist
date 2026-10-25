@@ -4,6 +4,9 @@ import { GUIDE_ICONS, PAGE_ICONS } from './icons';
 import navData from './navigation.json';
 
 // --- Resolve helpers ---
+//
+// navigation.json holds structure only (hrefs, kinds, menus, sections). Every
+// visible string comes from messages/en.json by key: see lib/navigation-i18n.js.
 
 const SOCIAL_ICON_MAP = {
   bluesky: SiBluesky,
@@ -17,10 +20,7 @@ function resolveItem(key) {
   const icon = GUIDE_ICONS[key];
   return {
     key,
-    label: raw.label,
-    title: raw.label,
     href: raw.href,
-    ...(raw.description && { description: raw.description }),
     ...(raw.kind && { kind: raw.kind }),
     ...(icon && { icon }),
   };
@@ -30,15 +30,13 @@ function resolveMenu(menuKey) {
   const menu = navData.menus[menuKey];
   const resolved = {
     key: menuKey,
-    label: menu.label,
     href: menu.href,
     type: 'dropdown',
     items: menu.items.map(resolveItem),
   };
   if (menu.columns) resolved.columns = menu.columns;
-  if (menu.footerLinkLabel) {
+  if (menu.footerLink) {
     resolved.footerLink = {
-      title: menu.footerLinkLabel,
       href: menu.href,
       type: 'full-width',
       icon: IoArrowForward,
@@ -120,7 +118,7 @@ export const navigationConfig = {
 export const footerConfig = {
   branding: SITE_BRANDING,
   sections: navData.footer.sections.map((section) => ({
-    title: section.title,
+    key: section.key,
     items: section.fromMenu ? resolveMenu(section.fromMenu).items : section.items.map(resolveItem),
   })),
   socialLinks: navData.footer.social.map(resolveSocialLink),

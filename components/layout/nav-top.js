@@ -106,7 +106,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                         href={social.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        aria-label={social.ariaLabel}
+                        aria-label={t(`footer.social.${social.key}AriaLabel`)}
                         className="inline-flex items-center justify-center h-9 w-9 rounded-md text-foreground/70 hover:text-foreground hover:bg-muted transition-colors"
                       >
                         <social.icon className="h-5 w-5" aria-hidden="true" />

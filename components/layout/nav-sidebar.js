@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   SidebarGroup,
   SidebarMenu,
@@ -9,11 +10,14 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { navigationConfig, findActiveSection, isSubItemActive } from '@/config/navigation';
+import { createIntlTranslator, getTranslatedNavItemFields } from '@/lib/navigation-i18n';
 import { cn } from '@/lib/utils';
 import Link from '@/components/Link';
 
 export function NavSidebar() {
   const pathname = usePathname();
+  const t = useTranslations();
+  const translateText = createIntlTranslator(t);
 
   // Find the current section based on the pathname
   const currentSection = findActiveSection(pathname);
@@ -42,7 +46,9 @@ export function NavSidebar() {
                   'border-link font-bold text-link hover:text-link hover:border-link',
               )}
             >
-              <Link href={item.href}>{item.title}</Link>
+              <Link href={item.href}>
+                {getTranslatedNavItemFields(item.key, item, translateText).title}
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         ))}
