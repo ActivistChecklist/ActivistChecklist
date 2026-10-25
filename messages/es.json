@@ -93,7 +93,7 @@
       "label": "Acerca de"
     },
     "contribute": {
-      "title": "Contribute"
+      "title": "Contribuye"
     },
     "changelog": {
       "title": "Actualizaciones recientes del sitio",
@@ -116,8 +116,8 @@
       "description": "Protégete del spyware y los programas de vigilancia."
     },
     "action": {
-      "title": "Prepare for an arrestable action",
-      "description": "Digital security for arrestable actions and civil disobedience."
+      "title": "Prepárate para una acción con riesgo de arresto",
+      "description": "Seguridad digital para acciones con riesgo de arresto y desobediencia civil."
     },
     "organizing": {
       "title": "Checklist para organizadores de acciones",
@@ -198,7 +198,7 @@
     "translationUnreviewedTitle": "Traducido automáticamente",
     "translationUnreviewed": "Esta página se tradujo automáticamente. Hasta ahora solo el {approvalPercent}% de la página fue revisado por una persona. El resto del texto puede tener errores. <link>Ayúdanos a revisar esta traducción</link>.",
     "nonUsThreatModel": "¿Fuera de EE. UU.? Algunas herramientas aquí, incluidas las apps de mensajería cifrada, son ilegales en ciertos países. Revisa las leyes locales antes de aplicar esta orientación.",
-    "staleGuide": "This guide is more than <b>{years, plural, one {# year} other {# years}}</b> old. Some of its advice may be out of date.",
+    "staleGuide": "Esta guía tiene más de <b>{years, plural, one {# año} other {# años}}</b>. Puede que algunos de sus consejos ya no estén al día.",
     "dismiss": "Cerrar"
   },
   "languageDetection": {
@@ -431,8 +431,8 @@
       "scope": "Protección básica para tu teléfono, cuentas y chats grupales."
     },
     "goingOut": {
-      "title": "Protests & travel",
-      "heading": "Protests & travel",
+      "title": "Protestas y viajes",
+      "heading": "Protestas y viajes",
       "scope": "Cualquier lugar donde los cops o agentes fronterizos puedan quitarte el teléfono."
     },
     "targeted": {
