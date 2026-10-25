@@ -92,6 +92,9 @@
       "title": "About this site",
       "label": "About"
     },
+    "contribute": {
+      "title": "Contribute"
+    },
     "changelog": {
       "title": "Recent site updates",
       "label": "Recent site updates"
@@ -113,8 +116,8 @@
       "description": "Protect yourself from spyware and surveillance software."
     },
     "action": {
-      "title": "Prepare for a direct action",
-      "description": "Digital security for direct actions and civil disobedience."
+      "title": "Prepare for an arrestable action",
+      "description": "Digital security for arrestable actions and civil disobedience."
     },
     "organizing": {
       "title": "Action organizer checklist",
@@ -216,7 +219,6 @@
   },
   "meta": {
     "lastUpdatedOn": "Last updated on",
-    "lastReviewedOn": "Last reviewed on",
     "takesAbout": "Takes about",
     "viewLatestGuideAt": "View the latest guide at"
   },
@@ -428,8 +430,8 @@
       "scope": "Baseline protection for your phone, accounts, and group chats."
     },
     "goingOut": {
-      "title": "Going out",
-      "heading": "Going out: protests, ICE watch, actions, travel",
+      "title": "Protests & travel",
+      "heading": "Protests & travel",
       "scope": "Anywhere police or border agents could take your phone."
     },
     "targeted": {

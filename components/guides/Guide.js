@@ -91,7 +91,7 @@ export default function Guide({
   if (frontmatter.lastUpdated) {
     metaBarItems.push({
       icon: <Calendar className="h-4 w-4 mr-1" />,
-      label: t('meta.lastReviewedOn'),
+      label: t('meta.lastUpdatedOn'),
       value: formatContentDate(frontmatter.lastUpdated, dateLocale),
     });
   }

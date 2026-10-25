@@ -1,178 +1,128 @@
 {
   "site": {
-    "title": "Activist Checklist",
-    "description": "Plain language steps for digital security, because protecting yourself helps keep your whole community safer."
+    "title": "Activist Checklist"
   },
   "staticPaths": {
     "pgpKeyFile": "/files/publickey.contact@activistchecklist.org.asc"
   },
   "items": {
     "home": {
-      "label": "Home",
       "href": "/"
     },
     "essentials": {
-      "label": "Security essentials",
-      "href": "/essentials/",
-      "description": "Core security practices every activist should follow."
+      "href": "/essentials/"
     },
     "protest": {
-      "label": "Prepare for a protest",
-      "href": "/protest/",
-      "description": "Digital security for anyone attending a protest."
+      "href": "/protest/"
     },
     "travel": {
-      "label": "Travel & flight security",
-      "href": "/travel/",
-      "description": "Digital security practices for activists traveling."
+      "href": "/travel/"
     },
     "signal": {
-      "label": "Signal security",
-      "href": "/signal/",
-      "description": "Secure your Signal messaging app for safer communications."
+      "href": "/signal/"
     },
     "whatsapp": {
-      "label": "WhatsApp security",
-      "href": "/whatsapp/",
-      "description": "Configure WhatsApp to protect your messages, groups, and contacts."
+      "href": "/whatsapp/"
     },
     "secondary": {
-      "label": "Secondary phone",
-      "href": "/secondary/",
-      "description": "Set up an extra phone for activism and protests."
+      "href": "/secondary/"
     },
     "emergency": {
-      "label": "Emergency planning",
-      "href": "/emergency/",
-      "description": "Establish an emergency support network in case you're detained or threatened."
+      "href": "/emergency/"
     },
     "spyware": {
-      "label": "Spyware protection",
-      "href": "/spyware/",
-      "description": "Protect yourself from spyware and surveillance software."
+      "href": "/spyware/"
     },
     "organizing": {
-      "label": "Action organizer checklist",
-      "href": "/organizing/",
-      "description": "For movement organizers and coordinators."
+      "href": "/organizing/"
     },
     "research": {
-      "label": "Action research & scouting",
-      "href": "/research/",
-      "description": "How to conduct research and browse the web anonymously."
+      "href": "/research/"
     },
     "federal": {
-      "label": "Federal workers",
-      "href": "/federal/",
-      "description": "Digital security guidance for federal employees."
+      "href": "/federal/"
     },
     "doxxing": {
-      "label": "Doxxing defense",
-      "href": "/doxxing/",
-      "description": "Protect yourself from doxxing and online harassment."
+      "href": "/doxxing/"
     },
     "action": {
-      "label": "Prepare for a direct action",
-      "href": "/action/",
-      "description": "Digital security for direct actions and civil disobedience."
+      "href": "/action/"
     },
     "ice": {
-      "label": "ICE watch digital security",
-      "href": "/ice/",
-      "description": "Digital security for ICE watch and rapid response networks."
+      "href": "/ice/"
     },
     "vpn": {
-      "label": "VPNs for activists",
       "href": "/vpn/",
       "kind": "explainer"
     },
     "movies": {
-      "label": "Movies, books, & podcasts",
       "href": "/movies/"
     },
     "resources": {
-      "label": "Resources",
       "href": "/resources/"
     },
     "police-door-poster": {
-      "label": "\"Police at the door\" poster",
       "href": "/police/",
       "kind": "printable"
     },
     "about": {
-      "label": "About",
       "href": "/about/"
     },
     "contribute": {
-      "label": "Contribute",
       "href": "/contribute/"
     },
     "contact": {
-      "label": "Contact",
       "href": "/contact/"
     },
     "privacy": {
-      "label": "Privacy",
       "href": "/privacy/"
     },
     "changelog": {
-      "label": "Recent site updates",
       "href": "/changelog/"
     },
     "news": {
-      "label": "News",
       "href": "/news/"
     },
     "flyer": {
-      "label": "Printable flyer",
       "href": "/flyer/",
       "kind": "printable"
     },
     "links": {
-      "label": "Remove link tracking",
       "href": "/links/",
       "kind": "explainer"
     },
     "party": {
-      "label": "Host a security party",
       "href": "/party/",
       "kind": "howto"
     },
     "signal-secure": {
-      "label": "Is Signal secure?",
       "href": "/signal-secure/",
       "kind": "explainer",
       "pairsWith": "signal"
     },
     "signal-ai": {
-      "label": "Is Apple Intelligence reading my Signal messages?",
       "href": "/signal-ai/",
       "kind": "explainer"
     },
     "lockdown": {
-      "label": "Lockdown Mode trade-offs",
       "href": "/lockdown/",
       "kind": "explainer",
       "pairsWith": "spyware"
     },
     "proton": {
-      "label": "How to use Proton safely",
       "href": "/proton/",
       "kind": "explainer"
     },
     "updates": {
-      "label": "Security update checker",
       "href": "/updates/",
       "kind": "tool"
     },
     "tools": {
-      "label": "Tools we built",
       "href": "/tools/"
     }
   },
   "menus": {
     "checklists": {
-      "label": "Security Checklists",
       "href": "/checklists/",
       "columns": 2,
       "items": [
@@ -185,15 +135,13 @@
         "emergency",
         "secondary"
       ],
-      "footerLinkLabel": "Browse all checklists"
+      "footerLink": true
     },
     "resources": {
-      "label": "Resources",
       "href": "/resources/",
       "items": ["tools", "links", "flyer", "movies", "resources"]
     },
     "about": {
-      "label": "About",
       "href": "/about/",
       "items": ["about", "contribute", "changelog", "contact", "privacy"]
     }
@@ -207,8 +155,8 @@
     },
     {
       "key": "goingOut",
-      "items": ["protest", "ice", "travel", "secondary", "action"],
-      "featured": ["protest", "ice", "travel", "secondary"],
+      "items": ["protest", "action", "ice", "travel", "secondary"],
+      "featured": ["protest", "action", "ice", "travel", "secondary"],
       "reads": []
     },
     {
@@ -228,7 +176,7 @@
   "footer": {
     "sections": [
       {
-        "title": "Navigation",
+        "key": "navigation",
         "items": [
           "home",
           "essentials",
@@ -243,7 +191,7 @@
         ]
       },
       {
-        "title": "Top Checklists",
+        "key": "topChecklists",
         "fromMenu": "checklists"
       }
     ],
@@ -253,21 +201,18 @@
     "bluesky": {
       "label": "Bluesky",
       "username": "@activistchecklist.org",
-      "href": "https://bsky.app/profile/activistchecklist.org",
-      "ariaLabel": "Follow us on Bluesky"
+      "href": "https://bsky.app/profile/activistchecklist.org"
     },
     "mastodon": {
       "label": "Mastodon",
       "username": "@ActivistChecklist",
       "href": "https://kolektiva.social/@activistchecklist",
-      "ariaLabel": "Follow us on Mastodon",
       "rel": "me"
     },
     "github": {
       "label": "GitHub",
       "username": "ActivistChecklist",
-      "href": "https://github.com/ActivistChecklist/ActivistChecklist",
-      "ariaLabel": "View our GitHub repository"
+      "href": "https://github.com/ActivistChecklist/ActivistChecklist"
     }
   }
 }
