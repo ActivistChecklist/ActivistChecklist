@@ -5,7 +5,7 @@ import PageNotices from '@/components/layout/PageNotices';
 import Link from '@/components/Link';
 import ChecklistSectionList from '@/components/ChecklistSectionList';
 import { getAllGuides } from '@/lib/content';
-import { staleReviewDate } from '@/lib/content-staleness';
+import { getGuideStaleness } from '@/lib/content-staleness';
 import { getSectionReadMinutes } from '@/lib/section-reads';
 import { NAV_ITEMS } from '@/config/navigation';
 
@@ -25,8 +25,8 @@ export default async function ChecklistsPage({ params }) {
 
   const staleReviewDates = {};
   for (const guide of getAllGuides(locale)) {
-    const date = staleReviewDate(guide.frontmatter.lastUpdated);
-    if (date) staleReviewDates[guide.frontmatter.slug || guide.slug] = date;
+    const staleness = getGuideStaleness(guide.frontmatter.lastUpdated);
+    if (staleness) staleReviewDates[guide.frontmatter.slug || guide.slug] = staleness.reviewDate;
   }
 
   return (

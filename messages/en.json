@@ -195,7 +195,7 @@
     "translationUnreviewedTitle": "Automatically translated",
     "translationUnreviewed": "This page was automatically translated. Only {approvalPercent}% of this page is human-reviewed so far. Other text may have errors. <link>Help us review this translation</link>.",
     "nonUsThreatModel": "Outside the US? Some tools here, including encrypted messaging apps, are illegal in certain countries. Check your local laws before acting on this guidance.",
-    "staleGuide": "This guide was last reviewed on {date}. Some of its advice may be out of date.",
+    "staleGuide": "This guide is more than <b>{years, plural, one {# year} other {# years}}</b> old. Some of its advice may be out of date.",
     "dismiss": "Dismiss"
   },
   "languageDetection": {

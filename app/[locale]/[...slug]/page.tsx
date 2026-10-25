@@ -21,8 +21,8 @@ import {
   serializeFrontmatter,
 } from '@/lib/content';
 import { resolveChecklistItem, resolveGuide, resolvePage } from '@/lib/content-draft';
-import { formatContentDate, getBaseUrl } from '@/lib/utils';
-import { staleReviewDate } from '@/lib/content-staleness';
+import { getBaseUrl } from '@/lib/utils';
+import { getGuideStaleness } from '@/lib/content-staleness';
 import { getOgImagePathForSlug } from '@/lib/og-image';
 import { LOCALES, DEFAULT_LOCALE } from '@/lib/i18n-config';
 import JsonLd from '@/components/JsonLd';
@@ -248,13 +248,14 @@ export default async function SlugPage({ params }) {
     }
 
     const guideNotices = buildContentNotices({ locale, isFallback, slug, t });
-    const reviewDate = staleReviewDate(frontmatter.lastUpdated);
-    if (reviewDate) {
+    const staleness = getGuideStaleness(frontmatter.lastUpdated);
+    if (staleness) {
       guideNotices.push({
         id: 'stale-guide',
         type: 'warning',
-        message: t('pageNotices.staleGuide', {
-          date: formatContentDate(reviewDate, LOCALES[locale]?.intlLocale || 'en-US'),
+        message: t.rich('pageNotices.staleGuide', {
+          years: staleness.yearsOld,
+          b: (chunks) => <strong className="font-semibold">{chunks}</strong>,
         }),
       });
     }
