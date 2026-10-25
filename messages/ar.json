@@ -93,7 +93,7 @@
       "label": "من نحن"
     },
     "contribute": {
-      "title": "Contribute"
+      "title": "ساهِم معنا"
     },
     "changelog": {
       "title": "تحديثات الموقع الأخيرة",
@@ -116,8 +116,8 @@
       "description": "احمِ نفسك من برامج التجسس وبرامج المراقبة."
     },
     "action": {
-      "title": "Prepare for an arrestable action",
-      "description": "Digital security for arrestable actions and civil disobedience."
+      "title": "التحضير لتحرّك قد ينتهي بالاعتقال",
+      "description": "الأمان الرقمي للتحرّكات التي قد تنتهي بالاعتقال وللعصيان المدني."
     },
     "organizing": {
       "title": "قائمة تحقق لمنظِّمي الفعاليات",
@@ -198,7 +198,7 @@
     "translationUnreviewedTitle": "ترجمة آلية",
     "translationUnreviewed": "تمت ترجمة هذه الصفحة آليًا. تمت مراجعة {approvalPercent}% فقط من هذه الصفحة بشريًا حتى الآن. وقد تحتوي النصوص الأخرى على أخطاء. <link>ساعدنا في مراجعة هذه الترجمة</link>.",
     "nonUsThreatModel": "خارج الولايات المتحدة؟ بعض الأدوات هنا، بما في ذلك تطبيقات المراسلة المشفّرة، غير قانونية في بعض الدول. تحقق من قوانين بلدك قبل العمل بهذه الإرشادات.",
-    "staleGuide": "This guide is more than <b>{years, plural, one {# year} other {# years}}</b> old. Some of its advice may be out of date.",
+    "staleGuide": "مضى على هذا الدليل أكثر من <b>{years, plural, zero {# سنة} one {سنة} two {سنتين} few {# سنوات} many {# سنة} other {# سنة}}</b>. قد تكون بعض نصائحه قديمة.",
     "dismiss": "تجاهل"
   },
   "languageDetection": {
@@ -431,8 +431,8 @@
       "scope": "حماية أساسية لهاتفك وحساباتك ومحادثاتك الجماعية."
     },
     "goingOut": {
-      "title": "Protests & travel",
-      "heading": "Protests & travel",
+      "title": "الاحتجاجات والسفر",
+      "heading": "الاحتجاجات والسفر",
       "scope": "أي مكان قد تأخذ فيه الشرطة أو عناصر الحدود هاتفك."
     },
     "targeted": {
