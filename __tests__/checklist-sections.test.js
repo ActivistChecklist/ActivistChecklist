@@ -4,7 +4,6 @@ import {
   findSectionForGuide,
   findSectionForPage,
   getNextInSection,
-  isOlderThanMonths,
   readingMinutes,
   slugFromHref,
 } from '../lib/checklist-sections';
@@ -71,6 +70,12 @@ describe('findSectionForPage', () => {
     expect(findSectionForPage(sections, items, 'party').key).toBe('organizing');
   });
 
+  it('prefers the section that features a page over an earlier one that lists it in reads', () => {
+    const withPartyRead = [{ key: 'basics', featured: [], reads: ['vpn', 'party'] }, ...sections];
+    expect(findSectionForPage(withPartyRead, items, 'party').key).toBe('organizing');
+    expect(findSectionForPage(withPartyRead, items, 'vpn').key).toBe('basics');
+  });
+
   it('returns null for pages in no section or unknown slugs', () => {
     expect(findSectionForPage(sections, items, 'about')).toBeNull();
     expect(findSectionForPage(sections, items, 'nope')).toBeNull();
@@ -114,23 +119,6 @@ describe('readingMinutes', () => {
     const tags = '<ChecklistItem slug="a-very-long-slug" /> '.repeat(500);
     const links = '[x](https://example.com/a/b/c) '.repeat(10);
     expect(readingMinutes(tags + links)).toBe(1);
-  });
-});
-
-describe('isOlderThanMonths', () => {
-  const now = new Date('2026-10-15');
-
-  it('flags a date past the cutoff', () => {
-    expect(isOlderThanMonths('2025-02-24', 12, now)).toBe(true);
-  });
-
-  it('does not flag a recent date', () => {
-    expect(isOlderThanMonths('2026-01-28', 12, now)).toBe(false);
-  });
-
-  it('does not flag missing or invalid dates', () => {
-    expect(isOlderThanMonths(undefined, 12, now)).toBe(false);
-    expect(isOlderThanMonths('not a date', 12, now)).toBe(false);
   });
 });
 

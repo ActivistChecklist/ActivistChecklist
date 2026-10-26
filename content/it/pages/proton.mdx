@@ -1,0 +1,250 @@
+---
+title: Come usare Proton in sicurezza
+seoTitle: Come usare Proton in sicurezza se fai attivismo (2026)
+seoDescription: Come usare Proton Mail, Proton Docs e Proton VPN in sicurezza se fai attivismo. Cosa è cifrato, cosa no, i malintesi più comuni e quando conviene usare altri strumenti.
+firstPublished: 2025-08-21
+lastUpdated: 2026-05-22
+---
+
+Questo articolo ti aiuta a capire se Proton Mail/Docs/Drive è lo strumento giusto per le tue esigenze e come usarlo in sicurezza se alla fine decidi di usarlo.
+
+**Quando Proton può fare al caso tuo:**
+
+* Se vuoi messaggi sicuri, usa Signal invece di Proton Mail. Ma se devi fare cose via email (come capita a quasi tuttə), Proton Mail fa sì che il contenuto delle tue email non possa essere consegnato agli sbirri se scrivi ad altre persone che usano Proton. (Gmail no.)
+* Se scrivi documenti insieme ad altre persone o condividi info in fogli di calcolo, con Proton Docs e Spreadsheets il contenuto dei tuoi documenti non può essere consegnato agli sbirri (anche se gli indirizzi email con cui chi collabora accede ai documenti *possono* esserlo). Google Workspace no.
+* Se ti serve una [VPN](/vpn/) gratuita, Proton VPN è sicura e veloce, anche se noi consigliamo soprattutto IVPN, un servizio a pagamento.
+* Se vuoi usare i servizi di Proton in modo anonimo: completa la configurazione usando [Tor Browser](https://www.torproject.org/download/), non inserire mai una carta di credito e non inserire mai un'email o un numero di telefono come dati di recupero. Poi accedi sempre a Proton con Tor Browser e mai con nessun altro browser. (Altre avvertenze più sotto.)
+
+**Perché continuiamo a consigliare Proton (anche se a volte l'azienda fa delle stronzate):**
+
+* Proton Docs è molto più facile da usare di CryptPad, e secondo noi la facilità d'uso conta tantissimo perché le persone usino davvero strumenti sicuri. E Proton è sicuro in un modo in cui i servizi di Google non lo sono.
+* Tutto considerato, le preoccupazioni per le dichiarazioni del CEO e per gli scivoloni del loro reparto marketing non cambiano la natura del servizio, che consideriamo sicuro, con le avvertenze che spieghiamo più sotto.
+* Il fatto che l'azienda abbia sede in Svizzera non mette i dati fuori dalla portata delle agenzie statunitensi, ma può offrire un po' più di protezione rispetto ai servizi con sede negli USA.
+
+Molte organizzazioni affini usano già Proton Mail: [Food Not Bombs](https://foodnotbombs.net/), [Waging Nonviolence](http://wagingnonviolence.org/), [PM Press](https://pmpress.org/), [Vision Change Win](https://visionchangewin.org/), [Palestine Legal](https://palestinelegal.org/), [The Intercept](https://theintercept.com/).
+
+<section id="worth-it">
+
+## Proton fa al caso tuo?
+
+Usare email e documenti cifrati può proteggerti in parecchie situazioni, ma non è la scelta giusta per tuttə.
+
+✅ Proton **potrebbe** essere una buona opzione se:
+
+* Conservi email/documenti che potrebbero mettere in pericolo te (e altre persone) se finissero nelle mani degli sbirri. (Nota: se la tua organizzazione riceve un subpoena, un mandato di comparizione, spesso dovrete consegnare i dati comunque. Proton ti proteggerebbe solo dal caso in cui gli sbirri ottengano i tuoi dati a tua insaputa, perché l'ordine del tribunale era accompagnato da un gag order, un ordine di riservatezza.)
+* Fai parte di un piccolo gruppo di persone di cui ti fidi per mantenere i propri account [sicuri](/essentials/). (Rispetto a Google, Proton offre meno protezioni per l'account.)
+* Vuoi accedere facilmente agli [alias email](https://proton.me/support/addresses-and-aliases), che ti aiutano a proteggere la tua privacy quando ti iscrivi a newsletter/servizi su altri siti.
+* Pensi che le grandi aziende tech come Google non siano etiche e vuoi tenere i tuoi dati in un posto più in linea con i tuoi valori.
+
+❌ Proton probabilmente **non** è una buona opzione per te se:
+
+* In realtà non hai bisogno della crittografia per le tue email o i tuoi documenti. Se pensi che sia improbabile che gli sbirri cerchino mai di ottenere un ordine del tribunale per i tuoi dati, o che i tuoi dati non siano abbastanza sensibili da creare problemi se venissero consegnati, Gmail e Google Docs sono spesso un'ottima opzione, perché sono facili da usare e la maggior parte delle persone li usa già.
+* Per te il furto mirato dell'account (phishing) è un rischio più grande rispetto a un'indagine o un subpoena da parte del governo. (Google Workspace offre protezioni più forti per la sicurezza dell'account.)
+* Stai cercando di restare anonimo/a. (Con Proton è possibile, ma devi stare [molto attento/a](#anonymous) a come lo usi.)
+* Hai bisogno che i destinatari dei tuoi messaggi (o le persone con cui condividi i tuoi documenti) restino completamente privati. (Valuta invece [Signal](https://signal.org/) o [CryptPad](https://cryptpad.fr/).)
+* Ti servono le funzioni di gestione del team di Proton, come usare più di 3 documenti con "chiunque abbia il link può modificare", ma non puoi permetterti di pagarle. (Valuta invece [CryptPad](https://cryptpad.fr/).)
+
+</section>
+
+<InlineCta />
+
+<section id="why-useful">
+
+## Perché i servizi di Proton sono utili per chi fa attivismo
+
+### ✅ Motivo n. 1: Proton offre documenti e fogli di calcolo collaborativi abbastanza facili da usare, ma completamente crittografati
+
+Prima dell'uscita di Proton Docs, di solito dovevamo scegliere tra facilità d'uso e crittografia end-to-end (CryptPad ecc.).
+
+Google Docs è facile da usare, ma è anche un rischio per chi fa attivismo, perché sappiamo che Google consegna spesso i dati agli sbirri quando il governo cerca di reprimere il dissenso. Di recente Google ha iniziato ad assecondare i cosiddetti "[mandati amministrativi](https://techcrunch.com/2026/02/10/google-sent-personal-and-financial-information-of-student-journalist-to-ice/)" dell'ICE, che non richiedono nemmeno la verifica di un giudice.
+
+Esistono altre piattaforme di documenti crittografati, come CryptPad, molto usate da chi fa attivismo. CryptPad è crittografato e gratuito, ma ha un'interfaccia molto difficile da usare e spesso non funziona bene da cellulare.
+
+**Proton offre un buon equilibrio tra le due cose: gli sbirri non possono vedere il contenuto dei tuoi documenti perché sono crittografati E ha un design abbastanza semplice da usare.** (Anche se non ha neanche lontanamente tutte le funzioni di Google Docs.)
+
+Crediamo che consigliare strumenti facili da usare sia uno dei modi migliori per farli adottare da più persone.
+
+### ✅ Motivo n. 2: Proton offre una crittografia delle email *limitata*, ma è lo strumento di email crittografata più facile da usare oggi disponibile
+
+Se gli sbirri ottengono un ordine del tribunale per accedere al tuo account Gmail, Google consegnerà i dati senza fare troppe storie. Se gli sbirri aggiungono un gag order, cioè un ordine di riservatezza, non saprai nemmeno che è successo fino a mesi dopo. L'email crittografata aiuta a proteggerti da questa minaccia.
+
+Ma diciamo subito la cosa più importante: <mark>se la tua sicurezza dipende dalla sicurezza delle tue comunicazioni, usa Signal invece dell'email.</mark>
+
+Detto questo, Proton offre davvero un servizio di email crittografata. Protegge alcuni dei tuoi messaggi, ma non tutti, ed è più limitata di quanto il loro materiale pubblicitario voglia farti credere. [Qui sotto trovi l'elenco completo dei limiti](#limitations).
+
+Più attiviste e attivisti usano Proton, più rendiamo difficile agli sbirri accedere alle nostre email quando cercano di reprimere il dissenso.
+
+### ✅ Motivo n. 3: Proton offre una VPN affidabile e gratuita
+
+Consigliamo vivamente di usare [IVPN](https://www.ivpn.net/) se puoi permetterti di pagare 6 $ al mese. Ma visto che molte persone attiviste hanno pochi soldi, per noi è importante proporre un'opzione VPN gratuita. Per essere un'opzione gratuita, Proton VPN è abbastanza veloce e affidabile.
+
+</section>
+
+<section id="equivoci">
+
+## Equivoci comuni (e potenzialmente pericolosi) su Proton
+
+Per usare Proton in modo sicuro, dobbiamo capirne i limiti.
+
+<h3 id="anonymous">❌ Equivoco n. 1: quando usi Proton sei anonimə</h3>
+
+Spesso si pensa che la "crittografia end-to-end" significhi anche che la tua identità è protetta. Anche se questo è (per lo più) vero quando usi Signal, non vale per nessun provider di email, per via di come funziona l'email. Crittografare messaggi e documenti non è la stessa cosa che essere anonimə.
+
+* Ogni volta che visiti un sito web, il tuo computer rivela il suo "indirizzo IP", che può essere usato per identificarti. Il tuo browser rivela anche una cosa chiamata "fingerprint", cioè un'impronta digitale che può essere usata per identificarti. (Puoi proteggerti da entrambi questi rischi usando [Tor Browser](https://www.torproject.org/download/).) Una VPN da sola non ti protegge dal fingerprinting del browser.
+* Se paghi un abbonamento Proton con la carta di credito, loro conoscono la tua identità e possono consegnarla agli sbirri. (Ci sono [opzioni di pagamento anonime](https://digitalgoods.proxysto.re/en) che puoi usare al loro posto.)
+* Se nelle informazioni di recupero inserisci il tuo numero di telefono o un altro indirizzo email collegato alla tua identità, anche questi dati possono essere consegnati.
+* Se inserisci il tuo nome completo nel campo "nome" delle impostazioni, stai rivelando direttamente la tua identità.
+
+**È *possibile* usare Proton in modo anonimo**, ma devi farlo con molta attenzione. Completa sempre la configurazione e accedi a Proton tramite [Tor Browser](https://www.torproject.org/download/), non usare mai una carta di credito e non inserire mai un numero di telefono o un'email di recupero collegati alla tua identità.
+
+<h3 id="limitations">❌ Equivoco n. 2: il 100% delle tue email è crittografato</h3>
+
+La crittografia delle email di Proton funziona solo sul **contenuto** dell'email (non sull'oggetto o sul destinatario) E solo quando le email sono **tra utenti Proton** (non Gmail o praticamente qualsiasi altro provider email).
+
+Ecco come funziona davvero la crittografia, e quali sono i suoi limiti:
+
+* **✅ Il contenuto delle email di Proton è davvero crittografato solo e soltanto se stai scrivendo a un altro utente Proton.** (O a qualcuno che sa come attivare la crittografia per il proprio dominio personalizzato, cosa rara.)
+* ❌ Quando scrivi a chiunque fuori da Proton Mail, l'email è completamente non crittografata nella sua casella di posta, quindi il provider (come Gmail) può leggerla e potrebbero accedervi hacker o sbirri. Nota: puoi usare la funzione di Proton per le [email protette da password](https://proton.me/support/password-protected-emails) per proteggere le email esterne. È una funzione che vale la pena usare.
+* ❌ L'oggetto e il destinatario non sono mai crittografati (nemmeno quando scrivi ad altri utenti Proton).
+* 🟡 Le email in arrivo (da qualsiasi provider) vengono crittografate dopo essere arrivate nel tuo account, ma tecnicamente Proton può vederle per un breve momento prima che vengano crittografate. Non ci sono stati casi pubblici in cui sia successo, ma Proton potrebbe essere costretta a tenere un registro attivo delle email in arrivo (da account non Proton come Gmail) prima che vengano crittografate. Sarebbe un passo piuttosto straordinario perché, a differenza del caso noto dell'[indirizzo IP di un'attivista per il clima](https://techcrunch.com/2021/09/06/protonmail-logged-ip-address-of-french-activist-after-order-by-swiss-authorities/) che è stato consegnato alle autorità, richiederebbe di scrivere nuovo codice.
+
+<h3 id="swiss">❌ Equivoco n. 3: il fatto che Proton abbia sede in Svizzera ti protegge dagli sbirri statunitensi che vogliono i dati del tuo account</h3>
+
+Il governo degli Stati Uniti usa una cosa chiamata Mutual Legal Assistance Treaty (MLAT, trattato di mutua assistenza giudiziaria) per far eseguire ordini dei tribunali in altri paesi.
+
+Questo significa che alcuni dei dati del tuo account Proton restano accessibili agli sbirri statunitensi, anche se l'azienda ha sede in Svizzera. ([Più sotto trovi un elenco di cosa è crittografato e cosa no](#encrypted-data).)
+
+Gli sbirri devono superare ostacoli in più, e i tribunali svizzeri devono valutare se la richiesta rispetta le leggi del loro paese. Se i tribunali svizzeri ritengono valida la richiesta, inviano un ordine a Proton e Proton deve rispettarlo (oppure affrontare conseguenze legali/economiche).
+
+Come spieghiamo più sotto, il fatto che Proton consegni dati agli sbirri non dice granché sulla sua reputazione. Si trova nella stessa situazione di qualsiasi altra app web o fornitore di servizi: deve rispettare la legge, altrimenti rischia multe pesanti e azioni legali. Quello che distingue un fornitore dall'altro è quanto è disposto a contestare gli ordini dei tribunali prima di rispettarli.
+
+**Secondo noi: il fatto che Proton abbia sede in Svizzera rende davvero più difficile agli sbirri accedere ai tuoi dati, e per chi fa attivismo questo conta. Ricorda solo che non *impedisce* loro di accedere ai tuoi dati.**
+
+Detto questo, la protezione più grande che ottieni usando Proton non viene dal fatto che l'azienda ha sede all'estero, ma dal fatto che i tuoi dati sono crittografati.
+
+</section>
+
+<section id="dati-crittografati">
+
+## Riepilogo di quali dati sono crittografati, o no, quando usi Proton
+
+Sapere quali dati potrebbero finire in mano agli sbirri ti aiuta a fare scelte sicure quando usi Proton.
+
+**✅ Dati crittografati (non possono essere consegnati agli sbirri)**
+
+* Il contenuto e i titoli dei tuoi documenti/file
+* Il contenuto delle tue email con altre persone che usano Proton
+* Il contenuto delle [email protette da password](https://proton.me/support/password-protected-emails) che invii a persone che non usano Proton
+
+**🟡 Parzialmente crittografati, ma senza garanzie complete**
+
+* Il contenuto delle email che scambi con persone che non usano Proton. Queste email vengono crittografate quando arrivano sui server di Proton o quando li lasciano. Però (come detto sopra) arrivano non crittografate, e in teoria Proton potrebbe essere costretta a intercettare quella copia non crittografata dell'email. Non è mai stato segnalato pubblicamente e pensiamo che sia abbastanza improbabile. Se succedesse, riguarderebbe solo le nuove email. Tutte le email già esistenti sarebbero state crittografate nel momento in cui sono state salvate nella tua casella di posta.
+
+**❌ Dati non crittografati (possono essere consegnati agli sbirri)**
+
+*Documenti:*
+
+* Gli indirizzi email delle persone con cui hai condiviso il documento (questo significa che un tribunale potrebbe obbligare Proton a consegnare tutti gli indirizzi email con cui hai condiviso qualsiasi tuo documento)
+* Dimensione del file, tipo di file, data di modifica
+
+*Email:*
+
+* [Oggetto delle email](https://proton.me/support/does-protonmail-encrypt-email-subjects)
+* Gli indirizzi email di tutte le persone a cui invii email
+* Quando l'email è stata inviata/ricevuta
+* La copia di un'email che hai inviato e che è arrivata nella casella di posta di qualcuno che non usa Proton (Proton non potrebbe consegnarla, ma l'altro provider email può leggerla e consegnarla)
+
+*Account:*
+
+* Il tuo indirizzo IP
+* Il numero di telefono o l'indirizzo email che hai impostato come "dati di recupero" del tuo account ([caso di esempio](https://cyberinsider.com/protonmail-discloses-user-data-leading-to-arrest-in-spain/))
+* La tua carta di credito (se hai un piano a pagamento)
+
+</section>
+
+<section id="dislike">
+
+## Perché Proton come azienda potrebbe non piacerti (anche se continuiamo a consigliare i suoi servizi)
+
+Tra attiviste e attivisti c'è un dibattito aperto: è sicuro per noi usare i servizi di [Proton](https://proton.me/)? I servizi di Proton si stanno diffondendo parecchio in questo periodo, e secondo noi è una buona cosa, perché permettono di mandare email in modo sicuro e di collaborare su documenti e fogli di calcolo. Però il software ha dei limiti di sicurezza, e ci sono anche diverse preoccupazioni legittime sull'azienda che spingono alcune persone attiviste a starne alla larga.
+
+Ci chiedono spesso perché consigliamo Proton, quindi abbiamo voluto spiegare per bene cosa protegge, cosa non protegge, come assicurarti di usarlo in modo sicuro e perché lo consigliamo anche se l'azienda a volte fa delle cose di merda. E se non ti abbiamo convinto, ti proponiamo anche un elenco di altre opzioni sicure.
+
+### 1. Il loro CEO ha elogiato il Partito Repubblicano e una persona nominata da Trump
+
+A gennaio 2025, il CEO di Proton [ha elogiato il Partito Repubblicano e una persona nominata da Trump](https://theintercept.com/2025/01/28/proton-mail-andy-yen-trump-republicans/). Per qualcunə era il segnale che Proton si stava schierando con le forze autoritarie e che i nostri dati lì non erano più al sicuro. Noi la vediamo diversamente. Per noi è stato un passo falso stupido da parte di un CEO che non capisce l'orientamento politico di chi usa Proton. È stata una cosa stupida e preoccupante, ma la maggior parte dei CEO è pessima. Se per te è un problema etico e vuoi usare un altro servizio, ha perfettamente senso. Detto questo, non basta minimamente per sostenere che il servizio in sé non sia più sicuro.
+
+### 2. Rispettano gli ordini del tribunale quando la legge svizzera lo impone
+
+Quando sentiamo che un'azienda come Proton è stata costretta a dare all'FBI dati su attiviste e attivisti, è comprensibile pensare che non sia più affidabile.
+
+Ma come abbiamo detto sopra: questo vale per qualsiasi fornitore in circolazione. A meno che non siano disposti a [chiudere pur di non rispettare un ordine del tribunale](https://www.theguardian.com/commentisfree/2014/may/20/why-did-lavabit-shut-down-snowden-email), prima o poi tutti, nessuno escluso, collaboreranno con gli sbirri.
+
+Alcuni fornitori vicini ai movimenti potrebbero usare strumenti legali per opporsi di più e ridurre la portata della richiesta, e per questo vale la pena prenderli in considerazione. (Vedi le [alternative](#alternatives) più sotto.)
+
+Una domanda più importante è se un fornitore collaborerà con gli sbirri *senza* aver ricevuto un ordine del tribunale. Per esempio, Ring a volte consegna i dati quando gli sbirri semplicemente li chiedono, anche senza un ordine del tribunale. Proton ha [un caso pubblico](https://theintercept.com/2025/09/12/proton-mail-journalist-accounts-suspended/) in cui ha sospeso un account senza un ordine del tribunale, per poi riattivarlo. Non ci sono casi pubblici in cui abbiano consegnato dati senza un ordine del tribunale.
+
+Puoi vedere quanti ordini del tribunale Proton contesta e quanti ne rispetta sulla sua [pagina sulla trasparenza](https://proton.me/legal/transparency).
+
+### 3. Il loro marketing è esagerato e fa affermazioni generiche che portano chi lo usa a credere di essere più protetto di quanto sia in realtà
+
+Il marketing di Proton fa spesso affermazioni fuorvianti sul livello di privacy e sicurezza che ottieni con i suoi servizi. Per esempio, la pagina promozionale di Proton Mail un tempo diceva che era una "email anonima". Qui sopra abbiamo mostrato perché nella maggior parte dei casi non è vero. Ora dicono "Email privata", che è più corretto.
+
+Allo stesso modo, la loro risposta quando l'FBI ha deanonimizzato un'attivista di Stop Cop City è stata pessima. Avrebbero potuto approfittarne per spiegare a chi usa il servizio come usarlo in modo anonimo. Invece si sono messi sulla difensiva e hanno cercato di [giocare con le parole](https://bsky.app/profile/bennjordan.bsky.social/post/3mgfp6gswz22g).
+
+Pensiamo che sia una pratica davvero pessima, perché porta le persone a fidarsi del servizio in situazioni in cui non dovrebbero. È una preoccupazione legittima e dobbiamo continuare a spingere Proton a fare meglio.
+
+Il marketing esagerato è pericoloso per la nostra comunità, ma il servizio di base resta sicuro ed è un enorme passo avanti rispetto a Google.
+
+Detto questo, pensiamo comunque che Proton sia un buono strumento per certi profili di rischio nelle comunità attiviste. Speriamo che un giorno nascano servizi ancora più in linea con i nostri valori e facili da usare anche per chi è alle prime armi.
+
+Anche se consigliamo Proton, dobbiamo assolutamente continuare a fare pressione perché si assumano la responsabilità delle loro azioni. Non dovremmo aver bisogno di scrivere un articolo come questo. Tante persone attiviste non vedranno mai questo articolo, sentiranno solo il consiglio "Proton è più sicuro per chi fa attivismo" e potrebbero pensare di essere più al sicuro di quanto siano davvero.
+
+</section>
+
+<section id="other-services">
+
+## E gli altri servizi di Proton?
+
+Se paghi Proton Ultimate (che ti dà accesso a tutti i loro servizi), potresti voler usare tutto quello che offre la loro suite. Detto questo, pensiamo che per la maggior parte degli altri loro prodotti ci siano opzioni migliori.
+
+* **Proton VPN:** te la consigliamo se ti serve un'opzione gratuita, ma [IVPN](https://www.ivpn.net/) fa molto di più per proteggere il tuo anonimato.
+* **Proton Pass:** Va bene, ma [1Password](https://1password.com/) è più facile da usare e [Bitwarden](https://bitwarden.com/) ha un piano gratuito ed è più potente.
+* **Proton Calendar:** In realtà è uno strumento piuttosto valido. Però è difficile far funzionare bene un calendario cifrato insieme ai calendari di altre persone.
+* **Proton Authenticator:** Anche questo va bene, ma se usi già 1Password è meglio usare l'autenticatore integrato. Se ti serve uno strumento a sé, usa [Ente Auth](https://ente.com/auth/).
+* **Proton Meet:** Al momento si appoggia a un'azienda statunitense, quindi il governo degli Stati Uniti può obbligare l'azienda a consegnare gli indirizzi IP di chi lo usa. Meglio usare le [videochiamate di gruppo di Signal](https://support.signal.org/hc/en-us/articles/360052977792-Group-Calling-Voice-or-Video) oppure [Zoom con la crittografia end-to-end](https://support.zoom.com/hc/en/article?id=zm_kb\&sysparm_article=KB0065408) attivata. (Usa sempre una [VPN](/vpn/).)
+
+</section>
+
+<section id="alternative">
+
+## Alternative a Proton
+
+Se decidi che i servizi di Proton non fanno per te o per il tuo gruppo, ci sono alternative che puoi prendere in considerazione.
+
+**Documenti/Fogli/Drive**
+
+* [**Google Docs**](https://workspace.google.com/products/docs/): Anche con tutti i rischi che comporta usare Google, pensiamo che in alcune situazioni sia davvero una buona scelta. Se non ti preoccupa che gli sbirri possano accedere più facilmente ai tuoi dati, né la sorveglianza aziendale che Google porta avanti di continuo, potrebbe andare bene per le tue email e i tuoi documenti.
+* [**CryptPad**](https://cryptpad.fr/): Usato spesso per lavorare insieme sui documenti. Se ti serve un'alternativa cifrata a Google Forms, i moduli di CryptPad sono un'opzione piuttosto valida.
+* [**Next Cloud Office**](https://nextcloud.com/office/): Servono competenze tecniche per installare e gestire una versione del software ospitata da te. L'interfaccia è meno facile da usare, ma hai il pieno controllo dei dati. La cosa più semplice è affidarsi a un servizio di hosting gestito (come [Cloud68](https://cloud68.co/managed-hosting/nextcloud)), oppure puoi fare da te (usando qualcosa come [Coop Cloud](https://coopcloud.tech/)).
+
+**Email**
+
+* [**Signal**](https://signal.org/): Non usare l'email per comunicazioni **sensibili**. Usa [Signal](/signal/).
+* [**RiseUp.net**](https://riseup.net/): Provider email vicino ai movimenti. Però serve un codice d'invito da parte di chi è già iscritto, e questo lo rende difficile da ottenere per molte persone. Offre una crittografia "zero knowledge" simile a quella di Proton. Qui trovi un'[intervista](https://pramen.io/en/2020/06/interview-with-riseup-tech-collective/) che hanno rilasciato sul rischio di essere intercettati.
+* [**Tuta**](https://tuta.com/): email con crittografia end-to-end. A differenza di Proton, la crittografia non funziona con altri provider email. Funziona solo quando scrivi ad altre persone che usano Tuta, e questo la rende parecchio meno efficace. Come Proton, ha una funzione di email "protetta da password" per scrivere a utenti esterni.
+
+</section>
+
+<section id="learn-more">
+
+## Per saperne di più
+
+* [L'analisi di Proton sulle leggi svizzere sulla privacy](https://proton.me/blog/switzerland)
+* [La crittografia "zero-access" di Proton (email con chi non usa Proton)](https://proton.me/learn/encryption/types-of-encryption/zero-access)
+* [La pagina di Proton con le "informazioni per le forze dell'ordine"](https://proton.me/legal/law-enforcement)
+* [Il report sulla trasparenza di Proton](https://proton.me/legal/transparency)
+* Freedom of the Press Foundation: [Proton Mail non serve per l'anonimato](https://freedom.press/digisec/blog/proton-mail-is-not-for-anonymity/) e [Guida all'uso di Proton Mail](https://freedom.press/digisec/blog/protonmail-pro/)
+* [Webinar](https://mayfirst.coop/posts/2025/can-the-feds-get-my-data/) di May First su quanto i tuoi dati siano al sicuro all'estero. Sono un provider di hosting vicino ai movimenti che fornisce l'hosting per le email di RiseUp.net. Include i mandati di comparizione dell'FBI che hanno ricevuto e un video dell'FBI che sequestra uno dei loro server. Non siamo d'accordo con le conclusioni del webinar, secondo cui l'hosting all'estero sarebbe in realtà più rischioso perché richiederebbe una rappresentanza legale all'estero, ma volevamo comunque segnalarlo qui come parte della discussione. (Basta trovare una rappresentanza legale nel paese/nella giurisdizione in questione.)
+
+</section>

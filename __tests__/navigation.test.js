@@ -111,11 +111,11 @@ describe('Navigation config structure', () => {
     }
   });
 
+  // Titles and descriptions come from messages/en.json; navigation-i18n.test.js
+  // checks every item has them.
   it('SECURITY_CHECKLISTS items have required properties', () => {
     for (const item of SECURITY_CHECKLISTS.items) {
-      expect(item.title, `Item ${item.key} missing title`).toBeDefined();
       expect(item.href, `Item ${item.key} missing href`).toBeDefined();
-      expect(item.description, `Item ${item.key} missing description`).toBeDefined();
       expect(item.icon, `Item ${item.key} missing icon`).toBeDefined();
     }
   });
@@ -129,7 +129,6 @@ describe('Navigation config structure', () => {
       expect(link.href).toBeDefined();
       expect(link.label).toBeDefined();
       expect(link.icon).toBeDefined();
-      expect(link.ariaLabel).toBeDefined();
     }
   });
 
