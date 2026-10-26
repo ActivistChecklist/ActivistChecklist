@@ -139,35 +139,33 @@
       }
     }
   }
-
-  @media (max-width: 639px) {
-    .def[popover] {
-      position: fixed;
-      inset: auto 0 0 0;
-      width: 100%;
-      overflow-y: hidden;
-      border-radius: 16px 16px 0 0;
-      border-bottom: 0;
-      padding-bottom: 1.5rem;
-    }
-
-    @media (prefers-reduced-motion: no-preference) {
-      .def[popover]:not(:popover-open) {
-        opacity: 1;
-        transform: translateY(100%);
-      }
-
-      @starting-style {
-        .def[popover]:popover-open {
-          opacity: 1;
-          transform: translateY(100%);
-        }
-      }
-    }
-  }
 }
 
 @media (max-width: 639px) {
+  .def[popover] {
+    position: fixed;
+    inset: auto 0 0 0;
+    width: 100%;
+    overflow-y: hidden;
+    border-radius: 16px 16px 0 0;
+    border-bottom: 0;
+    padding-bottom: 1.5rem;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .def[popover]:not(:popover-open) {
+      opacity: 1;
+      transform: translateY(100%);
+    }
+
+    @starting-style {
+      .def[popover]:popover-open {
+        opacity: 1;
+        transform: translateY(100%);
+      }
+    }
+  }
+
   /* disable background scrolling when the popup is open */
   :root:has(.def[popover]:popover-open) {
     overflow: hidden;
