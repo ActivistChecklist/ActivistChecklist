@@ -18,12 +18,12 @@
 
 .def[popover] {
   @apply shadow-lg;
+  margin: auto;
   padding: 1rem;
   border: 1px solid hsl(var(--border));
   border-radius: 12px;
   background-color: hsl(var(--popover));
   width: min(20rem, calc(100vw - 2rem));
-  margin-top: 0.2rem;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -37,40 +37,32 @@
 
   .def[popover]:not(:popover-open) {
     opacity: 0;
-    transform: translateY(8px);
+  }
+
+  .def::backdrop {
+    transition:
+      background-color 0.3s ease,
+      overlay 0.3s allow-discrete,
+      display 0.3s allow-discrete;
+  }
+
+  .def[popover]:not(:popover-open)::backdrop {
+    background-color: transparent;
   }
 
   @starting-style {
     .def[popover]:popover-open {
       opacity: 0;
-      transform: translateY(8px);
+    }
+
+    .def[popover]:popover-open::backdrop {
+      background: transparent;
     }
   }
+}
 
-  @media (max-width: 639px) {
-    .def[popover]:not(:popover-open) {
-      opacity: 1;
-      transform: translateY(100%);
-    }
-
-    .def::backdrop {
-      transition:
-        background-color 0.3s ease,
-        overlay 0.3s allow-discrete,
-        display 0.3s allow-discrete;
-    }
-
-    @starting-style {
-      .def[popover]:popover-open {
-        opacity: 1;
-        transform: translateY(100%);
-      }
-
-      .def[popover]:popover-open::backdrop {
-        background: transparent;
-      }
-    }
-  }
+.def::backdrop {
+  @apply bg-black/80;
 }
 
 .defHead {
@@ -99,9 +91,11 @@
 
 .defBody {
   display: block;
+  max-height: 30vh;
   margin-top: 0.5rem;
   font-weight: normal;
   color: hsl(var(--popover-foreground));
+  overflow-y: auto;
 }
 
 @media (hover: hover) {
@@ -120,34 +114,63 @@
   }
 }
 
-@media (min-width: 640px) {
-  .def[popover] {
-    position: absolute;
-    position-area: block-end span-inline-end;
-    position-try-fallbacks: flip-block, flip-inline;
+@supports (position-area: block-end) {
+  @media (min-width: 640px) {
+    .def[popover] {
+      position: absolute;
+      position-area: block-end span-inline-end;
+      position-try-fallbacks: flip-block, flip-inline;
+      margin-top: 0.2rem;
+    }
+
+    .def::backdrop {
+      background: transparent;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .def[popover]:not(:popover-open) {
+        transform: translateY(8px);
+      }
+
+      @starting-style {
+        .def[popover]:popover-open {
+          transform: translateY(8px);
+        }
+      }
+    }
   }
 
-  .def::backdrop {
-    background: transparent;
+  @media (max-width: 639px) {
+    .def[popover] {
+      position: fixed;
+      inset: auto 0 0 0;
+      width: 100%;
+      overflow-y: hidden;
+      border-radius: 16px 16px 0 0;
+      border-bottom: 0;
+      padding-bottom: 1.5rem;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .def[popover]:not(:popover-open) {
+        opacity: 1;
+        transform: translateY(100%);
+      }
+
+      @starting-style {
+        .def[popover]:popover-open {
+          opacity: 1;
+          transform: translateY(100%);
+        }
+      }
+    }
   }
 }
 
 @media (max-width: 639px) {
-  .def[popover] {
-    position: fixed;
-    inset: auto 0 0 0;
-    width: 100%;
-    border-radius: 16 16 0 0;
-    border-bottom: 0;
-    padding-bottom: 1.5rem;
-  }
-
-  .def::backdrop {
-    @apply bg-black/80;
-  }
-
   /* disable background scrolling when the popup is open */
   :root:has(.def[popover]:popover-open) {
     overflow: hidden;
+    overscroll-behavior: contain;
   }
 }

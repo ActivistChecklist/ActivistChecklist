@@ -5,16 +5,20 @@ import { FaQuestionCircle } from 'react-icons/fa';
 import { IoCloseOutline } from 'react-icons/io5';
 
 export default function Term({ slug, children }) {
-  const t = useTranslations();
+  const t = useTranslations('definitions');
   const popupId = useId();
+
+  // if a slug is missing or incorrect, fall back to the original content
+  if (!(t.has(slug + '.term') && t.has(slug + '.definition'))) {
+    return children;
+  }
 
   return (
     <>
       <button
+        type="button"
         popoverTarget={popupId}
         popoverTargetAction="toggle"
-        aria-labelledby={'term-' + popupId}
-        aria-describedby={'def-' + popupId}
         className={styles.term}
       >
         {children}
@@ -23,11 +27,10 @@ export default function Term({ slug, children }) {
 
       <span popover="auto" id={popupId} data-pagefind-ignore="all" className={styles.def}>
         <span className={styles.defHead}>
-          <span id={'term-' + popupId} className={styles.defTitle}>
-            {t('definitions.' + slug + '.term')}
-          </span>
+          <span className={styles.defTitle}>{t(slug + '.term')}</span>
           <button
-            aria-label="Close"
+            type="button"
+            aria-label={t('closeAriaLabel')}
             popoverTarget={popupId}
             popoverTargetAction="hide"
             className={styles.defClose}
@@ -35,9 +38,7 @@ export default function Term({ slug, children }) {
             <IoCloseOutline className={styles.closeIcon} size={20} />
           </button>
         </span>
-        <span id={'def-' + popupId} className={styles.defBody}>
-          {t('definitions.' + slug + '.definition')}
-        </span>
+        <span className={styles.defBody}>{t(slug + '.definition')}</span>
       </span>
     </>
   );
