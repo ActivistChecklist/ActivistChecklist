@@ -833,5 +833,24 @@
       "secondaryCta": "Lista de defensa contra doxxing",
       "openSource": "Las cuatro son <repos>open source</repos>. Si alguna no funciona, o necesitas algo que todavía no hemos creado, <contact>avísanos</contact>."
     }
+  },
+  "definitions": {
+    "closeAriaLabel": "Cerrar",
+    "people-search-sites": {
+      "term": "Sitios de búsqueda de personas",
+      "definition": "Sitios web que recopilan y venden información personal (como tu dirección, tu número de teléfono y tus familiares) a cualquiera que esté dispuesto a pagar. Los policías, los acosadores y la gente que quiere doxearte pueden comprar estos datos."
+    },
+    "data-broker": {
+      "term": "Corredor de datos",
+      "definition": "Una empresa que recopila información personal como tu dirección, tu número de teléfono y tus familiares a partir de registros públicos y otras fuentes, y luego la vende. Los policías, los acosadores y la gente que quiere doxearte pueden comprar estos datos."
+    },
+    "doxxing": {
+      "term": "Doxxing (o doxing)",
+      "definition": "Un tipo de acoso en el que se hace pública información personal (como el nombre legal completo, la dirección de casa, el correo electrónico, el número de teléfono y más) con la intención de acosar o intimidar a la víctima."
+    },
+    "vpn": {
+      "term": "VPN (red privada virtual)",
+      "definition": "Una app en tu teléfono o computadora que redirige y cifra todo tu tráfico de internet a través de sus servidores. Así tu proveedor de internet no puede ver lo que navegas, y los sitios web que visitas no pueden ver tu dirección IP."
+    }
   }
 }
