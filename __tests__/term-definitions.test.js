@@ -2,6 +2,12 @@ import { describe, it, expect } from 'vitest';
 import fs from 'fs';
 import path from 'path';
 import messages from '../messages/en.json';
+import {
+  inlineMarkdownHrefs,
+  isInternalHref,
+  isSafeHref,
+  termLinkSlug,
+} from '@/lib/inline-markdown';
 
 // <Term> silently falls back to plain text when its slug has no definition,
 // so a typo in content would quietly drop the popup. Catch that here.
@@ -30,28 +36,58 @@ describe('term definitions', () => {
     }
   });
 
-  // <Term> drops a source link that is missing its name or isn't https / site-relative
-  it('every source link has a name and an https or site-relative url', () => {
+  // definitions are inline Markdown; an HTML tag would show up as literal text
+  it('definitions use Markdown, not HTML tags', () => {
     for (const [slug, entry] of definitions) {
+      expect(entry.definition, slug).not.toMatch(/<\/?[a-zA-Z][\w-]*[\s>]/);
+    }
+  });
+
+  // <Term> drops a link whose url isn't https or site-relative
+  it('every source and inline link has a safe url', () => {
+    for (const [slug, entry] of definitions) {
+      for (const href of inlineMarkdownHrefs(entry.definition)) {
+        if (href.startsWith('term:')) continue;
+        expect(isSafeHref(href), `${slug}: ${href}`).toBe(true);
+      }
       if (entry.url === undefined && entry.source === undefined) continue;
-      expect(entry.url, slug).toMatch(/^(https:\/\/|\/(?!\/))/);
+      expect(isSafeHref(entry.url ?? ''), `${slug}: ${entry.url}`).toBe(true);
       expect(entry.source?.trim(), slug).toBeTruthy();
     }
   });
 
-  it('every internal source link points at an existing page and checklist item', () => {
+  // a [text](term:slug) link to a missing or malformed slug renders as plain text
+  it('every term link points at another existing definition', () => {
     for (const [slug, entry] of definitions) {
-      if (!entry.url?.startsWith('/')) continue;
-      const [, page, anchor] = entry.url.match(/^\/([^/#]+)\/(?:#(.+))?$/) ?? [];
-      expect(page, `${slug}: ${entry.url}`).toBeTruthy();
-      const file = ['guides', 'pages']
-        .map((dir) => path.join(CONTENT_DIR, 'en', dir, `${page}.mdx`))
-        .find((candidate) => fs.existsSync(candidate));
-      expect(file, `${slug}: no page for ${entry.url}`).toBeTruthy();
-      if (anchor) {
-        expect(fs.readFileSync(file, 'utf8'), `${slug}: no #${anchor} on ${page}`).toContain(
-          `slug="${anchor}"`,
-        );
+      for (const href of inlineMarkdownHrefs(entry.definition)) {
+        if (!href.startsWith('term:')) continue;
+        const target = termLinkSlug(href);
+        expect(target, `${slug}: malformed ${href}`).toBeTruthy();
+        expect(target, `${slug} links to itself`).not.toBe(slug);
+        expect(
+          messages.definitions[target]?.definition,
+          `${slug}: no definition for ${href}`,
+        ).toBeTruthy();
+      }
+    }
+  });
+
+  it('every internal link points at an existing page and anchor', () => {
+    for (const [slug, entry] of definitions) {
+      const hrefs = [entry.url, ...inlineMarkdownHrefs(entry.definition)];
+      for (const href of hrefs.filter((h) => h && isInternalHref(h))) {
+        const [, page, anchor] = href.match(/^\/([^/#]+)\/(?:#(.+))?$/) ?? [];
+        expect(page, `${slug}: ${href}`).toBeTruthy();
+        const file = ['guides', 'pages']
+          .map((dir) => path.join(CONTENT_DIR, 'en', dir, `${page}.mdx`))
+          .find((candidate) => fs.existsSync(candidate));
+        expect(file, `${slug}: no page for ${href}`).toBeTruthy();
+        if (anchor) {
+          // a checklist item slug or a custom heading id
+          const source = fs.readFileSync(file, 'utf8');
+          const found = source.includes(`slug="${anchor}"`) || source.includes(`{#${anchor}}`);
+          expect(found, `${slug}: no #${anchor} on ${page}`).toBe(true);
+        }
       }
     }
   });

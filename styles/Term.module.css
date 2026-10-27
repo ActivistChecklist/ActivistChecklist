@@ -76,6 +76,10 @@
   @apply mt-3 block text-sm text-muted-foreground;
 }
 
+.sourceIcon {
+  @apply ml-1 inline-block h-3.5 w-3.5 align-[-0.1em];
+}
+
 @media (hover: hover) {
   .term:hover {
     @apply rounded bg-primary/10;

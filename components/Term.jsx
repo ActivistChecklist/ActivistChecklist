@@ -1,14 +1,49 @@
 import Link from '@/components/Link';
 import styles from '@/styles/Term.module.css';
-import { X } from 'lucide-react';
+import { ExternalLink, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useId } from 'react';
+import { Fragment, useId } from 'react';
 import { FaQuestionCircle } from 'react-icons/fa';
 import { usePathname } from '@/i18n/navigation';
+import { isInternalHref, isSafeHref, parseInlineMarkdown } from '@/lib/inline-markdown';
 
 const samePath = (a, b) => a.replace(/\/+$/, '') === (b || '').replace(/\/+$/, '');
 
-export default function Term({ slug, children }) {
+// external links get an icon so readers can tell they're leaving the site
+function TermLink({ href, children }) {
+  return (
+    <Link href={href} className="link">
+      {children}
+      {!isInternalHref(href) && <ExternalLink className={styles.sourceIcon} aria-hidden="true" />}
+    </Link>
+  );
+}
+
+// a term link opens that term's popup on top of this one; inside that second popup,
+// term links are plain text so two terms that link to each other can't nest forever
+function renderInlineMarkdown(nodes, nested) {
+  return nodes.map((node, i) => {
+    if (node.type === 'text') return node.value;
+    const children = renderInlineMarkdown(node.children, nested);
+    if (node.type === 'strong') return <strong key={i}>{children}</strong>;
+    if (node.type === 'em') return <em key={i}>{children}</em>;
+    if (node.type === 'term') {
+      if (nested) return <Fragment key={i}>{children}</Fragment>;
+      return (
+        <Term key={i} slug={node.slug} nested>
+          {children}
+        </Term>
+      );
+    }
+    return (
+      <TermLink key={i} href={node.href}>
+        {children}
+      </TermLink>
+    );
+  });
+}
+
+export default function Term({ slug, children, nested = false }) {
   const t = useTranslations();
   const popupId = useId();
   const pathname = usePathname();
@@ -21,10 +56,9 @@ export default function Term({ slug, children }) {
 
   // source URLs come from translated message files, so only allow https or site-relative links
   const url = t.has(key + '.url') && t.has(key + '.source') ? t(key + '.url') : '';
-  const isInternal = url.startsWith('/') && !url.startsWith('//');
   // skip a link to the page the reader is already on
-  const onThatPage = isInternal && samePath(url.split('#')[0], pathname);
-  const sourceUrl = (url.startsWith('https://') || isInternal) && !onThatPage ? url : null;
+  const onThatPage = isInternalHref(url) && samePath(url.split('#')[0], pathname);
+  const sourceUrl = isSafeHref(url) && !onThatPage ? url : null;
 
   return (
     <>
@@ -52,16 +86,13 @@ export default function Term({ slug, children }) {
           </button>
         </span>
         <span className={styles.defBody}>
-          {t(key + '.definition')}
+          {/* raw, not t(): definitions are inline Markdown with no ICU arguments */}
+          {renderInlineMarkdown(parseInlineMarkdown(t.raw(key + '.definition')), nested)}
           {sourceUrl && (
             <span className={styles.defSource}>
               {t.rich('definitions.learnMore', {
                 source: t(key + '.source'),
-                link: (chunks) => (
-                  <Link href={sourceUrl} className="link">
-                    {chunks}
-                  </Link>
-                ),
+                link: (chunks) => <TermLink href={sourceUrl}>{chunks}</TermLink>,
               })}
             </span>
           )}
