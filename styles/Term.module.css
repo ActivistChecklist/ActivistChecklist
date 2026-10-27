@@ -96,6 +96,7 @@
   font-weight: normal;
   color: hsl(var(--popover-foreground));
   overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 @media (hover: hover) {
@@ -169,6 +170,5 @@
   /* disable background scrolling when the popup is open */
   :root:has(.def[popover]:popover-open) {
     overflow: hidden;
-    overscroll-behavior: contain;
   }
 }
