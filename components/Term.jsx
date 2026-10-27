@@ -1,15 +1,16 @@
 import styles from '@/styles/Term.module.css';
+import { X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useId } from 'react';
 import { FaQuestionCircle } from 'react-icons/fa';
-import { IoCloseOutline } from 'react-icons/io5';
 
 export default function Term({ slug, children }) {
-  const t = useTranslations('definitions');
+  const t = useTranslations();
   const popupId = useId();
+  const key = 'definitions.' + slug;
 
   // if a slug is missing or incorrect, fall back to the original content
-  if (!(t.has(slug + '.term') && t.has(slug + '.definition'))) {
+  if (!(t.has(key + '.term') && t.has(key + '.definition'))) {
     return children;
   }
 
@@ -27,18 +28,18 @@ export default function Term({ slug, children }) {
 
       <span popover="auto" id={popupId} data-pagefind-ignore="all" className={styles.def}>
         <span className={styles.defHead}>
-          <span className={styles.defTitle}>{t(slug + '.term')}</span>
+          <span className={styles.defTitle}>{t(key + '.term')}</span>
           <button
             type="button"
-            aria-label={t('closeAriaLabel')}
+            aria-label={t('definitions.closeAriaLabel')}
             popoverTarget={popupId}
             popoverTargetAction="hide"
             className={styles.defClose}
           >
-            <IoCloseOutline className={styles.closeIcon} size={20} />
+            <X className={styles.closeIcon} size={20} />
           </button>
         </span>
-        <span className={styles.defBody}>{t(slug + '.definition')}</span>
+        <span className={styles.defBody}>{t(key + '.definition')}</span>
       </span>
     </>
   );
