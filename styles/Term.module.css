@@ -72,6 +72,10 @@
   @apply mt-2 block max-h-[min(15rem,calc(100dvh-8rem))] overflow-y-auto overscroll-contain font-normal text-popover-foreground;
 }
 
+.defSource {
+  @apply mt-3 block text-sm text-muted-foreground;
+}
+
 @media (hover: hover) {
   .term:hover {
     @apply rounded bg-primary/10;
