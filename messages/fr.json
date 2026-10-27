@@ -833,5 +833,24 @@
       "secondaryCta": "Checklist de défense contre le doxxing",
       "openSource": "Les quatre sont <repos>open source</repos>. Si l'un d'eux ne marche pas, ou s'il te faut quelque chose qu'on n'a pas encore créé, <contact>dis-le-nous</contact>."
     }
+  },
+  "definitions": {
+    "closeAriaLabel": "Fermer",
+    "people-search-sites": {
+      "term": "Sites de recherche de personnes",
+      "definition": "Des sites web qui collectent et vendent des informations personnelles (comme ton adresse, ton numéro de téléphone et tes proches) à n'importe qui prêt à payer. Les flics, les harceleurs et les gens qui cherchent à te doxxer peuvent acheter ces données."
+    },
+    "data-broker": {
+      "term": "Courtier en données",
+      "definition": "Une entreprise qui collecte des informations personnelles comme ton adresse, ton numéro de téléphone et tes proches à partir de registres publics et d'autres sources, puis les revend. Les flics, les harceleurs et les gens qui cherchent à te doxxer peuvent acheter ces données."
+    },
+    "doxxing": {
+      "term": "Doxxing (ou doxing)",
+      "definition": "Une forme de harcèlement qui consiste à rendre publiques des informations personnelles (comme le nom légal complet, l'adresse du domicile, l'adresse e-mail, le numéro de téléphone, etc.) dans le but de harceler et/ou d'intimider la personne ciblée."
+    },
+    "vpn": {
+      "term": "VPN (réseau privé virtuel)",
+      "definition": "Une appli sur ton téléphone ou ton ordinateur qui redirige et chiffre tout ton trafic internet via ses serveurs. Ça cache ta navigation à ton fournisseur d'accès internet, et ça cache ton adresse IP aux sites que tu visites."
+    }
   }
 }
