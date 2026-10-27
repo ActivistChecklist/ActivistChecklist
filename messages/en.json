@@ -833,5 +833,24 @@
       "secondaryCta": "Doxxing Defense Checklist",
       "openSource": "All four are <repos>open source</repos>. If one is broken, or you need something we have not built yet, <contact>let us know</contact>."
     }
+  },
+  "definitions": {
+    "closeAriaLabel": "Close",
+    "people-search-sites": {
+      "term": "People Search Sites",
+      "definition": "Websites that collect and sell personal information (such as your address, phone number, and relatives) to anyone willing to pay for it. Police, stalkers, and people trying to dox you can buy this data."
+    },
+    "data-broker": {
+      "term": "Data Broker",
+      "definition": "A company that collects personal information like your address, phone number, and relatives from public records and other sources, then sells it. Police, stalkers, and people trying to dox you can buy this data."
+    },
+    "doxxing": {
+      "term": "Doxxing (or Doxing)",
+      "definition": "A type of harassment where personal information (such as full legal name, home address, email, phone number, and more) is made public with the intent to harass and/or intimidate the victim."
+    },
+    "vpn": {
+      "term": "VPN (Virtual Private Network)",
+      "definition": "An app on your phone or computer that redirects and encrypts all internet traffic through its servers. This keeps your internet browsing hidden from your internet provider, and keeps your IP address hidden from websites you visit."
+    }
   }
 }
