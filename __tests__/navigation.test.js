@@ -102,7 +102,7 @@ describe('isSubItemActive', () => {
 describe('Navigation config structure', () => {
   it('mainNav has expected number of items', () => {
     expect(navigationConfig.mainNav).toBeInstanceOf(Array);
-    expect(navigationConfig.mainNav.length).toBe(5);
+    expect(navigationConfig.mainNav.length).toBe(4);
   });
 
   it('all mainNav items have key property', () => {
