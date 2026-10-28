@@ -40,7 +40,7 @@ describe('buildHreflangAlternateRefs', () => {
   it('emits en, every other locale, and x-default (including in production)', () => {
     vi.stubEnv('NODE_ENV', 'production');
     const refs = buildHreflangAlternateRefs('/signal/');
-    expect(refs.map((r) => r.hreflang)).toEqual(['en', 'es', 'fr', 'it', 'x-default']);
+    expect(refs.map((r) => r.hreflang)).toEqual(['en', 'es', 'fr', 'it', 'ja', 'x-default']);
     expect(refs.find((r) => r.hreflang === 'en').href).toBe(
       'https://activistchecklist.org/signal/',
     );
