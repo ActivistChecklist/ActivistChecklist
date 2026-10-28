@@ -1,0 +1,1025 @@
+{
+  "site": {
+    "title": "Digital Security Checklists for Activists",
+    "description": "Plain language steps for digital security. Because protecting yourself helps keep your whole community safer."
+  },
+  "faq": {
+    "defaultTitle": "Frequently asked questions"
+  },
+  "nav": {
+    "home": "Home",
+    "checklists": "Security Checklists",
+    "news": "News",
+    "resources": "Resources",
+    "about": "About",
+    "browseAllChecklists": "Browse all checklists"
+  },
+  "navItems": {
+    "essentials": {
+      "title": "Security essentials",
+      "description": "Core security practices every activist should follow."
+    },
+    "search": {
+      "dialogTitle": "Search the site",
+      "dialogDescription": "Use the search bar to find relevant content across the site.",
+      "placeholder": "Search...",
+      "searching": "Searching...",
+      "popularHeading": "Popular searches",
+      "topGuidesHeading": "Top guides",
+      "pressEnter": "Press {kbd} to search"
+    },
+    "signal": {
+      "title": "Signal security",
+      "description": "Secure your Signal messaging app for safer communications."
+    },
+    "protest": {
+      "title": "Prepare for a protest",
+      "description": "Digital security for anyone attending a protest."
+    },
+    "ice": {
+      "title": "ICE watch digital security",
+      "description": "Digital security for ICE watch and rapid response networks."
+    },
+    "doxxing": {
+      "title": "Doxxing defense",
+      "description": "Protect yourself from doxxing and online harassment."
+    },
+    "travel": {
+      "title": "Travel & flight security",
+      "description": "Digital security practices for activists traveling."
+    },
+    "emergency": {
+      "title": "Emergency planning",
+      "description": "Establish an emergency support network in case you're detained or threatened."
+    },
+    "secondary": {
+      "title": "Secondary phone",
+      "description": "Set up an extra phone for activism and protests."
+    },
+    "links": {
+      "title": "Remove link tracking",
+      "label": "Remove link tracking"
+    },
+    "policeDoorPoster": {
+      "title": "Police at the door poster",
+      "label": "\"Police at the door\" poster"
+    },
+    "flyer": {
+      "title": "Printable flyer",
+      "label": "Printable flyer"
+    },
+    "vpn": {
+      "title": "VPNs for activists",
+      "label": "VPNs for activists"
+    },
+    "movies": {
+      "title": "Movies, books, & podcasts",
+      "label": "Movies, books, & podcasts"
+    },
+    "updates": {
+      "title": "Security update checker",
+      "label": "Security update checker"
+    },
+    "tools": {
+      "title": "Tools we built",
+      "label": "Tools we built"
+    },
+    "glossary": {
+      "title": "Terms & definitions",
+      "label": "Terms & definitions"
+    },
+    "resources": {
+      "title": "Resources",
+      "label": "Resources"
+    },
+    "about": {
+      "title": "About this site",
+      "label": "About"
+    },
+    "contribute": {
+      "title": "Contribute"
+    },
+    "changelog": {
+      "title": "Recent site updates",
+      "label": "Recent site updates"
+    },
+    "contact": {
+      "title": "Contact",
+      "label": "Contact"
+    },
+    "privacy": {
+      "title": "Privacy",
+      "label": "Privacy"
+    },
+    "whatsapp": {
+      "title": "WhatsApp security",
+      "description": "Configure WhatsApp to protect your messages, groups, and contacts."
+    },
+    "spyware": {
+      "title": "Spyware protection",
+      "description": "Protect yourself from spyware and surveillance software."
+    },
+    "action": {
+      "title": "Prepare for an arrestable action",
+      "description": "Digital security for arrestable actions and civil disobedience."
+    },
+    "organizing": {
+      "title": "Organize an arrestable action",
+      "description": "For movement organizers and coordinators."
+    },
+    "research": {
+      "title": "Action research & scouting",
+      "description": "How to conduct research and browse the web anonymously."
+    },
+    "federal": {
+      "title": "Federal workers",
+      "description": "Digital security guidance for federal employees."
+    },
+    "party": {
+      "title": "Host a security party",
+      "label": "Host a security party"
+    },
+    "proton": {
+      "title": "How to use Proton safely",
+      "label": "How to use Proton safely"
+    },
+    "lockdown": {
+      "title": "Lockdown Mode trade-offs",
+      "label": "Lockdown Mode trade-offs"
+    },
+    "signalSecure": {
+      "title": "Is Signal secure?",
+      "label": "Is Signal secure?"
+    },
+    "signalAi": {
+      "title": "Is Apple Intelligence reading my Signal messages?",
+      "label": "Is Apple Intelligence reading my Signal messages?"
+    }
+  },
+  "hero": {
+    "title": "Digital Security Checklists for Activists",
+    "description": "Plain language steps for digital security. Because protecting yourself helps keep your whole community safer.",
+    "primaryCta": "Digital Security Essentials",
+    "secondaryCta": "Host a security party"
+  },
+  "trustPoints": {
+    "experienceTitle": "Built from experience",
+    "experienceDescription": "Our guides draw from real organizing work and direct feedback from activists. While every situation is unique, we aim to share practical insights that can help inform your decisions.",
+    "updatedTitle": "Regularly updated",
+    "updatedDescription": "Our content is regularly reviewed by organizers who understand security concerns. We work to keep information current as risks and technologies evolve."
+  },
+  "misconceptions": {
+    "sectionTitle": "Common Misconceptions",
+    "sectionDescription": "When we start talking about digital security, we often hear these concerns. We think there's more to the story.",
+    "nothingToHideTitle": "\"I have nothing to hide\"",
+    "nothingToHideDescription": "The more engaged you are in any social movement work, the more your data can be used to map networks of activists. The best time to start protecting yourself is <b>before</b> you're as deeply involved.",
+    "alreadyKnowTitle": "\"They already know everything\"",
+    "alreadyKnowDescription": "While data collection is widespread, you can significantly reduce your digital footprint and protect future activities.",
+    "dontCareTitle": "\"They don't care about what I'm doing\"",
+    "dontCareDescription": "Mass surveillance affects everyone. Your data can be used to profile communities, predict protests, or target those you care about. Protecting your communications helps protect all of us."
+  },
+  "featured": {
+    "sectionTitle": "Featured In"
+  },
+  "homepage": {
+    "browseAll": "See all checklists",
+    "trustHeading": "Simple guides to keep us more safe",
+    "trustDescription": "We built this because digital security shouldn't be overwhelming. We take a harm reduction approach: start where you are and do what you can.",
+    "latestNewsHeading": "Latest Surveillance News",
+    "viewAllNews": "View all news",
+    "toolsHeading": "Tools we built",
+    "toolsDescription": "Free tools we made to go along with the checklists, for the steps that are hard to finish on your own.",
+    "viewAllTools": "See all tools",
+    "recentUpdatesHeading": "Recent Site Updates",
+    "viewAllUpdates": "View all updates",
+    "noRecentChanges": "No recent changes available"
+  },
+  "translationFallback": {
+    "message": "This page is not yet available in your language. You are viewing the English version.",
+    "suggest": "You can use your browser's built-in translation feature to translate this page."
+  },
+  "pageNotices": {
+    "translationUnreviewedTitle": "Automatically translated",
+    "translationUnreviewed": "This page was automatically translated. Only {approvalPercent}% of this page is human-reviewed so far. Other text may have errors. <link>Help us review this translation</link>.",
+    "nonUsThreatModel": "Outside the US? Some tools here, including encrypted messaging apps, are illegal in certain countries. Check your local laws before acting on this guidance.",
+    "staleGuide": "This guide is more than <b>{years, plural, one {# year} other {# years}}</b> old. Some of its advice may be out of date.",
+    "dismiss": "Dismiss"
+  },
+  "languageDetection": {
+    "message": "This site is available in {language}.",
+    "switchButton": "Switch to {language}",
+    "dismiss": "Dismiss"
+  },
+  "languageSwitcher": {
+    "ariaLabel": "Switch language"
+  },
+  "themeSwitcher": {
+    "placeholderAriaLabel": "Toggle theme",
+    "ariaLabel": "Theme: {theme}. Change theme",
+    "title": "Change theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "active": "Active"
+  },
+  "meta": {
+    "lastUpdatedOn": "Last updated on",
+    "takesAbout": "Takes about",
+    "viewLatestGuideAt": "View the latest guide at"
+  },
+  "footer": {
+    "branding": {
+      "title": "Activist Checklist",
+      "description": "Plain language steps for digital security, because protecting yourself helps keep your whole community safer."
+    },
+    "stayUpdated": "Stay Updated",
+    "sections": {
+      "navigation": "Navigation",
+      "topChecklists": "Top Checklists"
+    },
+    "disclaimer": "Heads up: We provide info and resources, not legal advice. Consult an attorney for your specific situation.",
+    "licenseNotice": "Content available under <cc>Creative Commons BY-SA</cc>. See our <sources>sources</sources>. Source code available on <github>GitHub</github>.",
+    "social": {
+      "blueskyAriaLabel": "Follow us on Bluesky",
+      "githubAriaLabel": "View our GitHub repository",
+      "mastodonAriaLabel": "Follow us on Mastodon"
+    },
+    "onion": {
+      "label": "Tor",
+      "ariaLabel": "Visit our Tor onion service"
+    }
+  },
+  "newsletter": {
+    "subscribe": "Subscribe",
+    "successLong": "You're subscribed! Want to message a friend on Signal to let them know about this project?",
+    "successShort": "Thanks for subscribing!",
+    "placeholders": {
+      "emailLong": "Enter your email",
+      "emailShort": "Email"
+    }
+  },
+  "inlineCta": {
+    "heading": "When their tactics change, our advice does too",
+    "description": "ICE, police, and corporate surveillance keep adding new tools. We update these guides to keep pace. Subscribe to hear when something important shifts.",
+    "buttonText": "Subscribe",
+    "emailAriaLabel": "Email address",
+    "privacyLink": "Privacy policy"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "viewChecklist": "View checklist",
+    "menuPathSeparator": "then"
+  },
+  "search": {
+    "placeholder": "Search...",
+    "dialogTitle": "Search site content",
+    "dialogDescription": "Search across all pages and guides on this site",
+    "close": "Close search",
+    "mostReadHeading": "Most-read guides",
+    "resultsLabel": "Search results",
+    "resultCount": "{count, plural, =0 {No results} one {# result} other {# results}}",
+    "searching": "Searching...",
+    "noResults": "No results found for \"{query}\"",
+    "noResultsHint": "Try fewer words, or another word for the same thing.",
+    "contactPrompt": "Can't find it? Tell us what you were looking for",
+    "unavailable": "Search isn't available right now. Try reloading the page.",
+    "untitled": "Untitled",
+    "keyNavigate": "to move",
+    "keyOpen": "to open",
+    "keyClose": "to close"
+  },
+  "notFound": {
+    "title": "Oops! This page doesn't exist",
+    "backToHome": "Back to Home",
+    "tryAnother": "Show another random \"missing page\" message",
+    "variations": {
+      "goneUnderground": {
+        "title": "Gone underground",
+        "message": "This page has disappeared! Maybe it's organizing something..."
+      },
+      "nothingToSee": {
+        "title": "Nothing to see here",
+        "message": "This page is practicing good OPSEC and staying off the grid."
+      },
+      "solidarity": {
+        "title": "Solidarity forever",
+        "message": "The page you're looking for is out on the picket line."
+      },
+      "securityCulture": {
+        "title": "Practicing good security culture",
+        "message": "This page is using end-to-end encryption... maybe a bit too well."
+      },
+      "whoseStreets": {
+        "title": "Whose streets?",
+        "message": "Our streets! But this particular URL leads nowhere..."
+      },
+      "identity": {
+        "title": "Identity protected",
+        "message": "This page is exercising its right to remain anonymous."
+      },
+      "directAction": {
+        "title": "Direct action",
+        "message": "This page is out disrupting business as usual."
+      },
+      "firedUp": {
+        "title": "Fired up",
+        "message": "This page is busy lighting the spark of revolution."
+      },
+      "mutualAid": {
+        "title": "Mutual aid station",
+        "message": "This page has relocated to help distribute resources to the community."
+      },
+      "beWater": {
+        "title": "Be water",
+        "message": "Like water, this page flows where it's needed most."
+      }
+    }
+  },
+  "riskLevel": {
+    "everyoneLabel": "everyone",
+    "mediumLabel": "medium-threat",
+    "highLabel": "high-threat",
+    "everyoneDefault": "This section is for anyone doing activism or advocacy work.",
+    "mediumDefault": "This section is for you if you are in a leadership role or you are doing activism that is more likely to be targeted by the state or your opposition.",
+    "highDefault": "This section is for you are in a high-profile role or your activism involves high-risk work that could result in serious consequences or retaliation.",
+    "forYouIf": "This section is for you if:",
+    "forYou": "This section is for:",
+    "whoIsThisFor": "Who is this section for?"
+  },
+  "checklistItem": {
+    "informationalItem": "Informational item",
+    "copyLink": "Copy link to this item",
+    "linkCopied": "Link copied!",
+    "markAsDone": "Mark as done",
+    "completed": "Completed",
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "importantBadge": "Important"
+  },
+  "sectionProgress": {
+    "count": "{done}/{total}",
+    "label": "{done} of {total} complete"
+  },
+  "tableOfContents": {
+    "title": "On this page"
+  },
+  "copyButton": {
+    "copy": "Copy",
+    "copyText": "Copy text",
+    "copied": "Copied",
+    "ariaLabel": "Copy to clipboard"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "intro": "Your feedback helps make this resource more useful and secure for everyone. We welcome suggestions for:",
+    "suggestion1": "Correcting any inaccuracies or outdated information",
+    "suggestion2": "Making our guides clearer and easier to understand",
+    "suggestion3": "Improving security recommendations",
+    "suggestion4": "Suggesting new topics we should cover",
+    "sendMessage": "Send us a message",
+    "recommended": "(recommended)",
+    "successMessage": "Message sent successfully! We'll get back to you soon.",
+    "otherWays": "Other ways to reach us",
+    "githubTitle": "Public Feedback (GitHub)",
+    "githubDescription": "If you're okay with sharing publicly, you can submit feedback, questions, and feature requests through our GitHub repository.",
+    "githubLink": "Visit GitHub Repository →",
+    "emailTitle": "Encrypted Email",
+    "emailDescription": "Using Proton Mail? Your messages will be automatically encrypted. For other providers, you can use our PGP key. Or you can just email this address unencrypted.",
+    "pgpLink": "View PGP Key →"
+  },
+  "contactForm": {
+    "messageLabel": "Your Message",
+    "messagePlaceholder": "Enter your message...",
+    "charactersRemaining": "{count} characters remaining",
+    "responseQuestion": "Would you like a response?",
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "Enter your email address",
+    "emailNote": "Note on email replies: Unless you use Proton Mail, your email provider can read any replies we send to your message.",
+    "signalUsernameLabel": "Signal Username",
+    "signalUsernamePlaceholder": "username.12",
+    "signalUsernameExample": "@snowden.04",
+    "signalUsernameHelp": "Your username is different than your display name. Find your username at Signal > User Icon (top right) > Settings. It will be listed near the top, just underneath your phone number.",
+    "signalPhoneLabel": "Signal Phone Number",
+    "signalPhonePlaceholder": "Enter your Signal phone number",
+    "sending": "Sending...",
+    "sendMessage": "Send Message",
+    "privacyLabel": "Privacy:",
+    "privacyText": "Your message is securely encrypted and sent to our Proton Mail account. We don't collect any personal information about you.",
+    "errorMessage": "Failed to send message. Please try again later.",
+    "responseNone": "No response needed (your message remains anonymous)",
+    "responseSignalUsername": "Reply by Signal (username)",
+    "responseSignalPhone": "Reply by Signal (phone number)",
+    "responseEmail": "Reply by Email",
+    "mostSecure": "Most Secure"
+  },
+  "feedbackCta": {
+    "heading": "Have Questions?",
+    "description": "Let us know if you have questions or feedback so we can make these guides as useful as possible.",
+    "inputPlaceholder": "Type your question...",
+    "sendButton": "Send",
+    "dialogTitle": "Send us a message",
+    "successMessage": "Thanks for your feedback! We'll review it and use it to improve the guides. If you're finding the site valuable, please help spread the word!"
+  },
+  "relatedGuides": {
+    "headingBlock": "Keep learning with these related guides",
+    "headingFooter": "If you found this helpful, also check out these guides"
+  },
+  "checklists": {
+    "title": "Checklists",
+    "intro": "Every checklist and explainer, grouped by situation. New here? Start with <link>Security Essentials</link>.",
+    "documentTitle": "Checklists | Activist Checklist"
+  },
+  "checklistSections": {
+    "basics": {
+      "title": "The basics",
+      "heading": "Everyone should do these",
+      "scope": "Baseline protection for your phone, accounts, and group chats."
+    },
+    "goingOut": {
+      "title": "Protests & travel",
+      "heading": "Protests & travel",
+      "scope": "Anywhere police or border agents could take your phone."
+    },
+    "targeted": {
+      "title": "Being targeted",
+      "heading": "Protect yourself from being targeted",
+      "scope": "Doxxing, harassment, investigations, or agents at your door."
+    },
+    "organizing": {
+      "title": "Organizing others",
+      "heading": "Organizing others",
+      "scope": "Running actions and getting your group secure."
+    },
+    "descriptions": {
+      "party": "A template agenda for getting your group through the checklists together."
+    },
+    "allChecklists": "All {count, plural, one {# checklist} other {# checklists}}",
+    "readMinutes": "{minutes} min read",
+    "explainer": "Explainer",
+    "howTo": "How-to guide",
+    "readGuide": "Read the guide",
+    "understandWhy": "Understand why",
+    "lastReviewed": "Last reviewed {date}"
+  },
+  "news": {
+    "title": "Surveillance News",
+    "description": "Latest news about state surveillance and threats facing social movements.",
+    "tipInvitation": "Have news you think should be included?",
+    "tipLink": "Send us a tip",
+    "tipSuffix": "and help keep our community informed.",
+    "noItems": "No news items found.",
+    "paywallBypassNotice": "This link bypasses the paywall.",
+    "seeOriginal": "See original"
+  },
+  "changelog": {
+    "title": "Recent site updates",
+    "description": "A history of changes to checklists, pages, and resources on the site.",
+    "last30Days": "Last 30 days",
+    "previousChanges": "Previous changes",
+    "noEntries": "No changelog entries found.",
+    "majorUpdate": "Major update"
+  },
+  "updates": {
+    "metaTitle": "Is your device still receiving security updates? | Activist Checklist",
+    "metaDescription": "Check whether your phone, tablet, watch, or laptop is still getting security updates. Out-of-date devices accumulate publicly known vulnerabilities and are easier to hack if it is seized or targeted.",
+    "title": "Is your device still receiving security updates?",
+    "intro": "If your device isn't using the latest operating system, hackers and law enforcement can break into it and access all your data.",
+    "searchLabel": "Type your device model",
+    "searchHelpAriaLabel": "Help finding your device model",
+    "searchHelp": "Need help finding it? Select your operating system above for guidance.",
+    "searchPlaceholder": "e.g. iPhone 12 Pro, Pixel 7, Windows 10",
+    "searchAriaLabel": "Search for your device or operating system",
+    "clearAriaLabel": "Clear search",
+    "editSelectionAriaLabel": "Change device, return to search",
+    "noMatches": "No matches in our list.",
+    "noMatchesHelp": "Try the manufacturer name (e.g. \"Galaxy A14\" instead of just \"A14\").",
+    "noMatchesSupported": "We currently track Apple, Google, Samsung, Motorola, OnePlus, Nokia, plus iOS, iPadOS, macOS, Android, and Windows.",
+    "noMatchesWindowsLaptop": "Windows laptop manufacturers don't announce when they stop offering security updates, so checking the laptop <b>model</b> won't tell you. Check your Windows <b>version</b> instead. That's what determines whether you're still receiving updates.",
+    "noMatchesWindowsPathLabel": "How to check your Windows version:",
+    "loading": "Loading device list...",
+    "loadError": "We couldn't load the device list. <retryLink>Try again</retryLink> or check <link>endoflife.date</link> directly.",
+    "snapshotStaleBanner": "Our device list may be out of date. Last updated {date}. <link>Check endoflife.date directly</link>",
+    "releasedYearHint": "released {year}",
+    "categoryPill": {
+      "phone": "Phone",
+      "tablet": "Tablet",
+      "watch": "Watch",
+      "laptop": "Laptop",
+      "desktop": "Desktop",
+      "os": "OS"
+    },
+    "platform": {
+      "prompt": "Or pick where to start:",
+      "helpPrompt": "Need help finding your device model?",
+      "apple": "Apple",
+      "android": "Android",
+      "windows": "Windows",
+      "other": "Other"
+    },
+    "subCategory": {
+      "prompt": "What kind of {platform} device?",
+      "back": "Back",
+      "iphone": "iPhone",
+      "ipad": "iPad",
+      "iphoneIpad": "iPhone / iPad",
+      "appleWatch": "Apple Watch",
+      "mac": "Mac / MacBook",
+      "samsung": "Samsung Galaxy",
+      "pixel": "Google Pixel",
+      "motorola": "Motorola",
+      "oneplus": "OnePlus",
+      "nokia": "Nokia",
+      "android": "Android",
+      "androidOs": "Android (OS only)",
+      "windows": "Windows"
+    },
+    "breadcrumb": {
+      "ariaLabel": "Picked category, click to change",
+      "clear": "Clear category"
+    },
+    "findYourModel": {
+      "label": "How to find your device model:",
+      "labelWindows": "How to check your Windows version:",
+      "iphone": "<settings>Settings app</settings> on your home screen → General → About → Model Name",
+      "ipad": "<settings>Settings app</settings> on your home screen → General → About → Model Name",
+      "iphoneIpad": "<settings>Settings app</settings> on your home screen → General → About → Model Name",
+      "appleWatch": "Watch app on iPhone → My Watch → General → About → Model",
+      "mac": "<apple>Apple menu</apple> in the top menu bar → About This Mac → Overview",
+      "samsung": "<settings>Settings app</settings> on your phone → About phone → Model number",
+      "pixel": "<settings>Settings app</settings> on your phone → About phone → Model",
+      "motorola": "<settings>Settings app</settings> on your phone → About phone → Model number",
+      "oneplus": "<settings>Settings app</settings> on your phone → About device → Model number",
+      "nokia": "<settings>Settings app</settings> on your phone → About phone → Model",
+      "android": "<settings>Settings app</settings> on your phone → About phone → Model number",
+      "androidOs": "<settings>Settings app</settings> on your phone → About phone → Android version",
+      "windows": "Press Windows key + R → type <code>winver</code> → Enter",
+      "windowsCaveat": "Windows laptop manufacturers don't announce when they stop offering security updates, so checking the laptop <b>model</b> won't tell you. Check your Windows <b>version</b> instead. That's what determines whether you're still receiving updates."
+    },
+    "otherInfo": {
+      "title": "Other devices",
+      "body": "We currently track Apple, Google, Samsung, Motorola, OnePlus, and Nokia devices, plus iOS, iPadOS, macOS, Android, and Windows. For anything else, <link>search online</link> for \"is [DEVICE MODEL] still receiving security updates.\""
+    },
+    "result": {
+      "checkAnother": "Check another device",
+      "source": "Source: <link>endoflife.date</link>",
+      "settingsPath": {
+        "ios": "<settings>Settings app</settings> on your home screen → General → Software Update → Update Now",
+        "ipados": "<settings>Settings app</settings> on your home screen → General → Software Update → Update Now",
+        "macos": "<apple>Apple menu</apple> in the top menu bar → System Settings → General → Software Update → Update Now",
+        "android": "<settings>Settings app</settings> on your phone → System → Software update → Check for updates",
+        "windows": "<windows>Start menu</windows> → <settings>Settings</settings> → Windows Update → Check for updates",
+        "watchos": "Watch app on your iPhone → My Watch → General → Software Update → Install",
+        "oneplus": "<settings>Settings app</settings> on your phone → System → System updates → Check for updates"
+      },
+      "osVersionPath": {
+        "ios": "<settings>Settings app</settings> on your home screen → General → About → Software Version",
+        "ipados": "<settings>Settings app</settings> on your home screen → General → About → Software Version",
+        "macos": "<apple>Apple menu</apple> in the top menu bar → About This Mac",
+        "android": "<settings>Settings app</settings> on your phone → About phone → Android version",
+        "windows": "Press Windows key + R → type <code>winver</code> → Enter",
+        "watchos": "Watch app on your iPhone → My Watch → General → About → Version"
+      },
+      "deviceSupportedTitle": "{label} will still receive security updates.",
+      "deviceSupportedSubtitleUntil": "Updates expected through <b>{date}</b>.",
+      "deviceSupportedSubtitleRecent": "End-of-support date not yet announced.",
+      "deviceUnsupportedTitle": "{label} is no longer receiving security updates.",
+      "deviceUnsupportedTitleAgoMonths": "{label} stopped receiving security <nowrap>updates <mark>{months, plural, one {1 month} other {# months}} ago</mark></nowrap>.",
+      "deviceUnsupportedTitleAgoYears": "{label} stopped receiving security <nowrap>updates <mark>{years, plural, one {1 year} other {# years}} ago</mark></nowrap>.",
+      "deviceUnsupportedSubtitleEnded": "Security support ended <b>{date}</b>.",
+      "deviceUnsupportedSubtitleUnmaintained": "{manufacturer} has stopped issuing security updates.",
+      "deviceUnsupportedSubtitleAge": "Released {age}. No published end-of-support date and {manufacturer} doesn't appear to be issuing updates.",
+      "manufacturerFallback": "The manufacturer",
+      "manufacturerFallbackLower": "the manufacturer",
+      "ageYearsAgo": "{years, plural, =0 {this year} =1 {1 year ago} other {# years ago}}",
+      "deviceUncertainTitle": "We can't confirm whether {label} will still receive updates.",
+      "deviceUncertainSubtitle": "Released {age}. {manufacturer} hasn't published an end-of-support date, and devices this old may or may not still be receiving updates.",
+      "deviceUncertainCheck": "Check the manufacturer's support page: <link></link>.",
+      "manufacturerSupport": {
+        "apple": {
+          "label": "Apple Support",
+          "url": "https://support.apple.com/"
+        },
+        "google": {
+          "label": "Google Pixel support",
+          "url": "https://support.google.com/pixelphone/answer/4457705"
+        },
+        "samsung": {
+          "label": "Samsung Mobile Security",
+          "url": "https://security.samsungmobile.com/workScope.smsb"
+        },
+        "motorola": {
+          "label": "Motorola software updates",
+          "url": "https://en-us.support.motorola.com/app/software-security-update"
+        },
+        "oneplus": {
+          "label": "OnePlus community",
+          "url": "https://www.oneplus.com/support"
+        },
+        "nokia": {
+          "label": "Nokia security updates",
+          "url": "https://www.nokia.com/phones/en_int/security-updates"
+        }
+      },
+      "osConfirmedShort": "{label} will still receive security updates.",
+      "osConfirmedShortYears": "{label} will still receive security updates <nowrap>for <mark>{years, plural, one {1 more year} other {# more years}}</mark></nowrap>.",
+      "osConfirmedShortMonths": "{label} will still receive security updates <nowrap>for <mark>{months, plural, one {1 more month} other {# more months}}</mark></nowrap>.",
+      "osConfirmedSubtitleUntil": "Updates expected through <b>{date}</b>.",
+      "osEolSoon": {
+        "titleMonths": "{label} will lose security <nowrap>updates <mark>in about {months, plural, =1 {1 month} other {# months}}</mark></nowrap>.",
+        "titleSoon": "{label} will lose security <nowrap>updates <mark>soon</mark></nowrap>.",
+        "subtitleDate": "Updates expected to end <b>{date}</b>."
+      },
+      "osEoasNote": "The vendor has moved this version to security-only updates. Plan an upgrade when convenient.",
+      "osUnsupportedTitle": "{label} is no longer receiving security updates.",
+      "osUnsupportedSubtitleEnded": "Support ended <b>{date}</b>.",
+      "osUpgradeAdvice": {
+        "ios": "Update to the latest iOS.",
+        "ipados": "Update to the latest iPadOS.",
+        "macos": "Update to a newer macOS.",
+        "android": "Update to a newer Android.",
+        "windows": "Upgrade to Windows 11."
+      },
+      "osCheckDeviceHint": "Or enter your device model in the box above to see if it is still able to receive security updates.",
+      "latestOsReminderTitle": "Make sure you're up to date",
+      "latestOsReminderWithVersion": "Make sure you're running {os} {version}.",
+      "latestOsReminderFamilyLatest": "Make sure you're running the latest {os} (currently {version}).",
+      "latestOsReminderGeneric": "Make sure your device is fully updated.",
+      "supportedOsLabel": {
+        "ios": "iOS",
+        "ipados": "iPadOS",
+        "macos": "macOS",
+        "android": "Android",
+        "windows": "Windows"
+      },
+      "deviceMaxOsWarningTitle": "A note about your device's OS",
+      "deviceMaxOsWarning": "Your {label} only supports up to {os} {maxVersion}. {os} {maxVersion} will stop receiving security updates before {os} {latestVersion} does. Newer devices will keep receiving updates longer.",
+      "deviceMaxOsWarningWithDate": "Your {label} only supports up to {os} {maxVersion}, which is expected to stop receiving security updates around {eolDate}. Newer devices that can run {os} {latestVersion} will keep receiving updates longer.",
+      "deviceMaxOsEolWarning": "Your {label} tops out at {os} {maxVersion}, which has officially ended support. You may still receive occasional updates, but treat this device as low-trust for sensitive work and plan to replace it.",
+      "deviceUpgradePlan": "If long-term security matters for your work, plan a hardware upgrade.",
+      "threatModelHeader": "Why this matters",
+      "threatModel": "Every week without an update, more ways to break into your device become public knowledge. If the cops seize your phone at a <protestLink>protest</protestLink> or a <borderLink>border crossing</borderLink> (or if someone targets you with <spywareLink>spyware</spywareLink>) those known weaknesses are what they'll use to get inside and read everything on it.  ",
+      "threatModelSoft": "Until you confirm, treat this device as potentially out-of-date for sensitive work.",
+      "viewEssentialsCta": "View our digital security essentials →",
+      "essentialsNextSteps": {
+        "title": "More easy-to-follow steps to protect your data and devices"
+      },
+      "startOver": "Start over",
+      "deviceInfo": {
+        "manufacturerLine": "{manufacturer} · Released {date}",
+        "manufacturerLineNoDate": "{manufacturer}",
+        "manufacturer": {
+          "apple": "Apple",
+          "google": "Google",
+          "samsung": "Samsung",
+          "microsoft": "Microsoft",
+          "motorola": "Motorola",
+          "oneplus": "OnePlus",
+          "nokia": "Nokia"
+        }
+      },
+      "eolSoon": {
+        "titleMonths": "{label} will lose security <nowrap>updates <mark>in about {months, plural, =1 {1 month} other {# months}}</mark></nowrap>.",
+        "titleSoon": "{label} will lose security <nowrap>updates <mark>soon</mark></nowrap>.",
+        "subtitleDate": "Updates expected to end <b>{date}</b>.",
+        "actionHeading": "What to do",
+        "action": "Start planning a replacement now. Once updates stop, your device begins accumulating publicly known vulnerabilities."
+      },
+      "buyingGuidance": {
+        "heading": "When you replace it",
+        "yearsPattern": "Most {deviceLabel} get security updates for {min}-{max} years from their release date.",
+        "deviceLabel": {
+          "phone": "phones",
+          "laptop": "laptops",
+          "tablet": "tablets",
+          "watch": "smartwatches"
+        },
+        "checkBeforeBuying": "If you're buying used, search for the model here first to see how long it'll keep getting updates."
+      },
+      "ctaReplace": {
+        "phone": "We suggest getting a new phone.",
+        "tablet": "We suggest getting a new tablet.",
+        "laptop": "We suggest getting a new laptop.",
+        "desktop": "We suggest getting a new Mac.",
+        "watch": "We suggest getting a new watch.",
+        "generic": "We suggest getting a new device."
+      },
+      "ctaPlan": {
+        "phone": "Start planning your next phone.",
+        "tablet": "Start planning your next tablet.",
+        "laptop": "Start planning your next laptop.",
+        "desktop": "Start planning your next Mac.",
+        "watch": "Start planning your next watch.",
+        "generic": "Start planning your next device."
+      },
+      "deviceConfirmedShort": "{label} will still receive security updates.",
+      "deviceConfirmedShortYears": "{label} will still receive security updates <nowrap>for <mark>{years, plural, one {1 more year} other {# more years}}</mark></nowrap>.",
+      "deviceConfirmedShortMonths": "{label} will still receive security updates <nowrap>for <mark>{months, plural, one {1 more month} other {# more months}}</mark></nowrap>.",
+      "deviceConfirmedShortApproxYears": "{label} will still receive security updates <nowrap>for <mark>about {years, plural, one {1 more year} other {# more years}}</mark></nowrap>.",
+      "deviceConfirmedShortApproxMonths": "{label} will still receive security updates <nowrap>for <mark>about {months, plural, one {1 more month} other {# more months}}</mark></nowrap>.",
+      "appleEstimate": {
+        "intro": "Apple doesn't publish end-of-support dates, but {deviceLabel} usually receive {min} to {max} years of security updates from launch."
+      },
+      "osCheckStep": {
+        "headingForOs": "Which version of {os} are you running?",
+        "headingForOsRelease": "Which version of {label} are you running?",
+        "headingGeneric": "Which version is your device running?",
+        "headingUpdatesAvailable": "Are there any updates available for your {device}?",
+        "headingUpdatesAvailableForRelease": "Are there any updates available for {label}?",
+        "subheadingHelp": "Open it on your device to check:",
+        "subheadingUpdatesHelp": "Check for updates on your device:",
+        "optionLatestShort": "I'm on {version}",
+        "optionLatestVersion": "I'm on {version} (latest)",
+        "optionOlderShort": "Older than {version}",
+        "optionOlderVersion": "Older than {version}",
+        "optionBetweenShort": "Between {major}.0.0 and {previousVersion}",
+        "optionThisVersion": "I'm on this version",
+        "optionNoUpdatesAvailable": "I don't see any updates available",
+        "optionNoUpdatesAvailableByOs": {
+          "windows": "It says \"You're up to date\"",
+          "android": "It says \"Your software is up to date\""
+        },
+        "optionUpdatesAvailable": "I see updates available",
+        "optionUnknown": "I'm not sure"
+      },
+      "deviceNoun": {
+        "phone": "phone",
+        "tablet": "tablet",
+        "laptop": "laptop",
+        "desktop": "computer",
+        "watch": "watch",
+        "generic": "device"
+      },
+      "osNeedsUpdate": {
+        "heading": "Your operating system needs an update",
+        "headingMaybe": "Your operating system might need an update",
+        "body": "Update to the latest version to get the most recent security updates.",
+        "newerMajorAvailable": "{os} {latestMajor} is now available. You are fully patched on {os} {currentMajor}, but that release has been superseded, and fixes for actively exploited flaws land on the newest version first.",
+        "howToHeading": "How to update:",
+        "didUpdateButton": "Done, I've updated",
+        "noUpdatesAvailableButton": "No updates available and I'm on a version older than {os} {major}",
+        "noUpdatesAvailableButtonCodename": "No updates available and I'm on a version older than {os} {major} ({codename})"
+      },
+      "deviceUnsupportedSubtitleStuckOnOs": "You can't get newer security updates on this device, so it has stopped receiving the patches that protect your data.",
+      "finalSuccess": {
+        "heading": "You're up to date.",
+        "deviceCheck": "{label} will still receive security updates.",
+        "deviceCheckUntil": "{label} is receiving security updates through {date}.",
+        "osCheck": "{os} is on the latest version ({version}).",
+        "osCheckCodename": "{os} {version} ({codename}) is the latest version.",
+        "osCheckDeviceMax": "{os} {version} is the newest version this device can run.",
+        "osCheckDeviceMaxCodename": "{os} {version} ({codename}) is the newest version this device can run.",
+        "osCheckNoVersion": "Operating system is up to date.",
+        "osLatestUpdates": "You have the latest security updates installed for {label}.",
+        "osLatestUpdatesWithVersion": "You have the latest security updates installed ({os} {version}).",
+        "checkPhoneNext": "Check your phone next",
+        "checkLaptopNext": "Check your laptop next",
+        "checkAnotherDevice": "Check another device"
+      }
+    },
+    "footer": "Powered by <eolLink>endoflife.date</eolLink> and <sofaLink>SOFA</sofaLink> · Updated {date}."
+  },
+  "tools": {
+    "metaTitle": "Tools we built | Activist Checklist",
+    "metaDescription": "Tools we built to go with our checklists: map your risks before an action, lock down your social media, and check if your phone still gets security updates.",
+    "documentTitle": "Tools we built | Activist Checklist",
+    "title": "Tools we built",
+    "intro": "Four tools we built to go along with the checklists. Each one covers a step that is hard to finish from written instructions alone.",
+    "items": {
+      "riskMapper": {
+        "eyebrow": "Plan an action",
+        "name": "Risk Mapper",
+        "short": "Map out the risks in your work and precautions you can take.",
+        "lede": "Work out what could go wrong before an action, and decide what your group will do about it.",
+        "bullet1": "Everyone adds the risks they are worried about. Then you drag each one onto a grid: how likely is it, and how bad would it be?",
+        "bullet2": "For the risks that land in the top right, you write down two things. How to make it less likely, and how to limit the harm if it happens anyway.",
+        "bullet3": "Share it with your group over an end-to-end encrypted link, or export a PDF for the people who were not at the meeting.",
+        "cta": "Open Risk Mapper",
+        "shotAlt": "Risk Mapper mid-session, with risks placed on a grid of how likely they are and how bad they would be."
+      },
+      "socialScrub": {
+        "eyebrow": "Lock down your profiles",
+        "name": "Social Scrub",
+        "short": "Lock down your social media accounts, one at a time.",
+        "lede": "Walks you through the same eight privacy steps on every social media account you have.",
+        "bullet1": "Pick your platforms from a list of 130 sites, including the ones you forgot about. Add any we missed.",
+        "bullet2": "For each account: delete it or keep it, change your display name and username, remove your photo, take your location and employer out of your bio, and lock down your privacy settings.",
+        "bullet3": "It remembers where you left off, so you can do a few accounts at a time.",
+        "cta": "Open Social Scrub",
+        "secondaryCta": "Doxxing defense guide",
+        "shotAlt": "A sample profile before and after a scrub. The name, photo, username, bio, friends list and location are all changed or hidden."
+      },
+      "updates": {
+        "eyebrow": "Check your device",
+        "name": "Security update checker",
+        "short": "Check whether your phone still gets security updates.",
+        "lede": "Find out whether your phone, tablet, or laptop is still getting security updates.",
+        "bullet1": "Type in your model. If you do not know it, the page shows you where to find it in your settings.",
+        "bullet2": "Once a device stops getting updates, every new security hole in it stays open. That makes it much easier for spyware, a hacker, or police forensics tools to get in.",
+        "bullet3": "Covers Apple, Google, Samsung, Motorola, OnePlus, and Nokia devices, plus iOS, Android, macOS, and Windows.",
+        "cta": "Check my device",
+        "shotAlt": "The update checker reporting that a searched phone stopped getting security updates, with advice on what to do about it."
+      },
+      "autoDelete": {
+        "eyebrow": "Delete old AI chats",
+        "name": "AI chat auto-delete",
+        "short": "Delete your old Claude chats on a schedule.",
+        "lede": "A Chrome extension that deletes your old Claude conversations on a schedule you set.",
+        "bullet1": "You pick how long to keep them. Anything older than 30 days is the default.",
+        "bullet2": "Star the chats you want to keep and it leaves them alone. It can ask you first, or run on its own.",
+        "bullet3": "It records how many chats it deleted, not which ones. Nothing gets sent to us.",
+        "cta": "Add to Chrome",
+        "shotAlt": "The extension set to delete chats older than 30 days every week, with the bar it shows on claude.ai when deletions are waiting."
+      }
+    },
+    "closing": {
+      "title": "Not sure which one you need?",
+      "body": "Each of these comes out of one of our checklists. Start with the checklist and it will point you to the tool when you get to that step.",
+      "primaryCta": "Digital Security Essentials",
+      "secondaryCta": "Doxxing Defense Checklist",
+      "openSource": "All four are <repos>open source</repos>. If one is broken, or you need something we have not built yet, <contact>let us know</contact>."
+    }
+  },
+  "terms": {
+    "metaTitle": "Terms & definitions | Activist Checklist",
+    "metaDescription": "Plain-language definitions of the digital security and surveillance terms activists run into, from doxxing and data brokers to stingrays and geofence warrants.",
+    "title": "Terms & definitions",
+    "intro": "Plain-language definitions of the security and surveillance terms used in our checklists and guides. Elsewhere on the site, terms with a dotted underline open these definitions in a popup.",
+    "copyLink": "Copy link to this term"
+  },
+  "definitions": {
+    "closeAriaLabel": "Close",
+    "backAriaLabel": "Back to {term}",
+    "learnMore": "Learn more: <link>{source}</link>",
+    "doxxing": {
+      "term": "Doxxing (or Doxing)",
+      "definition": "When someone publishes your private information, like your legal name, home address, phone number, or workplace, so others can harass or intimidate you online (and sometimes in person). It's an increasingly common tactic used against activists.",
+      "source": "Doxxing Defense Checklist",
+      "url": "/doxxing/"
+    },
+    "data-broker": {
+      "term": "Data Broker",
+      "definition": "A company that collects personal information like your address, phone number, and relatives from public records and other sources, then sells it. Cops, stalkers, and people trying to [dox you](term:doxxing) can buy this data.",
+      "source": "Doxxing Defense Checklist",
+      "url": "/doxxing/"
+    },
+    "people-search-sites": {
+      "term": "People Search Sites",
+      "definition": "Websites that collect and sell personal information (such as your address, phone number, and relatives) to anyone willing to pay for it. Police, stalkers, and people trying to [dox you](term:doxxing) can buy this data.",
+      "source": "Doxxing Defense Checklist",
+      "url": "/doxxing/"
+    },
+    "encryption": {
+      "term": "Encryption",
+      "definition": "Scrambling information so that only someone with the right key, like your password or passcode, can read it. To anyone else, encrypted data looks like random, unreadable text.",
+      "source": "EFF Surveillance Self-Defense",
+      "url": "https://ssd.eff.org/module/what-should-i-know-about-encryption"
+    },
+    "end-to-end-encryption": {
+      "term": "End-to-End Encryption",
+      "definition": "A type of [encryption](term:encryption) where only you and the people you're talking to can read your messages. The company running the app can't read them, so it has nothing to hand over to the cops if they ask. It usually doesn't hide who you talk to or when, and it can't protect messages on a phone that's been unlocked or hacked.",
+      "source": "EFF Surveillance Self-Defense",
+      "url": "https://ssd.eff.org/module/key-concepts-encryption"
+    },
+    "disappearing-messages": {
+      "term": "Disappearing Messages",
+      "definition": "A setting in Signal and WhatsApp that automatically deletes messages from everyone's phones after a set amount of time. If a phone is seized or hacked later, there's much less to find. It can't stop someone from taking a screenshot first.",
+      "source": "Signal Security Checklist",
+      "url": "/signal/#signal-disappearing"
+    },
+    "password-manager": {
+      "term": "Password Manager",
+      "definition": "An app that creates and remembers a strong, unique password for every account you have, so you only need to remember one master password. If one site gets hacked, the attacker won't be able to reuse a password across a bunch of your accounts because you were using unique passwords for each.",
+      "source": "Security Essentials",
+      "url": "/essentials/#password-manager"
+    },
+    "two-factor-authentication": {
+      "term": "Two-Factor Authentication (2FA)",
+      "definition": "An extra login step: after your password, you also verify your identity a second way. This could be a 6-digit code from an [authenticator app](term:authenticator-app), a text message, or sometimes a [passkey](term:passkey). It's like needing both a key and an alarm code to get into your house. Even if someone steals your password, they can't get into your account without the second step.",
+      "source": "Security Essentials",
+      "url": "/essentials/#mfa"
+    },
+    "authenticator-app": {
+      "term": "Authenticator App",
+      "definition": "An app on your phone that generates the login codes for [two-factor authentication](term:two-factor-authentication). It's safer than getting codes by text message, which attackers can intercept. [Ente Auth](https://ente.io/auth/) and [1Password](https://1password.com/) both have one.",
+      "source": "Security Essentials",
+      "url": "/essentials/#mfa"
+    },
+    "passkey": {
+      "term": "Passkey",
+      "definition": "A newer way to log in that replaces your password. Your phone, computer, or [password manager](term:password-manager) stores a secret key for the account and unlocks it with your face, fingerprint, or passcode. There's no password to type, so there's nothing for a [phishing](term:phishing) site to steal. [Security keys](term:security-key) work in a similar way, but are physical devices you plug in or tap.",
+      "source": "EFF",
+      "url": "https://www.eff.org/deeplinks/2023/10/what-passkey"
+    },
+    "security-key": {
+      "term": "Security Key",
+      "definition": "A small physical device (like a [YubiKey](https://www.yubico.com/)) that you plug in or tap to log in to an account. Someone who steals your password still can't get in without it, which makes it one of the strongest protections against [phishing](term:phishing). [Passkeys](term:passkey) work in a similar way, but live on your phone or in your password manager.",
+      "source": "EFF Surveillance Self-Defense",
+      "url": "https://ssd.eff.org/module/how-enable-two-factor-authentication"
+    },
+    "phishing": {
+      "term": "Phishing",
+      "definition": "A scam that tricks you into giving up your password and two-factor authentication code. It often looks like a real message from someone you trust, like a fake email from Google or a fake message from \"Signal Support.\"",
+      "source": "EFF Surveillance Self-Defense",
+      "url": "https://ssd.eff.org/module/how-avoid-phishing-attacks"
+    },
+    "sim-swapping": {
+      "term": "SIM Swapping",
+      "definition": "When an attacker convinces your phone carrier to move your phone number to a SIM card they control. They then receive your calls and texts, including login codes, and can use them to take over your accounts.",
+      "source": "Yubico",
+      "url": "https://www.yubico.com/resources/glossary/sim-swap/"
+    },
+    "spyware": {
+      "term": "Spyware",
+      "definition": "Software that secretly infects your phone or computer to steal your data. It can often read your messages (even on Signal), track your location, and turn on your camera or microphone. The most advanced spyware is expensive, and is mostly used against high-profile activists, journalists, and lawyers.",
+      "source": "Protecting Against Spyware",
+      "url": "/spyware/"
+    },
+    "malware": {
+      "term": "Malware",
+      "definition": "Any software designed to harm your device or steal from you. It's often installed by tricking you into clicking a link or opening a file. [Spyware](term:spyware) is one type of malware.",
+      "source": "EFF Surveillance Self-Defense",
+      "url": "https://ssd.eff.org/module/how-do-i-protect-myself-against-malware"
+    },
+    "forensic-extraction-tools": {
+      "term": "Phone-Cracking Tools (forensic extraction tools)",
+      "definition": "Devices that cops and border agents use to break into seized phones and copy the data off them, sometimes including deleted messages. Cellebrite and GrayKey are the best-known brands. A long random passcode and an up-to-date phone make them much less effective.",
+      "source": "EFF Street Level Surveillance",
+      "url": "https://sls.eff.org/technologies/forensic-extraction-tools"
+    },
+    "biometrics": {
+      "term": "Biometrics",
+      "definition": "Unlocking your phone with your face or fingerprint instead of a passcode. It's convenient, but cops can force you to look at your phone or press your finger to it. You have more legal protections when you use a passcode.",
+      "source": "Prepare for a Protest",
+      "url": "/protest/#biometrics-disable"
+    },
+    "secondary-phone": {
+      "term": "Secondary Phone (\"burner phone\" lite)",
+      "definition": "A second phone with as little personal data on it as possible, used for protests and sensitive organizing. If cops seize it, there's much less for them to find. It isn't truly anonymous like a [burner phone](term:burner-phone), and you can reuse it across many actions.",
+      "source": "Secondary Phone Checklist",
+      "url": "/secondary/"
+    },
+    "burner-phone": {
+      "term": "Burner Phone",
+      "definition": "A phone that is completely disconnected from your identity, bought with cash and used only a handful of times before it's destroyed. Keeping a burner truly anonymous takes a great deal of work, so for most people we recommend a [secondary phone](term:secondary-phone) instead.",
+      "source": "Secondary Phone Checklist",
+      "url": "/secondary/"
+    },
+    "pattern-of-life": {
+      "term": "Pattern of Life",
+      "definition": "The routine that shows up in your location and activity data: where you sleep, work, and hang out, and who you're often near. If you have a secondary phone that you're trying to keep separate from your main identity and you turn it on at the same locations and times as your primary devices, these pattern of life correlations can reveal your identity.",
+      "source": "Secondary Phone Checklist",
+      "url": "/secondary/#true-burner-steps"
+    },
+    "advertising-id": {
+      "term": "Advertising ID",
+      "definition": "A unique ID your phone gives to apps so advertisers can track you across them. Location data tied to it gets sold through [data brokers](term:data-broker), and ICE and other agencies use tools built on that data to track phones. It's on by default on Android.",
+      "source": "Security Essentials",
+      "url": "/essentials/#ad-id"
+    },
+    "geofence-warrant": {
+      "term": "Geofence Warrant",
+      "definition": "A [court order](term:warrant-subpoena) that makes a company like Google hand over data on every device that was in a certain area during a certain time. Cops have used them to identify people who were near a protest.",
+      "source": "EFF",
+      "url": "https://www.eff.org/deeplinks/2021/09/geofence-warrants-threaten-civil-liberties-and-free-speech-rights-kenosha-and"
+    },
+    "css": {
+      "term": "Cell Site Simulator (\"Stingray\")",
+      "definition": "A device that pretends to be a cell tower. It tricks nearby phones into connecting to it. Police can use one to log every phone at a protest, track a specific phone's location, and intercept calls and texts.",
+      "source": "EFF Street Level Surveillance",
+      "url": "https://sls.eff.org/technologies/cell-site-simulators-imsi-catchers"
+    },
+    "alpr": {
+      "term": "Automated License Plate Readers (ALPRs)",
+      "definition": "Cameras that automatically photograph every passing license plate and record the time and location. Flock is the most popular brand. They're common on highways, toll booths, bridges, and police cars. They give the cops a way to track your car without a warrant. Data is often shared with other law enforcement agencies.",
+      "source": "EFF Street Level Surveillance",
+      "url": "https://sls.eff.org/technologies/automated-license-plate-readers-alprs"
+    },
+    "ip-address": {
+      "term": "IP Address",
+      "definition": "A number that identifies your internet connection, kind of like your home address on the internet. Every website and app you connect to can see it. An IP address can often point back to you personally. With a court order, your internet provider can match it to your name and location. A VPN gives you an IP address shared by thousands of people so it's harder to identify your activity.",
+      "source": "VPNs for Activists",
+      "url": "/vpn/"
+    },
+    "vpn": {
+      "term": "VPN (Virtual Private Network)",
+      "definition": "An app on your phone or computer that redirects and encrypts all internet traffic through its servers. This keeps your internet browsing hidden from your internet provider, and keeps your [IP address](term:ip-address) hidden from websites you visit. It doesn't hide who you are from sites and apps you're logged into. And it doesn't offer total anonymity or internet security.",
+      "source": "VPNs for Activists",
+      "url": "/vpn/"
+    },
+    "browser-fingerprinting": {
+      "term": "Browser Fingerprinting",
+      "definition": "A way of tracking you by the unique combination of your browser's settings, like your screen size, fonts, and language. It works even if you clear your cookies or use a [VPN](term:vpn). [Tor Browser](https://www.torproject.org/download/) is designed to make everyone's fingerprint look the same.",
+      "source": "EFF Surveillance Self-Defense",
+      "url": "https://ssd.eff.org/module/what-fingerprinting"
+    },
+    "warrant-subpoena": {
+      "term": "Warrant vs. Subpoena",
+      "definition": "Both are legal orders that can force a company to hand over your data. A warrant must be signed by a judge who agrees there's probable cause of a crime, and it can also let police search your home or phone. Many subpoenas need no judge at all, but they don't give the investigator access to as much information. ICE often uses \"administrative warrants\" signed by an ICE officer, not a judge. These don't give them the right to enter your home without your permission."
+    },
+    "jail-support": {
+      "term": "Jail Support",
+      "definition": "A support role during an arrestable action or protest. These people support arrestees during and after an action. They track who's been arrested, stay in touch with lawyers, wait outside the jail, and bring people their phones, food, and a ride home once they're released."
+    }
+  }
+}
