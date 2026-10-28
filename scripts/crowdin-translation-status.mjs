@@ -20,7 +20,7 @@ try {
 
 import fs from 'fs';
 import path from 'path';
-import matter from 'gray-matter';
+import { parseFrontmatter } from '../lib/frontmatter.cjs';
 import { glob as globAsync } from 'node:fs/promises';
 
 const c = {
@@ -356,7 +356,7 @@ async function run() {
   for (const rel of guidePaths.sort()) {
     const full = path.join(process.cwd(), rel);
     const raw = fs.readFileSync(full, 'utf-8');
-    const { data, content } = matter(raw);
+    const { data, content } = parseFrontmatter(raw);
     const slug = data.slug || path.basename(rel, '.mdx');
     const guideRepoPath = rel.replace(/\\/g, '/');
 
@@ -391,7 +391,7 @@ async function run() {
   );
   for (const rel of pagePaths.sort()) {
     const raw = fs.readFileSync(path.join(process.cwd(), rel), 'utf-8');
-    const { data } = matter(raw);
+    const { data } = parseFrontmatter(raw);
     const slug = data.slug || path.basename(rel, '.mdx');
     const repoPath = rel.replace(/\\/g, '/');
     const entry = progressByRepoPath[repoPath];

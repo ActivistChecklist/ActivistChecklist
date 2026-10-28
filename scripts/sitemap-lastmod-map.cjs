@@ -8,7 +8,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const matter = require('gray-matter');
+const { parseFrontmatter } = require('../lib/frontmatter.cjs');
 
 /** @param {string[]} dates */
 function maxIsoDate(dates) {
@@ -45,7 +45,7 @@ function readMdxDir(dirPath) {
   for (const file of fs.readdirSync(dirPath)) {
     if (!file.endsWith('.mdx')) continue;
     const raw = fs.readFileSync(path.join(dirPath, file), 'utf8');
-    const { data } = matter(raw);
+    const { data } = parseFrontmatter(raw);
     const fileSlug = file.replace(/\.mdx$/, '');
     const slug = data.slug != null ? String(data.slug) : fileSlug;
     const urlPath = `/${slug.replace(/^\/+/, '').replace(/\/+$/, '')}/`;
@@ -65,7 +65,7 @@ function collectDatesFromDir(dirPath) {
   for (const file of fs.readdirSync(dirPath)) {
     if (!file.endsWith('.mdx')) continue;
     const raw = fs.readFileSync(path.join(dirPath, file), 'utf8');
-    const { data } = matter(raw);
+    const { data } = parseFrontmatter(raw);
     const d = pickLastmodFromFm(data);
     if (d) dates.push(d);
   }
