@@ -1,38 +1,38 @@
 ---
-title: Enable two-factor authentication
+title: 二要素認証をオンにしよう
 preview: |
-  If someone steals your password, two-factor authentication keeps them from being able to get in unless they have your phone too.
+  もしパスワードを盗まれても、二要素認証があれば、相手があなたのスマホまで持っていない限りログインされずにすみます。
 do: |
-  Enable two-factor authentication for important sites
+  大事なサイトでは二要素認証をオンにする
 dont: |
-  Use only a password
+  パスワードだけで済ませる
 titleBadges: []
 ---
 
-After entering your password, you'll need to enter a code from your phone to prove it's really you. Think of it like having both a key and an alarm code to get into your house—someone needs both to get in.
+パスワードを入力したあと、本当にあなた本人だと証明するために、スマホに表示されるコードを入力します。家に入るのに鍵と警報装置の暗証番号の両方が必要なのと同じです。両方そろわないと誰も入れません。
 
-Your email is the most important account to protect with two-factor authentication. If an attacker gets access to your email, they can reset all your other passwords.
+二要素認証で一番守るべきアカウントはメールです。攻撃者にメールを乗っ取られると、ほかのパスワードを全部リセットされてしまうからです。
 
-<HowTo title="How to set up">
-  **Install an [authenticator app](term:authenticator-app):**
+<HowTo title="設定のしかた">
+  **[認証アプリ](term:authenticator-app)をインストールしよう：**
 
-  1. **Option 1: 1Password:** If you're using [1Password](#password-manager), it has an "authenticator" feature built-in ([details here](https://support.1password.com/one-time-passwords/)).
-  2. **Option 2: Ente Auth:** Install [Ente Auth](https://ente.io/auth/) (iPhone, Android)
-     * Optional: You can create an account. Your data is end-to-end encrypted. Or you can not have an account, but you may lose your one time passwords if your phone is not backed up.
+  1. **選択肢1：1Password：** [1Password](#password-manager)を使っているなら、「認証アプリ」機能が組み込まれています（[詳しくはこちら](https://support.1password.com/one-time-passwords/)）。
+  2. **選択肢2：Ente Auth：** [Ente Auth](https://ente.io/auth/)をインストールします（iPhone、Android）
+     * 任意：アカウントを作ることもできます。データはエンドツーエンド暗号化されます。アカウントなしでも使えますが、スマホのバックアップを取っていないと、ワンタイムパスワードを失うおそれがあります。
 
-  **To set up two-factor authentication:**
+  **二要素認証を設定するには：**
 
-  1. Go to Security/Privacy settings
-  2. Look for "2FA" or "two-factor authentication" or "multi-factor authentication"
-  3. If an “authenticator app” option is available, select that! (Remember to save the backup codes somewhere secure, like your password manager.)
-  4. If “text/SMS verification” is the only option, select that and follow the instructions.
-  5. Links to set up 2FA on common sites:
+  1. セキュリティ／プライバシーの設定を開く
+  2. 「2FA」「二要素認証」「多要素認証」などの項目を探す
+  3. 「認証アプリ」という選択肢があれば、それを選びましょう！（バックアップコードは、パスワードマネージャーなど安全な場所に保存するのを忘れずに。）
+  4. 「テキストメッセージ／SMS認証」しか選べない場合は、それを選んで指示に従ってください。
+  5. よく使うサイトで2FAを設定するためのリンク：
      * [Google](https://myaccount.google.com/signinoptions/two-step-verification)
      * [Apple ID](https://support.apple.com/en-us/HT204915)
      * [Facebook](https://www.facebook.com/settings?tab=security)
      * [Twitter / X](https://twitter.com/settings/security)
      * [Instagram](https://help.instagram.com/566810106808145)
-     * Or look up whether a website/service/app has 2FA on the [2FA Directory](https://2fa.directory/us/).
+     * または、[2FA Directory](https://2fa.directory/us/)で、ウェブサイトやサービス、アプリが2FAに対応しているか調べることもできます。
 </HowTo>
 
-Note: When a service allows you to choose between an **authenticator app** and **SMS text message verification codes,** opting for the authenticator app is always best. It’s possible for an attacker to [intercept your SMS texts](https://www.wired.com/2016/06/hey-stop-using-texts-two-factor-authentication/).
+注：サービスで**認証アプリ**と**SMSテキストメッセージの認証コード**のどちらかを選べる場合は、いつでも認証アプリを選ぶのがベストです。攻撃者が[あなたのSMSを傍受する](https://www.wired.com/2016/06/hey-stop-using-texts-two-factor-authentication/)ことは十分あり得ます。
