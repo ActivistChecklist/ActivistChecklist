@@ -1,35 +1,35 @@
 ---
-title: Use Signal for secure group video/audio calls
+title: グループでの安全なビデオ通話・音声通話にはSignalを使おう
 preview: |
-  If you have a call through an app that isn’t end-to-end encrypted, it’s possible for it to be intercepted either by the app itself or by the government.
+  エンドツーエンド暗号化されていないアプリで通話すると、アプリ自体や政府に傍受されるおそれがあります。
 do: |
-  Use Signal for secure group video/audio calls
+  グループでの安全なビデオ通話・音声通話にはSignalを使おう
 dont: |
-  Use Jitsi Meet. Avoid using Zoom when possible.
+  Jitsi Meetを使う。できるだけZoomは避ける。
 titleBadges: []
 ---
 
-<HowTo title="How to use Signal for group calls">
-  Signal calls (audio or video) use the same powerful encryption technology that we trust in Signal messenger.
+<HowTo title="Signalでグループ通話をする方法">
+  Signalの通話（音声・ビデオ）には、私たちが信頼しているSignalメッセンジャーと同じ強力な暗号化技術が使われています。
 
-  1. **If you want to invite participants without an existing Signal group:** <MenuPath inline>Open Signal > **Calls** > **Create a Call Link** > **Copy Link**</MenuPath> (or **Join**)
-  2. **If you’re already in a group with the people you want to call:** You can click the video camera icon 🎥 in the top right of any Signal group to [start a group call](https://support.signal.org/hc/en-us/articles/360052977792-Group-Calling-Voice-or-Video).
+  1. **既存のSignalグループなしで参加者を招待したい場合：** <MenuPath inline>Signalを開く > **通話** > **通話リンクを作成** > **リンクをコピー**</MenuPath>（または **参加**）
+  2. **通話したい人たちとすでにグループに入っている場合：** Signalのグループ画面の右上にあるビデオカメラのアイコン 🎥 をタップすれば、[グループ通話を開始](https://support.signal.org/hc/en-us/articles/360052977792-Group-Calling-Voice-or-Video)できます。
 </HowTo>
 
 <Alert type="warning">
-  **Be careful what you say near a computer, even when your call is encrypted:** While using [end-to-end encrypted](term:end-to-end-encryption) calls makes it much harder for your conversation to be surveilled, it is still possible that someone’s phone/computer has spyware that gives an attacker full access to what’s happening on the device. We suggest not saying critical information (like the location of a surprise action) over any digital channel or near any microphones.
+  **通話が暗号化されていても、パソコンの近くで話す内容には気をつけよう：** [エンドツーエンド暗号化](term:end-to-end-encryption)された通話を使えば、会話を監視されるのはずっと難しくなります。それでも、誰かのスマホやパソコンにスパイウェアが入っていて、攻撃者にデバイス上で起きていることを全部見られている可能性はあります。重要な情報（サプライズアクションの場所など）は、どんなデジタル手段でも、マイクの近くでも話さないことをおすすめします。
 </Alert>
 
-| Signal Call                                                                 | Zoom                                                                                                                            |
-| --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| \* ✅ Most secure<br />\* ✅ Up to 75 participants<br />\* ❌ No host controls | \* 🟡 Just secure enough, but Signal is best<br />\* ✅ Up to 100 Participants<br />\* ✅ Has host controls (muting participants) |
+| Signal通話                                            | Zoom                                                                                  |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| \* ✅ 最も安全<br />\* ✅ 最大 75 人まで参加可能<br />\* ❌ ホスト機能なし | \* 🟡 ギリギリ十分な安全性。ただしSignalがベスト<br />\* ✅ 最大 100 人まで参加可能<br />\* ✅ ホスト機能あり（参加者のミュートなど） |
 
-**Is it okay to use Zoom? (Avoid when possible!)**
+**Zoomを使っても大丈夫？（できるだけ避けよう！）**
 
-* Zoom does offer end-to-end encryption, but we’re hesitant to recommend it since it wasn’t built with privacy as the main focus. It’s hard to fully trust software from a big corporation like theirs.
-* If you do use Zoom, make sure to [enable end-to-end encryption](https://support.zoom.com/hc/en/article?id=zm_kb\&sysparm_article=KB0065408) and suggest everyone sign out of their normal Zoom account before joining the meeting (so they are less trackable). We suggest being more cautious about what you say on Zoom.
+* Zoomにもエンドツーエンド暗号化はありますが、プライバシーを最優先に作られたサービスではないので、おすすめするのはためらわれます。 Zoomのような大企業のソフトウェアを完全に信頼するのは難しいです。
+* Zoomを使う場合は、必ず[エンドツーエンド暗号化を有効に](https://support.zoom.com/hc/en/article?id=zm_kb\&sysparm_article=KB0065408)して、参加者みんなにミーティング参加前にふだんのZoomアカウントからサインアウトしてもらいましょう（追跡されにくくなります）。 Zoomで話す内容には、より気をつけることをおすすめします。
 
-**Is it okay to use Jitsi Meet? (We don’t recommend it!)**
+**Jitsi Meetを使っても大丈夫？（おすすめしません！）**
 
-* [Jitsi Meet](https://meet.jit.si/) has been a common choice among activists because it doesn’t require an account. (It might have been a good choice before Signal added group audio and video calling.)
-* **Why we recommend avoiding Jitsi Meet:** It’s not end-to-end encrypted by default, so it is easier to forget to turn it on (which makes your conversation vulnerable to an attacker). Our understanding of their end-to-end encryption option is that it was implemented quickly and it’s not clear to us that it was rigorous or is still being actively developed. Given that, we suggest avoiding it.
+* [Jitsi Meet](https://meet.jit.si/)はアカウント不要なので、アクティビストの間でよく使われてきました。 （Signalにグループでの音声・ビデオ通話機能が加わる前なら、良い選択肢だったかもしれません。）
+* **Jitsi Meetを避けるべき理由：** デフォルトではエンドツーエンド暗号化されていないので、オンにし忘れやすいんです（そうなると会話が攻撃者に狙われやすくなります）。私たちの理解では、Jitsi Meetのエンドツーエンド暗号化オプションは急いで実装されたもので、十分に厳密なものなのか、今も積極的に開発が続いているのかははっきりしません。そのため、使わないことをおすすめします。
