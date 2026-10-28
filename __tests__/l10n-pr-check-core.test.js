@@ -215,12 +215,12 @@ describe('checkMessages', () => {
       contact: { title: 'Contacto', note: 'Lee primero la <link>guía</link>.' },
       footer: 'Hecho con cariño',
     };
-    expect(checkMessages(en, es)).toEqual([]);
+    expect(checkMessages(en, es).problems).toEqual([]);
   });
 
   it('compares per key, so a tag moved into another string is flagged', () => {
     const es = { contact: { title: 'Contacto <link>x</link>', note: 'Lee la guía.' }, footer: 'x' };
-    expect(checkMessages(en, es)).toEqual([
+    expect(checkMessages(en, es).problems).toEqual([
       'contact.title: tag <link[]> is not in the English source',
     ]);
   });
@@ -230,18 +230,19 @@ describe('checkMessages', () => {
       contact: { title: '<img src=x onerror=alert(1)>', note: '' },
       footer: 'javascript:x',
     };
-    const problems = checkMessages(en, es);
+    const problems = checkMessages(en, es).problems;
     expect(problems).toContain(
       'contact.title: tag <img[onerror,src]> is not in the English source',
     );
     expect(problems).toContain('footer: 1 more javascript: URL than the English source');
   });
 
-  it('holds keys missing from English to plain text', () => {
-    expect(checkMessages(en, { extra: 'just words' })).toEqual([]);
-    expect(checkMessages(en, { extra: '<b>bold</b>' })).toEqual([
-      'extra: tag <b[]> is not in the English source',
-    ]);
+  it('reports keys missing from English as stale instead of failing on them', () => {
+    expect(checkMessages(en, { extra: 'just words' })).toEqual({ problems: [], staleKeys: [] });
+    expect(checkMessages(en, { extra: '<kbd>↵</kbd>' })).toEqual({
+      problems: [],
+      staleKeys: ['extra'],
+    });
   });
 });
 

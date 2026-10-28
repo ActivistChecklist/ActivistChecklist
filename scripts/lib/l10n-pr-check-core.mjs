@@ -188,17 +188,24 @@ export function flattenMessages(obj, prefix = '', out = {}) {
 
 /**
  * Compare every string of a translated messages file with the English string
- * at the same key. A key the English file lacks is compared with an empty
- * string, so it may hold text but no markup.
+ * at the same key. Returns { problems, staleKeys }. A key the English file
+ * lacks (removed from en.json since Crowdin last synced) is never looked up
+ * by the code, so it is reported in staleKeys for review rather than as a
+ * problem; staleKeys lists such keys that also carry markup.
  */
 export function checkMessages(englishJson, translatedJson) {
   const en = flattenMessages(englishJson);
   const tr = flattenMessages(translatedJson);
   const problems = [];
+  const staleKeys = [];
   for (const [key, value] of Object.entries(tr)) {
-    for (const p of compareMarkup(en[key] ?? '', value)) problems.push(`${key}: ${p}`);
+    if (!(key in en)) {
+      if (compareMarkup('', value).length) staleKeys.push(key);
+      continue;
+    }
+    for (const p of compareMarkup(en[key], value)) problems.push(`${key}: ${p}`);
   }
-  return problems;
+  return { problems, staleKeys };
 }
 
 /** Keys whose translated value was added, changed or removed between two versions. */

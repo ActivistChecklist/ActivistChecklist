@@ -121,7 +121,14 @@ for (const { status, path } of changes) {
       errors.push({ path, message: `invalid JSON: ${e.message}` });
       continue;
     }
-    for (const message of checkMessages(en, tr)) errors.push({ path, message });
+    const { problems, staleKeys } = checkMessages(en, tr);
+    for (const message of problems) errors.push({ path, message });
+    if (staleKeys.length) {
+      warnings.push({
+        path,
+        message: `keys not in English (unused) carry markup: ${staleKeys.join(', ')}`,
+      });
+    }
     // The summary only; a base file that does not parse just shows every key as added.
     let before = {};
     try {
