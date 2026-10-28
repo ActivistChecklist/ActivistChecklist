@@ -84,6 +84,10 @@
       "title": "Herramientas que hicimos",
       "label": "Herramientas que creamos"
     },
+    "glossary": {
+      "title": "Términos y definiciones",
+      "label": "Términos y definiciones"
+    },
     "resources": {
       "title": "Recursos",
       "label": "Recursos"
@@ -834,6 +838,13 @@
       "openSource": "Las cuatro son <repos>open source</repos>. Si alguna no funciona, o necesitas algo que todavía no hemos creado, <contact>avísanos</contact>."
     }
   },
+  "terms": {
+    "metaTitle": "Términos y definiciones | Activist Checklist",
+    "metaDescription": "Definiciones en lenguaje sencillo de los términos de seguridad digital y vigilancia con los que se topan les activistas, desde el doxxing y los data brokers hasta los stingrays y las órdenes de geocerca o geofence warrants.",
+    "title": "Términos y definiciones",
+    "intro": "Definiciones en lenguaje sencillo de los términos de seguridad y vigilancia que usamos en nuestras listas y guías. En otras partes del sitio, los términos con subrayado punteado abren estas definiciones en una ventana emergente.",
+    "copyLink": "Copiar enlace a este término"
+  },
   "definitions": {
     "closeAriaLabel": "Cerrar",
     "backAriaLabel": "Volver a {term}",
@@ -971,8 +982,8 @@
       "url": "https://www.eff.org/deeplinks/2021/09/geofence-warrants-threaten-civil-liberties-and-free-speech-rights-kenosha-and"
     },
     "css": {
-      "term": "Cell Site Simulator (\"Stingray\")",
-      "definition": "A device that pretends to be a cell tower. It tricks nearby phones into connecting to it. Police can use one to log every phone at a protest, track a specific phone's location, and intercept calls and texts.",
+      "term": "Simulador de antenas celulares (\"Stingray\")",
+      "definition": "Un aparato que se hace pasar por una antena celular. Engaña a los teléfonos cercanos para que se conecten a él. Los policías pueden usarlo para registrar cada teléfono en una protesta, rastrear la ubicación de un teléfono específico e interceptar llamadas y mensajes de texto.",
       "source": "EFF Street Level Surveillance",
       "url": "https://sls.eff.org/technologies/cell-site-simulators-imsi-catchers"
     },
