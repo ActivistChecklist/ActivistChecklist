@@ -9,6 +9,10 @@
 # Crowdin’s GitHub integration pulls source changes from the repo continuously (not only on the
 # hourly sync schedule). See https://support.crowdin.com/github-integration/
 # A short fixed sleep runs before Crowdin API steps; optional extra minutes on manual dispatch.
+#
+# The Crowdin token lives in the main-only environment (see .github/ACTIONS-SECRETS.md), so a
+# manual run must be dispatched on main, and its head_sha must be a commit already on main.
+# Otherwise anyone who can push a branch could run their own copy of the script with the token.
 
 name: Crowdin sync (main)
 
@@ -40,10 +44,28 @@ permissions:
 
 jobs:
   crowdin:
+    environment: main-only
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
     steps:
+      - name: Check head_sha is on main
+        if: github.event.inputs.head_sha != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ github.event.inputs.head_sha }}
+        run: |
+          if ! [[ "$HEAD_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "head_sha must be a full 40-character commit SHA."
+            exit 1
+          fi
+          # "ahead" or "identical" means main contains HEAD_SHA.
+          status=$(gh api "repos/${GITHUB_REPOSITORY}/compare/${HEAD_SHA}...main" --jq .status)
+          if [ "$status" != 'ahead' ] && [ "$status" != 'identical' ]; then
+            echo "head_sha is not on main (compare status: ${status})."
+            exit 1
+          fi
+
       - name: Checkout
         uses: actions/checkout@v7
         with:
@@ -55,11 +77,12 @@ jobs:
           node-version-file: .nvmrc
 
       - name: Wait before Crowdin API steps
+        env:
+          EXTRA: ${{ github.event.inputs.delay_minutes }}
         run: |
           BUFFER_SEC=45
           echo "Fixed buffer: ${BUFFER_SEC}s before Crowdin steps (import may lag the push slightly)."
           sleep "$BUFFER_SEC"
-          EXTRA='${{ github.event.inputs.delay_minutes }}'
           if [ -n "$EXTRA" ] && [ "$EXTRA" != "0" ]; then
             echo "Additional wait: ${EXTRA} minute(s)."
             sleep "${EXTRA}m"

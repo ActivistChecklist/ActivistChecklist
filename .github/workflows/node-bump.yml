@@ -37,6 +37,9 @@ concurrency:
 jobs:
   bump:
     if: github.repository == 'ActivistChecklist/ActivistChecklist'
+    # Holds the autofix App key, so it only runs on main.
+    # See .github/ACTIONS-SECRETS.md.
+    environment: main-only
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -54,6 +57,19 @@ jobs:
         id: bump
         run: node scripts/node-bump.mjs
 
+      # An App token, not GITHUB_TOKEN: PRs opened with GITHUB_TOKEN do not
+      # trigger other workflows, so pr-checks.yml would never run on them.
+      # Shared with security-autofix.yml. Setup: .github/ACTIONS-SECRETS.md.
+      - name: Mint autofix App token
+        if: steps.bump.outputs.version != ''
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ vars.AUTOFIX_APP_CLIENT_ID }}
+          private-key: ${{ secrets.AUTOFIX_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+
       # Fixed branch name, so a later run updates this PR instead of opening
       # another. If main catches up (someone bumped by hand), the action closes
       # the PR and deletes the branch.
@@ -61,10 +77,7 @@ jobs:
         if: steps.bump.outputs.version != ''
         uses: peter-evans/create-pull-request@v8
         with:
-          # A PAT, not GITHUB_TOKEN: PRs opened with GITHUB_TOKEN do not trigger
-          # other workflows, so pr-checks.yml would never run on them. Shared
-          # with security-autofix.yml; it needs contents and pull-requests write.
-          token: ${{ secrets.SECURITY_AUTOFIX_TOKEN }}
+          token: ${{ steps.app-token.outputs.token }}
           add-paths: |
             .nvmrc
             railpack.json

@@ -2,7 +2,7 @@
 title: Proteggere la tua privacy
 seoDescription: Cosa raccogliamo (quasi niente) e perché. Activist Checklist è costruito in modo che, anche se arrivasse una subpoena, non ci sarebbe niente di utile da consegnare.
 firstPublished: 2025-01-09
-lastUpdated: 2026-05-23
+lastUpdated: 2026-10-27
 showToc: true
 ---
 
@@ -23,7 +23,7 @@ Abbiamo progettato questo sito apposta per proteggere la privacy il più possibi
 * ❌ Nessun indirizzo IP viene mai registrato
 * ❌ Nessun cookie viene salvato sul tuo dispositivo
 * ❌ Nel tuo browser non viene caricato nessun servizio esterno o libreria di terze parti che potrebbe esporre le tue informazioni personali (indirizzo IP)
-* ❌ Nessuna delle tue informazioni personali viene mai raccolta sui nostri server o inviata a server di terze parti.
+* ❌ Nessuna delle tue informazioni personali viene mai raccolta sui nostri server o inviata a server di terze parti. L'unica eccezione è un messaggio che scegli di inviarci tramite il nostro modulo di contatto, che viene crittografato prima di lasciare il nostro server ([vedi sotto](#contact-form)).
 
 ## Cosa tracciamo
 
@@ -67,9 +67,13 @@ Questi dati sono conservati su una piattaforma di analisi attenta alla privacy c
 
 Se vuoi, puoi controllare il [codice qui](https://github.com/ActivistChecklist/ActivistChecklist/blob/main/api/counter.js).
 
-## Modulo di contatto
+## Modulo di contatto {#contact-form}
 
-Se ci scrivi tramite il nostro [modulo di contatto](/contact/), il messaggio viene [crittografato](https://proton.me/blog/what-is-pgp-encryption) prima di essere inviato al nostro account Proton Mail. Lasciare il tuo indirizzo email è facoltativo. Se ci lasci il tuo indirizzo email per ricevere una risposta e non è un indirizzo Proton Mail, il tuo provider email potrà vedere la nostra conversazione una volta che ti rispondiamo.
+Se ci scrivi tramite il nostro [modulo di contatto](/contact/), il nostro server [crittografa](https://proton.me/blog/what-is-pgp-encryption) il tuo messaggio, insieme a qualsiasi recapito che ci fornisci, prima che lasci il nostro server. Solo noi possiamo leggerlo.
+
+Usiamo [Resend](https://resend.com/legal/privacy-policy), un servizio di invio email, per recapitare il messaggio crittografato al nostro account Proton Mail. Resend vede il messaggio crittografato e l'orario in cui è stato inviato. Non vede il tuo indirizzo IP, perché il messaggio parte dal nostro server, non dal tuo browser.
+
+Lasciare il tuo indirizzo email è facoltativo. Se ci lasci il tuo indirizzo email per ricevere una risposta e non è un indirizzo Proton Mail, il tuo provider email potrà vedere la nostra conversazione una volta che ti rispondiamo.
 
 Se vuoi, puoi controllare il [codice qui](https://github.com/ActivistChecklist/ActivistChecklist/blob/main/api/contact.js).
 
