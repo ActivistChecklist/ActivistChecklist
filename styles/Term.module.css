@@ -51,6 +51,14 @@
   @apply bg-black/80;
 }
 
+.defBack {
+  @apply -ml-1 mb-2 inline-flex cursor-pointer items-center gap-0.5 rounded text-sm text-muted-foreground;
+}
+
+.backIcon {
+  @apply size-4 rtl:rotate-180;
+}
+
 .defHead {
   @apply flex items-start justify-between;
 }
@@ -83,6 +91,10 @@
 @media (hover: hover) {
   .term:hover {
     @apply rounded bg-primary/10;
+  }
+
+  .defBack:hover {
+    @apply text-foreground;
   }
 
   .defClose:hover {
