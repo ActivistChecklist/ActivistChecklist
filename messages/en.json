@@ -850,18 +850,6 @@
       "source": "Doxxing Defense Checklist",
       "url": "/doxxing/"
     },
-    "people-search-sites": {
-      "term": "People Search Sites",
-      "definition": "Websites that collect and sell personal information (such as your address, phone number, and relatives) to anyone willing to pay for it. Police, stalkers, and people trying to [dox you](term:doxxing) can buy this data.",
-      "source": "Doxxing Defense Checklist",
-      "url": "/doxxing/"
-    },
-    "metadata": {
-      "term": "Metadata",
-      "definition": "Information about your data, rather than the content itself. For a photo, that can be the GPS location, time, and phone model. For messages, it's who you talked to, when, and how often. Even without the content, metadata can reveal a lot about your patterns of behavior and who you organize with.",
-      "source": "EFF Surveillance Self-Defense",
-      "url": "https://ssd.eff.org/module/why-metadata-matters"
-    },
     "encryption": {
       "term": "Encryption",
       "definition": "Scrambling information so that only someone with the right key, like your password or passcode, can read it. To anyone else, encrypted data looks like random, unreadable text.",
@@ -871,20 +859,14 @@
     "end-to-end-encryption": {
       "term": "End-to-End Encryption",
       "definition": "A type of [encryption](term:encryption) where only you and the people you're talking to can read your messages. The company running the app can't read them, so it has nothing to hand over to the cops if they ask. It usually doesn't hide who you talk to or when, and it can't protect messages on a phone that's been unlocked or hacked.",
-      "source": "Is Signal secure?",
-      "url": "/signal-secure/"
+      "source": "EFF Surveillance Self-Defense",
+      "url": "https://ssd.eff.org/module/key-concepts-encryption"
     },
     "disappearing-messages": {
       "term": "Disappearing Messages",
       "definition": "A setting in Signal and WhatsApp that automatically deletes messages from everyone's phones after a set amount of time. If a phone is seized or hacked later, there's much less to find. It can't stop someone from taking a screenshot first.",
       "source": "Signal Security Checklist",
       "url": "/signal/#signal-disappearing"
-    },
-    "safety-numbers": {
-      "term": "Safety Numbers",
-      "definition": "A special feature in Signal (and other messaging apps) that involves a unique code for each contact you're talking with. Comparing this code with your contact (in person or on a call) confirms no one is secretly intercepting your messages. Most people don't need to do this, but it's worth it for high-risk conversations.",
-      "source": "Signal Security Checklist",
-      "url": "/signal/#signal-verification"
     },
     "password-manager": {
       "term": "Password Manager",
@@ -924,7 +906,9 @@
     },
     "sim-swapping": {
       "term": "SIM Swapping",
-      "definition": "When an attacker convinces your phone carrier to move your phone number to a SIM card they control. They then receive your calls and texts, including login codes, and can use them to take over your accounts."
+      "definition": "When an attacker convinces your phone carrier to move your phone number to a SIM card they control. They then receive your calls and texts, including login codes, and can use them to take over your accounts.",
+      "source": "Yubico",
+      "url": "https://www.yubico.com/resources/glossary/sim-swap/"
     },
     "spyware": {
       "term": "Spyware",
@@ -950,12 +934,6 @@
       "source": "Prepare for a Protest",
       "url": "/protest/#biometrics-disable"
     },
-    "lockdown-mode": {
-      "term": "Lockdown Mode",
-      "definition": "An optional iPhone setting that turns off features [spyware](term:spyware) and [phone-cracking tools](term:forensic-extraction-tools) commonly exploit, like most message attachments and link previews. Some things work less smoothly, but it provides a lot of protections with one setting.",
-      "source": "Lockdown Mode and Advanced Protection",
-      "url": "/lockdown/"
-    },
     "secondary-phone": {
       "term": "Secondary Phone (\"burner phone\" lite)",
       "definition": "A second phone with as little personal data on it as possible, used for protests and sensitive organizing. If cops seize it, there's much less for them to find. It isn't truly anonymous like a [burner phone](term:burner-phone), and you can reuse it across many actions.",
@@ -973,12 +951,6 @@
       "definition": "The routine that shows up in your location and activity data: where you sleep, work, and hang out, and who you're often near. If you have a secondary phone that you're trying to keep separate from your main identity and you turn it on at the same locations and times as your primary devices, these pattern of life correlations can reveal your identity.",
       "source": "Secondary Phone Checklist",
       "url": "/secondary/#true-burner-steps"
-    },
-    "faraday-bag": {
-      "term": "Faraday Bag",
-      "definition": "A bag lined with material that blocks all signals (cell, GPS, Wi-Fi, and Bluetooth) going to and from your phone. While it's inside, the phone can't be located or connect to anything. It's an extra layer of protection on top of turning your phone off.",
-      "source": "Prepare for a Protest",
-      "url": "/protest/#faraday-bag"
     },
     "advertising-id": {
       "term": "Advertising ID",
@@ -1016,29 +988,19 @@
       "source": "VPNs for Activists",
       "url": "/vpn/"
     },
-    "tor": {
-      "term": "Tor",
-      "definition": "A free privacy tool that bounces your internet traffic through three random volunteer-run computers before it reaches a website. Your internet provider can't see what you're reading, and websites can't see who you are. The easiest way to use it is [Tor Browser](https://www.torproject.org/download/).",
-      "source": "What is Tor?",
-      "url": "/research/"
-    },
     "browser-fingerprinting": {
       "term": "Browser Fingerprinting",
-      "definition": "A way of tracking you by the unique combination of your browser's settings, like your screen size, fonts, and language. It works even if you clear your cookies or use a [VPN](term:vpn). [Tor Browser](term:tor) is designed to make everyone's fingerprint look the same.",
+      "definition": "A way of tracking you by the unique combination of your browser's settings, like your screen size, fonts, and language. It works even if you clear your cookies or use a [VPN](term:vpn). [Tor Browser](https://www.torproject.org/download/) is designed to make everyone's fingerprint look the same.",
       "source": "EFF Surveillance Self-Defense",
       "url": "https://ssd.eff.org/module/what-fingerprinting"
     },
     "warrant-subpoena": {
       "term": "Warrant vs. Subpoena",
-      "definition": "Both are legal orders that can force a company to hand over your data. A warrant must be signed by a judge who agrees there's probable cause of a crime, and it can also let police search your home or phone. Many subpoenas need no judge at all, but they don't give the investigator access to as much information."
+      "definition": "Both are legal orders that can force a company to hand over your data. A warrant must be signed by a judge who agrees there's probable cause of a crime, and it can also let police search your home or phone. Many subpoenas need no judge at all, but they don't give the investigator access to as much information. ICE often uses \"administrative warrants\" signed by an ICE officer, not a judge. These don't give them the right to enter your home without your permission."
     },
     "jail-support": {
       "term": "Jail Support",
       "definition": "A support role during an arrestable action or protest. These people support arrestees during and after an action. They track who's been arrested, stay in touch with lawyers, wait outside the jail, and bring people their phones, food, and a ride home once they're released."
-    },
-    "legal-observer": {
-      "term": "Legal Observer",
-      "definition": "A trained volunteer, often wearing a bright green [National Lawyers Guild](https://nlg.org/) hat, who watches and documents police conduct at protests. Their notes and videos can help defend people who get arrested and hold police accountable."
     }
   }
 }
