@@ -970,8 +970,8 @@
       "source": "EFF",
       "url": "https://www.eff.org/deeplinks/2021/09/geofence-warrants-threaten-civil-liberties-and-free-speech-rights-kenosha-and"
     },
-    "stingray": {
-      "term": "Stingray (Cell-Site Simulator)",
+    "css": {
+      "term": "Cell Site Simulator (\"Stingray\")",
       "definition": "A device that pretends to be a cell tower. It tricks nearby phones into connecting to it. Police can use one to log every phone at a protest, track a specific phone's location, and intercept calls and texts.",
       "source": "EFF Street Level Surveillance",
       "url": "https://sls.eff.org/technologies/cell-site-simulators-imsi-catchers"
