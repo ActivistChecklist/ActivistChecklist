@@ -47,6 +47,7 @@
 
 * Always make sure to write code with security as a core principle. Don't be excessive (ex: lots of try/catch loops), but do use thinking time to consider how an attacker could mount a meaningful attack.
 * Never hardcode secrets — use environment variables.
+* GitHub Actions secrets live in the `main-only` environment, never at repository level. Read `.github/ACTIONS-SECRETS.md` before adding a secret or a job that uses one.
 * Use parameterized queries — never interpolate into SQL.
 * Use constant-time comparison for tokens and hashes.
 * Never log secrets, tokens, or PII.
