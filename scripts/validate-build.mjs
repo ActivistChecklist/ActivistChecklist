@@ -2,7 +2,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import matter from 'gray-matter';
+import { parseFrontmatter } from '../lib/frontmatter.cjs';
 import chalk from 'chalk';
 import { getAllGuides, getAllPages, getAllNewsItems } from '../lib/content.js';
 import { LOCALES, DEFAULT_LOCALE } from '../lib/i18n-config.mjs';
@@ -143,7 +143,7 @@ function extractBodyStringFromMdx(mdxContent) {
 function parseMdxFile(filePath) {
   if (!fs.existsSync(filePath)) return null;
   const raw = fs.readFileSync(filePath, 'utf8');
-  const { data, content } = matter(raw);
+  const { data, content } = parseFrontmatter(raw);
   return { frontmatter: data || {}, content: content || '' };
 }
 

@@ -23,7 +23,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const matter = require('gray-matter');
+const { parseFrontmatter } = require('../lib/frontmatter.cjs');
 const ogs = require('open-graph-scraper');
 
 // Try to load sharp, but handle gracefully if it fails
@@ -75,7 +75,7 @@ function walkDir(dir) {
 function loadNewsItems() {
   return walkDir(CONTENT_DIR).map((filePath) => {
     const raw = fs.readFileSync(filePath, 'utf-8');
-    const { data: frontmatter } = matter(raw);
+    const { data: frontmatter } = parseFrontmatter(raw);
     const slug = path.basename(filePath, '.mdx');
     return { slug, frontmatter };
   });
