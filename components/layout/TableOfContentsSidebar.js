@@ -89,9 +89,9 @@ function TocList({ entries, onNavigate, linkClassName }) {
               aria-current={isActive ? 'location' : undefined}
               className={cn(
                 'block py-1 text-sm text-pretty',
-                'pl-3 border-l-2',
+                'ps-3 border-s-2',
                 linkClassName,
-                header.level === 3 && 'ml-4',
+                header.level === 3 && 'ms-4',
                 !isActive &&
                   'text-muted-foreground border-transparent hover:text-foreground hover:border-muted-foreground',
                 isActive &&
@@ -115,7 +115,7 @@ function TocList({ entries, onNavigate, linkClassName }) {
                     {/* Slot is always laid out so the bar keeps its width when the row turns active */}
                     <span
                       className={cn(
-                        'w-[5ch] shrink-0 text-right text-xs tabular-nums leading-none',
+                        'w-[5ch] shrink-0 text-end text-xs tabular-nums leading-none',
                         progress.complete ? 'text-success' : 'text-muted-foreground',
                         !isActive && 'invisible',
                       )}
@@ -213,7 +213,7 @@ export function MobileTableOfContents({ className }) {
       className={cn('not-annotatable md:hidden print:hidden mb-6 rounded-lg border', className)}
       data-pagefind-ignore
     >
-      <CollapsibleTrigger className="group flex w-full items-center gap-2 px-4 py-3 text-left font-semibold">
+      <CollapsibleTrigger className="group flex w-full items-center gap-2 px-4 py-3 text-start font-semibold">
         <TableOfContents className="size-4 shrink-0 text-muted-foreground" aria-hidden />
         <span className="flex-1">{t('tableOfContents.title')}</span>
         <ChevronDown

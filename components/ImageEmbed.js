@@ -60,10 +60,12 @@ export const ImageEmbed = ({
   const getAlignmentClass = () => {
     if (isMobile) return 'mx-auto block';
     switch (alignment) {
+      // float-start/-end emit float: inline-start/inline-end, so the image
+      // mirrors with the text direction instead of pinning to a physical side.
       case 'left':
-        return 'float-left mr-6 mb-4 mt-2';
+        return 'float-start me-6 mb-4 mt-2';
       case 'right':
-        return 'float-right ml-6 mb-4 mt-2';
+        return 'float-end ms-6 mb-4 mt-2';
       case 'full':
         return 'w-full block';
       default:

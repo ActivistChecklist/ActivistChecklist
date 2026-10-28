@@ -5,7 +5,7 @@
 }
 
 .termIcon {
-  @apply ml-[3px] mt-0.5 text-primary;
+  @apply ms-[3px] mt-0.5 text-primary;
 }
 
 .def[popover] {
@@ -60,7 +60,7 @@
 }
 
 .defClose {
-  @apply -mr-[0.7rem] -mt-[0.7rem] size-11 cursor-pointer;
+  @apply -me-[0.7rem] -mt-[0.7rem] size-11 cursor-pointer;
 }
 
 .closeIcon {

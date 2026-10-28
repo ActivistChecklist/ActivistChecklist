@@ -99,7 +99,7 @@ export default function ChecklistSectionList({ staleReviewDates = {}, readMinute
                         {description && <p className="text-muted-foreground">{description}</p>}
                       </div>
                       {meta && (
-                        <div className="col-start-2 text-sm text-muted-foreground sm:col-start-3 sm:pt-1 sm:text-right">
+                        <div className="col-start-2 text-sm text-muted-foreground sm:col-start-3 sm:pt-1 sm:text-end">
                           {meta}
                         </div>
                       )}

@@ -1,7 +1,7 @@
 ErrorDocument 404 /404/index.html
 
 # Locale rewrite: serve English content from /en/ without showing /en/ in URL
-# Non-English URLs (/es/, /fr/, /it/) are served directly (no rewrite needed)
+# Non-English URLs (/es/, /fr/, /it/, /ar/) are served directly (no rewrite needed)
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
@@ -31,10 +31,11 @@ ErrorDocument 404 /404/index.html
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
 
-  # Skip rewriting for /es/, /fr/, /it/, static files, API routes, and keystatic
+  # Skip rewriting for /es/, /fr/, /it/, /ar/, static files, API routes, and keystatic
   RewriteCond %{REQUEST_URI} !^/es/
   RewriteCond %{REQUEST_URI} !^/fr/
   RewriteCond %{REQUEST_URI} !^/it/
+  RewriteCond %{REQUEST_URI} !^/ar/
   RewriteCond %{REQUEST_URI} !^/en/
   RewriteCond %{REQUEST_URI} !^/_next/
   RewriteCond %{REQUEST_URI} !^/api/

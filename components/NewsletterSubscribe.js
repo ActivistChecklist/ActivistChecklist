@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Loader2 } from 'lucide-react';
+import { ArrowRight, Loader2 } from 'lucide-react';
 import { Alert } from '@/components/ui/alert';
 import { useTranslations } from 'next-intl';
 import { useAnalytics } from '@/hooks/use-analytics';
@@ -157,8 +157,18 @@ export function CompactNewsletterSubscribe({ context = 'footer' } = {}) {
             disabled={status === 'loading'}
             className="max-w-xs"
           />
-          <Button type="submit" disabled={status === 'loading'}>
-            {status === 'loading' ? <Loader2 className="h-4 w-4 animate-spin" /> : '→'}
+          <Button
+            type="submit"
+            disabled={status === 'loading'}
+            aria-label={t('newsletter.subscribe')}
+          >
+            {status === 'loading' ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              /* An icon, not a bare '→' glyph: a text arrow can't be flipped by
+                 the rtl: variant, so it kept pointing right in Arabic. */
+              <ArrowRight className="h-4 w-4 rtl:rotate-180" aria-hidden="true" />
+            )}
           </Button>
         </form>
       )}

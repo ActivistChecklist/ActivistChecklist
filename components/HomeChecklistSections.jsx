@@ -43,7 +43,7 @@ export default function HomeChecklistSections({ readMinutes = {}, estimatedTimes
                   className="group mt-3 inline-flex items-center text-sm font-medium text-muted-foreground transition-colors hover:text-link"
                 >
                   {t('checklistSections.allChecklists', { count: section.items.length })}
-                  <ArrowRight className="ml-1.5 h-4 w-4 transition-transform duration-300 ease-out group-hover:translate-x-1" />
+                  <ArrowRight className="ms-1.5 h-4 w-4 transition-transform duration-300 ease-out group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
                 </Link>
               </div>
               <div className="min-w-0">
@@ -95,7 +95,7 @@ export default function HomeChecklistSections({ readMinutes = {}, estimatedTimes
         <Button asChild variant="outline" size="lg">
           <Link href={SECURITY_CHECKLISTS.href} className="group">
             {t('homepage.browseAll')}{' '}
-            <ArrowRight className="ml-2 transition-transform duration-300 ease-out group-hover:translate-x-1" />
+            <ArrowRight className="ms-2 transition-transform duration-300 ease-out group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
           </Link>
         </Button>
       </div>
