@@ -51,6 +51,14 @@
   @apply bg-black/80;
 }
 
+.defBack {
+  @apply -ml-1 mb-2 inline-flex cursor-pointer items-center gap-0.5 rounded text-sm text-muted-foreground;
+}
+
+.backIcon {
+  @apply size-4 rtl:rotate-180;
+}
+
 .defHead {
   @apply flex items-start justify-between;
 }
@@ -72,9 +80,21 @@
   @apply mt-2 block max-h-[min(15rem,calc(100dvh-8rem))] overflow-y-auto overscroll-contain font-normal text-popover-foreground;
 }
 
+.defSource {
+  @apply mt-3 block text-sm text-muted-foreground;
+}
+
+.sourceIcon {
+  @apply ml-1 inline-block h-3.5 w-3.5 align-[-0.1em];
+}
+
 @media (hover: hover) {
   .term:hover {
     @apply rounded bg-primary/10;
+  }
+
+  .defBack:hover {
+    @apply text-foreground;
   }
 
   .defClose:hover {
