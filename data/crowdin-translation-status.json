@@ -1,22 +1,27 @@
 {
   "version": 2,
-  "generatedAt": "2026-10-22T21:56:37.781Z",
+  "generatedAt": "2026-10-28T16:53:40.464Z",
   "thresholds": {
     "unreviewedNoticeMaxApprovalPercent": 80
   },
   "routes": {
     "action": {
       "es": {
-        "translationPercent": 100,
-        "approvalPercent": 9,
+        "translationPercent": 97,
+        "approvalPercent": 4,
         "showUnreviewedNotice": true
       },
       "fr": {
-        "translationPercent": 100,
+        "translationPercent": 97,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
       },
       "it": {
+        "translationPercent": 97,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "ja": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -37,6 +42,11 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "ja": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "emergency": {
@@ -51,6 +61,11 @@
         "showUnreviewedNotice": true
       },
       "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "ja": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -71,6 +86,11 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "ja": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "federal": {
@@ -85,6 +105,11 @@
         "showUnreviewedNotice": true
       },
       "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "ja": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -105,20 +130,30 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "ja": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "organizing": {
       "es": {
-        "translationPercent": 100,
+        "translationPercent": 97,
         "approvalPercent": 2,
         "showUnreviewedNotice": true
       },
       "fr": {
-        "translationPercent": 100,
+        "translationPercent": 97,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
       },
       "it": {
+        "translationPercent": 97,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "ja": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -126,16 +161,21 @@
     },
     "protest": {
       "es": {
-        "translationPercent": 100,
+        "translationPercent": 99,
         "approvalPercent": 15,
         "showUnreviewedNotice": true
       },
       "fr": {
-        "translationPercent": 100,
+        "translationPercent": 99,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
       },
       "it": {
+        "translationPercent": 99,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "ja": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -156,6 +196,11 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "ja": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "secondary": {
@@ -170,6 +215,11 @@
         "showUnreviewedNotice": true
       },
       "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "ja": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -190,6 +240,11 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "ja": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "spyware": {
@@ -199,12 +254,17 @@
         "showUnreviewedNotice": true
       },
       "fr": {
-        "translationPercent": 99,
+        "translationPercent": 98,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
       },
       "it": {
-        "translationPercent": 99,
+        "translationPercent": 98,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "ja": {
+        "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
       }
@@ -224,6 +284,11 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "ja": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "whatsapp": {
@@ -233,11 +298,16 @@
         "showUnreviewedNotice": true
       },
       "fr": {
-        "translationPercent": 100,
-        "approvalPercent": 34,
+        "translationPercent": 99,
+        "approvalPercent": 33,
         "showUnreviewedNotice": true
       },
       "it": {
+        "translationPercent": 99,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "ja": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -258,6 +328,11 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "ja": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "contribute": {
@@ -272,6 +347,11 @@
         "showUnreviewedNotice": true
       },
       "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "ja": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -292,6 +372,11 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "ja": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "links": {
@@ -306,6 +391,11 @@
         "showUnreviewedNotice": true
       },
       "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "ja": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -326,6 +416,11 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "ja": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "movies": {
@@ -340,6 +435,11 @@
         "showUnreviewedNotice": true
       },
       "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "ja": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -360,6 +460,11 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "ja": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "party": {
@@ -374,6 +479,11 @@
         "showUnreviewedNotice": true
       },
       "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "ja": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -394,20 +504,30 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "ja": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "privacy": {
       "es": {
-        "translationPercent": 100,
+        "translationPercent": 99,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
       },
       "fr": {
-        "translationPercent": 100,
+        "translationPercent": 99,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
       },
       "it": {
+        "translationPercent": 99,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "ja": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -428,6 +548,11 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "ja": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "resources": {
@@ -442,6 +567,11 @@
         "showUnreviewedNotice": true
       },
       "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "ja": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -462,6 +592,11 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "ja": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "signal-secure": {
@@ -479,6 +614,11 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "ja": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "vpn": {
@@ -493,6 +633,11 @@
         "showUnreviewedNotice": true
       },
       "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "ja": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
