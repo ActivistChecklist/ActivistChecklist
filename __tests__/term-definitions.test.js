@@ -27,14 +27,24 @@ const definitions = Object.entries(messages.definitions).filter(
   ([, value]) => typeof value === 'object',
 );
 
-// matches the tag whatever order its attributes are in, so a <Term> without a slug is caught too
+// Content adds a popup with [text](term:slug). Older translations may still use
+// <Term slug="...">, matched whatever order its attributes are in, so a <Term>
+// without a slug is caught too.
 function termUsages() {
   return listMdxFiles(CONTENT_DIR).flatMap((file) => {
     const source = fs.readFileSync(file, 'utf8');
-    return [...source.matchAll(/<Term\b[^>]*>/g)].map(([tag]) => ({
-      file: path.relative(CONTENT_DIR, file),
-      slug: tag.match(/\bslug=["']([^"']+)["']/)?.[1] ?? null,
+    const relative = path.relative(CONTENT_DIR, file);
+    const links = [...source.matchAll(/\]\((term:[^)]*)\)/g)].map(([, href]) => ({
+      file: relative,
+      slug: termLinkSlug(href),
+      usage: href,
     }));
+    const tags = [...source.matchAll(/<Term\b[^>]*>/g)].map(([tag]) => ({
+      file: relative,
+      slug: tag.match(/\bslug=["']([^"']+)["']/)?.[1] ?? null,
+      usage: tag,
+    }));
+    return [...links, ...tags];
   });
 }
 
@@ -104,14 +114,14 @@ describe('term definitions', () => {
     }
   });
 
-  it('finds <Term> usages in content', () => {
+  it('finds term usages in content', () => {
     expect(termUsages().length).toBeGreaterThan(0);
   });
 
-  it('every <Term> in content has a slug with a definition', () => {
+  it('every term usage in content has a slug with a definition', () => {
     const missing = termUsages()
       .filter(({ slug }) => !(slug && messages.definitions[slug]?.definition))
-      .map(({ file, slug }) => `${file}: ${slug ?? '(no slug)'}`);
+      .map(({ file, usage }) => `${file}: ${usage}`);
     expect(missing).toEqual([]);
   });
 });

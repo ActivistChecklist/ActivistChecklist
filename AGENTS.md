@@ -17,6 +17,7 @@
 
 * IMPORTANT: Do NOT use em-dashes when writing content or text in .mdx files or static strings.
 * To give a heading a custom anchor id, add `{#your-id}` at the end of the heading line (e.g. `## Downsides to using a VPN {#downsides}`), then link to it with `/page/#your-id`. Without the marker, headings still get an auto id derived from their text. See `lib/mdx-heading-ids.js`.
+* To show a definition popup for a term, write `[text](term:slug)` (e.g. `[data brokers](term:data-broker)`), where `slug` is a key under `definitions` in `messages/en.json`. Definitions themselves use inline Markdown and can link to other terms the same way. Use popups sparingly: not on the term's own page or checklist item, not where the sentence already explains the term, and at most one per checklist item, spread across sections. Don't use the older `<Term slug="...">` tag in new content.
 
 ## Git commit rules
 
