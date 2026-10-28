@@ -84,6 +84,10 @@
       "title": "Tools we built",
       "label": "Tools we built"
     },
+    "glossary": {
+      "title": "Terms & definitions",
+      "label": "Terms & definitions"
+    },
     "resources": {
       "title": "Resources",
       "label": "Resources"
@@ -833,6 +837,13 @@
       "secondaryCta": "Doxxing Defense Checklist",
       "openSource": "All four are <repos>open source</repos>. If one is broken, or you need something we have not built yet, <contact>let us know</contact>."
     }
+  },
+  "terms": {
+    "metaTitle": "Terms & definitions | Activist Checklist",
+    "metaDescription": "Plain-language definitions of the digital security and surveillance terms activists run into, from doxxing and data brokers to stingrays and geofence warrants.",
+    "title": "Terms & definitions",
+    "intro": "Plain-language definitions of the security and surveillance terms used in our checklists and guides. Elsewhere on the site, terms with a dotted underline open these definitions in a popup.",
+    "copyLink": "Copy link to this term"
   },
   "definitions": {
     "closeAriaLabel": "Close",
