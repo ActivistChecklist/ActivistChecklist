@@ -1,8 +1,8 @@
 ---
-title: Why we need to remove everything after the '?' in links
-seoDescription: Sharing a link with a tracking code de-anonymizes everyone you share it with. How to spot tracking parameters and strip them before you post in Signal.
+title: リンクの「?」以降をすべて削除すべき理由
+seoDescription: トラッキングコード付きのリンクを共有すると、共有した相手全員の匿名性が失われてしまいます。 Signal に投稿する前に、トラッキングパラメータを見つけて削除する方法。
 answerCapsule: |
-  When you share a link with a tracking parameter, the platform can associate everyone who clicks with you in its records. For activist groups in Signal, this could contribute to a de-anonymization map that might be subpoenaed later. Take 5 seconds to delete the part after the ? before you share, and remind others when they forget. Brave or uBlock can do this automatically.
+  トラッキングパラメータ付きのリンクを共有すると、プラットフォームはクリックした人全員をあなたと結びつけて記録できてしまいます。 Signal で活動しているアクティビストのグループにとっては、これが匿名性を暴く「つながりの地図」作りに加担することになり、後で警察などに召喚状で提出を求められるおそれもあります。共有する前に5秒だけ使って、? 以降の部分を消しましょう。仲間が忘れていたら、声をかけてあげてください。 Brave や uBlock を使えば自動でやってくれます。
 relatedGuides:
   - essentials
   - signal
@@ -12,123 +12,123 @@ image: /images/content/dont-make-me-tap-the-sign-share.jpg
 ---
 
 <Alert type="success">
-  **Takeaway:** If you remove everything after the ? in links that you share, you'll help keep other people in your groups from being associated with you and each other (this is problematic because it can reduce anonymity for activism).
+  **まとめ：** シェアするリンクから「?」 以降をすべて削除すれば、グループの他のメンバーがあなたや互いと結びつけられるのを防げます（これはアクティビズムの匿名性を下げてしまうので問題なんです）。
 </Alert>
 
-## Short version
+## 手短に言うと
 
-<ImageEmbed src="/images/content/link-sharing-dont-make-me-tap-the-sign.jpg" alt="Simpsons meme screenshot with a bus driver saying &#x22;don't make me tap the sign&#x22; - The sign says &#x22;Remove everything after the question mark in URLs so we aren't all tracked when we click on it&#x22;" size="xs" alignment="right" />
+<ImageEmbed src="/images/content/link-sharing-dont-make-me-tap-the-sign.jpg" alt="シンプソンズのミーム画像。バスの運転手が&#x22;この看板を指差させないでくれ&#x22;と言っている。看板には&#x22;URLのはてなマーク以降はすべて消そう。そうすればクリックしたときにみんなが追跡されずに済む&#x22;と書かれている" size="xs" alignment="right" />
 
-**The link-sharing situation:** Major social platforms (YouTube, Instagram, etc.) now add a ***unique code*** every time an individual clicks "copy link" on a post.
+**リンク共有の現状：** 大手SNS（YouTube、Instagramなど）は今では、誰かが投稿の「リンクをコピー」を押すたびに***固有のコード***を付け加えています。
 
-**Background:**
+**背景：**
 
-* Everyone who clicks on it will be linked together as an associated group on that website.
-* If you're sharing the link in an activist group (esp. on Signal) where some people are at risk of being targeted for their political activity, the website (Instagram, etc) will then know who is interacting with who.  This can de-anonymize people who are trying to protect their activist work.
-* These companies will eventually develop a copy of your group membership list.
-* These companies want this information to sell us ads, but the government can force a company to turn the data over and use it to target people who are resisting.
+* そのリンクをクリックした人は全員、そのサイト上で関係のあるグループとして結びつけられます。
+* 政治活動を理由に狙われる危険がある人もいるアクティビストのグループ（特にSignal）でリンクをシェアすると、そのサイト（Instagramなど）に誰と誰がつながっているかがバレてしまいます。これによって、自分の活動を守ろうとしている人たちの匿名性が崩れてしまうおそれがあります。
+* こうした企業は、いずれあなたのグループのメンバーリストを手にすることになります。
+* 企業がこの情報を欲しがるのは広告を売りつけるためですが、政府は企業にデータを提出させ、抵抗する人たちを狙い撃ちするのに使うことができます。
 
-**Best practice for your community:** Delete everything after the "?" before you share a link, regardless of where you share it.
+**コミュニティのためにできるベストな方法：** どこでシェアする場合でも、リンクをシェアする前に「?」以降をすべて削除しましょう。
 
-**Best protective practice for you:** Also keep an eye out for a "?" In links that are shared by others. Do NOT click on that link!! Long-press on your phone and copy the link. Paste it into your browser. Delete the tracking stuff after the question mark. THEN you can click on it.
+**自分を守るためのベストな方法：** 他の人がシェアしたリンクに「?」が含まれていないかにも気をつけましょう。そのリンクはクリックしちゃダメ！！スマホで長押ししてリンクをコピーします。ブラウザに貼り付けます。はてなマーク以降のトラッキング用の部分を削除します。それから開きましょう。
 
-## Remind folks who forget
+## 忘れている人には声をかけよう
 
-Here's a sample message you can use if someone forgets.
+誰かが忘れていたときに使えるメッセージの例はこちら。
 
 > <CopyButton />
 >
-> *Quick reminder: Please edit your message to remove the tracking code (everything after the "?"). This helps keep us all safer. [https://activistchecklist.org/links](https://activistchecklist.org/links)*
+> *ちょっとしたお願い：メッセージを編集して、トラッキングコード（「?」以降すべて）を削除してもらえますか。そうすればみんながもっと安全になります。 [https://activistchecklist.org/links](https://activistchecklist.org/links)*
 
-## What you can do
+## あなたにできること
 
 <Alert type="success">
-  **Make it automatic:** You can configure your browser to automatically remove all tracking links if you use [Brave](https://brave.com/) or the uBlock Origin plugin. You just need to enable a block list called "**AdGuard/uBO - URL Tracking Protection.**" You can do this in Brave by going to <MenuPath inline>**Settings** > **Shields** > **Content Filters** > **Filters**</MenuPath>. [Read more](https://shreyasminocha.me/blog/removing-tracking-query-params)
+  **自動化しよう：** [Brave](https://brave.com/)やuBlock Originプラグインを使っているなら、トラッキングリンクを全部自動で取り除くようにブラウザを設定できるよ。 「**AdGuard/uBO - URL Tracking Protection**」というブロックリストを有効にするだけでOKです。Brave なら <MenuPath inline>**設定** > **シールド** > **コンテンツフィルター** > **フィルター**</MenuPath> から設定できます。[詳しくはこちら](https://shreyasminocha.me/blog/removing-tracking-query-params)
 </Alert>
 
-<HowTo title="How to remove the unique tracking code">
-  **To remove the tracking code BEFORE you post:**
+<HowTo title="固有のトラッキングコードを取り除く方法">
+  **投稿する「前に」トラッキングコードを取り除くには：**
 
-  1. Copy the link from a social media app
-  2. Paste it into the messaging app (Signal, etc)
-  3. Delete everything after the "?"
-  4. Press **Send**
+  1. SNSアプリからリンクをコピーする
+  2. メッセージアプリ（Signalなど）に貼り付ける
+  3. 「?」以降を全部消す
+  4. **送信**を押す
 
-  **If you want to remove a tracking code AFTER you've already posted it:**
+  **すでに投稿した「後で」トラッキングコードを取り除きたいときは：**
 
-  1. In Signal/WhatsApp/iMessage, long-press on a post until a menu appears.
-  2. Click **Edit**
-  3. Delete everything after the "?"
-  4. Press **Save**
+  1. Signal／WhatsApp／iMessageで、メニューが出るまで投稿を長押しする。
+  2. **編集**をタップする
+  3. 「?」以降を全部消す
+  4. **保存**を押す
 </HowTo>
 
-**Other tips:**
+**その他のヒント：**
 
-* If you're on Brave browser or Firefox, you can right click and select "Copy clean link..." which will automatically remove these tracking codes.
+* BraveブラウザかFirefoxを使っているなら、右クリックして「Copy clean link...」＝トラッキング情報を除いたリンクをコピー、を選べば、こうしたトラッキングコードを自動で取り除けるよ。
 
-## Examples
+## 例
 
-Which social media sites do this kind of tracking?
+こういうトラッキングをしているSNSはどこ？
 
-<StyledSpan className="bg-destructive text-destructive-foreground font-bold">Delete the section in red before sharing or visiting the link</StyledSpan>
+<StyledSpan className="bg-destructive text-destructive-foreground font-bold">リンクを共有したり開いたりする前に、赤い部分を消そう</StyledSpan>
 
-***Instagram:***
+***Instagram：***
 
-* **⚠️ Has tracking:**
+* **⚠️ トラッキングあり：**
 
   `https://www.instagram.com/p/CX7K9mNvAa5/` <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-destructive! text-destructive-foreground! font-bold!">?igshid=MzRlODBiNWFlZA==</StyledSpan>
-* **✅ Tracking removed:**
+* **✅ トラッキング除去済み：**
 
   <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-transparent! text-success!">https://www.instagram.com/p/CX7K9mNvAa5/</StyledSpan>
 
 **Facebook:**
 
-* **⚠️ Has tracking:**
+* **⚠️ トラッキングあり：**
 
   `https://www.facebook.com/share/p/15BkR7qJ8M/` <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-destructive! text-destructive-foreground! font-bold!">?mibextid=oFDknk</StyledSpan>
-* **✅ Tracking removed:**
+* **✅ トラッキング除去済み：**
 
   <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-transparent! text-success!">https://www.facebook.com/share/p/15BkR7qJ8M/</StyledSpan>
 
 **YouTube:**
 
-* **⚠️ Has tracking:**
+* **⚠️ トラッキングあり：**
 
   `https://youtu.be/zX9Ke_VXnIA` <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-destructive! text-destructive-foreground! font-bold!">?si=YpziAaccKeIEab6z</StyledSpan>
-* **✅ Tracking removed:**
+* **✅ トラッキング除去済み：**
 
   <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-transparent! text-success!">https://youtu.be/zX9Ke_VXnIA</StyledSpan>
 
 **Spotify:**
 
-* **⚠️ Has tracking:**
+* **⚠️ トラッキングあり：**
 
   `https://open.spotify.com/track/1eSNRUK0HIwOFHwWRjHJEo` <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-destructive! text-destructive-foreground! font-bold!">?si=3f7e61d1a8c26b0a</StyledSpan>
-* **✅ Tracking removed:**
+* **✅ トラッキング除去済み：**
 
   <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-transparent! text-success!">https://open.spotify.com/track/1eSNRUK0HIwOFHwWRjHJEo</StyledSpan>
 
-## Exceptions
+## 例外
 
-You can keep the ? stuff for some websites
+一部のサイトでは、「? 」以降の部分を残しておいても大丈夫です
 
 * ✅ **Zoom:**
 
   <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-transparent! text-success!">https://us02web.zoom.us/j/68714384251?pwd=mT9pKvXcRwLz2nYqF83S</StyledSpan>
-* **✅  YouTube:** You can keep `?v=...` but remove `?si=...`
+* **✅  YouTube:** `?v=...` は残してOK。でも `?si=...` は削除しよう
 
   <StyledSpan className="rounded px-1 py-0.5 font-mono text-sm before:content-none! after:content-none! bg-transparent! text-success!">https://www.youtube.com/watch?v=zX9Ke_VXnIA</StyledSpan>
 
-## FAQ
+## よくある質問
 
-**Does this mean Signal is not safe?**
+**じゃあ、Signalは安全じゃないってこと？**
 
-Signal is as safe as we can get while still using a phone. This tracking isn't happening inside Signal. It's happening on the big tech platforms because they’ve thought of another way to track us so they can sell us ads.
+スマホを使う限り、Signalは私たちが使える中で一番安全な選択肢です。このトラッキングはSignalの中で起きているわけではありません。これが大手テック企業のプラットフォームで起きているのは、私たちを追跡して広告を売りつけるための新しい手口を彼らが考え出したからです。
 
-**What about ?utm_source= type tracking codes?**
+**?utm_source= みたいなトラッキングコードはどうなの？**
 
-These don't matter as much. They don't track you uniquely or associate us together.
+こちらはそこまで気にしなくて大丈夫です。あなた個人を特定して追跡したり、私たちを互いに結びつけたりはしません。
 
-**I deleted the tracking code part and now the link doesn't work. What should I do?**
+**トラッキングコードの部分を消したら、リンクが開けなくなりました。どうすればいい？**
 
-On some sites, the stuff after the ? is required for the link to work, which can make this process confusing. If you're not sure how to share the link safely, see if you can find similar content on a differnet site that doesn't have a tracking code.
+サイトによっては、? 以降の部分がないとリンクが機能しないこともあるので、ちょっとややこしいです。リンクを安全に共有する方法がわからないときは、トラッキングコードの付いていない別のサイトで同じような内容を探してみてください。
