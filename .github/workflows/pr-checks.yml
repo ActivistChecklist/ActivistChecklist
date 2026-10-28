@@ -1,4 +1,10 @@
 # Full suite: tests + static build (link checks run inside buildstatic).
+#
+# Crowdin translation PRs (l10n_* branches) skip the full suite and run
+# l10n_check instead, which fails unless the PR only changes Crowdin-managed
+# translation files and adds no markup the English source lacks. merge_gate
+# requires whichever of the two applies, so a branch name alone never lets a
+# PR through with nothing run.
 
 name: Tests & Build (PRs)
 
@@ -117,21 +123,74 @@ jobs:
           NEXT_TELEMETRY_DISABLED: 1
         run: pnpm buildstatic
 
+  l10n_check:
+    if: ${{ startsWith(github.head_ref, 'l10n_') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      # The default pull_request ref is the merge commit, so HEAD^1 is the base
+      # branch and HEAD^1..HEAD is exactly what merging would change.
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6.1.0
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm run install:ci
+
+      # Paths allowed are derived from crowdin.yml. Also compares each changed
+      # file and string with its English source, and writes a per-locale
+      # summary of changed strings to the job summary for review.
+      - name: Translation paths and markup
+        run: node scripts/l10n-pr-check.mjs --base HEAD^1 --head HEAD
+
+      # xargs may split the list across several runs; -r runs nothing when no
+      # MDX changed (with no paths, validate-content checks all content).
+      - name: Content validation (changed MDX)
+        run: |
+          git diff -z --name-only --no-renames --diff-filter=d HEAD^1 HEAD -- ':(glob)content/**/*.mdx' \
+            | xargs -0 -r pnpm validate-content
+
   # The merge gate. ALWAYS runs. Reports a real success/failure.
+  # Checks each job by name rather than "nothing failed", because a skipped
+  # job does not fail: when the l10n_ skip covered every job, the old
+  # "success or skipped" rule passed with nothing run.
   merge_gate:
     name: merge_gate
     if: always()
-    needs: [detect_changes, pr_quality, pr_build]
+    needs: [detect_changes, pr_quality, pr_build, l10n_check]
     runs-on: ubuntu-latest
     steps:
       - name: Decide
+        env:
+          IS_L10N: ${{ startsWith(github.head_ref, 'l10n_') }}
+          DETECT: ${{ needs.detect_changes.result }}
+          QUALITY: ${{ needs.pr_quality.result }}
+          BUILD: ${{ needs.pr_build.result }}
+          RUNTIME_CHANGED: ${{ needs.detect_changes.outputs.runtime_changed }}
+          L10N: ${{ needs.l10n_check.result }}
         run: |
-          # Pass if every needed job ended in success or was skipped.
-          # Fail if any failed or was cancelled.
-          results='${{ toJSON(needs) }}'
-          echo "$results"
-          if echo "$results" | grep -E '"result": "(failure|cancelled)"' > /dev/null; then
-            echo "A required job failed or was cancelled."
-            exit 1
+          echo "l10n=$IS_L10N detect_changes=$DETECT pr_quality=$QUALITY pr_build=$BUILD runtime_changed=$RUNTIME_CHANGED l10n_check=$L10N"
+          fail() { echo "::error::$1"; exit 1; }
+          if [ "$IS_L10N" = "true" ]; then
+            [ "$L10N" = "success" ] || fail "l10n_check must pass on translation PRs (got: $L10N)."
+          else
+            [ "$DETECT" = "success" ] || fail "detect_changes must pass (got: $DETECT)."
+            [ "$QUALITY" = "success" ] || fail "pr_quality must pass (got: $QUALITY)."
+            case "$BUILD" in
+              success) ;;
+              skipped) [ "$RUNTIME_CHANGED" != "true" ] || fail "pr_build was skipped but runtime files changed." ;;
+              *) fail "pr_build must pass (got: $BUILD)." ;;
+            esac
           fi
           echo "All clear."

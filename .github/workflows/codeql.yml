@@ -24,6 +24,9 @@ permissions:
 
 jobs:
   analyze:
+    # Translation PRs carry no code: pr-checks.yml's l10n_check (required via
+    # merge_gate) fails any l10n_* PR that changes a file outside the Crowdin
+    # translation paths, so there is nothing here for CodeQL to scan.
     if: ${{ !startsWith(github.head_ref, 'l10n_') && !startsWith(github.ref_name, 'l10n_') }}
     name: Analyze (${{ matrix.name }})
     runs-on: ubuntu-latest
