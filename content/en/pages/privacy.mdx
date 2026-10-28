@@ -2,7 +2,7 @@
 title: Protecting Your Privacy
 seoDescription: What we collect (almost nothing) and why. Activist Checklist is built so that even if it gets subpoenaed, there's nothing useful to hand over.
 firstPublished: 2025-01-09
-lastUpdated: 2026-05-23
+lastUpdated: 2026-10-27
 showToc: true
 ---
 <Alert type="info">
@@ -22,7 +22,7 @@ We've intentionally designed this site to be as privacy-protective as possible:
 * ❌ No IP addresses are ever logged
 * ❌ No cookies are stored on your device
 * ❌ No external services or third-party libraries are loaded in your browser that could expose your personal information (IP address)
-* ❌ None of your personal information is ever collected on our servers or sent to any third-party servers.
+* ❌ None of your personal information is ever collected on our servers or sent to any third-party servers. The one exception is a message you choose to send us through our contact form, which is encrypted before it leaves our server ([see below](#contact-form)).
 
 ## What we do track
 
@@ -66,9 +66,13 @@ This data is stored on a privacy-focused analytics platform called [Umami](https
 
 If you’d like, you can review the [code here](https://github.com/ActivistChecklist/ActivistChecklist/blob/main/api/counter.js).
 
-## Contact form
+## Contact form {#contact-form}
 
-If you message us using our [contact form](/contact/), the message is [encrypted](https://proton.me/blog/what-is-pgp-encryption) before being sent to our Proton Mail account. Sharing your email address is optional. If you do share your email address for us to reply and it's not a Proton Mail address, your email provider will be able to see our conversation once we reply.
+If you message us using our [contact form](/contact/), our server [encrypts](https://proton.me/blog/what-is-pgp-encryption) your message, along with any contact details you give us, before it leaves our server. Only we can read it.
+
+We use [Resend](https://resend.com/legal/privacy-policy), an email delivery service, to deliver the encrypted message to our Proton Mail account. Resend sees the encrypted message, a generic subject line with a random reference number, and the time it was sent. It does not see your IP address, because the message comes from our server, not from your browser. Resend may keep a copy of the emails it delivers for a while, but that copy is encrypted too.
+
+Sharing your email address is optional. If you do share your email address for us to reply and it's not a Proton Mail address, your email provider will be able to see our conversation once we reply.
 
 If you’d like, you can review the [code here](https://github.com/ActivistChecklist/ActivistChecklist/blob/main/api/contact.js).
 
