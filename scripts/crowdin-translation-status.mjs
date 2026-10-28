@@ -20,7 +20,7 @@ try {
 
 import fs from 'fs';
 import path from 'path';
-import matter from 'gray-matter';
+import { parseFrontmatter } from '../lib/frontmatter.cjs';
 import { glob as globAsync } from 'node:fs/promises';
 import { LOCALES, DEFAULT_LOCALE } from '../lib/i18n-config.mjs';
 
@@ -310,7 +310,7 @@ async function run() {
   );
   for (const rel of guidePaths.sort()) {
     const raw = fs.readFileSync(path.join(process.cwd(), rel), 'utf-8');
-    const { data, content } = matter(raw);
+    const { data, content } = parseFrontmatter(raw);
     const slug = data.slug || path.basename(rel, '.mdx');
     const repoPaths = [rel.replace(/\\/g, '/')];
     for (const itemSlug of extractChecklistItemSlugs(content)) {
@@ -323,7 +323,7 @@ async function run() {
   );
   for (const rel of pagePaths.sort()) {
     const raw = fs.readFileSync(path.join(process.cwd(), rel), 'utf-8');
-    const { data } = matter(raw);
+    const { data } = parseFrontmatter(raw);
     const slug = data.slug || path.basename(rel, '.mdx');
     routeSources.push({ slug, repoPaths: [rel.replace(/\\/g, '/')] });
   }

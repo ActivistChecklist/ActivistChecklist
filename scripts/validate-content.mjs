@@ -18,7 +18,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { serialize } from 'next-mdx-remote/serialize';
-import matter from 'gray-matter';
+import { parseFrontmatter } from '../lib/frontmatter.cjs';
 import remarkGfm from 'remark-gfm';
 import { applyHeadingIds } from '../lib/mdx-heading-ids.js';
 import { ALLOWED_COMPONENTS, ALLOWED_HTML_ELEMENTS } from '../lib/mdx-options.js';
@@ -143,8 +143,16 @@ async function validateFile(filePath) {
     return errors;
   }
 
+  let content;
+  try {
+    ({ content } = parseFrontmatter(raw));
+  } catch (e) {
+    // e.g. `---js` front matter, which parseFrontmatter refuses rather than runs.
+    errors.push({ file: relativePath, error: e.message });
+    return errors;
+  }
+
   // Layer 1: Regex scan
-  const { content } = matter(raw);
   for (const { pattern, label } of SUSPICIOUS_PATTERNS) {
     // Reset regex lastIndex
     pattern.lastIndex = 0;
