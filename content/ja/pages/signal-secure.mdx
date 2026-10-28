@@ -1,0 +1,65 @@
+---
+title: Is Signal secure? (Yes!)
+seoDescription: Is Signal secure for activist use? Yes. How the encryption works, what Signal can share with law enforcement, and the myths that get it wrong.
+answerCapsule: |
+  Yes, Signal is secure for activist organizing. It's end-to-end encrypted, the code is open source and audited. When law enforcement subpoenas Signal, they get the account creation date and last connection date. They cannot get message contents or your contact list. The remaining risk is your device: a seized phone with a weak passcode exposes everything, regardless of how strong Signal itself is.
+relatedGuides:
+  - signal
+  - essentials
+firstPublished: 2026-02-24
+lastUpdated: 2026-04-03
+---
+
+<Alert type="success">
+  **Takeaway:** Signal is safe to use. If you already use Signal for your activism, rest assured, your communications are private and secure.
+</Alert>
+
+<Alert type="info">
+  **Using Signal securely:** This article is about whether Signal is trustworthy. For concrete steps to configure the app, use our [Signal Security Checklist](/signal/).
+</Alert>
+
+[Signal](https://signal.org/) is a secure, encrypted, messaging platform that is widely used by activists, journalists, human rights lawyers, and even government officials, for one-to-one or group communication including text, voice, and video.
+
+### Signal is run by a nonprofit
+
+The Signal app is owned by the Signal Technology Foundation, a US-based nonprofit, which receives funds through individual donations and grants.
+
+You can browse the Signal Technology Foundation's tax filings, which detail revenues and expenses, [here](https://projects.propublica.org/nonprofits/organizations/824506840).
+
+### Communication over Signal is private
+
+When communicating over Signal, messages remain private. This privacy is made possible by **end-to-end technology**, meaning that as your conversations are passing through the internet, they're **indecipherable**, i.e. only you and the person(s) you're communicating with can read or listen to the contents of your communications.
+
+If a government agency [subpoenas](term:warrant-subpoena) Signal for data related to a Signal account based on your phone number, Signal can only respond with the following pieces of information, which are: the account ID, a cryptographic hash of your username, when the account was created, and when it was last used. If they subpoena based on your username, Signal is able to tie a username to a phone number and produce a response that includes the phone number. This is one of the reasons that Signal designed usernames to be ephemeral and give users the ability to switch up usernames based on the need. Otherwise, Signal knows **nothing else** about you.
+
+### The Signal application is open source
+
+If apps were cakes, open source means having access to the entire cake recipe, i.e. you know how the cake is made, and what ingredients are used. You can even suggest changes that you believe might improve the cake. Similarly, Signal's code base is made openly available for anyone to view, inspect, and suggest modifications. In fact, you can [view Signal's code here](https://github.com/signalapp). The way in which Signal protects the millions of messages that pass through the app is also [made publicly available](https://github.com/signalapp/libsignal).
+
+This level of transparency makes it possible to trust Signal because we can see for ourselves that it works the way it says it does, and not just take its word for it.
+
+<Alert type="default">
+  **Side note:** In 2021, Signal introduced an anti-spam system after users reported a surge of spam from unknown contacts. To prevent spammers from studying the code and working around it, this one component was made closed source. Everything else remains open source. (See: [Signal's blog post](https://signal.org/blog/keeping-spam-off-signal/))
+</Alert>
+
+## The myth
+
+**Watch out:** A recurring claim that circulates on social media is that Signal is funded by the US government or the Central Intelligence Agency (CIA), implying that Signal is essentially a government operation and therefore not to be trusted.
+
+This claim is based on the fact that Signal [received funding](https://www.opentech.fund/projects-we-support/supported-projects/signal-open-whisper-systems/) from the Open Technology Fund (OTF) between 2012 and 2016. Signal has always openly acknowledged this funding. The OTF is a nonprofit that [receives most of its money from](https://www.opentech.fund/about/about-our-funding/) the US Agency for Global Media (USAGM), an independent US government agency whose job is to oversee international news broadcasters like Voice of America. OTF has funded a wide array of open source projects to support people with countering surveillance and censorship. USAGM itself is not an intelligence agency although it operates as part of broader US foreign policy efforts.
+
+It's always encouraged to question funding sources, particularly in activist spaces, and especially when investigating governance structures of organizations and assessing overall trust in them. However, jumping from "Signal got a grant from a USAGM-funded nonprofit" to "Signal is a CIA operation" can be considered a significant **logical leap**. By that same logic, one could accuse any journalist or NGO that receives a USAGM-funded grant of being a CIA asset.
+
+Setting that aside, funding can influence many aspects of an organization but doesn't specifically determine the security of a messaging application. Assessing an app's security depends on how the encryption is designed, whether the code is publicly available for anyone to inspect, and whether independent security researchers have tested it and found it sound. Signal scores well on all three counts, and those factors are ultimately what matter for security.
+
+### You need to secure your device
+
+Signal is widely regarded as one of the most secure messaging consumer platforms because it's transparently built and its security is publicly audited.
+
+That said, Signal is as secure as how you handle your device. If your device is seized, has a weak passcode, has face/fingerprint unlock enabled, or you [accidentally](https://micahflee.com/we-are-currently-clean-on-opsec-the-signalgate-saga/) add someone you don't trust to your Signal group, your communications will still be compromised, even though the app itself is working perfectly as intended.
+
+On newer iPhones, **Apple Intelligence** (and notification summaries) is a separate issue from whether Signal's encryption is sound. See [Is Apple Intelligence reading my Signal messages?](/signal-ai/).
+
+We recommend you follow our [Signal Security Checklist](/signal/) and [Essentials Checklist](/essentials/) to help keep your Signal messages safe once they arrive on your device.
+
+<Button title="Signal Security Checklist →" href="/signal/" target="_self" size="lg" />
