@@ -143,8 +143,16 @@ async function validateFile(filePath) {
     return errors;
   }
 
+  let content;
+  try {
+    ({ content } = parseFrontmatter(raw));
+  } catch (e) {
+    // e.g. `---js` front matter, which parseFrontmatter refuses rather than runs.
+    errors.push({ file: relativePath, error: e.message });
+    return errors;
+  }
+
   // Layer 1: Regex scan
-  const { content } = parseFrontmatter(raw);
   for (const { pattern, label } of SUSPICIOUS_PATTERNS) {
     // Reset regex lastIndex
     pattern.lastIndex = 0;
