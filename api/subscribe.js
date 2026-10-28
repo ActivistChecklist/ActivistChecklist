@@ -23,7 +23,7 @@ async function addSubscriber(request) {
 
     return result;
   } catch (error) {
-    console.error('Listmonk subscription error:', error);
+    console.error('Listmonk subscription error:', error.message);
     const message =
       process.env.NODE_ENV === 'production'
         ? 'Something went wrong. Please try again.'
