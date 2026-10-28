@@ -406,14 +406,6 @@
     color: hsl(var(--link));
   }
 
-  .search-dialog a {
-    @apply underline underline-offset-4 decoration-muted-foreground/70 hover:decoration-2 transition-colors;
-    &:hover {
-      color: hsl(var(--link));
-      text-decoration-color: hsl(var(--link));
-    }
-  }
-
   /* Inline markdown (outside prose) should keep standard link styling */
   .inline-markdown a:not(.button) {
     @apply font-medium underline underline-offset-4 decoration-1 hover:decoration-2;

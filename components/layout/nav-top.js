@@ -112,7 +112,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                         <social.icon className="h-5 w-5" aria-hidden="true" />
                       </a>
                     ))}
-                    <Search variant="button" />
+                    <Search />
                     <LanguageSwitcher />
                     <DarkModeToggle className="h-9 w-9 hover:bg-muted" />
                   </div>
@@ -291,7 +291,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                 </NavigationMenu>
               </div>
               <div className="flex items-center md:gap-2">
-                <Search variant="button" />
+                <Search variant="header" />
                 <LanguageSwitcher />
                 <DarkModeToggle className="h-9 w-9 hover:bg-muted" />
               </div>
