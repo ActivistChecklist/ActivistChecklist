@@ -120,6 +120,22 @@ describe('readingMinutes', () => {
     const links = '[x](https://example.com/a/b/c) '.repeat(10);
     expect(readingMinutes(tags + links)).toBe(1);
   });
+
+  it('times Japanese by character, since it has no spaces between words', () => {
+    // 1,995 characters in one unbroken run is about 4 minutes, not one "word".
+    expect(readingMinutes('安全な設定です'.repeat(285))).toBe(4);
+    expect(readingMinutes('パスワードマネージャー'.repeat(150))).toBe(3);
+  });
+
+  it('does not count Japanese punctuation as words', () => {
+    // 460 English words (2 min) plus punctuation alone adds nothing.
+    expect(readingMinutes('word '.repeat(460) + '、。「」？'.repeat(200))).toBe(2);
+  });
+
+  it('adds English words and Japanese characters together', () => {
+    // 230 words (1 min) + 1,000 characters (2 min) = 3 min.
+    expect(readingMinutes('VPN '.repeat(230) + '設定'.repeat(500))).toBe(3);
+  });
 });
 
 // Guards the config itself: a typo in navigation.json would otherwise just

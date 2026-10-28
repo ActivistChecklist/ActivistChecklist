@@ -83,6 +83,22 @@ describe('splitOnChevron', () => {
     expect(splitOnChevron('A > B → C > D')).toEqual(['A', 'B', 'C', 'D']);
   });
 
+  it('splits on full-width chevrons with or without spaces', () => {
+    expect(splitOnChevron('設定＞プライバシー＞ロック')).toEqual([
+      '設定',
+      'プライバシー',
+      'ロック',
+    ]);
+    expect(splitOnChevron('設定 ＞ プライバシー')).toEqual(['設定', 'プライバシー']);
+    // A run that is only the separator between two bold steps.
+    expect(splitOnChevron('＞')).toEqual(['', '']);
+  });
+
+  it('still needs spaces around an ASCII > in Japanese text', () => {
+    expect(splitOnChevron('設定>プライバシー')).toEqual(['設定>プライバシー']);
+    expect(splitOnChevron('設定 > プライバシー')).toEqual(['設定', 'プライバシー']);
+  });
+
   it('returns single segment when no separator present', () => {
     expect(splitOnChevron('Just one')).toEqual(['Just one']);
   });
