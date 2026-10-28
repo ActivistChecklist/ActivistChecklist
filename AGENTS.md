@@ -4,7 +4,7 @@
 
 * Use pnpm to manage packages
 * Before rejecting or re-evaluating a dependency upgrade, read the `ignore:` comments in `.github/dependabot.yml`. That is the single record of which major bumps we have declined and what would lift each one. If you decline a new one, close the PR and add a rule there with the reason and a checkable "take it when" condition. Do not create a separate doc for this.
-* Worktree setup is automatic: Claude Code reads `.worktreeinclude` at the repo root and symlinks the listed gitignored paths (env files) from the main checkout into each new worktree. If you add new gitignored top-level state that worktrees should mirror, add a pattern to `.worktreeinclude`. When setting up a new worktree, run `pnpm install` so the modules are ready.
+* Worktree setup is automatic: Claude Code reads `.worktreeinclude` at the repo root and copies the listed gitignored paths (env files, the Pagefind search index in `public/pagefind/`) from the main checkout into each new worktree. They are copies, not symlinks, so a worktree's search index is whatever the main checkout had when the worktree was made; run `pnpm index` there if you need it fresh. If you add new gitignored state that worktrees should mirror, add a pattern to `.worktreeinclude`. When setting up a new worktree, run `pnpm install` so the modules are ready.
 
 ## Testing rules
 
