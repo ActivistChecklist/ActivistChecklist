@@ -84,6 +84,10 @@
       "title": "Nos outils",
       "label": "Nos outils"
     },
+    "glossary": {
+      "title": "Termes et définitions",
+      "label": "Termes et définitions"
+    },
     "resources": {
       "title": "Ressources",
       "label": "Ressources"
@@ -91,6 +95,9 @@
     "about": {
       "title": "À propos du site",
       "label": "À propos"
+    },
+    "contribute": {
+      "title": "Contribuer"
     },
     "changelog": {
       "title": "Mises à jour récentes du site",
@@ -113,11 +120,11 @@
       "description": "Protège-toi des logiciels espions et des logiciels de surveillance."
     },
     "action": {
-      "title": "Se préparer pour une action directe",
-      "description": "Sécurité numérique pour les actions directes et la désobéissance civile."
+      "title": "Se préparer à une action à risque d'arrestation",
+      "description": "Sécurité numérique pour les actions à risque d'arrestation et la désobéissance civile."
     },
     "organizing": {
-      "title": "Checklist pour organiser une action",
+      "title": "Organiser une action avec risque d'arrestation",
       "description": "Pour les organisateur·rices et coordinateur·rices de mouvements."
     },
     "research": {
@@ -195,6 +202,7 @@
     "translationUnreviewedTitle": "Traduction automatique",
     "translationUnreviewed": "Cette page a été traduite automatiquement. Seuls {approvalPercent} % de cette page ont été relus par des humains pour l'instant. Le reste peut contenir des erreurs. <link>Aide-nous à relire cette traduction</link>.",
     "nonUsThreatModel": "Tu n'es pas aux États-Unis ? Certains outils présentés ici, dont les messageries chiffrées, sont illégaux dans certains pays. Vérifie les lois locales avant de suivre ces conseils.",
+    "staleGuide": "Ce guide a plus de <b>{years, plural, one {# an} other {# ans}}</b>. Certains de ses conseils sont peut-être dépassés.",
     "dismiss": "Ignorer"
   },
   "languageDetection": {
@@ -216,7 +224,6 @@
   },
   "meta": {
     "lastUpdatedOn": "Dernière mise à jour le",
-    "lastReviewedOn": "Dernière relecture le",
     "takesAbout": "Durée : environ",
     "viewLatestGuideAt": "Consulte la dernière version du guide sur"
   },
@@ -428,8 +435,8 @@
       "scope": "Une protection de base pour ton téléphone, tes comptes et tes discussions de groupe."
     },
     "goingOut": {
-      "title": "Sur le terrain",
-      "heading": "Sur le terrain : manifs, veille ICE, actions, voyages",
+      "title": "Manifs et déplacements",
+      "heading": "Manifs et déplacements",
       "scope": "Partout où les flics ou les agents aux frontières pourraient prendre ton téléphone."
     },
     "targeted": {
@@ -829,6 +836,188 @@
       "primaryCta": "Les bases de la sécurité numérique",
       "secondaryCta": "Checklist de défense contre le doxxing",
       "openSource": "Les quatre sont <repos>open source</repos>. Si l'un d'eux ne marche pas, ou s'il te faut quelque chose qu'on n'a pas encore créé, <contact>dis-le-nous</contact>."
+    }
+  },
+  "terms": {
+    "metaTitle": "Termes et définitions | Activist Checklist",
+    "metaDescription": "Des définitions en langage simple des termes de sécurité numérique et de surveillance que les militant·es croisent souvent, du doxxing aux courtiers en données, en passant par les stingrays et les mandats de géorepérage.",
+    "title": "Termes et définitions",
+    "intro": "Des définitions en langage simple des termes de sécurité et de surveillance utilisés dans nos checklists et nos guides. Ailleurs sur le site, les termes soulignés en pointillés ouvrent ces définitions dans une fenêtre pop-up.",
+    "copyLink": "Copier le lien vers ce terme"
+  },
+  "definitions": {
+    "closeAriaLabel": "Fermer",
+    "backAriaLabel": "Retour à {term}",
+    "learnMore": "En savoir plus : <link>{source}</link>",
+    "doxxing": {
+      "term": "Doxxing (ou doxing)",
+      "definition": "Quand quelqu'un publie tes infos privées, comme ton nom légal, ton adresse, ton numéro de téléphone ou ton lieu de travail, pour que d'autres puissent te harceler ou t'intimider en ligne (et parfois en personne). C'est une tactique de plus en plus utilisée contre les militant·es.",
+      "source": "Checklist de défense contre le doxxing",
+      "url": "/doxxing/"
+    },
+    "data-broker": {
+      "term": "Courtier en données",
+      "definition": "Une entreprise qui collecte des infos personnelles, comme ton adresse, ton numéro de téléphone et tes proches, à partir de registres publics et d'autres sources, puis les revend. Les flics, les harceleurs et les gens qui veulent [te doxxer](term:doxxing) peuvent acheter ces données.",
+      "source": "Checklist de défense contre le doxxing",
+      "url": "/doxxing/"
+    },
+    "people-search-sites": {
+      "term": "Sites de recherche de personnes",
+      "definition": "Des sites qui collectent et vendent des infos personnelles (comme ton adresse, ton numéro de téléphone et tes proches) à n'importe qui prêt à payer. Les flics, les harceleurs et les gens qui veulent [te doxxer](term:doxxing) peuvent acheter ces données.",
+      "source": "Checklist de défense contre le doxxing",
+      "url": "/doxxing/"
+    },
+    "encryption": {
+      "term": "Chiffrement",
+      "definition": "Brouiller des informations pour que seule une personne qui a la bonne clé, comme ton mot de passe ou ton code, puisse les lire. Pour tout le monde, les données chiffrées ressemblent à du texte aléatoire et illisible.",
+      "source": "EFF Surveillance Self-Defense",
+      "url": "https://ssd.eff.org/module/what-should-i-know-about-encryption"
+    },
+    "end-to-end-encryption": {
+      "term": "Chiffrement de bout en bout",
+      "definition": "Un type de [chiffrement](term:encryption) où seules toi et les personnes avec qui tu parles pouvez lire vos messages. L'entreprise qui gère l'appli ne peut pas les lire, donc elle n'a rien à donner aux flics s'ils le demandent. En général, ça ne cache pas avec qui tu parles ni quand, et ça ne protège pas les messages sur un téléphone déverrouillé ou piraté.",
+      "source": "EFF Surveillance Self-Defense",
+      "url": "https://ssd.eff.org/module/key-concepts-encryption"
+    },
+    "disappearing-messages": {
+      "term": "Messages éphémères",
+      "definition": "Un réglage dans Signal et WhatsApp qui supprime automatiquement les messages des téléphones de tout le monde après un certain temps. Si un téléphone est saisi ou piraté plus tard, il y a beaucoup moins à trouver. Ça n'empêche pas quelqu'un de faire une capture d'écran avant.",
+      "source": "Checklist de sécurité Signal",
+      "url": "/signal/#signal-disappearing"
+    },
+    "password-manager": {
+      "term": "Gestionnaire de mots de passe",
+      "definition": "Une appli qui crée et retient un mot de passe solide et unique pour chacun de tes comptes, comme ça tu n'as qu'un seul mot de passe principal à retenir. Si un site se fait pirater, l'attaquant ne pourra pas réutiliser ce mot de passe sur plein d'autres comptes, puisque chacun a le sien.",
+      "source": "Les essentiels de la sécurité",
+      "url": "/essentials/#password-manager"
+    },
+    "two-factor-authentication": {
+      "term": "Authentification à deux facteurs (2FA)",
+      "definition": "Une étape de connexion en plus : après ton mot de passe, tu confirmes ton identité d'une deuxième façon. Ça peut être un code à 6 chiffres venant d'une [appli d'authentification](term:authenticator-app), un message texte, ou parfois une [clé d'accès](term:passkey). C'est comme avoir besoin à la fois d'une clé et du code de l'alarme pour entrer chez toi. Même si quelqu'un vole ton mot de passe, il ne peut pas accéder à ton compte sans la deuxième étape.",
+      "source": "Les essentiels de la sécurité",
+      "url": "/essentials/#mfa"
+    },
+    "authenticator-app": {
+      "term": "Appli d'authentification",
+      "definition": "Une appli sur ton téléphone qui génère les codes de connexion pour l'[authentification à deux facteurs](term:two-factor-authentication). C'est plus sûr que de recevoir les codes par message texte, que des attaquants peuvent intercepter. [Ente Auth](https://ente.io/auth/) et [1Password](https://1password.com/) en proposent une.",
+      "source": "Les essentiels de la sécurité",
+      "url": "/essentials/#mfa"
+    },
+    "passkey": {
+      "term": "Clé d'accès",
+      "definition": "Une nouvelle façon de se connecter qui remplace ton mot de passe. Ton téléphone, ton ordi ou ton [gestionnaire de mots de passe](term:password-manager) garde une clé secrète pour le compte et la déverrouille avec ton visage, ton empreinte ou ton code. Il n'y a pas de mot de passe à taper, donc rien à voler pour un site de [phishing](term:phishing). Les [clés de sécurité](term:security-key) fonctionnent de façon similaire, mais ce sont des objets physiques que tu branches ou que tu approches de ton appareil.",
+      "source": "EFF",
+      "url": "https://www.eff.org/deeplinks/2023/10/what-passkey"
+    },
+    "security-key": {
+      "term": "Clé de sécurité",
+      "definition": "Un petit appareil physique (comme une [YubiKey](https://www.yubico.com/)) que tu branches ou que tu touches pour te connecter à un compte. Quelqu'un qui vole ton mot de passe ne peut toujours pas entrer sans elle, ce qui en fait l'une des meilleures protections contre le [phishing](term:phishing). Les [passkeys](term:passkey) fonctionnent de façon similaire, mais elles sont stockées sur ton téléphone ou dans ton gestionnaire de mots de passe.",
+      "source": "EFF Surveillance Self-Defense",
+      "url": "https://ssd.eff.org/module/how-enable-two-factor-authentication"
+    },
+    "phishing": {
+      "term": "Phishing",
+      "definition": "Une arnaque qui te pousse à donner ton mot de passe et ton code d'authentification à deux facteurs. Ça ressemble souvent à un vrai message de quelqu'un en qui tu as confiance, comme un faux e-mail de Google ou un faux message du « Support Signal ».",
+      "source": "EFF Surveillance Self-Defense",
+      "url": "https://ssd.eff.org/module/how-avoid-phishing-attacks"
+    },
+    "sim-swapping": {
+      "term": "SIM swapping",
+      "definition": "Quand une personne malveillante convainc ton opérateur téléphonique de transférer ton numéro sur une carte SIM qu'elle contrôle. Elle reçoit alors tes appels et tes SMS, y compris les codes de connexion, et peut s'en servir pour prendre le contrôle de tes comptes.",
+      "source": "Yubico",
+      "url": "https://www.yubico.com/resources/glossary/sim-swap/"
+    },
+    "spyware": {
+      "term": "Spyware",
+      "definition": "Un logiciel qui infecte discrètement ton téléphone ou ton ordinateur pour voler tes données. Il peut souvent lire tes messages (même sur Signal), suivre ta localisation et activer ta caméra ou ton micro. Les logiciels espions les plus avancés coûtent cher et sont surtout utilisés contre des militant·es, des journalistes et des avocat·es très en vue.",
+      "source": "Se protéger contre les logiciels espions",
+      "url": "/spyware/"
+    },
+    "malware": {
+      "term": "Malware",
+      "definition": "Tout logiciel conçu pour endommager ton appareil ou te voler. Il est souvent installé en te poussant à cliquer sur un lien ou à ouvrir un fichier. Les [logiciels espions](term:spyware) sont un type de malware.",
+      "source": "EFF Surveillance Self-Defense",
+      "url": "https://ssd.eff.org/module/how-do-i-protect-myself-against-malware"
+    },
+    "forensic-extraction-tools": {
+      "term": "Outils de piratage de téléphone (outils d'extraction forensique)",
+      "definition": "Des appareils que les flics et les agents des frontières utilisent pour forcer l'accès aux téléphones saisis et en copier les données, y compris parfois les messages supprimés. Cellebrite et GrayKey sont les marques les plus connues. Un code long et aléatoire et un téléphone à jour les rendent beaucoup moins efficaces.",
+      "source": "EFF Street Level Surveillance",
+      "url": "https://sls.eff.org/technologies/forensic-extraction-tools"
+    },
+    "biometrics": {
+      "term": "Biométrie",
+      "definition": "Déverrouiller ton téléphone avec ton visage ou ton empreinte digitale au lieu d'un code. C'est pratique, mais les flics peuvent te forcer à regarder ton téléphone ou à y poser ton doigt. Tu as plus de protections légales quand tu utilises un code.",
+      "source": "Se préparer pour une manif",
+      "url": "/protest/#biometrics-disable"
+    },
+    "secondary-phone": {
+      "term": "Téléphone secondaire (« burner phone » light)",
+      "definition": "Un deuxième téléphone avec le moins de données personnelles possible, utilisé pour les manifs et l'organisation sensible. Si les flics le saisissent, ils trouveront beaucoup moins de choses. Il n'est pas vraiment anonyme comme un [burner phone](term:burner-phone), et tu peux le réutiliser pour plein d'actions.",
+      "source": "Checklist du téléphone secondaire",
+      "url": "/secondary/"
+    },
+    "burner-phone": {
+      "term": "Burner phone / téléphone jetable",
+      "definition": "Un téléphone complètement déconnecté de ton identité, acheté en liquide et utilisé seulement quelques fois avant d'être détruit. Garder un burner vraiment anonyme demande énormément de travail, donc pour la plupart des gens, on recommande plutôt un [téléphone secondaire](term:secondary-phone).",
+      "source": "Checklist du téléphone secondaire",
+      "url": "/secondary/"
+    },
+    "pattern-of-life": {
+      "term": "Pattern of life / schéma de vie",
+      "definition": "La routine qui ressort de tes données de localisation et d'activité : où tu dors, où tu bosses, où tu traînes, et près de qui tu te trouves souvent. Si tu as un téléphone secondaire que tu essaies de garder séparé de ton identité principale et que tu l'allumes aux mêmes endroits et aux mêmes moments que tes appareils principaux, ces corrélations de schéma de vie peuvent révéler ton identité.",
+      "source": "Checklist du téléphone secondaire",
+      "url": "/secondary/#true-burner-steps"
+    },
+    "advertising-id": {
+      "term": "Identifiant publicitaire",
+      "definition": "Un identifiant unique que ton téléphone donne aux applis pour que les annonceurs puissent te suivre de l'une à l'autre. Les données de localisation liées à cet identifiant sont vendues par des [courtiers en données](term:data-broker), et ICE et d'autres agences utilisent des outils basés sur ces données pour pister des téléphones. Il est activé par défaut sur Android.",
+      "source": "Les essentiels de la sécurité",
+      "url": "/essentials/#ad-id"
+    },
+    "geofence-warrant": {
+      "term": "Geofence warrant / mandat de géorepérage",
+      "definition": "Une [décision de justice](term:warrant-subpoena) qui oblige une entreprise comme Google à livrer les données de tous les appareils présents dans une zone donnée pendant une période donnée. Les flics s'en sont servis pour identifier des personnes qui se trouvaient près d'une manif.",
+      "source": "EFF",
+      "url": "https://www.eff.org/deeplinks/2021/09/geofence-warrants-threaten-civil-liberties-and-free-speech-rights-kenosha-and"
+    },
+    "css": {
+      "term": "Simulateur d'antenne-relais (« Stingray »)",
+      "definition": "Un appareil qui se fait passer pour une antenne-relais. Il pousse les téléphones à proximité à s'y connecter. Les flics peuvent s'en servir pour enregistrer tous les téléphones présents à une manif, suivre la localisation d'un téléphone précis et intercepter les appels et les textos.",
+      "source": "EFF Street Level Surveillance",
+      "url": "https://sls.eff.org/technologies/cell-site-simulators-imsi-catchers"
+    },
+    "alpr": {
+      "term": "Lecteurs automatiques de plaques d'immatriculation (ALPR)",
+      "definition": "Des caméras qui photographient automatiquement chaque plaque d'immatriculation qui passe et enregistrent l'heure et le lieu. Flock est la marque la plus répandue. On en trouve beaucoup sur les autoroutes, aux péages, sur les ponts et sur les voitures de flics. Elles permettent aux flics de suivre ta voiture sans mandat. Les données sont souvent partagées avec d'autres services de police.",
+      "source": "EFF Street Level Surveillance",
+      "url": "https://sls.eff.org/technologies/automated-license-plate-readers-alprs"
+    },
+    "ip-address": {
+      "term": "Adresse IP",
+      "definition": "Un numéro qui identifie ta connexion internet, un peu comme ton adresse postale sur internet. Chaque site et chaque appli auxquels tu te connectes peuvent la voir. Une adresse IP peut souvent remonter jusqu'à toi personnellement. Avec une décision de justice, ton fournisseur d'accès à internet peut la relier à ton nom et à ta localisation. Un VPN te donne une adresse IP partagée par des milliers de personnes, ce qui rend ton activité plus difficile à identifier.",
+      "source": "Les VPN pour les activistes",
+      "url": "/vpn/"
+    },
+    "vpn": {
+      "term": "VPN (réseau privé virtuel)",
+      "definition": "Une appli sur ton téléphone ou ton ordinateur qui redirige et chiffre tout ton trafic internet via ses serveurs. Ça cache ta navigation à ton fournisseur d'accès à internet, et ça cache ton [adresse IP](term:ip-address) aux sites que tu visites. Ça ne cache pas qui tu es aux sites et aux applis où tu es connecté·e. Et ça n'offre pas un anonymat total ni une sécurité complète sur internet.",
+      "source": "Les VPN pour les activistes",
+      "url": "/vpn/"
+    },
+    "browser-fingerprinting": {
+      "term": "Empreinte numérique du navigateur",
+      "definition": "Une façon de te pister grâce à la combinaison unique des réglages de ton navigateur, comme la taille de ton écran, tes polices et ta langue. Ça marche même si tu effaces tes cookies ou que tu utilises un [VPN](term:vpn). [Tor Browser](https://www.torproject.org/download/) est conçu pour que l'empreinte de tout le monde se ressemble.",
+      "source": "EFF Surveillance Self-Defense",
+      "url": "https://ssd.eff.org/module/what-fingerprinting"
+    },
+    "warrant-subpoena": {
+      "term": "Mandat vs. injonction",
+      "definition": "Ce sont deux ordres légaux qui peuvent obliger une entreprise à remettre tes données. Un mandat doit être signé par un·e juge qui estime qu'il existe une cause probable de crime, et il peut aussi permettre aux flics de fouiller ton domicile ou ton téléphone. Beaucoup d'injonctions ne nécessitent aucun·e juge, mais elles ne donnent pas accès à autant d'informations à la personne qui enquête. ICE utilise souvent des « mandats administratifs » signés par un agent d'ICE, pas par un·e juge. Ces documents ne leur donnent pas le droit d'entrer chez toi sans ton autorisation."
+    },
+    "jail-support": {
+      "term": "Soutien aux personnes arrêtées",
+      "definition": "Un rôle de soutien pendant une action ou une manif où des arrestations sont possibles. Ces personnes soutiennent les personnes arrêtées pendant et après une action. Elles notent qui a été arrêté·e, restent en contact avec les avocat·es, attendent devant le poste ou la prison, et apportent aux gens leur téléphone, de quoi manger et les ramènent chez elleux une fois libéré·es."
     }
   }
 }
