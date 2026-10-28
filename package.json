@@ -29,6 +29,7 @@
     "crowdin:hide-strings:apply": "node scripts/crowdin-hide-strings.mjs --apply",
     "crowdin:translation-status": "node scripts/crowdin-translation-status.mjs",
     "validate-content": "node scripts/validate-content.mjs",
+    "untrusted": "node scripts/untrusted-worktree.mjs",
     "prebuild": "(pnpm audit --audit-level high || true) && (pnpm fetch:eol || true) && pnpm validate-content",
     "build": "NEXT_TELEMETRY_DISABLED=1 next build --webpack",
     "buildstatic": "BUILD_MODE=static pnpm build && pnpm check-build && pnpm check-links && pnpm validate-build",
