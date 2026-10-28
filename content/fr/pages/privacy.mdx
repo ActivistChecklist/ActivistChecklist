@@ -2,7 +2,7 @@
 title: Protéger ta vie privée
 seoDescription: Ce qu'on collecte (presque rien) et pourquoi. Activist Checklist est conçu pour que, même en cas d'injonction judiciaire, il n'y ait rien d'utile à remettre.
 firstPublished: 2025-01-09
-lastUpdated: 2026-05-23
+lastUpdated: 2026-10-27
 showToc: true
 ---
 
@@ -24,7 +24,7 @@ On a volontairement conçu ce site pour qu'il protège ta vie privée au maximum
   dAucune adresse IP n'est jamais enregistrée
 * ❌ Aucun cookie n'est stocké sur ton appareil
 * ❌ Aucun service externe ni aucune bibliothèque tierce susceptible d'exposer tes informations personnelles (adresse IP) n'est chargé dans ton navigateur
-* ❌ Aucune de tes informations personnelles n'est jamais collectée sur nos serveurs ni envoyée à des serveurs tiers.
+* ❌ Aucune de tes informations personnelles n'est jamais collectée sur nos serveurs ni envoyée à des serveurs tiers. The one exception is a message you choose to send us through our contact form, which is encrypted before it leaves our server ([see below](#contact-form)).
 
 ## Ce qu'on suit
 
@@ -68,9 +68,13 @@ Ces données sont stockées sur une plateforme d'analyse respectueuse de la vie 
 
 Si tu veux, tu peux consulter le [code ici](https://github.com/ActivistChecklist/ActivistChecklist/blob/main/api/counter.js).
 
-## Formulaire de contact
+## Formulaire de contact {#contact-form}
 
-Si tu nous écris via notre [formulaire de contact](/contact/), le message est [chiffré](https://proton.me/blog/what-is-pgp-encryption) avant d'être envoyé à notre compte Proton Mail. Donner ton adresse e-mail est facultatif. Si tu nous donnes ton adresse e-mail pour qu'on te réponde et que ce n'est pas une adresse Proton Mail, ton fournisseur de messagerie pourra voir notre conversation une fois qu'on aura répondu.
+If you message us using our [contact form](/contact/), our server [encrypts](https://proton.me/blog/what-is-pgp-encryption) your message, along with any contact details you give us, before it leaves our server. Only we can read it.
+
+We use [Resend](https://resend.com/legal/privacy-policy), an email delivery service, to deliver the encrypted message to our Proton Mail account. Resend sees the encrypted message and the time it was sent. It does not see your IP address, because the message comes from our server, not from your browser.
+
+Donner ton adresse e-mail est facultatif. Si tu nous donnes ton adresse e-mail pour qu'on te réponde et que ce n'est pas une adresse Proton Mail, ton fournisseur de messagerie pourra voir notre conversation une fois qu'on aura répondu.
 
 Si tu veux, tu peux consulter le [code ici](https://github.com/ActivistChecklist/ActivistChecklist/blob/main/api/contact.js).
 
