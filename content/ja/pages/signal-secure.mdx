@@ -1,8 +1,8 @@
 ---
-title: Is Signal secure? (Yes!)
-seoDescription: Is Signal secure for activist use? Yes. How the encryption works, what Signal can share with law enforcement, and the myths that get it wrong.
+title: Signalは安全？（安全です！）
+seoDescription: Signalはアクティビストが使っても安全？はい。暗号化の仕組み、Signalが警察に渡せる情報、そしてよくある誤解について。
 answerCapsule: |
-  Yes, Signal is secure for activist organizing. It's end-to-end encrypted, the code is open source and audited. When law enforcement subpoenas Signal, they get the account creation date and last connection date. They cannot get message contents or your contact list. The remaining risk is your device: a seized phone with a weak passcode exposes everything, regardless of how strong Signal itself is.
+  はい、Signalはアクティビストのオーガナイジングに使っても安全です。エンドツーエンド暗号化されていて、コードはオープンソースで監査も受けているよ。警察がSignalに召喚状を出しても、手に入るのはアカウントの作成日と最終接続日だけ。メッセージの内容や連絡先リストは取れないんだ。残るリスクはあなたのデバイス。押収されたスマホのパスコードが弱ければ、Signal自体がどれだけ強力でも、中身は全部丸見えになっちゃう。
 relatedGuides:
   - signal
   - essentials
@@ -11,55 +11,55 @@ lastUpdated: 2026-04-03
 ---
 
 <Alert type="success">
-  **Takeaway:** Signal is safe to use. If you already use Signal for your activism, rest assured, your communications are private and secure.
+  **ポイント：** Signalは安心して使えます。すでに活動でSignalを使っているなら、安心してください。あなたのやりとりはプライベートで安全に守られています。
 </Alert>
 
 <Alert type="info">
-  **Using Signal securely:** This article is about whether Signal is trustworthy. For concrete steps to configure the app, use our [Signal Security Checklist](/signal/).
+  **Signalを安全に使うには：** この記事では、Signalが信頼できるかどうかについて説明しています。アプリの具体的な設定方法は、[Signalセキュリティチェックリスト](/signal/)を見てください。
 </Alert>
 
-[Signal](https://signal.org/) is a secure, encrypted, messaging platform that is widely used by activists, journalists, human rights lawyers, and even government officials, for one-to-one or group communication including text, voice, and video.
+[Signal](https://signal.org/)は、安全で暗号化されたメッセージングプラットフォームです。アクティビスト、ジャーナリスト、人権派の弁護士、さらには政府関係者にも広く使われていて、個人同士やグループでのテキスト、音声、ビデオのやりとりができます。
 
-### Signal is run by a nonprofit
+### Signalは非営利団体が運営している
 
-The Signal app is owned by the Signal Technology Foundation, a US-based nonprofit, which receives funds through individual donations and grants.
+Signalアプリは、アメリカを拠点とする非営利団体Signal Technology Foundationが所有していて、個人からの寄付や助成金で運営されています。
 
-You can browse the Signal Technology Foundation's tax filings, which detail revenues and expenses, [here](https://projects.propublica.org/nonprofits/organizations/824506840).
+Signal Technology Foundationの収入と支出が詳しく載っている税務申告書は、[こちら](https://projects.propublica.org/nonprofits/organizations/824506840)で見ることができます。
 
-### Communication over Signal is private
+### Signalでのやりとりはプライベート
 
-When communicating over Signal, messages remain private. This privacy is made possible by **end-to-end technology**, meaning that as your conversations are passing through the internet, they're **indecipherable**, i.e. only you and the person(s) you're communicating with can read or listen to the contents of your communications.
+Signalでやりとりするメッセージは、プライベートなまま守られます。このプライバシーを実現しているのが**エンドツーエンド技術**です。つまり、会話がインターネット上を流れている間は**解読できない**状態になっていて、あなたとやりとりしている相手(複数の場合も)だけがその内容を読んだり聞いたりできるということです。
 
-If a government agency [subpoenas](term:warrant-subpoena) Signal for data related to a Signal account based on your phone number, Signal can only respond with the following pieces of information, which are: the account ID, a cryptographic hash of your username, when the account was created, and when it was last used. If they subpoena based on your username, Signal is able to tie a username to a phone number and produce a response that includes the phone number. This is one of the reasons that Signal designed usernames to be ephemeral and give users the ability to switch up usernames based on the need. Otherwise, Signal knows **nothing else** about you.
+政府機関があなたの電話番号に紐づくSignalアカウントのデータについてSignalに[召喚状を出した](term:warrant-subpoena)場合でも、Signalが提出できるのは次の情報だけ：アカウントID、ユーザー名の暗号学的ハッシュ、アカウントの作成日時、最後に使われた日時。ユーザー名をもとに召喚状が出された場合、Signalはユーザー名と電話番号をひも付けて、その電話番号を含む回答を出すことができます。これが、Signalがユーザー名を一時的なものとして設計し、必要に応じてユーザー名を変えられるようにしている理由の一つです。それ以外に、Signalはあなたについて**何も知りません**。
 
-### The Signal application is open source
+### Signalアプリはオープンソース
 
-If apps were cakes, open source means having access to the entire cake recipe, i.e. you know how the cake is made, and what ingredients are used. You can even suggest changes that you believe might improve the cake. Similarly, Signal's code base is made openly available for anyone to view, inspect, and suggest modifications. In fact, you can [view Signal's code here](https://github.com/signalapp). The way in which Signal protects the millions of messages that pass through the app is also [made publicly available](https://github.com/signalapp/libsignal).
+アプリをケーキにたとえると、オープンソースとはケーキのレシピ全部を見られるということ。つまり、ケーキがどうやって作られていて、どんな材料が使われているかがわかるんです。ケーキがもっとおいしくなりそうな変更を提案することだってできます。同じように、Signalのコードは誰でも見たり、チェックしたり、修正を提案したりできるよう公開されています。実際、[Signalのコードはここで見られます](https://github.com/signalapp)。アプリを行き交う何百万ものメッセージをSignalがどうやって守っているかも[公開されています](https://github.com/signalapp/libsignal)。
 
-This level of transparency makes it possible to trust Signal because we can see for ourselves that it works the way it says it does, and not just take its word for it.
+ここまで透明性が高いから、Signalを信頼できるんです。Signalの言葉をうのみにするのではなく、言っているとおりに動いているかを自分たちの目で確かめられるからです。
 
 <Alert type="default">
-  **Side note:** In 2021, Signal introduced an anti-spam system after users reported a surge of spam from unknown contacts. To prevent spammers from studying the code and working around it, this one component was made closed source. Everything else remains open source. (See: [Signal's blog post](https://signal.org/blog/keeping-spam-off-signal/))
+  **補足：** 2021年、知らない相手からのスパムが急増しているという報告を受けて、Signalはスパム対策システムを導入しました。スパム業者がコードを研究してすり抜けるのを防ぐため、この部分だけはクローズドソースになっています。それ以外はすべてオープンソースのままです。（参照：[Signalのブログ記事](https://signal.org/blog/keeping-spam-off-signal/)）
 </Alert>
 
-## The myth
+## よくある誤解
 
-**Watch out:** A recurring claim that circulates on social media is that Signal is funded by the US government or the Central Intelligence Agency (CIA), implying that Signal is essentially a government operation and therefore not to be trusted.
+\*\*注意：\*\*SNSでくり返し出回っている主張に、「Signalはアメリカ政府や中央情報局（CIA）から資金をもらっている」というものがあります。つまり、Signalは実質的に政府の作戦なので信用できない、というわけです。
 
-This claim is based on the fact that Signal [received funding](https://www.opentech.fund/projects-we-support/supported-projects/signal-open-whisper-systems/) from the Open Technology Fund (OTF) between 2012 and 2016. Signal has always openly acknowledged this funding. The OTF is a nonprofit that [receives most of its money from](https://www.opentech.fund/about/about-our-funding/) the US Agency for Global Media (USAGM), an independent US government agency whose job is to oversee international news broadcasters like Voice of America. OTF has funded a wide array of open source projects to support people with countering surveillance and censorship. USAGM itself is not an intelligence agency although it operates as part of broader US foreign policy efforts.
+この主張の根拠は、Signalが2012年から2016年にかけてOpen Technology Fund（OTF）から[資金を受けていた](https://www.opentech.fund/projects-we-support/supported-projects/signal-open-whisper-systems/)という事実です。 Signalはこの資金について、ずっとオープンに認めてきました。 OTFは非営利団体で、[資金の大部分を](https://www.opentech.fund/about/about-our-funding/)米国グローバルメディア局（USAGM）から受けています。USAGMは、Voice of Americaのような国際報道機関を監督するアメリカ政府の独立機関です。 OTFは、監視や検閲に対抗する人たちを支えるために、さまざまなオープンソースプロジェクトに資金を出してきました。 USAGMはアメリカの外交政策の一環として活動していますが、それ自体は諜報機関ではありません。
 
-It's always encouraged to question funding sources, particularly in activist spaces, and especially when investigating governance structures of organizations and assessing overall trust in them. However, jumping from "Signal got a grant from a USAGM-funded nonprofit" to "Signal is a CIA operation" can be considered a significant **logical leap**. By that same logic, one could accuse any journalist or NGO that receives a USAGM-funded grant of being a CIA asset.
+資金源を疑ってみるのは、いつだって大事なことです。とくにアクティビストの場では、組織のガバナンス構造を調べたり、全体としてどこまで信頼できるかを見極めたりするときには欠かせません。とはいえ、「SignalはUSAGMが資金を出す非営利団体から助成金をもらった」から「SignalはCIAの作戦だ」へと話を飛ばすのは、かなりの**論理の飛躍**と言えます。同じ理屈でいけば、USAGMの資金による助成金を受けたジャーナリストやNGOは、みんなCIAの手先だと言えてしまいます。
 
-Setting that aside, funding can influence many aspects of an organization but doesn't specifically determine the security of a messaging application. Assessing an app's security depends on how the encryption is designed, whether the code is publicly available for anyone to inspect, and whether independent security researchers have tested it and found it sound. Signal scores well on all three counts, and those factors are ultimately what matter for security.
+それはさておき、資金は組織のいろんな面に影響しうるものの、メッセージアプリのセキュリティを直接決めるわけではありません。アプリのセキュリティを評価するポイントは、暗号化がどう設計されているか、コードが公開されていて誰でも検証できるか、そして独立したセキュリティ研究者がテストして問題ないと確認しているか、です。 Signalはこの三つすべてで高く評価されていて、セキュリティにとって最終的に大事なのはまさにこの点です。
 
-### You need to secure your device
+### デバイスの保護は自分でやる必要がある
 
-Signal is widely regarded as one of the most secure messaging consumer platforms because it's transparently built and its security is publicly audited.
+Signalは、透明性のある形で作られ、セキュリティが公に監査されているため、一般向けメッセージアプリの中でもっとも安全なもののひとつと広く認められています。
 
-That said, Signal is as secure as how you handle your device. If your device is seized, has a weak passcode, has face/fingerprint unlock enabled, or you [accidentally](https://micahflee.com/we-are-currently-clean-on-opsec-the-signalgate-saga/) add someone you don't trust to your Signal group, your communications will still be compromised, even though the app itself is working perfectly as intended.
+ただし、Signalの安全性は、あなたがデバイスをどう扱うかにかかっています。デバイスを押収されたり、パスコードが弱かったり、顔認証や指紋認証のロック解除をオンにしていたり、信頼できない人を[うっかり](https://micahflee.com/we-are-currently-clean-on-opsec-the-signalgate-saga/)Signalのグループに追加してしまったりすれば、アプリ自体が設計どおり完璧に動いていても、やりとりは筒抜けになってしまいます。
 
-On newer iPhones, **Apple Intelligence** (and notification summaries) is a separate issue from whether Signal's encryption is sound. See [Is Apple Intelligence reading my Signal messages?](/signal-ai/).
+新しいiPhoneの**Apple Intelligence**（と通知の要約）は、Signalの暗号化が確かかどうかとは別の問題です。 [Apple IntelligenceはSignalのメッセージを読んでいる？](/signal-ai/)を読んでみてください。
 
-We recommend you follow our [Signal Security Checklist](/signal/) and [Essentials Checklist](/essentials/) to help keep your Signal messages safe once they arrive on your device.
+デバイスに届いたあとのSignalメッセージを守るために、[Signalセキュリティチェックリスト](/signal/)と[基本チェックリスト](/essentials/)に沿って対策することをおすすめします。
 
-<Button title="Signal Security Checklist →" href="/signal/" target="_self" size="lg" />
+<Button title="Signalセキュリティチェックリスト →" href="/signal/" target="_self" size="lg" />
