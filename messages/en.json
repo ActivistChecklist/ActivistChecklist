@@ -836,21 +836,209 @@
   },
   "definitions": {
     "closeAriaLabel": "Close",
-    "people-search-sites": {
-      "term": "People Search Sites",
-      "definition": "Websites that collect and sell personal information (such as your address, phone number, and relatives) to anyone willing to pay for it. Police, stalkers, and people trying to dox you can buy this data."
+    "backAriaLabel": "Back to {term}",
+    "learnMore": "Learn more: <link>{source}</link>",
+    "doxxing": {
+      "term": "Doxxing (or Doxing)",
+      "definition": "When someone publishes your private information, like your legal name, home address, phone number, or workplace, so others can harass or intimidate you online (and sometimes in person). It's an increasingly common tactic used against activists.",
+      "source": "Doxxing Defense Checklist",
+      "url": "/doxxing/"
     },
     "data-broker": {
       "term": "Data Broker",
-      "definition": "A company that collects personal information like your address, phone number, and relatives from public records and other sources, then sells it. Police, stalkers, and people trying to dox you can buy this data."
+      "definition": "A company that collects personal information like your address, phone number, and relatives from public records and other sources, then sells it. Cops, stalkers, and people trying to [dox you](term:doxxing) can buy this data.",
+      "source": "Doxxing Defense Checklist",
+      "url": "/doxxing/"
     },
-    "doxxing": {
-      "term": "Doxxing (or Doxing)",
-      "definition": "A type of harassment where personal information (such as full legal name, home address, email, phone number, and more) is made public with the intent to harass and/or intimidate the victim."
+    "people-search-sites": {
+      "term": "People Search Sites",
+      "definition": "Websites that collect and sell personal information (such as your address, phone number, and relatives) to anyone willing to pay for it. Police, stalkers, and people trying to [dox you](term:doxxing) can buy this data.",
+      "source": "Doxxing Defense Checklist",
+      "url": "/doxxing/"
+    },
+    "metadata": {
+      "term": "Metadata",
+      "definition": "Information about your data, rather than the content itself. For a photo, that can be the GPS location, time, and phone model. For messages, it's who you talked to, when, and how often. Even without the content, metadata can reveal a lot about your patterns of behavior and who you organize with.",
+      "source": "EFF Surveillance Self-Defense",
+      "url": "https://ssd.eff.org/module/why-metadata-matters"
+    },
+    "encryption": {
+      "term": "Encryption",
+      "definition": "Scrambling information so that only someone with the right key, like your password or passcode, can read it. To anyone else, encrypted data looks like random, unreadable text.",
+      "source": "EFF Surveillance Self-Defense",
+      "url": "https://ssd.eff.org/module/what-should-i-know-about-encryption"
+    },
+    "end-to-end-encryption": {
+      "term": "End-to-End Encryption",
+      "definition": "A type of [encryption](term:encryption) where only you and the people you're talking to can read your messages. The company running the app can't read them, so it has nothing to hand over to the cops if they ask. It usually doesn't hide who you talk to or when, and it can't protect messages on a phone that's been unlocked or hacked.",
+      "source": "Is Signal secure?",
+      "url": "/signal-secure/"
+    },
+    "disappearing-messages": {
+      "term": "Disappearing Messages",
+      "definition": "A setting in Signal and WhatsApp that automatically deletes messages from everyone's phones after a set amount of time. If a phone is seized or hacked later, there's much less to find. It can't stop someone from taking a screenshot first.",
+      "source": "Signal Security Checklist",
+      "url": "/signal/#signal-disappearing"
+    },
+    "safety-numbers": {
+      "term": "Safety Numbers",
+      "definition": "A special feature in Signal (and other messaging apps) that involves a unique code for each contact you're talking with. Comparing this code with your contact (in person or on a call) confirms no one is secretly intercepting your messages. Most people don't need to do this, but it's worth it for high-risk conversations.",
+      "source": "Signal Security Checklist",
+      "url": "/signal/#signal-verification"
+    },
+    "password-manager": {
+      "term": "Password Manager",
+      "definition": "An app that creates and remembers a strong, unique password for every account you have, so you only need to remember one master password. If one site gets hacked, the attacker won't be able to reuse a password across a bunch of your accounts because you were using unique passwords for each.",
+      "source": "Security Essentials",
+      "url": "/essentials/#password-manager"
+    },
+    "two-factor-authentication": {
+      "term": "Two-Factor Authentication (2FA)",
+      "definition": "An extra login step: after your password, you also verify your identity a second way. This could be a 6-digit code from an [authenticator app](term:authenticator-app), a text message, or sometimes a [passkey](term:passkey). It's like needing both a key and an alarm code to get into your house. Even if someone steals your password, they can't get into your account without the second step.",
+      "source": "Security Essentials",
+      "url": "/essentials/#mfa"
+    },
+    "authenticator-app": {
+      "term": "Authenticator App",
+      "definition": "An app on your phone that generates the login codes for [two-factor authentication](term:two-factor-authentication). It's safer than getting codes by text message, which attackers can intercept. [Ente Auth](https://ente.io/auth/) and [1Password](https://1password.com/) both have one.",
+      "source": "Security Essentials",
+      "url": "/essentials/#mfa"
+    },
+    "passkey": {
+      "term": "Passkey",
+      "definition": "A newer way to log in that replaces your password. Your phone, computer, or [password manager](term:password-manager) stores a secret key for the account and unlocks it with your face, fingerprint, or passcode. There's no password to type, so there's nothing for a [phishing](term:phishing) site to steal. [Security keys](term:security-key) work in a similar way, but are physical devices you plug in or tap.",
+      "source": "EFF",
+      "url": "https://www.eff.org/deeplinks/2023/10/what-passkey"
+    },
+    "security-key": {
+      "term": "Security Key",
+      "definition": "A small physical device (like a [YubiKey](https://www.yubico.com/)) that you plug in or tap to log in to an account. Someone who steals your password still can't get in without it, which makes it one of the strongest protections against [phishing](term:phishing). [Passkeys](term:passkey) work in a similar way, but live on your phone or in your password manager.",
+      "source": "EFF Surveillance Self-Defense",
+      "url": "https://ssd.eff.org/module/how-enable-two-factor-authentication"
+    },
+    "phishing": {
+      "term": "Phishing",
+      "definition": "A scam that tricks you into giving up your password and two-factor authentication code. It often looks like a real message from someone you trust, like a fake email from Google or a fake message from \"Signal Support.\"",
+      "source": "EFF Surveillance Self-Defense",
+      "url": "https://ssd.eff.org/module/how-avoid-phishing-attacks"
+    },
+    "sim-swapping": {
+      "term": "SIM Swapping",
+      "definition": "When an attacker convinces your phone carrier to move your phone number to a SIM card they control. They then receive your calls and texts, including login codes, and can use them to take over your accounts."
+    },
+    "spyware": {
+      "term": "Spyware",
+      "definition": "Software that secretly infects your phone or computer to steal your data. It can often read your messages (even on Signal), track your location, and turn on your camera or microphone. The most advanced spyware is expensive, and is mostly used against high-profile activists, journalists, and lawyers.",
+      "source": "Protecting Against Spyware",
+      "url": "/spyware/"
+    },
+    "malware": {
+      "term": "Malware",
+      "definition": "Any software designed to harm your device or steal from you. It's often installed by tricking you into clicking a link or opening a file. [Spyware](term:spyware) is one type of malware.",
+      "source": "EFF Surveillance Self-Defense",
+      "url": "https://ssd.eff.org/module/how-do-i-protect-myself-against-malware"
+    },
+    "forensic-extraction-tools": {
+      "term": "Phone-Cracking Tools (forensic extraction tools)",
+      "definition": "Devices that cops and border agents use to break into seized phones and copy the data off them, sometimes including deleted messages. Cellebrite and GrayKey are the best-known brands. A long random passcode and an up-to-date phone make them much less effective.",
+      "source": "EFF Street Level Surveillance",
+      "url": "https://sls.eff.org/technologies/forensic-extraction-tools"
+    },
+    "biometrics": {
+      "term": "Biometrics",
+      "definition": "Unlocking your phone with your face or fingerprint instead of a passcode. It's convenient, but cops can force you to look at your phone or press your finger to it. You have more legal protections when you use a passcode.",
+      "source": "Prepare for a Protest",
+      "url": "/protest/#biometrics-disable"
+    },
+    "lockdown-mode": {
+      "term": "Lockdown Mode",
+      "definition": "An optional iPhone setting that turns off features [spyware](term:spyware) and [phone-cracking tools](term:forensic-extraction-tools) commonly exploit, like most message attachments and link previews. Some things work less smoothly, but it provides a lot of protections with one setting.",
+      "source": "Lockdown Mode and Advanced Protection",
+      "url": "/lockdown/"
+    },
+    "secondary-phone": {
+      "term": "Secondary Phone (\"burner phone\" lite)",
+      "definition": "A second phone with as little personal data on it as possible, used for protests and sensitive organizing. If cops seize it, there's much less for them to find. It isn't truly anonymous like a [burner phone](term:burner-phone), and you can reuse it across many actions.",
+      "source": "Secondary Phone Checklist",
+      "url": "/secondary/"
+    },
+    "burner-phone": {
+      "term": "Burner Phone",
+      "definition": "A phone that is completely disconnected from your identity, bought with cash and used only a handful of times before it's destroyed. Keeping a burner truly anonymous takes a great deal of work, so for most people we recommend a [secondary phone](term:secondary-phone) instead.",
+      "source": "Secondary Phone Checklist",
+      "url": "/secondary/"
+    },
+    "pattern-of-life": {
+      "term": "Pattern of Life",
+      "definition": "The routine that shows up in your location and activity data: where you sleep, work, and hang out, and who you're often near. If you have a secondary phone that you're trying to keep separate from your main identity and you turn it on at the same locations and times as your primary devices, these pattern of life correlations can reveal your identity.",
+      "source": "Secondary Phone Checklist",
+      "url": "/secondary/#true-burner-steps"
+    },
+    "faraday-bag": {
+      "term": "Faraday Bag",
+      "definition": "A bag lined with material that blocks all signals (cell, GPS, Wi-Fi, and Bluetooth) going to and from your phone. While it's inside, the phone can't be located or connect to anything. It's an extra layer of protection on top of turning your phone off.",
+      "source": "Prepare for a Protest",
+      "url": "/protest/#faraday-bag"
+    },
+    "advertising-id": {
+      "term": "Advertising ID",
+      "definition": "A unique ID your phone gives to apps so advertisers can track you across them. Location data tied to it gets sold through [data brokers](term:data-broker), and ICE and other agencies use tools built on that data to track phones. It's on by default on Android.",
+      "source": "Security Essentials",
+      "url": "/essentials/#ad-id"
+    },
+    "geofence-warrant": {
+      "term": "Geofence Warrant",
+      "definition": "A [court order](term:warrant-subpoena) that makes a company like Google hand over data on every device that was in a certain area during a certain time. Cops have used them to identify people who were near a protest.",
+      "source": "EFF",
+      "url": "https://www.eff.org/deeplinks/2021/09/geofence-warrants-threaten-civil-liberties-and-free-speech-rights-kenosha-and"
+    },
+    "stingray": {
+      "term": "Stingray (Cell-Site Simulator)",
+      "definition": "A device that pretends to be a cell tower. It tricks nearby phones into connecting to it. Police can use one to log every phone at a protest, track a specific phone's location, and intercept calls and texts.",
+      "source": "EFF Street Level Surveillance",
+      "url": "https://sls.eff.org/technologies/cell-site-simulators-imsi-catchers"
+    },
+    "alpr": {
+      "term": "Automated License Plate Readers (ALPRs)",
+      "definition": "Cameras that automatically photograph every passing license plate and record the time and location. Flock is the most popular brand. They're common on highways, toll booths, bridges, and police cars. They give the cops a way to track your car without a warrant. Data is often shared with other law enforcement agencies.",
+      "source": "EFF Street Level Surveillance",
+      "url": "https://sls.eff.org/technologies/automated-license-plate-readers-alprs"
+    },
+    "ip-address": {
+      "term": "IP Address",
+      "definition": "A number that identifies your internet connection, kind of like your home address on the internet. Every website and app you connect to can see it. An IP address can often point back to you personally. With a court order, your internet provider can match it to your name and location. A VPN gives you an IP address shared by thousands of people so it's harder to identify your activity.",
+      "source": "VPNs for Activists",
+      "url": "/vpn/"
     },
     "vpn": {
       "term": "VPN (Virtual Private Network)",
-      "definition": "An app on your phone or computer that redirects and encrypts all internet traffic through its servers. This keeps your internet browsing hidden from your internet provider, and keeps your IP address hidden from websites you visit."
+      "definition": "An app on your phone or computer that redirects and encrypts all internet traffic through its servers. This keeps your internet browsing hidden from your internet provider, and keeps your [IP address](term:ip-address) hidden from websites you visit. It doesn't hide who you are from sites and apps you're logged into. And it doesn't offer total anonymity or internet security.",
+      "source": "VPNs for Activists",
+      "url": "/vpn/"
+    },
+    "tor": {
+      "term": "Tor",
+      "definition": "A free privacy tool that bounces your internet traffic through three random volunteer-run computers before it reaches a website. Your internet provider can't see what you're reading, and websites can't see who you are. The easiest way to use it is [Tor Browser](https://www.torproject.org/download/).",
+      "source": "What is Tor?",
+      "url": "/research/"
+    },
+    "browser-fingerprinting": {
+      "term": "Browser Fingerprinting",
+      "definition": "A way of tracking you by the unique combination of your browser's settings, like your screen size, fonts, and language. It works even if you clear your cookies or use a [VPN](term:vpn). [Tor Browser](term:tor) is designed to make everyone's fingerprint look the same.",
+      "source": "EFF Surveillance Self-Defense",
+      "url": "https://ssd.eff.org/module/what-fingerprinting"
+    },
+    "warrant-subpoena": {
+      "term": "Warrant vs. Subpoena",
+      "definition": "Both are legal orders that can force a company to hand over your data. A warrant must be signed by a judge who agrees there's probable cause of a crime, and it can also let police search your home or phone. Many subpoenas need no judge at all, but they don't give the investigator access to as much information."
+    },
+    "jail-support": {
+      "term": "Jail Support",
+      "definition": "A support role during an arrestable action or protest. These people support arrestees during and after an action. They track who's been arrested, stay in touch with lawyers, wait outside the jail, and bring people their phones, food, and a ride home once they're released."
+    },
+    "legal-observer": {
+      "term": "Legal Observer",
+      "definition": "A trained volunteer, often wearing a bright green [National Lawyers Guild](https://nlg.org/) hat, who watches and documents police conduct at protests. Their notes and videos can help defend people who get arrested and hold police accountable."
     }
   }
 }
