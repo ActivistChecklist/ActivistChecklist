@@ -86,8 +86,9 @@ export default async function ChangelogPage({ params }) {
     .map((year) => parseInt(year))
     .sort((a, b) => b - a);
 
+  // Out of search: every entry repeats a guide's keywords, so it outranked the guides.
   return (
-    <Layout>
+    <Layout searchable={false}>
       <div className="max-w-4xl mx-auto">
         <header className="mb-8">
           <h1 className="page-title">{t('changelog.title')}</h1>

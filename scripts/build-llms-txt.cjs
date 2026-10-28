@@ -14,7 +14,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const matter = require('gray-matter');
+const { parseFrontmatter } = require('../lib/frontmatter.cjs');
 const { LOCALES } = require('../lib/i18n-config.mjs');
 
 const SITE_NAME = 'Activist Checklist';
@@ -218,7 +218,7 @@ function listMdxDir(dirPath) {
     .filter((f) => f.endsWith('.mdx'))
     .map((f) => {
       const raw = fs.readFileSync(path.join(dirPath, f), 'utf8');
-      const { data, content } = matter(raw);
+      const { data, content } = parseFrontmatter(raw);
       return {
         slug: f.replace(/\.mdx$/, ''),
         frontmatter: data,

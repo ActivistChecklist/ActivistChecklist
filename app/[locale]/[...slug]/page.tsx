@@ -193,7 +193,8 @@ export default async function SlugPage({ params }) {
   const { locale, slug: slugParts } = await params;
   setRequestLocale(locale);
   const slug = slugParts?.join('/') || '';
-  if ((await draftMode()).isEnabled) {
+  const isDraft = (await draftMode()).isEnabled;
+  if (isDraft) {
     noStore();
   }
 
@@ -250,13 +251,16 @@ export default async function SlugPage({ params }) {
       }),
     );
 
-    // Generate OG image at build time
+    // Generate OG image at build time. Not in draft preview: preview content can come from a
+    // contributor's fork and must not write or delete files under public/.
     const ogCard = await getOgCard(slug, locale, frontmatter, 'guide');
-    try {
-      const { generateOgImageForRoute } = await import('@/lib/og-image');
-      await generateOgImageForRoute({ ...ogCard, slug });
-    } catch (err) {
-      console.warn(`OG image skipped for guide "${slug}":`, err.message);
+    if (!isDraft) {
+      try {
+        const { generateOgImageForRoute } = await import('@/lib/og-image');
+        await generateOgImageForRoute({ ...ogCard, slug });
+      } catch (err) {
+        console.warn(`OG image skipped for guide "${slug}":`, err.message);
+      }
     }
 
     const guideNotices = buildContentNotices({ locale, isFallback, slug, t });
@@ -349,13 +353,16 @@ export default async function SlugPage({ params }) {
       }),
     );
 
-    // Generate OG image at build time
+    // Generate OG image at build time. Not in draft preview: preview content can come from a
+    // contributor's fork and must not write or delete files under public/.
     const ogCard = await getOgCard(slug, locale, frontmatter, 'page');
-    try {
-      const { generateOgImageForRoute } = await import('@/lib/og-image');
-      await generateOgImageForRoute({ ...ogCard, slug });
-    } catch (err) {
-      console.warn(`OG image skipped for page "${slug}":`, err.message);
+    if (!isDraft) {
+      try {
+        const { generateOgImageForRoute } = await import('@/lib/og-image');
+        await generateOgImageForRoute({ ...ogCard, slug });
+      } catch (err) {
+        console.warn(`OG image skipped for page "${slug}":`, err.message);
+      }
     }
 
     const pageNotices = buildContentNotices({ locale, isFallback, slug, t });

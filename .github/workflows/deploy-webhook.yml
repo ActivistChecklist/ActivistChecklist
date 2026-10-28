@@ -5,15 +5,19 @@ on:
     branches:
       - main
 
-# Optional: add repository secret HEALTHCHECKS_DEPLOY_PING_URL with your check's Ping URL
-# (from Healthchecks.io, e.g. https://hc-ping.com/...). On success we GET that URL; on
-# failure we POST to .../fail with the deploy step output (truncated to 100 kB).
+# DEPLOY_SECRET and HEALTHCHECKS_DEPLOY_PING_URL live in the main-only environment, so
+# only a run on main can read them. See .github/ACTIONS-SECRETS.md.
+#
+# Optional: HEALTHCHECKS_DEPLOY_PING_URL is your check's Ping URL (from Healthchecks.io,
+# e.g. https://hc-ping.com/...). On success we GET that URL; on failure we POST to
+# .../fail with the deploy step output (truncated to 100 kB).
 
 # This workflow only calls an external webhook; it needs nothing from GITHUB_TOKEN.
 permissions: {}
 
 jobs:
   trigger_build_and_deploy_webhook:
+    environment: main-only
     runs-on: ubuntu-latest
     steps:
       - name: Trigger server deploy webhook

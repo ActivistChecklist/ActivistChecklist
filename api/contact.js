@@ -3,6 +3,7 @@ const path = require('path');
 const dotenv = require('dotenv');
 const openpgp = require('openpgp');
 const https = require('https');
+const crypto = require('crypto');
 dotenv.config();
 
 class PGPMailer {
@@ -191,19 +192,17 @@ async function handleContactForm(req, reply) {
         contactInfo = '## No response requested';
     }
 
-    // Create subject preview from message
-    let preview = data.message
-      .replace(/[\r\n\t]+/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim();
-    if (preview.length > 50) {
-      preview = `${preview.substring(0, 47)}...`;
-    }
+    // PGP encrypts the body only. The subject travels in plaintext through
+    // Resend, the mail relays and Proton, so it must never carry anything the
+    // visitor typed. A random reference keeps each message in its own thread
+    // and is repeated inside the encrypted body so the two can be matched.
+    const referenceId = crypto.randomBytes(4).toString('hex');
+    const subject = `Contact Form (${referenceId})`;
 
     // Add timestamp and contact info to message
     const timestamp = new Date().toLocaleString('en-US', { timeZone: 'UTC' });
     const pagePath = data.pagePath || 'unknown';
-    const messageWithTime = `ActivistChecklist.org Contact Form\n\n## Message received:\n${timestamp}\n\n## Sent from page:\n${pagePath}\n\n${contactInfo}\n\n## Message:\n${data.message}`;
+    const messageWithTime = `ActivistChecklist.org Contact Form\n\n## Reference:\n${referenceId}\n\n## Message received:\n${timestamp}\n\n## Sent from page:\n${pagePath}\n\n${contactInfo}\n\n## Message:\n${data.message}`;
 
     const config = {
       resendApiKey: process.env.RESEND_API_KEY,
@@ -239,7 +238,7 @@ async function handleContactForm(req, reply) {
       const result = await mailer.sendEncryptedEmail(
         'Activist Checklist Contact Form <contact@activistchecklist.org>',
         'contact@activistchecklist.org',
-        `Contact Form: ${preview}`,
+        subject,
         encrypted,
       );
 

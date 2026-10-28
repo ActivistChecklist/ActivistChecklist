@@ -34,6 +34,7 @@ export const MetaBar = ({
       "print:mb-0",
       className
     )}
+    data-pagefind-ignore
     {...props}
     >
       {items.map((item, index) => (

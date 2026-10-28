@@ -191,6 +191,9 @@ importers:
       '@hookform/resolvers':
         specifier: ^6.0.0
         version: 6.0.0(ajv@8.20.0)(react-hook-form@7.91.0(@types/react@19.3.0)(react@19.3.1))(superstruct@1.0.4)(zod@4.6.7)
+      '@keystar/ui':
+        specifier: ~0.10.0
+        version: 0.10.0(next@16.4.2(@types/node@26.6.5)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-aria@3.50.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-dom@19.3.1(react@19.3.1))(react-stately@3.48.0(react@19.3.1))(react@19.3.1)
       '@keystatic/core':
         specifier: ^0.6.9
         version: 0.6.9(@keystar/ui@0.10.0(next@16.4.2(@types/node@26.6.5)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-aria@3.50.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-dom@19.3.1(react@19.3.1))(react-stately@3.48.0(react@19.3.1))(react@19.3.1))(react-aria@3.50.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-dom@19.3.1(react@19.3.1))(react-stately@3.48.0(react@19.3.1))(react@19.3.1)(supports-color@10.2.2)
@@ -4182,8 +4185,8 @@ packages:
   pure-color@1.3.0:
     resolution: {integrity: sha512-QFADYnsVoBMw1srW7OVKEYjG+MbIa49s54w1MA1EDY6r2r/sTcKKYqRX1f4GYvnXP7eN/Pe9HFcX+hwzmrXRHA==}
 
-  qs@6.16.0:
-    resolution: {integrity: sha512-h6fhOIaRrID2CbEY2fqs+7t+UXZo+MLAnU5gRIq85uFtdiUPCdsApMlHhXogKVM4HM2DVbIjGNTTYH2OcmP1vA==}
+  qs@6.17.0:
+    resolution: {integrity: sha512-5LK5BZ2XDHMvcUJaf0CQ5HL3aVgKbpklvByC7qLSxYkfE8COEEbJg5xCHWCTqzqi0Gs4Jn5Mv5v3R38W6edscA==}
     engines: {node: '>=0.6'}
 
   queue-microtask@1.2.3:
@@ -8879,7 +8882,7 @@ snapshots:
 
   pure-color@1.3.0: {}
 
-  qs@6.16.0:
+  qs@6.17.0:
     dependencies:
       es-define-property: 1.0.1
       side-channel: 1.1.1
@@ -9482,7 +9485,7 @@ snapshots:
 
   union@0.5.0:
     dependencies:
-      qs: 6.16.0
+      qs: 6.17.0
 
   unist-util-is@6.0.1:
     dependencies:
@@ -9522,7 +9525,7 @@ snapshots:
   url@0.11.4:
     dependencies:
       punycode: 1.4.1
-      qs: 6.16.0
+      qs: 6.17.0
 
   urql@4.2.2(@urql/core@5.2.0(graphql@16.14.2))(react@19.3.1):
     dependencies:

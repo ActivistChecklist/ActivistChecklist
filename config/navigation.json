@@ -119,6 +119,9 @@
     },
     "tools": {
       "href": "/tools/"
+    },
+    "glossary": {
+      "href": "/glossary/"
     }
   },
   "menus": {
@@ -130,6 +133,7 @@
         "signal",
         "protest",
         "ice",
+        "action",
         "doxxing",
         "travel",
         "emergency",
@@ -139,7 +143,7 @@
     },
     "resources": {
       "href": "/resources/",
-      "items": ["tools", "links", "flyer", "movies", "resources"]
+      "items": ["news", "tools", "links", "flyer", "movies", "glossary", "resources"]
     },
     "about": {
       "href": "/about/",
@@ -172,7 +176,7 @@
       "reads": []
     }
   ],
-  "mainNav": ["home", "checklists", "news", "resources", "about"],
+  "mainNav": ["home", "checklists", "resources", "about"],
   "footer": {
     "sections": [
       {

@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import {
   createIntlTranslator,
   getTranslatedNavItemFields,
+  NAV_LABEL_KEYS,
   navItemMessageKey,
   translateMainNavigation,
 } from '../lib/navigation-i18n';
@@ -36,7 +37,16 @@ describe('navigation i18n translation mapping', () => {
 
     expect(translated[0].label).toBe('Inicio');
     expect(translated[1].label).toBe('Listas de seguridad');
-    expect(translated[2].label).toBe('Noticias');
+  });
+
+  it('keeps the short nav.* label for News inside the Resources menu', () => {
+    const t = (key, fallback) => (key === 'nav.news' ? 'Noticias' : fallback);
+
+    const translated = translateMainNavigation(navigationConfig.mainNav, t);
+    const resources = translated.find((item) => item.key === 'resources');
+    const news = resources.items.find((item) => item.key === 'news');
+
+    expect(news.title).toBe('Noticias');
   });
 
   it('translates dropdown items and footer link', () => {
@@ -72,10 +82,9 @@ describe('navigation i18n translation mapping', () => {
 // navigation.json carries no text, so a missing message would render an empty link.
 describe('every navigation entry has English strings', () => {
   const t = englishT();
-  const mainNavKeys = new Set(navData.mainNav);
 
   it.each(Object.entries(navData.items))('%s has a title', (key, item) => {
-    const titleKey = mainNavKeys.has(key) ? `nav.${key}` : `${navItemMessageKey(key)}.title`;
+    const titleKey = NAV_LABEL_KEYS.has(key) ? `nav.${key}` : `${navItemMessageKey(key)}.title`;
     expect(t.has(titleKey), titleKey).toBe(true);
     if (item.kind) {
       expect(t.has(`${navItemMessageKey(key)}.label`), `${key} needs a label`).toBe(true);
