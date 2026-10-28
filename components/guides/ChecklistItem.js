@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronDown, Check, Link2 } from 'lucide-react';
+import { ChevronDown, Check } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -11,6 +11,7 @@ import { IoInformationCircleOutline } from 'react-icons/io5';
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import CopyLinkButton from '@/components/CopyLinkButton';
 import { useAnalytics } from '@/hooks/use-analytics';
 import { useTranslations } from 'next-intl';
 import { migrateLegacyChecklistKeysForSlug } from '@/lib/checklist-storage-migrate';
@@ -38,85 +39,6 @@ const InfoItemIcon = () => {
         </TooltipTrigger>
         <TooltipContent side="top" sideOffset={5} className="z-100">
           {t('checklistItem.informationalItem')}
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  );
-};
-
-const CopyLinkButton = ({ slug, onCopy }) => {
-  const t = useTranslations();
-  const [linkCopied, setLinkCopied] = useState(false);
-  const [tooltipOpen, setTooltipOpen] = useState(false);
-  const [linkHref, setLinkHref] = useState(() => `#${slug}`);
-
-  useEffect(() => {
-    const pathWithSearch = `${window.location.pathname}${window.location.search}`;
-    setLinkHref(`${window.location.origin}${pathWithSearch}#${slug}`);
-  }, [slug]);
-
-  const handleCopy = async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const pathWithSearch = `${window.location.pathname}${window.location.search}`;
-    const url = `${window.location.origin}${pathWithSearch}#${slug}`;
-    window.history.replaceState(null, '', `${pathWithSearch}#${slug}`);
-
-    try {
-      await navigator.clipboard.writeText(url);
-      setLinkCopied(true);
-      setTooltipOpen(true);
-
-      // Call the parent's copy handler if provided
-      if (onCopy) {
-        onCopy(url);
-      }
-
-      // Reset after 2 seconds
-      setTimeout(() => {
-        setLinkCopied(false);
-        setTooltipOpen(false);
-      }, 2000);
-    } catch (err) {
-      console.error('Failed to copy link:', err);
-    }
-  };
-
-  return (
-    <TooltipProvider>
-      <Tooltip delayDuration={0} open={tooltipOpen} onOpenChange={setTooltipOpen}>
-        <TooltipTrigger asChild>
-          <a
-            href={linkHref}
-            onClick={handleCopy}
-            className={cn(
-              'relative inline-flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center rounded-md align-middle transition-colors duration-200',
-              'hover:bg-neutral-200/60',
-              'text-neutral-500 hover:text-neutral-700',
-              'no-underline',
-              'print:hidden',
-              linkCopied && 'text-green-600',
-            )}
-            aria-label={t('checklistItem.copyLink')}
-          >
-            <Link2
-              aria-hidden
-              className={cn(
-                'absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-200',
-                linkCopied && 'opacity-0',
-              )}
-            />
-            <Check
-              aria-hidden
-              className={cn(
-                'absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 text-green-600 transition-opacity duration-200',
-                linkCopied ? 'opacity-100' : 'opacity-0',
-              )}
-            />
-          </a>
-        </TooltipTrigger>
-        <TooltipContent side="top" sideOffset={5}>
-          {linkCopied ? t('checklistItem.linkCopied') : t('checklistItem.copyLink')}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

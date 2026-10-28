@@ -14,7 +14,7 @@ const samePath = (a, b) => a.replace(/\/+$/, '') === (b || '').replace(/\/+$/, '
 const SWAP_QUERY = '(min-width: 640px)';
 
 // external links get an icon so readers can tell they're leaving the site
-function TermLink({ href, children }) {
+export function TermLink({ href, children }) {
   return (
     <Link href={href} className="link">
       {children}
@@ -23,23 +23,14 @@ function TermLink({ href, children }) {
   );
 }
 
-// On phones a term link opens that term's sheet on top of this one; inside that second
-// sheet, term links are plain text so two terms that link to each other can't nest forever.
-// On wider screens onNavigate swaps this popup's content instead.
-function renderInlineMarkdown(nodes, nested, onNavigate) {
+// renderTerm(slug, children, key) decides what a [text](term:slug) link becomes
+export function renderInlineMarkdown(nodes, renderTerm) {
   return nodes.map((node, i) => {
     if (node.type === 'text') return node.value;
-    const children = renderInlineMarkdown(node.children, nested, onNavigate);
+    const children = renderInlineMarkdown(node.children, renderTerm);
     if (node.type === 'strong') return <strong key={i}>{children}</strong>;
     if (node.type === 'em') return <em key={i}>{children}</em>;
-    if (node.type === 'term') {
-      if (nested) return <Fragment key={i}>{children}</Fragment>;
-      return (
-        <Term key={i} slug={node.slug} nested onNavigate={onNavigate}>
-          {children}
-        </Term>
-      );
-    }
+    if (node.type === 'term') return renderTerm(node.slug, children, i);
     return (
       <TermLink key={i} href={node.href}>
         {children}
@@ -89,6 +80,17 @@ export default function Term({ slug, children, nested = false, onNavigate }) {
       setTrail([]);
     }
   };
+  // On phones a term link opens that term's sheet on top of this one; inside that second
+  // sheet, term links are plain text so two terms that link to each other can't nest forever.
+  // On wider screens navigate swaps this popup's content instead.
+  const renderTerm = (target, termChildren, termKey) =>
+    nested ? (
+      <Fragment key={termKey}>{termChildren}</Fragment>
+    ) : (
+      <Term key={termKey} slug={target} nested onNavigate={navigate}>
+        {termChildren}
+      </Term>
+    );
   const previousTitle = trail.length > 0 && t('definitions.' + (trail.at(-2) ?? slug) + '.term');
 
   // source URLs come from translated message files, so only allow https or site-relative links
@@ -139,11 +141,7 @@ export default function Term({ slug, children, nested = false, onNavigate }) {
         </span>
         <span className={styles.defBody}>
           {/* raw, not t(): definitions are inline Markdown with no ICU arguments */}
-          {renderInlineMarkdown(
-            parseInlineMarkdown(t.raw(activeKey + '.definition')),
-            nested,
-            nested ? undefined : navigate,
-          )}
+          {renderInlineMarkdown(parseInlineMarkdown(t.raw(activeKey + '.definition')), renderTerm)}
           {sourceUrl && (
             <span className={styles.defSource}>
               {t.rich('definitions.learnMore', {

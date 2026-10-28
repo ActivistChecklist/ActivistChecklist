@@ -119,6 +119,9 @@
     },
     "tools": {
       "href": "/tools/"
+    },
+    "glossary": {
+      "href": "/glossary/"
     }
   },
   "menus": {
@@ -139,7 +142,7 @@
     },
     "resources": {
       "href": "/resources/",
-      "items": ["tools", "links", "flyer", "movies", "resources"]
+      "items": ["tools", "links", "flyer", "movies", "glossary", "resources"]
     },
     "about": {
       "href": "/about/",
