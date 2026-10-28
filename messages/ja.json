@@ -1,525 +1,525 @@
 {
   "site": {
-    "title": "Digital Security Checklists for Activists",
-    "description": "Plain language steps for digital security. Because protecting yourself helps keep your whole community safer."
+    "title": "アクティビストのためのデジタルセキュリティ・チェックリスト",
+    "description": "わかりやすい言葉で伝えるデジタルセキュリティの手順。自分を守ることが、コミュニティ全体の安全につながるから。"
   },
   "faq": {
-    "defaultTitle": "Frequently asked questions"
+    "defaultTitle": "よくある質問"
   },
   "nav": {
-    "home": "Home",
-    "checklists": "Security Checklists",
-    "news": "News",
-    "resources": "Resources",
-    "about": "About",
-    "browseAllChecklists": "Browse all checklists"
+    "home": "ホーム",
+    "checklists": "セキュリティ・チェックリスト",
+    "news": "ニュース",
+    "resources": "リソース",
+    "about": "このサイトについて",
+    "browseAllChecklists": "すべてのチェックリストを見る"
   },
   "navItems": {
     "essentials": {
-      "title": "Security essentials",
-      "description": "Core security practices every activist should follow."
+      "title": "セキュリティの基本",
+      "description": "アクティビストみんなに実践してほしい、セキュリティの基本。"
     },
     "search": {
-      "dialogTitle": "Search the site",
-      "dialogDescription": "Use the search bar to find relevant content across the site.",
-      "placeholder": "Search...",
-      "searching": "Searching...",
-      "popularHeading": "Popular searches",
-      "topGuidesHeading": "Top guides",
-      "pressEnter": "Press {kbd} to search"
+      "dialogTitle": "サイト内を検索",
+      "dialogDescription": "検索バーを使って、サイト内の関連コンテンツを探せます。",
+      "placeholder": "検索...",
+      "searching": "検索中...",
+      "popularHeading": "よく検索されているキーワード",
+      "topGuidesHeading": "人気のガイド",
+      "pressEnter": "{kbd} を押して検索"
     },
     "signal": {
-      "title": "Signal security",
-      "description": "Secure your Signal messaging app for safer communications."
+      "title": "Signalのセキュリティ",
+      "description": "Signalメッセージアプリの設定を見直して、より安全にやりとりしよう。"
     },
     "protest": {
-      "title": "Prepare for a protest",
-      "description": "Digital security for anyone attending a protest."
+      "title": "デモに参加する前の準備",
+      "description": "デモに参加するすべての人のためのデジタルセキュリティ。"
     },
     "ice": {
-      "title": "ICE watch digital security",
-      "description": "Digital security for ICE watch and rapid response networks."
+      "title": "ICEウォッチのデジタルセキュリティ",
+      "description": "ICEウォッチや緊急対応ネットワークのためのデジタルセキュリティ。"
     },
     "doxxing": {
-      "title": "Doxxing defense",
-      "description": "Protect yourself from doxxing and online harassment."
+      "title": "ドクシング(晒し)対策",
+      "description": "ドクシング(晒し)やネット上の嫌がらせから身を守ろう。"
     },
     "travel": {
-      "title": "Travel & flight security",
-      "description": "Digital security practices for activists traveling."
+      "title": "旅行・飛行機移動のセキュリティ",
+      "description": "移動・旅行するアクティビストのためのデジタルセキュリティ対策。"
     },
     "emergency": {
-      "title": "Emergency planning",
-      "description": "Establish an emergency support network in case you're detained or threatened."
+      "title": "緊急時への備え",
+      "description": "拘束されたり脅されたりしたときに備えて、緊急時の支援ネットワークをつくっておこう。"
     },
     "secondary": {
-      "title": "Secondary phone",
-      "description": "Set up an extra phone for activism and protests."
+      "title": "サブのスマホ",
+      "description": "活動やデモ用に、もう一台スマホを用意しよう。"
     },
     "links": {
-      "title": "Remove link tracking",
-      "label": "Remove link tracking"
+      "title": "リンクのトラッキングを削除",
+      "label": "リンクのトラッキングを削除"
     },
     "policeDoorPoster": {
-      "title": "Police at the door poster",
-      "label": "\"Police at the door\" poster"
+      "title": "「サツが家に来たら」ポスター",
+      "label": "「警察が玄関に来たら」ポスター"
     },
     "flyer": {
-      "title": "Printable flyer",
-      "label": "Printable flyer"
+      "title": "印刷用チラシ",
+      "label": "印刷用チラシ"
     },
     "vpn": {
-      "title": "VPNs for activists",
-      "label": "VPNs for activists"
+      "title": "活動家のためのVPN",
+      "label": "活動家のためのVPN"
     },
     "movies": {
-      "title": "Movies, books, & podcasts",
-      "label": "Movies, books, & podcasts"
+      "title": "映画・本・ポッドキャスト",
+      "label": "映画・本・ポッドキャスト"
     },
     "updates": {
-      "title": "Security update checker",
-      "label": "Security update checker"
+      "title": "セキュリティアップデート確認ツール",
+      "label": "セキュリティアップデート確認ツール"
     },
     "tools": {
-      "title": "Tools we built",
-      "label": "Tools we built"
+      "title": "私たちが作ったツール",
+      "label": "私たちが作ったツール"
     },
     "glossary": {
-      "title": "Terms & definitions",
-      "label": "Terms & definitions"
+      "title": "用語集",
+      "label": "用語集"
     },
     "resources": {
-      "title": "Resources",
-      "label": "Resources"
+      "title": "リソース",
+      "label": "リソース"
     },
     "about": {
-      "title": "About this site",
-      "label": "About"
+      "title": "このサイトについて",
+      "label": "このサイトについて"
     },
     "contribute": {
-      "title": "Contribute"
+      "title": "協力する"
     },
     "changelog": {
-      "title": "Recent site updates",
-      "label": "Recent site updates"
+      "title": "サイトの最近の更新",
+      "label": "サイトの最近の更新"
     },
     "contact": {
-      "title": "Contact",
-      "label": "Contact"
+      "title": "お問い合わせ",
+      "label": "お問い合わせ"
     },
     "privacy": {
-      "title": "Privacy",
-      "label": "Privacy"
+      "title": "プライバシー",
+      "label": "プライバシー"
     },
     "whatsapp": {
-      "title": "WhatsApp security",
-      "description": "Configure WhatsApp to protect your messages, groups, and contacts."
+      "title": "WhatsAppのセキュリティ",
+      "description": "WhatsAppを設定して、メッセージ、グループ、連絡先を守ろう。"
     },
     "spyware": {
-      "title": "Spyware protection",
-      "description": "Protect yourself from spyware and surveillance software."
+      "title": "スパイウェア対策",
+      "description": "スパイウェアや監視ソフトから身を守ろう。"
     },
     "action": {
-      "title": "Prepare for an arrestable action",
-      "description": "Digital security for arrestable actions and civil disobedience."
+      "title": "逮捕の可能性があるアクションに備える",
+      "description": "逮捕の可能性があるアクションや市民的不服従のためのデジタルセキュリティ。"
     },
     "organizing": {
-      "title": "Organize an arrestable action",
-      "description": "For movement organizers and coordinators."
+      "title": "逮捕の可能性があるアクションをオーガナイズする",
+      "description": "運動のオーガナイザーやコーディネーター向け。"
     },
     "research": {
-      "title": "Action research & scouting",
-      "description": "How to conduct research and browse the web anonymously."
+      "title": "アクションのための調査と下見",
+      "description": "匿名で調査やウェブ閲覧をする方法。"
     },
     "federal": {
-      "title": "Federal workers",
-      "description": "Digital security guidance for federal employees."
+      "title": "連邦政府職員",
+      "description": "連邦政府職員向けのデジタルセキュリティガイド。"
     },
     "party": {
-      "title": "Host a security party",
-      "label": "Host a security party"
+      "title": "セキュリティ・パーティーを開こう",
+      "label": "セキュリティ・パーティーを開こう"
     },
     "proton": {
-      "title": "How to use Proton safely",
-      "label": "How to use Proton safely"
+      "title": "Protonを安全に使う方法",
+      "label": "Protonを安全に使う方法"
     },
     "lockdown": {
-      "title": "Lockdown Mode trade-offs",
-      "label": "Lockdown Mode trade-offs"
+      "title": "ロックダウンモードのメリットとデメリット",
+      "label": "ロックダウンモードのメリットとデメリット"
     },
     "signalSecure": {
-      "title": "Is Signal secure?",
-      "label": "Is Signal secure?"
+      "title": "Signalは安全？",
+      "label": "Signalは安全？"
     },
     "signalAi": {
-      "title": "Is Apple Intelligence reading my Signal messages?",
-      "label": "Is Apple Intelligence reading my Signal messages?"
+      "title": "Apple IntelligenceはSignalのメッセージを読んでいるの？",
+      "label": "Apple IntelligenceはSignalのメッセージを読んでいるの？"
     }
   },
   "hero": {
-    "title": "Digital Security Checklists for Activists",
-    "description": "Plain language steps for digital security. Because protecting yourself helps keep your whole community safer.",
-    "primaryCta": "Digital Security Essentials",
-    "secondaryCta": "Host a security party"
+    "title": "アクティビストのためのデジタルセキュリティ・チェックリスト",
+    "description": "わかりやすい言葉で伝えるデジタルセキュリティの手順。自分を守ることが、コミュニティ全体の安全につながるから。",
+    "primaryCta": "デジタルセキュリティの基本",
+    "secondaryCta": "セキュリティ・パーティーを開こう"
   },
   "trustPoints": {
-    "experienceTitle": "Built from experience",
-    "experienceDescription": "Our guides draw from real organizing work and direct feedback from activists. While every situation is unique, we aim to share practical insights that can help inform your decisions.",
-    "updatedTitle": "Regularly updated",
-    "updatedDescription": "Our content is regularly reviewed by organizers who understand security concerns. We work to keep information current as risks and technologies evolve."
+    "experienceTitle": "現場の経験から生まれた",
+    "experienceDescription": "私たちのガイドは、実際のオーガナイジングの現場と、アクティビストからの直接のフィードバックをもとに作られています。状況は人それぞれですが、あなたの判断に役立つ実践的なヒントを共有したいと考えています。",
+    "updatedTitle": "定期的に更新",
+    "updatedDescription": "内容は、セキュリティの課題をよく知るオーガナイザーが定期的に見直しています。リスクや技術の変化に合わせて、情報を最新に保つよう努めています。"
   },
   "misconceptions": {
-    "sectionTitle": "Common Misconceptions",
-    "sectionDescription": "When we start talking about digital security, we often hear these concerns. We think there's more to the story.",
-    "nothingToHideTitle": "\"I have nothing to hide\"",
-    "nothingToHideDescription": "The more engaged you are in any social movement work, the more your data can be used to map networks of activists. The best time to start protecting yourself is <b>before</b> you're as deeply involved.",
-    "alreadyKnowTitle": "\"They already know everything\"",
-    "alreadyKnowDescription": "While data collection is widespread, you can significantly reduce your digital footprint and protect future activities.",
-    "dontCareTitle": "\"They don't care about what I'm doing\"",
-    "dontCareDescription": "Mass surveillance affects everyone. Your data can be used to profile communities, predict protests, or target those you care about. Protecting your communications helps protect all of us."
+    "sectionTitle": "よくある誤解",
+    "sectionDescription": "デジタルセキュリティの話をすると、よくこんな声を聞きます。でも、実はそれだけではありません。",
+    "nothingToHideTitle": "「隠すことなんて何もない」",
+    "nothingToHideDescription": "社会運動に深く関わるほど、あなたのデータはアクティビストのつながりを洗い出すのに使われやすくなります。自分を守り始めるベストなタイミングは、深く関わる<b>前</b>です。",
+    "alreadyKnowTitle": "「どうせ全部知られてる」",
+    "alreadyKnowDescription": "データ収集は広く行われていますが、デジタル上の足跡を大きく減らし、これからの活動を守ることはできます。",
+    "dontCareTitle": "「自分のやってることなんて誰も気にしない」",
+    "dontCareDescription": "大規模監視はすべての人に影響します。あなたのデータは、コミュニティのプロファイリングや抗議行動の予測、あなたの大切な人たちを標的にすることに使われるかもしれません。自分の通信を守ることは、みんなを守ることにつながります。"
   },
   "featured": {
-    "sectionTitle": "Featured In"
+    "sectionTitle": "掲載メディア"
   },
   "homepage": {
-    "browseAll": "See all checklists",
-    "trustHeading": "Simple guides to keep us more safe",
-    "trustDescription": "We built this because digital security shouldn't be overwhelming. We take a harm reduction approach: start where you are and do what you can.",
-    "latestNewsHeading": "Latest Surveillance News",
-    "viewAllNews": "View all news",
-    "toolsHeading": "Tools we built",
-    "toolsDescription": "Free tools we made to go along with the checklists, for the steps that are hard to finish on your own.",
-    "viewAllTools": "See all tools",
-    "recentUpdatesHeading": "Recent Site Updates",
-    "viewAllUpdates": "View all updates",
-    "noRecentChanges": "No recent changes available"
+    "browseAll": "すべてのチェックリストを見る",
+    "trustHeading": "みんながもっと安全でいるためのシンプルなガイド",
+    "trustDescription": "デジタルセキュリティは、圧倒されるようなものであってはいけない。そう思ってこのサイトを作りました。私たちはハームリダクションの考え方を大切にしています。今いるところから始めて、できることをやればいいんです。",
+    "latestNewsHeading": "監視に関する最新ニュース",
+    "viewAllNews": "すべてのニュースを見る",
+    "toolsHeading": "私たちが作ったツール",
+    "toolsDescription": "チェックリストと一緒に使える無料ツールを作りました。ひとりでは進めにくいステップに役立ちます。",
+    "viewAllTools": "すべてのツールを見る",
+    "recentUpdatesHeading": "サイトの最近の更新",
+    "viewAllUpdates": "すべての更新を見る",
+    "noRecentChanges": "最近の更新はありません"
   },
   "translationFallback": {
-    "message": "This page is not yet available in your language. You are viewing the English version.",
-    "suggest": "You can use your browser's built-in translation feature to translate this page."
+    "message": "このページはまだ日本語に対応していません。英語版を表示しています。",
+    "suggest": "ブラウザの翻訳機能を使えば、このページを翻訳できます。"
   },
   "pageNotices": {
-    "translationUnreviewedTitle": "Automatically translated",
-    "translationUnreviewed": "This page was automatically translated. Only {approvalPercent}% of this page is human-reviewed so far. Other text may have errors. <link>Help us review this translation</link>.",
-    "nonUsThreatModel": "Outside the US? Some tools here, including encrypted messaging apps, are illegal in certain countries. Check your local laws before acting on this guidance.",
-    "staleGuide": "This guide is more than <b>{years, plural, one {# year} other {# years}}</b> old. Some of its advice may be out of date.",
-    "dismiss": "Dismiss"
+    "translationUnreviewedTitle": "自動翻訳",
+    "translationUnreviewed": "このページは自動翻訳されたものです。今のところ、人による確認が済んでいるのはこのページの{approvalPercent}%だけです。それ以外の部分には誤りがあるかもしれません。<link>翻訳のチェックに協力する</link>。",
+    "nonUsThreatModel": "アメリカ国外にいる？ここで紹介しているツールの中には、暗号化メッセージアプリなど、国によっては違法なものもあります。このガイドに沿って行動する前に、現地の法律を確認してください。",
+    "staleGuide": "このガイドは<b>{years, plural, other {#年}}</b>以上前のものです。一部のアドバイスは古くなっているかもしれません。",
+    "dismiss": "閉じる"
   },
   "languageDetection": {
-    "message": "This site is available in {language}.",
-    "switchButton": "Switch to {language}",
-    "dismiss": "Dismiss"
+    "message": "このサイトは{language}でも見られます。",
+    "switchButton": "{language}に切り替える",
+    "dismiss": "閉じる"
   },
   "languageSwitcher": {
-    "ariaLabel": "Switch language"
+    "ariaLabel": "言語を切り替える"
   },
   "themeSwitcher": {
-    "placeholderAriaLabel": "Toggle theme",
-    "ariaLabel": "Theme: {theme}. Change theme",
-    "title": "Change theme",
-    "light": "Light",
-    "dark": "Dark",
-    "system": "System",
-    "active": "Active"
+    "placeholderAriaLabel": "テーマを切り替え",
+    "ariaLabel": "テーマ：{theme}。テーマを変更",
+    "title": "テーマを変更",
+    "light": "ライト",
+    "dark": "ダーク",
+    "system": "システム",
+    "active": "選択中"
   },
   "meta": {
-    "lastUpdatedOn": "Last updated on",
-    "takesAbout": "Takes about",
-    "viewLatestGuideAt": "View the latest guide at"
+    "lastUpdatedOn": "最終更新日：",
+    "takesAbout": "所要時間：約",
+    "viewLatestGuideAt": "最新版のガイドはこちら："
   },
   "footer": {
     "branding": {
       "title": "Activist Checklist",
-      "description": "Plain language steps for digital security, because protecting yourself helps keep your whole community safer."
+      "description": "デジタルセキュリティのためのわかりやすいステップ集。自分を守ることは、コミュニティ全体の安全を守ることにつながるから。"
     },
-    "stayUpdated": "Stay Updated",
+    "stayUpdated": "最新情報を受け取る",
     "sections": {
-      "navigation": "Navigation",
-      "topChecklists": "Top Checklists"
+      "navigation": "ナビゲーション",
+      "topChecklists": "人気のチェックリスト"
     },
-    "disclaimer": "Heads up: We provide info and resources, not legal advice. Consult an attorney for your specific situation.",
-    "licenseNotice": "Content available under <cc>Creative Commons BY-SA</cc>. See our <sources>sources</sources>. Source code available on <github>GitHub</github>.",
+    "disclaimer": "ご注意：ここで提供しているのは情報やリソースであって、法的助言ではありません。自分の状況については弁護士に相談してください。",
+    "licenseNotice": "コンテンツは<cc>Creative Commons BY-SA</cc>で公開しています。<sources>出典</sources>もご覧ください。ソースコードは<github>GitHub</github>で公開しています。",
     "social": {
-      "blueskyAriaLabel": "Follow us on Bluesky",
-      "githubAriaLabel": "View our GitHub repository",
-      "mastodonAriaLabel": "Follow us on Mastodon"
+      "blueskyAriaLabel": "Blueskyでフォローする",
+      "githubAriaLabel": "GitHubリポジトリを見る",
+      "mastodonAriaLabel": "Mastodonでフォローする"
     },
     "onion": {
       "label": "Tor",
-      "ariaLabel": "Visit our Tor onion service"
+      "ariaLabel": "Torオニオンサービスでアクセス"
     }
   },
   "newsletter": {
-    "subscribe": "Subscribe",
-    "successLong": "You're subscribed! Want to message a friend on Signal to let them know about this project?",
-    "successShort": "Thanks for subscribing!",
+    "subscribe": "登録する",
+    "successLong": "登録完了！Signalで友だちにこのプロジェクトのことを伝えてみませんか？",
+    "successShort": "登録ありがとう！",
     "placeholders": {
-      "emailLong": "Enter your email",
-      "emailShort": "Email"
+      "emailLong": "メールアドレスを入力",
+      "emailShort": "メールアドレス"
     }
   },
   "inlineCta": {
-    "heading": "When their tactics change, our advice does too",
-    "description": "ICE, police, and corporate surveillance keep adding new tools. We update these guides to keep pace. Subscribe to hear when something important shifts.",
-    "buttonText": "Subscribe",
-    "emailAriaLabel": "Email address",
-    "privacyLink": "Privacy policy"
+    "heading": "向こうの手口が変われば、私たちのアドバイスも変わる",
+    "description": "ICEや警察、企業による監視は、次々と新しいツールを取り入れています。私たちもそれに負けないよう、このガイドを更新し続けています。大事な変化があったときに知らせを受け取るには、登録してください。",
+    "buttonText": "登録する",
+    "emailAriaLabel": "メールアドレス",
+    "privacyLink": "プライバシーポリシー"
   },
   "common": {
-    "loading": "Loading...",
-    "error": "Something went wrong",
-    "viewChecklist": "View checklist",
-    "menuPathSeparator": "then"
+    "loading": "読み込み中...",
+    "error": "問題が発生しました",
+    "viewChecklist": "チェックリストを見る",
+    "menuPathSeparator": "→"
   },
   "search": {
-    "placeholder": "Search...",
-    "dialogTitle": "Search site content",
-    "dialogDescription": "Search across all pages and guides on this site",
-    "close": "Close search",
-    "mostReadHeading": "Most-read guides",
-    "resultsLabel": "Search results",
-    "resultCount": "{count, plural, =0 {No results} one {# result} other {# results}}",
-    "searching": "Searching...",
-    "noResults": "No results found for \"{query}\"",
-    "noResultsHint": "Try fewer words, or another word for the same thing.",
-    "contactPrompt": "Can't find it? Tell us what you were looking for",
-    "unavailable": "Search isn't available right now. Try reloading the page.",
-    "untitled": "Untitled",
-    "keyNavigate": "to move",
-    "keyOpen": "to open",
-    "keyClose": "to close"
+    "placeholder": "検索...",
+    "dialogTitle": "サイト内を検索",
+    "dialogDescription": "このサイトのすべてのページとガイドを検索",
+    "close": "検索を閉じる",
+    "mostReadHeading": "よく読まれているガイド",
+    "resultsLabel": "検索結果",
+    "resultCount": "{count, plural, =0 {結果なし} other {#件の結果}}",
+    "searching": "検索中...",
+    "noResults": "「{query}」に一致する結果は見つかりませんでした",
+    "noResultsHint": "キーワードを減らすか、別の言葉で検索してみてください。",
+    "contactPrompt": "見つからない？探していたものを教えてください",
+    "unavailable": "現在、検索は利用できません。ページを再読み込みしてみてください。",
+    "untitled": "無題",
+    "keyNavigate": "で移動",
+    "keyOpen": "で開く",
+    "keyClose": "で閉じる"
   },
   "notFound": {
-    "title": "Oops! This page doesn't exist",
-    "backToHome": "Back to Home",
-    "tryAnother": "Show another random \"missing page\" message",
+    "title": "おっと！このページは存在しません",
+    "backToHome": "ホームに戻る",
+    "tryAnother": "別の「ページが見つかりません」メッセージをランダムに表示",
     "variations": {
       "goneUnderground": {
-        "title": "Gone underground",
-        "message": "This page has disappeared! Maybe it's organizing something..."
+        "title": "地下に潜伏中",
+        "message": "このページは姿を消しました！何かオーガナイズしているのかも..."
       },
       "nothingToSee": {
-        "title": "Nothing to see here",
-        "message": "This page is practicing good OPSEC and staying off the grid."
+        "title": "ここには何もないよ",
+        "message": "このページはしっかりOPSECを実践して、足跡を残さないようにしています。"
       },
       "solidarity": {
-        "title": "Solidarity forever",
-        "message": "The page you're looking for is out on the picket line."
+        "title": "連帯よ永遠に",
+        "message": "お探しのページは今、ピケットラインに立っています。"
       },
       "securityCulture": {
-        "title": "Practicing good security culture",
-        "message": "This page is using end-to-end encryption... maybe a bit too well."
+        "title": "セキュリティ・カルチャーを実践中",
+        "message": "このページはエンドツーエンド暗号化を使っています…ちょっと効きすぎたみたい。"
       },
       "whoseStreets": {
-        "title": "Whose streets?",
-        "message": "Our streets! But this particular URL leads nowhere..."
+        "title": "誰の街だ？",
+        "message": "私たちの街だ！でも、このURLはどこにもつながっていません..."
       },
       "identity": {
-        "title": "Identity protected",
-        "message": "This page is exercising its right to remain anonymous."
+        "title": "身元は守られています",
+        "message": "このページは匿名でいる権利を行使しています。"
       },
       "directAction": {
-        "title": "Direct action",
-        "message": "This page is out disrupting business as usual."
+        "title": "直接行動",
+        "message": "このページはいつもの日常をストップさせに出かけています。"
       },
       "firedUp": {
-        "title": "Fired up",
-        "message": "This page is busy lighting the spark of revolution."
+        "title": "燃えてるぜ",
+        "message": "このページは革命の火花を灯すのに忙しいところです。"
       },
       "mutualAid": {
-        "title": "Mutual aid station",
-        "message": "This page has relocated to help distribute resources to the community."
+        "title": "相互扶助ステーション",
+        "message": "このページは、コミュニティに物資を届けるお手伝いのために引っ越しました。"
       },
       "beWater": {
-        "title": "Be water",
-        "message": "Like water, this page flows where it's needed most."
+        "title": "水になれ",
+        "message": "水のように、このページはいちばん必要とされる場所へ流れていきました。"
       }
     }
   },
   "riskLevel": {
-    "everyoneLabel": "everyone",
-    "mediumLabel": "medium-threat",
-    "highLabel": "high-threat",
-    "everyoneDefault": "This section is for anyone doing activism or advocacy work.",
-    "mediumDefault": "This section is for you if you are in a leadership role or you are doing activism that is more likely to be targeted by the state or your opposition.",
-    "highDefault": "This section is for you are in a high-profile role or your activism involves high-risk work that could result in serious consequences or retaliation.",
-    "forYouIf": "This section is for you if:",
-    "forYou": "This section is for:",
-    "whoIsThisFor": "Who is this section for?"
+    "everyoneLabel": "すべての人",
+    "mediumLabel": "中リスク",
+    "highLabel": "高リスク",
+    "everyoneDefault": "このセクションは、アクティビズムやアドボカシーに関わるすべての人向けです。",
+    "mediumDefault": "このセクションは、リーダー的な役割を担っている人や、国家や対立する勢力から狙われやすい活動をしている人向けです。",
+    "highDefault": "このセクションは、目立つ立場にいる人や、深刻な結果や報復につながりかねない高リスクな活動をしている人向けです。",
+    "forYouIf": "このセクションは、次のような人向けです：",
+    "forYou": "このセクションの対象：",
+    "whoIsThisFor": "このセクションは誰向け？"
   },
   "checklistItem": {
-    "informationalItem": "Informational item",
-    "copyLink": "Copy link to this item",
-    "linkCopied": "Link copied!",
-    "markAsDone": "Mark as done",
-    "completed": "Completed",
-    "expand": "Expand",
-    "collapse": "Collapse",
-    "importantBadge": "Important"
+    "informationalItem": "情報項目",
+    "copyLink": "この項目へのリンクをコピー",
+    "linkCopied": "リンクをコピーしました！",
+    "markAsDone": "完了にする",
+    "completed": "完了",
+    "expand": "開く",
+    "collapse": "閉じる",
+    "importantBadge": "重要"
   },
   "sectionProgress": {
     "count": "{done}/{total}",
-    "label": "{done} of {total} complete"
+    "label": "{total}件中{done}件完了"
   },
   "tableOfContents": {
-    "title": "On this page"
+    "title": "このページの内容"
   },
   "copyButton": {
-    "copy": "Copy",
-    "copyText": "Copy text",
-    "copied": "Copied",
-    "ariaLabel": "Copy to clipboard"
+    "copy": "コピー",
+    "copyText": "テキストをコピー",
+    "copied": "コピーしました",
+    "ariaLabel": "クリップボードにコピー"
   },
   "contact": {
-    "title": "Contact Us",
-    "intro": "Your feedback helps make this resource more useful and secure for everyone. We welcome suggestions for:",
-    "suggestion1": "Correcting any inaccuracies or outdated information",
-    "suggestion2": "Making our guides clearer and easier to understand",
-    "suggestion3": "Improving security recommendations",
-    "suggestion4": "Suggesting new topics we should cover",
-    "sendMessage": "Send us a message",
-    "recommended": "(recommended)",
-    "successMessage": "Message sent successfully! We'll get back to you soon.",
-    "otherWays": "Other ways to reach us",
-    "githubTitle": "Public Feedback (GitHub)",
-    "githubDescription": "If you're okay with sharing publicly, you can submit feedback, questions, and feature requests through our GitHub repository.",
-    "githubLink": "Visit GitHub Repository →",
-    "emailTitle": "Encrypted Email",
-    "emailDescription": "Using Proton Mail? Your messages will be automatically encrypted. For other providers, you can use our PGP key. Or you can just email this address unencrypted.",
-    "pgpLink": "View PGP Key →"
+    "title": "お問い合わせ",
+    "intro": "みなさんからのフィードバックが、このリソースをみんなにとってもっと役に立つ、安全なものにしてくれます。こんな提案を大歓迎しています：",
+    "suggestion1": "間違いや古くなった情報の修正",
+    "suggestion2": "ガイドをもっとわかりやすくすること",
+    "suggestion3": "セキュリティに関するおすすめの改善",
+    "suggestion4": "取り上げてほしい新しいトピックの提案",
+    "sendMessage": "メッセージを送る",
+    "recommended": "（おすすめ）",
+    "successMessage": "メッセージを送信しました！近いうちに返信します。",
+    "otherWays": "その他の連絡方法",
+    "githubTitle": "公開フィードバック（GitHub）",
+    "githubDescription": "公開されても大丈夫なら、GitHubリポジトリからフィードバックや質問、機能リクエストを送ることもできます。",
+    "githubLink": "GitHubリポジトリを見る →",
+    "emailTitle": "暗号化メール",
+    "emailDescription": "Proton Mailを使っているなら、メッセージは自動的に暗号化されます。ほかのメールサービスの場合は、私たちのPGP鍵を使えます。暗号化せずにこのアドレスへそのままメールを送ってもOKです。",
+    "pgpLink": "PGP鍵を見る →"
   },
   "contactForm": {
-    "messageLabel": "Your Message",
-    "messagePlaceholder": "Enter your message...",
-    "charactersRemaining": "{count} characters remaining",
-    "responseQuestion": "Would you like a response?",
-    "emailLabel": "Email Address",
-    "emailPlaceholder": "Enter your email address",
-    "emailNote": "Note on email replies: Unless you use Proton Mail, your email provider can read any replies we send to your message.",
-    "signalUsernameLabel": "Signal Username",
+    "messageLabel": "メッセージ",
+    "messagePlaceholder": "メッセージを入力...",
+    "charactersRemaining": "残り{count}文字",
+    "responseQuestion": "返信を希望しますか？",
+    "emailLabel": "メールアドレス",
+    "emailPlaceholder": "メールアドレスを入力",
+    "emailNote": "メールでの返信について：Proton Mailを使っていない場合、私たちからの返信はあなたのメールサービス事業者に読まれる可能性があります。",
+    "signalUsernameLabel": "Signalのユーザー名",
     "signalUsernamePlaceholder": "username.12",
     "signalUsernameExample": "@snowden.04",
-    "signalUsernameHelp": "Your username is different than your display name. Find your username at Signal > User Icon (top right) > Settings. It will be listed near the top, just underneath your phone number.",
-    "signalPhoneLabel": "Signal Phone Number",
-    "signalPhonePlaceholder": "Enter your Signal phone number",
-    "sending": "Sending...",
-    "sendMessage": "Send Message",
-    "privacyLabel": "Privacy:",
-    "privacyText": "Your message is securely encrypted and sent to our Proton Mail account. We don't collect any personal information about you.",
-    "errorMessage": "Failed to send message. Please try again later.",
-    "responseNone": "No response needed (your message remains anonymous)",
-    "responseSignalUsername": "Reply by Signal (username)",
-    "responseSignalPhone": "Reply by Signal (phone number)",
-    "responseEmail": "Reply by Email",
-    "mostSecure": "Most Secure"
+    "signalUsernameHelp": "ユーザー名は表示名とは別のものです。ユーザー名は Signal > ユーザーアイコン（右上）> 設定 で確認できます。上のほう、電話番号のすぐ下に表示されています。",
+    "signalPhoneLabel": "Signalの電話番号",
+    "signalPhonePlaceholder": "Signalで使っている電話番号を入力",
+    "sending": "送信中...",
+    "sendMessage": "メッセージを送信",
+    "privacyLabel": "プライバシー：",
+    "privacyText": "メッセージは安全に暗号化されて、私たちのProton Mailアカウントに送られます。あなたの個人情報は一切集めていません。",
+    "errorMessage": "メッセージを送信できませんでした。しばらくしてからもう一度試してください。",
+    "responseNone": "返信不要（メッセージは匿名のままです）",
+    "responseSignalUsername": "Signalで返信（ユーザー名）",
+    "responseSignalPhone": "Signalで返信（電話番号）",
+    "responseEmail": "メールで返信",
+    "mostSecure": "最も安全"
   },
   "feedbackCta": {
-    "heading": "Have Questions?",
-    "description": "Let us know if you have questions or feedback so we can make these guides as useful as possible.",
-    "inputPlaceholder": "Type your question...",
-    "sendButton": "Send",
-    "dialogTitle": "Send us a message",
-    "successMessage": "Thanks for your feedback! We'll review it and use it to improve the guides. If you're finding the site valuable, please help spread the word!"
+    "heading": "質問がありますか？",
+    "description": "質問やフィードバックがあれば気軽に教えてください。このガイドをもっと役立つものにしていきます。",
+    "inputPlaceholder": "質問を入力...",
+    "sendButton": "送信",
+    "dialogTitle": "メッセージを送る",
+    "successMessage": "フィードバックありがとう！しっかり目を通して、ガイドの改善に活かします。このサイトが役に立ったら、ぜひまわりの人にも広めてください！"
   },
   "relatedGuides": {
-    "headingBlock": "Keep learning with these related guides",
-    "headingFooter": "If you found this helpful, also check out these guides"
+    "headingBlock": "関連ガイドでさらに学ぼう",
+    "headingFooter": "役に立ったら、こちらのガイドもチェックしてみてください"
   },
   "checklists": {
-    "title": "Checklists",
-    "intro": "Every checklist and explainer, grouped by situation. New here? Start with <link>Security Essentials</link>.",
-    "documentTitle": "Checklists | Activist Checklist"
+    "title": "チェックリスト",
+    "intro": "すべてのチェックリストと解説を、状況別にまとめています。初めての方は<link>セキュリティの基本</link>から始めてみてください。",
+    "documentTitle": "チェックリスト | Activist Checklist"
   },
   "checklistSections": {
     "basics": {
-      "title": "The basics",
-      "heading": "Everyone should do these",
-      "scope": "Baseline protection for your phone, accounts, and group chats."
+      "title": "基本",
+      "heading": "みんなにやってほしいこと",
+      "scope": "スマホ、アカウント、グループチャットを守るための基本の対策。"
     },
     "goingOut": {
-      "title": "Protests & travel",
-      "heading": "Protests & travel",
-      "scope": "Anywhere police or border agents could take your phone."
+      "title": "抗議行動と移動",
+      "heading": "抗議行動と移動",
+      "scope": "警察や国境の職員にスマホを取り上げられるかもしれない場所すべて。"
     },
     "targeted": {
-      "title": "Being targeted",
-      "heading": "Protect yourself from being targeted",
-      "scope": "Doxxing, harassment, investigations, or agents at your door."
+      "title": "狙われているとき",
+      "heading": "狙われたときに自分を守る",
+      "scope": "ドクシング、嫌がらせ、捜査、捜査官が家に来ること。"
     },
     "organizing": {
-      "title": "Organizing others",
-      "heading": "Organizing others",
-      "scope": "Running actions and getting your group secure."
+      "title": "仲間をオーガナイズする",
+      "heading": "仲間をオーガナイズする",
+      "scope": "アクションの運営と、グループのセキュリティ強化。"
     },
     "descriptions": {
-      "party": "A template agenda for getting your group through the checklists together."
+      "party": "グループのみんなで一緒にチェックリストを進めるためのアジェンダのテンプレート。"
     },
-    "allChecklists": "All {count, plural, one {# checklist} other {# checklists}}",
-    "readMinutes": "{minutes} min read",
-    "explainer": "Explainer",
-    "howTo": "How-to guide",
-    "readGuide": "Read the guide",
-    "understandWhy": "Understand why",
-    "lastReviewed": "Last reviewed {date}"
+    "allChecklists": "{count, plural, other {#件}}のチェックリストすべて",
+    "readMinutes": "{minutes}分で読めます",
+    "explainer": "解説",
+    "howTo": "やり方ガイド",
+    "readGuide": "ガイドを読む",
+    "understandWhy": "理由を知る",
+    "lastReviewed": "最終確認日：{date}"
   },
   "news": {
-    "title": "Surveillance News",
-    "description": "Latest news about state surveillance and threats facing social movements.",
-    "tipInvitation": "Have news you think should be included?",
-    "tipLink": "Send us a tip",
-    "tipSuffix": "and help keep our community informed.",
-    "noItems": "No news items found.",
-    "paywallBypassNotice": "This link bypasses the paywall.",
-    "seeOriginal": "See original"
+    "title": "監視ニュース",
+    "description": "国家による監視や、社会運動が直面している脅威についての最新ニュース。",
+    "tipInvitation": "取り上げてほしいニュースはありますか？",
+    "tipLink": "情報を送って",
+    "tipSuffix": "コミュニティに最新情報を届けるのを手伝ってください。",
+    "noItems": "ニュースが見つかりませんでした。",
+    "paywallBypassNotice": "このリンクはペイウォールを回避します。",
+    "seeOriginal": "元の記事を見る"
   },
   "changelog": {
-    "title": "Recent site updates",
-    "description": "A history of changes to checklists, pages, and resources on the site.",
-    "last30Days": "Last 30 days",
-    "previousChanges": "Previous changes",
-    "noEntries": "No changelog entries found.",
-    "majorUpdate": "Major update"
+    "title": "サイトの最近の更新",
+    "description": "このサイトのチェックリスト、ページ、リソースの変更履歴です。",
+    "last30Days": "過去30日間",
+    "previousChanges": "以前の変更",
+    "noEntries": "変更履歴が見つかりませんでした。",
+    "majorUpdate": "大型アップデート"
   },
   "updates": {
-    "metaTitle": "Is your device still receiving security updates? | Activist Checklist",
-    "metaDescription": "Check whether your phone, tablet, watch, or laptop is still getting security updates. Out-of-date devices accumulate publicly known vulnerabilities and are easier to hack if it is seized or targeted.",
-    "title": "Is your device still receiving security updates?",
-    "intro": "If your device isn't using the latest operating system, hackers and law enforcement can break into it and access all your data.",
-    "searchLabel": "Type your device model",
-    "searchHelpAriaLabel": "Help finding your device model",
-    "searchHelp": "Need help finding it? Select your operating system above for guidance.",
-    "searchPlaceholder": "e.g. iPhone 12 Pro, Pixel 7, Windows 10",
-    "searchAriaLabel": "Search for your device or operating system",
-    "clearAriaLabel": "Clear search",
-    "editSelectionAriaLabel": "Change device, return to search",
-    "noMatches": "No matches in our list.",
-    "noMatchesHelp": "Try the manufacturer name (e.g. \"Galaxy A14\" instead of just \"A14\").",
-    "noMatchesSupported": "We currently track Apple, Google, Samsung, Motorola, OnePlus, Nokia, plus iOS, iPadOS, macOS, Android, and Windows.",
-    "noMatchesWindowsLaptop": "Windows laptop manufacturers don't announce when they stop offering security updates, so checking the laptop <b>model</b> won't tell you. Check your Windows <b>version</b> instead. That's what determines whether you're still receiving updates.",
-    "noMatchesWindowsPathLabel": "How to check your Windows version:",
-    "loading": "Loading device list...",
-    "loadError": "We couldn't load the device list. <retryLink>Try again</retryLink> or check <link>endoflife.date</link> directly.",
-    "snapshotStaleBanner": "Our device list may be out of date. Last updated {date}. <link>Check endoflife.date directly</link>",
-    "releasedYearHint": "released {year}",
+    "metaTitle": "あなたのデバイスはまだセキュリティアップデートを受け取れる？ | Activist Checklist",
+    "metaDescription": "スマホ、タブレット、スマートウォッチ、ノートパソコンがまだセキュリティアップデートを受け取れているか確認しよう。古いデバイスには公に知られた脆弱性がどんどん溜まっていくので、押収されたり狙われたりしたときにハッキングされやすくなります。",
+    "title": "あなたのデバイスはまだセキュリティアップデートを受け取れる？",
+    "intro": "デバイスが最新のOSになっていないと、ハッカーやサツに侵入されて、データを全部見られてしまうおそれがあります。",
+    "searchLabel": "デバイスの機種名を入力",
+    "searchHelpAriaLabel": "デバイスの機種名の調べ方",
+    "searchHelp": "見つからない？上でOSを選ぶと、確認方法が表示されるよ。",
+    "searchPlaceholder": "例：iPhone 12 Pro、Pixel 7、Windows 10",
+    "searchAriaLabel": "デバイスまたはOSを検索",
+    "clearAriaLabel": "検索をクリア",
+    "editSelectionAriaLabel": "デバイスを変更して検索に戻る",
+    "noMatches": "リストに一致するものがありません。",
+    "noMatchesHelp": "メーカー名や製品名を含めて試してみて（例：「A14」だけでなく「Galaxy A14」）。",
+    "noMatchesSupported": "現在対応しているのは、Apple、Google、Samsung、Motorola、OnePlus、Nokia、それにiOS、iPadOS、macOS、Android、Windowsです。",
+    "noMatchesWindowsLaptop": "Windowsノートパソコンのメーカーは、セキュリティアップデートの提供終了を発表しないので、ノートパソコンの<b>機種</b>を調べてもわかりません。代わりにWindowsの<b>バージョン</b>を確認してね。アップデートがまだ届くかどうかは、それで決まります。",
+    "noMatchesWindowsPathLabel": "Windowsのバージョンの確認方法：",
+    "loading": "デバイスリストを読み込み中...",
+    "loadError": "デバイスリストを読み込めませんでした。<retryLink>もう一度試す</retryLink>か、<link>endoflife.date</link>で直接確認してね。",
+    "snapshotStaleBanner": "デバイスリストが古くなっている可能性があります。最終更新：{date}。<link>endoflife.dateで直接確認する</link>",
+    "releasedYearHint": "{year}年発売",
     "categoryPill": {
-      "phone": "Phone",
-      "tablet": "Tablet",
-      "watch": "Watch",
-      "laptop": "Laptop",
-      "desktop": "Desktop",
+      "phone": "スマホ",
+      "tablet": "タブレット",
+      "watch": "スマートウォッチ",
+      "laptop": "ノートパソコン",
+      "desktop": "デスクトップ",
       "os": "OS"
     },
     "platform": {
-      "prompt": "Or pick where to start:",
-      "helpPrompt": "Need help finding your device model?",
+      "prompt": "または、ここから始めよう：",
+      "helpPrompt": "デバイスの機種がわからない？",
       "apple": "Apple",
       "android": "Android",
       "windows": "Windows",
-      "other": "Other"
+      "other": "その他"
     },
     "subCategory": {
-      "prompt": "What kind of {platform} device?",
-      "back": "Back",
+      "prompt": "どの{platform}デバイス？",
+      "back": "戻る",
       "iphone": "iPhone",
       "ipad": "iPad",
       "iphoneIpad": "iPhone / iPad",
@@ -531,77 +531,77 @@
       "oneplus": "OnePlus",
       "nokia": "Nokia",
       "android": "Android",
-      "androidOs": "Android (OS only)",
+      "androidOs": "Android（OSのみ）",
       "windows": "Windows"
     },
     "breadcrumb": {
-      "ariaLabel": "Picked category, click to change",
-      "clear": "Clear category"
+      "ariaLabel": "選択中のカテゴリ、クリックで変更",
+      "clear": "カテゴリをクリア"
     },
     "findYourModel": {
-      "label": "How to find your device model:",
-      "labelWindows": "How to check your Windows version:",
-      "iphone": "<settings>Settings app</settings> on your home screen → General → About → Model Name",
-      "ipad": "<settings>Settings app</settings> on your home screen → General → About → Model Name",
-      "iphoneIpad": "<settings>Settings app</settings> on your home screen → General → About → Model Name",
-      "appleWatch": "Watch app on iPhone → My Watch → General → About → Model",
-      "mac": "<apple>Apple menu</apple> in the top menu bar → About This Mac → Overview",
-      "samsung": "<settings>Settings app</settings> on your phone → About phone → Model number",
-      "pixel": "<settings>Settings app</settings> on your phone → About phone → Model",
-      "motorola": "<settings>Settings app</settings> on your phone → About phone → Model number",
-      "oneplus": "<settings>Settings app</settings> on your phone → About device → Model number",
-      "nokia": "<settings>Settings app</settings> on your phone → About phone → Model",
-      "android": "<settings>Settings app</settings> on your phone → About phone → Model number",
-      "androidOs": "<settings>Settings app</settings> on your phone → About phone → Android version",
-      "windows": "Press Windows key + R → type <code>winver</code> → Enter",
-      "windowsCaveat": "Windows laptop manufacturers don't announce when they stop offering security updates, so checking the laptop <b>model</b> won't tell you. Check your Windows <b>version</b> instead. That's what determines whether you're still receiving updates."
+      "label": "デバイスのモデルの調べ方：",
+      "labelWindows": "Windowsのバージョンの確認方法：",
+      "iphone": "ホーム画面の<settings>「設定」アプリ</settings> →「一般」→「情報」→「機種名」",
+      "ipad": "ホーム画面の<settings>「設定」アプリ</settings> →「一般」→「情報」→「機種名」",
+      "iphoneIpad": "ホーム画面の<settings>「設定」アプリ</settings> →「一般」→「情報」→「機種名」",
+      "appleWatch": "iPhoneの「Watch」アプリ →「マイウォッチ」→「一般」→「情報」→「機種」",
+      "mac": "画面上部のメニューバーの<apple>Appleメニュー</apple> →「このMacについて」→「概要」",
+      "samsung": "スマホの<settings>「設定」アプリ</settings> →「端末情報」→「モデル番号」",
+      "pixel": "スマホの<settings>「設定」アプリ</settings> →「デバイス情報」→「モデル」",
+      "motorola": "スマホの<settings>「設定」アプリ</settings> →「端末情報」→「モデル番号」",
+      "oneplus": "スマホの<settings>「設定」アプリ</settings> →「デバイス情報」→「モデル番号」",
+      "nokia": "スマホの<settings>「設定」アプリ</settings> →「デバイス情報」→「モデル」",
+      "android": "スマホの<settings>「設定」アプリ</settings> →「端末情報」→「モデル番号」",
+      "androidOs": "スマホの<settings>「設定」アプリ</settings> →「デバイス情報」→「Android バージョン」",
+      "windows": "Windowsキー + R を押す → <code>winver</code> と入力 → Enter",
+      "windowsCaveat": "Windowsノートパソコンのメーカーは、セキュリティアップデートの提供終了を発表しないので、ノートパソコンの<b>機種</b>を調べてもわかりません。代わりにWindowsの<b>バージョン</b>を確認してね。アップデートがまだ届くかどうかは、それで決まります。"
     },
     "otherInfo": {
-      "title": "Other devices",
-      "body": "We currently track Apple, Google, Samsung, Motorola, OnePlus, and Nokia devices, plus iOS, iPadOS, macOS, Android, and Windows. For anything else, <link>search online</link> for \"is [DEVICE MODEL] still receiving security updates.\""
+      "title": "その他のデバイス",
+      "body": "今のところ、Apple、Google、Samsung、Motorola、OnePlus、Nokiaのデバイスと、iOS、iPadOS、macOS、Android、Windowsに対応しています。それ以外のデバイスは、「[デバイスのモデル名] セキュリティアップデート まだ提供されている」などで<link>ネット検索</link>してみてください。"
     },
     "result": {
-      "checkAnother": "Check another device",
-      "source": "Source: <link>endoflife.date</link>",
+      "checkAnother": "別のデバイスをチェック",
+      "source": "出典：<link>endoflife.date</link>",
       "settingsPath": {
-        "ios": "<settings>Settings app</settings> on your home screen → General → Software Update → Update Now",
-        "ipados": "<settings>Settings app</settings> on your home screen → General → Software Update → Update Now",
-        "macos": "<apple>Apple menu</apple> in the top menu bar → System Settings → General → Software Update → Update Now",
-        "android": "<settings>Settings app</settings> on your phone → System → Software update → Check for updates",
-        "windows": "<windows>Start menu</windows> → <settings>Settings</settings> → Windows Update → Check for updates",
-        "watchos": "Watch app on your iPhone → My Watch → General → Software Update → Install",
-        "oneplus": "<settings>Settings app</settings> on your phone → System → System updates → Check for updates"
+        "ios": "ホーム画面の<settings>設定アプリ</settings> → 一般 → ソフトウェアアップデート → 今すぐアップデート",
+        "ipados": "ホーム画面の<settings>設定アプリ</settings> → 一般 → ソフトウェアアップデート → 今すぐアップデート",
+        "macos": "画面上部のメニューバーにある<apple>Appleメニュー</apple> → システム設定 → 一般 → ソフトウェアアップデート → 今すぐアップデート",
+        "android": "スマホの<settings>設定アプリ</settings> → システム → ソフトウェア アップデート → アップデートをチェック",
+        "windows": "<windows>スタート メニュー</windows> → <settings>設定</settings> → Windows Update → 更新プログラムのチェック",
+        "watchos": "iPhoneのWatchアプリ → マイウォッチ → 一般 → ソフトウェアアップデート → インストール",
+        "oneplus": "スマホの<settings>設定アプリ</settings> → システム → システムアップデート → アップデートを確認"
       },
       "osVersionPath": {
-        "ios": "<settings>Settings app</settings> on your home screen → General → About → Software Version",
-        "ipados": "<settings>Settings app</settings> on your home screen → General → About → Software Version",
-        "macos": "<apple>Apple menu</apple> in the top menu bar → About This Mac",
-        "android": "<settings>Settings app</settings> on your phone → About phone → Android version",
-        "windows": "Press Windows key + R → type <code>winver</code> → Enter",
-        "watchos": "Watch app on your iPhone → My Watch → General → About → Version"
+        "ios": "ホーム画面の<settings>設定アプリ</settings> → 一般 → 情報 → ソフトウェアバージョン",
+        "ipados": "ホーム画面の<settings>設定アプリ</settings> → 一般 → 情報 → ソフトウェアバージョン",
+        "macos": "画面上部のメニューバーにある<apple>Appleメニュー</apple> → このMacについて",
+        "android": "スマホの<settings>「設定」アプリ</settings> →「デバイス情報」→「Android バージョン」",
+        "windows": "Windowsキー + R を押す → <code>winver</code> と入力 → Enter",
+        "watchos": "iPhoneのWatchアプリ → マイウォッチ → 一般 → 情報 → バージョン"
       },
-      "deviceSupportedTitle": "{label} will still receive security updates.",
-      "deviceSupportedSubtitleUntil": "Updates expected through <b>{date}</b>.",
-      "deviceSupportedSubtitleRecent": "End-of-support date not yet announced.",
-      "deviceUnsupportedTitle": "{label} is no longer receiving security updates.",
-      "deviceUnsupportedTitleAgoMonths": "{label} stopped receiving security <nowrap>updates <mark>{months, plural, one {1 month} other {# months}} ago</mark></nowrap>.",
-      "deviceUnsupportedTitleAgoYears": "{label} stopped receiving security <nowrap>updates <mark>{years, plural, one {1 year} other {# years}} ago</mark></nowrap>.",
-      "deviceUnsupportedSubtitleEnded": "Security support ended <b>{date}</b>.",
-      "deviceUnsupportedSubtitleUnmaintained": "{manufacturer} has stopped issuing security updates.",
-      "deviceUnsupportedSubtitleAge": "Released {age}. No published end-of-support date and {manufacturer} doesn't appear to be issuing updates.",
-      "manufacturerFallback": "The manufacturer",
-      "manufacturerFallbackLower": "the manufacturer",
-      "ageYearsAgo": "{years, plural, =0 {this year} =1 {1 year ago} other {# years ago}}",
-      "deviceUncertainTitle": "We can't confirm whether {label} will still receive updates.",
-      "deviceUncertainSubtitle": "Released {age}. {manufacturer} hasn't published an end-of-support date, and devices this old may or may not still be receiving updates.",
-      "deviceUncertainCheck": "Check the manufacturer's support page: <link></link>.",
+      "deviceSupportedTitle": "{label}は今もセキュリティアップデートを受け取れます。",
+      "deviceSupportedSubtitleUntil": "<b>{date}</b>までアップデートが提供される見込みです。",
+      "deviceSupportedSubtitleRecent": "サポート終了日はまだ発表されていません。",
+      "deviceUnsupportedTitle": "{label}はもうセキュリティアップデートを受け取れません。",
+      "deviceUnsupportedTitleAgoMonths": "{label}のセキュリティ<nowrap>アップデートは<mark>{months, plural, one {1か月} other {#か月}}前</mark>に終了しました</nowrap>。",
+      "deviceUnsupportedTitleAgoYears": "{label}のセキュリティ<nowrap>アップデートは<mark>{years, plural, one {1年} other {#年}}前</mark>に終了しました</nowrap>。",
+      "deviceUnsupportedSubtitleEnded": "セキュリティサポートは<b>{date}</b>に終了しました。",
+      "deviceUnsupportedSubtitleUnmaintained": "{manufacturer}はセキュリティアップデートの提供を終了しています。",
+      "deviceUnsupportedSubtitleAge": "リリース時期：{age}。サポート終了日は公表されていませんが、{manufacturer}はアップデートを提供していないようです。",
+      "manufacturerFallback": "メーカー",
+      "manufacturerFallbackLower": "メーカー",
+      "ageYearsAgo": "{years, plural, =0 {今年} =1 {1年前} other {#年前}}",
+      "deviceUncertainTitle": "{label}が今後もアップデートを受け取れるかどうかは、確認できませんでした。",
+      "deviceUncertainSubtitle": "発売：{age}。{manufacturer}はサポート終了日を公表していません。これくらい古い端末だと、まだアップデートが届いているかどうかはわかりません。",
+      "deviceUncertainCheck": "メーカーのサポートページをチェックしてみてください：<link></link>。",
       "manufacturerSupport": {
         "apple": {
-          "label": "Apple Support",
+          "label": "Apple サポート",
           "url": "https://support.apple.com/"
         },
         "google": {
-          "label": "Google Pixel support",
+          "label": "Google Pixel サポート",
           "url": "https://support.google.com/pixelphone/answer/4457705"
         },
         "samsung": {
@@ -609,42 +609,42 @@
           "url": "https://security.samsungmobile.com/workScope.smsb"
         },
         "motorola": {
-          "label": "Motorola software updates",
+          "label": "Motorola ソフトウェアアップデート",
           "url": "https://en-us.support.motorola.com/app/software-security-update"
         },
         "oneplus": {
-          "label": "OnePlus community",
+          "label": "OnePlus コミュニティ",
           "url": "https://www.oneplus.com/support"
         },
         "nokia": {
-          "label": "Nokia security updates",
+          "label": "Nokia セキュリティアップデート",
           "url": "https://www.nokia.com/phones/en_int/security-updates"
         }
       },
-      "osConfirmedShort": "{label} will still receive security updates.",
-      "osConfirmedShortYears": "{label} will still receive security updates <nowrap>for <mark>{years, plural, one {1 more year} other {# more years}}</mark></nowrap>.",
-      "osConfirmedShortMonths": "{label} will still receive security updates <nowrap>for <mark>{months, plural, one {1 more month} other {# more months}}</mark></nowrap>.",
-      "osConfirmedSubtitleUntil": "Updates expected through <b>{date}</b>.",
+      "osConfirmedShort": "{label}は今もセキュリティアップデートを受け取れます。",
+      "osConfirmedShortYears": "{label}は、<nowrap><mark>あと{years, plural, one {1年} other {#年}}</mark>間</nowrap>セキュリティアップデートを受け取れます。",
+      "osConfirmedShortMonths": "{label}は、<nowrap><mark>あと{months, plural, one {1か月} other {#か月}}</mark>間</nowrap>セキュリティアップデートを受け取れます。",
+      "osConfirmedSubtitleUntil": "<b>{date}</b>までアップデートが提供される見込みです。",
       "osEolSoon": {
-        "titleMonths": "{label} will lose security <nowrap>updates <mark>in about {months, plural, =1 {1 month} other {# months}}</mark></nowrap>.",
-        "titleSoon": "{label} will lose security <nowrap>updates <mark>soon</mark></nowrap>.",
-        "subtitleDate": "Updates expected to end <b>{date}</b>."
+        "titleMonths": "{label}は、<nowrap><mark>あと約{months, plural, =1 {1か月} other {#か月}}</mark>で</nowrap>セキュリティアップデートが終了します。",
+        "titleSoon": "{label}は、<nowrap><mark>まもなく</mark></nowrap>セキュリティアップデートが終了します。",
+        "subtitleDate": "アップデートは<b>{date}</b>に終了する見込みです。"
       },
-      "osEoasNote": "The vendor has moved this version to security-only updates. Plan an upgrade when convenient.",
-      "osUnsupportedTitle": "{label} is no longer receiving security updates.",
-      "osUnsupportedSubtitleEnded": "Support ended <b>{date}</b>.",
+      "osEoasNote": "メーカーはこのバージョンへの提供をセキュリティアップデートのみに切り替えました。都合のいいときにアップグレードを考えておきましょう。",
+      "osUnsupportedTitle": "{label}はもうセキュリティアップデートを受け取れません。",
+      "osUnsupportedSubtitleEnded": "サポートは<b>{date}</b>に終了しました。",
       "osUpgradeAdvice": {
-        "ios": "Update to the latest iOS.",
-        "ipados": "Update to the latest iPadOS.",
-        "macos": "Update to a newer macOS.",
-        "android": "Update to a newer Android.",
-        "windows": "Upgrade to Windows 11."
+        "ios": "最新のiOSにアップデートしましょう。",
+        "ipados": "最新のiPadOSにアップデートしましょう。",
+        "macos": "より新しいmacOSにアップデートしましょう。",
+        "android": "新しいバージョンのAndroidにアップデートしよう。",
+        "windows": "Windows 11にアップグレードしよう。"
       },
-      "osCheckDeviceHint": "Or enter your device model in the box above to see if it is still able to receive security updates.",
-      "latestOsReminderTitle": "Make sure you're up to date",
-      "latestOsReminderWithVersion": "Make sure you're running {os} {version}.",
-      "latestOsReminderFamilyLatest": "Make sure you're running the latest {os} (currently {version}).",
-      "latestOsReminderGeneric": "Make sure your device is fully updated.",
+      "osCheckDeviceHint": "または、上の欄にデバイスの機種名を入力して、まだセキュリティアップデートを受け取れるか確認しよう。",
+      "latestOsReminderTitle": "最新の状態になっているか確認しよう",
+      "latestOsReminderWithVersion": "{os} {version}を使っているか確認しよう。",
+      "latestOsReminderFamilyLatest": "最新の{os}（現在は{version}）を使っているか確認しよう。",
+      "latestOsReminderGeneric": "デバイスが完全にアップデートされているか確認しよう。",
       "supportedOsLabel": {
         "ios": "iOS",
         "ipados": "iPadOS",
@@ -652,21 +652,21 @@
         "android": "Android",
         "windows": "Windows"
       },
-      "deviceMaxOsWarningTitle": "A note about your device's OS",
-      "deviceMaxOsWarning": "Your {label} only supports up to {os} {maxVersion}. {os} {maxVersion} will stop receiving security updates before {os} {latestVersion} does. Newer devices will keep receiving updates longer.",
-      "deviceMaxOsWarningWithDate": "Your {label} only supports up to {os} {maxVersion}, which is expected to stop receiving security updates around {eolDate}. Newer devices that can run {os} {latestVersion} will keep receiving updates longer.",
-      "deviceMaxOsEolWarning": "Your {label} tops out at {os} {maxVersion}, which has officially ended support. You may still receive occasional updates, but treat this device as low-trust for sensitive work and plan to replace it.",
-      "deviceUpgradePlan": "If long-term security matters for your work, plan a hardware upgrade.",
-      "threatModelHeader": "Why this matters",
-      "threatModel": "Every week without an update, more ways to break into your device become public knowledge. If the cops seize your phone at a <protestLink>protest</protestLink> or a <borderLink>border crossing</borderLink> (or if someone targets you with <spywareLink>spyware</spywareLink>) those known weaknesses are what they'll use to get inside and read everything on it.  ",
-      "threatModelSoft": "Until you confirm, treat this device as potentially out-of-date for sensitive work.",
-      "viewEssentialsCta": "View our digital security essentials →",
+      "deviceMaxOsWarningTitle": "デバイスのOSについての注意",
+      "deviceMaxOsWarning": "お使いの{label}は{os} {maxVersion}までしか対応していません。{os} {maxVersion}は{os} {latestVersion}より先にセキュリティアップデートが終了します。新しいデバイスなら、より長くアップデートを受け取れます。",
+      "deviceMaxOsWarningWithDate": "お使いの{label}は{os} {maxVersion}までしか対応しておらず、セキュリティアップデートは{eolDate}ごろに終了する見込みです。{os} {latestVersion}を使える新しいデバイスなら、より長くアップデートを受け取れます。",
+      "deviceMaxOsEolWarning": "あなたの{label}は{os} {maxVersion}までしか対応しておらず、このバージョンは公式サポートがすでに終了しています。たまにアップデートが届くこともありますが、機密性の高い作業には信頼度の低いデバイスとして扱い、買い替えを検討しよう。",
+      "deviceUpgradePlan": "長期的なセキュリティが活動にとって大事なら、デバイスの買い替えを計画しよう。",
+      "threatModelHeader": "なぜこれが大事なのか",
+      "threatModel": "アップデートしないまま週を重ねるごとに、デバイスに侵入する方法がどんどん世の中に知れ渡っていきます。<protestLink>抗議行動</protestLink>や<borderLink>国境の通過時</borderLink>にサツにスマホを押収されたら（または誰かに<spywareLink>スパイウェア</spywareLink>で狙われたら）、こうした既知の弱点を突かれて中に侵入され、中身を全部読まれてしまいます。  ",
+      "threatModelSoft": "確認できるまでは、機密性の高い作業ではこのデバイスが古いままかもしれないと考えて扱おう。",
+      "viewEssentialsCta": "デジタルセキュリティの基本を見る →",
       "essentialsNextSteps": {
-        "title": "More easy-to-follow steps to protect your data and devices"
+        "title": "データとデバイスを守るための、ほかにも簡単にできるステップ"
       },
-      "startOver": "Start over",
+      "startOver": "最初からやり直す",
       "deviceInfo": {
-        "manufacturerLine": "{manufacturer} · Released {date}",
+        "manufacturerLine": "{manufacturer} · {date}発売",
         "manufacturerLineNoDate": "{manufacturer}",
         "manufacturer": {
           "apple": "Apple",
@@ -679,347 +679,347 @@
         }
       },
       "eolSoon": {
-        "titleMonths": "{label} will lose security <nowrap>updates <mark>in about {months, plural, =1 {1 month} other {# months}}</mark></nowrap>.",
-        "titleSoon": "{label} will lose security <nowrap>updates <mark>soon</mark></nowrap>.",
-        "subtitleDate": "Updates expected to end <b>{date}</b>.",
-        "actionHeading": "What to do",
-        "action": "Start planning a replacement now. Once updates stop, your device begins accumulating publicly known vulnerabilities."
+        "titleMonths": "{label}は、<nowrap><mark>あと約{months, plural, =1 {1か月} other {#か月}}</mark>で</nowrap>セキュリティアップデートが終了します。",
+        "titleSoon": "{label}は、<nowrap><mark>まもなく</mark></nowrap>セキュリティアップデートが終了します。",
+        "subtitleDate": "アップデートは<b>{date}</b>に終了する見込みです。",
+        "actionHeading": "やること",
+        "action": "今のうちに買い替えの計画を始めましょう。アップデートが終わると、あなたのデバイスには公に知られた脆弱性がどんどんたまっていきます。"
       },
       "buyingGuidance": {
-        "heading": "When you replace it",
-        "yearsPattern": "Most {deviceLabel} get security updates for {min}-{max} years from their release date.",
+        "heading": "買い替えるときは",
+        "yearsPattern": "ほとんどの{deviceLabel}は、発売日から{min}〜{max}年間セキュリティアップデートを受けられます。",
         "deviceLabel": {
-          "phone": "phones",
-          "laptop": "laptops",
-          "tablet": "tablets",
-          "watch": "smartwatches"
+          "phone": "スマホ",
+          "laptop": "ノートパソコン",
+          "tablet": "タブレット",
+          "watch": "スマートウォッチ"
         },
-        "checkBeforeBuying": "If you're buying used, search for the model here first to see how long it'll keep getting updates."
+        "checkBeforeBuying": "中古で買うなら、まずここでそのモデルを検索して、あとどれくらいアップデートが続くか確認しましょう。"
       },
       "ctaReplace": {
-        "phone": "We suggest getting a new phone.",
-        "tablet": "We suggest getting a new tablet.",
-        "laptop": "We suggest getting a new laptop.",
-        "desktop": "We suggest getting a new Mac.",
-        "watch": "We suggest getting a new watch.",
-        "generic": "We suggest getting a new device."
+        "phone": "新しいスマホに買い替えるのがおすすめです。",
+        "tablet": "新しいタブレットに買い替えるのがおすすめです。",
+        "laptop": "新しいノートパソコンに買い替えるのがおすすめです。",
+        "desktop": "新しいMacに買い替えるのがおすすめです。",
+        "watch": "新しいウォッチに買い替えるのがおすすめです。",
+        "generic": "新しいデバイスに買い替えるのがおすすめです。"
       },
       "ctaPlan": {
-        "phone": "Start planning your next phone.",
-        "tablet": "Start planning your next tablet.",
-        "laptop": "Start planning your next laptop.",
-        "desktop": "Start planning your next Mac.",
-        "watch": "Start planning your next watch.",
-        "generic": "Start planning your next device."
+        "phone": "次のスマホの計画を始めましょう。",
+        "tablet": "次のタブレットの計画を始めましょう。",
+        "laptop": "次のノートパソコンの計画を始めましょう。",
+        "desktop": "次のMacの計画を始めましょう。",
+        "watch": "次のウォッチの計画を始めましょう。",
+        "generic": "次のデバイスの計画を始めましょう。"
       },
-      "deviceConfirmedShort": "{label} will still receive security updates.",
-      "deviceConfirmedShortYears": "{label} will still receive security updates <nowrap>for <mark>{years, plural, one {1 more year} other {# more years}}</mark></nowrap>.",
-      "deviceConfirmedShortMonths": "{label} will still receive security updates <nowrap>for <mark>{months, plural, one {1 more month} other {# more months}}</mark></nowrap>.",
-      "deviceConfirmedShortApproxYears": "{label} will still receive security updates <nowrap>for <mark>about {years, plural, one {1 more year} other {# more years}}</mark></nowrap>.",
-      "deviceConfirmedShortApproxMonths": "{label} will still receive security updates <nowrap>for <mark>about {months, plural, one {1 more month} other {# more months}}</mark></nowrap>.",
+      "deviceConfirmedShort": "{label}は今もセキュリティアップデートを受け取れます。",
+      "deviceConfirmedShortYears": "{label}は、<nowrap><mark>あと{years, plural, one {1年} other {#年}}</mark>間</nowrap>セキュリティアップデートを受け取れます。",
+      "deviceConfirmedShortMonths": "{label}は、<nowrap><mark>あと{months, plural, one {1か月} other {#か月}}</mark>間</nowrap>セキュリティアップデートを受け取れます。",
+      "deviceConfirmedShortApproxYears": "{label}は、<nowrap><mark>あと約{years, plural, one {1年} other {#年}}</mark>間</nowrap>セキュリティアップデートを受けられます。",
+      "deviceConfirmedShortApproxMonths": "{label}は、<nowrap><mark>あと約{months, plural, one {1か月} other {#か月}}</mark>間</nowrap>セキュリティアップデートを受けられます。",
       "appleEstimate": {
-        "intro": "Apple doesn't publish end-of-support dates, but {deviceLabel} usually receive {min} to {max} years of security updates from launch."
+        "intro": "Appleはサポート終了日を公表していませんが、{deviceLabel}は通常、発売から{min}〜{max}年間セキュリティアップデートを受けられます。"
       },
       "osCheckStep": {
-        "headingForOs": "Which version of {os} are you running?",
-        "headingForOsRelease": "Which version of {label} are you running?",
-        "headingGeneric": "Which version is your device running?",
-        "headingUpdatesAvailable": "Are there any updates available for your {device}?",
-        "headingUpdatesAvailableForRelease": "Are there any updates available for {label}?",
-        "subheadingHelp": "Open it on your device to check:",
-        "subheadingUpdatesHelp": "Check for updates on your device:",
-        "optionLatestShort": "I'm on {version}",
-        "optionLatestVersion": "I'm on {version} (latest)",
-        "optionOlderShort": "Older than {version}",
-        "optionOlderVersion": "Older than {version}",
-        "optionBetweenShort": "Between {major}.0.0 and {previousVersion}",
-        "optionThisVersion": "I'm on this version",
-        "optionNoUpdatesAvailable": "I don't see any updates available",
+        "headingForOs": "使っている{os}のバージョンは？",
+        "headingForOsRelease": "使っている{label}のバージョンは？",
+        "headingGeneric": "デバイスのバージョンはどれ？",
+        "headingUpdatesAvailable": "{device}に利用できるアップデートはある？",
+        "headingUpdatesAvailableForRelease": "{label}に利用できるアップデートはある？",
+        "subheadingHelp": "デバイスで開いて確認してみよう：",
+        "subheadingUpdatesHelp": "デバイスでアップデートを確認しよう：",
+        "optionLatestShort": "{version}を使っている",
+        "optionLatestVersion": "{version}（最新）を使っている",
+        "optionOlderShort": "{version}より古い",
+        "optionOlderVersion": "{version}より古い",
+        "optionBetweenShort": "{major}.0.0から{previousVersion}の間",
+        "optionThisVersion": "このバージョンを使っている",
+        "optionNoUpdatesAvailable": "利用できるアップデートは見当たらない",
         "optionNoUpdatesAvailableByOs": {
-          "windows": "It says \"You're up to date\"",
-          "android": "It says \"Your software is up to date\""
+          "windows": "「最新の状態です」と表示されている",
+          "android": "「ソフトウェアは最新の状態です」と表示されている"
         },
-        "optionUpdatesAvailable": "I see updates available",
-        "optionUnknown": "I'm not sure"
+        "optionUpdatesAvailable": "利用できるアップデートがある",
+        "optionUnknown": "よくわからない"
       },
       "deviceNoun": {
-        "phone": "phone",
-        "tablet": "tablet",
-        "laptop": "laptop",
-        "desktop": "computer",
-        "watch": "watch",
-        "generic": "device"
+        "phone": "スマホ",
+        "tablet": "タブレット",
+        "laptop": "ノートパソコン",
+        "desktop": "パソコン",
+        "watch": "スマートウォッチ",
+        "generic": "デバイス"
       },
       "osNeedsUpdate": {
-        "heading": "Your operating system needs an update",
-        "headingMaybe": "Your operating system might need an update",
-        "body": "Update to the latest version to get the most recent security updates.",
-        "newerMajorAvailable": "{os} {latestMajor} is now available. You are fully patched on {os} {currentMajor}, but that release has been superseded, and fixes for actively exploited flaws land on the newest version first.",
-        "howToHeading": "How to update:",
-        "didUpdateButton": "Done, I've updated",
-        "noUpdatesAvailableButton": "No updates available and I'm on a version older than {os} {major}",
-        "noUpdatesAvailableButtonCodename": "No updates available and I'm on a version older than {os} {major} ({codename})"
+        "heading": "オペレーティングシステムのアップデートが必要だよ",
+        "headingMaybe": "オペレーティングシステムのアップデートが必要かもしれない",
+        "body": "最新バージョンにアップデートして、最新のセキュリティ修正を取り込もう。",
+        "newerMajorAvailable": "{os} {latestMajor}がリリースされています。{os} {currentMajor}のパッチはすべて適用済みですが、このバージョンはすでに旧版です。実際に悪用されている脆弱性の修正は、まず最新バージョンに提供されます。",
+        "howToHeading": "アップデートの方法：",
+        "didUpdateButton": "完了、アップデートした",
+        "noUpdatesAvailableButton": "アップデートがなく、{os} {major}より古いバージョンを使っている",
+        "noUpdatesAvailableButtonCodename": "アップデートがなく、{os} {major}（{codename}）より古いバージョンを使っている"
       },
-      "deviceUnsupportedSubtitleStuckOnOs": "You can't get newer security updates on this device, so it has stopped receiving the patches that protect your data.",
+      "deviceUnsupportedSubtitleStuckOnOs": "このデバイスでは新しいセキュリティアップデートを受け取れません。つまり、あなたのデータを守るパッチがもう届かない状態です。",
       "finalSuccess": {
-        "heading": "You're up to date.",
-        "deviceCheck": "{label} will still receive security updates.",
-        "deviceCheckUntil": "{label} is receiving security updates through {date}.",
-        "osCheck": "{os} is on the latest version ({version}).",
-        "osCheckCodename": "{os} {version} ({codename}) is the latest version.",
-        "osCheckDeviceMax": "{os} {version} is the newest version this device can run.",
-        "osCheckDeviceMaxCodename": "{os} {version} ({codename}) is the newest version this device can run.",
-        "osCheckNoVersion": "Operating system is up to date.",
-        "osLatestUpdates": "You have the latest security updates installed for {label}.",
-        "osLatestUpdatesWithVersion": "You have the latest security updates installed ({os} {version}).",
-        "checkPhoneNext": "Check your phone next",
-        "checkLaptopNext": "Check your laptop next",
-        "checkAnotherDevice": "Check another device"
+        "heading": "最新の状態です。",
+        "deviceCheck": "{label}は今もセキュリティアップデートを受け取れます。",
+        "deviceCheckUntil": "{label}は{date}までセキュリティアップデートを受け取れます。",
+        "osCheck": "{os}は最新バージョン（{version}）です。",
+        "osCheckCodename": "{os} {version}（{codename}）が最新バージョンです。",
+        "osCheckDeviceMax": "{os} {version}は、このデバイスで使える最新バージョンです。",
+        "osCheckDeviceMaxCodename": "このデバイスで使える最新バージョンは {os} {version}（{codename}）です。",
+        "osCheckNoVersion": "オペレーティングシステムは最新の状態です。",
+        "osLatestUpdates": "{label}の最新のセキュリティアップデートがインストールされています。",
+        "osLatestUpdatesWithVersion": "最新のセキュリティアップデートがインストールされています（{os} {version}）。",
+        "checkPhoneNext": "次はスマホをチェックしよう",
+        "checkLaptopNext": "次はノートPCをチェックしよう",
+        "checkAnotherDevice": "別のデバイスをチェック"
       }
     },
-    "footer": "Powered by <eolLink>endoflife.date</eolLink> and <sofaLink>SOFA</sofaLink> · Updated {date}."
+    "footer": "データ提供：<eolLink>endoflife.date</eolLink>、<sofaLink>SOFA</sofaLink> · {date}更新"
   },
   "tools": {
-    "metaTitle": "Tools we built | Activist Checklist",
-    "metaDescription": "Tools we built to go with our checklists: map your risks before an action, lock down your social media, and check if your phone still gets security updates.",
-    "documentTitle": "Tools we built | Activist Checklist",
-    "title": "Tools we built",
-    "intro": "Four tools we built to go along with the checklists. Each one covers a step that is hard to finish from written instructions alone.",
+    "metaTitle": "私たちが作ったツール | Activist Checklist",
+    "metaDescription": "チェックリストと一緒に使えるツールを作りました。アクション前のリスクの洗い出し、SNSのロックダウン、スマホにまだセキュリティアップデートが届くかの確認ができます。",
+    "documentTitle": "私たちが作ったツール | Activist Checklist",
+    "title": "私たちが作ったツール",
+    "intro": "チェックリストと一緒に使える四つのツールを作りました。どれも、文章の説明だけでは進めにくいステップをサポートします。",
     "items": {
       "riskMapper": {
-        "eyebrow": "Plan an action",
+        "eyebrow": "アクションを計画する",
         "name": "Risk Mapper",
-        "short": "Map out the risks in your work and precautions you can take.",
-        "lede": "Work out what could go wrong before an action, and decide what your group will do about it.",
-        "bullet1": "Everyone adds the risks they are worried about. Then you drag each one onto a grid: how likely is it, and how bad would it be?",
-        "bullet2": "For the risks that land in the top right, you write down two things. How to make it less likely, and how to limit the harm if it happens anyway.",
-        "bullet3": "Share it with your group over an end-to-end encrypted link, or export a PDF for the people who were not at the meeting.",
-        "cta": "Open Risk Mapper",
-        "shotAlt": "Risk Mapper mid-session, with risks placed on a grid of how likely they are and how bad they would be."
+        "short": "活動に潜むリスクと、取れる対策を整理しよう。",
+        "lede": "アクションの前に何がまずくなりうるかを洗い出して、グループとしてどう対応するか決めよう。",
+        "bullet1": "みんなが気になっているリスクを書き出します。次に、それぞれをグリッド上にドラッグします。どのくらい起こりやすい？起きたらどのくらい深刻？",
+        "bullet2": "右上に来たリスクについては、二つのことを書き出します。起こりにくくする方法と、それでも起きてしまったときに被害を最小限にする方法です。",
+        "bullet3": "エンドツーエンド暗号化されたリンクでグループに共有したり、ミーティングに来られなかった人のためにPDFで書き出したりできます。",
+        "cta": "Risk Mapperを開く",
+        "shotAlt": "使用中のRisk Mapper。起こりやすさと深刻さのグリッド上にリスクが配置されている。"
       },
       "socialScrub": {
-        "eyebrow": "Lock down your profiles",
+        "eyebrow": "プロフィールをロックダウンする",
         "name": "Social Scrub",
-        "short": "Lock down your social media accounts, one at a time.",
-        "lede": "Walks you through the same eight privacy steps on every social media account you have.",
-        "bullet1": "Pick your platforms from a list of 130 sites, including the ones you forgot about. Add any we missed.",
-        "bullet2": "For each account: delete it or keep it, change your display name and username, remove your photo, take your location and employer out of your bio, and lock down your privacy settings.",
-        "bullet3": "It remembers where you left off, so you can do a few accounts at a time.",
-        "cta": "Open Social Scrub",
-        "secondaryCta": "Doxxing defense guide",
-        "shotAlt": "A sample profile before and after a scrub. The name, photo, username, bio, friends list and location are all changed or hidden."
+        "short": "SNSアカウントをひとつずつロックダウンしよう。",
+        "lede": "持っているすべてのSNSアカウントで、同じ八つのプライバシー対策をひとつずつ案内します。",
+        "bullet1": "130のサイトのリストから使っているプラットフォームを選びます。忘れていたアカウントも見つかるはず。リストにないものは追加できます。",
+        "bullet2": "アカウントごとに：削除するか残すかを決め、表示名とユーザー名を変え、写真を消し、プロフィール文から居場所や勤務先を外し、プライバシー設定をロックダウンします。",
+        "bullet3": "どこまで進んだかを覚えているので、数アカウントずつ少しずつ進められます。",
+        "cta": "Social Scrubを開く",
+        "secondaryCta": "ドクシング対策ガイド",
+        "shotAlt": "スクラブ前と後のプロフィールの例。名前、写真、ユーザー名、自己紹介、友達リスト、位置情報がすべて変更または非表示になっています。"
       },
       "updates": {
-        "eyebrow": "Check your device",
-        "name": "Security update checker",
-        "short": "Check whether your phone still gets security updates.",
-        "lede": "Find out whether your phone, tablet, or laptop is still getting security updates.",
-        "bullet1": "Type in your model. If you do not know it, the page shows you where to find it in your settings.",
-        "bullet2": "Once a device stops getting updates, every new security hole in it stays open. That makes it much easier for spyware, a hacker, or police forensics tools to get in.",
-        "bullet3": "Covers Apple, Google, Samsung, Motorola, OnePlus, and Nokia devices, plus iOS, Android, macOS, and Windows.",
-        "cta": "Check my device",
-        "shotAlt": "The update checker reporting that a searched phone stopped getting security updates, with advice on what to do about it."
+        "eyebrow": "デバイスをチェック",
+        "name": "セキュリティアップデート確認ツール",
+        "short": "スマホにまだセキュリティアップデートが届いているかチェックしよう。",
+        "lede": "スマホ、タブレット、ノートPCにまだセキュリティアップデートが届いているか確認しよう。",
+        "bullet1": "機種名を入力してね。わからなければ、設定のどこで確認できるかページで案内してるよ。",
+        "bullet2": "アップデートが届かなくなったデバイスは、新しく見つかったセキュリティホールがずっと放置されたままになる。そうなると、スパイウェアやハッカー、警察のフォレンジックツールにずっと侵入されやすくなるんだ。",
+        "bullet3": "Apple、Google、Samsung、Motorola、OnePlus、Nokiaのデバイスに加えて、iOS、Android、macOS、Windowsに対応。",
+        "cta": "自分のデバイスをチェック",
+        "shotAlt": "アップデートチェッカーが、検索したスマホのセキュリティアップデートが終了していることを表示し、対処法をアドバイスしている画面。"
       },
       "autoDelete": {
-        "eyebrow": "Delete old AI chats",
-        "name": "AI chat auto-delete",
-        "short": "Delete your old Claude chats on a schedule.",
-        "lede": "A Chrome extension that deletes your old Claude conversations on a schedule you set.",
-        "bullet1": "You pick how long to keep them. Anything older than 30 days is the default.",
-        "bullet2": "Star the chats you want to keep and it leaves them alone. It can ask you first, or run on its own.",
-        "bullet3": "It records how many chats it deleted, not which ones. Nothing gets sent to us.",
-        "cta": "Add to Chrome",
-        "shotAlt": "The extension set to delete chats older than 30 days every week, with the bar it shows on claude.ai when deletions are waiting."
+        "eyebrow": "古いAIチャットを削除",
+        "name": "AIチャット自動削除",
+        "short": "古いClaudeのチャットを定期的に削除。",
+        "lede": "古いClaudeの会話を、自分で決めたスケジュールで削除してくれるChrome拡張機能。",
+        "bullet1": "保存する期間は自分で選べるよ。デフォルトは30日より古いものを削除。",
+        "bullet2": "残したいチャットにスターを付ければ削除されないよ。削除前に確認させることも、自動で実行させることもできる。",
+        "bullet3": "記録するのは削除したチャットの件数だけで、どのチャットかは記録しない。私たちには何も送信されないよ。",
+        "cta": "Chromeに追加",
+        "shotAlt": "30日より古いチャットを毎週削除するよう設定した拡張機能と、削除待ちのときにclaude.aiに表示されるバー。"
       }
     },
     "closing": {
-      "title": "Not sure which one you need?",
-      "body": "Each of these comes out of one of our checklists. Start with the checklist and it will point you to the tool when you get to that step.",
-      "primaryCta": "Digital Security Essentials",
-      "secondaryCta": "Doxxing Defense Checklist",
-      "openSource": "All four are <repos>open source</repos>. If one is broken, or you need something we have not built yet, <contact>let us know</contact>."
+      "title": "どれが必要かわからない？",
+      "body": "どのツールも、私たちのチェックリストのどれかから生まれたもの。まずはチェックリストから始めれば、そのステップに来たときにツールを案内するよ。",
+      "primaryCta": "デジタルセキュリティの基本",
+      "secondaryCta": "ドクシング対策チェックリスト",
+      "openSource": "どれも<repos>オープンソース</repos>だよ。動かないものがあったり、まだ作っていないものが必要だったりしたら、<contact>教えてね</contact>。"
     }
   },
   "terms": {
-    "metaTitle": "Terms & definitions | Activist Checklist",
-    "metaDescription": "Plain-language definitions of the digital security and surveillance terms activists run into, from doxxing and data brokers to stingrays and geofence warrants.",
-    "title": "Terms & definitions",
-    "intro": "Plain-language definitions of the security and surveillance terms used in our checklists and guides. Elsewhere on the site, terms with a dotted underline open these definitions in a popup.",
-    "copyLink": "Copy link to this term"
+    "metaTitle": "用語集 | Activist Checklist",
+    "metaDescription": "ドキシングやデータブローカーから、Stingrayやジオフェンス令状まで、アクティビストが出会うデジタルセキュリティと監視に関する用語をわかりやすく解説します。",
+    "title": "用語集",
+    "intro": "チェックリストやガイドで使われているセキュリティと監視に関する用語を、わかりやすく解説しています。サイト内の点線の下線が付いた用語をクリックすると、ポップアップでこの解説が表示されます。",
+    "copyLink": "この用語へのリンクをコピー"
   },
   "definitions": {
-    "closeAriaLabel": "Close",
-    "backAriaLabel": "Back to {term}",
-    "learnMore": "Learn more: <link>{source}</link>",
+    "closeAriaLabel": "閉じる",
+    "backAriaLabel": "{term}に戻る",
+    "learnMore": "詳しくはこちら：<link>{source}</link>",
     "doxxing": {
-      "term": "Doxxing (or Doxing)",
-      "definition": "When someone publishes your private information, like your legal name, home address, phone number, or workplace, so others can harass or intimidate you online (and sometimes in person). It's an increasingly common tactic used against activists.",
-      "source": "Doxxing Defense Checklist",
+      "term": "晒し（ドキシング／Doxxing）",
+      "definition": "誰かがあなたの本名、自宅の住所、電話番号、職場などの個人情報をネットに晒して、他の人がネット上で（ときには直接）あなたに嫌がらせや脅しをできるようにすること。アクティビストを狙う手口として、どんどん増えています。",
+      "source": "ドクシング対策チェックリスト",
       "url": "/doxxing/"
     },
     "data-broker": {
-      "term": "Data Broker",
-      "definition": "A company that collects personal information like your address, phone number, and relatives from public records and other sources, then sells it. Cops, stalkers, and people trying to [dox you](term:doxxing) can buy this data.",
-      "source": "Doxxing Defense Checklist",
+      "term": "データブローカー",
+      "definition": "公的記録などから、あなたの住所、電話番号、親族といった個人情報を集めて売っている会社。警察やストーカー、あなたを[晒そう](term:doxxing)とする人たちも、このデータを買えてしまいます。",
+      "source": "ドクシング対策チェックリスト",
       "url": "/doxxing/"
     },
     "people-search-sites": {
-      "term": "People Search Sites",
-      "definition": "Websites that collect and sell personal information (such as your address, phone number, and relatives) to anyone willing to pay for it. Police, stalkers, and people trying to [dox you](term:doxxing) can buy this data.",
-      "source": "Doxxing Defense Checklist",
+      "term": "人物検索サイト",
+      "definition": "個人情報（住所、電話番号、親族など）を集めて、お金を払う人なら誰にでも売っているウェブサイト。警察やストーカー、あなたを[晒そう](term:doxxing)とする人たちも、このデータを買えてしまいます。",
+      "source": "ドクシング対策チェックリスト",
       "url": "/doxxing/"
     },
     "encryption": {
-      "term": "Encryption",
-      "definition": "Scrambling information so that only someone with the right key, like your password or passcode, can read it. To anyone else, encrypted data looks like random, unreadable text.",
+      "term": "暗号化",
+      "definition": "パスワードやパスコードのような正しい鍵を持っている人だけが読めるように、情報をごちゃまぜにすること。それ以外の人には、暗号化されたデータは意味のない、読めない文字の羅列にしか見えません。",
       "source": "EFF Surveillance Self-Defense",
       "url": "https://ssd.eff.org/module/what-should-i-know-about-encryption"
     },
     "end-to-end-encryption": {
-      "term": "End-to-End Encryption",
-      "definition": "A type of [encryption](term:encryption) where only you and the people you're talking to can read your messages. The company running the app can't read them, so it has nothing to hand over to the cops if they ask. It usually doesn't hide who you talk to or when, and it can't protect messages on a phone that's been unlocked or hacked.",
+      "term": "エンドツーエンド暗号化",
+      "definition": "[暗号化](term:encryption)の一種で、あなたとやりとりしている相手だけがメッセージを読めるしくみ。アプリを運営している会社も読めないので、警察に求められても渡せるものがありません。ただし、誰といつやりとりしたかは通常隠せませんし、ロックが解除された端末やハッキングされた端末にあるメッセージは守れません。",
       "source": "EFF Surveillance Self-Defense",
       "url": "https://ssd.eff.org/module/key-concepts-encryption"
     },
     "disappearing-messages": {
-      "term": "Disappearing Messages",
-      "definition": "A setting in Signal and WhatsApp that automatically deletes messages from everyone's phones after a set amount of time. If a phone is seized or hacked later, there's much less to find. It can't stop someone from taking a screenshot first.",
-      "source": "Signal Security Checklist",
+      "term": "消えるメッセージ",
+      "definition": "SignalやWhatsAppの設定で、決めた時間が過ぎるとメッセージを全員のスマホから自動で削除してくれる機能。あとでスマホが押収されたりハッキングされたりしても、見つかるものがずっと少なくなります。ただし、消える前にスクリーンショットを撮られるのは防げません。",
+      "source": "Signal セキュリティチェックリスト",
       "url": "/signal/#signal-disappearing"
     },
     "password-manager": {
-      "term": "Password Manager",
-      "definition": "An app that creates and remembers a strong, unique password for every account you have, so you only need to remember one master password. If one site gets hacked, the attacker won't be able to reuse a password across a bunch of your accounts because you were using unique passwords for each.",
-      "source": "Security Essentials",
+      "term": "パスワードマネージャー",
+      "definition": "アカウントごとに強力でバラバラのパスワードを作って覚えてくれるアプリ。あなたが覚えるのはマスターパスワードひとつだけでOK。どこかのサイトがハッキングされても、アカウントごとに違うパスワードを使っているので、攻撃者が同じパスワードで他のアカウントにまで入り込むことはできません。",
+      "source": "セキュリティの基本",
       "url": "/essentials/#password-manager"
     },
     "two-factor-authentication": {
-      "term": "Two-Factor Authentication (2FA)",
-      "definition": "An extra login step: after your password, you also verify your identity a second way. This could be a 6-digit code from an [authenticator app](term:authenticator-app), a text message, or sometimes a [passkey](term:passkey). It's like needing both a key and an alarm code to get into your house. Even if someone steals your password, they can't get into your account without the second step.",
-      "source": "Security Essentials",
+      "term": "二要素認証（2FA）",
+      "definition": "ログイン時の追加ステップ。パスワードを入れたあと、もうひとつ別の方法で本人確認をします。たとえば[認証アプリ](term:authenticator-app)の6桁のコード、ショートメッセージ、場合によっては[パスキー](term:passkey)などです。家に入るのに鍵と警報システムの暗証番号の両方が必要なようなもの。たとえパスワードを盗まれても、ふたつ目のステップがなければアカウントには入れません。",
+      "source": "セキュリティの基本",
       "url": "/essentials/#mfa"
     },
     "authenticator-app": {
-      "term": "Authenticator App",
-      "definition": "An app on your phone that generates the login codes for [two-factor authentication](term:two-factor-authentication). It's safer than getting codes by text message, which attackers can intercept. [Ente Auth](https://ente.io/auth/) and [1Password](https://1password.com/) both have one.",
-      "source": "Security Essentials",
+      "term": "認証アプリ",
+      "definition": "[二要素認証](term:two-factor-authentication)のログインコードを生成するスマホアプリのこと。攻撃者に傍受されるおそれがあるSMSでコードを受け取るより安全だよ。[Ente Auth](https://ente.io/auth/)や[1Password](https://1password.com/)にこの機能があるよ。",
+      "source": "セキュリティの基本",
       "url": "/essentials/#mfa"
     },
     "passkey": {
-      "term": "Passkey",
-      "definition": "A newer way to log in that replaces your password. Your phone, computer, or [password manager](term:password-manager) stores a secret key for the account and unlocks it with your face, fingerprint, or passcode. There's no password to type, so there's nothing for a [phishing](term:phishing) site to steal. [Security keys](term:security-key) work in a similar way, but are physical devices you plug in or tap.",
+      "term": "パスキー",
+      "definition": "パスワードの代わりになる新しいログイン方法。スマホやパソコン、[パスワードマネージャー](term:password-manager)がアカウント用の秘密鍵を保存して、顔認証や指紋、パスコードでロックを解除するしくみ。入力するパスワードがないから、[フィッシング](term:phishing)サイトに盗まれるものもないんだ。[セキュリティキー](term:security-key)も似たしくみだけど、差し込んだりタッチしたりして使う物理的なデバイスだよ。",
       "source": "EFF",
       "url": "https://www.eff.org/deeplinks/2023/10/what-passkey"
     },
     "security-key": {
-      "term": "Security Key",
-      "definition": "A small physical device (like a [YubiKey](https://www.yubico.com/)) that you plug in or tap to log in to an account. Someone who steals your password still can't get in without it, which makes it one of the strongest protections against [phishing](term:phishing). [Passkeys](term:passkey) work in a similar way, but live on your phone or in your password manager.",
+      "term": "セキュリティキー",
+      "definition": "アカウントにログインするときに差し込んだりタッチしたりする小さな物理デバイス（[YubiKey](https://www.yubico.com/)など）。誰かにパスワードを盗まれても、これがなければログインできないから、[フィッシング](term:phishing)に対する最強クラスの防御のひとつなんだ。[パスキー](term:passkey)も似たしくみだけど、スマホやパスワードマネージャーの中に保存されるよ。",
       "source": "EFF Surveillance Self-Defense",
       "url": "https://ssd.eff.org/module/how-enable-two-factor-authentication"
     },
     "phishing": {
-      "term": "Phishing",
-      "definition": "A scam that tricks you into giving up your password and two-factor authentication code. It often looks like a real message from someone you trust, like a fake email from Google or a fake message from \"Signal Support.\"",
+      "term": "フィッシング",
+      "definition": "あなたをだましてパスワードや二要素認証コードを聞き出す詐欺のこと。Googleを装った偽メールや「Signalサポート」を名乗る偽メッセージなど、信頼している相手からの本物のメッセージに見せかけてくることが多いよ。",
       "source": "EFF Surveillance Self-Defense",
       "url": "https://ssd.eff.org/module/how-avoid-phishing-attacks"
     },
     "sim-swapping": {
-      "term": "SIM Swapping",
-      "definition": "When an attacker convinces your phone carrier to move your phone number to a SIM card they control. They then receive your calls and texts, including login codes, and can use them to take over your accounts.",
+      "term": "SIMスワップ",
+      "definition": "攻撃者が携帯キャリアをだまして、あなたの電話番号を自分の管理するSIMカードに移してしまう手口。そうなると、ログインコードを含むあなたの電話やSMSが攻撃者に届くようになり、それを使ってアカウントを乗っ取られてしまうんだ。",
       "source": "Yubico",
       "url": "https://www.yubico.com/resources/glossary/sim-swap/"
     },
     "spyware": {
-      "term": "Spyware",
-      "definition": "Software that secretly infects your phone or computer to steal your data. It can often read your messages (even on Signal), track your location, and turn on your camera or microphone. The most advanced spyware is expensive, and is mostly used against high-profile activists, journalists, and lawyers.",
-      "source": "Protecting Against Spyware",
+      "term": "スパイウェア",
+      "definition": "スマホやパソコンにこっそり感染してデータを盗むソフトウェア。メッセージを読んだり（Signalでも）、位置情報を追跡したり、カメラやマイクをオンにしたりできることが多いんだ。最先端のスパイウェアは高額で、主に注目度の高いアクティビストやジャーナリスト、弁護士が標的にされているよ。",
+      "source": "スパイウェアから身を守る",
       "url": "/spyware/"
     },
     "malware": {
-      "term": "Malware",
-      "definition": "Any software designed to harm your device or steal from you. It's often installed by tricking you into clicking a link or opening a file. [Spyware](term:spyware) is one type of malware.",
+      "term": "マルウェア",
+      "definition": "デバイスに害を与えたり、あなたから何かを盗んだりするために作られたソフトウェア全般のこと。リンクをクリックさせたりファイルを開かせたりして、だましてインストールさせる手口が多いよ。[スパイウェア](term:spyware)もマルウェアの一種なんだ。",
       "source": "EFF Surveillance Self-Defense",
       "url": "https://ssd.eff.org/module/how-do-i-protect-myself-against-malware"
     },
     "forensic-extraction-tools": {
-      "term": "Phone-Cracking Tools (forensic extraction tools)",
-      "definition": "Devices that cops and border agents use to break into seized phones and copy the data off them, sometimes including deleted messages. Cellebrite and GrayKey are the best-known brands. A long random passcode and an up-to-date phone make them much less effective.",
+      "term": "スマホ解析ツール（フォレンジック抽出ツール）",
+      "definition": "サツや国境の取締官が、押収したスマホに侵入してデータをコピーするために使うデバイス。削除したメッセージまで取り出されることもあるよ。CellebriteやGrayKeyが有名なブランド。長いランダムなパスコードを設定して、スマホを最新の状態にしておけば、効果をかなり弱められるよ。",
       "source": "EFF Street Level Surveillance",
       "url": "https://sls.eff.org/technologies/forensic-extraction-tools"
     },
     "biometrics": {
-      "term": "Biometrics",
-      "definition": "Unlocking your phone with your face or fingerprint instead of a passcode. It's convenient, but cops can force you to look at your phone or press your finger to it. You have more legal protections when you use a passcode.",
-      "source": "Prepare for a Protest",
+      "term": "生体認証",
+      "definition": "パスコードの代わりに顔や指紋でスマホのロックを解除すること。便利だけど、警察はあなたに無理やりスマホを見させたり、指を押し付けさせたりできる。パスコードを使うほうが、法的に守られる範囲が広いよ。",
+      "source": "デモに参加する前の準備",
       "url": "/protest/#biometrics-disable"
     },
     "secondary-phone": {
-      "term": "Secondary Phone (\"burner phone\" lite)",
-      "definition": "A second phone with as little personal data on it as possible, used for protests and sensitive organizing. If cops seize it, there's much less for them to find. It isn't truly anonymous like a [burner phone](term:burner-phone), and you can reuse it across many actions.",
-      "source": "Secondary Phone Checklist",
+      "term": "サブスマホ（簡易版「バーナーフォン」）",
+      "definition": "個人データをできるだけ入れないようにした予備のスマホ。デモや慎重さが必要なオーガナイジングに使う。警察に押収されても、見つかるものがずっと少なくて済む。[バーナーフォン](term:burner-phone)のように完全に匿名ではないけど、いろんなアクションで繰り返し使えるよ。",
+      "source": "サブスマホのチェックリスト",
       "url": "/secondary/"
     },
     "burner-phone": {
-      "term": "Burner Phone",
-      "definition": "A phone that is completely disconnected from your identity, bought with cash and used only a handful of times before it's destroyed. Keeping a burner truly anonymous takes a great deal of work, so for most people we recommend a [secondary phone](term:secondary-phone) instead.",
-      "source": "Secondary Phone Checklist",
+      "term": "バーナーフォン",
+      "definition": "あなたの身元と完全に切り離されたスマホ。現金で買って、数回だけ使ったら処分する。バーナーフォンを本当に匿名のまま保つのはかなり大変なので、ほとんどの人には代わりに[サブスマホ](term:secondary-phone)をおすすめするよ。",
+      "source": "サブスマホのチェックリスト",
       "url": "/secondary/"
     },
     "pattern-of-life": {
-      "term": "Pattern of Life",
-      "definition": "The routine that shows up in your location and activity data: where you sleep, work, and hang out, and who you're often near. If you have a secondary phone that you're trying to keep separate from your main identity and you turn it on at the same locations and times as your primary devices, these pattern of life correlations can reveal your identity.",
-      "source": "Secondary Phone Checklist",
+      "term": "生活パターン",
+      "definition": "位置情報や行動データに表れる日々のルーティンのこと。どこで寝て、働いて、過ごしているか、そして誰の近くにいることが多いか。メインの身元と切り離しておきたいサブスマホを持っていても、普段使っているデバイスと同じ場所・同じ時間に電源を入れると、こうした生活パターンの相関から身元がバレることがあるよ。",
+      "source": "サブスマホのチェックリスト",
       "url": "/secondary/#true-burner-steps"
     },
     "advertising-id": {
-      "term": "Advertising ID",
-      "definition": "A unique ID your phone gives to apps so advertisers can track you across them. Location data tied to it gets sold through [data brokers](term:data-broker), and ICE and other agencies use tools built on that data to track phones. It's on by default on Android.",
-      "source": "Security Essentials",
+      "term": "広告ID",
+      "definition": "スマホがアプリに渡す固有のIDで、広告主はこれを使ってアプリをまたいであなたを追跡できる。このIDに紐づいた位置情報は[データブローカー](term:data-broker)を通じて売られていて、ICEなどの機関はそのデータをもとにしたツールでスマホを追跡している。Androidではデフォルトでオンになっているよ。",
+      "source": "セキュリティの基本",
       "url": "/essentials/#ad-id"
     },
     "geofence-warrant": {
-      "term": "Geofence Warrant",
-      "definition": "A [court order](term:warrant-subpoena) that makes a company like Google hand over data on every device that was in a certain area during a certain time. Cops have used them to identify people who were near a protest.",
+      "term": "ジオフェンス令状",
+      "definition": "Googleのような企業に、特定の時間に特定のエリアにいたすべてのデバイスのデータを提出させる[裁判所命令](term:warrant-subpoena)。警察はこれを使って、デモの近くにいた人たちを特定してきたんだ。",
       "source": "EFF",
       "url": "https://www.eff.org/deeplinks/2021/09/geofence-warrants-threaten-civil-liberties-and-free-speech-rights-kenosha-and"
     },
     "css": {
-      "term": "Cell Site Simulator (\"Stingray\")",
-      "definition": "A device that pretends to be a cell tower. It tricks nearby phones into connecting to it. Police can use one to log every phone at a protest, track a specific phone's location, and intercept calls and texts.",
+      "term": "基地局シミュレーター（「Stingray」）",
+      "definition": "携帯電話の基地局になりすます装置。近くのスマホをだまして自分に接続させます。警察はこれを使って、抗議行動の現場にあるすべてのスマホを記録したり、特定のスマホの位置を追跡したり、通話やSMSを傍受したりできます。",
       "source": "EFF Street Level Surveillance",
       "url": "https://sls.eff.org/technologies/cell-site-simulators-imsi-catchers"
     },
     "alpr": {
-      "term": "Automated License Plate Readers (ALPRs)",
-      "definition": "Cameras that automatically photograph every passing license plate and record the time and location. Flock is the most popular brand. They're common on highways, toll booths, bridges, and police cars. They give the cops a way to track your car without a warrant. Data is often shared with other law enforcement agencies.",
+      "term": "自動ナンバープレート読取装置（ALPR）",
+      "definition": "通り過ぎる車のナンバープレートをすべて自動で撮影して、時間と場所を記録するカメラ。一番普及しているブランドはFlock。高速道路、料金所、橋、パトカーなどによく設置されている。これがあれば、警察は令状なしであなたの車を追跡できてしまう。データは他の警察機関と共有されることも多いよ。",
       "source": "EFF Street Level Surveillance",
       "url": "https://sls.eff.org/technologies/automated-license-plate-readers-alprs"
     },
     "ip-address": {
-      "term": "IP Address",
-      "definition": "A number that identifies your internet connection, kind of like your home address on the internet. Every website and app you connect to can see it. An IP address can often point back to you personally. With a court order, your internet provider can match it to your name and location. A VPN gives you an IP address shared by thousands of people so it's harder to identify your activity.",
-      "source": "VPNs for Activists",
+      "term": "IPアドレス",
+      "definition": "あなたのインターネット接続を識別する番号で、インターネット上の住所みたいなもの。接続するすべてのウェブサイトやアプリから見える。IPアドレスから個人が特定されることも多い。裁判所命令があれば、プロバイダはそれをあなたの名前や住所と結びつけられる。VPNを使うと何千人もの人と共有されるIPアドレスになるので、あなたの行動を特定しにくくなるよ。",
+      "source": "アクティビストのためのVPN",
       "url": "/vpn/"
     },
     "vpn": {
-      "term": "VPN (Virtual Private Network)",
-      "definition": "An app on your phone or computer that redirects and encrypts all internet traffic through its servers. This keeps your internet browsing hidden from your internet provider, and keeps your [IP address](term:ip-address) hidden from websites you visit. It doesn't hide who you are from sites and apps you're logged into. And it doesn't offer total anonymity or internet security.",
-      "source": "VPNs for Activists",
+      "term": "VPN（仮想プライベートネットワーク）",
+      "definition": "スマホやパソコンのすべてのインターネット通信を暗号化して、自社のサーバー経由に切り替えるアプリ。これでプロバイダからは閲覧内容が見えなくなり、訪れたウェブサイトからはあなたの[IPアドレス](term:ip-address)が見えなくなる。ただし、ログインしているサイトやアプリに対しては、あなたが誰なのかは隠せない。それに、完全な匿名性やインターネットの安全を保証してくれるわけでもないよ。",
+      "source": "アクティビストのためのVPN",
       "url": "/vpn/"
     },
     "browser-fingerprinting": {
-      "term": "Browser Fingerprinting",
-      "definition": "A way of tracking you by the unique combination of your browser's settings, like your screen size, fonts, and language. It works even if you clear your cookies or use a [VPN](term:vpn). [Tor Browser](https://www.torproject.org/download/) is designed to make everyone's fingerprint look the same.",
+      "term": "ブラウザフィンガープリンティング",
+      "definition": "画面サイズ、フォント、言語など、ブラウザの設定の組み合わせが人それぞれ違うことを利用して、あなたを追跡する手法。Cookieを削除しても、[VPN](term:vpn)を使っても追跡されてしまいます。[Tor Browser](https://www.torproject.org/download/)は、全員のフィンガープリントが同じに見えるように作られています。",
       "source": "EFF Surveillance Self-Defense",
       "url": "https://ssd.eff.org/module/what-fingerprinting"
     },
     "warrant-subpoena": {
-      "term": "Warrant vs. Subpoena",
-      "definition": "Both are legal orders that can force a company to hand over your data. A warrant must be signed by a judge who agrees there's probable cause of a crime, and it can also let police search your home or phone. Many subpoenas need no judge at all, but they don't give the investigator access to as much information. ICE often uses \"administrative warrants\" signed by an ICE officer, not a judge. These don't give them the right to enter your home without your permission."
+      "term": "令状と召喚状の違い",
+      "definition": "どちらも、企業にあなたのデータを提出させることができる法的な命令です。令状は、犯罪の「相当な理由」があると認めた裁判官の署名が必要で、警察が家やスマホを捜索することも可能になります。召喚状の多くは裁判官の関与がまったく不要ですが、捜査する側が手に入れられる情報は令状より限られます。ICEは、裁判官ではなくICE職員が署名した「行政令状」をよく使います。これでは、あなたの許可なく家に入る権利は与えられません。"
     },
     "jail-support": {
-      "term": "Jail Support",
-      "definition": "A support role during an arrestable action or protest. These people support arrestees during and after an action. They track who's been arrested, stay in touch with lawyers, wait outside the jail, and bring people their phones, food, and a ride home once they're released."
+      "term": "ジェイルサポート（逮捕された仲間への支援）",
+      "definition": "逮捕の可能性があるアクションや抗議行動での支援役。アクション中もその後も、逮捕された人たちをサポートします。誰が逮捕されたかを把握し、弁護士と連絡を取り合い、留置場の外で待機して、釈放された人にスマホや食べ物を渡し、家まで送り届けます。"
     }
   }
 }
