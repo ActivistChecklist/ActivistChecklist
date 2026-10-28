@@ -92,6 +92,9 @@
       "title": "About this site",
       "label": "About"
     },
+    "contribute": {
+      "title": "Contribute"
+    },
     "changelog": {
       "title": "Recent site updates",
       "label": "Recent site updates"
@@ -103,6 +106,50 @@
     "privacy": {
       "title": "Privacy",
       "label": "Privacy"
+    },
+    "whatsapp": {
+      "title": "WhatsApp security",
+      "description": "Configure WhatsApp to protect your messages, groups, and contacts."
+    },
+    "spyware": {
+      "title": "Spyware protection",
+      "description": "Protect yourself from spyware and surveillance software."
+    },
+    "action": {
+      "title": "Prepare for an arrestable action",
+      "description": "Digital security for arrestable actions and civil disobedience."
+    },
+    "organizing": {
+      "title": "Organize an arrestable action",
+      "description": "For movement organizers and coordinators."
+    },
+    "research": {
+      "title": "Action research & scouting",
+      "description": "How to conduct research and browse the web anonymously."
+    },
+    "federal": {
+      "title": "Federal workers",
+      "description": "Digital security guidance for federal employees."
+    },
+    "party": {
+      "title": "Host a security party",
+      "label": "Host a security party"
+    },
+    "proton": {
+      "title": "How to use Proton safely",
+      "label": "How to use Proton safely"
+    },
+    "lockdown": {
+      "title": "Lockdown Mode trade-offs",
+      "label": "Lockdown Mode trade-offs"
+    },
+    "signalSecure": {
+      "title": "Is Signal secure?",
+      "label": "Is Signal secure?"
+    },
+    "signalAi": {
+      "title": "Is Apple Intelligence reading my Signal messages?",
+      "label": "Is Apple Intelligence reading my Signal messages?"
     }
   },
   "hero": {
@@ -131,7 +178,6 @@
     "sectionTitle": "Featured In"
   },
   "homepage": {
-    "checklistsHeading": "Digital Security & Physical Safety Checklists",
     "browseAll": "See all checklists",
     "trustHeading": "Simple guides to keep us more safe",
     "trustDescription": "We built this because digital security shouldn't be overwhelming. We take a harm reduction approach: start where you are and do what you can.",
@@ -152,6 +198,7 @@
     "translationUnreviewedTitle": "Automatically translated",
     "translationUnreviewed": "This page was automatically translated. Only {approvalPercent}% of this page is human-reviewed so far. Other text may have errors. <link>Help us review this translation</link>.",
     "nonUsThreatModel": "Outside the US? Some tools here, including encrypted messaging apps, are illegal in certain countries. Check your local laws before acting on this guidance.",
+    "staleGuide": "This guide is more than <b>{years, plural, one {# year} other {# years}}</b> old. Some of its advice may be out of date.",
     "dismiss": "Dismiss"
   },
   "languageDetection": {
@@ -173,7 +220,6 @@
   },
   "meta": {
     "lastUpdatedOn": "Last updated on",
-    "lastReviewedOn": "Last reviewed on",
     "takesAbout": "Takes about",
     "viewLatestGuideAt": "View the latest guide at"
   },
@@ -292,7 +338,8 @@
     "mediumDefault": "This section is for you if you are in a leadership role or you are doing activism that is more likely to be targeted by the state or your opposition.",
     "highDefault": "This section is for you are in a high-profile role or your activism involves high-risk work that could result in serious consequences or retaliation.",
     "forYouIf": "This section is for you if:",
-    "forYou": "This section is for:"
+    "forYou": "This section is for:",
+    "whoIsThisFor": "Who is this section for?"
   },
   "checklistItem": {
     "informationalItem": "Informational item",
@@ -303,6 +350,13 @@
     "expand": "Expand",
     "collapse": "Collapse",
     "importantBadge": "Important"
+  },
+  "sectionProgress": {
+    "count": "{done}/{total}",
+    "label": "{done} of {total} complete"
+  },
+  "tableOfContents": {
+    "title": "On this page"
   },
   "copyButton": {
     "copy": "Copy",
@@ -367,9 +421,40 @@
   },
   "checklists": {
     "title": "Checklists",
-    "featured": "Featured Checklists",
-    "more": "More Checklists",
+    "intro": "Every checklist and explainer, grouped by situation. New here? Start with <link>Security Essentials</link>.",
     "documentTitle": "Checklists | Activist Checklist"
+  },
+  "checklistSections": {
+    "basics": {
+      "title": "The basics",
+      "heading": "Everyone should do these",
+      "scope": "Baseline protection for your phone, accounts, and group chats."
+    },
+    "goingOut": {
+      "title": "Protests & travel",
+      "heading": "Protests & travel",
+      "scope": "Anywhere police or border agents could take your phone."
+    },
+    "targeted": {
+      "title": "Being targeted",
+      "heading": "Protect yourself from being targeted",
+      "scope": "Doxxing, harassment, investigations, or agents at your door."
+    },
+    "organizing": {
+      "title": "Organizing others",
+      "heading": "Organizing others",
+      "scope": "Running actions and getting your group secure."
+    },
+    "descriptions": {
+      "party": "A template agenda for getting your group through the checklists together."
+    },
+    "allChecklists": "All {count, plural, one {# checklist} other {# checklists}}",
+    "readMinutes": "{minutes} min read",
+    "explainer": "Explainer",
+    "howTo": "How-to guide",
+    "readGuide": "Read the guide",
+    "understandWhy": "Understand why",
+    "lastReviewed": "Last reviewed {date}"
   },
   "news": {
     "title": "Surveillance News",
@@ -747,6 +832,25 @@
       "primaryCta": "Digital Security Essentials",
       "secondaryCta": "Doxxing Defense Checklist",
       "openSource": "All four are <repos>open source</repos>. If one is broken, or you need something we have not built yet, <contact>let us know</contact>."
+    }
+  },
+  "definitions": {
+    "closeAriaLabel": "Close",
+    "people-search-sites": {
+      "term": "People Search Sites",
+      "definition": "Websites that collect and sell personal information (such as your address, phone number, and relatives) to anyone willing to pay for it. Police, stalkers, and people trying to dox you can buy this data."
+    },
+    "data-broker": {
+      "term": "Data Broker",
+      "definition": "A company that collects personal information like your address, phone number, and relatives from public records and other sources, then sells it. Police, stalkers, and people trying to dox you can buy this data."
+    },
+    "doxxing": {
+      "term": "Doxxing (or Doxing)",
+      "definition": "A type of harassment where personal information (such as full legal name, home address, email, phone number, and more) is made public with the intent to harass and/or intimidate the victim."
+    },
+    "vpn": {
+      "term": "VPN (Virtual Private Network)",
+      "definition": "An app on your phone or computer that redirects and encrypts all internet traffic through its servers. This keeps your internet browsing hidden from your internet provider, and keeps your IP address hidden from websites you visit."
     }
   }
 }

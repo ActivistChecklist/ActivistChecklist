@@ -1,5 +1,10 @@
-# One runner: optional delay, hide untranslatable strings, then AI pre-translate for files touched
-# in this commit. See scripts/crowdin-hide-strings.mjs and scripts/crowdin-pre-translate.mjs.
+# Hides untranslatable strings in Crowdin after each source push. See scripts/crowdin-hide-strings.mjs.
+#
+# AI pre-translation is left to Crowdin's own auto pre-translate (Project Settings > Pre-translate
+# > AI), which runs when new content is imported. Edited strings count as new because crowdin.yml
+# leaves update_option unset, so Crowdin clears their old translations. Calling the
+# pre-translations API from here per touched file re-translated every non-approved string in that
+# file, so unchanged strings churned on every push.
 #
 # Crowdin’s GitHub integration pulls source changes from the repo continuously (not only on the
 # hourly sync schedule). See https://support.crowdin.com/github-integration/
@@ -43,7 +48,6 @@ jobs:
         uses: actions/checkout@v7
         with:
           ref: ${{ github.event.inputs.head_sha || github.sha }}
-          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v7
@@ -71,33 +75,3 @@ jobs:
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
         run: node scripts/crowdin-hide-strings.mjs --apply
-
-      - name: Collect Crowdin source paths from this commit
-        id: paths
-        run: |
-          set -euo pipefail
-          git show --name-only --pretty="" HEAD > /tmp/commit_files.txt
-          grep -E '^(content/en/|messages/en\.json)' /tmp/commit_files.txt | sort -u > /tmp/crowdin_paths.txt || true
-          count=$(wc -l < /tmp/crowdin_paths.txt | tr -d ' ')
-          echo "count=$count" >> "$GITHUB_OUTPUT"
-          {
-            echo 'files<<EOF'
-            cat /tmp/crowdin_paths.txt
-            echo EOF
-          } >> "$GITHUB_OUTPUT"
-
-      - name: Scoped pre-translate (Crowdin API)
-        if: steps.paths.outputs.count != '0'
-        env:
-          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
-          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
-          CROWDIN_AI_PROMPT_ID: ${{ secrets.CROWDIN_AI_PROMPT_ID }}
-          CROWDIN_TRANSLATE_UNTRANSLATED_ONLY: ${{ vars.CROWDIN_TRANSLATE_UNTRANSLATED_ONLY || 'false' }}
-          CROWDIN_SKIP_APPROVED_TRANSLATIONS: ${{ vars.CROWDIN_SKIP_APPROVED_TRANSLATIONS || 'true' }}
-          CROWDIN_EXCLUDE_LABEL_IDS: ${{ vars.CROWDIN_EXCLUDE_LABEL_IDS }}
-          CHANGED_FILES: ${{ steps.paths.outputs.files }}
-        run: node scripts/crowdin-pre-translate.mjs
-
-      - name: Skip pre-translate (no matching source paths)
-        if: steps.paths.outputs.count == '0'
-        run: echo "No content/en/ or messages/en.json in this commit — skipping pre-translate."

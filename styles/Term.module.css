@@ -1,0 +1,133 @@
+@reference "./globals.css";
+
+.term {
+  @apply inline-flex cursor-pointer px-[0.05em] underline decoration-primary decoration-dotted underline-offset-4;
+}
+
+.termIcon {
+  @apply ms-[3px] mt-0.5 text-primary;
+}
+
+.def[popover] {
+  @apply m-auto w-[min(20rem,calc(100vw-2rem))] rounded-xl border border-border bg-popover p-4 shadow-lg;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .def[popover] {
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s cubic-bezier(0.2, 0.85, 0.25, 1),
+      overlay 0.3s allow-discrete,
+      display 0.3s allow-discrete;
+  }
+
+  .def[popover]:not(:popover-open) {
+    opacity: 0;
+  }
+
+  .def::backdrop {
+    transition:
+      background-color 0.3s ease,
+      overlay 0.3s allow-discrete,
+      display 0.3s allow-discrete;
+  }
+
+  .def[popover]:not(:popover-open)::backdrop {
+    background-color: transparent;
+  }
+
+  @starting-style {
+    .def[popover]:popover-open {
+      opacity: 0;
+    }
+
+    .def[popover]:popover-open::backdrop {
+      background: transparent;
+    }
+  }
+}
+
+.def::backdrop {
+  @apply bg-black/80;
+}
+
+.defHead {
+  @apply flex items-start justify-between;
+}
+
+.defTitle {
+  @apply text-lg font-bold text-popover-foreground;
+}
+
+.defClose {
+  @apply -me-[0.7rem] -mt-[0.7rem] size-11 cursor-pointer;
+}
+
+.closeIcon {
+  @apply m-auto text-muted-foreground;
+}
+
+/* about 10 lines before scrolling, less if the viewport is too short to fit that */
+.defBody {
+  @apply mt-2 block max-h-[min(15rem,calc(100dvh-8rem))] overflow-y-auto overscroll-contain font-normal text-popover-foreground;
+}
+
+@media (hover: hover) {
+  .term:hover {
+    @apply rounded bg-primary/10;
+  }
+
+  .defClose:hover {
+    @apply rounded-full bg-muted;
+  }
+
+  .defClose:hover .closeIcon {
+    @apply text-foreground;
+  }
+}
+
+@supports (position-area: block-end) {
+  @media (min-width: 640px) {
+    .def[popover] {
+      @apply absolute mt-[0.2rem];
+      position-area: block-end span-inline-end;
+      position-try-fallbacks: flip-block, flip-inline;
+    }
+
+    .def::backdrop {
+      background: transparent;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .def[popover]:not(:popover-open) {
+        transform: translateY(8px);
+      }
+
+      @starting-style {
+        .def[popover]:popover-open {
+          transform: translateY(8px);
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 639px) {
+  .def[popover] {
+    @apply fixed inset-x-0 bottom-0 top-auto w-full overflow-y-hidden rounded-b-none rounded-t-2xl border-b-0 pb-6;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .def[popover]:not(:popover-open) {
+      opacity: 1;
+      transform: translateY(100%);
+    }
+
+    @starting-style {
+      .def[popover]:popover-open {
+        opacity: 1;
+        transform: translateY(100%);
+      }
+    }
+  }
+}

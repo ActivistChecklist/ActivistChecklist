@@ -1,9 +1,12 @@
 import { IoArrowForward, IoLogoGithub, IoLogoMastodon } from 'react-icons/io5';
 import { SiBluesky } from 'react-icons/si';
-import { GUIDE_ICONS } from './icons';
+import { GUIDE_ICONS, PAGE_ICONS } from './icons';
 import navData from './navigation.json';
 
 // --- Resolve helpers ---
+//
+// navigation.json holds structure only (hrefs, kinds, menus, sections). Every
+// visible string comes from messages/en.json by key: see lib/navigation-i18n.js.
 
 const SOCIAL_ICON_MAP = {
   bluesky: SiBluesky,
@@ -17,10 +20,8 @@ function resolveItem(key) {
   const icon = GUIDE_ICONS[key];
   return {
     key,
-    label: raw.label,
-    title: raw.label,
     href: raw.href,
-    ...(raw.description && { description: raw.description }),
+    ...(raw.kind && { kind: raw.kind }),
     ...(icon && { icon }),
   };
 }
@@ -29,15 +30,13 @@ function resolveMenu(menuKey) {
   const menu = navData.menus[menuKey];
   const resolved = {
     key: menuKey,
-    label: menu.label,
     href: menu.href,
     type: 'dropdown',
     items: menu.items.map(resolveItem),
   };
   if (menu.columns) resolved.columns = menu.columns;
-  if (menu.footerLinkLabel) {
+  if (menu.footerLink) {
     resolved.footerLink = {
-      title: menu.footerLinkLabel,
       href: menu.href,
       type: 'full-width',
       icon: IoArrowForward,
@@ -75,6 +74,33 @@ export const NAV_ITEMS = Object.fromEntries(
 );
 
 export const SECURITY_CHECKLISTS = resolveMenu('checklists');
+
+/**
+ * The four groups every checklist, explainer, and printable sits in. `items`
+ * are the section's checklists; `featured` get full cards on the homepage and
+ * a bold row in the menu (a how-to can be featured too); `reads` are the
+ * explainers and printables listed under them. See lib/checklist-sections.js.
+ */
+// Pages featured in a section (the security party) get an icon here only, so
+// other menus that list the same page (Resources) keep their plain rows.
+function resolveSectionItem(key) {
+  const item = resolveItem(key);
+  return PAGE_ICONS[key] ? { ...item, icon: PAGE_ICONS[key] } : item;
+}
+
+export const CHECKLIST_SECTIONS = navData.checklistSections.map((section) => ({
+  key: section.key,
+  href: `${navData.menus.checklists.href}#${section.key}`,
+  items: section.items.map(resolveSectionItem),
+  featured: section.featured.map(resolveSectionItem),
+  reads: section.reads.map(resolveSectionItem),
+}));
+
+/** Raw section keys, for the pure helpers in lib/checklist-sections.js. */
+export const CHECKLIST_SECTION_KEYS = navData.checklistSections;
+
+/** Raw navigation items, for `findPairedExplainer`. */
+export const NAV_ITEM_DATA = navData.items;
 export const RESOURCES_SECTION = resolveMenu('resources');
 export const ABOUT_SECTION = resolveMenu('about');
 
@@ -95,7 +121,7 @@ export const navigationConfig = {
 export const footerConfig = {
   branding: SITE_BRANDING,
   sections: navData.footer.sections.map((section) => ({
-    title: section.title,
+    key: section.key,
     items: section.fromMenu ? resolveMenu(section.fromMenu).items : section.items.map(resolveItem),
   })),
   socialLinks: navData.footer.social.map(resolveSocialLink),

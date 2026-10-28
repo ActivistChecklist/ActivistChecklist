@@ -73,6 +73,8 @@ fi
 if [[ "$REMOTE_SKIP_API" == "1" ]]; then
   echo "===> Skipping API restart (REMOTE_SKIP_API=1)."
 else
+  # `pm2 restart` keeps the PM2 daemon's Node. After a .nvmrc bump,
+  # scripts/healthcheck-api.sh replaces the daemon on its next run.
   echo "===> Restarting API (run-with-repo-node.sh api:restart)..."
   ssh "$REMOTE_SSH_HOST" "bash -lc \"cd $(printf %q "$REMOTE_REPO_PATH") && ./scripts/run-with-repo-node.sh api:restart\""
 fi

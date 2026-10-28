@@ -1,0 +1,81 @@
+# Daily check for a newer Node release on the major we pin.
+#
+# Dependabot cannot do this: it has no updater for .nvmrc or railpack.json, and
+# its npm updater never touches engines. So the pin only moved when someone
+# remembered, which is how builds sat on a 22.x without the October 2026 TLS
+# hostname-verification fixes.
+#
+# scripts/node-bump.mjs reads nodejs.org/dist/index.json and, when a newer
+# release exists on the pinned major, rewrites .nvmrc, railpack.json and the
+# matching engines.node term together. It never crosses a major. Merging the PR
+# is the whole upgrade:
+#   - CI and every workflow read .nvmrc through setup-node
+#   - Railway reads railpack.json
+#   - the May First host installs the new .nvmrc version on first use
+#     (scripts/lib/nvm-pnpm.sh) and scripts/healthcheck-api.sh moves ac-api
+#     onto it within one 5-minute run
+#
+# The only output is ONE pull request on a fixed branch that later runs refresh
+# in place, so three patch releases in a week are one PR, not three.
+# pr-checks.yml tests and builds it on the new Node. Runs daily at 08:00 UTC,
+# plus manual `workflow_dispatch`.
+
+name: Node version bump
+
+on:
+  schedule:
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: node-bump
+  cancel-in-progress: false
+
+jobs:
+  bump:
+    if: github.repository == 'ActivistChecklist/ActivistChecklist'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # The bump script has no dependencies, so no pnpm install.
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+
+      - name: Check for a newer release
+        id: bump
+        run: node scripts/node-bump.mjs
+
+      # Fixed branch name, so a later run updates this PR instead of opening
+      # another. If main catches up (someone bumped by hand), the action closes
+      # the PR and deletes the branch.
+      - name: Open PR
+        if: steps.bump.outputs.version != ''
+        uses: peter-evans/create-pull-request@v8
+        with:
+          # A PAT, not GITHUB_TOKEN: PRs opened with GITHUB_TOKEN do not trigger
+          # other workflows, so pr-checks.yml would never run on them. Shared
+          # with security-autofix.yml; it needs contents and pull-requests write.
+          token: ${{ secrets.SECURITY_AUTOFIX_TOKEN }}
+          add-paths: |
+            .nvmrc
+            railpack.json
+            package.json
+          commit-message: ${{ steps.bump.outputs.title }}
+          title: ${{ steps.bump.outputs.title }}
+          # Built by scripts/node-bump.mjs: release-note links, what changed, and
+          # what happens on the server after merge.
+          body: ${{ steps.bump.outputs.body }}
+          branch: automation/node-bump
+          delete-branch: true
+          labels: |
+            dependencies
+            ${{ steps.bump.outputs.security == 'true' && 'security 🔐' || '' }}

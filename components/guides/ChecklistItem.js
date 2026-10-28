@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button';
 import { useAnalytics } from '@/hooks/use-analytics';
 import { useTranslations } from 'next-intl';
 import { migrateLegacyChecklistKeysForSlug } from '@/lib/checklist-storage-migrate';
+import { useChecklistProgressActions } from '@/contexts/ChecklistProgressContext';
 
 const TITLE_BADGE_VARIANTS = {
   important: 'destructive',
@@ -154,6 +155,7 @@ const ChecklistItem = ({
   const [hasMounted, setHasMounted] = useState(false);
   const [enableTransitions, setEnableTransitions] = useState(false);
   const { trackEvent } = useAnalytics();
+  const { setItemChecked } = useChecklistProgressActions();
   const t = useTranslations();
   const hasTrackedExpansion = useRef(false);
   const cardRef = useRef(null);
@@ -175,6 +177,11 @@ const ChecklistItem = ({
     setIsChecked(checked);
     localStorage.setItem(storageKey, checked);
   };
+
+  // Mirror checked state into section progress (TOC sidebar, floating header)
+  useEffect(() => {
+    setItemChecked(itemSlug, isChecked);
+  }, [itemSlug, isChecked, setItemChecked]);
 
   // Track when component has mounted (client-side only)
   // This prevents the browser from scrolling to the hash on initial page load

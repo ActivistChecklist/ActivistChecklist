@@ -1,4 +1,8 @@
 # .github/dependabot.yml
+#
+# Node itself is not covered here: Dependabot cannot update .nvmrc or
+# railpack.json, and its npm updater skips engines. .github/workflows/node-bump.yml
+# opens those PRs instead.
 version: 2
 updates:
   - package-ecosystem: 'npm'

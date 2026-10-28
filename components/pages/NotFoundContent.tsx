@@ -23,6 +23,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { NAV_ITEMS } from '@/config/navigation';
 import { useAnalytics } from '@/hooks/use-analytics';
+import { cleanedPathCandidates } from '@/lib/not-found-path';
 
 const VARIATIONS = [
   { icon: FaGhost, key: 'goneUnderground' },
@@ -37,6 +38,21 @@ const VARIATIONS = [
   { icon: FaWater, key: 'beWater' },
 ];
 
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+/** First same-origin path that answers 2xx, or null. Candidates come from cleanedPathCandidates. */
+async function firstExistingPath(candidates) {
+  for (const candidate of candidates) {
+    try {
+      const res = await fetch(candidate, { method: 'HEAD' });
+      if (res.ok) return candidate;
+    } catch {
+      return null;
+    }
+  }
+  return null;
+}
+
 export function NotFoundInner() {
   const t = useTranslations();
   const { trackEvent } = useAnalytics();
@@ -49,13 +65,33 @@ export function NotFoundInner() {
   }, []);
 
   useEffect(() => {
-    trackEvent({
+    const path = window.location.pathname + window.location.search;
+    const tracked = trackEvent({
       name: '404_not_found',
-      data: {
-        path: window.location.pathname + window.location.search,
-        referrer: document.referrer || '(none)',
-      },
-    });
+      data: { path, referrer: document.referrer || '(none)' },
+    }).catch(() => {});
+
+    // Pasted links often drag junk along (/ice/)before, /travel%E2%81%A9).
+    // If stripping it gives a page that exists, go there instead.
+    const candidates = cleanedPathCandidates(window.location.pathname);
+    if (!candidates.length) return;
+    let cancelled = false;
+
+    (async () => {
+      const target = await firstExistingPath(candidates);
+      if (!target || cancelled) return;
+      const redirected = trackEvent({ name: '404_redirected', data: { path, to: target } }).catch(
+        () => {},
+      );
+      // Give analytics a moment to send, but never hold the visitor up for long.
+      await Promise.race([Promise.all([tracked, redirected]), sleep(1000)]);
+      if (!cancelled)
+        window.location.replace(target + window.location.search + window.location.hash);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const variation = VARIATIONS[variationIndex];

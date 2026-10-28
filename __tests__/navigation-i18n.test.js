@@ -2,9 +2,24 @@ import { describe, it, expect } from 'vitest';
 import {
   createIntlTranslator,
   getTranslatedNavItemFields,
+  navItemMessageKey,
   translateMainNavigation,
 } from '../lib/navigation-i18n';
 import { navigationConfig } from '../config/navigation';
+import navData from '../config/navigation.json';
+import messages from '../messages/en.json';
+
+/** A next-intl-like `t` over the real English messages, with `t.has`. */
+function englishT() {
+  const lookup = (key) => key.split('.').reduce((node, part) => node?.[part], messages);
+  const t = (key) => {
+    const value = lookup(key);
+    if (typeof value !== 'string') throw new Error(`MISSING_MESSAGE: ${key}`);
+    return value;
+  };
+  t.has = (key) => typeof lookup(key) === 'string';
+  return t;
+}
 
 describe('navigation i18n translation mapping', () => {
   it('translates top-level nav labels when keys are available', () => {
@@ -43,15 +58,47 @@ describe('navigation i18n translation mapping', () => {
     expect(checklists.footerLink.title).toBe('Ver todas las listas');
   });
 
-  it('falls back to existing labels when translation is missing', () => {
-    const t = (_key, fallback) => fallback;
-    const translated = translateMainNavigation(navigationConfig.mainNav, t);
+  it('takes every top-level label from the English messages', () => {
+    const translated = translateMainNavigation(
+      navigationConfig.mainNav,
+      createIntlTranslator(englishT()),
+    );
 
-    const home = translated.find((item) => item.key === 'home');
-    const resources = translated.find((item) => item.key === 'resources');
+    expect(translated.find((item) => item.key === 'home').label).toBe('Home');
+    expect(translated.find((item) => item.key === 'resources').label).toBe('Resources');
+  });
+});
 
-    expect(home.label).toBe('Home');
-    expect(resources.label).toBe('Resources');
+// navigation.json carries no text, so a missing message would render an empty link.
+describe('every navigation entry has English strings', () => {
+  const t = englishT();
+  const mainNavKeys = new Set(navData.mainNav);
+
+  it.each(Object.entries(navData.items))('%s has a title', (key, item) => {
+    const titleKey = mainNavKeys.has(key) ? `nav.${key}` : `${navItemMessageKey(key)}.title`;
+    expect(t.has(titleKey), titleKey).toBe(true);
+    if (item.kind) {
+      expect(t.has(`${navItemMessageKey(key)}.label`), `${key} needs a label`).toBe(true);
+    }
+  });
+
+  it('checklists in sections have a description', () => {
+    const keys = navData.checklistSections.flatMap((section) => section.items);
+    for (const key of keys) {
+      const descriptionKey = `${navItemMessageKey(key)}.description`;
+      expect(t.has(descriptionKey), descriptionKey).toBe(true);
+    }
+  });
+
+  it('menus, footer sections, and social links have their strings', () => {
+    for (const key of Object.keys(navData.menus)) expect(t.has(`nav.${key}`), key).toBe(true);
+    for (const section of navData.footer.sections) {
+      expect(t.has(`footer.sections.${section.key}`), section.key).toBe(true);
+    }
+    for (const key of Object.keys(navData.social)) {
+      expect(t.has(`footer.social.${key}AriaLabel`), key).toBe(true);
+    }
+    expect(t.has('nav.browseAllChecklists')).toBe(true);
   });
 });
 
@@ -68,6 +115,12 @@ describe('getTranslatedNavItemFields', () => {
     );
     expect(out.title).toBe('Póster policía');
     expect(out.description).toBe('Desc');
+  });
+
+  it('uses the title as the label when the item has no separate label', () => {
+    const out = getTranslatedNavItemFields('protest', {}, createIntlTranslator(englishT()));
+    expect(out.label).toBe(out.title);
+    expect(out.title).toBe(messages.navItems.protest.title);
   });
 
   it('returns fallbacks unchanged when the nav key has no message map entry', () => {
@@ -127,5 +180,13 @@ describe('createIntlTranslator', () => {
   it('still works when t has no has() method', () => {
     const translateText = createIntlTranslator((key) => `translated:${key}`);
     expect(translateText('nav.home', 'Home')).toBe('translated:nav.home');
+  });
+
+  it('returns fallback without calling t when t.has says the key is missing', () => {
+    const t = () => {
+      throw new Error('should not be called');
+    };
+    t.has = () => false;
+    expect(createIntlTranslator(t)('navItems.vpn.description', undefined)).toBeUndefined();
   });
 });

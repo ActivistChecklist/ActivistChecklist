@@ -1,0 +1,132 @@
+---
+title: Checklist de sécurité WhatsApp
+seoTitle: Checklist de sécurité WhatsApp pour les militant·es (2026)
+seoDescription: WhatsApp n'est pas la messagerie la plus confidentielle, mais c'est déjà là que se passe une grande partie de l'organisation militante. Des réglages étape par étape pour mieux protéger tes messages, tes groupes et tes contacts.
+answerCapsule: |
+  Les messages WhatsApp sont chiffrés de bout en bout, mais Meta (l'entreprise propriétaire de WhatsApp) remet quand même plein de métadonnées aux flics. Si tu t'organises déjà sur WhatsApp (surtout dans les communautés immigrées), cette checklist verrouille les sauvegardes, les groupes, les fonctionnalités d'IA, les appareils connectés et les notifications. Pour le travail politique plus risqué, passe les conversations sensibles sur Signal.
+estimatedTime: 15 minutes
+excerpt: |
+  Configure WhatsApp pour protéger tes messages, tes groupes et tes contacts
+relatedGuides:
+  - signal
+  - essentials
+  - spyware
+  - doxxing
+firstPublished: 2026-05-22
+lastUpdated: 2026-10-22
+---
+
+Beaucoup de militantisme se passe déjà sur WhatsApp, surtout dans les communautés immigrées. Ce n'est pas l'option la plus sécurisée ni la plus respectueuse de la vie privée, mais c'est parfois un outil utile pour l'organisation communautaire, parce que les gens l'utilisent déjà ou parce qu'on a besoin de fonctionnalités propres à WhatsApp (comme les Communautés).
+
+Tes messages WhatsApp sont chiffrés de bout en bout, ce qui rend WhatsApp plus sûr que les messages texte classiques pour protéger ce que tu dis. Si les flics envoient un subpoena à ton opérateur pour récupérer tes messages texte classiques, ils peuvent voir le contenu de chaque message. S'ils obtiennent une injonction auprès de Meta pour tes messages WhatsApp, ils ne peuvent pas en voir le contenu (tant que tu n'as pas activé les sauvegardes des discussions).
+
+<Alert type="warning">**Aborde l'organisation en grand groupe sur WhatsApp comme tu le ferais sur les réseaux sociaux :** pars du principe que des personnes malveillantes (gouvernement, extrême droite) peuvent rejoindre et surveiller n'importe quel grand groupe non filtré, exactement comme elles pourraient rejoindre et surveiller de grands groupes sur les réseaux sociaux. Pars aussi du principe qu'elles peuvent voir qui fait partie du groupe, comme elles pourraient voir qui te suit sur les réseaux sociaux.</Alert>
+
+Même avec les protections de ce guide, il y a un certain nombre de choses que WhatsApp pourra toujours remettre aux flics :
+
+* Toute ta liste de contacts (si tu as déjà donné à l'appli l'accès à tes contacts, ils l'auront toujours, même si tu désactives cet accès plus tard)
+* Toutes les autres personnes sur WhatsApp qui ont TON numéro dans leurs contacts ([source](https://www.justsecurity.org/79549/we-now-know-what-information-the-fbi-can-obtain-from-encrypted-messaging-apps/))
+* Le nom de tous les groupes dont tu fais partie
+* Les membres de tous les groupes dont tu fais partie
+* Avec quels numéros de téléphone tu échanges et quand (ils peuvent même obtenir ces infos [en temps réel](https://www.rollingstone.com/politics/politics-features/whatsapp-imessage-facebook-apple-fbi-privacy-1261816/), ce que la plupart des autres entreprises tech ne fournissent pas aux flics)
+* Si tu actives les sauvegardes des discussions, Google ou Apple peuvent être contraints de les remettre, et elles contiennent tous tes messages. Consulte [Sauvegarder tes discussions WhatsApp en toute sécurité](/whatsapp/#whatsapp-secure-backup) pour savoir comment utiliser les sauvegardes sans risque.
+
+**Tu débutes sur WhatsApp ?** Consulte ce guide sur [comment utiliser WhatsApp](https://ssd.eff.org/module/how-to-use-whatsapp).
+
+<Section title="Protections WhatsApp de base" slug="baseline">
+  <RiskLevel level="everyone" mode="default" />
+
+  Si tu n'as que 10 minutes, commence ici.
+
+  <ChecklistItemGroup>
+    <ChecklistItem slug="whatsapp-disable-backups" />
+
+    <ChecklistItem slug="whatsapp-hide-last-seen" />
+
+    <ChecklistItem slug="whatsapp-strict-account" />
+
+    <ChecklistItem slug="whatsapp-disappearing" />
+  </ChecklistItemGroup>
+</Section>
+
+<Section title="Bonnes pratiques de sécurité WhatsApp au quotidien" slug="ongoing">
+  <RiskLevel level="everyone" mode="default" />
+
+  <ChecklistItemGroup>
+    <ChecklistItem slug="whatsapp-no-sensitive-topics" />
+
+    <ChecklistItem slug="whatsapp-meta-ai" />
+
+    <ChecklistItem slug="whatsapp-pairing-code-scams" />
+
+    <ChecklistItem slug="whatsapp-fake-support" />
+  </ChecklistItemGroup>
+</Section>
+
+<Section title="Protections WhatsApp renforcées" slug="enhanced">
+  <RiskLevel level="medium" mode="default" />
+
+  <ChecklistItemGroup>
+    <ChecklistItem slug="whatsapp-advanced-chat-privacy" />
+
+    <ChecklistItem slug="whatsapp-disable-save-camera-roll" />
+
+    <ChecklistItem slug="whatsapp-display-name" />
+
+    <ChecklistItem slug="whatsapp-username" />
+
+    <ChecklistItem slug="whatsapp-live-location" />
+
+    <ChecklistItem slug="whatsapp-secure-backup" />
+  </ChecklistItemGroup>
+</Section>
+
+<Section title="Pour les organisateur·ices et admins de groupes" slug="groups">
+  <RiskLevel level="medium" mode="default" />
+
+  Si tu gères un groupe d'organisation, les paramètres du groupe lui-même comptent autant que tes paramètres perso.
+
+  <ChecklistItemGroup>
+    <ChecklistItem slug="whatsapp-group-settings" />
+
+    <ChecklistItem slug="whatsapp-communities" />
+  </ChecklistItemGroup>
+</Section>
+
+<Section title="Protections pour les militant·es plus exposé·es" slug="higher">
+  <RiskLevel level="high" mode="default" />
+
+  Les points de cette section t'aideront à protéger tes données si les flics saisissent ton appareil.
+
+  <ChecklistItemGroup>
+    <ChecklistItem slug="lockdown" />
+
+    <ChecklistItem slug="updates" />
+
+    <ChecklistItem slug="biometrics-disable" />
+
+    <ChecklistItem slug="passcode" />
+
+    <ChecklistItem slug="whatsapp-limit-photo-access" />
+
+    <ChecklistItem slug="whatsapp-disable-notifications" />
+
+    <ChecklistItem slug="whatsapp-disable-ai" />
+
+    <ChecklistItem slug="whatsapp-linked-devices" />
+  </ChecklistItemGroup>
+</Section>
+
+<Section title="Autres ressources" slug="resources">
+  * [Guide d'utilisation de WhatsApp](https://ssd.eff.org/module/how-to-use-whatsapp) — Electronic Frontier Foundation
+  * [Upgrading WhatsApp security](https://freedom.press/digisec/blog/upgrading-whatsapp-security/) — Freedom of the Press Foundation
+</Section>
+
+<FAQ>
+  <FAQItem question="C'est quoi cette option « Vérifier la clé de chiffrement » que je vois dans chaque discussion ?" answer="Cette fonctionnalité te permet de vérifier les clés de chiffrement d'une discussion précise. Elle sert dans des situations à très haut risque, où quelqu'un aurait pu essayer de s'interposer dans ta connexion la première fois que tu es entré·e en contact avec une personne. Si tes discussions sont sensibles au point de devoir te protéger contre ce genre de menace avancée, tu devrais utiliser Signal plutôt que WhatsApp." />
+  <FAQItem question="Et les procès de 2026 qui affirment que WhatsApp a créé une « porte dérobée » pour contourner le chiffrement de bout en bout ?" answer="Deux procès distincts en 2026 ont affirmé que WhatsApp permettrait au personnel de Meta de lire les messages des utilisateur·rices, en contournant le chiffrement de bout en bout. Les spécialistes en cryptographie qui se sont penché·es sur cette affirmation pensent qu'elle est très probablement fausse ou exagérée. Si ces affirmations s'avéraient vraies, ce serait une atteinte à la vie privée sans précédent de la part d'une grande entreprise tech. Notre position : des affirmations extraordinaires exigent des preuves extraordinaires. On ne pense absolument pas que Meta soit une entreprise éthique, mais on préfère attendre de voir ce qui ressortira de ces procès. Comme toujours, si ça t'inquiète, utilise Signal." />
+  <FAQItem question="WhatsApp est-il plus sûr que les messages texte classiques (SMS) ?" answer="Pour le contenu des messages, oui. Les messages WhatsApp sont chiffrés de bout en bout, donc ton opérateur téléphonique ne peut pas transmettre leur contenu aux flics, même avec une réquisition judiciaire. Les messages texte classiques (SMS) ne sont pas chiffrés et l'opérateur voit chaque mot. WhatsApp reste moins bien que Signal pour les métadonnées : Meta enregistre à qui tu écris, quand, et dans quels groupes tu es, et transmet ces infos aux flics quand on les lui demande." />
+  <FAQItem question="Les flics peuvent-ils lire mes messages WhatsApp ?" answer="Ils ne peuvent pas lire le contenu des messages pendant leur trajet entre ton appareil et celui de l'autre personne. Par contre, ils peuvent accéder à tes messages si tu actives les sauvegardes des discussions sans activer le chiffrement de bout en bout. Ils peuvent obliger Meta à leur remettre plein de métadonnées (ta liste de contacts, les personnes à qui tu écris, les groupes dont tu fais partie, tes adresses IP). Ils peuvent aussi déverrouiller un téléphone confisqué protégé par un code faible et lire directement les messages." />
+  <FAQItem question="Est-ce que les noms d'utilisateur WhatsApp cachent mon numéro de téléphone aux flics ?" answer="Non. Les noms d'utilisateur cachent ton numéro de téléphone aux autres utilisateur·ices de WhatsApp qui ne l'ont pas déjà. Tu as toujours besoin d'un numéro de téléphone pour utiliser WhatsApp, et Meta peut toujours le transmettre aux flics, avec ta liste de contacts, les groupes dont tu fais partie et les personnes à qui tu écris." />
+  <FAQItem question="Quand est-ce que je devrais utiliser Signal plutôt que WhatsApp ?" answer="Utilise Signal pour tout ce qui touche à l'organisation politique sensible. Signal ne collecte presque aucune métadonnée et ne remet quasiment rien quand les flics lui font des demandes. Ça vaut le coup de bien configurer WhatsApp si ta communauté l'utilise déjà et risque de ne pas changer, mais essaie de déplacer les conversations plus risquées sur Signal." />
+</FAQ>

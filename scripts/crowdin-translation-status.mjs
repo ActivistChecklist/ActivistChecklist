@@ -8,8 +8,8 @@
  * Required: CROWDIN_PROJECT_ID
  * Auth: CROWDIN_TRANSLATION_STATUS_API_KEY (falls back to CROWDIN_PERSONAL_TOKEN for local runs)
  *
- * Optional: CROWDIN_TARGET_LANGUAGE_ID=es-ES — Crowdin language id for progress API (defaults: match
- *   CROWDIN_TARGET_LOCALE against GET /projects/{id} → targetLanguageIds, e.g. es → es-ES)
+ * Covers every non-default locale in lib/i18n-config.mjs that the Crowdin project translates into;
+ * locales Crowdin does not have yet are skipped with a note.
  *
  * pnpm crowdin:translation-status
  */
@@ -22,6 +22,7 @@ import fs from 'fs';
 import path from 'path';
 import { parseFrontmatter } from '../lib/frontmatter.cjs';
 import { glob as globAsync } from 'node:fs/promises';
+import { LOCALES, DEFAULT_LOCALE } from '../lib/i18n-config.mjs';
 
 const c = {
   reset: '\x1b[0m',
@@ -39,8 +40,8 @@ const c = {
 const TOKEN = process.env.CROWDIN_TRANSLATION_STATUS_API_KEY || process.env.CROWDIN_PERSONAL_TOKEN;
 const PROJECT_ID = process.env.CROWDIN_PROJECT_ID;
 const BASE_URL = 'https://api.crowdin.com/api/v2';
-/** App locale to match against project targetLanguageIds (e.g. es matches es-ES). */
-const TARGET_LOCALE = (process.env.CROWDIN_TARGET_LOCALE || 'es').trim();
+/** Every non-default app locale; each is matched against project targetLanguageIds (e.g. es → es-ES). */
+const TARGET_LOCALES = Object.keys(LOCALES).filter((l) => l !== DEFAULT_LOCALE);
 /** Show PageNotices warning when aggregated approval is strictly below this percent. */
 const UNREVIEWED_NOTICE_MAX_APPROVAL = 80;
 
@@ -189,40 +190,16 @@ function findCrowdinFile(repoPath, files) {
 /**
  * Crowdin language id for
  * GET /projects/{id}/languages/{languageId}/progress
- * Uses project targetLanguageIds (e.g. es-ES). Optional explicit override via env.
+ * Matches an app locale against the project's targetLanguageIds (e.g. es → es-ES, fr → fr).
+ * Returns null when the project does not translate into that locale yet.
  */
-async function resolveCrowdinLanguageId() {
-  const explicit =
-    process.env.CROWDIN_TARGET_LANGUAGE_ID?.trim() ||
-    process.env.CROWDIN_TARGET_LANGUAGE_IDS?.split(',')[0]?.trim();
-  if (explicit) {
-    return { crowdinLanguageId: explicit, label: explicit };
-  }
-
-  const proj = await crowdinGet(`/projects/${PROJECT_ID}`);
-  const targets = proj.data?.targetLanguageIds || [];
-  const lower = TARGET_LOCALE.toLowerCase();
-
-  const match = targets.find((tid) => {
+function resolveCrowdinLanguageId(locale, targetLanguageIds) {
+  const lower = locale.toLowerCase();
+  const match = targetLanguageIds.find((tid) => {
     const s = String(tid).toLowerCase();
-    return s === lower || s.startsWith(`${lower}-`) || s.split('-')[0] === lower;
+    return s === lower || s.split('-')[0] === lower;
   });
-
-  if (match) {
-    return { crowdinLanguageId: String(match), label: String(match) };
-  }
-
-  if (targets.length === 1) {
-    const only = String(targets[0]);
-    console.log(
-      `${c.yellow}Note:${c.reset} using only target language ${c.white}${only}${c.reset} (set CROWDIN_TARGET_LANGUAGE_ID to override).`,
-    );
-    return { crowdinLanguageId: only, label: only };
-  }
-
-  throw new Error(
-    `Could not pick Crowdin language from targetLanguageIds [${targets.join(', ')}] for locale "${TARGET_LOCALE}". Set CROWDIN_TARGET_LANGUAGE_ID (e.g. es-ES).`,
-  );
+  return match ? String(match) : null;
 }
 
 async function fetchAllFileProgress(languageIdForApi) {
@@ -303,14 +280,11 @@ async function run() {
     process.exit(1);
   }
 
-  const { crowdinLanguageId, label } = await resolveCrowdinLanguageId();
+  const project = await crowdinGet(`/projects/${PROJECT_ID}`);
+  const targetLanguageIds = project.data?.targetLanguageIds || [];
   console.log(
-    `${c.gray}Target language:${c.reset} ${c.white}${TARGET_LOCALE}${c.reset} ${c.gray}(Crowdin language id ${crowdinLanguageId}, ${label})${c.reset}`,
+    `${c.gray}Crowdin target languages:${c.reset} ${c.white}${targetLanguageIds.join(', ')}${c.reset}`,
   );
-
-  console.log(`${c.blue}Fetching${c.reset} file progress from Crowdin...`);
-  const progressByFileId = await fetchAllFileProgress(crowdinLanguageId);
-  console.log(`  ${c.gray}Progress rows for ${progressByFileId.size} files.${c.reset}`);
 
   console.log(`${c.blue}Fetching${c.reset} Crowdin source file list...`);
   const crowdinFiles = await listAllProjectFiles();
@@ -319,73 +293,31 @@ async function run() {
     await Array.fromAsync(globAsync('content/en/**/*.mdx', { cwd: process.cwd() }))
   ).sort();
 
-  /** In-memory only — used to aggregate each route; not written to JSON. */
-  /** @type {Record<string, object>} */
-  const progressByRepoPath = {};
+  /** Repo path → Crowdin file id; same for every language. */
+  const fileIdByRepoPath = new Map();
   const missingCrowdin = [];
-  const missingProgress = [];
-
   for (const rel of mdxPaths) {
     const repoPath = rel.replace(/\\/g, '/');
     const { file } = findCrowdinFile(repoPath, crowdinFiles);
-    if (!file?.id) {
-      missingCrowdin.push(repoPath);
-      progressByRepoPath[repoPath] = { error: 'not_in_crowdin' };
-      continue;
-    }
-    const prog = progressByFileId.get(file.id);
-    if (!prog) {
-      missingProgress.push(repoPath);
-      progressByRepoPath[repoPath] = { error: 'no_progress_row' };
-      continue;
-    }
-    const phrasePct = pctFromPhrases(prog.phrases);
-    progressByRepoPath[repoPath] = {
-      phrases: prog.phrases,
-      translationPercent: phrasePct?.translationPercent ?? prog.translationProgress,
-      approvalPercent: phrasePct?.approvalPercent ?? prog.approvalProgress,
-    };
+    if (file?.id) fileIdByRepoPath.set(repoPath, file.id);
+    else missingCrowdin.push(repoPath);
   }
 
-  /** @type {Record<string, Record<string, { translationPercent: number|null, approvalPercent: number|null, showUnreviewedNotice: boolean }>>} */
-  const routes = {};
-
+  /** Route slug → repo paths whose progress rolls up into it (guides include their checklist items). */
+  const routeSources = [];
   const guidePaths = await Array.fromAsync(
     globAsync('content/en/guides/*.mdx', { cwd: process.cwd() }),
   );
   for (const rel of guidePaths.sort()) {
-    const full = path.join(process.cwd(), rel);
-    const raw = fs.readFileSync(full, 'utf-8');
+    const raw = fs.readFileSync(path.join(process.cwd(), rel), 'utf-8');
     const { data, content } = parseFrontmatter(raw);
     const slug = data.slug || path.basename(rel, '.mdx');
-    const guideRepoPath = rel.replace(/\\/g, '/');
-
-    const itemSlugs = extractChecklistItemSlugs(content);
-    const componentPaths = [guideRepoPath];
-    for (const itemSlug of itemSlugs) {
-      componentPaths.push(`content/en/checklist-items/${itemSlug}.mdx`);
+    const repoPaths = [rel.replace(/\\/g, '/')];
+    for (const itemSlug of extractChecklistItemSlugs(content)) {
+      repoPaths.push(`content/en/checklist-items/${itemSlug}.mdx`);
     }
-
-    const progRows = [];
-    for (const p of componentPaths) {
-      const entry = progressByRepoPath[p];
-      if (!entry || entry.error) continue;
-      progRows.push(entry);
-    }
-
-    const agg = aggregateProgressRows(progRows.map((e) => ({ phrases: e.phrases })));
-    const showUnreviewedNotice =
-      agg.approvalPercent != null && agg.approvalPercent < UNREVIEWED_NOTICE_MAX_APPROVAL;
-
-    routes[slug] = {
-      [TARGET_LOCALE]: {
-        translationPercent: agg.translationPercent,
-        approvalPercent: agg.approvalPercent,
-        showUnreviewedNotice,
-      },
-    };
+    routeSources.push({ slug, repoPaths });
   }
-
   const pagePaths = await Array.fromAsync(
     globAsync('content/en/pages/*.mdx', { cwd: process.cwd() }),
   );
@@ -393,20 +325,58 @@ async function run() {
     const raw = fs.readFileSync(path.join(process.cwd(), rel), 'utf-8');
     const { data } = parseFrontmatter(raw);
     const slug = data.slug || path.basename(rel, '.mdx');
-    const repoPath = rel.replace(/\\/g, '/');
-    const entry = progressByRepoPath[repoPath];
-    const progRows = entry && !entry.error ? [entry] : [];
-    const agg = aggregateProgressRows(progRows.map((e) => ({ phrases: e.phrases })));
-    const showUnreviewedNotice =
-      agg.approvalPercent != null && agg.approvalPercent < UNREVIEWED_NOTICE_MAX_APPROVAL;
+    routeSources.push({ slug, repoPaths: [rel.replace(/\\/g, '/')] });
+  }
 
-    routes[slug] = {
-      [TARGET_LOCALE]: {
-        translationPercent: agg.translationPercent,
-        approvalPercent: agg.approvalPercent,
-        showUnreviewedNotice,
-      },
-    };
+  /** @type {Record<string, Record<string, { translationPercent: number|null, approvalPercent: number|null, showUnreviewedNotice: boolean }>>} */
+  const routes = {};
+  const missingProgress = new Set();
+
+  for (const locale of TARGET_LOCALES) {
+    const crowdinLanguageId = resolveCrowdinLanguageId(locale, targetLanguageIds);
+    if (!crowdinLanguageId) {
+      console.log(
+        `${c.yellow}Skipping${c.reset} ${c.white}${locale}${c.reset}: not a target language in the Crowdin project.`,
+      );
+      continue;
+    }
+
+    console.log(
+      `${c.blue}Fetching${c.reset} file progress for ${c.white}${locale}${c.reset} ${c.gray}(Crowdin ${crowdinLanguageId})${c.reset}...`,
+    );
+    const progressByFileId = await fetchAllFileProgress(crowdinLanguageId);
+    console.log(`  ${c.gray}Progress rows for ${progressByFileId.size} files.${c.reset}`);
+
+    for (const { slug, repoPaths } of routeSources) {
+      const progRows = [];
+      // A source with no Crowdin file or progress row means we can't vouch for the route,
+      // even if the files we do have are fully approved.
+      let incomplete = false;
+      for (const repoPath of repoPaths) {
+        const fileId = fileIdByRepoPath.get(repoPath);
+        if (fileId == null) {
+          incomplete = true;
+          continue;
+        }
+        const prog = progressByFileId.get(fileId);
+        if (!prog) {
+          missingProgress.add(repoPath);
+          incomplete = true;
+          continue;
+        }
+        progRows.push({ phrases: prog.phrases });
+      }
+
+      const agg = aggregateProgressRows(progRows);
+      routes[slug] ??= {};
+      routes[slug][locale] = {
+        translationPercent: incomplete ? null : agg.translationPercent,
+        approvalPercent: incomplete ? null : agg.approvalPercent,
+        showUnreviewedNotice:
+          incomplete ||
+          (agg.approvalPercent != null && agg.approvalPercent < UNREVIEWED_NOTICE_MAX_APPROVAL),
+      };
+    }
   }
 
   const payload = {
@@ -430,23 +400,25 @@ async function run() {
       `\n${c.yellow}Warning:${c.reset} ${missingCrowdin.length} MDX paths not matched in Crowdin (aggregation may be incomplete for some routes).`,
     );
   }
-  if (missingProgress.length) {
+  if (missingProgress.size) {
     console.log(
-      `${c.yellow}Warning:${c.reset} ${missingProgress.length} source files had no progress row in Crowdin.`,
+      `${c.yellow}Warning:${c.reset} ${missingProgress.size} source files had no progress row in Crowdin.`,
     );
   }
 
-  const flagged = Object.entries(routes).filter(
-    ([, byLang]) => byLang[TARGET_LOCALE]?.showUnreviewedNotice,
-  );
-  console.log(
-    `\n${c.gray}Routes with unreviewed notice (< ${UNREVIEWED_NOTICE_MAX_APPROVAL}% approved):${c.reset} ${c.bold}${flagged.length}${c.reset}`,
-  );
-  for (const [s] of flagged.slice(0, 25)) {
-    console.log(`  ${c.dim}${s}${c.reset}`);
-  }
-  if (flagged.length > 25) {
-    console.log(`  ${c.dim}... +${flagged.length - 25} more${c.reset}`);
+  for (const locale of TARGET_LOCALES) {
+    const flagged = Object.entries(routes).filter(
+      ([, byLang]) => byLang[locale]?.showUnreviewedNotice,
+    );
+    console.log(
+      `\n${c.gray}${locale} routes with unreviewed notice (< ${UNREVIEWED_NOTICE_MAX_APPROVAL}% approved):${c.reset} ${c.bold}${flagged.length}${c.reset}`,
+    );
+    for (const [s] of flagged.slice(0, 25)) {
+      console.log(`  ${c.dim}${s}${c.reset}`);
+    }
+    if (flagged.length > 25) {
+      console.log(`  ${c.dim}... +${flagged.length - 25} more${c.reset}`);
+    }
   }
   console.log();
 }

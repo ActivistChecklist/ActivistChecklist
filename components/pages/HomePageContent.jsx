@@ -7,19 +7,17 @@ import PageNotices from '@/components/layout/PageNotices';
 import { Card, CardHeader, CardFooter, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { cn, getBaseUrl } from '@/lib/utils';
-import { NAV_ITEMS, SECURITY_CHECKLISTS } from '@/config/navigation';
+import { NAV_ITEMS } from '@/config/navigation';
 import FEATURE_LOGOS from '@/config/featured.json';
 import FeatureLogo from '@/components/FeatureLogo';
 import ChangeLogRecentEntries from '@/components/ChangeLogRecentEntries';
-import GuideCard from '@/components/GuideCard';
+import HomeChecklistSections from '@/components/HomeChecklistSections';
 import HomeToolsSection from '@/components/HomeToolsSection';
 import Markdown from '@/components/Markdown';
 import { useTranslations } from 'next-intl';
 import { useLocale } from 'next-intl';
 import Link from '@/components/Link';
 import { LOCALES, DEFAULT_LOCALE } from '@/lib/i18n-config';
-
-const ACTION_GUIDES = SECURITY_CHECKLISTS.items.slice(0, 8);
 
 const TrustPoint = ({ icon: Icon, title, description }) => (
   <Card className="bg-transparent border-0 shadow-none transition-all duration-300">
@@ -48,6 +46,8 @@ export default function HomePageContent({
   children,
   changelogEntries = [],
   latestMajorBodyText = null,
+  readMinutes = {},
+  estimatedTimes = {},
   locale = 'en',
 }) {
   const t = useTranslations();
@@ -114,7 +114,7 @@ export default function HomePageContent({
                   </Button>
                 </div>
                 {latestMajorBodyText && (
-                  <div className="mt-8 text-brand-foreground [&_a]:text-inherit">
+                  <div className="mt-8 mx-auto max-w-3xl px-4 text-brand-foreground [&_a]:text-inherit">
                     <Sparkles className="h-4 w-4 inline me-1" />
                     <Markdown content={latestMajorBodyText} isProse={false} inlineOnly={true} />
                   </div>
@@ -128,23 +128,7 @@ export default function HomePageContent({
 
           <PageNotices />
 
-          {/* Quick Action Guides */}
-          <section className="mb-16">
-            <h2 className="text-2xl font-bold mb-6">{t('homepage.checklistsHeading')}</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {ACTION_GUIDES.map((guide, index) => (
-                <GuideCard key={index} guideItem={guide} size="large" />
-              ))}
-            </div>
-            <div className="mt-8 text-center">
-              <Button asChild variant="outline" size="lg">
-                <Link href={SECURITY_CHECKLISTS.href} className="group">
-                  {t('homepage.browseAll')}{' '}
-                  <ArrowRight className="ms-2 transition-transform duration-300 ease-out group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
-                </Link>
-              </Button>
-            </div>
-          </section>
+          <HomeChecklistSections readMinutes={readMinutes} estimatedTimes={estimatedTimes} />
 
           {/* Why Trust Us Section */}
           <section className="mb-16 bg-linear-to-br from-muted via-muted to-accent/5 p-5 sm:p-6 md:p-8 rounded-lg">
@@ -169,6 +153,16 @@ export default function HomePageContent({
                   description={t('trustPoints.updatedDescription')}
                 />
               </div>
+            </div>
+          </section>
+
+          {/* Featured In - orgs that have linked to us */}
+          <section className="mb-16">
+            <h2 className="text-2xl font-bold mb-6">{t('featured.sectionTitle')}</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {FEATURE_LOGOS.map((logo, index) => (
+                <FeatureLogo key={index} logo={logo} />
+              ))}
             </div>
           </section>
 
@@ -205,16 +199,6 @@ export default function HomePageContent({
 
           {/* Tools */}
           <HomeToolsSection />
-
-          {/* Featured In - orgs that have linked to us */}
-          <section className="mb-16">
-            <h2 className="text-2xl font-bold mb-6">{t('featured.sectionTitle')}</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {FEATURE_LOGOS.map((logo, index) => (
-                <FeatureLogo key={index} logo={logo} />
-              ))}
-            </div>
-          </section>
 
           {/* Recent Updates */}
           <section>

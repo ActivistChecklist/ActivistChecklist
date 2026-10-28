@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import GuideCard from '@/components/GuideCard';
+import SectionReadLinks from '@/components/SectionReadLinks';
 import { NAV_ITEMS } from '@/config/navigation';
 import { cn } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
@@ -14,8 +15,17 @@ function findGuideBySlug(slug) {
 
 /**
  * RelatedGuides — <RelatedGuides><RelatedGuide slug="essentials" />...</RelatedGuides>
+ *
+ * `reads` (explainers and printables, as resolved navigation items) are listed
+ * under the cards; the end of a guide passes its section's.
  */
-const RelatedGuides = ({ children, guideSlugs = [], isBlock = false }) => {
+const RelatedGuides = ({
+  children,
+  guideSlugs = [],
+  isBlock = false,
+  reads = [],
+  readMinutes = {},
+}) => {
   const t = useTranslations();
   const slugsFromChildren = React.Children.toArray(children)
     .filter((child) => child?.props?.slug)
@@ -55,6 +65,7 @@ const RelatedGuides = ({ children, guideSlugs = [], isBlock = false }) => {
           <GuideCard key={index} guideItem={guideItem} size="medium" />
         ))}
       </div>
+      <SectionReadLinks items={reads} readMinutes={readMinutes} className="mt-6" />
     </div>
   );
 };

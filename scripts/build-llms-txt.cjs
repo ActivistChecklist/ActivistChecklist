@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Build `public/llms.txt` (English, mirrored to root) and `out/es/llms.txt`
+ * Build `public/llms.txt` (English, mirrored to root) and `out/<locale>/llms.txt` per other locale
  * (Spanish) at postbuild time.
  *
  * llms.txt is an emerging convention (llmstxt.org) for sites to advertise a
@@ -15,6 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const { parseFrontmatter } = require('../lib/frontmatter.cjs');
+const { LOCALES } = require('../lib/i18n-config.mjs');
 
 const SITE_NAME = 'Activist Checklist';
 const SITE_TAGLINE =
@@ -150,7 +151,7 @@ function extractChecklistItemSlugs(mdxContent) {
  *
  * @param {object} args
  * @param {string} args.siteUrl - e.g. https://activistchecklist.org
- * @param {string} args.locale  - 'en' | 'es'
+ * @param {string} args.locale  - a key of LOCALES in lib/i18n-config.mjs
  * @param {Array<{slug:string, frontmatter:object, content:string}>} args.guides
  * @param {Array<{slug:string, frontmatter:object, content:string}>} args.pages
  * @param {Array<{slug:string, frontmatter:object, content:string}>} args.checklistItems
@@ -280,10 +281,12 @@ function main() {
   writeFile(path.join(outDir, 'llms.txt'), enBody);
   writeFile(path.join(outDir, 'en', 'llms.txt'), enBody);
 
-  // Spanish: /es/llms.txt
-  const es = readLocale('es');
-  const esBody = buildLlmsTxt({ siteUrl, locale: 'es', ...es });
-  writeFile(path.join(outDir, 'es', 'llms.txt'), esBody);
+  // Other locales: /es/llms.txt, /fr/llms.txt, ...
+  for (const locale of Object.keys(LOCALES)) {
+    if (locale === 'en') continue;
+    const loc = readLocale(locale);
+    writeFile(path.join(outDir, locale, 'llms.txt'), buildLlmsTxt({ siteUrl, locale, ...loc }));
+  }
 
   // eslint-disable-next-line no-console
   console.log(

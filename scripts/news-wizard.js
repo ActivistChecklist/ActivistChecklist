@@ -11,9 +11,8 @@
  *
  * First positional argument is the article URL (no flag). Other options use --key=value.
  *
- * After a successful push, if GitHub CLI (`gh`) is installed and authenticated, you can open a
- * pull request into main and enable auto-merge. The wizard prints a highlighted reminder of which
- * GitHub account will create the PR before you confirm.
+ * After a successful push, if GitHub CLI (`gh`) is installed and authenticated, the wizard opens a
+ * pull request into main and enables auto-merge.
  */
 
 const fs = require('fs');
@@ -23,40 +22,8 @@ const readline = require('readline');
 const { execFileSync } = require('child_process');
 const { stringifyFrontmatter } = require('../lib/frontmatter.cjs');
 const ogs = require('open-graph-scraper');
-const chalkModule = require('chalk');
-const chalk = chalkModule.default || chalkModule;
 
 const { loadNewsItems } = require('./fetch-news-images.js');
-
-function printGhIdentityBanner(auth) {
-  const login = auth.login || '(unknown login)';
-  const bannerLabel =
-    typeof chalk?.bgCyan?.black?.bold === 'function' ? chalk.bgCyan.black.bold('  gh  ') : '  gh  ';
-  const bannerText =
-    typeof chalk?.bold === 'function'
-      ? chalk.bold('  Pull requests will be created as:')
-      : '  Pull requests will be created as:';
-  const spacer = typeof chalk?.bold === 'function' ? chalk.bold('      ') : '      ';
-  const loginStyled = typeof chalk?.green?.bold === 'function' ? chalk.green.bold(login) : login;
-  const nameStyled =
-    auth.name && typeof chalk?.gray === 'function'
-      ? chalk.gray(`  (${auth.name})`)
-      : auth.name
-        ? `  (${auth.name})`
-        : '';
-  const profilePrefix = typeof chalk?.gray === 'function' ? chalk.gray('      ') : '      ';
-  const profileStyled =
-    typeof chalk?.cyan?.underline === 'function'
-      ? chalk.cyan.underline(auth.profileUrl || '')
-      : auth.profileUrl || '';
-  console.log('');
-  console.log(bannerLabel + bannerText);
-  console.log(spacer + loginStyled + nameStyled);
-  if (auth.profileUrl) {
-    console.log(profilePrefix + profileStyled);
-  }
-  console.log('');
-}
 
 function parseArgv(argv) {
   const positional = [];
@@ -452,7 +419,7 @@ function tryGh(args, options = {}) {
 }
 
 /**
- * Returns { ok, login?, name?, profileUrl? } — ok is true only when gh is installed and authenticated.
+ * Returns { ok, login? } — ok is true only when gh is installed and authenticated.
  */
 function getGhSessionInfo() {
   const st = tryGh(['auth', 'status']);
@@ -468,8 +435,6 @@ function getGhSessionInfo() {
     return {
       ok: true,
       login: u.login || null,
-      name: u.name || null,
-      profileUrl: u.html_url || null,
     };
   } catch {
     return { ok: false, reason: 'parse_failed' };
@@ -482,9 +447,9 @@ function parsePrUrlFromCreateOutput(text) {
 }
 
 /**
- * After a content branch is pushed, optionally create a PR and enable auto-merge.
+ * After a content branch is pushed, create a PR and enable auto-merge.
  */
-async function maybeCreatePullRequest(getRl, { branchName, articleTitle, articleUrl }) {
+async function maybeCreatePullRequest({ branchName, articleTitle, articleUrl }) {
   const ghInstalled = tryGh(['--version']);
   if (!ghInstalled.ok) {
     console.log(
@@ -501,17 +466,7 @@ async function maybeCreatePullRequest(getRl, { branchName, articleTitle, article
     return;
   }
 
-  printGhIdentityBanner(auth);
-  const line = await promptLine(
-    getRl(),
-    'Create a pull request into main and enable auto-merge when checks pass? [Y/n]: ',
-  );
-  const answer = String(line || '').trim();
-  const yes = answer === '' || /^y(es)?$/i.test(answer);
-  if (!yes) {
-    console.log('Skipped PR creation.');
-    return;
-  }
+  console.log(`\nCreating pull request as ${auth.login || '(unknown login)'}…`);
 
   const prTitle = `Adding news: ${articleTitle}`;
   const prBody = `Add news item.\n\nArticle: ${articleUrl}\n`;
@@ -786,7 +741,7 @@ async function main() {
 
     console.log(`✅ Done. Committed and pushed to ${pushedBranch}.`);
 
-    await maybeCreatePullRequest(getRl, {
+    await maybeCreatePullRequest({
       branchName: pushedBranch,
       articleTitle: title,
       articleUrl,

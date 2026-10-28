@@ -1,0 +1,118 @@
+---
+title: Protéger ta vie privée
+seoDescription: Ce qu'on collecte (presque rien) et pourquoi. Activist Checklist est conçu pour que, même en cas d'injonction judiciaire, il n'y ait rien d'utile à remettre.
+firstPublished: 2025-01-09
+lastUpdated: 2026-05-23
+showToc: true
+---
+
+<Alert type="info">
+  En bref : on ne collecte presque rien. On n'enregistre pas les adresses IP brutes, et on n'envoie aucune donnée te concernant nulle part. Les seules données stockées sont ta progression dans les checklists (enregistrée localement sur ton appareil) et des statistiques basiques de pages vues (sans aucune info personnelle). Tout le reste n'est volontairement PAS collecté, pour protéger ta vie privée.
+</Alert>
+
+Notre politique de confidentialité est différente : on t'explique tout ce qu'on fait pour ne pas collecter d'informations permettant de t'identifier.
+
+Notre approche de la vie privée, ce n'est pas une question de conformité légale : c'est faire tout notre possible pour protéger ta vie privée et ta sécurité.
+
+On sait que des sites comme celui-ci peuvent devenir la cible de la surveillance de l'État, alors on s'est donné beaucoup de mal pour collecter le moins d'informations identifiantes possible et te protéger quand tu navigues sur ce site.
+
+## Ce qu'on ne suit PAS
+
+On a volontairement conçu ce site pour qu'il protège ta vie privée au maximum :
+
+* ❌
+  dAucune adresse IP n'est jamais enregistrée
+* ❌ Aucun cookie n'est stocké sur ton appareil
+* ❌ Aucun service externe ni aucune bibliothèque tierce susceptible d'exposer tes informations personnelles (adresse IP) n'est chargé dans ton navigateur
+* ❌ Aucune de tes informations personnelles n'est jamais collectée sur nos serveurs ni envoyée à des serveurs tiers.
+
+## Ce qu'on suit
+
+**Infrastructure minimale** On a construit ce site avec les outils les plus simples possible pour garantir un maximum de confidentialité :
+
+* ✅ On a choisi [May First](https://mayfirst.coop) comme hébergeur justement parce qu'ils soutiennent des projets militants comme le nôtre.
+* ✅ On a désactivé toute journalisation pour ce site (pas de journaux de visites, pas de journaux d'adresses IP, pas de journaux d'erreurs). Si May First recevait un jour une injonction judiciaire (subpoena) exigeant la liste des personnes qui visitent notre site, il n'y aurait rien à remettre.
+* ✅ On utilise un framework web très léger qu'on a soigneusement audité pour s'assurer qu'il n'y a aucun pistage ni aucune journalisation cachés.
+* ✅ On suit quand même quelques informations de façon anonyme pour comprendre comment les gens utilisent ce site. (voir ci-dessous)
+
+Tu peux aussi lire la [politique de confidentialité de May First](https://mayfirst.coop/en/privacy-policy/).
+
+## Les seules données qu'on stocke sur ton appareil : les cases cochées des checklists
+
+Les seules données stockées sur ton appareil sont ta progression dans les checklists, qui reste dans le stockage local de ton navigateur et n'en sort jamais.
+
+**Si tu veux supprimer les informations qu'on stocke dans ton navigateur, voici comment faire :**
+
+* <MenuPath>*Brave/Chrome :* Clique sur l'icône de cadenas dans la barre d'adresse → **Cookies et données des sites** → **Gérer les données des sites** → Appuie sur l'icône de corbeille</MenuPath>
+* <MenuPath>*Firefox :* Clique sur l'icône de cadenas dans la barre d'adresse → **Effacer les cookies et les données de site** → **Effacer**</MenuPath>
+* <MenuPath>*Safari :* **Préférences** → **Confidentialité** → **Gérer les données de sites web** → Sélectionne le site → **Supprimer**</MenuPath>
+
+## Les seules données qu'on collecte sur notre serveur : les statistiques de pages vues
+
+On fait un suivi ultra minimal des pages vues pour comprendre quelles sections de notre site te sont les plus utiles.
+
+* On enregistre uniquement les informations suivantes, qu'on stocke sur notre serveur :
+  * **infos sur les pages vues :** quelle page a été consultée et quand
+  * **infos sur le navigateur :** type de navigateur, système d'exploitation, page de provenance et taille de l'écran de l'appareil
+  * **statistiques des cases à cocher :** éléments cochés et sections dépliées
+  * **téléchargements de fichiers :** quel fichier a été téléchargé
+  * **recherches :** le texte de ta recherche
+  * **localisation générale :** on envoie une version de ton adresse IP dont environ la moitié des infos a été supprimée avant d'arriver sur nos serveurs. Ça nous permet de situer approximativement ton pays, sans jamais stocker ta localisation précise. On rend aléatoire une partie de l'adresse IP, qui change toutes les 24 heures, pour que tu ne sois pas identifiable d'une visite à l'autre sur des jours différents.
+* On ne collecte ni ne stocke aucune information personnelle comme l'adresse IP complète ou la localisation exacte
+* On ne te suit pas d'un site à l'autre et on n'a aucun service sur notre site qui pourrait suivre ton utilisation du site
+* On ne vend ni ne donne aucune de ces informations à qui que ce soit
+
+Ce simple compteur de pages vues nous aide à améliorer le contenu du site tout en préservant ta vie privée.
+
+Ces données sont stockées sur une plateforme d'analyse respectueuse de la vie privée appelée [Umami](https://umami.is/). On l'héberge sur nos propres serveurs.
+
+Si tu veux, tu peux consulter le [code ici](https://github.com/ActivistChecklist/ActivistChecklist/blob/main/api/counter.js).
+
+## Formulaire de contact
+
+Si tu nous écris via notre [formulaire de contact](/contact/), le message est [chiffré](https://proton.me/blog/what-is-pgp-encryption) avant d'être envoyé à notre compte Proton Mail. Donner ton adresse e-mail est facultatif. Si tu nous donnes ton adresse e-mail pour qu'on te réponde et que ce n'est pas une adresse Proton Mail, ton fournisseur de messagerie pourra voir notre conversation une fois qu'on aura répondu.
+
+Si tu veux, tu peux consulter le [code ici](https://github.com/ActivistChecklist/ActivistChecklist/blob/main/api/contact.js).
+
+## Newsletter
+
+Si tu t'abonnes à notre newsletter, on enregistre ton adresse e-mail dans une base de données stockée sur notre serveur, pour un maximum de sécurité.
+
+On envoie les e-mails directement depuis notre serveur, au lieu d'utiliser des outils de newsletter, pour que ton adresse IP et ton activité soient protégées. Cet outil suit bien les clics sur les liens, mais il ne les associe à personne en particulier : ta vie privée est protégée (et on peut quand même voir ce qui marche dans nos e-mails). Il ne garde aucun journal et ne suit pas les adresses IP si tu vas sur la page de désabonnement. (Notre [système de newsletter](https://github.com/knadh/listmonk) est open source si tu veux le vérifier.)
+
+On protège l'accès à ce service avec [Cloudflare](https://www.cloudflare.com/privacypolicy/) pour qu'il soit beaucoup plus difficile de pirater notre logiciel de newsletter et de voler les adresses e-mail de tout le monde. Ça veut dire que Cloudflare a effectivement la possibilité de suivre les adresses IP. Mais leur politique de confidentialité indique qu'ils ne conservent ces informations que 4 heures dans la plupart des cas.
+
+Si tu veux une couche de confidentialité en plus, tu peux t'abonner avec un service d'anonymisation d'e-mail comme les alias « hide-my-email » de Proton Mail (10 alias avec l'offre gratuite, illimités avec l'offre payante), les [alias e-mail DuckDuckGo](https://github.com/Lanshuns/Qwacky) ou [addy.io](http://addy.io) (qui propose des alias illimités).
+
+## Comment on répond aux demandes légales
+
+Si on reçoit un jour une demande légale qui concerne nos utilisateur·ices ou notre infrastructure, on s'engage à :
+
+1. **Contester les demandes** qu'on estime trop larges, abusives ou inconstitutionnelles, dans la mesure du possible.
+2. **Prévenir directement les personnes concernées** quand on peut les identifier (par exemple, une injonction visant les informations d'une personne abonnée à la newsletter).
+3. **Rendre la demande publique** sur cette page, en termes généraux, quand on ne peut pas prévenir les personnes directement ou quand la demande concerne le site dans son ensemble.
+4. **Refuser de modifier le site ou son infrastructure** pour faciliter la surveillance des personnes qui le visitent, et refuser d'accorder à des tiers un accès secret à nos systèmes.
+
+## Canari de mandat (warrant canary) {#canary}
+
+On tient à jour un canari de mandat pour attester qu'on n'a pas été contraint·es de modifier le site ni réduit·es au silence pour nous empêcher de révéler l'existence d'une demande légale portant sur des données d'utilisateur·ices.
+
+[Voir notre canari de mandat →](/files/canary.txt)
+
+<ImageEmbed src="https://img.shields.io/endpoint?url=https://healthchecks.io/b/2/f424e66f-06c3-463a-8d54-e5b4749a55e9.shields&label=Warrant%20canary" alt="Canari de mandat (warrant canary)" raw />
+
+(Si ce badge passe du vert au rouge et affiche « down », c'est un signal pour poser des questions, comme expliqué ci-dessous.)
+
+On mettra à jour ce canari tous les 3 mois. Si plus de 4 mois passent sans mise à jour ET qu'on continue à mettre à jour régulièrement notre [dépôt de code](https://github.com/ActivistChecklist/ActivistChecklist), c'est un signal pour poser des questions, pas la confirmation qu'on a été compromis·es. Commence par nous [contacter](/contact/) pour voir si on a juste du retard sur une mise à jour.
+
+Pour vérifier, télécharge [`canary.txt`](/files/canary.txt), récupère notre clé publique depuis l'une des sources ci-dessous, puis lance `gpg --verify canary.txt`. Si elle est valide, tu devrais voir quelque chose comme `Good signature from "contact@activistchecklist.org \<contact@activistchecklist.org>"`
+
+Tu peux trouver notre clé publique PGP et son empreinte (`B7AA5B9EC0F0351D9FB7E387D037BB0E887206EC`) à plusieurs endroits : [ce site](https://activistchecklist.org/files/publickey.contact@activistchecklist.org.asc), [Proton](https://api.protonmail.ch/pks/lookup?op=get\&search=contact@activistchecklist.org), [openpgp.org](https://keys.openpgp.org/search?q=contact@activistchecklist.org), [archive.org](https://web.archive.org/web/20250928110818/https://activistchecklist.org/files/publickey.contact@activistchecklist.org.asc), [Bluesky](https://bsky.app/profile/activistchecklist.org/post/3mmkabjgpas2y) et [kolektiva.social](https://kolektiva.social/@activistchecklist/116625655033452078). Si les empreintes diffèrent selon les sources, ne fais pas confiance au canari.
+
+Si on prévoit d'arrêter le canari, on l'indiquera dans la dernière mise à jour du fichier canari.
+
+## Des questions ?
+
+Si tu as des questions sur nos pratiques en matière de vie privée ou si tu veux vérifier ce qu'on avance, tout le [code de notre site est open source et peut être audité](https://github.com/ActivistChecklist/ActivistChecklist). On t'encourage à l'examiner toi-même ou à le faire vérifier par une personne de confiance qui s'y connaît en technique.
+
+Si tu as d'autres questions, [contacte-nous](/contact/).

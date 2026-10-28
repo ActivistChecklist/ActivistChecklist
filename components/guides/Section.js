@@ -1,9 +1,17 @@
 'use client';
 import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
-import { ChevronsDown, ChevronsUp } from 'lucide-react';
+import { Check, ChevronsDown, ChevronsUp } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { RiskLevelBadge } from '@/components/RiskLevel';
 import { SectionContext } from '@/contexts/SectionContext';
+import { useChecklistItems } from '@/contexts/ChecklistItemsContext';
+import {
+  useChecklistProgressActions,
+  useSectionProgress,
+} from '@/contexts/ChecklistProgressContext';
+import SectionProgressBar from '@/components/guides/SectionProgressBar';
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 
@@ -84,6 +92,25 @@ const Section = ({ slug, title, description, children }) => {
 
   const checklistItemCount = checklistChildren.length;
 
+  const t = useTranslations();
+  const checklistItems = useChecklistItems();
+  const { registerSection } = useChecklistProgressActions();
+  const progress = useSectionProgress(slug);
+
+  /** Slugs that can be checked off; informational items don't count toward progress. */
+  const checkableSlugsKey = checklistChildren
+    .filter(
+      (child) =>
+        (child.props.type ?? checklistItems[child.props.slug]?.frontmatter?.type) !== 'info',
+    )
+    .map((child) => child.props.slug)
+    .join('\n');
+
+  useEffect(() => {
+    if (!slug || !checkableSlugsKey) return;
+    return registerSection(slug, checkableSlugsKey.split('\n'));
+  }, [slug, checkableSlugsKey, registerSection]);
+
   const sectionIntroChildren = useMemo(
     () =>
       childrenArray.filter((child) => !isChecklistItemChild(child) && !isChecklistItemGroup(child)),
@@ -91,14 +118,16 @@ const Section = ({ slug, title, description, children }) => {
   );
 
   /** First `<RiskLevel>` in this section (MDX), for the floating header. */
-  const sectionRiskLevel = useMemo(() => {
-    for (const child of childrenArray) {
-      if (React.isValidElement(child) && child.type?.isRiskLevel === true) {
-        return child.props.level ?? 'everyone';
-      }
-    }
-    return null;
-  }, [childrenArray]);
+  const sectionRiskLevelElement = useMemo(
+    () =>
+      childrenArray.find(
+        (child) => React.isValidElement(child) && child.type?.isRiskLevel === true,
+      ) ?? null,
+    [childrenArray],
+  );
+  const sectionRiskLevel = sectionRiskLevelElement
+    ? (sectionRiskLevelElement.props.level ?? 'everyone')
+    : null;
 
   const hasChecklist = checklistItemCount >= 1;
   const showExpandAll = checklistItemCount > 1;
@@ -208,7 +237,8 @@ const Section = ({ slug, title, description, children }) => {
             <div
               className={cn(
                 'print:hidden fixed z-40',
-                'border-b bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/90',
+                !progress && 'border-b',
+                'bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/90',
                 'transition-[opacity,transform] duration-200 ease-out',
               )}
               style={{
@@ -228,16 +258,53 @@ const Section = ({ slug, title, description, children }) => {
                   >
                     {title}
                   </p>
-                  {sectionRiskLevel != null && (
-                    <span aria-hidden className="inline-flex shrink-0">
-                      <RiskLevelBadge
-                        level={sectionRiskLevel}
-                        showLabel={mdUp}
-                        className="me-0! shrink-0"
-                      />
-                    </span>
+                  {progress?.complete && (
+                    <Check
+                      className="size-4 shrink-0 stroke-3 text-success motion-safe:animate-success-icon-pop"
+                      aria-hidden
+                    />
                   )}
+                  {sectionRiskLevel != null &&
+                    (mdUp ? (
+                      <span aria-hidden className="inline-flex shrink-0">
+                        <RiskLevelBadge level={sectionRiskLevel} className="me-0! shrink-0" />
+                      </span>
+                    ) : (
+                      // Bars only fit on a phone, so tapping them opens the section's
+                      // risk callout to explain who the section is for.
+                      <Sheet>
+                        <SheetTrigger
+                          className="-m-1.5 inline-flex shrink-0 rounded-full p-1.5 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
+                          aria-label={t('riskLevel.whoIsThisFor')}
+                        >
+                          <RiskLevelBadge
+                            level={sectionRiskLevel}
+                            showLabel={false}
+                            className="me-0! shrink-0"
+                          />
+                        </SheetTrigger>
+                        <SheetContent
+                          side="bottom"
+                          aria-describedby={undefined}
+                          className="rounded-t-xl px-4 pt-5 pb-[max(1.5rem,env(safe-area-inset-bottom))]"
+                        >
+                          <SheetTitle className="mb-4 pe-8 text-base font-bold">{title}</SheetTitle>
+                          {sectionRiskLevelElement}
+                        </SheetContent>
+                      </Sheet>
+                    ))}
                 </div>
+                {progress && (
+                  <span
+                    className={cn(
+                      'hidden sm:inline shrink-0 text-sm tabular-nums',
+                      progress.complete ? 'text-success font-semibold' : 'text-muted-foreground',
+                    )}
+                    aria-hidden
+                  >
+                    {t('sectionProgress.count', { done: progress.done, total: progress.total })}
+                  </span>
+                )}
                 {showExpandAll &&
                   (mdUp ? (
                     <Button
@@ -282,6 +349,12 @@ const Section = ({ slug, title, description, children }) => {
                     </Tooltip>
                   ))}
               </div>
+              {progress && (
+                <SectionProgressBar
+                  progress={progress}
+                  className="absolute inset-x-0 bottom-0 h-1 rounded-none"
+                />
+              )}
             </div>
           )}
 

@@ -1,7 +1,7 @@
 {
   "site": {
     "title": "Listas de seguridad digital para activistas",
-    "description": "Pasos en lenguaje sencillo para la seguridad digital. Porque protegerte a ti también ayuda a mantener más segura a toda tu comunidad."
+    "description": "Pasos en lenguaje sencillo para la seguridad digital. Porque protegerte a ti mismo ayuda a mantener más segura a toda tu comunidad."
   },
   "faq": {
     "defaultTitle": "Preguntas frecuentes"
@@ -18,6 +18,15 @@
     "essentials": {
       "title": "Fundamentos de seguridad",
       "description": "Prácticas básicas de seguridad que toda persona activista debería seguir."
+    },
+    "search": {
+      "dialogTitle": "Buscar en el sitio",
+      "dialogDescription": "Usa la barra de búsqueda para encontrar contenido relevante en el sitio.",
+      "placeholder": "Buscar...",
+      "searching": "Buscando...",
+      "popularHeading": "Búsquedas populares",
+      "topGuidesHeading": "Guías principales",
+      "pressEnter": "Pulsa {kbd} para buscar"
     },
     "signal": {
       "title": "Seguridad en Signal",
@@ -41,7 +50,7 @@
     },
     "emergency": {
       "title": "Planificación de emergencia",
-      "description": "Establece una red de apoyo de emergencia por si te detienen o amenazan."
+      "description": "Arma una red de apoyo de emergencia en caso de que te detengan o te amenacen."
     },
     "secondary": {
       "title": "Teléfono secundario",
@@ -72,7 +81,7 @@
       "label": "Verificador de actualizaciones de seguridad"
     },
     "tools": {
-      "title": "Herramientas que construimos",
+      "title": "Herramientas que hicimos",
       "label": "Herramientas que creamos"
     },
     "resources": {
@@ -94,6 +103,50 @@
     "privacy": {
       "title": "Privacidad",
       "label": "Privacidad"
+    },
+    "whatsapp": {
+      "title": "Seguridad en WhatsApp",
+      "description": "Configura WhatsApp para proteger tus mensajes, grupos y contactos."
+    },
+    "spyware": {
+      "title": "Protección contra spyware",
+      "description": "Protégete del spyware y los programas de vigilancia."
+    },
+    "action": {
+      "title": "Prepárate para una acción directa",
+      "description": "Seguridad digital para acciones directas y desobediencia civil."
+    },
+    "organizing": {
+      "title": "Checklist para organizadores de acciones",
+      "description": "Para organizadores y coordinadores de movimientos."
+    },
+    "research": {
+      "title": "Investigación y reconocimiento para acciones",
+      "description": "Cómo investigar y navegar por la web de forma anónima."
+    },
+    "federal": {
+      "title": "Trabajadores federales",
+      "description": "Guía de seguridad digital para empleados federales."
+    },
+    "party": {
+      "title": "Organiza una security party",
+      "label": "Organiza una security party"
+    },
+    "proton": {
+      "title": "Cómo usar Proton de forma segura",
+      "label": "Cómo usar Proton de forma segura"
+    },
+    "lockdown": {
+      "title": "Ventajas y desventajas del Modo de aislamiento",
+      "label": "Ventajas y desventajas del Modo de aislamiento"
+    },
+    "signalSecure": {
+      "title": "¿Es Signal seguro?",
+      "label": "¿Es Signal seguro?"
+    },
+    "signalAi": {
+      "title": "¿Apple Intelligence está leyendo mis mensajes de Signal?",
+      "label": "¿Apple Intelligence está leyendo mis mensajes de Signal?"
     }
   },
   "hero": {
@@ -104,32 +157,31 @@
   },
   "trustPoints": {
     "experienceTitle": "Hecho desde la experiencia",
-    "experienceDescription": "Nuestras guías se basan en trabajo real de organización y comentarios directos de activistas. Aunque cada situación es única, buscamos compartir ideas prácticas que ayuden a informar tus decisiones.",
-    "updatedTitle": "Actualizado con regularidad",
-    "updatedDescription": "Nuestro contenido es revisado con regularidad por organizadores que entienden las preocupaciones de seguridad. Trabajamos para mantener la información al día a medida que cambian los riesgos y las tecnologías."
+    "experienceDescription": "Nuestras guías se basan en trabajo real de organización y en comentarios directos de activistas. Aunque cada situación es única, buscamos compartir ideas prácticas que puedan ayudarte a tomar decisiones informadas.",
+    "updatedTitle": "Se actualiza con frecuencia",
+    "updatedDescription": "Nuestro contenido lo revisan con frecuencia organizadores que entienden las preocupaciones de seguridad. Trabajamos para mantener la información al día a medida que cambian los riesgos y las tecnologías."
   },
   "misconceptions": {
     "sectionTitle": "Ideas erróneas comunes",
-    "sectionDescription": "Cuando empezamos a hablar de seguridad digital, escuchamos estas preocupaciones seguido. Creemos que hay más que decir.",
+    "sectionDescription": "Cuando empezamos a hablar de seguridad digital, solemos escuchar estas inquietudes. Creemos que hay más que decir al respecto.",
     "nothingToHideTitle": "\"No tengo nada que ocultar\"",
-    "nothingToHideDescription": "Mientras más te involucres en cualquier movimiento social, más se pueden usar tus datos para mapear redes de activistas. El mejor momento para empezar a protegerte es <b>antes</b> de estar tan involucrado.",
+    "nothingToHideDescription": "Mientras más te involucres en el trabajo de un movimiento social, más pueden usar tus datos para mapear redes de activistas. El mejor momento para empezar a protegerte es <b>antes</b> de estar tan involucrado.",
     "alreadyKnowTitle": "\"Ya lo saben todo\"",
-    "alreadyKnowDescription": "Aunque la recolección de datos está por todas partes, puedes reducir bastante tu huella digital y proteger lo que hagas de aquí en adelante.",
+    "alreadyKnowDescription": "Aunque la recolección de datos está en todas partes, puedes reducir mucho tu huella digital y proteger lo que hagas de aquí en adelante.",
     "dontCareTitle": "\"A nadie le importa lo que hago\"",
-    "dontCareDescription": "La vigilancia masiva nos afecta a todes. Tus datos pueden usarse para perfilar comunidades, anticipar protestas o ir contra la gente que te importa. Proteger tus comunicaciones ayuda a protegernos a todes."
+    "dontCareDescription": "La vigilancia masiva nos afecta a todes. Tus datos pueden usarse para perfilar comunidades, anticipar protestas o ir contra personas que te importan. Proteger tus comunicaciones ayuda a protegernos a todes."
   },
   "featured": {
-    "sectionTitle": "Aparecemos en"
+    "sectionTitle": "Nos han mencionado en"
   },
   "homepage": {
-    "checklistsHeading": "Listas de seguridad digital y física",
     "browseAll": "Ver todas las listas",
-    "trustHeading": "Guías sencillas para estar más seguros",
-    "trustDescription": "Hicimos esto porque la seguridad digital no debería ser abrumadora. Vamos con un enfoque de reducción de daños: empieza donde estés y haz lo que puedas.",
+    "trustHeading": "Guías sencillas para estar más seguras",
+    "trustDescription": "Hicimos esto porque la seguridad digital no debería abrumarte. Partimos de un enfoque de reducción de daños: empieza donde estés y haz lo que puedas.",
     "latestNewsHeading": "Últimas noticias sobre vigilancia",
     "viewAllNews": "Ver todas las noticias",
     "toolsHeading": "Herramientas que creamos",
-    "toolsDescription": "Herramientas gratuitas que hicimos para acompañar las listas, para los pasos que son difíciles de completar por tu cuenta.",
+    "toolsDescription": "Herramientas gratis que hicimos para acompañar las listas, para los pasos que cuesta terminar por tu cuenta.",
     "viewAllTools": "Ver todas las herramientas",
     "recentUpdatesHeading": "Actualizaciones recientes del sitio",
     "viewAllUpdates": "Ver todas las actualizaciones",
@@ -141,8 +193,8 @@
   },
   "pageNotices": {
     "translationUnreviewedTitle": "Traducido automáticamente",
-    "translationUnreviewed": "Esta página se tradujo automáticamente. Solo el {approvalPercent}% de esta página ha sido revisado por personas hasta ahora. El resto del texto puede tener errores. <link>Ayúdanos a revisar esta traducción</link>.",
-    "nonUsThreatModel": "¿Fuera de EE. UU.? Algunas herramientas aquí, incluidas las apps de mensajería cifrada, son ilegales en ciertos países. Revisa las leyes locales antes de seguir esta guía.",
+    "translationUnreviewed": "Esta página se tradujo automáticamente. Hasta ahora solo el {approvalPercent}% de la página fue revisado por una persona. El resto del texto puede tener errores. <link>Ayúdanos a revisar esta traducción</link>.",
+    "nonUsThreatModel": "¿Fuera de EE. UU.? Algunas herramientas aquí, incluidas las apps de mensajería cifrada, son ilegales en ciertos países. Revisa las leyes locales antes de aplicar esta orientación.",
     "dismiss": "Cerrar"
   },
   "languageDetection": {
@@ -154,7 +206,7 @@
     "ariaLabel": "Cambiar idioma"
   },
   "themeSwitcher": {
-    "placeholderAriaLabel": "Cambiar tema",
+    "placeholderAriaLabel": "Alternar tema",
     "ariaLabel": "Tema: {theme}. Cambiar tema",
     "title": "Cambiar tema",
     "light": "Claro",
@@ -171,15 +223,15 @@
   "footer": {
     "branding": {
       "title": "Activist Checklist",
-      "description": "Pasos en lenguaje sencillo para la seguridad digital, porque protegerte a ti también ayuda a mantener más segura a toda tu comunidad."
+      "description": "Pasos en lenguaje sencillo para la seguridad digital, porque protegerte a ti mismo ayuda a mantener más segura a toda tu comunidad."
     },
     "stayUpdated": "Mantente al día",
     "sections": {
       "navigation": "Navegación",
       "topChecklists": "Listas principales"
     },
-    "disclaimer": "Aviso: compartimos información y recursos, no asesoría legal. Consulta con un abogado para tu situación específica.",
-    "licenseNotice": "Contenido disponible bajo <cc>Creative Commons BY-SA</cc>. Consulta nuestras <sources>fuentes</sources>. El código fuente está disponible en <github>GitHub</github>.",
+    "disclaimer": "Aviso: compartimos información y recursos, no asesoría legal. Consulta con un abogado o abogada para tu situación específica.",
+    "licenseNotice": "Contenido disponible bajo <cc>Creative Commons BY-SA</cc>. Consulta nuestras <sources>fuentes</sources>. Código fuente disponible en <github>GitHub</github>.",
     "social": {
       "blueskyAriaLabel": "Síguenos en Bluesky",
       "githubAriaLabel": "Ver nuestro repositorio en GitHub",
@@ -192,7 +244,7 @@
   },
   "newsletter": {
     "subscribe": "Suscribirme",
-    "successLong": "¡Ya estás suscrite! ¿Quieres avisarle a alguien por Signal sobre este proyecto?",
+    "successLong": "¡Ya estás suscrito! ¿Quieres avisarle a una amistad por Signal sobre este proyecto?",
     "successShort": "¡Gracias por suscribirte!",
     "placeholders": {
       "emailLong": "Escribe tu correo",
@@ -201,7 +253,7 @@
   },
   "inlineCta": {
     "heading": "Cuando cambian sus tácticas, también cambia nuestro consejo",
-    "description": "ICE, los cops y la vigilancia corporativa suman herramientas nuevas todo el tiempo. Actualizamos estas guías para no quedarnos atrás. Suscríbete para enterarte cuando cambie algo importante.",
+    "description": "ICE, la cops y la vigilancia corporativa no paran de sumar nuevas herramientas. Actualizamos estas guías para seguirles el ritmo. Suscríbete para enterarte cuando algo importante cambie.",
     "buttonText": "Suscribirse",
     "emailAriaLabel": "Correo electrónico",
     "privacyLink": "Política de privacidad"
@@ -214,8 +266,8 @@
   },
   "search": {
     "placeholder": "Buscar...",
-    "dialogTitle": "Buscar en el contenido del sitio",
-    "dialogDescription": "Buscar en todas las páginas y guías de este sitio",
+    "dialogTitle": "Buscar contenido en el sitio",
+    "dialogDescription": "Busca en todas las páginas y guías del sitio",
     "popularHeading": "Búsquedas populares",
     "topGuidesHeading": "Guías principales",
     "pressEnter": "Presiona <kbd>↵</kbd> para buscar",
@@ -225,8 +277,8 @@
     "suggestion0": "seguridad del teléfono protesta",
     "suggestion1": "mensajería segura signal",
     "suggestion2": "rastreo de ubicación",
-    "suggestion3": "seguridad de passcode",
-    "suggestion4": "protección de alto riesgo"
+    "suggestion3": "seguridad del passcode",
+    "suggestion4": "protección alto riesgo"
   },
   "notFound": {
     "title": "¡Ups! Esta página no existe",
@@ -234,12 +286,12 @@
     "tryAnother": "Mostrar otro mensaje aleatorio de \"página no encontrada\"",
     "variations": {
       "goneUnderground": {
-        "title": "En la clandestinidad",
-        "message": "¡Esta página desapareció! Tal vez está organizando algo..."
+        "title": "Pasó a la clandestinidad",
+        "message": "¡Esta página desapareció! Capaz anda organizando algo..."
       },
       "nothingToSee": {
-        "title": "Nada que ver por aquí",
-        "message": "Esta página está practicando buena OPSEC y se mantiene fuera del radar."
+        "title": "Nada que ver por acá",
+        "message": "Esta página está practicando buen opsec y se mantiene fuera del radar."
       },
       "solidarity": {
         "title": "Solidaridad por siempre",
@@ -251,7 +303,7 @@
       },
       "whoseStreets": {
         "title": "¿De quién son las calles?",
-        "message": "¡Nuestras! Pero esta URL en particular no lleva a ningún lado..."
+        "message": "¡Nuestras! Pero esta URL no lleva a ningún lado..."
       },
       "identity": {
         "title": "Identidad protegida",
@@ -259,15 +311,15 @@
       },
       "directAction": {
         "title": "Acción directa",
-        "message": "Esta página anda interrumpiendo el orden habitual de las cosas."
+        "message": "Esta página anda interrumpiendo la normalidad."
       },
       "firedUp": {
         "title": "Con todo",
-        "message": "Esta página anda ocupada encendiendo la chispa de la revolución."
+        "message": "Esta página está encendiendo la chispa de la revolución."
       },
       "mutualAid": {
         "title": "Punto de apoyo mutuo",
-        "message": "Esta página se trasladó para ayudar a distribuir recursos a la comunidad."
+        "message": "Esta página se trasladó para ayudar a repartir recursos a la comunidad."
       },
       "beWater": {
         "title": "Sé como el agua",
@@ -279,11 +331,12 @@
     "everyoneLabel": "todo el mundo",
     "mediumLabel": "amenaza media",
     "highLabel": "amenaza alta",
-    "everyoneDefault": "Esta sección es para cualquier persona que haga activismo o trabajo de incidencia.",
-    "mediumDefault": "Esta sección es para ti si tienes un rol de liderazgo o haces activismo que tiene más probabilidades de ser blanco del Estado o de tu oposición.",
+    "everyoneDefault": "Esta sección es para cualquier persona que haga trabajo de activismo o incidencia.",
+    "mediumDefault": "Esta sección es para ti si tienes un rol de liderazgo o haces un activismo que tiene más chance de ser atacado por el Estado o tu oposición.",
     "highDefault": "Esta sección es para ti si ocupas un rol de alto perfil o tu activismo implica trabajo de alto riesgo que podría traer consecuencias graves o represalias.",
     "forYouIf": "Esta sección es para ti si:",
-    "forYou": "Esta sección es para:"
+    "forYou": "Esta sección es para:",
+    "whoIsThisFor": "¿Para quién es esta sección?"
   },
   "checklistItem": {
     "informationalItem": "Elemento informativo",
@@ -294,6 +347,13 @@
     "expand": "Expandir",
     "collapse": "Contraer",
     "importantBadge": "Importante"
+  },
+  "sectionProgress": {
+    "count": "{done}/{total}",
+    "label": "{done} de {total} completados"
+  },
+  "tableOfContents": {
+    "title": "En esta página"
   },
   "copyButton": {
     "copy": "Copiar",
@@ -313,10 +373,10 @@
     "successMessage": "¡Mensaje enviado! Te respondemos pronto.",
     "otherWays": "Otras formas de contactarnos",
     "githubTitle": "Comentarios públicos (GitHub)",
-    "githubDescription": "Si te parece bien compartir en público, puedes enviar comentarios, preguntas y solicitudes de funciones a través de nuestro repositorio de GitHub.",
-    "githubLink": "Ir al repositorio de GitHub →",
+    "githubDescription": "Si no tienes problema con compartir públicamente, puedes enviar comentarios, preguntas y sugerencias a través de nuestro repositorio de GitHub.",
+    "githubLink": "Visitar el repositorio en GitHub →",
     "emailTitle": "Correo cifrado",
-    "emailDescription": "¿Usas Proton Mail? Tus mensajes se cifrarán automáticamente. Para otros proveedores, puedes usar nuestra clave PGP. O simplemente puedes escribirnos a esta dirección sin cifrar.",
+    "emailDescription": "¿Usas Proton Mail? Tus mensajes se cifrarán automáticamente. Para otros proveedores, puedes usar nuestra clave PGP. O simplemente escríbenos a esa dirección sin cifrar.",
     "pgpLink": "Ver clave PGP →"
   },
   "contactForm": {
@@ -326,17 +386,17 @@
     "responseQuestion": "¿Quieres una respuesta?",
     "emailLabel": "Correo electrónico",
     "emailPlaceholder": "Escribe tu correo electrónico",
-    "emailNote": "Nota sobre respuestas por correo: a menos que uses Proton Mail, tu proveedor de correo puede leer cualquier respuesta que te enviemos.",
+    "emailNote": "Nota sobre respuestas por correo: Salvo que uses Proton Mail, tu proveedor de correo puede leer las respuestas que te enviemos.",
     "signalUsernameLabel": "Nombre de usuarie de Signal",
     "signalUsernamePlaceholder": "usuario.12",
     "signalUsernameExample": "@snowden.04",
-    "signalUsernameHelp": "Tu nombre de usuario es distinto a tu nombre visible. Encuentra tu nombre de usuario en Signal > Ícono de usuario (arriba a la derecha) > Configuración. Aparecerá cerca de la parte superior, justo debajo de tu número de teléfono.",
+    "signalUsernameHelp": "Tu nombre de usuario es distinto a tu nombre visible. Lo encuentras en Signal > Ícono de usuario (arriba a la derecha) > Configuración. Aparece cerca del inicio, justo debajo de tu número de teléfono.",
     "signalPhoneLabel": "Número de teléfono de Signal",
     "signalPhonePlaceholder": "Escribe tu número de teléfono de Signal",
     "sending": "Enviando...",
     "sendMessage": "Enviar mensaje",
     "privacyLabel": "Privacidad:",
-    "privacyText": "Tu mensaje se cifra de forma segura y se envía a nuestra cuenta de Proton Mail. No recopilamos ningún dato personal sobre ti.",
+    "privacyText": "Tu mensaje se cifra de forma segura y llega a nuestra cuenta de Proton Mail. No recopilamos ninguna información personal sobre ti.",
     "errorMessage": "No se pudo enviar el mensaje. Inténtalo de nuevo más tarde.",
     "responseNone": "No necesito respuesta (tu mensaje se mantiene anónimo)",
     "responseSignalUsername": "Responder por Signal (nombre de usuarie)",
@@ -350,17 +410,48 @@
     "inputPlaceholder": "Escribe tu pregunta...",
     "sendButton": "Enviar",
     "dialogTitle": "Envíanos un mensaje",
-    "successMessage": "¡Gracias por tu comentario! Lo revisaremos y lo usaremos para mejorar las guías. Si el sitio te resulta útil, ¡ayúdanos a correr la voz!"
+    "successMessage": "¡Gracias por tu comentario! Lo revisaremos y lo usaremos para mejorar las guías. Si el sitio te está sirviendo, ¡ayúdanos a correr la voz!"
   },
   "relatedGuides": {
     "headingBlock": "Sigue aprendiendo con estas guías relacionadas",
-    "headingFooter": "Si esto te resultó útil, échale un vistazo a estas guías"
+    "headingFooter": "Si esto te sirvió, también mira estas guías"
   },
   "checklists": {
     "title": "Listas",
-    "featured": "Listas destacadas",
-    "more": "Más listas",
+    "intro": "Cada checklist y explicación, agrupados por situación. ¿Nuevx por aquí? Empieza con <link>Lo esencial de seguridad</link>.",
     "documentTitle": "Listas | Activist Checklist"
+  },
+  "checklistSections": {
+    "basics": {
+      "title": "Lo básico",
+      "heading": "Esto deberíamos hacerlo todes",
+      "scope": "Protección básica para tu teléfono, cuentas y chats grupales."
+    },
+    "goingOut": {
+      "title": "Al salir",
+      "heading": "Al salir: protestas, ICE watch, acciones, viajes",
+      "scope": "Cualquier lugar donde los cops o agentes fronterizos puedan quitarte el teléfono."
+    },
+    "targeted": {
+      "title": "Si te están apuntando",
+      "heading": "Protégete de ser blanco de ataques",
+      "scope": "Doxxing, acoso, investigaciones o agentes en tu puerta."
+    },
+    "organizing": {
+      "title": "Organizar a otres",
+      "heading": "Organizar a otres",
+      "scope": "Realizar acciones y asegurar a tu grupo."
+    },
+    "descriptions": {
+      "party": "Una agenda modelo para recorrer los checklists en grupo."
+    },
+    "allChecklists": "Los {count, plural, one {# checklist} other {# checklists}}",
+    "readMinutes": "{minutes} min de lectura",
+    "explainer": "Explicación",
+    "howTo": "Guía práctica",
+    "readGuide": "Leer la guía",
+    "understandWhy": "Entiende por qué",
+    "lastReviewed": "Última revisión: {date}"
   },
   "news": {
     "title": "Noticias sobre vigilancia",
@@ -382,32 +473,32 @@
   },
   "updates": {
     "metaTitle": "¿Tu dispositivo aún recibe actualizaciones de seguridad? | Activist Checklist",
-    "metaDescription": "Verifica si tu teléfono, tableta, reloj o laptop sigue recibiendo actualizaciones de seguridad. Los dispositivos desactualizados acumulan vulnerabilidades conocidas públicamente y son más fáciles de hackear si te los confiscan o si te atacan directamente.",
+    "metaDescription": "Verifica si tu teléfono, tableta, reloj o laptop sigue recibiendo actualizaciones de seguridad. Los dispositivos desactualizados acumulan vulnerabilidades públicamente conocidas y son más fáciles de hackear si los incautan o te los apuntan.",
     "title": "¿Tu dispositivo aún recibe actualizaciones de seguridad?",
-    "intro": "Si tu dispositivo no está usando el sistema operativo más reciente, los cops y los hackers pueden entrar y acceder a todos tus datos.",
+    "intro": "Si tu dispositivo no está en el último sistema operativo, hackers y la cops pueden entrar y acceder a todos tus datos.",
     "searchLabel": "Escribe el modelo de tu dispositivo",
     "searchHelpAriaLabel": "Ayuda para encontrar el modelo de tu dispositivo",
-    "searchHelp": "¿Necesitas ayuda para encontrarlo? Elige tu sistema operativo arriba para ver instrucciones.",
+    "searchHelp": "¿Necesitas ayuda para encontrarlo? Selecciona arriba tu sistema operativo para ver instrucciones.",
     "searchPlaceholder": "por ejemplo, iPhone 12 Pro, Pixel 7, Windows 10",
     "searchAriaLabel": "Buscar tu dispositivo o sistema operativo",
     "clearAriaLabel": "Limpiar búsqueda",
     "editSelectionAriaLabel": "Cambiar dispositivo, volver a la búsqueda",
     "noMatches": "Sin coincidencias en nuestra lista.",
-    "noMatchesHelp": "Prueba con el nombre del fabricante (p. ej. \"Galaxy A14\" en lugar de solo \"A14\").",
-    "noMatchesSupported": "Actualmente cubrimos Apple, Google, Samsung, Motorola, OnePlus, Nokia, más iOS, iPadOS, macOS, Android y Windows.",
-    "noMatchesWindowsLaptop": "Los fabricantes de laptops con Windows no avisan cuándo dejan de ofrecer actualizaciones de seguridad, así que revisar el <b>modelo</b> de la laptop no te dirá. Revisa mejor tu <b>versión</b> de Windows. Eso es lo que determina si aún estás recibiendo actualizaciones.",
+    "noMatchesHelp": "Prueba con el nombre del fabricante (p. ej., \"Galaxy A14\" en lugar de solo \"A14\").",
+    "noMatchesSupported": "Por ahora cubrimos Apple, Google, Samsung, Motorola, OnePlus, Nokia, además de iOS, iPadOS, macOS, Android y Windows.",
+    "noMatchesWindowsLaptop": "Los fabricantes de laptops con Windows no anuncian cuándo dejan de ofrecer actualizaciones de seguridad, así que revisar el <b>modelo</b> no te dirá nada. Revisa mejor la <b>versión</b> de Windows. Eso es lo que determina si sigues recibiendo actualizaciones.",
     "noMatchesWindowsPathLabel": "Cómo revisar tu versión de Windows:",
     "loading": "Cargando lista de dispositivos...",
-    "loadError": "No pudimos cargar la lista de dispositivos. <retryLink>Intenta de nuevo</retryLink> o consulta <link>endoflife.date</link> directamente.",
-    "snapshotStaleBanner": "Nuestra lista de dispositivos puede estar desactualizada. Última actualización: {date}. <link>Consulta endoflife.date directamente</link>",
+    "loadError": "No pudimos cargar la lista de dispositivos. <retryLink>Inténtalo de nuevo</retryLink> o revisa <link>endoflife.date</link> directamente.",
+    "snapshotStaleBanner": "Nuestra lista de dispositivos podría estar desactualizada. Última actualización: {date}. <link>Consulta directamente endoflife.date</link>",
     "releasedYearHint": "lanzado en {year}",
     "categoryPill": {
       "phone": "Teléfono",
-      "tablet": "Tableta",
+      "tablet": "Tablet",
       "watch": "Reloj",
       "laptop": "Laptop",
       "desktop": "Computadora",
-      "os": "SO"
+      "os": "Sistema operativo"
     },
     "platform": {
       "prompt": "O elige dónde empezar:",
@@ -419,7 +510,7 @@
     },
     "subCategory": {
       "prompt": "¿Qué tipo de dispositivo {platform}?",
-      "back": "Atrás",
+      "back": "Volver",
       "iphone": "iPhone",
       "ipad": "iPad",
       "iphoneIpad": "iPhone / iPad",
@@ -431,7 +522,7 @@
       "oneplus": "OnePlus",
       "nokia": "Nokia",
       "android": "Android",
-      "androidOs": "Android (solo el OS)",
+      "androidOs": "Android (solo sistema operativo)",
       "windows": "Windows"
     },
     "breadcrumb": {
@@ -441,59 +532,59 @@
     "findYourModel": {
       "label": "Cómo encontrar el modelo de tu dispositivo:",
       "labelWindows": "Cómo revisar tu versión de Windows:",
-      "iphone": "<settings>App de Configuración</settings> en tu pantalla de inicio → General → Información → Nombre del modelo",
-      "ipad": "<settings>App Configuración</settings> en tu pantalla de inicio → General → Información → Nombre del modelo",
-      "iphoneIpad": "<settings>App Configuración</settings> en tu pantalla de inicio → General → Información → Nombre del modelo",
-      "appleWatch": "App Watch en el iPhone → Mi Watch → General → Información → Modelo",
-      "mac": "Menú <apple>Apple</apple> en la barra superior → Acerca de esta Mac → Descripción general",
-      "samsung": "<settings>App de Configuración</settings> en tu teléfono → Acerca del teléfono → Número de modelo",
-      "pixel": "<settings>App de Configuración</settings> en tu teléfono → Acerca del teléfono → Modelo",
-      "motorola": "<settings>App Configuración</settings> en tu teléfono → Acerca del teléfono → Número de modelo",
-      "oneplus": "<settings>App de Configuración</settings> en tu teléfono → Acerca del dispositivo → Número de modelo",
-      "nokia": "<settings>App Configuración</settings> en tu teléfono → Acerca del teléfono → Modelo",
-      "android": "<settings>App Configuración</settings> en tu teléfono → Acerca del teléfono → Número de modelo",
-      "androidOs": "<settings>App de Configuración</settings> en tu teléfono → Acerca del teléfono → Versión de Android",
+      "iphone": "<settings>App de Ajustes</settings> en tu pantalla de inicio → General → Información → Nombre del modelo",
+      "ipad": "<settings>App de Configuración</settings> en tu pantalla de inicio → General → Información → Nombre del modelo",
+      "iphoneIpad": "<settings>App de Configuración</settings> en tu pantalla de inicio → General → Información → Nombre del modelo",
+      "appleWatch": "App Watch en tu iPhone → Mi Reloj → General → Información → Modelo",
+      "mac": "<apple>Menú Apple</apple> en la barra superior → Acerca de este Mac → Visión general",
+      "samsung": "<settings>App de Ajustes</settings> en tu teléfono → Acerca del teléfono → Número de modelo",
+      "pixel": "<settings>App de Ajustes</settings> en tu teléfono → Acerca del teléfono → Modelo",
+      "motorola": "<settings>App de Configuración</settings> en tu teléfono → Acerca del teléfono → Número de modelo",
+      "oneplus": "<settings>App de Ajustes</settings> en tu teléfono → Acerca del dispositivo → Número de modelo",
+      "nokia": "<settings>App de Configuración</settings> en tu teléfono → Acerca del teléfono → Modelo",
+      "android": "<settings>App de Configuración</settings> en tu teléfono → Acerca del teléfono → Número de modelo",
+      "androidOs": "<settings>App de Ajustes</settings> en tu teléfono → Acerca del teléfono → Versión de Android",
       "windows": "Tecla Windows + R → escribe <code>winver</code> → Enter",
-      "windowsCaveat": "Los fabricantes de laptops con Windows no avisan cuándo dejan de ofrecer actualizaciones de seguridad, así que revisar el <b>modelo</b> no te dirá nada. Mejor revisa tu <b>versión</b> de Windows. Eso es lo que determina si sigues recibiendo actualizaciones."
+      "windowsCaveat": "Los fabricantes de laptops con Windows no avisan cuándo dejan de ofrecer actualizaciones de seguridad, así que revisar el <b>modelo</b> de la laptop no te dirá nada. Mejor revisa tu <b>versión</b> de Windows. Eso es lo que determina si todavía estás recibiendo actualizaciones."
     },
     "otherInfo": {
       "title": "Otros dispositivos",
-      "body": "Actualmente cubrimos dispositivos Apple, Google, Samsung, Motorola, OnePlus y Nokia, además de iOS, iPadOS, macOS, Android y Windows. Para cualquier otra cosa, <link>busca en línea</link> \"is [MODELO DE DISPOSITIVO] still receiving security updates\"."
+      "body": "Por ahora cubrimos dispositivos Apple, Google, Samsung, Motorola, OnePlus y Nokia, además de iOS, iPadOS, macOS, Android y Windows. Para cualquier otra cosa, <link>busca en línea</link> \"is [MODELO DEL DISPOSITIVO] still receiving security updates.\""
     },
     "result": {
       "checkAnother": "Revisar otro dispositivo",
       "source": "Fuente: <link>endoflife.date</link>",
       "settingsPath": {
-        "ios": "<settings>App de Configuración</settings> en tu pantalla de inicio → General → Actualización de software → Actualizar ahora",
-        "ipados": "<settings>App de Ajustes</settings> en tu pantalla de inicio → General → Actualización de software → Actualizar ahora",
-        "macos": "Menú <apple>Apple</apple> en la barra superior → Ajustes del sistema → General → Actualización de software → Actualizar ahora",
-        "android": "<settings>App de Configuración</settings> en tu teléfono → Sistema → Actualización de software → Buscar actualizaciones",
+        "ios": "<settings>App de Ajustes</settings> en tu pantalla de inicio → General → Actualización de software → Actualizar ahora",
+        "ipados": "<settings>App de Configuración</settings> en tu pantalla de inicio → General → Actualización de software → Actualizar ahora",
+        "macos": "<apple>Menú Apple</apple> en la barra de menú superior → Configuración del sistema → General → Actualización de software → Actualizar ahora",
+        "android": "<settings>App de Ajustes</settings> en tu teléfono → Sistema → Actualización de software → Buscar actualizaciones",
         "windows": "<windows>Menú Inicio</windows> → <settings>Configuración</settings> → Windows Update → Buscar actualizaciones",
-        "watchos": "App Watch en tu iPhone → Mi Watch → General → Actualización de software → Instalar",
-        "oneplus": "<settings>App de Configuración</settings> en tu teléfono → Sistema → Actualizaciones del sistema → Buscar actualizaciones"
+        "watchos": "App Watch en tu iPhone → Mi Reloj → General → Actualización de software → Instalar",
+        "oneplus": "<settings>App de Ajustes</settings> en tu teléfono → Sistema → Actualizaciones del sistema → Buscar actualizaciones"
       },
       "osVersionPath": {
-        "ios": "<settings>App de Configuración</settings> en tu pantalla de inicio → General → Información → Versión del software",
-        "ipados": "<settings>App Configuración</settings> en tu pantalla de inicio → General → Información → Versión de software",
+        "ios": "<settings>App Ajustes</settings> en tu pantalla de inicio → General → Información → Versión de software",
+        "ipados": "<settings>App de Configuración</settings> en tu pantalla de inicio → General → Información → Versión del software",
         "macos": "<apple>Menú Apple</apple> en la barra de menú superior → Acerca de esta Mac",
-        "android": "<settings>App Configuración</settings> en tu teléfono → Acerca del teléfono → Versión de Android",
+        "android": "<settings>App de Configuración</settings> en tu teléfono → Acerca del teléfono → Versión de Android",
         "windows": "Presiona la tecla Windows + R → escribe <code>winver</code> → Enter",
-        "watchos": "App Watch en tu iPhone → Mi Watch → General → Información → Versión"
+        "watchos": "App Watch en tu iPhone → Mi Reloj → General → Información → Versión"
       },
       "deviceSupportedTitle": "{label} seguirá recibiendo actualizaciones de seguridad.",
       "deviceSupportedSubtitleUntil": "Actualizaciones esperadas hasta <b>{date}</b>.",
-      "deviceSupportedSubtitleRecent": "Aún no se anuncia la fecha de fin de soporte.",
+      "deviceSupportedSubtitleRecent": "La fecha de fin de soporte aún no se ha anunciado.",
       "deviceUnsupportedTitle": "{label} ya no está recibiendo actualizaciones de seguridad.",
       "deviceUnsupportedTitleAgoMonths": "{label} dejó de recibir actualizaciones de <nowrap>seguridad <mark>hace {months, plural, one {1 mes} other {# meses}}</mark></nowrap>.",
       "deviceUnsupportedTitleAgoYears": "{label} dejó de recibir actualizaciones de <nowrap>seguridad <mark>hace {years, plural, one {1 año} other {# años}}</mark></nowrap>.",
       "deviceUnsupportedSubtitleEnded": "El soporte de seguridad terminó el <b>{date}</b>.",
       "deviceUnsupportedSubtitleUnmaintained": "{manufacturer} dejó de publicar actualizaciones de seguridad.",
-      "deviceUnsupportedSubtitleAge": "Lanzado {age}. Sin fecha publicada de fin de soporte, y {manufacturer} no parece estar emitiendo actualizaciones.",
+      "deviceUnsupportedSubtitleAge": "Lanzado hace {age}. No hay fecha publicada de fin de soporte y parece que {manufacturer} ya no emite actualizaciones.",
       "manufacturerFallback": "El fabricante",
       "manufacturerFallbackLower": "el fabricante",
       "ageYearsAgo": "{years, plural, =0 {este año} =1 {hace 1 año} other {hace # años}}",
       "deviceUncertainTitle": "No podemos confirmar si {label} seguirá recibiendo actualizaciones.",
-      "deviceUncertainSubtitle": "Lanzado {age}. {manufacturer} no ha publicado una fecha de fin de soporte, y los dispositivos así de viejos pueden o no seguir recibiendo actualizaciones.",
+      "deviceUncertainSubtitle": "Lanzado hace {age}. {manufacturer} no publicó una fecha de fin de soporte y los dispositivos de esta edad pueden o no estar recibiendo actualizaciones.",
       "deviceUncertainCheck": "Revisa la página de soporte del fabricante: <link></link>.",
       "manufacturerSupport": {
         "apple": {
@@ -526,25 +617,25 @@
       "osConfirmedShortMonths": "{label} seguirá recibiendo actualizaciones de <nowrap>seguridad <mark>por {months, plural, one {1 mes más} other {# meses más}}</mark></nowrap>.",
       "osConfirmedSubtitleUntil": "Actualizaciones previstas hasta <b>{date}</b>.",
       "osEolSoon": {
-        "titleMonths": "{label} perderá actualizaciones de <nowrap>seguridad <mark>en aproximadamente {months, plural, =1 {1 mes} other {# meses}}</mark></nowrap>.",
-        "titleSoon": "{label} perderá actualizaciones de <nowrap>seguridad <mark>pronto</mark></nowrap>.",
+        "titleMonths": "{label} dejará de recibir actualizaciones de <nowrap>seguridad <mark>en unos {months, plural, =1 {1 mes} other {# meses}}</mark></nowrap>.",
+        "titleSoon": "{label} dejará de recibir actualizaciones de <nowrap>seguridad <mark>pronto</mark></nowrap>.",
         "subtitleDate": "Se espera que las actualizaciones terminen el <b>{date}</b>."
       },
-      "osEoasNote": "El proveedor pasó esta versión a actualizaciones solo de seguridad. Planea actualizar cuando te convenga.",
+      "osEoasNote": "El fabricante pasó esta versión a actualizaciones solo de seguridad. Planea una actualización cuando te sea posible.",
       "osUnsupportedTitle": "{label} ya no está recibiendo actualizaciones de seguridad.",
       "osUnsupportedSubtitleEnded": "El soporte terminó el <b>{date}</b>.",
       "osUpgradeAdvice": {
-        "ios": "Actualiza al iOS más reciente.",
-        "ipados": "Actualiza al iPadOS más reciente.",
+        "ios": "Actualiza a la versión más reciente de iOS.",
+        "ipados": "Actualiza a la versión más reciente de iPadOS.",
         "macos": "Actualiza a una versión más nueva de macOS.",
         "android": "Actualiza a una versión más nueva de Android.",
         "windows": "Actualiza a Windows 11."
       },
-      "osCheckDeviceHint": "O ingresa el modelo de tu dispositivo en la caja de arriba para ver si aún puede recibir actualizaciones de seguridad.",
+      "osCheckDeviceHint": "O ingresa el modelo de tu dispositivo arriba para ver si todavía puede recibir actualizaciones de seguridad.",
       "latestOsReminderTitle": "Asegúrate de estar al día",
-      "latestOsReminderWithVersion": "Asegúrate de estar en {os} {version}.",
-      "latestOsReminderFamilyLatest": "Asegúrate de estar en el {os} más reciente (actualmente {version}).",
-      "latestOsReminderGeneric": "Asegúrate de que tu dispositivo esté totalmente actualizado.",
+      "latestOsReminderWithVersion": "Verifica que estés usando {os} {version}.",
+      "latestOsReminderFamilyLatest": "Asegúrate de estar en la última versión de {os} (actualmente {version}).",
+      "latestOsReminderGeneric": "Verifica que tu dispositivo esté totalmente actualizado.",
       "supportedOsLabel": {
         "ios": "iOS",
         "ipados": "iPadOS",
@@ -554,13 +645,13 @@
       },
       "deviceMaxOsWarningTitle": "Nota sobre el SO de tu dispositivo",
       "deviceMaxOsWarning": "Tu {label} solo admite hasta {os} {maxVersion}. {os} {maxVersion} dejará de recibir actualizaciones de seguridad antes que {os} {latestVersion}. Los dispositivos más nuevos seguirán recibiendo actualizaciones por más tiempo.",
-      "deviceMaxOsWarningWithDate": "Tu {label} solo soporta hasta {os} {maxVersion}, que se espera deje de recibir actualizaciones de seguridad alrededor del {eolDate}. Los dispositivos más nuevos que pueden correr {os} {latestVersion} seguirán recibiendo actualizaciones por más tiempo.",
-      "deviceMaxOsEolWarning": "Tu {label} llega como máximo a {os} {maxVersion}, que ya terminó su soporte oficial. Es posible que aún recibas actualizaciones ocasionales, pero considera este dispositivo como de baja confianza para trabajo sensible y planea reemplazarlo.",
-      "deviceUpgradePlan": "Si la seguridad a largo plazo importa para tu trabajo, planea una actualización de hardware.",
+      "deviceMaxOsWarningWithDate": "Tu {label} solo admite hasta {os} {maxVersion}, que se espera deje de recibir actualizaciones de seguridad cerca del {eolDate}. Los dispositivos más nuevos que pueden correr {os} {latestVersion} seguirán recibiendo actualizaciones por más tiempo.",
+      "deviceMaxOsEolWarning": "Tu {label} llega como máximo a {os} {maxVersion}, cuya oficialidad de soporte ya terminó. Puede que todavía recibas actualizaciones ocasionales, pero trata este dispositivo como de baja confianza para trabajo sensible y planifica reemplazarlo.",
+      "deviceUpgradePlan": "Si la seguridad a largo plazo importa para tu trabajo, planifica un cambio de hardware.",
       "threatModelHeader": "Por qué esto importa",
-      "threatModel": "Cada semana sin actualización, más formas de entrar a tu dispositivo se hacen públicas. Si los cops te confiscan el teléfono en una <protestLink>protesta</protestLink> o en un <borderLink>cruce fronterizo</borderLink> (o si alguien te ataca con <spywareLink>spyware</spywareLink>), esas debilidades conocidas son las que usarán para entrar y leer todo lo que tienes ahí.  ",
+      "threatModel": "Cada semana sin una actualización, se hacen públicas más formas de meterse a tu dispositivo. Si los cops te incautan el teléfono en una <protestLink>protesta</protestLink> o en un <borderLink>cruce fronterizo</borderLink> (o si alguien te apunta con <spywareLink>spyware</spywareLink>), esas vulnerabilidades conocidas son las que van a usar para entrar y leer todo lo que tienes.  ",
       "threatModelSoft": "Hasta que lo confirmes, trata este dispositivo como posiblemente desactualizado para trabajo sensible.",
-      "viewEssentialsCta": "Ver nuestros fundamentos de seguridad digital →",
+      "viewEssentialsCta": "Mira nuestros fundamentos de seguridad digital →",
       "essentialsNextSteps": {
         "title": "Más pasos fáciles de seguir para proteger tus datos y dispositivos"
       },
@@ -583,22 +674,22 @@
         "titleSoon": "{label} dejará de recibir actualizaciones de <nowrap>seguridad <mark>pronto</mark></nowrap>.",
         "subtitleDate": "Se espera que las actualizaciones terminen el <b>{date}</b>.",
         "actionHeading": "Qué hacer",
-        "action": "Empieza a planear un reemplazo ahora. Una vez que se detengan las actualizaciones, tu dispositivo empieza a acumular vulnerabilidades conocidas públicamente."
+        "action": "Empieza a planificar un reemplazo ahora. Cuando las actualizaciones paran, tu dispositivo empieza a acumular vulnerabilidades públicamente conocidas."
       },
       "buyingGuidance": {
         "heading": "Cuando lo reemplaces",
-        "yearsPattern": "La mayoría de {deviceLabel} recibe actualizaciones de seguridad de {min} a {max} años desde su fecha de lanzamiento.",
+        "yearsPattern": "La mayoría de {deviceLabel} recibe actualizaciones de seguridad por {min}-{max} años desde la fecha de lanzamiento.",
         "deviceLabel": {
           "phone": "teléfonos",
           "laptop": "laptops",
-          "tablet": "tabletas",
+          "tablet": "tablets",
           "watch": "los relojes inteligentes"
         },
-        "checkBeforeBuying": "Si vas a comprar usado, busca el modelo aquí primero para ver por cuánto tiempo más recibirá actualizaciones."
+        "checkBeforeBuying": "Si vas a comprar uno usado, busca aquí primero el modelo para ver por cuánto tiempo seguirá recibiendo actualizaciones."
       },
       "ctaReplace": {
         "phone": "Te recomendamos conseguir un teléfono nuevo.",
-        "tablet": "Te recomendamos conseguir una tableta nueva.",
+        "tablet": "Te recomendamos conseguir una tablet nueva.",
         "laptop": "Te recomendamos conseguir una laptop nueva.",
         "desktop": "Te recomendamos conseguir una Mac nueva.",
         "watch": "Te recomendamos conseguir un reloj nuevo.",
@@ -606,7 +697,7 @@
       },
       "ctaPlan": {
         "phone": "Empieza a planificar tu próximo teléfono.",
-        "tablet": "Empieza a planear tu próxima tablet.",
+        "tablet": "Empieza a planificar tu próxima tableta.",
         "laptop": "Empieza a planificar tu próxima laptop.",
         "desktop": "Empieza a planificar tu próxima Mac.",
         "watch": "Empieza a planificar tu próximo reloj.",
@@ -615,15 +706,15 @@
       "deviceConfirmedShort": "{label} seguirá recibiendo actualizaciones de seguridad.",
       "deviceConfirmedShortYears": "{label} seguirá recibiendo actualizaciones de <nowrap>seguridad <mark>durante {years, plural, one {1 año más} other {# años más}}</mark></nowrap>.",
       "deviceConfirmedShortMonths": "{label} seguirá recibiendo actualizaciones de <nowrap>seguridad <mark>durante {months, plural, one {1 mes más} other {# meses más}}</mark></nowrap>.",
-      "deviceConfirmedShortApproxYears": "{label} seguirá recibiendo actualizaciones de <nowrap>seguridad <mark>por unos {years, plural, one {1 año más} other {# años más}}</mark></nowrap>.",
-      "deviceConfirmedShortApproxMonths": "{label} seguirá recibiendo actualizaciones de <nowrap>seguridad <mark>por unos {months, plural, one {1 mes más} other {# meses más}}</mark></nowrap>.",
+      "deviceConfirmedShortApproxYears": "{label} seguirá recibiendo actualizaciones de seguridad <nowrap>por <mark>unos {years, plural, one {1 año más} other {# años más}}</mark></nowrap>.",
+      "deviceConfirmedShortApproxMonths": "{label} seguirá recibiendo actualizaciones de seguridad <nowrap>por <mark>unos {months, plural, one {1 mes más} other {# meses más}}</mark></nowrap>.",
       "appleEstimate": {
-        "intro": "Apple no publica fechas de fin de soporte, pero {deviceLabel} suelen recibir de {min} a {max} años de actualizaciones de seguridad desde su lanzamiento."
+        "intro": "Apple no publica fechas de fin de soporte, pero {deviceLabel} usualmente reciben entre {min} y {max} años de actualizaciones de seguridad desde su lanzamiento."
       },
       "osCheckStep": {
         "headingForOs": "¿Qué versión de {os} tienes?",
         "headingForOsRelease": "¿Qué versión de {label} tienes?",
-        "headingGeneric": "¿Qué versión tiene tu dispositivo?",
+        "headingGeneric": "¿Qué versión usa tu dispositivo?",
         "headingUpdatesAvailable": "¿Hay alguna actualización disponible para tu {device}?",
         "headingUpdatesAvailableForRelease": "¿Hay alguna actualización disponible para {label}?",
         "subheadingHelp": "Ábrelo en tu dispositivo para revisar:",
@@ -636,7 +727,7 @@
         "optionThisVersion": "Tengo esta versión",
         "optionNoUpdatesAvailable": "No veo ninguna actualización disponible",
         "optionNoUpdatesAvailableByOs": {
-          "windows": "Dice \"Está actualizado\"",
+          "windows": "Dice \"Estás actualizado\"",
           "android": "Dice \"Tu software está actualizado\""
         },
         "optionUpdatesAvailable": "Veo actualizaciones disponibles",
@@ -644,100 +735,100 @@
       },
       "deviceNoun": {
         "phone": "teléfono",
-        "tablet": "tableta",
+        "tablet": "tablet",
         "laptop": "laptop",
         "desktop": "computadora",
         "watch": "reloj",
         "generic": "dispositivo"
       },
       "osNeedsUpdate": {
-        "heading": "Tu sistema operativo necesita una actualización",
-        "headingMaybe": "Tu sistema operativo puede necesitar una actualización",
-        "body": "Actualiza a la versión más reciente para obtener las últimas actualizaciones de seguridad.",
-        "newerMajorAvailable": "{os} {latestMajor} ya está disponible. Estás totalmente parchado en {os} {currentMajor}, pero esa versión fue reemplazada, y las correcciones para fallas explotadas activamente llegan primero a la versión más nueva.",
+        "heading": "Tu sistema operativo necesita actualizarse",
+        "headingMaybe": "Tu sistema operativo quizás necesita actualizarse",
+        "body": "Actualiza a la última versión para tener los parches de seguridad más recientes.",
+        "newerMajorAvailable": "{os} {latestMajor} ya está disponible. Estás totalmente parchado en {os} {currentMajor}, pero esa versión quedó atrás, y las correcciones para fallos activamente explotados llegan primero a la versión más nueva.",
         "howToHeading": "Cómo actualizar:",
         "didUpdateButton": "Listo, ya actualicé",
-        "noUpdatesAvailableButton": "No hay actualizaciones disponibles y tengo una versión más antigua que {os} {major}",
-        "noUpdatesAvailableButtonCodename": "No hay actualizaciones disponibles y tengo una versión más antigua que {os} {major} ({codename})"
+        "noUpdatesAvailableButton": "No hay actualizaciones disponibles y tengo una versión anterior a {os} {major}",
+        "noUpdatesAvailableButtonCodename": "No hay actualizaciones disponibles y tengo una versión anterior a {os} {major} ({codename})"
       },
-      "deviceUnsupportedSubtitleStuckOnOs": "No puedes obtener nuevas actualizaciones de seguridad en este dispositivo, así que dejó de recibir los parches que protegen tus datos.",
+      "deviceUnsupportedSubtitleStuckOnOs": "No puedes obtener actualizaciones de seguridad más nuevas en este dispositivo, así que ya dejó de recibir los parches que protegen tus datos.",
       "finalSuccess": {
         "heading": "Estás al día.",
         "deviceCheck": "{label} seguirá recibiendo actualizaciones de seguridad.",
         "deviceCheckUntil": "{label} está recibiendo actualizaciones de seguridad hasta {date}.",
-        "osCheck": "{os} tiene la versión más reciente ({version}).",
+        "osCheck": "{os} tiene la última versión ({version}).",
         "osCheckCodename": "{os} {version} ({codename}) es la última versión.",
-        "osCheckDeviceMax": "{os} {version} es la versión más nueva que puede ejecutar este dispositivo.",
-        "osCheckDeviceMaxCodename": "{os} {version} ({codename}) es la versión más nueva que puede ejecutar este dispositivo.",
-        "osCheckNoVersion": "El sistema operativo está al día.",
-        "osLatestUpdates": "Tienes las últimas actualizaciones de seguridad instaladas para {label}.",
-        "osLatestUpdatesWithVersion": "Tienes las últimas actualizaciones de seguridad instaladas ({os} {version}).",
-        "checkPhoneNext": "Revisa tu teléfono después",
-        "checkLaptopNext": "Revisa tu laptop después",
+        "osCheckDeviceMax": "{os} {version} es la versión más nueva que puede correr este dispositivo.",
+        "osCheckDeviceMaxCodename": "{os} {version} ({codename}) es la versión más nueva que puede correr este dispositivo.",
+        "osCheckNoVersion": "El sistema operativo está actualizado.",
+        "osLatestUpdates": "Tienes instalados los últimos parches de seguridad para {label}.",
+        "osLatestUpdatesWithVersion": "Tienes instalados los últimos parches de seguridad ({os} {version}).",
+        "checkPhoneNext": "Revisa tu teléfono ahora",
+        "checkLaptopNext": "Revisa tu laptop ahora",
         "checkAnotherDevice": "Revisar otro dispositivo"
       }
     },
     "footer": "Con la ayuda de <eolLink>endoflife.date</eolLink> y <sofaLink>SOFA</sofaLink> · Actualizado el {date}."
   },
   "tools": {
-    "metaTitle": "Herramientas que construimos | Activist Checklist",
-    "metaDescription": "Herramientas que construimos para acompañar nuestras listas: mapea tus riesgos antes de una acción, blinda tus redes sociales y revisa si tu teléfono aún recibe actualizaciones de seguridad.",
+    "metaTitle": "Herramientas que hicimos | Activist Checklist",
+    "metaDescription": "Herramientas que creamos para acompañar nuestras listas: mapear riesgos antes de una acción, blindar tus redes sociales y revisar si tu teléfono sigue recibiendo actualizaciones de seguridad.",
     "documentTitle": "Herramientas que creamos | Activist Checklist",
     "title": "Herramientas que creamos",
-    "intro": "Cuatro herramientas que construimos para acompañar las listas. Cada una cubre un paso que es difícil de completar solo con instrucciones escritas.",
+    "intro": "Cuatro herramientas que creamos para acompañar las listas. Cada una cubre un paso que cuesta terminar solo con instrucciones escritas.",
     "items": {
       "riskMapper": {
-        "eyebrow": "Planea una acción",
+        "eyebrow": "Planifica una acción",
         "name": "Risk Mapper",
         "short": "Mapea los riesgos en tu trabajo y las precauciones que puedes tomar.",
-        "lede": "Piensa qué podría salir mal antes de una acción y decide qué hará tu grupo al respecto.",
-        "bullet1": "Cada persona agrega los riesgos que le preocupan. Después arrastras cada uno a una cuadrícula: ¿qué tan probable es? y ¿qué tan grave sería?",
-        "bullet2": "Para los riesgos que caen arriba a la derecha, anotas dos cosas. Cómo hacerlos menos probables y cómo limitar el daño si ocurren de todos modos.",
-        "bullet3": "Compártelo con tu grupo por un enlace cifrado de extremo a extremo, o exporta un PDF para quienes no estuvieron en la reunión.",
+        "lede": "Piensa qué podría salir mal antes de una acción y decidan en grupo qué harán al respecto.",
+        "bullet1": "Cada quien agrega los riesgos que le preocupan. Después arrastran cada uno a una cuadrícula: ¿qué tan probable es? ¿qué tan grave sería?",
+        "bullet2": "Para los riesgos que caen en la esquina superior derecha, anotan dos cosas: cómo hacerlos menos probables, y cómo limitar el daño si pasan igual.",
+        "bullet3": "Compártelo con tu grupo por un enlace cifrado de extremo a extremo, o exporta un PDF para las personas que no estuvieron en la reunión.",
         "cta": "Abrir Risk Mapper",
-        "shotAlt": "Risk Mapper en medio de una sesión, con riesgos ubicados en una cuadrícula según qué tan probables son y qué tan graves serían."
+        "shotAlt": "Risk Mapper a mitad de sesión, con riesgos ubicados en una cuadrícula de qué tan probables son y qué tan graves serían."
       },
       "socialScrub": {
         "eyebrow": "Blinda tus perfiles",
         "name": "Social Scrub",
         "short": "Blinda tus cuentas de redes sociales, una a la vez.",
-        "lede": "Te guía por los mismos ocho pasos de privacidad en cada cuenta de redes sociales que tengas.",
-        "bullet1": "Elige tus plataformas de una lista de 130 sitios, incluidos los que se te habían olvidado. Agrega los que no incluyamos.",
-        "bullet2": "Para cada cuenta: bórrala o consérvala, cambia tu nombre visible y nombre de usuario, quita tu foto, saca tu ubicación y tu empleador de la bio, y blinda tus ajustes de privacidad.",
-        "bullet3": "Recuerda dónde te quedaste, así puedes hacer unas cuantas cuentas a la vez.",
+        "lede": "Te guía por los mismos ocho pasos de privacidad en cada cuenta de red social que tengas.",
+        "bullet1": "Elige tus plataformas de una lista de 130 sitios, incluidos los que olvidaste. Agrega cualquiera que nos haya faltado.",
+        "bullet2": "Para cada cuenta: bórrala o déjala, cambia tu nombre visible y nombre de usuario, quita tu foto, saca tu ubicación y empleador de la bio, y blinda tus ajustes de privacidad.",
+        "bullet3": "Recuerda dónde quedaste, así puedes hacer unas cuantas cuentas por vez.",
         "cta": "Abrir Social Scrub",
         "secondaryCta": "Guía de defensa contra doxxing",
-        "shotAlt": "Un perfil de muestra antes y después de una limpieza. El nombre, la foto, el usuario, la bio, la lista de amistades y la ubicación están cambiados u ocultos."
+        "shotAlt": "Un perfil de ejemplo antes y después de un scrub. El nombre, foto, nombre de usuario, bio, lista de amistades y ubicación están cambiados u ocultos."
       },
       "updates": {
-        "eyebrow": "Revisa tu dispositivo",
+        "eyebrow": "Verifica tu dispositivo",
         "name": "Verificador de actualizaciones de seguridad",
-        "short": "Revisa si tu teléfono aún recibe actualizaciones de seguridad.",
-        "lede": "Averigua si tu teléfono, tableta o laptop aún recibe actualizaciones de seguridad.",
-        "bullet1": "Escribe tu modelo. Si no lo sabes, la página te muestra dónde encontrarlo en tus ajustes.",
-        "bullet2": "Cuando un dispositivo deja de recibir actualizaciones, cada nuevo agujero de seguridad queda abierto. Eso hace mucho más fácil que entren spyware, un hacker o las herramientas forenses de los cops.",
-        "bullet3": "Cubre dispositivos Apple, Google, Samsung, Motorola, OnePlus y Nokia, más iOS, Android, macOS y Windows.",
-        "cta": "Revisar mi dispositivo",
-        "shotAlt": "El verificador de actualizaciones informando que un teléfono buscado dejó de recibir actualizaciones de seguridad, con consejos sobre qué hacer al respecto."
+        "short": "Revisa si tu teléfono sigue recibiendo actualizaciones de seguridad.",
+        "lede": "Averigua si tu teléfono, tableta o laptop sigue recibiendo actualizaciones de seguridad.",
+        "bullet1": "Escribe tu modelo. Si no lo sabes, la página te indica dónde encontrarlo en tus ajustes.",
+        "bullet2": "Cuando un dispositivo deja de recibir actualizaciones, cada nueva vulnerabilidad en él queda abierta. Eso hace mucho más fácil que entren spyware, hackers o herramientas forenses de la cops.",
+        "bullet3": "Cubre dispositivos de Apple, Google, Samsung, Motorola, OnePlus y Nokia, además de iOS, Android, macOS y Windows.",
+        "cta": "Verificar mi dispositivo",
+        "shotAlt": "El verificador de actualizaciones reportando que un teléfono buscado dejó de recibir actualizaciones de seguridad, con consejos sobre qué hacer."
       },
       "autoDelete": {
-        "eyebrow": "Borra chats viejos de IA",
-        "name": "Autoborrado de chats de IA",
-        "short": "Borra tus chats viejos de Claude según un horario.",
-        "lede": "Una extensión de Chrome que borra tus conversaciones viejas de Claude según el horario que tú fijes.",
-        "bullet1": "Tú eliges por cuánto tiempo conservarlos. Por defecto, todo lo mayor a 30 días.",
-        "bullet2": "Marca con estrella los chats que quieras conservar y los deja en paz. Puede preguntarte primero o correr solo.",
-        "bullet3": "Registra cuántos chats borró, no cuáles. Nada se nos envía a nosotros.",
+        "eyebrow": "Elimina chats viejos de IA",
+        "name": "Autoeliminación de chats de IA",
+        "short": "Elimina tus chats viejos de Claude de forma programada.",
+        "lede": "Una extensión de Chrome que elimina tus conversaciones viejas de Claude según el horario que tú elijas.",
+        "bullet1": "Tú eliges por cuánto tiempo guardarlos. Por defecto, cualquier cosa de más de 30 días.",
+        "bullet2": "Marca con estrella los chats que quieras conservar y los dejará en paz. Puede preguntarte antes, o correr solo.",
+        "bullet3": "Registra cuántos chats eliminó, no cuáles. No se nos envía nada.",
         "cta": "Agregar a Chrome",
-        "shotAlt": "La extensión configurada para borrar chats mayores a 30 días cada semana, con la barra que muestra en claude.ai cuando hay borrados pendientes."
+        "shotAlt": "La extensión configurada para eliminar chats de más de 30 días cada semana, con la barra que muestra en claude.ai cuando hay eliminaciones pendientes."
       }
     },
     "closing": {
       "title": "¿No estás seguro de cuál necesitas?",
-      "body": "Cada una de estas sale de una de nuestras listas. Empieza con la lista y te enviará a la herramienta cuando llegues a ese paso.",
+      "body": "Cada una sale de alguna de nuestras listas. Empieza por la lista y te llevará a la herramienta cuando llegues a ese paso.",
       "primaryCta": "Fundamentos de seguridad digital",
-      "secondaryCta": "Lista de defensa contra el doxxing",
-      "openSource": "Las cuatro son <repos>de código abierto</repos>. Si alguna está rota, o necesitas algo que aún no hayamos construido, <contact>cuéntanos</contact>."
+      "secondaryCta": "Lista de defensa contra doxxing",
+      "openSource": "Las cuatro son <repos>open source</repos>. Si alguna no funciona, o necesitas algo que todavía no hemos creado, <contact>avísanos</contact>."
     }
   }
 }

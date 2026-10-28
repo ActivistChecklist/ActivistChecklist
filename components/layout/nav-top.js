@@ -24,6 +24,7 @@ import {
 import { cn } from '@/lib/utils';
 import { createIntlTranslator, translateMainNavigation } from '@/lib/navigation-i18n';
 import { isRtlLocale } from '@/lib/rtl';
+import ChecklistsMenu from '@/components/layout/ChecklistsMenu';
 
 const TopNav = ({ hideOnScroll = false, maxWidth }) => {
   const pathname = usePathname();
@@ -108,7 +109,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                         href={social.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        aria-label={social.ariaLabel}
+                        aria-label={t(`footer.social.${social.key}AriaLabel`)}
                         className="inline-flex items-center justify-center h-9 w-9 rounded-md text-foreground/70 hover:text-foreground hover:bg-muted transition-colors"
                       >
                         <social.icon className="h-5 w-5" aria-hidden="true" />
@@ -142,33 +143,27 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                           >
                             {item.label}
                           </Link>
-                          {item.items.map((subItem) => (
-                            <Link
-                              key={subItem.key}
-                              href={subItem.href}
-                              className={cn(
-                                'flex items-center gap-2 ps-4 py-1 text-md border-s-2 border-s-transparent hover:border-s-foreground/20',
-                                isSubItemActive(subItem, pathname) &&
-                                  'border-link font-bold text-link',
-                              )}
-                            >
-                              {subItem.icon && <subItem.icon className="h-4 w-4" />}
-                              {subItem.title}
-                            </Link>
-                          ))}
-                          {item.items.length > 0 && item.key === 'security-checklists' && (
-                            <Link
-                              href="/checklists/"
-                              className={cn(
-                                'flex items-center gap-2 ps-4 py-2 text-md border-s-2 border-s-transparent hover:border-s-foreground/20 text-muted-foreground group',
-                                item.footerLink?.className,
-                              )}
-                            >
-                              {item.footerLink?.title || 'Browse all checklists'}
-                              {item.footerLink?.icon && (
-                                <item.footerLink.icon className={item.footerLink.iconClassName} />
-                              )}
-                            </Link>
+                          {item.key === 'checklists' ? (
+                            <ChecklistsMenu
+                              variant="mobile"
+                              pathname={pathname}
+                              footerLink={item.footerLink}
+                            />
+                          ) : (
+                            item.items.map((subItem) => (
+                              <Link
+                                key={subItem.key}
+                                href={subItem.href}
+                                className={cn(
+                                  'flex items-center gap-2 ps-4 py-1 text-md border-s-2 border-s-transparent hover:border-s-foreground/20',
+                                  isSubItemActive(subItem, pathname) &&
+                                    'border-link font-bold text-link',
+                                )}
+                              >
+                                {subItem.icon && <subItem.icon className="h-4 w-4" />}
+                                {subItem.title}
+                              </Link>
+                            ))
                           )}
                         </div>
                       ),
@@ -214,74 +209,78 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                               {item.label}
                             </NavigationMenuTrigger>
                             <NavigationMenuContent>
-                              <ul
-                                className={cn(
-                                  'grid w-[400px] gap-3 p-4',
-                                  item.columns === 2
-                                    ? 'md:w-[500px] md:grid-cols-2'
-                                    : 'md:w-[200px]',
-                                )}
-                              >
-                                {item.items.map((subItem) => (
-                                  <li key={subItem.key}>
-                                    <NavigationMenuLink asChild>
-                                      <Link
-                                        href={subItem.href}
-                                        className={cn(
-                                          'block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-hidden transition-colors hover:bg-muted hover:text-link focus:bg-muted focus:text-link',
-                                          isSubItemActive(subItem, pathname) && 'bg-muted',
-                                        )}
-                                      >
-                                        <div className="flex items-center gap-2">
-                                          {subItem.icon && <subItem.icon className="h-4 w-4" />}
-                                          <div className="text-sm font-medium leading-none">
-                                            {subItem.title}
-                                          </div>
-                                        </div>
-                                        {subItem.description && (
-                                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                                            {subItem.description}
-                                          </p>
-                                        )}
-                                      </Link>
-                                    </NavigationMenuLink>
-                                  </li>
-                                ))}
-                                {item.footerLink && (
-                                  <li
-                                    className={cn(
-                                      'col-span-1',
-                                      item.footerLink.type === 'full-width' &&
-                                        item.items.length % 2 === 0
-                                        ? 'md:col-span-2'
-                                        : '',
-                                    )}
-                                  >
-                                    <NavigationMenuLink asChild>
-                                      <Link
-                                        href={item.footerLink.href}
-                                        className={cn(
-                                          'block select-none rounded-md p-2 no-underline outline-hidden transition-colors hover:bg-muted hover:text-link focus:bg-muted focus:text-link text-center',
-                                          item.footerLink.type === 'full-width' &&
-                                            item.items.length % 2 === 0
-                                            ? 'bg-muted'
-                                            : 'bg-muted h-full flex items-center justify-center',
-                                          item.footerLink.className,
-                                        )}
-                                      >
-                                        <div className="text-sm font-medium flex items-center justify-center w-full gap-2">
-                                          {item.footerLink.title}
-                                          {item.footerLink.icon && (
-                                            <item.footerLink.icon
-                                              className={item.footerLink.iconClassName}
-                                            />
+                              {item.key === 'checklists' ? (
+                                <ChecklistsMenu pathname={pathname} footerLink={item.footerLink} />
+                              ) : (
+                                <ul
+                                  className={cn(
+                                    'grid w-[400px] gap-3 p-4',
+                                    item.columns === 2
+                                      ? 'md:w-[500px] md:grid-cols-2'
+                                      : 'md:w-[260px]',
+                                  )}
+                                >
+                                  {item.items.map((subItem) => (
+                                    <li key={subItem.key}>
+                                      <NavigationMenuLink asChild>
+                                        <Link
+                                          href={subItem.href}
+                                          className={cn(
+                                            'block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-hidden transition-colors hover:bg-muted hover:text-link focus:bg-muted focus:text-link',
+                                            isSubItemActive(subItem, pathname) && 'bg-muted',
                                           )}
-                                        </div>
-                                      </Link>
-                                    </NavigationMenuLink>
-                                  </li>
-                                )}
-                              </ul>
+                                        >
+                                          <div className="flex items-center gap-2">
+                                            {subItem.icon && <subItem.icon className="h-4 w-4" />}
+                                            <div className="text-sm font-medium leading-none">
+                                              {subItem.title}
+                                            </div>
+                                          </div>
+                                          {subItem.description && (
+                                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                                              {subItem.description}
+                                            </p>
+                                          )}
+                                        </Link>
+                                      </NavigationMenuLink>
+                                    </li>
+                                  ))}
+                                  {item.footerLink && (
+                                    <li
+                                      className={cn(
+                                        'col-span-1',
+                                        item.footerLink.type === 'full-width' &&
+                                          item.items.length % 2 === 0
+                                          ? 'md:col-span-2'
+                                          : '',
+                                      )}
+                                    >
+                                      <NavigationMenuLink asChild>
+                                        <Link
+                                          href={item.footerLink.href}
+                                          className={cn(
+                                            'block select-none rounded-md p-2 no-underline outline-hidden transition-colors hover:bg-muted hover:text-link focus:bg-muted focus:text-link text-center',
+                                            item.footerLink.type === 'full-width' &&
+                                              item.items.length % 2 === 0
+                                              ? 'bg-muted'
+                                              : 'bg-muted h-full flex items-center justify-center',
+                                            item.footerLink.className,
+                                          )}
+                                        >
+                                          <div className="text-sm font-medium flex items-center justify-center w-full gap-2">
+                                            {item.footerLink.title}
+                                            {item.footerLink.icon && (
+                                              <item.footerLink.icon
+                                                className={item.footerLink.iconClassName}
+                                              />
+                                            )}
+                                          </div>
+                                        </Link>
+                                      </NavigationMenuLink>
+                                    </li>
+                                  )}
+                                </ul>
+                              )}
                             </NavigationMenuContent>
                           </>
                         ) : (

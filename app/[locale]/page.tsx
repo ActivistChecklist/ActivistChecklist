@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { setRequestLocale } from 'next-intl/server';
-import { getAllChangelogEntries, toChangelogListEntry } from '@/lib/content';
+import { getAllChangelogEntries, getAllGuides, toChangelogListEntry } from '@/lib/content';
 import HomePageContent from '@/components/pages/HomePageContent';
 import HomeNewsSection from './HomeNewsSection';
 import { DEFAULT_LOCALE, LOCALES } from '@/lib/i18n-config';
@@ -9,6 +9,7 @@ import { getOgImagePathForSlug } from '@/lib/og-image';
 import { getOpenGraphLocale } from '@/lib/rtl';
 import JsonLd from '@/components/JsonLd';
 import { buildHomePageGraph } from '@/lib/structured-data';
+import { getSectionReadMinutes } from '@/lib/section-reads';
 
 function getMessageValue(messages, keyPath) {
   return keyPath
@@ -78,6 +79,13 @@ export default async function HomePage({ params }) {
       <HomePageContent
         changelogEntries={changelogEntries.slice(0, 5)}
         latestMajorBodyText={latestMajor?.bodyText ?? null}
+        readMinutes={getSectionReadMinutes(locale)}
+        estimatedTimes={Object.fromEntries(
+          getAllGuides(locale).map((g) => [
+            g.frontmatter.slug || g.slug,
+            g.frontmatter.estimatedTime,
+          ]),
+        )}
         locale={locale}
       >
         <HomeNewsSection locale={locale} />

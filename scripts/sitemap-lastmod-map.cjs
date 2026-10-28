@@ -9,6 +9,7 @@
 const fs = require('fs');
 const path = require('path');
 const { parseFrontmatter } = require('../lib/frontmatter.cjs');
+const { stripLocalePrefix } = require('./sitemap-seo-fields.cjs');
 
 /** @param {string[]} dates */
 function maxIsoDate(dates) {
@@ -105,7 +106,7 @@ function buildLastmodByPath() {
 }
 
 /**
- * Resolve lastmod for a canonical path from the export (may include /es/).
+ * Resolve lastmod for a canonical path from the export (may include /es/, /fr/).
  * @param {string} canonicalLoc e.g. /signal/ or /es/signal/
  * @param {Map<string, string>} lastmodByPath
  */
@@ -113,13 +114,7 @@ function lookupContentLastmod(canonicalLoc, lastmodByPath) {
   let key = canonicalLoc.startsWith('/') ? canonicalLoc : `/${canonicalLoc}`;
   if (!key.endsWith('/')) key = `${key}/`;
 
-  if (key.startsWith('/es/')) {
-    const rest = key.slice(4);
-    key = rest ? `/${rest.replace(/\/$/, '')}/` : '/';
-  }
-  if (key === '/en/' || key === '/en') key = '/';
-
-  return lastmodByPath.get(key) || null;
+  return lastmodByPath.get(stripLocalePrefix(key)) || null;
 }
 
 module.exports = {

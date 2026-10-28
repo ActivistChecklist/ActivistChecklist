@@ -44,7 +44,7 @@ export const TOOLS = [
     id: 'ai-chat-auto-delete',
     icon: Trash2,
     accent: 'text-info',
-    href: 'https://chromewebstore.google.com/detail/ai-chat-history-auto-dele/ipmoefogkkpbgpbniklknonnmbmcbnpk',
+    href: 'https://activistchecklist.github.io/ai-chat-history-auto-delete-extension/',
     shotUrl: 'AI chat auto-delete · Settings',
   },
 ];
