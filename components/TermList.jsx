@@ -33,11 +33,15 @@ export default function TermList() {
         return (
           <section
             key={slug}
-            id={slug}
-            className="-mx-3 scroll-mt-4 rounded-lg border-t border-border px-3 py-6 first:border-t-0 target:border-transparent target:bg-muted"
+            className="-mx-3 rounded-lg border-t border-border px-3 py-6 first:border-t-0 has-target:border-transparent has-target:bg-muted"
           >
             <div className="flex items-center gap-2">
-              <h2 className="text-xl font-bold sm:text-2xl">{term}</h2>
+              {/* The id is on the heading, not the section, because Pagefind
+                  only gives headings with an id their own search result. The
+                  scroll margin covers the section's top padding. */}
+              <h2 id={slug} className="scroll-mt-10 text-xl font-bold sm:text-2xl">
+                {term}
+              </h2>
               <CopyLinkButton slug={slug} label={t('terms.copyLink')} />
             </div>
             {/* raw, not t(): definitions are inline Markdown with no ICU arguments */}
