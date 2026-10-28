@@ -159,8 +159,29 @@ describe('highlightParts', () => {
     expect(marked(highlightParts('C++ (and more)', 'c++'))).toEqual(['C']);
   });
 
+  it('keeps markup characters in the title as plain text for React to escape', () => {
+    const parts = highlightParts('Travel & Flight <b>Security</b>', 'b security');
+    expect(marked(parts)).toEqual(['b', 'Security', 'b']);
+    expect(parts.map((p) => p.text).join('')).toBe('Travel & Flight <b>Security</b>');
+  });
+
   it('matches accented words in other languages', () => {
     expect(marked(highlightParts('Protección básica', 'protec'))).toEqual(['Protección']);
+  });
+
+  it('marks only the term inside Japanese text, which has no spaces', () => {
+    const parts = highlightParts('暗号化アプリの使い方', 'アプリ');
+    expect(marked(parts)).toEqual(['アプリ']);
+    expect(parts.map((p) => p.text).join('')).toBe('暗号化アプリの使い方');
+    expect(marked(highlightParts('メッセージの保存期間', 'メッセージ'))).toEqual(['メッセージ']);
+  });
+
+  it('separates a Latin word from the Japanese text next to it', () => {
+    expect(marked(highlightParts('Signalの設定方法', 'signal 設定'))).toEqual(['Signal', '設定']);
+  });
+
+  it('prefers the longer term where two overlap in Japanese text', () => {
+    expect(marked(highlightParts('暗号化について', '暗号 暗号化'))).toEqual(['暗号化']);
   });
 
   it('returns the text unmarked for an empty query', () => {
