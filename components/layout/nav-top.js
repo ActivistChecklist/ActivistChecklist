@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import Link from '@/components/Link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -25,11 +25,75 @@ import { cn } from '@/lib/utils';
 import { createIntlTranslator, translateMainNavigation } from '@/lib/navigation-i18n';
 import ChecklistsMenu from '@/components/layout/ChecklistsMenu';
 
+// The logo's natural width (the <Image> width below).
+const LOGO_WIDTH = 250;
+// The logo stops shrinking here (md:min-w-[8rem] on its link); past it the
+// desktop nav folds into the menu button instead.
+const LOGO_MIN_REM = 8;
+// The header search box (w-52 in Search.js) and the icon it turns into (w-9).
+const SEARCH_BOX_REM = 13;
+const SEARCH_ICON_REM = 2.25;
+
+/**
+ * Fit the header to the room its labels actually need, not to fixed
+ * breakpoints: nav labels vary a lot by language (the Japanese nav is about
+ * 40% wider than the English one). The search box turns into an icon as soon
+ * as the logo can't have its full width. If the logo would still drop below its
+ * minimum, the desktop nav folds into the menu button. A folded nav stays
+ * rendered (invisible and out of flow) so its width can still be measured.
+ * Until this runs, the server-rendered header uses the md/lg breakpoints.
+ */
+function useHeaderFit() {
+  const rowRef = useRef(null);
+  const navRef = useRef(null);
+  const toolsRef = useRef(null);
+  const [fit, setFit] = useState({ searchCompact: false, navFits: true });
+
+  // Layout effect, so the first hydrated frame is already the measured layout.
+  useLayoutEffect(() => {
+    const row = rowRef.current;
+    const nav = navRef.current;
+    const tools = toolsRef.current;
+    if (!row || !nav || !tools) return;
+
+    const gapOf = (el) => parseFloat(getComputedStyle(el).columnGap) || 0;
+    const check = () => {
+      const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+      const iconWidth = SEARCH_ICON_REM * rem;
+      // If the box is showing, count it as the icon.
+      const boxWidth = tools.querySelector('[data-search-box]')?.offsetWidth || 0;
+      // Everything right of the logo, with the search as an icon. The tools'
+      // parent holds the nav and the tools, so its gap sits between them.
+      const navAndTools =
+        gapOf(row) +
+        nav.offsetWidth +
+        gapOf(tools.parentElement) +
+        tools.offsetWidth -
+        (boxWidth ? boxWidth - iconWidth : 0);
+      const searchCompact =
+        LOGO_WIDTH + navAndTools + (SEARCH_BOX_REM * rem - iconWidth) > row.clientWidth;
+      const navFits = LOGO_MIN_REM * rem + navAndTools <= row.clientWidth;
+      setFit((prev) =>
+        prev.searchCompact === searchCompact && prev.navFits === navFits
+          ? prev
+          : { searchCompact, navFits },
+      );
+    };
+
+    const observer = new ResizeObserver(check);
+    [row, nav, tools].forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
+  return { ...fit, rowRef, navRef, toolsRef };
+}
+
 const TopNav = ({ hideOnScroll = false, maxWidth }) => {
   const pathname = usePathname();
   const t = useTranslations();
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
+  const { searchCompact, navFits, rowRef, navRef, toolsRef } = useHeaderFit();
 
   const translateText = createIntlTranslator(t);
 
@@ -84,14 +148,17 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
       >
         {/* Normal top nav bar */}
         <div className={cn(maxWidth, 'mx-auto px-4')}>
-          <div className="flex h-14 items-center justify-between">
+          <div ref={rowRef} className="flex h-14 items-center justify-between gap-2">
             <div className="flex items-center">
               <Sheet>
                 <SheetTrigger asChild>
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="md:hidden mr-2 text-foreground hover:text-foreground/80"
+                    className={cn(
+                      'mr-2 text-foreground hover:text-foreground/80',
+                      navFits && 'md:hidden',
+                    )}
                     aria-label="Open navigation menu"
                   >
                     <Menu className="h-6 w-6" aria-hidden="true" />
@@ -170,27 +237,34 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
               </Sheet>
               <Link
                 href={navigationConfig.logo.href}
-                className="flex items-center space-x-2 ml-0 font-bold text-xl"
+                className="flex items-center space-x-2 ml-0 font-bold text-xl md:min-w-[8rem]"
                 aria-label={navigationConfig.logo.ariaLabel}
               >
                 <Image
                   src={navigationConfig.logo.image}
                   alt={navigationConfig.logo.ariaLabel}
-                  width={250}
+                  width={LOGO_WIDTH}
                   height={30}
                   className="dark:hidden"
                 />
                 <Image
                   src="/images/logo-bg-white-transparent.png"
                   alt={navigationConfig.logo.ariaLabel}
-                  width={250}
+                  width={LOGO_WIDTH}
                   height={30}
                   className="hidden dark:block"
                 />
               </Link>
             </div>
             <div className="flex items-center gap-4">
-              <div className="hidden md:flex items-center space-x-4">
+              <div
+                ref={navRef}
+                inert={!navFits}
+                className={cn(
+                  'hidden md:flex items-center space-x-4',
+                  !navFits && 'md:invisible md:absolute md:top-0 md:right-0',
+                )}
+              >
                 <NavigationMenu>
                   <NavigationMenuList>
                     {translatedMainNav.map((item, mainIndex) => (
@@ -290,8 +364,8 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                   </NavigationMenuList>
                 </NavigationMenu>
               </div>
-              <div className="flex items-center md:gap-2">
-                <Search variant="header" />
+              <div ref={toolsRef} className="flex items-center md:gap-2">
+                <Search variant="header" compact={searchCompact} />
                 <LanguageSwitcher />
                 <DarkModeToggle className="h-9 w-9 hover:bg-muted" />
               </div>

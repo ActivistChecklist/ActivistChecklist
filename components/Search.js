@@ -60,10 +60,11 @@ const Highlighted = ({ text, query }) =>
 
 /**
  * Site search. `variant="header"` is the one in the top bar: a search field
- * from lg up, an icon below, and it owns the Cmd/Ctrl+K shortcut. Other
+ * from lg up, an icon below, and it owns the Cmd/Ctrl+K shortcut. `compact`
+ * keeps it an icon at any width, for when the header is short on room. Other
  * instances (the mobile menu) are an icon only.
  */
-const Search = ({ variant = 'icon', className }) => {
+const Search = ({ variant = 'icon', compact = false, className }) => {
   const t = useTranslations();
   const { addDebugData } = useDebug();
   const translateText = useMemo(() => createIntlTranslator(t), [t]);
@@ -348,8 +349,10 @@ const Search = ({ variant = 'icon', className }) => {
           aria-haspopup="dialog"
           aria-label={t('search.dialogTitle')}
           aria-keyshortcuts="Meta+K Control+K"
+          data-search-box
           className={cn(
-            'hidden lg:flex h-9 w-52 items-center gap-2 rounded-md border border-input bg-background px-3',
+            'hidden h-9 w-52 items-center gap-2 rounded-md border border-input bg-background px-3',
+            !compact && 'lg:flex',
             'text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground',
             'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring',
             className,
@@ -368,7 +371,11 @@ const Search = ({ variant = 'icon', className }) => {
         onFocus={warmUp}
         aria-haspopup="dialog"
         aria-label={t('search.dialogTitle')}
-        className={cn('h-9 w-9 hover:bg-muted', variant === 'header' && 'lg:hidden', className)}
+        className={cn(
+          'h-9 w-9 hover:bg-muted',
+          variant === 'header' && !compact && 'lg:hidden',
+          className,
+        )}
       >
         <IoSearch className="h-5 w-5" />
       </Button>
