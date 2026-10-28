@@ -2,7 +2,7 @@
 title: حماية خصوصيتك
 seoDescription: ما نجمعه (لا شيء تقريبًا) ولماذا. تم بناء Activist Checklist بحيث حتى لو تلقى مذكرة استدعاء، فلن يكون هناك شيء مفيد لتسليمه.
 firstPublished: 2025-01-09
-lastUpdated: 2026-05-23
+lastUpdated: 2026-10-27
 showToc: true
 ---
 
@@ -23,7 +23,7 @@ showToc: true
 * ❌ لا يتم تسجيل أي عناوين IP إطلاقًا
 * ❌ لا يتم تخزين أي ملفات تعريف ارتباط cookies على جهازك
 * ❌ لا يتم تحميل أي خدمات خارجية أو مكتبات تابعة لأطراف ثالثة في متصفحك يمكن أن تكشف معلوماتك الشخصية (مثل عنوان IP)
-* ❌ لا تُجمع أي من معلوماتك الشخصية على خوادمنا أو تُرسل إلى أي خوادم تابعة لأطراف ثالثة.
+* ❌ لا تُجمع أي من معلوماتك الشخصية على خوادمنا أو تُرسل إلى أي خوادم تابعة لأطراف ثالثة. The one exception is a message you choose to send us through our contact form, which is encrypted before it leaves our server ([see below](#contact-form)).
 
 ## ما نتتبعه فعلًا
 
@@ -67,9 +67,13 @@ showToc: true
 
 إذا أردت، يمكنك مراجعة [الكود هنا](https://github.com/ActivistChecklist/ActivistChecklist/blob/main/api/counter.js).
 
-## نموذج الاتصال
+## نموذج الاتصال {#contact-form}
 
-إذا راسلتنا باستخدام [نموذج الاتصال](/contact/) الخاص بنا، فإن الرسالة يتم [تشفيرها](https://proton.me/blog/what-is-pgp-encryption) قبل إرسالها إلى حساب Proton Mail الخاص بنا. مشاركة بريدك الإلكتروني اختيارية. إذا شاركت عنوان بريدك الإلكتروني لنرد عليك ولم يكن عنوان Proton Mail، فسيتمكن مزود بريدك الإلكتروني من رؤية محادثتنا بمجرد أن نرد.
+If you message us using our [contact form](/contact/), our server [encrypts](https://proton.me/blog/what-is-pgp-encryption) your message, along with any contact details you give us, before it leaves our server. Only we can read it.
+
+We use [Resend](https://resend.com/legal/privacy-policy), an email delivery service, to deliver the encrypted message to our Proton Mail account. Resend sees the encrypted message and the time it was sent. It does not see your IP address, because the message comes from our server, not from your browser.
+
+مشاركة بريدك الإلكتروني اختيارية. إذا شاركت عنوان بريدك الإلكتروني لنرد عليك ولم يكن عنوان Proton Mail، فسيتمكن مزود بريدك الإلكتروني من رؤية محادثتنا بمجرد أن نرد.
 
 إذا أردت، يمكنك مراجعة [الكود هنا](https://github.com/ActivistChecklist/ActivistChecklist/blob/main/api/contact.js).
 
