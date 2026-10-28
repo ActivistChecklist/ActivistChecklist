@@ -8,16 +8,19 @@ import ChangeLogTimelineMarker from '@/components/ChangeLogTimelineMarker';
 import RSSButton from '@/components/ui/RSSButton';
 import { cn } from '@/lib/utils';
 
-export const metadata = {
-  title: 'Recent Site Updates - Activist Checklist',
-  description:
-    'Complete changelog of updates and improvements to Activist Checklist digital security guides.',
-  alternates: {
-    types: {
-      'application/rss+xml': '/rss/changelog.xml',
+export async function generateMetadata({ params }) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale });
+  return {
+    title: `${t('changelog.title')} | Activist Checklist`,
+    description: t('changelog.description'),
+    alternates: {
+      types: {
+        'application/rss+xml': '/rss/changelog.xml',
+      },
     },
-  },
-};
+  };
+}
 
 function groupEntriesByTime(entries) {
   const now = new Date();

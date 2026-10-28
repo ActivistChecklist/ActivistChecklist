@@ -7,9 +7,13 @@ import { IoLogoGithub, IoKeyOutline } from 'react-icons/io5';
 import ContactForm from '@/components/forms/ContactForm';
 import { STATIC_PATHS } from '@/config/navigation';
 
-export const metadata = {
-  title: 'Contact Us | Activist Checklist',
-};
+export async function generateMetadata({ params }) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale });
+  return {
+    title: `${t('contact.title')} | Activist Checklist`,
+  };
+}
 
 export default async function ContactPage({ params }) {
   const { locale } = await params;

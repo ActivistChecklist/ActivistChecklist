@@ -8,10 +8,14 @@ import RSSButton from '@/components/ui/RSSButton';
 import Link from '@/components/Link';
 import { cn } from '@/lib/utils';
 
-export const metadata = {
-  title: 'Surveillance News - Activist Checklist',
-  description: 'Latest news about state surveillance and threats facing social movements.',
-};
+export async function generateMetadata({ params }) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale });
+  return {
+    title: `${t('news.title')} | Activist Checklist`,
+    description: t('news.description'),
+  };
+}
 
 function groupNewsByYear(items) {
   const groups = {};

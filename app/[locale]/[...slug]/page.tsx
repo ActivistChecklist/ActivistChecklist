@@ -29,9 +29,6 @@ import JsonLd from '@/components/JsonLd';
 import { buildContentPageGraph, buildHowTo, TOP_GUIDE_SLUGS } from '@/lib/structured-data';
 import { getSectionReadMinutes } from '@/lib/section-reads';
 
-const DEFAULT_DESCRIPTION =
-  'Plain language steps for digital security, because protecting yourself helps keep your whole community safer. Built by activists, for activists with field-tested, community-verified guides.';
-
 /**
  * What the auto-generated OG card shows. Cards are English-only (the label and
  * button are English), so every locale uses the English title. Otherwise each
@@ -140,19 +137,20 @@ export async function generateMetadata({ params }) {
   if (!content) return {};
 
   const { frontmatter } = content;
+  const t = await getTranslations({ locale });
   // seoTitle: full <title> override when set. Otherwise fall back to the
   // suffixed pattern that's been the site default.
   const pageTitle = frontmatter?.seoTitle
     ? frontmatter.seoTitle
     : frontmatter?.title
-      ? `${frontmatter.title} | Digital Security Checklists for Activists`
-      : 'Digital Security Checklists for Activists';
+      ? `${frontmatter.title} | ${t('site.title')}`
+      : t('site.title');
   const pageDescription =
     frontmatter?.seoDescription ||
     frontmatter?.excerpt ||
     frontmatter?.summary ||
     frontmatter?.description ||
-    DEFAULT_DESCRIPTION;
+    t('site.description');
   const ogCard = await getOgCard(slug, locale, frontmatter, guide ? 'guide' : 'page');
   const ogImageUrl = resolveOgImageUrl(frontmatter, slug, baseUrl, ogCard);
 
