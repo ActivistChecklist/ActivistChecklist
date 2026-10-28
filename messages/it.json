@@ -84,6 +84,10 @@
       "title": "Strumenti che abbiamo creato",
       "label": "Strumenti che abbiamo creato"
     },
+    "glossary": {
+      "title": "Termini e definizioni",
+      "label": "Termini e definizioni"
+    },
     "resources": {
       "title": "Risorse",
       "label": "Risorse"
@@ -833,6 +837,13 @@
       "secondaryCta": "Checklist per difendersi dal doxxing",
       "openSource": "Sono tutti e quattro <repos>open source</repos>. Se qualcosa non funziona o ti serve qualcosa che non abbiamo ancora creato, <contact>faccelo sapere</contact>."
     }
+  },
+  "terms": {
+    "metaTitle": "Termini e definizioni | Activist Checklist",
+    "metaDescription": "Definizioni semplici e chiare dei termini di sicurezza digitale e sorveglianza in cui ci si imbatte nell'attivismo, dal doxxing ai data broker, fino agli stingray e ai geofence warrant.",
+    "title": "Termini e definizioni",
+    "intro": "Definizioni semplici e chiare dei termini di sicurezza e sorveglianza che usiamo nelle nostre checklist e guide. Nel resto del sito, i termini sottolineati con una linea tratteggiata aprono queste definizioni in un popup.",
+    "copyLink": "Copia il link a questo termine"
   },
   "definitions": {
     "closeAriaLabel": "Chiudi",
