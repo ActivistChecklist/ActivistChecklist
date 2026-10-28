@@ -16,6 +16,7 @@ import { useAnalytics } from '@/hooks/use-analytics';
 import { useTranslations } from 'next-intl';
 import { migrateLegacyChecklistKeysForSlug } from '@/lib/checklist-storage-migrate';
 import { useChecklistProgressActions } from '@/contexts/ChecklistProgressContext';
+import { checklistItemAnchorId } from '@/lib/search';
 
 const TITLE_BADGE_VARIANTS = {
   important: 'destructive',
@@ -278,9 +279,11 @@ const ChecklistItem = ({
                     isChecked && `opacity-${checkedOpacity}`,
                   )}
                 >
+                  {/* Before mount the id is a search-only anchor, so the static
+                      HTML gives Pagefind one hit per item (see lib/search.js). */}
                   <h3
                     className="inline mt-0 text-lg"
-                    id={hasMounted ? itemSlug : undefined}
+                    id={hasMounted ? itemSlug : checklistItemAnchorId(itemSlug)}
                     data-slug={itemSlug}
                   >
                     {itemTitleBadges && itemTitleBadges.length > 0 && (
@@ -293,6 +296,7 @@ const ChecklistItem = ({
                             <Badge
                               key={index}
                               variant={variant}
+                              data-pagefind-ignore
                               className={cn(
                                 'text-xs inline mr-2 align-middle',
                                 isChecked && 'opacity-50',
@@ -358,6 +362,7 @@ const ChecklistItem = ({
                 size="sm"
                 aria-expanded={expanded}
                 aria-controls={`checklist-body-${itemSlug}`}
+                data-pagefind-ignore
                 className={cn(
                   'flex h-9 w-full justify-start gap-2 px-2 sm:hidden',
                   '-ml-2',
@@ -417,6 +422,7 @@ const ChecklistItem = ({
               {/* Mark as done button row */}
               {itemType !== 'info' && (
                 <div
+                  data-pagefind-ignore
                   className={cn(
                     'pt-4 border-muted-foreground/20',
                     'flex flex-col sm:flex-row items-start sm:items-center gap-3',
