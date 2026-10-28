@@ -850,6 +850,12 @@
       "source": "Doxxing Defense Checklist",
       "url": "/doxxing/"
     },
+    "people-search-sites": {
+      "term": "People Search Sites",
+      "definition": "Websites that collect and sell personal information (such as your address, phone number, and relatives) to anyone willing to pay for it. Police, stalkers, and people trying to [dox you](term:doxxing) can buy this data.",
+      "source": "Doxxing Defense Checklist",
+      "url": "/doxxing/"
+    },
     "encryption": {
       "term": "Encryption",
       "definition": "Scrambling information so that only someone with the right key, like your password or passcode, can read it. To anyone else, encrypted data looks like random, unreadable text.",

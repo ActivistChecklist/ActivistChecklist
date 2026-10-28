@@ -1,5 +1,5 @@
 // @ts-nocheck — ui/button.jsx has loose typings for variant/size/children
-import { cookies, draftMode } from 'next/headers';
+import { draftMode } from 'next/headers';
 import {
   Check,
   CircleHelp,
@@ -18,6 +18,7 @@ import { getGuide, getPage } from '@/lib/content';
 import { getPreviewVsDefaultFileStatus } from '@/lib/github-preview-diff-status.mjs';
 import { keystaticItemEditPath } from '@/lib/keystatic-admin-url';
 import { githubBlobUrl } from '@/lib/github-web-url';
+import { getPreviewBranch } from '@/lib/preview-branch';
 import { getCanonicalGithubRepo, getGithubRepoForContentFetch } from '@/lib/preview-github-repo';
 
 type Props = {
@@ -73,6 +74,23 @@ const DIFF_BADGE = {
   },
 };
 
+function EndPreviewButton() {
+  return (
+    <form method="POST" action="/preview/end" className="inline-flex">
+      <Button
+        type="submit"
+        variant="outline"
+        size="sm"
+        className={btnClass}
+        title="Leave draft preview"
+      >
+        <Hand className="h-3.5 w-3.5 shrink-0" aria-hidden />
+        End preview
+      </Button>
+    </form>
+  );
+}
+
 /**
  * Shown when viewing the site in Keystatic draft preview mode (/preview/start).
  */
@@ -87,7 +105,22 @@ export default async function DraftPreviewBanner({ locale, slug }: Props) {
     return null;
   }
 
-  const branch = (await cookies()).get('ks-branch')?.value;
+  const branch = await getPreviewBranch();
+  if (!branch) {
+    // Draft mode outlives the 8-hour preview grant (or a changed signing key), and without a
+    // grant pages render published content, so say that instead of showing a stale preview.
+    return (
+      <div className="border-b border-amber-500/35 bg-amber-500/12 dark:bg-amber-950/25">
+        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+          <p className="text-sm text-amber-950 dark:text-amber-50">
+            <span className="font-semibold">Draft preview expired.</span> This page shows the
+            published content. Open the preview again from Keystatic.
+          </p>
+          <EndPreviewButton />
+        </div>
+      </div>
+    );
+  }
   const previewRepo = await getGithubRepoForContentFetch();
   const canonicalRepo = getCanonicalGithubRepo();
   const isForkPreview =
@@ -195,18 +228,7 @@ export default async function DraftPreviewBanner({ locale, slug }: Props) {
               </Link>
             </Button>
           ) : null}
-          <form method="POST" action="/preview/end" className="inline-flex">
-            <Button
-              type="submit"
-              variant="outline"
-              size="sm"
-              className={btnClass}
-              title="Leave draft preview"
-            >
-              <Hand className="h-3.5 w-3.5 shrink-0" aria-hidden />
-              End preview
-            </Button>
-          </form>
+          <EndPreviewButton />
         </div>
       </div>
     </div>

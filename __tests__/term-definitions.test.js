@@ -9,8 +9,9 @@ import {
   termLinkSlug,
 } from '@/lib/inline-markdown';
 
-// <Term> silently falls back to plain text when its slug has no definition,
-// so a typo in content would quietly drop the popup. Catch that here.
+// <Term> renders its children as plain text when the slug has no definition,
+// so a typo'd or removed slug would otherwise ship silently. Every locale is
+// checked against en.json because other locales fall back to it.
 
 const CONTENT_DIR = path.join(__dirname, '..', 'content');
 
@@ -25,6 +26,17 @@ function listMdxFiles(dir) {
 const definitions = Object.entries(messages.definitions).filter(
   ([, value]) => typeof value === 'object',
 );
+
+// matches the tag whatever order its attributes are in, so a <Term> without a slug is caught too
+function termUsages() {
+  return listMdxFiles(CONTENT_DIR).flatMap((file) => {
+    const source = fs.readFileSync(file, 'utf8');
+    return [...source.matchAll(/<Term\b[^>]*>/g)].map(([tag]) => ({
+      file: path.relative(CONTENT_DIR, file),
+      slug: tag.match(/\bslug=["']([^"']+)["']/)?.[1] ?? null,
+    }));
+  });
+}
 
 describe('term definitions', () => {
   it('every definition has a term and a definition', () => {
@@ -92,16 +104,14 @@ describe('term definitions', () => {
     }
   });
 
-  it('every <Term slug> used in content has a definition', () => {
-    const missing = [];
-    for (const file of listMdxFiles(CONTENT_DIR)) {
-      const text = fs.readFileSync(file, 'utf8');
-      for (const match of text.matchAll(/<Term\s+slug=["']([^"']+)["']/g)) {
-        if (!messages.definitions[match[1]]?.definition) {
-          missing.push(`${path.relative(CONTENT_DIR, file)}: ${match[1]}`);
-        }
-      }
-    }
+  it('finds <Term> usages in content', () => {
+    expect(termUsages().length).toBeGreaterThan(0);
+  });
+
+  it('every <Term> in content has a slug with a definition', () => {
+    const missing = termUsages()
+      .filter(({ slug }) => !(slug && messages.definitions[slug]?.definition))
+      .map(({ file, slug }) => `${file}: ${slug ?? '(no slug)'}`);
     expect(missing).toEqual([]);
   });
 });

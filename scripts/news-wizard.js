@@ -20,7 +20,7 @@ const os = require('os');
 const path = require('path');
 const readline = require('readline');
 const { execFileSync } = require('child_process');
-const matter = require('gray-matter');
+const { stringifyFrontmatter } = require('../lib/frontmatter.cjs');
 const ogs = require('open-graph-scraper');
 
 const { loadNewsItems } = require('./fetch-news-images.js');
@@ -730,7 +730,7 @@ async function main() {
       frontmatter.tags = tagArr;
     }
 
-    const mdxBody = normalizeWizardYamlDates(matter.stringify('\n', frontmatter));
+    const mdxBody = normalizeWizardYamlDates(stringifyFrontmatter('\n', frontmatter));
 
     console.log('\nRunning git automation (transactional push to content branch)…');
     const pushedBranch = transactionalCommitToContentBranch({
