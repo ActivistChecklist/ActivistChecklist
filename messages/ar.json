@@ -84,6 +84,10 @@
       "title": "أدوات بنيناها",
       "label": "أدوات بنيناها"
     },
+    "glossary": {
+      "title": "المصطلحات والتعريفات",
+      "label": "المصطلحات والتعريفات"
+    },
     "resources": {
       "title": "المصادر",
       "label": "المصادر"
@@ -834,6 +838,13 @@
       "openSource": "الأدوات الأربع كلها <repos>مفتوحة المصدر</repos>. إذا كانت إحداها معطّلة، أو كنت تحتاج شيئًا لم نبنه بعد، <contact>أخبرنا</contact>."
     }
   },
+  "terms": {
+    "metaTitle": "المصطلحات والتعريفات | Activist Checklist",
+    "metaDescription": "تعريفات بلغة بسيطة لمصطلحات الأمن الرقمي والمراقبة اللي بتواجه الناشطين والناشطات، من الـ doxxing ونشر المعلومات الشخصية وسماسرة البيانات إلى أجهزة الـ stingray وأوامر التفتيش الجغرافية geofence warrants.",
+    "title": "المصطلحات والتعريفات",
+    "intro": "تعريفات بلغة بسيطة لمصطلحات الأمن والمراقبة المستخدمة في قوائمنا وأدلّتنا. في باقي الموقع، المصطلحات اللي تحتها خط منقّط بتفتح هالتعريفات في نافذة منبثقة.",
+    "copyLink": "انسخ رابط هذا المصطلح"
+  },
   "definitions": {
     "closeAriaLabel": "إغلاق",
     "backAriaLabel": "العودة إلى {term}",
@@ -971,8 +982,8 @@
       "url": "https://www.eff.org/deeplinks/2021/09/geofence-warrants-threaten-civil-liberties-and-free-speech-rights-kenosha-and"
     },
     "css": {
-      "term": "Cell Site Simulator (\"Stingray\")",
-      "definition": "A device that pretends to be a cell tower. It tricks nearby phones into connecting to it. Police can use one to log every phone at a protest, track a specific phone's location, and intercept calls and texts.",
+      "term": "جهاز محاكاة أبراج الاتصالات (\"Stingray\")",
+      "definition": "جهاز بيتظاهر إنه برج اتصالات، وبيخدع التليفونات اللي حواليه عشان تتصل بيه. الشرطة ممكن تستخدمه عشان تسجّل كل تليفون موجود في مظاهرة، وتتبّع مكان تليفون معيّن، وتعترض المكالمات والرسايل.",
       "source": "EFF Street Level Surveillance",
       "url": "https://sls.eff.org/technologies/cell-site-simulators-imsi-catchers"
     },
