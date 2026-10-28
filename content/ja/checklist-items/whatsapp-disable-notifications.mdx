@@ -1,18 +1,18 @@
 ---
-title: Hide WhatsApp notification content on the lock screen
+title: ロック画面にWhatsAppの通知内容を表示しないようにする
 preview: |
-  Stops message previews and sender names from showing up if your phone is seized.
+  スマホが押収されても、メッセージのプレビューや送信者の名前が見られないようにできます。
 titleBadges: []
 firstPublished: 2026-05-22
 lastUpdated: 2026-05-22
 ---
 
-If your phone is confiscated, your notification history can reveal message content and sender names, even after the messages themselves have disappeared. See the [Prairieland case](https://bsky.app/profile/activistchecklist.org/post/3mityctmsfc2v) for why this matters.
+スマホが没収されると、メッセージ自体が消えた後でも、通知履歴からメッセージの内容や送信者の名前がバレてしまうことがあります。なぜこれが大事なのかは、[Prairieland事件](https://bsky.app/profile/activistchecklist.org/post/3mityctmsfc2v)を見てください。
 
-Apple has fixed the issue that lead to incoming Signal notifications being stored even after messages were disabled in iOS/iPadOS 26.4.2 (and the older 18.7.8 maintenance branch). Even though they fixed that issue, it's unclear whether Android phones still present the same weakness, so it's worth hiding previews on either platform.
+メッセージが無効化された後もSignalの受信通知が保存されてしまう問題は、AppleがiOS/iPadOS 26.4.2(と旧バージョン向けの18.7.8メンテナンスアップデート)で修正しました。この問題は修正されましたが、Androidのスマホに同じ弱点が残っているかどうかははっきりしていません。なので、どちらのスマホでもプレビューは非表示にしておくのがおすすめです。
 
-<HowTo title="How to hide WhatsApp notification content">
-  <MenuPath>*iPhone:* **Settings** app > **Notifications** > **WhatsApp** > set **Show Previews** to **Never**</MenuPath>
+<HowTo title="WhatsAppの通知内容を非表示にする方法">
+  <MenuPath>*iPhone:* **設定**アプリ > **通知** > **WhatsApp** > **プレビューを表示**を**しない**に設定</MenuPath>
 
-  <MenuPath>*Android:* **Settings** app > **Apps** > **WhatsApp** > **Notifications** > turn off **Show notification content on lock screen**</MenuPath>
+  <MenuPath>*Android:* **設定**アプリ > **アプリ** > **WhatsApp** > **通知** > **ロック画面に通知の内容を表示**をオフにする</MenuPath>
 </HowTo>
