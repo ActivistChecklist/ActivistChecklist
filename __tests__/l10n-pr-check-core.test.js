@@ -51,7 +51,7 @@ describe('translationPatterns / translationTarget', () => {
       'crowdin.yml',
       'scripts/validate-content.mjs',
       'components/Markdown.js',
-      'content/storyblok-id-map.json',
+      'content/index.json',
       'content/es/announcement/index.yaml',
       'content/es/guides/signal.md',
       'content/es/guides/signal.mdx.js',
