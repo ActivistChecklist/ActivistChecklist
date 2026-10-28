@@ -73,7 +73,6 @@ const Search = ({ variant = 'icon', className }) => {
   // { term, pages, total } once a search finishes, { term, error } if it failed
   const [results, setResults] = useState(null);
   const [active, setActive] = useState(0);
-  const [shortcutHint, setShortcutHint] = useState(null);
 
   const idPrefix = useId();
   const optionId = (index) => `${idPrefix}-option-${index}`;
@@ -144,7 +143,6 @@ const Search = ({ variant = 'icon', className }) => {
 
   useEffect(() => {
     if (variant !== 'header') return;
-    setShortcutHint(/Mac|iPhone|iPad/.test(navigator.platform) ? '⌘K' : 'Ctrl K');
     const onKeyDown = (event) => {
       if (event.key?.toLowerCase() !== 'k' || !(event.metaKey || event.ctrlKey)) return;
       if (event.altKey || event.shiftKey) return;
@@ -357,7 +355,6 @@ const Search = ({ variant = 'icon', className }) => {
         >
           <IoSearch className="h-4 w-4 shrink-0" aria-hidden />
           <span className="flex-1 text-left">{t('search.placeholder')}</span>
-          {shortcutHint && <Kbd>{shortcutHint}</Kbd>}
         </button>
       )}
       <Button
