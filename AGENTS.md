@@ -4,7 +4,7 @@
 
 * Use pnpm to manage packages
 * Before rejecting or re-evaluating a dependency upgrade, read the `ignore:` comments in `.github/dependabot.yml`. That is the single record of which major bumps we have declined and what would lift each one. If you decline a new one, close the PR and add a rule there with the reason and a checkable "take it when" condition. Do not create a separate doc for this.
-* Worktree setup is automatic: Claude Code reads `.worktreeinclude` at the repo root and copies the listed gitignored paths (env files, the Pagefind search index in `public/pagefind/`) from the main checkout into each new worktree. They are copies, not symlinks, so a worktree's search index is whatever the main checkout had when the worktree was made; run `pnpm index` there if you need it fresh. If you add new gitignored state that worktrees should mirror, add a pattern to `.worktreeinclude`. When setting up a new worktree, run `pnpm install` so the modules are ready.
+* Worktree setup is automatic: Claude Code reads `.worktreeinclude` at the repo root and copies the listed gitignored paths (env files, the Pagefind search index in `public/pagefind/`) from the main checkout into each new worktree. They are copies, not symlinks: a worktree keeps whatever the main checkout had when the worktree was made, so a later edit to the main checkout's `.env` does not reach it, and its search index can go stale (run `pnpm index` there if you need it fresh). If you add new gitignored state that worktrees should mirror, add a pattern to `.worktreeinclude`. When setting up a new worktree, run `pnpm install` so the modules are ready.
 
 ## Testing rules
 
@@ -49,6 +49,7 @@
 * Always make sure to write code with security as a core principle. Don't be excessive (ex: lots of try/catch loops), but do use thinking time to consider how an attacker could mount a meaningful attack.
 * Never hardcode secrets — use environment variables.
 * GitHub Actions secrets live in the `main-only` environment, never at repository level. Read `.github/ACTIONS-SECRETS.md` before adding a secret or a job that uses one.
+* Production secrets live in 1Password. `.env.production*.local` and `public/webhooks/webhook-secrets.local.php` hold `{{ op://… }}` references that the deploy scripts resolve at upload time; never write a real value into them. The dev `.env` gets its own dev-only keys, never production ones.
 * Use parameterized queries — never interpolate into SQL.
 * Use constant-time comparison for tokens and hashes.
 * Never log secrets, tokens, or PII.
