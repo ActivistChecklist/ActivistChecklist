@@ -1,0 +1,121 @@
+---
+title: Protecting Your Privacy
+seoDescription: What we collect (almost nothing) and why. Activist Checklist is built so that even if it gets subpoenaed, there's nothing useful to hand over.
+firstPublished: 2025-01-09
+lastUpdated: 2026-10-27
+showToc: true
+---
+
+<Alert type="info">
+  TL;DR: We collect almost nothing. We don't log raw IP addresses, we don't send any data about you anywhere. The only data stored is your checklist progress (saved locally on your device) and basic page view stats (with no personal info). Everything else is deliberately NOT collected to protect your privacy.
+</Alert>
+
+Our privacy policy is different - we'll explain the lengths we go to to not collect identifiable information about you.
+
+Our approach to privacy isn't about legal compliance - it's about doing everything we can to protect your privacy and security.
+
+We know that sites like this can become the target of state surveillance, so we went to great lengths to collect as little identifiable information as possible to protect you while browsing this site.
+
+## What we do NOT track
+
+We've intentionally designed this site to be as privacy-protective as possible:
+
+* ❌ No IP addresses are ever logged
+* ❌ No cookies are stored on your device
+* ❌ No external services or third-party libraries are loaded in your browser that could expose your personal information (IP address)
+* ❌ None of your personal information is ever collected on our servers or sent to any third-party servers. The one exception is a message you choose to send us through our contact form, which is encrypted before it leaves our server ([see below](#contact-form)).
+
+## What we do track
+
+**Minimal Infrastructure** We've built this site using the simplest possible tools to ensure maximum privacy:
+
+* ✅ We chose [May First](https://mayfirst.coop) as our web host specifically because they support activist projects like ours.
+* ✅ We have disabled all logging for this site (no visitor logs, no IP address logs, no error logs). If May First were ever to receive a subpoena requesting a list of visitors to our website, there would be nothing for them to turn over.
+* ✅ We use a very lightweight website framework that we've carefully audited to ensure there's no hidden tracking or logging.
+* ✅ We do track a bit of information in an anonymous way to help us understand how folks are using this site. (see below)
+
+You can also read [May First's privacy policy](https://mayfirst.coop/en/privacy-policy/).
+
+## The only data we store on your device: checklist completions
+
+The only data stored on your device is your checklist progress, which stays in your browser's local storage and never leaves it.
+
+**If you want to remove the information we store in your browser, here’s how:**
+
+* <MenuPath>*Brave/Chrome:* Click lock icon in address bar → **Cookies and Site Data** → **Manage site data** → Press trash can icon</MenuPath>
+* <MenuPath>*Firefox:* Click lock icon in address bar → **Clear cookies and site data** → **Confirm**</MenuPath>
+* <MenuPath>*Safari:* **Preferences** → **Privacy** → **Manage Website Data** → Select site → **Remove**</MenuPath>
+
+## The only data we collect on our server: page view statistics
+
+We do the most minimal tracking of page views to understand which sections of our site are most helpful to you.
+
+* We only record the following pieces of information and store them on our server:
+  * **pageview info:** which page was viewed and when
+  * **browser info:** browser type, operating system, referring page, and device screen size
+  * **checkbox statistics:** checkbox items clicked and checkbox sections expanded
+  * **file downloads:** which file was downloaded
+  * **searches:** the text of your search query
+  * **generic location:** We send a version of your IP address that has about half of the IP address info removed before it reaches our servers. This allows us to approximate your location to a country but not ever store your specific location. We randomize a part of the IP address that changes every 24 hours, so you aren't identifiable across visits on different days.
+* We do not collect or store any personal information like full IP addresses or exact location
+* We do not track you across different websites or have any services on our site that could track your usage of our site
+* We do not sell or give any of this information to any other entity
+
+This simple page view counter helps us improve the site's content while maintaining your privacy.
+
+This data is stored on a privacy-focused analytics platform called [Umami](https://umami.is/). We host this on our own servers.
+
+If you’d like, you can review the [code here](https://github.com/ActivistChecklist/ActivistChecklist/blob/main/api/counter.js).
+
+## Contact form {#contact-form}
+
+If you message us using our [contact form](/contact/), our server [encrypts](https://proton.me/blog/what-is-pgp-encryption) your message, along with any contact details you give us, before it leaves our server. Only we can read it.
+
+We use [Resend](https://resend.com/legal/privacy-policy), an email delivery service, to deliver the encrypted message to our Proton Mail account. Resend sees the encrypted message and the time it was sent. It does not see your IP address, because the message comes from our server, not from your browser.
+
+Sharing your email address is optional. If you do share your email address for us to reply and it's not a Proton Mail address, your email provider will be able to see our conversation once we reply.
+
+If you’d like, you can review the [code here](https://github.com/ActivistChecklist/ActivistChecklist/blob/main/api/contact.js).
+
+## Newsletter
+
+If you subscribe to our newsletter, we save your email address in a database stored on our server for maximum security.
+
+We send emails directly from our server, rather than using newsletter tools, so your IP address and activity are protected. This tool does track link clicks, but it doesn’t attribute them to individuals, so your privacy is protected (and we can still see what’s working in our emails). It doesn’t keep logs or track IP addresses if you visit the unsubscribe page. (Our [newsletter system](https://github.com/knadh/listmonk) is open source if you want to review it.)
+
+We protect access to this service with [Cloudflare](https://www.cloudflare.com/privacypolicy/) so that it's much harder for someone to hack into our newsletter software and steal everyone's email addresses. That means Cloudflare does have the ability to track IP addresses. But their privacy policy says they only retain this information for 4 hours in most cases.
+
+If you want an extra layer of privacy, you can subscribe using an email anonymization service like Proton Mail’s hide-my-email aliases (10 aliases on the free plan, unlimited on the paid plan), [DuckDuckGo email aliases](https://github.com/Lanshuns/Qwacky), or [addy.io](http://addy.io) (which offers unlimited aliases).
+
+## How we respond to legal demands
+
+If we ever receive a legal demand affecting our users or our infrastructure, we will:
+
+1. **Challenge demands** we believe are overbroad, improper, or unconstitutional, to the extent we are able.
+2. **Notify the affected people directly** where we can identify them (for example, a subpoena for a specific newsletter subscriber's information).
+3. **Publicly disclose the demand** on this page in general terms when we cannot notify individuals directly, or when the demand affects the site as a whole.
+4. **Refuse to modify the site or its infrastructure** to facilitate surveillance of visitors, and refuse to grant covert third-party access to our systems.
+
+## Warrant canary {#canary}
+
+We maintain a warrant canary to attest that we have not been compelled to modify the site or gagged from disclosing the existence of a legal demand for user data.
+
+[View our warrant canary →](/files/canary.txt)
+
+<ImageEmbed src="https://img.shields.io/endpoint?url=https://healthchecks.io/b/2/f424e66f-06c3-463a-8d54-e5b4749a55e9.shields&label=Warrant%20canary" alt="Warrant canary" raw />
+
+(If this badge turns from green to red and says "down", that's a sign to ask questions as described below.)
+
+We will update this canary every 3 months. If more than 4 months pass without an update AND we are still regularly updating our [code repository](https://github.com/ActivistChecklist/ActivistChecklist), that is a sign to ask questions rather than a confirmed compromise. Start by [contacting](/contact/) us to see if we're just behind on an update.
+
+To verify, download [`canary.txt`](/files/canary.txt), fetch our public key from one of the sources below, and run `gpg --verify canary.txt`. If it is valid, you should see something like `Good signature from "contact@activistchecklist.org \<contact@activistchecklist.org>"`
+
+You can find our PGP public key and fingerprint (`B7AA5B9EC0F0351D9FB7E387D037BB0E887206EC`) in many places: [This site](https://activistchecklist.org/files/publickey.contact@activistchecklist.org.asc), [Proton](https://api.protonmail.ch/pks/lookup?op=get\&search=contact@activistchecklist.org), [openpgp.org](https://keys.openpgp.org/search?q=contact@activistchecklist.org), [archive.org](https://web.archive.org/web/20250928110818/https://activistchecklist.org/files/publickey.contact@activistchecklist.org.asc), [Bluesky](https://bsky.app/profile/activistchecklist.org/post/3mmkabjgpas2y), and [kolektiva.social](https://kolektiva.social/@activistchecklist/116625655033452078). If the fingerprints differ across sources, do not trust the canary.
+
+If we plan to retire the canary, we will include that information in the final update of the canary file.
+
+## Questions?
+
+If you have questions about our privacy practices or need to verify any of our claims, our entire [website's code is open source and available for audit](https://github.com/ActivistChecklist/ActivistChecklist). We encourage you to inspect it yourself or have a trusted technical advisor review it.
+
+If you have additional questions, please [contact us](/contact/).
