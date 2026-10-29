@@ -8,6 +8,7 @@
 // Fails when the diff touches anything crowdin.yml does not translate into, or
 // when a translated file or string carries a tag, script URL or event handler
 // its English source does not have (see scripts/lib/l10n-pr-check-core.mjs).
+// Warns, without failing, on new link hosts and literal escapes like `\u00a0`.
 // Writes a per-locale summary of what changed to GITHUB_STEP_SUMMARY when set,
 // so a reviewer can read the strings instead of a 700-file diff.
 
@@ -20,6 +21,7 @@ import {
   diffMessages,
   flattenMessages,
   newLinkHosts,
+  newUnicodeEscapes,
   parseRawDiff,
   translationPatterns,
   translationTarget,
@@ -89,6 +91,18 @@ const english = (file) => {
   return englishCache.get(file);
 };
 
+// A warning, not an error: it is a display bug for Crowdin to fix, and failing
+// the sync would also hold back every other translation in it.
+function warnEscapes(path, englishText, translatedText) {
+  const escapes = newUnicodeEscapes(englishText, translatedText);
+  if (escapes.length) {
+    warnings.push({
+      path,
+      message: `literal escape text the English does not have (shows on the page as typed): ${escapes.join(', ')}`,
+    });
+  }
+}
+
 for (const { status, path } of changes) {
   const target = translationTarget(path, patterns);
   if (!target) continue;
@@ -129,17 +143,23 @@ for (const { status, path } of changes) {
         message: `keys not in English (unused) carry markup: ${staleKeys.join(', ')}`,
       });
     }
+    const enFlat = flattenMessages(en);
+    warnEscapes(
+      path,
+      Object.values(enFlat).join('\n'),
+      Object.values(flattenMessages(tr)).join('\n'),
+    );
     // The summary only; a base file that does not parse just shows every key as added.
     let before = {};
     try {
       before = JSON.parse(show(base, path) ?? '{}');
     } catch {}
-    const enFlat = flattenMessages(en);
     for (const change of diffMessages(before, tr)) {
       entry.strings.push({ ...change, english: enFlat[change.key] ?? '' });
     }
   } else {
     for (const message of compareMarkup(source, translated)) errors.push({ path, message });
+    warnEscapes(path, source, translated);
   }
 
   const hosts = newLinkHosts(source, translated);
