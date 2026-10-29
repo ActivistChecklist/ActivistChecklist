@@ -230,3 +230,16 @@ export function newLinkHosts(english, translated) {
   const known = hosts(english);
   return [...hosts(translated)].filter((h) => !known.has(h)).sort();
 }
+
+/**
+ * Escape sequences such as `\u00a0` that appear as literal text in
+ * `translated` but never in `english`. Crowdin's AI pre-translation writes a
+ * non-breaking space this way, and MDX shows the six characters on the page.
+ * Pass decoded strings for JSON, where `\u00a0` in the file is a real escape.
+ */
+export function newUnicodeEscapes(english, translated) {
+  const escapes = (t) =>
+    new Set([...t.matchAll(/\\u[0-9a-f]{4}/gi)].map((m) => m[0].toLowerCase()));
+  const known = escapes(english);
+  return [...escapes(translated)].filter((e) => !known.has(e)).sort();
+}

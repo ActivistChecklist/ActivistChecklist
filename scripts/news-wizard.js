@@ -660,7 +660,11 @@ async function main() {
 
     const og = await fetchOg(articleUrl);
 
-    const title = flagTitle || pickTitle(og) || titleFromUrlPath(articleUrl);
+    // `\s` covers non-breaking spaces, common in page titles. Left in, YAML
+    // stores one as `\_` and Crowdin's AI translates it to literal "\u00a0".
+    const title = (flagTitle || pickTitle(og) || titleFromUrlPath(articleUrl) || '')
+      .replace(/\s+/g, ' ')
+      .trim();
     if (!title) {
       throw new Error(
         'Could not determine title (no og:title). Pass --title="…" to set it manually.',
