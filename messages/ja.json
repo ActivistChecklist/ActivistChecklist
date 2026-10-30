@@ -463,11 +463,11 @@
     "lastReviewed": "最終確認日：{date}"
   },
   "news": {
-    "title": "監視ニュース",
+    "title": "監視に関するニュース",
     "description": "国家による監視や、社会運動が直面している脅威についての最新ニュース。",
     "tipInvitation": "載せるべきだと思うニュースはありますか？",
     "tipLink": "情報を送って",
-    "tipSuffix": "コミュニティに最新情報を届ける手助けをしてください。",
+    "tipSuffix": "コミュニティに最新情報を届ける手助けを。",
     "noItems": "ニュースが見つかりませんでした。",
     "paywallBypassNotice": "このリンクはペイウォールを回避します。",
     "seeOriginal": "元の記事を見る"
@@ -484,10 +484,10 @@
     "metaTitle": "あなたのデバイスはまだセキュリティアップデートを受け取れる？ | Activist Checklist",
     "metaDescription": "スマホ、タブレット、スマートウォッチ、ノートパソコンがセキュリティアップデートを受けられているか確認しよう。古いデバイスには公に知られた脆弱性がたまっていき、押収されたり標的にされたりしたときにハッキングされやすくなります。",
     "title": "デバイスのセキュリティアップデートはまだ大丈夫？",
-    "intro": "デバイスが最新のOSになっていないと、ハッカーや警察に侵入されて、データをすべて見られてしまう危険があります。",
+    "intro": "最新のOSになっていないと、ハッカーや警察に侵入されて、データをすべて見られてしまう危険があります。",
     "searchLabel": "デバイスのモデル名を入力",
     "searchHelpAriaLabel": "デバイスのモデル名の調べ方",
-    "searchHelp": "わからない？上でOSを選ぶと調べ方を確認できます。",
+    "searchHelp": "わからない場合は、上でOSを選ぶと調べ方を確認できます。",
     "searchPlaceholder": "例：iPhone 12 Pro、Pixel 7、Windows 10",
     "searchAriaLabel": "デバイスまたはOSを検索",
     "clearAriaLabel": "検索をクリア",
@@ -511,14 +511,14 @@
     },
     "platform": {
       "prompt": "または、ここから選んでスタート：",
-      "helpPrompt": "デバイスの機種がわからない場合は？",
+      "helpPrompt": "デバイスのモデル名がわからない場合",
       "apple": "Apple",
       "android": "Android",
       "windows": "Windows",
       "other": "その他"
     },
     "subCategory": {
-      "prompt": "{platform}のどのデバイスですか？",
+      "prompt": "{platform}のどのデバイス？",
       "back": "戻る",
       "iphone": "iPhone",
       "ipad": "iPad",
