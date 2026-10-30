@@ -14,7 +14,6 @@ import { Button } from '@/components/ui/button';
 import CopyLinkButton from '@/components/CopyLinkButton';
 import { useAnalytics } from '@/hooks/use-analytics';
 import { useTranslations } from 'next-intl';
-import { migrateLegacyChecklistKeysForSlug } from '@/lib/checklist-storage-migrate';
 import { useChecklistProgressActions } from '@/contexts/ChecklistProgressContext';
 import { checklistItemAnchorId } from '@/lib/search';
 
@@ -120,8 +119,6 @@ const ChecklistItem = ({
   }, []);
 
   useEffect(() => {
-    migrateLegacyChecklistKeysForSlug(itemSlug);
-
     // Load checked state
     const stored = localStorage.getItem(storageKey);
     if (stored !== null) {

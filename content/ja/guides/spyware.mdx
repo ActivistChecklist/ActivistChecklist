@@ -1,0 +1,133 @@
+---
+title: スパイウェアから身を守る
+seoTitle: スパイウェアからスマホを守る方法（2026年版）
+seoDescription: Pegasus、Graphiteなどの商用スパイウェアは、著名な活動家、ジャーナリスト、弁護士を標的にしています。スパイウェアからスマホを守る方法。
+answerCapsule: |
+  ほとんどの活動家は、商用スパイウェアの標的にはなりません。導入には国家レベルの予算がかかるからです。あなた自身が著名な立場にいる場合や、そういう人と一緒に活動している場合、最も重要な対策は、パッチが公開されたその日にスマホをアップデートすること、ロックダウンモード（iPhone）または高度な保護機能（Android）をオンにすること、そして怪しいリンクを避けることです。何かおかしいと感じたら、Citizen LabやAccess Nowが無料でデバイスを検査してくれる場合があります。
+estimatedTime: 30分
+excerpt: |
+  自分がスパイウェアに狙われる可能性があるか、そして何ができるかを知るためのガイド
+firstPublished: 2025-09-03
+lastUpdated: 2026-10-15
+---
+
+スパイウェアとは、あなたのデバイスに感染し、知らないうちに、同意もなくあなたを監視してデータを盗むソフトウェアのことです。最も狙われやすいのはスマホです。詳細な位置情報や多要素認証（2FA）のコード、その他たくさんの個人情報が記録されているからです。ただし、ノートパソコンやその他のデバイスが狙われることもあります。
+
+スパイウェアは、プライベートなメッセージを抜き取り（Signalのような暗号化メッセージアプリでも）、2FAコードにアクセスし、会話を監視し、位置情報をリアルタイムで追跡し、さらには気づかないうちにカメラやマイクをオンにすることさえできます。こうしたデータはすべて、スパイウェアを操る側に送り返されます。スマホを使っているあなたの肩越しに、誰かがずっと画面をのぞき込んでいるようなものです。
+
+スパイウェアは民間企業によって作られ、政府に販売されています。そして犯罪者だけでなく、活動家、ジャーナリスト、弁護士に対しても使われています。最近では、[ICE（移民・関税執行局）がスパイウェアツールへのアクセス権を購入しました](https://www.404media.co/were-suing-ice-for-its-2-million-spyware-contract/)。
+
+モバイル向けスパイウェアとして最もよく知られているのは、Pegasus（NSO Group製）とGraphite（Paragon Solutions製）の2つです。どちらの企業も、米国でいうNSAにあたるイスラエルの「8200部隊」の元幹部たちによって設立されました。でも、[新しい](https://www.wired.com/story/coruna-iphone-hacking-toolkit-us-government/)[スパイウェア](https://www.wired.com/story/hundreds-of-millions-of-iphones-can-be-hacked-with-a-new-tool-found-in-the-wild/)は次々と見つかっています。しかもスパイウェアは、「[マルウェア](term:malware)」や「ストーカーウェア」と呼ばれるもっと大きな世界のほんの一角にすぎません。こうしたツールは、抑圧的な政府や、パートナーに暴力をふるう人たちが、相手を黙らせるためにも使っています。スパイウェアは、クリックすらしなくても、[ごく普通のオンライン広告を通じて送り込まれる](https://citizenlab.ca/research/how-discover-tech-turned-targeted-ads-into-a-pipeline-for-spyware/)ことさえあります。
+
+## 自分がスパイウェアの標的になる可能性はどのくらい？
+
+政府はスパイウェアを犯罪者にしか使わないと主張していますが、政府が政治活動家、ジャーナリスト、弁護士に対して使った事例は数多く記録されています：
+
+* 著名なオーガナイザーや活動家（[カタルーニャ](https://citizenlab.ca/research/catalangate-extensive-mercenary-spyware-operation-against-catalans-using-pegasus-candiru/)）
+* 人権派弁護士（[メキシコ](https://citizenlab.ca/research/lawyers-murdered-women-nso-group/)）
+* 調査報道ジャーナリスト（[Forbidden Stories](https://forbiddenstories.org/pegasus-the-new-global-weapon-for-silencing-journalists/)と[Amnesty International](https://securitylab.amnesty.org/case-study-the-pegasus-project)を参照）
+* 標的となった人の家族のデバイスがスパイウェアに感染していたケースも確認されています。 （[Citizen Lab](https://citizenlab.ca/research/reckless-exploit-mexico-nso/) を参照）
+
+<Alert type="success">
+  PegasusやGraphiteのようなスパイウェアを使うには、政府にとっても**数万〜数十万ドル**のコストがかかります。**つまり、ほとんどのアクティビストはスパイウェアの標的には**ならない**ので、[他の脅威から身を守る](/essentials/)ことのほうが役に立ちます。**
+</Alert>
+
+まずは[セキュリティの基本チェックリスト](/essentials/)から始めて、それからこのガイドに戻ってくるのがおすすめです。そのガイドは、位置情報の追跡や、警察がデバイスを押収した後に使うスマホのロック解除ソフトなど、もっと安く使える監視技術から身を守るのに役立ちます。
+
+抑圧的な政治家たちがアメリカを権威主義へと押し進め続けるなか、高度なスパイウェアがアクティビストに対してより広く使われるようになると考えておくべきです。
+
+**良いニュース：** スパイウェアやストーカーウェアから身を守るための対策は、あなたが実際に受ける可能性の高い他の種類の攻撃を防ぐことにも役立ちます。なので、どちらにしてもやっておく価値があります。
+
+<Alert type="success">
+  **パニックにならないで：** こうした高度なハッキングツールについて読むと、つい強い不安を感じてしまいがちです。ほとんどの活動家は、スパイウェアの標的にはなりません。権威主義者たちは、自分たちが全能で、私たちの行動をすべて見通せると思い込ませたいのです。いくつかの簡単なステップで、私たちを監視することを、彼らにとってコストが高く、政治的にもリスクの大きいものにできます。
+</Alert>
+
+<Section title="基本の対策" slug="baseline">
+  <RiskLevel level="everyone" />
+
+  <ChecklistItemGroup>
+    <ChecklistItem slug="essentials-doxxing" />
+
+    <ChecklistItem slug="updates" />
+
+    <ChecklistItem slug="lockdown" />
+
+    <ChecklistItem slug="spyware-block-ads" />
+
+    <ChecklistItem slug="ad-id" />
+
+    <ChecklistItem slug="account-protection" />
+
+    <ChecklistItem slug="links" />
+  </ChecklistItemGroup>
+</Section>
+
+<Section title="さらに強化した対策" slug="enhanced">
+  <RiskLevel level="medium" />
+
+  <ChecklistItemGroup>
+    <ChecklistItem slug="minimization" />
+
+    <ChecklistItem slug="link-previews" />
+
+    <ChecklistItem slug="cover-cameras" />
+
+    <ChecklistItem slug="secondary-device" />
+
+    <ChecklistItem slug="reboot" />
+  </ChecklistItemGroup>
+</Section>
+
+<Section title="デバイスの検査" slug="testing">
+  iPhone を使っているなら、[iMazing](https://imazing.com/spyware-analyzer) でスパイウェアの分析ができます。無料で利用できます（「購入」ボタンはクリックしないでください）。技術に詳しい人は、[Mobile Verification Toolkit (MVT)](https://github.com/mvt-project/mvt) を使って、本人の同意のもとで詳しいデバイスのフォレンジック調査を行うこともできます。
+
+  ただし、デバイス上のスパイウェアを検出するのは簡単なことではありません。誰にでもスマホの調査を任せていいわけではありません。世界中の市民社会のメンバーが、以下の機関に頼って、専門家のサポートのもとでスマホを調べ、詳しい分析を行ってきました：
+
+  * [Citizen Lab](https://citizenlab.ca/spyware-outreach/) - スパイウェア分析の第一線の専門家
+  * [Access Now](https://www.accessnow.org/help/)
+  * [Amnesty Security Lab](https://securitylab.amnesty.org/get-help/)
+  * [Constitutional Communications](https://constitutionalcommunications.org/) - 活動家コミュニティのより多くの人がスパイウェア分析を受けられるよう支援している団体
+  * [Electronic Frontier Foundation](https://www.eff.org/about/contact) - 米国在住の人向け
+
+  団体ごとに独自の審査プロセスがあり、先方で確認を進める間、返事が来るまでに時間がかかることもあります。
+
+  ### 感染しているかもしれないサインに気づくには
+
+  スパイウェアは通常、目立った症状がなく、*気づかれないうちに*感染します。ただし、これまでスパイウェアの標的になった人たちからよく報告されている症状には、次のようなものがあります：
+
+  * スマホのバッテリーが急に減る
+  * 特定のアプリの動作がおかしい
+  * データ通信量が異常に多い
+  * 怪しいリンクや添付ファイルが届く
+
+  <Alert type="warning">
+    こうした症状があったとしても、必ずしもデバイスがスパイウェアでハッキングされているとは限りません。上でリンクした団体のいずれかに連絡して、デバイスを検査してもらうことをおすすめします。
+  </Alert>
+
+  <Alert type="info">
+    スパイウェアは非常に高度なマルウェアで、一般的なウイルス対策ソフトでは**検出できません**。デバイスに（過去または現在の）侵害の兆候があるかどうかを判断するには、信頼できる専門団体にサポートを求めることをおすすめします。
+  </Alert>
+
+  現在、**Apple**と**WhatsApp**は、傭兵型スパイウェアの標的にされた疑いのあるユーザーに定期的に通知を送っています。詳しくは[Appleの脅威通知](https://support.apple.com/en-us/102174)と[WhatsAppの脅威通知](https://faq.whatsapp.com/641700318302674)をご覧ください。
+
+  ###
+</Section>
+
+<Section title="もっと詳しく">
+  * Citizen Lab は、Pegasus による作戦を[45か国](https://citizenlab.ca/research/hide-and-seek-tracking-nso-groups-pegasus-spyware-to-operations-in-45-countries/)で確認しています
+  * Forensic Architecture は、それらの作戦がもたらした人的被害を、自身のサイト [Digital Violence](https://digitalviolence.org) でマッピングしています
+
+
+  関連情報：アメリカ政府がインターネットのセキュリティを損なってきた歴史：
+
+  * [Microsoft handed the NSA access to encrypted messages（Microsoft が暗号化されたメッセージへのアクセスを NSA に提供）](https://www.theguardian.com/world/2013/jul/11/microsoft-nsa-collaboration-user-data) - The Guardian、2013年
+  * [Revealed: how US and UK spy agencies defeat internet privacy and security（暴露：米英の諜報機関はいかにしてインターネットのプライバシーとセキュリティを破っているか）](https://www.theguardian.com/world/2013/sep/05/nsa-gchq-encryption-codes-security) - The Guardian、2013年
+  * [N.S.A. Able to Foil Basic Safeguards of Privacy on Web（NSA、ウェブ上のプライバシーの基本的な保護を突破可能）](https://archive.nytimes.com/www.nytimes.com/interactive/2013/09/05/us/documents-reveal-nsa-campaign-against-encryption.html) - The New York Times、2013年
+  * [NSA infected 50,000 computer networks with malicious software（NSA、5万のコンピューターネットワークをマルウェアに感染させる）](https://www.nrc.nl/nieuws/2013/11/23/nsa-infected-50000-computer-networks-with-malicious-software-a1429487) - NRC、2013年
+  * [Secret contract tied NSA and security industry pioneer（秘密契約が NSA とセキュリティ業界の先駆者を結びつけていた）](https://www.reuters.com/article/us-usa-security-rsa-idUSBRE9BJ1C220131220) - Reuters、2013年
+  * [N.S.A. Devises Radio Pathway Into Computers（NSA、無線経由でコンピューターに侵入する手段を考案）](https://www.nytimes.com/2014/01/15/us/nsa-effort-pries-open-computers-not-connected-to-internet.html) - The New York Times、2014年
+  * [How the NSA Plans to Infect 'Millions' of Computers with Malware（NSA は「数百万台」のコンピューターをいかにマルウェアに感染させようとしているか）](https://theintercept.com/2014/03/12/nsa-plans-infect-millions-computers-malware/) - The Intercept、2014年
+  * [Prying Eyes: Inside the NSA's War on Internet Security（詮索の目：NSA によるインターネットセキュリティへの戦争の内幕）](https://www.spiegel.de/international/germany/inside-the-nsa-s-war-on-internet-security-a-1010361.html) - Der Spiegel、2014年
+  * [New Discovery Around Juniper Backdoor Raises More Questions About the Company（Juniper のバックドアをめぐる新発見で、同社への疑問がさらに深まる）](https://www.wired.com/2016/01/new-discovery-around-juniper-backdoor-raises-more-questions-about-the-company/) - Wired、2016年
+  * [The NSA Leak Is Real, Snowden Documents Confirm（NSA のリークは本物、スノーデン文書が裏付け）](https://theintercept.com/2016/08/19/the-nsa-was-hacked-snowden-documents-confirm/) - The Intercept、2016年
+</Section>

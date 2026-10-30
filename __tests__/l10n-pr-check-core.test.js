@@ -6,6 +6,7 @@ import {
   compareMarkup,
   diffMessages,
   newLinkHosts,
+  newUnicodeEscapes,
   parseRawDiff,
   translationPatterns,
   translationTarget,
@@ -51,7 +52,7 @@ describe('translationPatterns / translationTarget', () => {
       'crowdin.yml',
       'scripts/validate-content.mjs',
       'components/Markdown.js',
-      'content/storyblok-id-map.json',
+      'content/index.json',
       'content/es/announcement/index.yaml',
       'content/es/guides/signal.md',
       'content/es/guides/signal.mdx.js',
@@ -263,5 +264,19 @@ describe('newLinkHosts', () => {
     const en = 'See https://signal.org/download and <https://ssd.eff.org/>.';
     const tr = 'Mira https://signal.org/es/ y https://signa1.org/download y http://Evil.example/x.';
     expect(newLinkHosts(en, tr)).toEqual(['evil.example', 'signa1.org']);
+  });
+});
+
+describe('newUnicodeEscapes', () => {
+  it('reports literal escapes the translation adds, in any case', () => {
+    const en = 'A\u00a0**security party** is a gathering.';
+    const tr = 'Une\\u00a0**soirée sécu**, c’est un moment\\u00A0? Oui\\u202f!';
+    expect(newUnicodeEscapes(en, tr)).toEqual(['\\u00a0', '\\u202f']);
+  });
+
+  it('ignores escapes the English already has, and real characters', () => {
+    const en = 'Type `\\u00a0` to write a non-breaking space in JSON.';
+    expect(newUnicodeEscapes(en, 'Escribe `\\u00a0` en JSON.')).toEqual([]);
+    expect(newUnicodeEscapes('a b', 'a\u00a0b')).toEqual([]);
   });
 });

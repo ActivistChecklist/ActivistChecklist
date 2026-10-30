@@ -7,6 +7,7 @@ import { useTableOfContents } from '@/contexts/TableOfContentsContext';
 import { useAllSectionProgress } from '@/contexts/ChecklistProgressContext';
 import SectionProgressBar from '@/components/guides/SectionProgressBar';
 import { cn } from '@/lib/utils';
+import { assignHeadingIds } from '@/lib/heading-anchor';
 import { SidebarGroup, SidebarMenu, SidebarMenuItem } from '@/components/ui/sidebar';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
@@ -14,14 +15,12 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 export function extractHeaders(content, enableH3 = true) {
   if (!content) return [];
 
-  const headerElements = content.querySelectorAll(enableH3 ? 'h2, h3' : 'h2');
-  const headersData = Array.from(headerElements).map((header) => ({
-    id:
-      header.id ||
-      header.innerText
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/-+$/, ''),
+  const headerElements = Array.from(content.querySelectorAll(enableH3 ? 'h2, h3' : 'h2'));
+  const ids = assignHeadingIds(
+    headerElements.map((header) => ({ id: header.id, text: header.innerText })),
+  );
+  const headersData = headerElements.map((header, index) => ({
+    id: ids[index],
     text: header.innerText,
     level: parseInt(header.tagName[1]),
   }));

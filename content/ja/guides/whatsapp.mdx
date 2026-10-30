@@ -1,0 +1,132 @@
+---
+title: WhatsAppセキュリティチェックリスト
+seoTitle: アクティビストのためのWhatsAppセキュリティチェックリスト（2026年版）
+seoDescription: WhatsAppは最もプライバシーに優れたメッセンジャーではありませんが、すでに多くの組織活動の場になっています。メッセージ、グループ、連絡先をより安全に保つための設定をステップごとに紹介します。
+answerCapsule: |
+  WhatsAppのメッセージはエンドツーエンドで暗号化されていますが、Meta（WhatsAppを所有する企業）は今でも大量のメタデータを警察に渡しています。すでにWhatsAppで組織活動をしているなら（特に移民コミュニティで）、このチェックリストでバックアップ、グループ、AI機能、リンク済みデバイス、通知の設定を固めましょう。リスクの高い政治活動では、センシティブな会話はSignalに移しましょう。
+estimatedTime: 15分
+excerpt: |
+  WhatsAppを設定して、メッセージ、グループ、連絡先を守る
+relatedGuides:
+  - signal
+  - essentials
+  - spyware
+  - doxxing
+firstPublished: 2026-05-22
+lastUpdated: 2026-10-22
+---
+
+多くのアクティビズムはすでにWhatsApp上で行われています。特に移民コミュニティではその傾向が強いです。最も安全でプライバシーに配慮した選択肢ではありませんが、すでに多くの人が使っていたり、WhatsAppの機能（コミュニティなど）が必要だったりするため、コミュニティの組織活動に役立つツールになることもあります。
+
+WhatsAppのメッセージは[エンドツーエンド暗号化](term:end-to-end-encryption)されているので、会話の内容を守るという点では、通常のSMSよりも安全です。警察があなたの携帯電話会社に召喚状を出して通常のSMSを要求すると、すべてのメッセージの内容を見ることができます。一方、Metaに召喚状を出してWhatsAppのメッセージを要求しても、内容を見ることはできません（チャットのバックアップを有効にしていない限り）。
+
+<Alert type="warning">**WhatsAppでの大規模なグループ活動は、ソーシャルメディアと同じものだと考えましょう：** ソーシャルメディアの大きなグループと同じように、メンバーを精査していない大規模なグループには、悪意ある人たち（政府や右派など）が参加して監視している可能性があると想定してください。 SNSで誰があなたをフォローしているかが見えるのと同じように、グループに誰がいるかも見られると考えておきましょう。</Alert>
+
+このガイドの対策をすべて行っても、WhatsAppが常に警察に提出できる情報がいくつかあります：
+
+* あなたの連絡先リスト全体（一度でもアプリに連絡先へのアクセスを許可したことがあれば、後で無効にしても、WhatsAppはずっとそのデータを持ち続けます）
+* あなたを連絡先リストに登録している他のすべてのWhatsAppユーザー（[出典](https://www.justsecurity.org/79549/we-now-know-what-information-the-fbi-can-obtain-from-encrypted-messaging-apps/)）
+* 参加しているすべてのグループの名前
+* 参加しているすべてのグループのメンバー
+* どの電話番号といつメッセージをやり取りしているか（この情報は[リアルタイム](https://www.rollingstone.com/politics/politics-features/whatsapp-imessage-facebook-apple-fbi-privacy-1261816/)でも取得可能で、これは他のほとんどのテック企業が警察に提供していないものです）
+* チャットのバックアップを有効にしている場合、GoogleやAppleが提出を強制される可能性があり、そこにはあなたのメッセージがすべて含まれています。バックアップを安全に使う方法は、[WhatsAppのチャットを安全にバックアップする](/whatsapp/#whatsapp-secure-backup)を参照してください。
+
+**WhatsAppを使うのは初めて？** [WhatsAppの使い方](https://ssd.eff.org/module/how-to-use-whatsapp)についてはこちらのガイドを参照してください。
+
+<Section title="WhatsAppの基本的な保護対策" slug="baseline">
+  <RiskLevel level="everyone" mode="default" />
+
+  10分しか時間がないなら、ここから始めましょう。
+
+  <ChecklistItemGroup>
+    <ChecklistItem slug="whatsapp-disable-backups" />
+
+    <ChecklistItem slug="whatsapp-hide-last-seen" />
+
+    <ChecklistItem slug="whatsapp-strict-account" />
+
+    <ChecklistItem slug="whatsapp-disappearing" />
+  </ChecklistItemGroup>
+</Section>
+
+<Section title="WhatsAppで継続的に行うセキュリティ習慣" slug="ongoing">
+  <RiskLevel level="everyone" mode="default" />
+
+  <ChecklistItemGroup>
+    <ChecklistItem slug="whatsapp-no-sensitive-topics" />
+
+    <ChecklistItem slug="whatsapp-meta-ai" />
+
+    <ChecklistItem slug="whatsapp-pairing-code-scams" />
+
+    <ChecklistItem slug="whatsapp-fake-support" />
+  </ChecklistItemGroup>
+</Section>
+
+<Section title="WhatsAppの強化された保護対策" slug="enhanced">
+  <RiskLevel level="medium" mode="default" />
+
+  <ChecklistItemGroup>
+    <ChecklistItem slug="whatsapp-advanced-chat-privacy" />
+
+    <ChecklistItem slug="whatsapp-disable-save-camera-roll" />
+
+    <ChecklistItem slug="whatsapp-display-name" />
+
+    <ChecklistItem slug="whatsapp-username" />
+
+    <ChecklistItem slug="whatsapp-live-location" />
+
+    <ChecklistItem slug="whatsapp-secure-backup" />
+  </ChecklistItemGroup>
+</Section>
+
+<Section title="グループのオーガナイザー・管理者向け" slug="groups">
+  <RiskLevel level="medium" mode="default" />
+
+  組織活動のグループを運営しているなら、個人の設定と同じくらい、グループ自体の設定も重要です。
+
+  <ChecklistItemGroup>
+    <ChecklistItem slug="whatsapp-group-settings" />
+
+    <ChecklistItem slug="whatsapp-communities" />
+  </ChecklistItemGroup>
+</Section>
+
+<Section title="リスクの高いアクティビストのための保護対策" slug="higher">
+  <RiskLevel level="high" mode="default" />
+
+  このセクションのチェックリスト項目は、デバイスが警察に押収された場合にあなたのデータを守るのに役立ちます。
+
+  <ChecklistItemGroup>
+    <ChecklistItem slug="lockdown" />
+
+    <ChecklistItem slug="updates" />
+
+    <ChecklistItem slug="biometrics-disable" />
+
+    <ChecklistItem slug="passcode" />
+
+    <ChecklistItem slug="whatsapp-limit-photo-access" />
+
+    <ChecklistItem slug="whatsapp-disable-notifications" />
+
+    <ChecklistItem slug="whatsapp-disable-ai" />
+
+    <ChecklistItem slug="whatsapp-linked-devices" />
+  </ChecklistItemGroup>
+</Section>
+
+<Section title="その他のリソース" slug="resources">
+  * [WhatsAppの使い方ガイド](https://ssd.eff.org/module/how-to-use-whatsapp) — Electronic Frontier Foundation
+  * [WhatsAppのセキュリティを強化する](https://freedom.press/digisec/blog/upgrading-whatsapp-security/) — Freedom of the Press Foundation
+</Section>
+
+<FAQ>
+  <FAQItem question="各チャットに表示される「暗号化を確認」というオプションは何ですか？" answer="この機能を使うと、特定のチャットの暗号鍵を確認できます。これは、相手と最初につながったときに、攻撃者が通信の間に割り込もうとした可能性があるような、非常にリスクの高い状況で使われるものです。こうした高度な脅威まで考慮しなければならないほどセンシティブなチャットなら、WhatsAppではなくSignalを使うべきです。" />
+  <FAQItem question="WhatsAppがエンドツーエンド暗号化を回避する「バックドア」を作ったと主張する2026年の訴訟については？" answer="2026年に起こされた二つの別々の訴訟で、WhatsAppにはMetaのスタッフがエンドツーエンド暗号化を回避してユーザーのメッセージを読める仕組みがあると主張されています。この主張を検証した暗号の専門家たちは、事実ではないか、誇張されている可能性が高いと考えています。もし主張が事実だと判明すれば、大手テック企業によるこれまでにないプライバシー侵害ということになります。私たちのスタンス：とんでもない主張には、それに見合うだけの確かな証拠が必要です。 Metaが倫理的な企業だとはまったく思っていませんが、訴訟で何が明らかになるかを見守りたいと考えています。いつも通り、心配ならSignalを使いましょう。" />
+  <FAQItem question="WhatsAppは通常のテキストメッセージ（SMS）より安全？" answer="メッセージの内容に関しては、安全です。 WhatsAppのメッセージはエンドツーエンドで暗号化されているので、たとえ召喚状があっても、携帯電話会社がメッセージの内容を警察に渡すことはできません。通常のテキストメッセージ（SMS）は暗号化されておらず、携帯電話会社にはすべての内容が見えています。それでもメタデータについては、WhatsAppはSignalより劣ります。Metaは、あなたが誰にいつメッセージを送ったか、どのグループに入っているかを記録していて、警察から求められればそれを渡します。" />
+  <FAQItem question="警察は私のWhatsAppメッセージを読める？" answer="あなたのデバイスと相手のデバイスの間でやり取りされている途中のメッセージの内容は読めません。ただし、エンドツーエンド暗号化をオンにしないままチャットのバックアップを有効にしていると、メッセージにアクセスされる可能性があります。また、警察はMetaに大量のメタデータ（連絡先リスト、メッセージの相手、参加しているグループ、IPアドレス）の提出を強制できます。さらに、押収したスマホのパスコードが弱ければ、ロックを突破してメッセージを直接読むこともできます。" />
+  <FAQItem question="WhatsAppのユーザー名を使えば、警察から電話番号を隠せる？" answer="いいえ。ユーザー名で電話番号を隠せるのは、まだあなたの番号を知らない他のWhatsAppユーザーに対してだけです。 WhatsAppを使うには今でも電話番号が必要で、Metaはその番号を、連絡先リストや参加しているグループ、誰とメッセージをやり取りしているかといった情報と一緒に警察へ提出できてしまいます。" />
+  <FAQItem question="WhatsAppではなくSignalを使うべきなのはどんなとき？" answer="センシティブな政治的組織活動にはSignalを使いましょう。 Signalはメタデータをほとんど収集しておらず、警察からの要請があっても渡せる情報はほぼありません。コミュニティがすでにWhatsAppを使っていて乗り換えそうにないなら、設定を見直す価値はあります。ただし、リスクの高い会話はできるだけSignalに移しましょう。" />
+</FAQ>
