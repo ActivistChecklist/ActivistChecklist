@@ -189,8 +189,8 @@ importers:
         specifier: ^11.2.1
         version: 11.2.1
       '@hookform/resolvers':
-        specifier: ^6.0.0
-        version: 6.0.0(ajv@8.20.0)(react-hook-form@7.91.0(@types/react@19.3.0)(react@19.3.1))(superstruct@1.0.4)(zod@4.6.7)
+        specifier: ^6.0.1
+        version: 6.0.1(ajv@8.20.0)(react-hook-form@7.91.0(@types/react@19.3.0)(react@19.3.1))(superstruct@1.0.4)(zod@4.6.7)
       '@keystar/ui':
         specifier: ~0.10.0
         version: 0.10.0(next@16.4.2(@types/node@26.6.5)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-aria@3.50.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-dom@19.3.1(react@19.3.1))(react-stately@3.48.0(react@19.3.1))(react@19.3.1)
@@ -300,8 +300,8 @@ importers:
         specifier: '>=4.3.1 <5'
         version: 4.3.2
       lucide-react:
-        specifier: ^1.61.0
-        version: 1.61.0(@types/react@19.3.0)(react@19.3.1)
+        specifier: ^1.62.0
+        version: 1.62.0(@types/react@19.3.0)(react@19.3.1)
       mongodb:
         specifier: ^7.7.0
         version: 7.7.0(socks@2.8.9)
@@ -419,7 +419,7 @@ importers:
         version: 1.5.2
       postcss:
         specifier: '>=8.5.23'
-        version: 8.5.31
+        version: 8.5.32
       prettier:
         specifier: 3.9.10
         version: 3.9.10
@@ -799,12 +799,11 @@ packages:
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
 
-  '@hookform/resolvers@6.0.0':
-    resolution: {integrity: sha512-6iBzQnB+YwAveVc8HUi6QYLITn5X+xNKRMFIcNXHZlvp2aTI7yWbj4n/JodXxirMCcBc4VCjb2aYAJh4x07mVw==}
+  '@hookform/resolvers@6.0.1':
+    resolution: {integrity: sha512-Qj/4Ge0MMU5VtVtz2lnBiuaBQNTIR27jejpE1fYvADbx2tqae0vpnJnqgep7LAVHHpMXlrebjL9+V2zkZ7qZfA==}
     peerDependencies:
       '@sinclair/typebox': '>=0.25.24'
       '@standard-schema/spec': ^1.0.0
-      '@typeschema/main': '>=0.13.7'
       '@vinejs/vine': ^2.0.0 || ^3.0.0 || ^4.0.0
       ajv: ^8.12.0
       ajv-errors: ^3.0.0
@@ -831,8 +830,6 @@ packages:
       '@sinclair/typebox':
         optional: true
       '@standard-schema/spec':
-        optional: true
-      '@typeschema/main':
         optional: true
       '@vinejs/vine':
         optional: true
@@ -3629,8 +3626,8 @@ packages:
   lru-cache@10.4.3:
     resolution: {integrity: sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==}
 
-  lucide-react@1.61.0:
-    resolution: {integrity: sha512-v2SQPPPNjnr+BlhL9Spuzmo5yR+hLkftfuE4E3jaxdNPgSH0hJKPcLJBP7yAta87jQNPsSERS59PJjCJ/CorBA==}
+  lucide-react@1.62.0:
+    resolution: {integrity: sha512-2i8QZZhkgYMA3oJvKYpCltHh54VnT/3rIPkDLHbzr3IJQBaCz8+7j7V2k2rczYd2aCqcBaMmNlWQ2KKeDfcxmw==}
     peerDependencies:
       '@types/react': '*'
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
@@ -4127,8 +4124,8 @@ packages:
   postcss-value-parser@4.2.0:
     resolution: {integrity: sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==}
 
-  postcss@8.5.31:
-    resolution: {integrity: sha512-YUbWYCgErwnMAVkjUnYa+KlMBzGpHwiIt/DE7f0G33AuX2LH9UcTk6KgWxd3zRU+pN3u/C+Xl3EnMLM4Hea7Sg==}
+  postcss@8.5.32:
+    resolution: {integrity: sha512-LJlKCCAUFKOuZxipUdYw1NzIITEsPcgyOG9LkvRJvuKj/bRzbuRY0ARXvL0pWGpsZvn8jku+LMep2eU0seHp8g==}
     engines: {node: ^10 || ^12 || >=14}
 
   prettier@3.9.10:
@@ -5049,7 +5046,7 @@ snapshots:
     dependencies:
       '@annotorious/react': 3.8.9(openseadragon@6.1.1)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@recogito/react-text-annotator': 3.4.10(openseadragon@6.1.1)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
-      lucide-react: 1.61.0(@types/react@19.3.0)(react@19.3.1)
+      lucide-react: 1.62.0(@types/react@19.3.0)(react@19.3.1)
       mongodb: 7.7.0(socks@2.8.9)
       next: 16.4.2(@types/node@26.6.5)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       openseadragon: 6.1.1
@@ -5350,7 +5347,7 @@ snapshots:
     dependencies:
       graphql: 16.14.2
 
-  '@hookform/resolvers@6.0.0(ajv@8.20.0)(react-hook-form@7.91.0(@types/react@19.3.0)(react@19.3.1))(superstruct@1.0.4)(zod@4.6.7)':
+  '@hookform/resolvers@6.0.1(ajv@8.20.0)(react-hook-form@7.91.0(@types/react@19.3.0)(react@19.3.1))(superstruct@1.0.4)(zod@4.6.7)':
     dependencies:
       '@standard-schema/utils': 0.3.0
       react-hook-form: 7.91.0(@types/react@19.3.0)(react@19.3.1)
@@ -6798,7 +6795,7 @@ snapshots:
       '@alloc/quick-lru': 5.2.0
       '@tailwindcss/node': 4.3.3
       '@tailwindcss/oxide': 4.3.3
-      postcss: 8.5.31
+      postcss: 8.5.32
       tailwindcss: 4.3.3
 
   '@toeverything/y-indexeddb@0.10.0-canary.9(yjs@13.6.32)':
@@ -7987,7 +7984,7 @@ snapshots:
 
   lru-cache@10.4.3: {}
 
-  lucide-react@1.61.0(@types/react@19.3.0)(react@19.3.1):
+  lucide-react@1.62.0(@types/react@19.3.0)(react@19.3.1):
     dependencies:
       react: 19.3.1
     optionalDependencies:
@@ -8545,7 +8542,7 @@ snapshots:
       '@swc/helpers': 0.5.23
       baseline-browser-mapping: 2.11.19
       caniuse-lite: 1.0.30001809
-      postcss: 8.5.31
+      postcss: 8.5.32
       react: 19.3.1
       react-dom: 19.3.1(react@19.3.1)
       styled-jsx: 5.1.6(react@19.3.1)
@@ -8807,7 +8804,7 @@ snapshots:
 
   postcss-value-parser@4.2.0: {}
 
-  postcss@8.5.31:
+  postcss@8.5.32:
     dependencies:
       nanoid: 3.3.20
       picocolors: 1.1.1
@@ -9604,7 +9601,7 @@ snapshots:
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.7
-      postcss: 8.5.31
+      postcss: 8.5.32
       rolldown: 1.2.14
       tinyglobby: 0.2.17
     optionalDependencies:
