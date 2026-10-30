@@ -1,3 +1,6 @@
-.env*
-public/webhooks/webhook-secrets.local.php
+# Gitignored files Claude Code copies from the main checkout into each new worktree.
+# Only what `pnpm dev` needs. The production env files (.env.production*.local) and
+# public/webhooks/webhook-secrets.local.php are read only by the deploy scripts,
+# which run from the main checkout, so worktrees go without them.
+.env
 public/pagefind/
