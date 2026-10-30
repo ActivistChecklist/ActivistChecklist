@@ -1,0 +1,24 @@
+---
+title: 動画や写真は安全に共有する（Signalなどで）
+do: |
+  暗号化された手段で写真を送る：Signal、Proton Drive、OnionShareなど
+dont: |
+  Google フォトやiCloudのようなクラウド共有サービスを使う
+titleBadges: []
+---
+
+センシティブな動画や写真を信頼できるアクティビストや弁護士と共有するなら、安全な手段を使いましょう。 AppleやGoogleのようなクラウド事業者は、裁判所の命令があればあなたのデータを警察に渡す可能性があります。
+
+<HowTo title="動画を安全に共有する方法">
+  * [Signal](https://signal.org/)：Signalでメディアを共有するのが、いちばん簡単で安全です。「メタデータ」（位置情報など）も自動で削除してくれます。ただし、長い動画だと画質が落ちる点には注意してください。
+
+    <Alert type="info">
+          **画質：** Signalの設定で、メディア共有を「高画質」にしておきましょう。 <MenuPath inline>Signalを開く > プロフィール写真をタップ > **設定** > **データとストレージ** > **メディアの画質** > **送信するメディアの画質** > **高画質**に設定</MenuPath>
+    </Alert>
+  * [Proton Drive](https://proton.me/drive)：無料アカウントで最大5GBまでファイルを保存できます。
+  * [OnionShare](https://onionshare.org/)：大きなファイルをたくさん送る必要があるときに最適です。エンドツーエンド暗号化されています。受け取る側は[Tor Browser](https://www.torproject.org/?noredirect=1)を使う必要があります。
+</HowTo>
+
+<Alert type="default">
+  **上級編：** さらに一段階強いセキュリティ・暗号化で動画を保存したいなら？ [Tella](https://tella-app.org/)をチェックしてみてください。動画を特定の時刻に撮影したこと、そして改ざんされていないことを証明できる、検証可能なメタデータを追加したいなら？ [Proofmode](https://proofmode.org/)をチェックしてみてください。
+</Alert>

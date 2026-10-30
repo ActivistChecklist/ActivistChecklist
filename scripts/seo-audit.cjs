@@ -13,7 +13,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const matter = require('gray-matter');
+const { parseFrontmatter } = require('../lib/frontmatter.cjs');
 
 const TOP_GUIDE_SLUGS = [
   'signal',
@@ -164,7 +164,7 @@ function listMdxDir(kind, dirPath) {
     .filter((f) => f.endsWith('.mdx'))
     .map((f) => {
       const raw = fs.readFileSync(path.join(dirPath, f), 'utf8');
-      const { data, content } = matter(raw);
+      const { data, content } = parseFrontmatter(raw);
       return {
         kind,
         slug: f.replace(/\.mdx$/, ''),

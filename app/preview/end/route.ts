@@ -1,5 +1,7 @@
 import { cookies, draftMode } from 'next/headers';
 
+import { PREVIEW_GRANT_COOKIE } from '@/lib/preview-grant';
+
 export async function POST(req: Request) {
   const url = new URL(req.url);
   const origin = req.headers.get('origin');
@@ -13,9 +15,9 @@ export async function POST(req: Request) {
 
   const store = await cookies();
   (await draftMode()).disable();
-  store.delete('ks-branch');
-  store.delete('ks-preview-owner');
-  store.delete('ks-preview-repo');
+  for (const name of [PREVIEW_GRANT_COOKIE, 'ks-branch', 'ks-preview-owner', 'ks-preview-repo']) {
+    store.delete(name);
+  }
 
   return Response.redirect(referrer, 303);
 }

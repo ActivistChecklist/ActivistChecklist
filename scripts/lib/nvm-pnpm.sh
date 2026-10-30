@@ -10,9 +10,12 @@
 #   NVM_PNPM_NVM_DIR       — default $HOME/.nvm
 #   NVM_PNPM_NODE_VERSION  — optional; else first real line of $PROJECT_DIR/.nvmrc
 #   NVM_PNPM_PATH_EXTRA    — optional PATH prefix
+#   NVM_PNPM_AUTO_INSTALL  — 1 (default when NVM_PNPM_USE_NVM=1) or 0 — when the
+#                            version is not installed, `nvm install` it first
+#                            (see nvm_pnpm__ensure_installed)
 #
-# Optional: define nvm_pnpm_err(message) before sourcing to route errors
-# (e.g. to log_echo or deploy log).
+# Optional: define nvm_pnpm_err(message) before sourcing to route errors and
+# progress messages (e.g. to log_echo or deploy log).
 #
 # After successful nvm_pnpm_init:
 #   NVM_PNPM_RESOLVED_VERSION — non-empty when pnpm must run via nvm exec
@@ -51,6 +54,52 @@ nvm_pnpm__prepend_path() {
   export PATH="$HOME/bin:$HOME/.local/bin:$HOME/.local/share/pnpm:$HOME/Library/pnpm:$PATH"
 }
 
+# Install Node $1 through nvm when no installed version satisfies it, so bumping
+# .nvmrc in a PR is the whole upgrade: the next deploy or scheduled job on the
+# server installs it rather than failing at `nvm exec`. nvm verifies the
+# download against the release's SHASUMS256.txt.
+#
+# Every job on the host shares one nvm dir, and the 5-minute healthchecks can
+# land on the same version as a webhook deploy, so installs are serialized with
+# flock. Whoever gets the lock second re-checks and finds it already installed.
+# A partial version ("22") resolves to the newest installed 22.x and never
+# triggers an install unless no 22.x exists at all.
+nvm_pnpm__ensure_installed() {
+  local ver="$1" nvm_dir="$2"
+  [[ "$(nvm version "$ver" 2>/dev/null)" != "N/A" ]] && return 0
+
+  if [[ "${NVM_PNPM_AUTO_INSTALL:-1}" != "1" ]]; then
+    nvm_pnpm__err "nvm_pnpm_init: Node '$ver' is not installed (NVM_PNPM_AUTO_INSTALL=0); run: nvm install $ver"
+    return 1
+  fi
+  if ! command -v flock >/dev/null 2>&1; then
+    nvm_pnpm__err "nvm_pnpm_init: Node '$ver' is not installed and flock is unavailable to serialize the install; run: nvm install $ver"
+    return 1
+  fi
+
+  local lock_file="$nvm_dir/.nvm-pnpm-install.lock"
+  # Subshell so the lock fd is released however it exits. fd 7, not 9:
+  # scripts/build-deploy.sh holds its deploy lock on 9.
+  (
+    if ! flock -w 900 7; then
+      nvm_pnpm__err "nvm_pnpm_init: timed out waiting for another Node install ($lock_file)"
+      exit 1
+    fi
+    if [[ "$(nvm version "$ver" 2>/dev/null)" != "N/A" ]]; then
+      nvm_pnpm__err "nvm_pnpm_init: Node '$ver' was installed by another job while waiting"
+      exit 0
+    fi
+    nvm_pnpm__err "nvm_pnpm_init: Node '$ver' is not installed; running nvm install $ver"
+    # nvm's progress goes to stderr: the deploy log for build-deploy.sh, the
+    # journal for scheduled jobs. stdout is left alone for callers that read it.
+    if ! nvm install --no-progress "$ver" >&2; then
+      nvm_pnpm__err "nvm_pnpm_init: nvm install $ver failed"
+      exit 1
+    fi
+    nvm_pnpm__err "nvm_pnpm_init: installed Node $(nvm version "$ver")"
+  ) 7>"$lock_file"
+}
+
 nvm_pnpm_init() {
   local project_dir="${NVM_PNPM_PROJECT_DIR:-}"
   if [[ -z "$project_dir" ]] || [[ ! -d "$project_dir" ]]; then
@@ -84,8 +133,11 @@ nvm_pnpm_init() {
   unset npm_config_prefix
   unset NPM_CONFIG_PREFIX
 
+  # --no-use: everything below goes through `nvm exec`, and nvm's default auto-use
+  # reads .nvmrc from the cwd and fails (status 3, fatal under set -e) whenever
+  # that version is not installed yet, i.e. before ensure_installed can run.
   # shellcheck disable=SC1090
-  source "$nvm_dir/nvm.sh"
+  source "$nvm_dir/nvm.sh" --no-use
 
   local ver="${NVM_PNPM_NODE_VERSION:-}"
   if [[ -z "$ver" ]]; then
@@ -95,6 +147,8 @@ nvm_pnpm_init() {
     nvm_pnpm__err "nvm_pnpm_init: set NVM_PNPM_NODE_VERSION or add .nvmrc under $project_dir"
     return 1
   fi
+
+  nvm_pnpm__ensure_installed "$ver" "$nvm_dir" || return 1
 
   if ! nvm exec "$ver" node -v >/dev/null 2>&1; then
     nvm_pnpm__err "nvm_pnpm_init: nvm exec '$ver' node failed"

@@ -1,0 +1,38 @@
+---
+title: 二要素認証を有効にする
+preview: |
+  もしパスワードを盗まれても、二要素認証を使っていれば、相手があなたのスマホも持っていない限りログインされずに済みます。
+do: |
+  重要なサイトでは二要素認証を有効にする
+dont: |
+  パスワードだけに頼る
+titleBadges: []
+---
+
+パスワードを入力したあと、本当にあなた本人であることを証明するために、スマホに表示されるコードを入力します。家に入るのに、鍵と警報システムの暗証番号の両方が必要なようなもの。両方そろわないと誰も入れません。
+
+二要素認証でいちばん守るべきアカウントはメールです。攻撃者にメールに入られると、ほかのパスワードを全部リセットされてしまいます。
+
+<HowTo title="設定方法">
+  **[認証アプリ](term:authenticator-app)をインストールする：**
+
+  1. **オプション1：1Password：** [1Password](#password-manager)を使っているなら、「authenticator（認証）」機能が組み込まれています。[詳しくはこちら](https://support.1password.com/one-time-passwords/)。
+  2. **オプション2：Ente Auth：** [Ente Auth](https://ente.io/auth/)をインストールする（iPhone、Android）
+     * 任意：アカウントを作成することもできます。データはエンドツーエンドで暗号化されます。アカウントを作らずに使うこともできますが、スマホのバックアップを取っていないと、ワンタイムパスワードを失ってしまうおそれがあります。
+
+  **二要素認証の設定方法：**
+
+  1. セキュリティ／プライバシーの設定を開く
+  2. 「2FA」「二要素認証」「二段階認証」「多要素認証」といった項目を探す
+  3. 「認証アプリ」のオプションがあれば、それを選びましょう！（バックアップコードは、パスワードマネージャーなど安全な場所に必ず保存しておきましょう。）
+  4. 「テキストメッセージ／SMSによる認証」しか選べない場合は、それを選んで指示に従ってください。
+  5. よく使われるサイトの2FA設定ページへのリンク：
+     * [Google](https://myaccount.google.com/signinoptions/two-step-verification)
+     * [Apple ID](https://support.apple.com/en-us/HT204915)
+     * [Facebook](https://www.facebook.com/settings?tab=security)
+     * [Twitter / X](https://twitter.com/settings/security)
+     * [Instagram](https://help.instagram.com/566810106808145)
+     * または、[2FA Directory](https://2fa.directory/us/)で、ウェブサイトやサービス、アプリが2FAに対応しているか調べることもできます。
+</HowTo>
+
+注：サービスによっては、**認証アプリ**と**SMSの認証コード**のどちらかを選べる場合があります。そのときは、いつでも認証アプリを選ぶのがベストです。攻撃者に[SMSを傍受される](https://www.wired.com/2016/06/hey-stop-using-texts-two-factor-authentication/)可能性があるからです。

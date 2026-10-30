@@ -2,7 +2,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import matter from 'gray-matter';
+import { parseFrontmatter } from '../lib/frontmatter.cjs';
 import chalk from 'chalk';
 import { getAllGuides, getAllPages, getAllNewsItems } from '../lib/content.js';
 import { LOCALES, DEFAULT_LOCALE } from '../lib/i18n-config.mjs';
@@ -143,7 +143,7 @@ function extractBodyStringFromMdx(mdxContent) {
 function parseMdxFile(filePath) {
   if (!fs.existsSync(filePath)) return null;
   const raw = fs.readFileSync(filePath, 'utf8');
-  const { data, content } = matter(raw);
+  const { data, content } = parseFrontmatter(raw);
   return { frontmatter: data || {}, content: content || '' };
 }
 
@@ -270,7 +270,11 @@ function getHomepageExpectedText(locale) {
   try {
     const raw = fs.readFileSync(messagesPath, 'utf8');
     const messages = JSON.parse(raw);
-    const candidates = ['homepage.checklistsHeading', 'hero.title', 'site.title'];
+    // Strings the homepage renders in every locale. homepage.checklistsHeading
+    // used to lead this list; the homepage no longer shows it, but older
+    // translations still carry the key, so the check would look for text that
+    // isn't on the page.
+    const candidates = ['hero.title', 'site.title'];
     for (const keyPath of candidates) {
       const value = getByPath(messages, keyPath);
       if (typeof value === 'string' && value.trim()) {

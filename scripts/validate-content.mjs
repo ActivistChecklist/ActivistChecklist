@@ -6,6 +6,8 @@
  * Scans all MDX files in content/ for security violations:
  *   Layer 1: Regex scan for suspicious patterns
  *   Layer 2: AST validation via MDX compilation with security plugins
+ *   Layer 3: No raw HTML or script URLs in text rendered by lib/markdown-html.js
+ *            (every front matter string, and changelog/news bodies)
  *
  * Usage:
  *   node scripts/validate-content.mjs              # validate all content
@@ -18,10 +20,15 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { serialize } from 'next-mdx-remote/serialize';
-import matter from 'gray-matter';
+import { parseFrontmatter } from '../lib/frontmatter.cjs';
 import remarkGfm from 'remark-gfm';
 import { applyHeadingIds } from '../lib/mdx-heading-ids.js';
 import { ALLOWED_COMPONENTS, ALLOWED_HTML_ELEMENTS } from '../lib/mdx-options.js';
+import {
+  bodyRendersAsMarkdown,
+  collectStrings,
+  findUnsafeMarkup,
+} from '../lib/content-markup-check.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -39,6 +46,9 @@ const SUSPICIOUS_PATTERNS = [
   { pattern: /dangerouslySetInnerHTML/g, label: 'dangerouslySetInnerHTML' },
   { pattern: /javascript\s*:/gi, label: 'javascript: URL' },
   { pattern: /\bon[A-Z][a-zA-Z]*\s*=/g, label: 'event handler attribute' },
+  // Raw HTML attributes are case-insensitive (onerror=, ONERROR=). Only inside a
+  // tag, so prose such as "one = two" does not trip it.
+  { pattern: /<[^>]*\bon[a-z]+\s*=/gi, label: 'event handler attribute in tag' },
   { pattern: /<script[\s>]/gi, label: '<script> tag' },
   { pattern: /<iframe[\s>]/gi, label: '<iframe> tag' },
   { pattern: /<object[\s>]/gi, label: '<object> tag' },
@@ -97,7 +107,7 @@ function remarkValidateComponents() {
         }
         if (node.attributes) {
           for (const attr of node.attributes) {
-            if (attr.name && /^on[A-Z]/.test(attr.name)) {
+            if (attr.name && /^on[a-z]/i.test(attr.name)) {
               violations.push(`Event handler "${attr.name}" on <${name}>`);
             }
           }
@@ -143,8 +153,16 @@ async function validateFile(filePath) {
     return errors;
   }
 
+  let content, data;
+  try {
+    ({ content, data } = parseFrontmatter(raw));
+  } catch (e) {
+    // e.g. `---js` front matter, which parseFrontmatter refuses rather than runs.
+    errors.push({ file: relativePath, error: e.message });
+    return errors;
+  }
+
   // Layer 1: Regex scan
-  const { content } = matter(raw);
   for (const { pattern, label } of SUSPICIOUS_PATTERNS) {
     // Reset regex lastIndex
     pattern.lastIndex = 0;
@@ -184,6 +202,27 @@ async function validateFile(filePath) {
       file: relativePath,
       error: `MDX compilation/validation error: ${e.message}`,
     });
+  }
+
+  // Layer 3: text rendered by lib/markdown-html.js
+  for (const { keyPath, value } of collectStrings(data)) {
+    for (const hit of findUnsafeMarkup(value)) {
+      errors.push({
+        file: relativePath,
+        error: `Front matter "${keyPath}": ${hit.label}`,
+        context: hit.context,
+      });
+    }
+  }
+  if (bodyRendersAsMarkdown(relativePath)) {
+    for (const hit of findUnsafeMarkup(content)) {
+      errors.push({
+        file: relativePath,
+        line: hit.line,
+        error: `Markdown body: ${hit.label}`,
+        context: hit.context,
+      });
+    }
   }
 
   return errors;

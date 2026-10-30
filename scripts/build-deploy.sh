@@ -95,17 +95,24 @@ export NVM_PNPM_NVM_DIR="${BUILD_DEPLOY_NVM_DIR:-${NVM_PNPM_NVM_DIR:-$HOME/.nvm}
 export NVM_PNPM_NODE_VERSION="${BUILD_DEPLOY_NODE_VERSION:-${NVM_PNPM_NODE_VERSION:-}}"
 export NVM_PNPM_PATH_EXTRA="${BUILD_DEPLOY_PATH_EXTRA:-${NVM_PNPM_PATH_EXTRA:-}}"
 
-if ! nvm_pnpm_init; then
-  log "ERROR: nvm_pnpm_init failed. whoami=$(whoami) HOME=$HOME PATH=$PATH"
-  exit 127
-fi
-
 log "Deploy user=$(whoami) HOME=$HOME"
-if [[ -n "${NVM_PNPM_RESOLVED_VERSION:-}" ]]; then
-  log "Node=$(nvm exec "$NVM_PNPM_RESOLVED_VERSION" node -v) pnpm=$(nvm exec "$NVM_PNPM_RESOLVED_VERSION" command -v pnpm)"
-else
-  log "Node=$(command -v node || echo missing) pnpm=$(command -v pnpm || echo missing)"
-fi
+
+# Resolve Node from the tree just synced, not the one we started in, so the
+# deploy that bumps .nvmrc already builds on the new version. With nvm, a version
+# the server lacks is installed first (see nvm_pnpm__ensure_installed). ac-api
+# moves when scripts/healthcheck-api.sh next runs and finds its PM2 daemon on a
+# different Node.
+init_node() {
+  if ! nvm_pnpm_init; then
+    log "ERROR: nvm_pnpm_init failed. whoami=$(whoami) HOME=$HOME PATH=$PATH"
+    exit 127
+  fi
+  if [[ -n "${NVM_PNPM_RESOLVED_VERSION:-}" ]]; then
+    log "Node=$(nvm exec "$NVM_PNPM_RESOLVED_VERSION" node -v) pnpm=$(nvm exec "$NVM_PNPM_RESOLVED_VERSION" command -v pnpm)"
+  else
+    log "Node=$(command -v node || echo missing) pnpm=$(command -v pnpm || echo missing)"
+  fi
+}
 
 GIT_BRANCH="${GIT_BRANCH:-main}"
 
@@ -140,6 +147,7 @@ while :; do
   # here on is a genuinely newer push and earns another iteration.
   rm -f "$PENDING_FILE"
   log "Building $(git rev-parse --short HEAD) on $GIT_BRANCH (iteration $iteration/$MAX_BUILD_ITERATIONS)"
+  init_node
 
   if superseded "pnpm install"; then continue; fi
 

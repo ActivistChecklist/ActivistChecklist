@@ -7,7 +7,10 @@
 #   1. PM2 state - is APP_NAME listed as "online"?
 #   2. HTTP probe - does the API actually serve its expected payload?
 #
-# The second one is the one that catches real outages. "online" in `pm2 status`
+# It also replaces the PM2 daemon when it runs a different Node than .nvmrc
+# pins, which is how a Node bump reaches ac-api (see "PM2 daemon Node version").
+#
+# The second probe is the one that catches real outages. "online" in `pm2 status`
 # only means PM2 has a child it has not seen exit: it says nothing about whether
 # Fastify bound the port, whether the routes registered, or whether a wedged
 # event loop is refusing every request. This monitor used to ping Healthchecks
@@ -188,7 +191,8 @@ pm2_unit_setenv_args() {
     "--setenv=NVM_PNPM_USE_NVM=$NVM_PNPM_USE_NVM" \
     "--setenv=NVM_PNPM_NVM_DIR=$NVM_PNPM_NVM_DIR" \
     "--setenv=NVM_PNPM_NODE_VERSION=$NVM_PNPM_NODE_VERSION" \
-    "--setenv=NVM_PNPM_PATH_EXTRA=$NVM_PNPM_PATH_EXTRA"
+    "--setenv=NVM_PNPM_PATH_EXTRA=$NVM_PNPM_PATH_EXTRA" \
+    "--setenv=NVM_PNPM_AUTO_INSTALL=${NVM_PNPM_AUTO_INSTALL:-1}"
 }
 
 # Place the PM2 God daemon in a cgroup that outlives this (Type=oneshot) job.
@@ -242,6 +246,13 @@ ensure_pm2_daemon() {
   # KillMode=process plus RemainAfterExit: without them the unit going inactive
   # takes the daemon we just spawned down with it, which is the very thing this
   # function exists to prevent.
+  #
+  # The flip side of RemainAfterExit: once that daemon dies (crash, `pm2 kill`,
+  # cycle_pm2_daemon), the unit still reads "active (exited)", and systemd-run
+  # refuses to reuse the name. Stop it first. That is safe here because no live
+  # daemon is left at this point, and KillMode=process limits the stop to the
+  # unit's main process, the `pm2 ping` that exited long ago.
+  systemctl --user stop ac-api-pm2-daemon.service >/dev/null 2>&1 || true
   systemctl --user reset-failed ac-api-pm2-daemon.service >/dev/null 2>&1 || true
   systemd-run --user --unit=ac-api-pm2-daemon --quiet \
     --property=KillMode=process \
@@ -278,6 +289,48 @@ ensure_pm2_daemon() {
 
   log_echo "ERROR: could not place the PM2 daemon outside this job's cgroup; it will be reaped when this script exits"
   PM2_DAEMON_PLACED="bad"
+}
+
+# --- PM2 daemon Node version ---
+#
+# ac-api runs on the PM2 God daemon's Node: ecosystem.config.js sets no
+# interpreter, and `pm2 restart` reuses the daemon. So a .nvmrc bump reaches the
+# API only when the daemon itself is replaced, which this check does whenever
+# the two disagree. Keeping it here rather than in the deploy leaves one owner
+# for the daemon's placement, and the timer converges within one interval of a
+# bump landing (scripts/lib/nvm-pnpm.sh installs the new version first).
+
+# Resolved path of the Node binary the running daemon was started from. Empty
+# when unknown (no daemon, or no /proc on macOS), which skips the comparison.
+pm2_daemon_node() {
+  local pid
+  pid="$(pm2_daemon_pid)" || return 0
+  readlink -f "/proc/$pid/exe" 2>/dev/null || true
+}
+
+# Resolved path of the Node binary nvm_pnpm_init selected. Empty without nvm.
+wanted_node() {
+  [[ -n "${NVM_PNPM_RESOLVED_VERSION:-}" ]] || return 0
+  local path
+  path="$(nvm which "$NVM_PNPM_RESOLVED_VERSION" 2>/dev/null)" || return 0
+  [[ -n "$path" ]] || return 0
+  readlink -f "$path" 2>/dev/null || true
+}
+
+# 0 when the daemon runs a different Node than the repo pins. If the old binary
+# has since been removed, /proc reports "... (deleted)", which also differs.
+pm2_daemon_node_stale() {
+  local running wanted
+  running="$(pm2_daemon_node)"
+  wanted="$(wanted_node)"
+  [[ -n "$running" && -n "$wanted" && "$running" != "$wanted" ]]
+}
+
+# Replace the daemon (and ac-api with it) so the next start uses wanted_node.
+# The API is down from here until the restart below brings it back.
+cycle_pm2_daemon() {
+  nvm_pnpm exec pm2 kill >/dev/null 2>&1 </dev/null || true
+  ensure_pm2_daemon
 }
 
 # --- HTTP probe ---
@@ -364,6 +417,15 @@ fi
 # MUST come before any other pm2 command - see the systemd note in the header.
 ensure_pm2_daemon
 
+# A misplaced daemon is about to be reaped anyway, and cycling cannot place it
+# any better, so only replace one that would otherwise survive.
+node_cycled=false
+if [[ "$PM2_DAEMON_PLACED" != "bad" ]] && pm2_daemon_node_stale; then
+  log_echo "PM2 daemon runs $(pm2_daemon_node) but the repo pins $(wanted_node); replacing the daemon"
+  cycle_pm2_daemon
+  node_cycled=true
+fi
+
 PM2_OUTPUT=""
 pm2_online=false
 if pm2_is_online; then
@@ -432,7 +494,16 @@ if [[ "$service_online" == true && "$PM2_DAEMON_PLACED" == "bad" ]]; then
   service_online=false
 fi
 
-status_line="pm2_online=$pm2_online probe=$PROBE_VERDICT daemon_placed=$PM2_DAEMON_PLACED restart_attempted=$needs_restart"
+# Red rather than green-on-the-old-Node: a daemon that will not move would get
+# replaced on every run, so someone needs to look.
+node_current=true
+if pm2_daemon_node_stale; then
+  log_echo "ERROR: PM2 daemon still runs $(pm2_daemon_node), not $(wanted_node)"
+  node_current=false
+  service_online=false
+fi
+
+status_line="pm2_online=$pm2_online probe=$PROBE_VERDICT daemon_placed=$PM2_DAEMON_PLACED restart_attempted=$needs_restart node_cycled=$node_cycled node_current=$node_current"
 
 if [[ "$service_online" == true ]]; then
   hc_ok "api-health ok $(date -u +"%Y-%m-%dT%H:%M:%SZ") app=$APP_NAME $status_line"

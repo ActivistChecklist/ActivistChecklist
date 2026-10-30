@@ -8,7 +8,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const matter = require('gray-matter');
+const { parseFrontmatter } = require('../lib/frontmatter.cjs');
+const { stripLocalePrefix } = require('./sitemap-seo-fields.cjs');
 
 /** @param {string[]} dates */
 function maxIsoDate(dates) {
@@ -45,7 +46,7 @@ function readMdxDir(dirPath) {
   for (const file of fs.readdirSync(dirPath)) {
     if (!file.endsWith('.mdx')) continue;
     const raw = fs.readFileSync(path.join(dirPath, file), 'utf8');
-    const { data } = matter(raw);
+    const { data } = parseFrontmatter(raw);
     const fileSlug = file.replace(/\.mdx$/, '');
     const slug = data.slug != null ? String(data.slug) : fileSlug;
     const urlPath = `/${slug.replace(/^\/+/, '').replace(/\/+$/, '')}/`;
@@ -65,7 +66,7 @@ function collectDatesFromDir(dirPath) {
   for (const file of fs.readdirSync(dirPath)) {
     if (!file.endsWith('.mdx')) continue;
     const raw = fs.readFileSync(path.join(dirPath, file), 'utf8');
-    const { data } = matter(raw);
+    const { data } = parseFrontmatter(raw);
     const d = pickLastmodFromFm(data);
     if (d) dates.push(d);
   }
@@ -105,7 +106,7 @@ function buildLastmodByPath() {
 }
 
 /**
- * Resolve lastmod for a canonical path from the export (may include /es/).
+ * Resolve lastmod for a canonical path from the export (may include /es/, /fr/).
  * @param {string} canonicalLoc e.g. /signal/ or /es/signal/
  * @param {Map<string, string>} lastmodByPath
  */
@@ -113,13 +114,7 @@ function lookupContentLastmod(canonicalLoc, lastmodByPath) {
   let key = canonicalLoc.startsWith('/') ? canonicalLoc : `/${canonicalLoc}`;
   if (!key.endsWith('/')) key = `${key}/`;
 
-  if (key.startsWith('/es/')) {
-    const rest = key.slice(4);
-    key = rest ? `/${rest.replace(/\/$/, '')}/` : '/';
-  }
-  if (key === '/en/' || key === '/en') key = '/';
-
-  return lastmodByPath.get(key) || null;
+  return lastmodByPath.get(stripLocalePrefix(key)) || null;
 }
 
 module.exports = {

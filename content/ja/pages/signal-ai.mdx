@@ -1,0 +1,117 @@
+---
+title: Apple IntelligenceはSignalのメッセージを読んでいる？
+seoDescription: Apple IntelligenceはあなたのSignalのメッセージを読んでいる？メッセージそのものはおそらく読んでいません。でも、Signalの通知は処理される可能性があります。 iPhoneでオフにする方法。
+answerCapsule: |
+  Apple Intelligenceは保存されたSignalメッセージを読むことはありません。ただし、Signalの通知を要約することはできます。つまり、通知の内容がデバイスの外に出て、Appleのサーバーに送られる可能性があるということです。何がデバイス上にとどまるのか、Appleは明らかにしていません。いちばん安全なのは、設定でApple Intelligenceをオフにすること。少なくとも、Signalの通知の要約はオフにしておきましょう。
+relatedGuides: []
+firstPublished: 2025-02-20
+lastUpdated: 2025-10-21
+---
+
+<Alert type="info" title="要点まとめ">
+  iPhone 15 Pro/Max、iPhone 16、またはそれ以降の機種を使っているなら、通知の内容（Signalも含む）を守るために、**Apple Intelligenceを完全にオフにしておくのがおすすめです**。どのデータが端末の外に送られるのか、Appleがはっきり説明していないからです。 Apple Intelligenceは、<MenuPath inline>**設定** > **Apple IntelligenceとSiri** > **Apple Intelligenceをオフにする**</MenuPath>でオフにできます。
+</Alert>
+
+数か月おきに、「Signalが破られた！」といった内容のメッセージがSignalのグループで出回ります。こうした心配は、大げさだったり情報が古かったりすることがよくあります。本当に信頼できるツールへの信頼が失われないように、正確なセキュリティ情報を広めることが大切だと私たちは考えています。
+
+## SignalとApple Intelligenceについて拡散しているメッセージとは？
+
+2024年12月ごろから、このメッセージが多くのアクティビストのグループで拡散されるのを見かけるようになりました。一部は正しいものの、誤解を招く情報や間違った情報も含まれているので、ここで整理しておきます。
+
+以下が、出回っている***不正確な***メッセージです。<StyledSpan className="text-error">不正確な部分は赤字で示しています。</StyledSpan>
+
+> 新しいiPhoneでは、Apple Intelligenceが<StyledSpan className="text-error">Signalのメッセージを読める</StyledSpan>ようになりました。新しいiPhone 15または16を使っていて、iOS 18.1をダウンロードしている場合は、設定でAppleの人工知能をオフにするか、Siri/AIの設定でSignalに対して有効になっていないことを必ず確認してください。そうしないと、<StyledSpan className="text-error">Signalのメッセージがスキャンされ、内容を読まれてしまいます</StyledSpan>。やり方は、<StyledSpan className="text-error">設定 › Siri › 下にスクロールしてApp › Signal › 「このAppから学習」とほかの2つの設定をオフにします。</StyledSpan>
+
+## 不正確な主張
+
+❌ <StyledSpan className="text-error font-bold">不正確</StyledSpan>\
+**「このAppから学習」をオフにすれば、Signalのメッセージを守れる**
+
+* 「このAppから学習」は2015年からある機能で、特定の時間帯（や場所）によく使うアプリをスマホが提案してくれる、というだけのものです。[「このAppから学習」機能はApple Intelligenceとは何の関係もありません](https://www.intego.com/mac-security-blog/no-siris-learn-from-this-app-setting-is-not-sending-data-from-your-apps-to-third-parties/#sources)。
+
+🟡 <StyledSpan className="text-warning font-bold">一部正確</StyledSpan>\
+**Apple Intelligenceが「Signalのメッセージをスキャンしている」**
+
+* **実際には、Apple IntelligenceはSignalの*通知*の内容をもとに要約を作っているのであって、アプリ内のすべてのメッセージを対象にしているわけではありません**。通知のプレビューをオフにすれば、SignalでApple Intelligenceが使われることはありません。
+* 重要なのは、**Apple Intelligenceは保存されているメッセージにはアクセスしていない**ということです。
+* また、このツールがメッセージを「読んでいる」かどうかは、実はそれほど本質的な問題ではない、ということも言っておきたいと思います。そもそも、スマホのOSは画面に表示されているものには何でも常にアクセスできるのです。**本当に問うべきなのは、「この情報がデバイスの外に出て、Appleのサーバーに送られることはあるのか？」ということです。**
+* AI通知の要約がデバイス上だけで処理されている可能性もあります（その場合、メッセージの安全は保たれます）。ただ、Appleは、どのAIリクエストがデバイス上にとどまり、どれがAppleのサーバーに送られるのかを、ユーザーが知る手段を提供していません。なので、スマホのAI機能をオフにする（またはSignalの通知をオフにする）ことをおすすめします。
+
+## 正確な主張
+
+✅ <StyledSpan className="text-success font-bold">正確</StyledSpan>\
+**iOS 18.1以降が対象：** Apple Intelligenceは、iOS 18.1以降で導入された新機能です。
+
+* iOS 18.3以降では、デフォルトで有効になっています。
+
+✅ <StyledSpan className="text-success font-bold">正確</StyledSpan>\
+**iPhone 15/16以降が対象：** Apple Intelligenceが現在使えるのは、iPhone 15 Pro、iPhone 15 Max、そしてすべてのiPhone 16モデルだけです。
+
+* 今後、高性能なプロセッサを搭載したiPhoneモデルにも搭載されていくと考えられます。
+* Apple Intelligenceは、「Silicon」搭載のMac（M1、M2、M3など）やMシリーズのiPadでも有効になっています。 [Apple Intelligenceに対応しているデバイスの一覧はこちら](https://9to5mac.com/every-device-that-supports-apple-intelligence/)。
+
+## 自分を守るためにできること
+
+### ステップ1：Signalの通知でメッセージのプレビューを無効にする
+
+これが一番おすすめの対策です。[抗議活動チェックリストでもすでに推奨しています](/protest/)。スマホが押収されたり手元を離れたりしたときに備えて、通知にはメッセージの内容や名前を表示しないようにしておくのがおすすめです。
+
+<HowTo title="Signalの通知プレビューをオフにする方法">
+  <MenuPath inline>Signalを開く > プロフィール写真をタップ > **設定** > **通知** > **Notification Content** > **No Name or Content** を選択</MenuPath>
+</HowTo>
+
+**Signal Desktopアプリ**をインストールしている場合は、そちらでもメッセージのプレビューを無効にしておきましょう（メニューの場所は同じです）。
+
+### ステップ2：Apple Intelligenceを完全に無効にする（またはSignalの通知だけ無効にする）
+
+Apple Intelligence自体を完全に無効にすることもおすすめします。そうすれば、ほかの通知も要約されなくなります（要約の過程でデバイスの外に送られる可能性もなくなります）。
+
+<HowTo title="オプションA：Apple Intelligenceを完全に無効にする方法">
+  <MenuPath>*iPhone:* **設定** > **Apple IntelligenceとSiri** > **Apple Intelligence**をオフ > **確認**</MenuPath>
+
+  M1プロセッサ搭載のMacを使っている場合は、ここからApple Intelligenceをオフにできます：
+
+  <MenuPath>*Mac:*  > **システム設定** > **Apple IntelligenceとSiri** > **Apple Intelligence**をオフ > **確認**</MenuPath>
+</HowTo>
+
+Apple Intelligenceはオンのままにして、Signalの通知だけ無効にしたい場合は、次の方法でできます：
+
+<HowTo title="オプションB：Signalの通知だけApple Intelligenceを無効にする方法">
+  <MenuPath>*iPhone:* **設定** > **通知** > **通知を要約** > **Signal**をオフ</MenuPath>
+</HowTo>
+
+### （任意）ステップ3：Signalをより安全にするためのその他の手順
+
+Signalをできるだけ安全に設定する方法をまとめたガイドがあります：
+
+<Button title="Signalチェックリスト →" href="/signal/" target="_self" size="lg" />
+
+このガイドでは、消えるメッセージをデフォルトにする設定や、アプリを開くときにFace IDを必須にする設定などを紹介しています。
+
+[ほかのチェックリスト](/checklists/)もぜひ見てみてください。
+
+## Signalのグループに、より正確な情報を伝えよう
+
+Signalのグループでセキュリティのアドバイスを共有したい人のために、そのままコピペできる文面を用意しました。
+
+> <CopyButton />
+>
+> Apple IntelligenceがSignalのメッセージを「読める」という話が出回っています。それを見た人のために、もう少し正確な情報を共有しておきます：
+>
+> * Apple Intelligenceがアクセスしているのは、Signalの通知だけです（すべてのメッセージではありません）。これは「通知の要約」機能の一部です。現在この機能が使えるのは、iOS 18.1以降のiPhone 15 Pro/Pro MaxとiPhone 16（全モデル）だけです。
+> * どの情報がデバイスの外に送られるのか、Appleは明らかにしていません。なので、Apple Intelligenceをオフにするのが一番安全です。スマホでもパソコンでも、<MenuPath inline>**設定** > **Apple IntelligenceとSiri** > **オフにする**</MenuPath>からオフにできます。
+> * Apple Intelligenceをオンのままにしたい場合は、<MenuPath inline>Signalを開く > プロフィール写真をタップ > **設定** > **通知** > **通知内容** > **名前も内容も表示しない**を選択</MenuPath>で、Signalの通知のメッセージプレビューをオフにできます（デバイスが押収されたり手元から離れたりした場合に備えて、これはいずれにしても良いセキュリティ対策です）。
+>
+> 詳しい手順と背景はこちら：[https://activistchecklist.org/signal-ai](https://activistchecklist.org/signal-ai)
+
+リンクは必要なければ削除してもOKです！
+
+## AndroidスマホでAIをオフにする方法
+
+新しいAndroidスマホには、Gemini AI（Google製）が搭載されています。どの情報がデバイスの外に送られるのかについて、GoogleはAppleよりもさらに不透明です。そのため、[AndroidデバイスでGeminiをオフにする](https://www.cnet.com/tech/mobile/i-tried-to-turn-off-the-ai-on-my-pixel-9-it-wasnt-easy/)ことをおすすめします。
+
+## 関連記事
+
+* [Signalは安全？](/signal-secure/) Signalのセキュリティについての記事。暗号化、Signalが共有しうる情報、オープンソース、よくある誤解などを解説しています。
+* [「Private Cloud Compute」がエンドツーエンド暗号化と同じレベルのプライバシーではない理由](https://www.eff.org/deeplinks/2026/09/secure-messaging-and-ai-remain-conflict-despite-promise-tees) - EFF
+* [ボットは暗号化されたメッセージを読めるのか？暗号化、プライバシー、そして新たなAIのジレンマ](https://www.techpolicy.press/can-bots-read-your-encrypted-messages-encryption-privacy-and-the-emerging-ai-dilemma/)

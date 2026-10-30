@@ -1,12 +1,22 @@
 {
   "version": 2,
-  "generatedAt": "2026-04-12T18:19:49.051Z",
+  "generatedAt": "2026-10-22T21:56:37.781Z",
   "thresholds": {
     "unreviewedNoticeMaxApprovalPercent": 80
   },
   "routes": {
     "action": {
       "es": {
+        "translationPercent": 100,
+        "approvalPercent": 9,
+        "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -15,12 +25,32 @@
     "doxxing": {
       "es": {
         "translationPercent": 100,
-        "approvalPercent": 3,
+        "approvalPercent": 12,
+        "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
         "showUnreviewedNotice": true
       }
     },
     "emergency": {
       "es": {
+        "translationPercent": 100,
+        "approvalPercent": 8,
+        "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -29,12 +59,32 @@
     "essentials": {
       "es": {
         "translationPercent": 100,
+        "approvalPercent": 5,
+        "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
       }
     },
     "federal": {
       "es": {
+        "translationPercent": 100,
+        "approvalPercent": 6,
+        "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -43,6 +93,16 @@
     "ice": {
       "es": {
         "translationPercent": 100,
+        "approvalPercent": 6,
+        "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
       }
@@ -50,12 +110,32 @@
     "organizing": {
       "es": {
         "translationPercent": 100,
+        "approvalPercent": 2,
+        "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
       }
     },
     "protest": {
       "es": {
+        "translationPercent": 100,
+        "approvalPercent": 15,
+        "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -66,10 +146,30 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "secondary": {
       "es": {
+        "translationPercent": 100,
+        "approvalPercent": 8,
+        "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -78,19 +178,66 @@
     "signal": {
       "es": {
         "translationPercent": 100,
+        "approvalPercent": 3,
+        "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
       }
     },
     "spyware": {
       "es": {
-        "translationPercent": 100,
+        "translationPercent": 98,
+        "approvalPercent": 9,
+        "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 99,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 99,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
       }
     },
     "travel": {
       "es": {
+        "translationPercent": 100,
+        "approvalPercent": 5,
+        "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    },
+    "whatsapp": {
+      "es": {
+        "translationPercent": 99,
+        "approvalPercent": 36,
+        "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 34,
+        "showUnreviewedNotice": true
+      },
+      "it": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -101,10 +248,30 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "contribute": {
       "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -115,10 +282,47 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "links": {
       "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    },
+    "lockdown": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -129,10 +333,64 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    },
+    "onion": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    },
+    "party": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "police": {
       "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -143,10 +401,30 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "proton": {
       "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
@@ -157,6 +435,16 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "signal-ai": {
@@ -164,10 +452,47 @@
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
       }
     },
     "signal-secure": {
       "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    },
+    "vpn": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
         "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true

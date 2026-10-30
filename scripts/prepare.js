@@ -13,3 +13,6 @@ try {
 } catch {
   process.exit(0);
 }
+
+// In a linked worktree, stop running the main checkout's hooks. See the module.
+require('./lib/worktree-hooks-path.cjs').fixWorktreeHooksPath();

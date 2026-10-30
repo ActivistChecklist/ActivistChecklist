@@ -1,5 +1,6 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import fs from 'fs';
+import os from 'os';
 import path from 'path';
 
 describe('OG Image Configuration', () => {
@@ -121,15 +122,96 @@ describe('OG Image Configuration', () => {
   });
 
   describe('getOgImagePathForSlug', () => {
-    it('matches generateOgImageForRoute public paths for default and custom slugs', async () => {
+    const card = { title: 'Prepare for an Arrestable Action', pageType: 'guide' };
+
+    it('uses the default image for default slugs and when there is no title', async () => {
       const { getOgImagePathForSlug } = await import('../lib/og-image.js');
-      expect(getOgImagePathForSlug('')).toBe('/images/og-image.png');
-      expect(getOgImagePathForSlug('flyer')).toBe('/images/og-image.png');
-      expect(getOgImagePathForSlug('protest')).toBe('/images/og/protest.png');
-      // Built by app/[locale]/tools/page.tsx, not the MDX render path
-      expect(getOgImagePathForSlug('tools')).toBe('/images/og/tools.png');
-      expect(getOgImagePathForSlug('nested/slug')).toBe('/images/og/nested-slug.png');
+      expect(getOgImagePathForSlug('', card)).toBe('/images/og-image.png');
+      expect(getOgImagePathForSlug('flyer', card)).toBe('/images/og-image.png');
+      expect(getOgImagePathForSlug('protest')).toBe('/images/og-image.png');
     });
+
+    it('puts a content hash in the file name', async () => {
+      const { getOgImagePathForSlug } = await import('../lib/og-image.js');
+      expect(getOgImagePathForSlug('action', card)).toMatch(
+        /^\/images\/og\/action-[0-9a-f]{10}\.png$/,
+      );
+      expect(getOgImagePathForSlug('nested/slug', card)).toMatch(
+        /^\/images\/og\/nested-slug-[0-9a-f]{10}\.png$/,
+      );
+      expect(getOgImagePathForSlug('action/', card)).toBe(getOgImagePathForSlug('action', card));
+    });
+
+    it('changes the URL when the title or page type changes, so social sites refetch', async () => {
+      const { getOgImagePathForSlug } = await import('../lib/og-image.js');
+      const original = getOgImagePathForSlug('action', card);
+      expect(getOgImagePathForSlug('action', { ...card })).toBe(original);
+      expect(
+        getOgImagePathForSlug('action', { ...card, title: 'Prepare for a Direct Action' }),
+      ).not.toBe(original);
+      expect(getOgImagePathForSlug('action', { ...card, pageType: 'page' })).not.toBe(original);
+    });
+  });
+
+  describe('generateOgImageForRoute', () => {
+    let tmpDir;
+    let ogDir;
+
+    beforeEach(() => {
+      // Render into a private temp copy of public/ so the test never touches the real cache.
+      tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'og-image-test-'));
+      const realPublic = path.join(process.cwd(), 'public');
+      fs.mkdirSync(path.join(tmpDir, 'public', 'images'), { recursive: true });
+      fs.symlinkSync(path.join(realPublic, 'fonts'), path.join(tmpDir, 'public', 'fonts'));
+      fs.symlinkSync(
+        path.join(realPublic, 'images', 'logo-stacked-color-transparent.png'),
+        path.join(tmpDir, 'public', 'images', 'logo-stacked-color-transparent.png'),
+      );
+      ogDir = path.join(tmpDir, 'public', 'images', 'og');
+      vi.spyOn(process, 'cwd').mockReturnValue(tmpDir);
+    });
+
+    afterEach(() => {
+      vi.restoreAllMocks();
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    });
+
+    it("regenerates when the title changes and removes only that slug's stale images", async () => {
+      const { generateOgImageForRoute } = await import('../lib/og-image.js');
+      fs.mkdirSync(ogDir, { recursive: true });
+      // Left behind by the old unhashed generator, plus a neighbour slug that shares a prefix.
+      fs.writeFileSync(path.join(ogDir, 'action.png'), 'legacy');
+      fs.writeFileSync(path.join(ogDir, 'action-plan-0123456789.png'), 'other slug');
+
+      const oldPath = await generateOgImageForRoute({
+        title: 'Prepare for a Direct Action',
+        pageType: 'guide',
+        slug: 'action',
+      });
+      const newPath = await generateOgImageForRoute({
+        title: 'Prepare for an Arrestable Action',
+        pageType: 'guide',
+        slug: 'action',
+      });
+
+      expect(newPath).not.toBe(oldPath);
+      expect(fs.readdirSync(ogDir).sort()).toEqual(
+        [path.basename(newPath), 'action-plan-0123456789.png'].sort(),
+      );
+      const png = fs.readFileSync(path.join(ogDir, path.basename(newPath)));
+      expect(png.subarray(1, 4).toString()).toBe('PNG');
+    }, 30_000);
+
+    it('reuses the cached image when nothing changed', async () => {
+      const { generateOgImageForRoute } = await import('../lib/og-image.js');
+      const params = { title: 'Signal', pageType: 'guide', slug: 'signal' };
+      const first = await generateOgImageForRoute(params);
+      const filePath = path.join(ogDir, path.basename(first));
+      fs.writeFileSync(filePath, 'cached');
+
+      expect(await generateOgImageForRoute(params)).toBe(first);
+      expect(fs.readFileSync(filePath, 'utf-8')).toBe('cached');
+    }, 30_000);
   });
 
   describe('Slug to Icon Matching', () => {

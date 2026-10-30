@@ -102,7 +102,7 @@ describe('isSubItemActive', () => {
 describe('Navigation config structure', () => {
   it('mainNav has expected number of items', () => {
     expect(navigationConfig.mainNav).toBeInstanceOf(Array);
-    expect(navigationConfig.mainNav.length).toBe(5);
+    expect(navigationConfig.mainNav.length).toBe(4);
   });
 
   it('all mainNav items have key property', () => {
@@ -111,11 +111,11 @@ describe('Navigation config structure', () => {
     }
   });
 
+  // Titles and descriptions come from messages/en.json; navigation-i18n.test.js
+  // checks every item has them.
   it('SECURITY_CHECKLISTS items have required properties', () => {
     for (const item of SECURITY_CHECKLISTS.items) {
-      expect(item.title, `Item ${item.key} missing title`).toBeDefined();
       expect(item.href, `Item ${item.key} missing href`).toBeDefined();
-      expect(item.description, `Item ${item.key} missing description`).toBeDefined();
       expect(item.icon, `Item ${item.key} missing icon`).toBeDefined();
     }
   });
@@ -129,7 +129,6 @@ describe('Navigation config structure', () => {
       expect(link.href).toBeDefined();
       expect(link.label).toBeDefined();
       expect(link.icon).toBeDefined();
-      expect(link.ariaLabel).toBeDefined();
     }
   });
 

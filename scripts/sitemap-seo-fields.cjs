@@ -3,29 +3,38 @@
  * and coarse priority / changefreq hints.
  */
 
+const { LOCALES, DEFAULT_LOCALE } = require('../lib/i18n-config.mjs');
+
 const SITE_URL = 'https://activistchecklist.org'.replace(/\/$/, '');
+const NON_DEFAULT_LOCALES = Object.keys(LOCALES).filter((l) => l !== DEFAULT_LOCALE);
 
 /**
- * @param {string} dedupeKey — trailing-slash path, may be `/es/...` or English canonical
- * @returns {string} English canonical path with slashes, e.g. `/signal/` or `/`
+ * Strip a leading locale segment (`/en/`, `/es/`, `/fr/`, ...) from a trailing-slash path.
+ * @param {string} p — path starting and ending with `/`
  */
-function normalizeToEnCanonicalPath(dedupeKey) {
-  let p = dedupeKey.startsWith('/') ? dedupeKey : `/${dedupeKey}`;
-  if (!p.endsWith('/')) p = `${p}/`;
-  if (p === '/en/' || p === '/en') return '/';
-  if (p.startsWith('/en/')) {
-    const rest = p.slice(4);
-    return rest ? `/${rest.replace(/\/$/, '')}/` : '/';
-  }
-  if (p.startsWith('/es/')) {
-    const rest = p.slice(4);
-    return rest ? `/${rest.replace(/\/$/, '')}/` : '/';
+function stripLocalePrefix(p) {
+  for (const locale of Object.keys(LOCALES)) {
+    const prefix = `/${locale}/`;
+    if (p.startsWith(prefix)) {
+      const rest = p.slice(prefix.length);
+      return rest ? `/${rest.replace(/\/$/, '')}/` : '/';
+    }
   }
   return p;
 }
 
 /**
- * Google-supported hreflang cluster for default-locale + Spanish routes.
+ * @param {string} dedupeKey — trailing-slash path, may be `/es/...`, `/fr/...` or English canonical
+ * @returns {string} English canonical path with slashes, e.g. `/signal/` or `/`
+ */
+function normalizeToEnCanonicalPath(dedupeKey) {
+  let p = dedupeKey.startsWith('/') ? dedupeKey : `/${dedupeKey}`;
+  if (!p.endsWith('/')) p = `${p}/`;
+  return stripLocalePrefix(p);
+}
+
+/**
+ * Google-supported hreflang cluster: the default locale, every other locale, and x-default.
  * @param {string} dedupeKey
  * @returns {Array<{ href: string, hreflang: string, hrefIsAbsolute: boolean }>}
  */
@@ -34,11 +43,18 @@ function buildHreflangAlternateRefs(dedupeKey) {
   const enUrl =
     enPath === '/' ? `${SITE_URL}/` : `${SITE_URL}${enPath.endsWith('/') ? enPath : `${enPath}/`}`;
 
-  const esUrl = enPath === '/' ? `${SITE_URL}/es/` : `${SITE_URL}/es${enPath.replace(/\/$/, '')}/`;
+  const localeRefs = NON_DEFAULT_LOCALES.map((locale) => ({
+    href:
+      enPath === '/'
+        ? `${SITE_URL}/${locale}/`
+        : `${SITE_URL}/${locale}${enPath.replace(/\/$/, '')}/`,
+    hreflang: locale,
+    hrefIsAbsolute: true,
+  }));
 
   return [
-    { href: enUrl, hreflang: 'en', hrefIsAbsolute: true },
-    { href: esUrl, hreflang: 'es', hrefIsAbsolute: true },
+    { href: enUrl, hreflang: DEFAULT_LOCALE, hrefIsAbsolute: true },
+    ...localeRefs,
     { href: enUrl, hreflang: 'x-default', hrefIsAbsolute: true },
   ];
 }
@@ -64,6 +80,7 @@ function seoPriorityAndChangefreq(dedupeKey) {
 
 module.exports = {
   SITE_URL,
+  stripLocalePrefix,
   normalizeToEnCanonicalPath,
   buildHreflangAlternateRefs,
   seoPriorityAndChangefreq,

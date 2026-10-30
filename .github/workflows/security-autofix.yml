@@ -25,6 +25,12 @@
 #     with no patched release, and a bump that breaks tests or the build (the
 #     run goes red, which GitHub already notifies about).
 #
+# Two jobs. `autofix` installs, updates, tests and builds, so it runs code
+# from packages that were published minutes ago; it gets no secrets. `open-pr`
+# runs only when that fixed something: it applies just the lockfile and
+# package.json diff and opens the PR with the autofix App token, which lives in
+# the main-only environment (see .github/ACTIONS-SECRETS.md).
+#
 # Runs daily at 07:00 UTC, after Dependabot's own daily scan. Manual
 # `workflow_dispatch` included. Note that GitHub disables scheduled workflows
 # after 60 days without repository activity.
@@ -48,6 +54,11 @@ jobs:
     if: github.repository == 'ActivistChecklist/ActivistChecklist'
     runs-on: ubuntu-latest
     timeout-minutes: 25
+    outputs:
+      packages: ${{ steps.audit.outputs.packages }}
+      cleared_count: ${{ steps.reaudit.outputs.cleared_count }}
+      cleared_list: ${{ steps.reaudit.outputs.cleared_list }}
+      remaining_list: ${{ steps.reaudit.outputs.remaining_list }}
 
     steps:
       - name: Checkout
@@ -242,31 +253,75 @@ jobs:
         if: steps.reaudit.outputs.cleared_count != '0' && steps.reaudit.outputs.cleared_count != ''
         run: pnpm buildstatic
 
+      - name: Save the update
+        if: steps.reaudit.outputs.cleared_count != '0' && steps.reaudit.outputs.cleared_count != ''
+        run: git diff --binary -- pnpm-lock.yaml package.json > autofix.patch
+
+      - name: Upload the update
+        if: steps.reaudit.outputs.cleared_count != '0' && steps.reaudit.outputs.cleared_count != ''
+        uses: actions/upload-artifact@v7
+        with:
+          name: autofix-patch
+          path: autofix.patch
+          if-no-files-found: error
+          retention-days: 1
+
+  open-pr:
+    needs: autofix
+    if: needs.autofix.outputs.cleared_count != '0' && needs.autofix.outputs.cleared_count != ''
+    environment: main-only
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Download the update
+        uses: actions/download-artifact@v8
+        with:
+          name: autofix-patch
+
+      # The patch came from a job that ran untrusted package code, so take
+      # only the two files this workflow is allowed to change.
+      - name: Apply the update
+        run: |
+          git apply --include=pnpm-lock.yaml --include=package.json autofix.patch
+          rm autofix.patch
+
+      # An App token, not GITHUB_TOKEN: PRs opened with GITHUB_TOKEN do not
+      # trigger other workflows, so pr-checks.yml would never run on them.
+      - name: Mint autofix App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ vars.AUTOFIX_APP_CLIENT_ID }}
+          private-key: ${{ secrets.AUTOFIX_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+
       # Fixed branch name, so a later run updates this PR instead of opening
       # another. If nothing on the branch differs from main any more, the action
       # closes the PR and deletes the branch.
       - name: Open PR
-        if: steps.reaudit.outputs.cleared_count != '0' && steps.reaudit.outputs.cleared_count != ''
         uses: peter-evans/create-pull-request@v8
         with:
-          # A PAT, not GITHUB_TOKEN: PRs opened with GITHUB_TOKEN do not trigger
-          # other workflows, so pr-checks.yml would never run on them.
-          token: ${{ secrets.SECURITY_AUTOFIX_TOKEN }}
+          token: ${{ steps.app-token.outputs.token }}
           add-paths: |
             pnpm-lock.yaml
             package.json
-          commit-message: 'Security: update ${{ steps.audit.outputs.packages }}'
-          title: 'Security: update ${{ steps.audit.outputs.packages }}'
+          commit-message: 'Security: update ${{ needs.autofix.outputs.packages }}'
+          title: 'Security: update ${{ needs.autofix.outputs.packages }}'
           body: |
-            The daily security sweep ran `pnpm update ${{ steps.audit.outputs.packages }}`. Every change stays inside the ranges we already declare: for a transitive package only the lockfile moves, and for a direct dependency the specifier floor rises within the same major.
+            The daily security sweep ran `pnpm update ${{ needs.autofix.outputs.packages }}`. Every change stays inside the ranges we already declare: for a transitive package only the lockfile moves, and for a direct dependency the specifier floor rises within the same major.
 
-            **Cleared (${{ steps.reaudit.outputs.cleared_count }}):**
+            **Cleared (${{ needs.autofix.outputs.cleared_count }}):**
 
-            ${{ steps.reaudit.outputs.cleared_list }}
+            ${{ needs.autofix.outputs.cleared_list }}
 
             **Still open after this PR:**
 
-            ${{ steps.reaudit.outputs.remaining_list }}
+            ${{ needs.autofix.outputs.remaining_list }}
 
             Anything still open could not be fixed in range: usually a parent caps us below the fix (needs a hand-written override in `pnpm-workspace.yaml`), or no patched release exists. Those stay in the Dependabot alerts tab; this workflow will not open issues for them.
 

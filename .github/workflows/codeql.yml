@@ -24,6 +24,9 @@ permissions:
 
 jobs:
   analyze:
+    # Translation PRs carry no code: pr-checks.yml's l10n_check (required via
+    # merge_gate) fails any l10n_* PR that changes a file outside the Crowdin
+    # translation paths, so there is nothing here for CodeQL to scan.
     if: ${{ !startsWith(github.head_ref, 'l10n_') && !startsWith(github.ref_name, 'l10n_') }}
     name: Analyze (${{ matrix.name }})
     runs-on: ubuntu-latest
@@ -42,7 +45,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v4.38.2
+        uses: github/codeql-action/init@v4.39.0
         with:
           languages: ${{ matrix.codeql-language }}
 
@@ -76,6 +79,6 @@ jobs:
         run: ./node_modules/.bin/next build --webpack
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v4.38.2
+        uses: github/codeql-action/analyze@v4.39.0
         with:
           category: '/language:${{ matrix.name }}'

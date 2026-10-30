@@ -15,7 +15,8 @@
   @apply py-3;
 }
 
-.alert svg {
+/* direct children only: the alert's own icon, not icons inside its content (like term popups) */
+.alert > svg {
   @apply h-6 w-6;
 }
 
@@ -73,7 +74,7 @@
   @apply bg-accent/30 text-foreground border-border;
 }
 
-.default svg {
+.default > svg {
   @apply text-muted-foreground;
 }
 
@@ -82,7 +83,7 @@
   /* @apply text-destructive-text; */
 }
 
-.error svg {
+.error > svg {
   @apply text-destructive;
 }
 
@@ -91,7 +92,7 @@
   /* @apply text-warning-text; */
 }
 
-.warning svg {
+.warning > svg {
   @apply text-warning;
 }
 
@@ -100,7 +101,7 @@
   /* @apply text-info-text; */
 }
 
-.info svg {
+.info > svg {
   @apply text-info;
 }
 
@@ -109,6 +110,6 @@
   /* @apply text-success-text; */
 }
 
-.success svg {
+.success > svg {
   @apply text-success;
 }

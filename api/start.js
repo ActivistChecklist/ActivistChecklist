@@ -3,8 +3,13 @@ const Fastify = require('fastify');
 const app = require('./server.js');
 
 // Load .env.production if NODE_ENV is production, otherwise load .env
+// override: the file must win over inherited values. PM2 is started from a shell
+// that has already sourced .env.production (run-with-repo-node.sh), stores that
+// environment, and replays it on every `pm2 restart`. Without override, a rotated
+// secret in the file never reaches the running API.
 dotenv.config({
   path: process.env.NODE_ENV === 'production' ? '.env.production' : '.env',
+  override: true,
 });
 
 // Instantiate Fastify with the options from server.js (logger is not in server.js so CLI pretty-logs still work)

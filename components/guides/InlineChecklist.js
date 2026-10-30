@@ -128,7 +128,11 @@ export function InlineChecklist({ children, storageKey, className }) {
               return (
                 <li
                   key={idx}
-                  onClick={() => toggleItem(itemIndex)}
+                  onClick={(e) => {
+                    // Let links and other controls inside the item work without toggling it
+                    if (e.target.closest('a, button, input, select, textarea, summary')) return;
+                    toggleItem(itemIndex);
+                  }}
                   className={cn(
                     'flex items-start gap-3 cursor-pointer select-none transition-all',
                     'hover:bg-muted/40 -mx-2 px-2 py-1 rounded-md',

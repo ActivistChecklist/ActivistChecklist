@@ -11,22 +11,9 @@ export function Footer() {
 
   const translateText = createIntlTranslator(t);
 
-  const sectionTitleKeys = {
-    Navigation: 'footer.sections.navigation',
-    'Top Checklists': 'footer.sections.topChecklists',
-  };
-
-  const socialAriaLabelKeys = {
-    bluesky: 'footer.social.blueskyAriaLabel',
-    github: 'footer.social.githubAriaLabel',
-    mastodon: 'footer.social.mastodonAriaLabel',
-  };
-
   const translatedSections = footerConfig.sections.map((section) => ({
     ...section,
-    title: sectionTitleKeys[section.title]
-      ? translateText(sectionTitleKeys[section.title], section.title)
-      : section.title,
+    title: t(`footer.sections.${section.key}`),
     items: section.items.map((item) => translateNavigationItem(item, translateText)),
   }));
 
@@ -115,11 +102,7 @@ export function Footer() {
                   href={social.href}
                   target="_blank"
                   rel={['noopener', 'noreferrer', social.rel].filter(Boolean).join(' ')}
-                  aria-label={
-                    socialAriaLabelKeys[social.key]
-                      ? translateText(socialAriaLabelKeys[social.key], social.ariaLabel)
-                      : social.ariaLabel
-                  }
+                  aria-label={t(`footer.social.${social.key}AriaLabel`)}
                   className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
                 >
                   <social.icon className="h-5 w-5" aria-hidden="true" />
