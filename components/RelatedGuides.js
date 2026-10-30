@@ -31,11 +31,11 @@ const RelatedGuides = ({ children, guideSlugs = [], isBlock = false }) => {
 
   const getGridClass = () => {
     if (guideItems.length === 1) return 'grid grid-cols-1 max-w-md mx-auto';
-    return 'grid grid-cols-1 lg:grid-cols-2 gap-8';
+    return 'grid grid-cols-1 lg:grid-cols-2 gap-8 print:grid-cols-2 print:gap-3';
   };
 
   const containerClass = isBlock
-    ? 'not-prose bg-muted/50 border border-border/50 rounded-lg p-6 my-8'
+    ? 'not-prose bg-muted/50 border border-border/50 rounded-lg p-6 my-8 print:break-inside-avoid'
     : 'not-prose mt-12 pt-8 border-t border-border/50';
 
   const titleClass = isBlock ? 'text-xl font-semibold text-foreground mb-4' : '';

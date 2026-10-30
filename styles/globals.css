@@ -498,6 +498,12 @@
       margin: 0.9cm;
     }
 
+    /* Keep callout, badge and do/don't colors; browsers drop backgrounds by default. */
+    html {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
     /* Reduce overall text size for printing without affecting layout */
     html,
     body {
@@ -529,6 +535,34 @@
       widows: 3;
     }
 
+    /* Inline code otherwise keeps its screen size next to 9pt body text. */
+    code {
+      font-size: 8pt !important;
+    }
+
+    /* Screen heading sizes eat a printed page. */
+    h1 {
+      font-size: 24pt !important;
+    }
+
+    h2 {
+      font-size: 17pt !important;
+    }
+
+    /* Keep a heading on the same page as what it introduces. */
+    h1,
+    h2,
+    h3,
+    h4 {
+      break-after: avoid;
+    }
+
+    tr,
+    img,
+    figure {
+      break-inside: avoid;
+    }
+
     /* Optimize links for print */
     a {
       text-decoration: none;
@@ -540,6 +574,20 @@
       content: ' (' attr(href) ')';
       font-size: 90%;
       font-style: italic;
+    }
+
+    /* Build-time PDFs (scripts/build-pdfs.mjs) make every href absolute and
+       put a short, typeable form in data-print-url. Print that instead. */
+    html.pdf-export a[href^='http']:after {
+      content: none;
+    }
+
+    html.pdf-export a[data-print-url]:after {
+      content: ' (' attr(data-print-url) ')';
+    }
+
+    a.no-print-url:after {
+      content: none !important;
     }
 
     /* Adjust colors for better print readability */

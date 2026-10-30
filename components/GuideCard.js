@@ -51,19 +51,19 @@ const GuideCard = ({ guideItem, size = 'medium' }) => {
 
   return (
     <Link href={href} className="block group">
-      <Card className="h-full transition-all duration-200 ease-in-out transform hover:scale-101 hover:shadow-xl border-primary/10 hover:border-primary/30 bg-linear-to-br from-card via-card to-primary/5 dark:to-primary/35 flex flex-col">
-        <CardHeader className="py-3 px-4">
+      <Card className="h-full transition-all duration-200 ease-in-out transform hover:scale-101 hover:shadow-xl border-primary/10 hover:border-primary/30 bg-linear-to-br from-card via-card to-primary/5 dark:to-primary/35 flex flex-col print:shadow-none print:bg-none print:break-inside-avoid">
+        <CardHeader className="py-3 px-4 print:pb-1">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-primary/10 text-primary">
+            <div className="p-2 rounded-lg bg-primary/10 text-primary print:hidden">
               <Icon className="h-5 w-5" />
             </div>
             <CardTitle className="text-lg">{displayTitle}</CardTitle>
           </div>
         </CardHeader>
-        <CardContent className="py-3 px-4 pt-0 flex-1">
+        <CardContent className="py-3 px-4 pt-0 flex-1 print:pb-2">
           <CardDescription className="text-sm">{displayDescription}</CardDescription>
         </CardContent>
-        <CardFooter className="py-3 px-4 pt-0 mt-auto">
+        <CardFooter className="py-3 px-4 pt-0 mt-auto print:hidden">
           <span className="text-primary font-medium inline-flex items-center text-sm">
             {t('common.viewChecklist')}{' '}
             <ArrowRight className="ml-2 transition-transform duration-300 ease-out group-hover:translate-x-1" />

@@ -26,7 +26,17 @@ const STATIC_EXPORT_STUBS = [
   ],
 ];
 
+// Guide PDFs only exist where scripts/build-pdfs.mjs runs (static postbuild);
+// dev serves whatever an earlier static build left in public/pdf/. Server
+// builds never make them, so the download link would 404 there.
+const pdfExportEnabled =
+  process.env.PDF_EXPORT !== 'off' &&
+  (process.env.BUILD_MODE === 'static' || process.env.NODE_ENV === 'development');
+
 const baseConfig = {
+  env: {
+    NEXT_PUBLIC_PDF_EXPORT: pdfExportEnabled ? '1' : '0',
+  },
   async redirects() {
     return REDIRECTS.map(({ source, destination, permanent = true }) => ({
       source,

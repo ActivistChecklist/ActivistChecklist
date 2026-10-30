@@ -175,7 +175,12 @@
     "lastUpdatedOn": "Last updated on",
     "lastReviewedOn": "Last reviewed on",
     "takesAbout": "Takes about",
-    "viewLatestGuideAt": "View the latest guide at"
+    "viewLatestGuideAt": "View the latest guide at",
+    "downloadPdf": "Download PDF"
+  },
+  "printNotice": {
+    "madeOn": "This copy was made on {date}.",
+    "updatesOften": "We update our guides often as threats change and as better ways to protect yourself become available. For the latest version, visit"
   },
   "footer": {
     "branding": {

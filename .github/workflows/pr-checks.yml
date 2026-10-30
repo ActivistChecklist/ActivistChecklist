@@ -111,6 +111,10 @@ jobs:
       - name: Install dependencies
         run: pnpm run install:ci
 
+      # scripts/build-pdfs.mjs renders the guide PDFs in postbuild.
+      - name: Install Chromium for guide PDFs
+        run: pnpm exec playwright install --with-deps chromium-headless-shell
+
       - name: Static export build (production path)
         env:
           BUILD_MODE: static

@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 import { useGuideHashScroll } from '@/hooks/use-guide-hash-scroll';
 import { MDXRemote } from 'next-mdx-remote';
-import { Clock, Calendar } from 'lucide-react';
+import { Clock, Calendar, Download } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
 import { mdxComponents } from '@/lib/mdx-components';
 import { ChecklistItemsContext } from '@/contexts/ChecklistItemsContext';
@@ -16,6 +16,13 @@ import { LOCALES } from '@/lib/i18n-config';
 import { formatContentDate } from '@/lib/utils';
 import PageNotices from '@/components/layout/PageNotices';
 import AnswerCapsule from '@/components/AnswerCapsule';
+import PrintNotice from '@/components/guides/PrintNotice';
+import { pdfDownloadName, pdfPathFor } from '@/lib/pdf-export.mjs';
+import { trackFileDownload } from '@/lib/download-tracker';
+
+// Set in next.config.js: on for static builds (which run scripts/build-pdfs.mjs)
+// and dev, off for server builds that never produce the files.
+const PDF_EXPORT_ENABLED = process.env.NEXT_PUBLIC_PDF_EXPORT === '1';
 
 function parseRelatedGuides(value) {
   if (Array.isArray(value)) return value.filter(Boolean);
@@ -82,7 +89,7 @@ export default function Guide({
   return (
     <ChecklistItemsContext.Provider value={checklistItems}>
       {/* Header */}
-      <div className="relative bg-linear-to-r from-primary/15 via-primary/10 to-transparent dark:from-primary/40 dark:via-primary/25 rounded-lg px-6 py-6 mb-6 overflow-hidden print:bg-transparent print:p-0 print:mb-2">
+      <div className="relative bg-linear-to-r from-primary/15 via-primary/10 to-transparent dark:from-primary/40 dark:via-primary/25 rounded-lg px-6 py-6 mb-6 overflow-hidden print:bg-none print:p-0 print:mb-4">
         <div className="absolute top-1.5 bottom-1.5 right-3 aspect-square flex items-center justify-center pointer-events-none print:hidden">
           <GuideIcon className="h-5/6 w-5/6 text-primary/15 dark:text-primary/40" />
         </div>
@@ -98,10 +105,24 @@ export default function Guide({
                 </span>
               </div>
             ))}
+            {PDF_EXPORT_ENABLED && (
+              // Plain <a>, not @/components/Link: this is a file download, and the
+              // path already carries its locale, so it must not be prefixed again.
+              <a
+                href={pdfPathFor(intlLocale, slug)}
+                download={pdfDownloadName(intlLocale, slug)}
+                onClick={() => trackFileDownload(pdfDownloadName(intlLocale, slug))}
+                className="flex items-center whitespace-nowrap font-semibold text-primary hover:underline underline-offset-4 print:hidden"
+              >
+                <Download className="h-4 w-4 mr-1" aria-hidden="true" />
+                {t('meta.downloadPdf')}
+              </a>
+            )}
           </div>
         )}
       </div>
 
+      <PrintNotice />
       <PageNotices initialNotices={notices} />
 
       {/* Body */}

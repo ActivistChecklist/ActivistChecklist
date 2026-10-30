@@ -5,6 +5,7 @@ import { ChevronRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible';
 import { cn } from '@/lib/utils';
+import { useIsPrinting } from '@/hooks/use-is-printing';
 import { buildFaqPage } from '@/lib/structured-data';
 import { serializeJsonLd } from '@/lib/structured-data';
 
@@ -18,12 +19,18 @@ import { serializeJsonLd } from '@/lib/structured-data';
  * and skip Markdown formatting.
  */
 export function FAQItem({ question, answer }) {
+  const [open, setOpen] = React.useState(false);
+  const isPrinting = useIsPrinting();
   if (!question || !answer) return null;
   return (
-    <Collapsible className="border-b border-border last:border-b-0">
+    <Collapsible
+      open={open || isPrinting}
+      onOpenChange={setOpen}
+      className="border-b border-border last:border-b-0 print:break-inside-avoid"
+    >
       <CollapsibleTrigger
         className={cn(
-          'flex w-full items-start gap-2 py-3 text-left',
+          'flex w-full items-start gap-2 py-3 text-left print:pb-1',
           'font-heading text-base font-semibold text-foreground',
           'hover:text-primary transition-colors cursor-pointer',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
@@ -31,13 +38,15 @@ export function FAQItem({ question, answer }) {
         )}
       >
         <ChevronRight
-          className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 mt-1"
+          className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 mt-1 print:hidden"
           aria-hidden="true"
         />
         <span>{question}</span>
       </CollapsibleTrigger>
-      <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
-        <p className="pl-6 pb-3 m-0 text-base leading-relaxed text-foreground">{answer}</p>
+      <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down print:animate-none">
+        <p className="pl-6 pb-3 print:pl-0 m-0 text-base leading-relaxed text-foreground">
+          {answer}
+        </p>
       </CollapsibleContent>
     </Collapsible>
   );

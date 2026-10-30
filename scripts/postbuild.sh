@@ -42,6 +42,11 @@ if [ "$BUILD_MODE" = "static" ]; then
     ".htaccess copied to out/" \
     "English routes mirrored to site root" \
     "Removed .DS_Store from out/"
+
+  build_section "📄" "Post-build — guide PDFs"
+  build_detail "Renders each guide with the print stylesheet; unchanged guides come from the cache"
+  node scripts/build-pdfs.mjs
+  build_section_done 0 "Guide PDFs → out/pdf/ (cache: public/pdf/, .pdf-cache.json)"
 else
   build_section "🧹" "Post-build — cleanup"
   find out -name '.DS_Store' -delete 2>/dev/null || true
