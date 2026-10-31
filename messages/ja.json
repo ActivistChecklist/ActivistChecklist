@@ -554,11 +554,11 @@
       "android": "<settings>設定アプリ</settings> →「 デバイス情報 」→「 モデル番号」",
       "androidOs": "<settings>設定アプリ</settings> →「デバイス情報」→「Android バージョン」",
       "windows": "Windowsキー + R を押す → <code>winver</code> と入力 → Enterキーを押す",
-      "windowsCaveat": "Windowsノートパソコンのメーカーは、セキュリティアップデートの提供終了を発表しません。だから、ノートパソコンの<b>モデル</b>を確認してもわかりません。代わりにWindowsの<b>バージョン</b>を確認しましょう。アップデートをまだ受け取れるかどうかは、バージョンで決まります。"
+      "windowsCaveat": "Windowsノートパソコンのメーカーはセキュリティアップデートの提供終了を発表しません。そのためノートパソコンの<b>モデル名</b>を確認してもわかりません。代わりにWindowsの<b>バージョン</b>を確認しましょう。アップデートをまだ受け取れるかどうかはバージョンで決まります。"
     },
     "otherInfo": {
       "title": "その他のデバイス",
-      "body": "現在、Apple、Google、Samsung、Motorola、OnePlus、Nokiaのデバイスと、iOS、iPadOS、macOS、Android、Windowsに対応しています。それ以外のデバイスについては、「[デバイスの機種名] セキュリティアップデート まだ提供されている」などで<link>ネット検索</link>してみてください。"
+      "body": "現在、Apple、Google、Samsung、Motorola、OnePlus、Nokiaのデバイスと、iOS、iPadOS、macOS、Android、Windowsに対応しています。それ以外のデバイスについては、「[デバイスのモデル名] セキュリティアップデート いつまで」などで<link>ネット検索</link>してみてください。"
     },
     "result": {
       "checkAnother": "別のデバイスを確認する",
@@ -583,7 +583,7 @@
       "deviceSupportedTitle": "{label}は引き続きセキュリティアップデートを受け取れます。",
       "deviceSupportedSubtitleUntil": "<b>{date}</b>までアップデートが提供される見込みです。",
       "deviceSupportedSubtitleRecent": "サポート終了日はまだ発表されていません。",
-      "deviceUnsupportedTitle": "{label}はもうセキュリティアップデートを受け取れません。",
+      "deviceUnsupportedTitle": "{label} はもうセキュリティアップデートを受け取れません。",
       "deviceUnsupportedTitleAgoMonths": "{label}のセキュリティ<nowrap>アップデートは<mark>{months, plural, other {#か月}}前</mark>に終了しています</nowrap>。",
       "deviceUnsupportedTitleAgoYears": "{label}のセキュリティ<nowrap>アップデートは<mark>{years, plural, other {#年}}前</mark>に終了しています</nowrap>。",
       "deviceUnsupportedSubtitleEnded": "セキュリティサポートは<b>{date}</b>に終了しました。",
@@ -598,7 +598,7 @@
       "manufacturerSupport": {
         "apple": {
           "label": "Apple サポート",
-          "url": "https://support.apple.com/"
+          "url": "https://support.apple.com/ja-jp"
         },
         "google": {
           "label": "Google Pixel サポート",
@@ -636,8 +636,8 @@
       "osUpgradeAdvice": {
         "ios": "最新の iOS にアップデートしましょう。",
         "ipados": "最新の iPadOS にアップデートしましょう。",
-        "macos": "より新しい macOS にアップデートしましょう。",
-        "android": "より新しい Android にアップデートしましょう。",
+        "macos": "新しい macOS にアップデートしましょう。",
+        "android": "新しい Android にアップデートしましょう。",
         "windows": "Windows 11 にアップグレードしましょう。"
       },
       "osCheckDeviceHint": "または、上のボックスにデバイスのモデル名を入力すると、まだセキュリティアップデートを受け取れるかどうかを確認できます。",
@@ -660,9 +660,9 @@
       "threatModelHeader": "なぜこれが重要なのか",
       "threatModel": "アップデートしないまま週を重ねるごとに、デバイスに侵入する方法が次々と世間に知られていきます。<protestLink>抗議行動</protestLink>や<borderLink>国境通過</borderLink>の際に警察にスマホを押収されたら（あるいは誰かに<spywareLink>スパイウェア</spywareLink>で狙われたら）、そうした既知の弱点を突かれて中に侵入され、すべてを読まれてしまいます。  ",
       "threatModelSoft": "確認できるまでは、このデバイスは古いままの可能性があるものとして、センシティブな作業には使わないようにしましょう。",
-      "viewEssentialsCta": "デジタルセキュリティの基本を見る →",
+      "viewEssentialsCta": "デジタルセキュリティの基本へ →",
       "essentialsNextSteps": {
-        "title": "データとデバイスを守るための、取り組みやすいステップをもっと見る"
+        "title": "データとデバイスを守るためのわかりやすいステップへ"
       },
       "startOver": "最初からやり直す",
       "deviceInfo": {
@@ -1019,7 +1019,7 @@
     },
     "jail-support": {
       "term": "ジェイルサポート（拘置所サポート）",
-      "definition": "逮捕の可能性があるアクションや抗議行動でのサポート役。アクションの最中と終了後に、逮捕された人をサポートします。誰が逮捕されたかを把握し、弁護士と連絡を取り合い、拘置所の外で待機し、釈放されたら本人のスマホや食べ物を届け、家まで送ります。"
+      "definition": "逮捕の可能性があるアクションや抗議行動でのサポート役。行動の最中と終了後に、逮捕された人をサポートします。誰が逮捕されたかを把握し、弁護士と連絡を取り、警察施設の外で待機し、釈放されたら本人のスマホや食べ物を届け、家まで送ります。"
     }
   }
 }
