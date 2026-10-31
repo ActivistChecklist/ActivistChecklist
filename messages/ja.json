@@ -683,10 +683,10 @@
         "titleSoon": "{label} は<nowrap><mark>まもなく</mark>セキュリティアップデート</nowrap>が終了します。",
         "subtitleDate": "アップデートは<b>{date}</b>に終了する見込みです。",
         "actionHeading": "やるべきこと",
-        "action": "今のうちに買い替えの計画を始めましょう。アップデートが止まると、デバイスには世間に知られた脆弱性がどんどんたまっていきます。"
+        "action": "新しい機種への変更を今から検討しましょう。アップデートが止まると、デバイスには既知の脆弱性がどんどんたまっていきます。"
       },
       "buyingGuidance": {
-        "heading": "買い替えるときは",
+        "heading": "機種を変更するときは",
         "yearsPattern": "ほとんどの{deviceLabel}は、発売日から{min}〜{max}年間セキュリティアップデートを受けられます。",
         "deviceLabel": {
           "phone": "スマホ",
@@ -694,27 +694,27 @@
           "tablet": "タブレット",
           "watch": "スマートウォッチ"
         },
-        "checkBeforeBuying": "中古で買う場合は、まずここでモデルを検索して、あとどのくらいアップデートが提供されるか確認しましょう。"
+        "checkBeforeBuying": "中古で買う場合は、まずここでモデルを検索して、あとどのくらいアップデートが提供されるかを確認しましょう。"
       },
       "ctaReplace": {
-        "phone": "新しいスマホへの買い替えをおすすめします。",
-        "tablet": "新しいタブレットへの買い替えをおすすめします。",
-        "laptop": "新しいノートパソコンへの買い替えをおすすめします。",
-        "desktop": "新しいMacへの買い替えをおすすめします。",
-        "watch": "新しいウォッチへの買い替えをおすすめします。",
-        "generic": "新しいデバイスへの買い替えをおすすめします。"
+        "phone": "新しいスマホの入手をおすすめします。",
+        "tablet": "新しいタブレットの入手をおすすめします。",
+        "laptop": "新しいノートパソコンの入手をおすすめします。",
+        "desktop": "新しいMacの入手をおすすめします。",
+        "watch": "新しいウォッチの入手をおすすめします。",
+        "generic": "新しいデバイスの入手をおすすめします。"
       },
       "ctaPlan": {
-        "phone": "次のスマホへの買い替えを考え始めましょう。",
-        "tablet": "次のタブレットへの買い替えを考え始めましょう。",
-        "laptop": "次のノートパソコンへの買い替えを考え始めましょう。",
-        "desktop": "次のMacへの買い替えを考え始めましょう。",
-        "watch": "次のウォッチへの買い替えを考え始めましょう。",
-        "generic": "次のデバイスへの買い替えを考え始めましょう。"
+        "phone": "次のスマホの入手を検討しはじめましょう。",
+        "tablet": "次のタブレットの入手を検討しはじめましょう。",
+        "laptop": "次のノートパソコンの入手を検討しはじめましょう。",
+        "desktop": "次のMacの入手を検討しはじめましょう。",
+        "watch": "次のウォッチの入手を検討しはじめましょう。",
+        "generic": "次のデバイスの入手を検討しはじめましょう。"
       },
-      "deviceConfirmedShort": "{label} は引き続きセキュリティアップデートを受け取れます。",
-      "deviceConfirmedShortYears": "{label} は<nowrap><mark>あと{years, plural, one {1年} other {#年}}</mark></nowrap>セキュリティアップデートを受け取れます。",
-      "deviceConfirmedShortMonths": "{label} は<nowrap><mark>あと{months, plural, one {1か月} other {#か月}}</mark></nowrap>セキュリティアップデートを受け取れます。",
+      "deviceConfirmedShort": "{label}は引き続きセキュリティアップデートを受け取れます。",
+      "deviceConfirmedShortYears": "{label}は<nowrap><mark>あと{years, plural, =1 {1年} other {#年}}</mark></nowrap>セキュリティアップデートを受け取れます。",
+      "deviceConfirmedShortMonths": "{label}は<nowrap><mark>あと{months, plural, =1 {1か月} other {#か月}}</mark></nowrap>セキュリティアップデートを受け取れます。",
       "deviceConfirmedShortApproxYears": "{label}は、<nowrap><mark>あと約{years, plural, other {#年}}</mark>間</nowrap>セキュリティアップデートを受け取れます。",
       "deviceConfirmedShortApproxMonths": "{label}は、<nowrap><mark>あと約{months, plural, other {#か月}}</mark>間</nowrap>セキュリティアップデートを受け取れます。",
       "appleEstimate": {
