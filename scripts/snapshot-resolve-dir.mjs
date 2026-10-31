@@ -13,7 +13,7 @@ export const REPO_ROOT = ROOT;
 
 /** Shared help line for both snapshot CLI tools */
 export const SNAPSHOT_PATH_ARG_HELP =
-  'Paths can be absolute, relative to the repo root, or a folder name under buildbackups/ (e.g. snapshot-…, out-…).';
+  'Paths can be absolute, relative to the repo root, or a folder name under buildbackups/ (e.g. snapshot-…).';
 
 export function usageSnapshotTwoDirs(scriptName) {
   return `Usage: pnpm ${scriptName} <dir-1> <dir-2>\n  ${SNAPSHOT_PATH_ARG_HELP}`;

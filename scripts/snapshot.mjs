@@ -28,9 +28,7 @@ import {
   gitRevParse,
   gitShortSha,
   linkNodeModulesFromMain,
-  listOutBackups,
   removeWorktree,
-  snapshotBuildEnv,
 } from './snapshot-worktree.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -44,8 +42,6 @@ function getTimestamp() {
 
 const targetCommit = process.argv[2] || 'HEAD';
 const ref = targetCommit;
-
-const env = snapshotBuildEnv();
 
 let exitCode = 0;
 let wtPath = null;
@@ -77,15 +73,14 @@ try {
     linkNodeModulesFromMain(ROOT, wtPath);
 
     console.log('🔨 pnpm buildstatic…');
-    execSync('pnpm buildstatic', { cwd: wtPath, stdio: 'inherit', env });
+    execSync('pnpm buildstatic', { cwd: wtPath, stdio: 'inherit' });
 
-    const wtBackups = path.join(wtPath, 'buildbackups');
-    const newest = listOutBackups(wtBackups)[0];
-    if (!newest) {
-      console.error('❌ No buildbackups/out-* backup found after build.');
+    const wtOut = path.join(wtPath, 'out');
+    if (!fs.existsSync(wtOut)) {
+      console.error('❌ No out/ directory found after build.');
       exitCode = 1;
     } else {
-      moveBuildOutputToCache(ROOT, fullSha, newest.path);
+      moveBuildOutputToCache(ROOT, fullSha, wtOut);
       const snapshotName = `snapshot-${getTimestamp()}-${builtShort}`;
       const dest = path.join(BACKUP_DIR, snapshotName);
       if (fs.existsSync(dest)) {

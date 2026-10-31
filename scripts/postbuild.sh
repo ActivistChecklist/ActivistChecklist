@@ -47,11 +47,3 @@ else
   find out -name '.DS_Store' -delete 2>/dev/null || true
   build_section_done 0 "Removed .DS_Store from out/ (if any)"
 fi
-
-if [ -n "$CI" ]; then
-  build_section "💾" "Post-build — backup"
-  build_detail "CI detected — skipping local out/ backup"
-  build_section_done 0 "Backup skipped (CI environment)"
-else
-  pnpm buildbackup
-fi

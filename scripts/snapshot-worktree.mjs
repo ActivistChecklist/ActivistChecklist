@@ -22,23 +22,6 @@ export function gitShortSha(repoRoot, fullSha) {
 }
 
 /**
- * @param {string} backupRoot Usually repo/buildbackups (contains out-* from buildbackup)
- */
-export function listOutBackups(backupRoot) {
-  if (!fs.existsSync(backupRoot)) {
-    return [];
-  }
-  return fs
-    .readdirSync(backupRoot)
-    .filter((name) => name.startsWith('out-'))
-    .map((name) => {
-      const full = path.join(backupRoot, name);
-      return { name, path: full, mtime: fs.statSync(full).mtimeMs };
-    })
-    .sort((a, b) => b.mtime - a.mtime);
-}
-
-/**
  * Create a detached worktree at buildbackups/.worktrees/<prefix>-<stamp>-<shortsha>/.
  * @returns {{ path: string, commit: string, short: string }}
  */
@@ -115,11 +98,4 @@ export function moveDirPreferRename(src, dest) {
     fs.cpSync(src, dest, { recursive: true });
     fs.rmSync(src, { recursive: true, force: true });
   }
-}
-
-/** Env for builds in a worktree: ensure postbuild runs buildbackup (not skipped when CI is set). */
-export function snapshotBuildEnv() {
-  const env = { ...process.env };
-  delete env.CI;
-  return env;
 }

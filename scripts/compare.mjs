@@ -32,16 +32,12 @@ import {
   addDetachedWorktree,
   gitRevParse,
   linkNodeModulesFromMain,
-  listOutBackups,
   removeWorktree,
-  snapshotBuildEnv,
 } from './snapshot-worktree.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const BACKUP_DIR = path.join(ROOT, 'buildbackups');
-
-const env = snapshotBuildEnv();
 
 function verifyRef(ref) {
   try {
@@ -135,7 +131,7 @@ async function promptLabels(ref1, ref2, nameA, nameB, noPrompt) {
 
 /**
  * Materialize static tree under destStatic: reuse buildbackups/.cache/static-<sha>/ if valid,
- * else build in a worktree, move out-* into cache, then symlink destStatic → cache.
+ * else build in a worktree, move its out/ into cache, then symlink destStatic → cache.
  */
 function buildRefToStatic(ref, label, destStatic) {
   const fullSha = gitRevParse(ROOT, ref);
@@ -162,13 +158,13 @@ function buildRefToStatic(ref, label, destStatic) {
     linkNodeModulesFromMain(ROOT, wtPath);
 
     console.log('🔨 pnpm buildstatic…');
-    execSync('pnpm buildstatic', { cwd: wtPath, stdio: 'inherit', env });
+    execSync('pnpm buildstatic', { cwd: wtPath, stdio: 'inherit' });
 
-    const newest = listOutBackups(path.join(wtPath, 'buildbackups'))[0];
-    if (!newest) {
-      throw new Error('No buildbackups/out-* backup found after build.');
+    const wtOut = path.join(wtPath, 'out');
+    if (!fs.existsSync(wtOut)) {
+      throw new Error('No out/ directory found after build.');
     }
-    moveBuildOutputToCache(ROOT, fullSha, newest.path);
+    moveBuildOutputToCache(ROOT, fullSha, wtOut);
     if (fs.existsSync(destStatic)) {
       fs.rmSync(destStatic, { recursive: true, force: true });
     }
