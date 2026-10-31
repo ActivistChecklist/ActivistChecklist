@@ -731,7 +731,7 @@
         "optionLatestShort": "{version}を使っています",
         "optionLatestVersion": "{version}（最新）を使っています",
         "optionOlderShort": "{version}より古い",
-        "optionOlderVersion": "{version} より古い",
+        "optionOlderVersion": "{version}より古い",
         "optionBetweenShort": "{major}.0.0〜{previousVersion}",
         "optionThisVersion": "このバージョンを使っている",
         "optionNoUpdatesAvailable": "利用できるアップデートが表示されない",
