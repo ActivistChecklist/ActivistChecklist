@@ -573,12 +573,12 @@
         "oneplus": "<settings>設定アプリ</settings> → 「システム」 → 「ソフトウェアアップデート」"
       },
       "osVersionPath": {
-        "ios": "ホーム画面の<settings>設定アプリ</settings> → 一般 → 情報 → iOSバージョン",
-        "ipados": "ホーム画面の<settings>設定アプリ</settings> → 一般 → 情報 → ソフトウェアバージョン",
-        "macos": "画面上部のメニューバーにある<apple>アップルメニュー</apple> → このMacについて",
-        "android": "スマホの<settings>設定アプリ</settings> → デバイス情報 → Android バージョン",
+        "ios": "ホーム画面の<settings>「設定」</settings> →「 一般」 →「 情報」 → iOSバージョン",
+        "ipados": "ホーム画面の<settings>「設定」</settings> →「 一般」 →「 情報」 → iPadOSバージョン",
+        "macos": "画面上部のメニューバーにある<apple>アップルメニュー</apple> → 「このMacについて」",
+        "android": "<settings>設定アプリ</settings> → 「デバイス情報」 → 「Android バージョン」",
         "windows": "Windows キー + R を押す → <code>winver</code> と入力 → Enterキーを押す",
-        "watchos": "iPhoneの「Watch」App → マイウォッチ → 一般 → 情報 → バージョン"
+        "watchos": "iPhoneのApple Watchアプリ → 「マイウォッチ」 → 「一般」 → 「情報」 → 「モデル番号」"
       },
       "deviceSupportedTitle": "{label}は引き続きセキュリティアップデートを受け取れます。",
       "deviceSupportedSubtitleUntil": "<b>{date}</b>までアップデートが提供される見込みです。",
@@ -588,12 +588,12 @@
       "deviceUnsupportedTitleAgoYears": "{label}のセキュリティ<nowrap>アップデートは<mark>{years, plural, other {#年}}前</mark>に終了しています</nowrap>。",
       "deviceUnsupportedSubtitleEnded": "セキュリティサポートは<b>{date}</b>に終了しました。",
       "deviceUnsupportedSubtitleUnmaintained": "{manufacturer}はセキュリティアップデートの提供を終了しています。",
-      "deviceUnsupportedSubtitleAge": "発売は{age}。サポート終了日は公表されておらず、{manufacturer}もアップデートを提供していないようです。",
+      "deviceUnsupportedSubtitleAge": "発売は{age}。サポート終了日は公表されていませんが、{manufacturer}はアップデートを提供していないようです。",
       "manufacturerFallback": "メーカー",
       "manufacturerFallbackLower": "メーカー",
       "ageYearsAgo": "{years, plural, =0 {今年} =1 {1年前} other {#年前}}",
       "deviceUncertainTitle": "{label}が今後もアップデートを受け取れるかどうかは確認できません。",
-      "deviceUncertainSubtitle": "発売は{age}。{manufacturer}はサポート終了日を公表しておらず、これほど古いデバイスだと、まだアップデートが届いているかどうかはわかりません。",
+      "deviceUncertainSubtitle": "発売は{age}。{manufacturer}はサポート終了日を公表していませんが、これほど古いデバイスだと、まだアップデートが提供されているかどうかはわかりません。",
       "deviceUncertainCheck": "メーカーのサポートページを確認してください：<link></link>。",
       "manufacturerSupport": {
         "apple": {
@@ -622,16 +622,16 @@
         }
       },
       "osConfirmedShort": "{label} は引き続きセキュリティアップデートを受け取れます。",
-      "osConfirmedShortYears": "{label} は<nowrap><mark>あと{years, plural, one {1年} other {#年}}</mark></nowrap>セキュリティアップデートを受け取れます。",
-      "osConfirmedShortMonths": "{label} は<nowrap><mark>あと{months, plural, one {1か月} other {#か月}}</mark></nowrap>セキュリティアップデートを受け取れます。",
+      "osConfirmedShortYears": "{label}は<nowrap><mark>あと{years, plural, =1 {1年} other {#年}}</mark></nowrap>セキュリティアップデートを受け取れます。",
+      "osConfirmedShortMonths": "{label} は<nowrap><mark>あと{months, plural, =1 {1か月} other {#か月}}</mark></nowrap>セキュリティアップデートを受け取れます。",
       "osConfirmedSubtitleUntil": "アップデートは <b>{date}</b> まで提供される見込みです。",
       "osEolSoon": {
-        "titleMonths": "{label} は<nowrap><mark>約{months, plural, =1 {1か月} other {#か月}}後</mark>に</nowrap>セキュリティアップデートが終了します。",
-        "titleSoon": "{label} は<nowrap><mark>まもなく</mark></nowrap>セキュリティアップデートが終了します。",
+        "titleMonths": "{label}は<nowrap><mark>約{months, plural, =1 {1か月} other {#か月}}後</mark>に</nowrap>セキュリティアップデートが終了します。",
+        "titleSoon": "{label}は<nowrap><mark>まもなく</mark></nowrap>セキュリティアップデートが終了します。",
         "subtitleDate": "アップデートは<b>{date}</b>に終了する見込みです。"
       },
-      "osEoasNote": "このバージョンは、メーカーによってセキュリティアップデートのみの提供に移行しています。都合のいいときにアップグレードを計画しましょう。",
-      "osUnsupportedTitle": "{label} はもうセキュリティアップデートを受け取れません。",
+      "osEoasNote": "このバージョンはセキュリティアップデートのみの提供に移行しています。都合のよいときにアップグレードを計画しましょう。",
+      "osUnsupportedTitle": "{label}はもうセキュリティアップデートを受け取れません。",
       "osUnsupportedSubtitleEnded": "サポートは<b>{date}</b>に終了しました。",
       "osUpgradeAdvice": {
         "ios": "最新の iOS にアップデートしましょう。",
@@ -642,9 +642,9 @@
       },
       "osCheckDeviceHint": "または、上のボックスにデバイスのモデル名を入力すると、まだセキュリティアップデートを受け取れるかどうかを確認できます。",
       "latestOsReminderTitle": "最新の状態になっているか確認しよう",
-      "latestOsReminderWithVersion": "{os} {version} を使っているか確認しましょう。",
-      "latestOsReminderFamilyLatest": "最新の {os}（現在は {version}）を使っているか確認しましょう。",
-      "latestOsReminderGeneric": "デバイスが完全にアップデートされているか確認しましょう。",
+      "latestOsReminderWithVersion": "{os} {version}を使っているか確認しましょう。",
+      "latestOsReminderFamilyLatest": "最新の{os}（現在は{version}）を使っているか確認しましょう。",
+      "latestOsReminderGeneric": "デバイスが完全にアップデートされているか確認しよう。",
       "supportedOsLabel": {
         "ios": "iOS",
         "ipados": "iPadOS",
@@ -652,13 +652,13 @@
         "android": "Android",
         "windows": "Windows"
       },
-      "deviceMaxOsWarningTitle": "お使いのデバイスのOSについての注意",
-      "deviceMaxOsWarning": "お使いの{label}は{os} {maxVersion}までしか対応していません。{os} {maxVersion}は、{os} {latestVersion}より先にセキュリティアップデートの提供が終わります。新しいデバイスのほうが、より長くアップデートを受け取れます。",
-      "deviceMaxOsWarningWithDate": "お使いの{label}は{os} {maxVersion}までしか対応していません。このバージョンは{eolDate}頃にセキュリティアップデートの提供が終わる見込みです。{os} {latestVersion}を実行できる新しいデバイスのほうが、より長くアップデートを受け取れます。",
-      "deviceMaxOsEolWarning": "お使いの{label}は{os} {maxVersion}までしか対応しておらず、このバージョンは公式サポートがすでに終了しています。今後もたまにアップデートが届くことはあるかもしれませんが、センシティブな作業には信頼性の低いデバイスとして扱い、買い替えを計画しましょう。",
-      "deviceUpgradePlan": "活動のために長期的なセキュリティが重要なら、ハードウェアの買い替えを計画しましょう。",
-      "threatModelHeader": "なぜこれが重要なのか",
-      "threatModel": "アップデートしないまま週を重ねるごとに、デバイスに侵入する方法が次々と世間に知られていきます。<protestLink>抗議行動</protestLink>や<borderLink>国境通過</borderLink>の際に警察にスマホを押収されたら（あるいは誰かに<spywareLink>スパイウェア</spywareLink>で狙われたら）、そうした既知の弱点を突かれて中に侵入され、すべてを読まれてしまいます。  ",
+      "deviceMaxOsWarningTitle": "デバイスのOSについてのメモ",
+      "deviceMaxOsWarning": "{label}は{os} {maxVersion}までしか対応していません。{os} {maxVersion}は、{os} {latestVersion}より先にセキュリティアップデートの提供が終わります。新しいデバイスのほうが、より長くアップデートを受け取れます。",
+      "deviceMaxOsWarningWithDate": "{label}は{os} {maxVersion}までしか対応していません。このバージョンは{eolDate}ごろにセキュリティアップデートの提供が終わる見込みです。{os} {latestVersion}を動かせる新しいデバイスのほうが、より長くアップデートを受け取れます。",
+      "deviceMaxOsEolWarning": "{label}は{os} {maxVersion}までしか対応しておらず、このバージョンは公式サポートがすでに終了しています。今後もたまにアップデートが届くことはあるかもしれませんが、センシティブな作業をするには信頼性の低いデバイスとして扱い、新しい機種への変更を計画しましょう。",
+      "deviceUpgradePlan": "活動のために長期的なセキュリティが重要なら、ハードウェアのアップグレードを計画しましょう。",
+      "threatModelHeader": "なぜこれが大事なのか",
+      "threatModel": "アップデートしないままだとどうなるか。毎週ごとにデバイスに侵入する方法が次々と公開されていきます。<protestLink>抗議行動</protestLink>や<borderLink>国境通過</borderLink>の際に警察にスマホを押収されたら（あるいは誰かに<spywareLink>スパイウェア</spywareLink>で狙われたら）、そうした既知の弱点を突かれて中に侵入され、データを全部見られてしまいます。  ",
       "threatModelSoft": "確認できるまでは、このデバイスは古いままの可能性があるものとして、センシティブな作業には使わないようにしましょう。",
       "viewEssentialsCta": "デジタルセキュリティの基本へ →",
       "essentialsNextSteps": {
@@ -681,7 +681,7 @@
       "eolSoon": {
         "titleMonths": "{label} は<nowrap><mark>あと約{months, plural, =1 {1か月} other {#か月}}</mark>でセキュリティアップデート</nowrap>が終了します。",
         "titleSoon": "{label} は<nowrap><mark>まもなく</mark>セキュリティアップデート</nowrap>が終了します。",
-        "subtitleDate": "アップデートは <b>{date}</b> に終了する見込みです。",
+        "subtitleDate": "アップデートは<b>{date}</b>に終了する見込みです。",
         "actionHeading": "やるべきこと",
         "action": "今のうちに買い替えの計画を始めましょう。アップデートが止まると、デバイスには世間に知られた脆弱性がどんどんたまっていきます。"
       },
