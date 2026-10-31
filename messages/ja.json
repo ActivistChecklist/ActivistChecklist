@@ -541,9 +541,9 @@
     "findYourModel": {
       "label": "デバイスの機種を確認する方法：",
       "labelWindows": "Windowsのバージョンを確認する方法：",
-      "iphone": "ホーム画面の<settings>「設定」App</settings> →「一般」→「情報」→「機種名」",
-      "ipad": "ホーム画面の<settings>設定アプリ</settings> → 一般 → 情報 → 機種名",
-      "iphoneIpad": "ホーム画面の<settings>設定アプリ</settings> → 一般 → 情報 → 機種名",
+      "iphone": "ホーム画面の<settings>設定アプリ</settings> →「一般」→「情報」→「モデル番号」",
+      "ipad": "ホーム画面の<settings>設定アプリ</settings> →「一般」→「情報」→「モデル番号」",
+      "iphoneIpad": "ホーム画面の<settings>設定アプリ</settings> →「一般」→「情報」→「モデル番号」",
       "appleWatch": "iPhoneの「Watch」App →「マイウォッチ」→「一般」→「情報」→「モデル」",
       "mac": "画面上部のメニューバーにある<apple>Appleメニュー</apple> →「このMacについて」→「概要」",
       "samsung": "スマホの<settings>「設定」アプリ</settings> →「端末情報」→「モデル番号」",
