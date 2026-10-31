@@ -564,20 +564,20 @@
       "checkAnother": "別のデバイスを確認する",
       "source": "出典：<link>endoflife.date</link>",
       "settingsPath": {
-        "ios": "ホーム画面の<settings>「設定」App</settings> →「一般」→「ソフトウェアアップデート」→「今すぐアップデート」",
-        "ipados": "ホーム画面の<settings>設定アプリ</settings> → 一般 → ソフトウェアアップデート → 今すぐアップデート",
-        "macos": "画面上部のメニューバーにある<apple>Appleメニュー</apple> →「システム設定」→「一般」→「ソフトウェアアップデート」→「今すぐアップデート」",
-        "android": "スマホの<settings>「設定」アプリ</settings> →「システム」→「ソフトウェア アップデート」→「アップデートをチェック」",
-        "windows": "<windows>スタート メニュー</windows> → <settings>設定</settings> → Windows Update → 更新プログラムのチェック",
-        "watchos": "iPhoneの「Watch」App → マイウォッチ → 一般 → ソフトウェア・アップデート → インストール",
-        "oneplus": "スマホの<settings>設定アプリ</settings> → システム → システムアップデート → アップデートを確認"
+        "ios": "ホーム画面の<settings>設定アプリ</settings> →「一般」→「ソフトウェアアップデート」→「ダウンロードしてインストール」",
+        "ipados": "ホーム画面の<settings>設定アプリ</settings> →「一般」→「ソフトウェアアップデート」→「ダウンロードしてインストール」",
+        "macos": "画面上部のメニューバーにある<apple>アップルメニュー</apple> →「システム設定」→「一般」→「ソフトウェアアップデート」→「今すぐアップデート」",
+        "android": "スマホの<settings>設定アプリ</settings> →「システム」→「ソフトウェア アップデート」",
+        "windows": "<windows>スタート メニュー</windows> → <settings>設定</settings> → 「Windows Update」 → 「Windows更新プログラムの確認」",
+        "watchos": "iPhoneのApple Watchアプリ → 「マイウォッチ」 → 「一般」 → 「ソフトウェアアップデート」",
+        "oneplus": "<settings>設定アプリ</settings> → 「システム」 → 「ソフトウェアアップデート」"
       },
       "osVersionPath": {
         "ios": "ホーム画面の<settings>設定アプリ</settings> → 一般 → 情報 → iOSバージョン",
         "ipados": "ホーム画面の<settings>設定アプリ</settings> → 一般 → 情報 → ソフトウェアバージョン",
         "macos": "画面上部のメニューバーにある<apple>アップルメニュー</apple> → このMacについて",
         "android": "スマホの<settings>設定アプリ</settings> → デバイス情報 → Android バージョン",
-        "windows": "Windows キー + R を押す → <code>winver</code> と入力 → Enter",
+        "windows": "Windows キー + R を押す → <code>winver</code> と入力 → Enterキーを押す",
         "watchos": "iPhoneの「Watch」App → マイウォッチ → 一般 → 情報 → バージョン"
       },
       "deviceSupportedTitle": "{label}は引き続きセキュリティアップデートを受け取れます。",
