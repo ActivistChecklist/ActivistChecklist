@@ -100,7 +100,7 @@
       "title": "協力する"
     },
     "changelog": {
-      "title": "サイトの最近の更新",
+      "title": "最近のサイト更新",
       "label": "最近のサイト更新"
     },
     "contact": {
@@ -113,15 +113,15 @@
     },
     "whatsapp": {
       "title": "WhatsAppのセキュリティ",
-      "description": "WhatsAppを設定して、メッセージ、グループ、連絡先を守ろう。"
+      "description": "WhatsAppの設定を見直して、メッセージ・グループ・連絡先を守ろう。"
     },
     "spyware": {
       "title": "スパイウェア対策",
       "description": "スパイウェアや監視ソフトウェアから身を守ろう。"
     },
     "action": {
-      "title": "逮捕の可能性がある行動への準備",
-      "description": "逮捕の可能性がある行動や市民的不服従のためのデジタルセキュリティ。"
+      "title": "逮捕される可能性がある行動のためのデジタルセキュリティ",
+      "description": "逮捕の危険があるときに、スマホと仲間を守ろう。"
     },
     "organizing": {
       "title": "逮捕の可能性がある行動を組織する",
@@ -172,11 +172,11 @@
     "sectionTitle": "よくある誤解",
     "sectionDescription": "デジタルセキュリティの話をすると、よくこんな声を聞きます。でも、実はそれだけではないと思います。",
     "nothingToHideTitle": "「隠すことなんて何もない」",
-    "nothingToHideDescription": "社会運動に深く関わるほど、自分のデータがアクティビストのつながりを調べるために使われやすくなります。自分を守り始めるベストなタイミングは、深く関わるようになる<b>前</b>です。",
+    "nothingToHideDescription": "社会運動に深く関わるほど、自分のデータがアクティビスト同士のつながりを調べるために使われやすくなります。自分を守り始めるベストなタイミングは、深く関わるようになる<b>前</b>です。",
     "alreadyKnowTitle": "「どうせもう全部知られてる」",
     "alreadyKnowDescription": "データ収集はあちこちで行われていますが、自分のデジタルフットプリントを大きく減らし、これからの活動を守ることはできます。",
     "dontCareTitle": "「自分のやっていることなんて誰も気にしない」",
-    "dontCareDescription": "大規模監視はすべての人に影響します。自分のデータが、コミュニティのプロファイリングや抗議行動の予測、自分の大切な人たちを標的にすることに使われるかもしれません。自分の通信を守ることは、私たちみんなを守ることにつながります。"
+    "dontCareDescription": "大規模監視はすべての人に影響します。自分のデータが、コミュニティのプロファイリングや抗議行動の予測、自分の大切な人たちを標的にするために使われるかもしれません。自分の通信を守ることは、私たちみんなを守ることにつながります。"
   },
   "featured": {
     "sectionTitle": "掲載先"
@@ -184,11 +184,11 @@
   "homepage": {
     "browseAll": "チェックリストをすべて見る",
     "trustHeading": "みんなの安全を守るためのシンプルなガイド",
-    "trustDescription": "デジタルセキュリティは、大変すぎるものであってはいけない。そう思ってこのサイトを作りました。私たちはハームリダクションの考え方を大切にしています。現状から始めて、できることをやればいいんです。",
+    "trustDescription": "デジタルセキュリティは難しすぎるものであってはいけない。そう思ってこのサイトを作りました。私たちはハームリダクションの考え方を大切にしています。現状からはじめて、できることをやりましょう。",
     "latestNewsHeading": "監視に関する最新ニュース",
     "viewAllNews": "ニュースをすべて見る",
     "toolsHeading": "私たちが作ったツール",
-    "toolsDescription": "チェックリストと一緒に使える、私たちが作った無料ツール。一人では終わらせにくいステップに役立ちます。",
+    "toolsDescription": "チェックリストと一緒に使える、私たちが作った無料ツール。一人では終わらせづらいステップに役立ちます。",
     "viewAllTools": "すべてのツールを見る",
     "recentUpdatesHeading": "サイトの最近の更新",
     "viewAllUpdates": "更新をすべて見る",
@@ -237,7 +237,7 @@
       "navigation": "ナビゲーション",
       "topChecklists": "人気のチェックリスト"
     },
-    "disclaimer": "注意：ここで提供しているのは情報やリソースであって、法的助言ではありません。自分の状況については弁護士に相談してください。",
+    "disclaimer": "注意：ここで提供しているのは情報やリソースであって、法的助言ではありません。個別の状況については弁護士に相談を。",
     "licenseNotice": "コンテンツは<cc>Creative Commons BY-SA</cc>で公開しています。<sources>出典</sources>はこちら。ソースコードは<github>GitHub</github>で公開しています。",
     "social": {
       "blueskyAriaLabel": "Blueskyでフォローする",
@@ -324,7 +324,7 @@
       },
       "firedUp": {
         "title": "燃えあがれ",
-        "message": "このページは革命の火花を灯すのに忙しくしています。"
+        "message": "このページは革命の火花を灯すためがんばっています。"
       },
       "mutualAid": {
         "title": "相互扶助ステーション",
@@ -341,7 +341,7 @@
     "mediumLabel": "中程度の脅威",
     "highLabel": "高い脅威",
     "everyoneDefault": "このセクションは、アクティビズムや権利擁護に関わるすべての人向けです。",
-    "mediumDefault": "このセクションは、リーダー的な役割を担っている人や、国家や対立勢力から標的にされやすいアクティビズムに関わっている人向けです。",
+    "mediumDefault": "このセクションは、リーダー的な役割を担っている人や、国家や対立勢力から標的にされやすい運動分野に関わっている人向けです。",
     "highDefault": "このセクションは、注目を集める立場にある人や、深刻な結果や報復につながりかねないハイリスクな活動に関わっている人向けです。",
     "forYouIf": "このセクションは、次に当てはまる人向けです：",
     "forYou": "このセクションの対象：",
@@ -371,8 +371,8 @@
     "ariaLabel": "クリップボードにコピー"
   },
   "contact": {
-    "title": "お問い合わせ",
-    "intro": "いただいたフィードバックは、このリソースをより役立つ、より安全なものにするために活かされます。こんな提案を歓迎しています：",
+    "title": "コンタクト",
+    "intro": "もらったフィードバックは、このリソースをもっと役立つ、安全なものにするために活かします。こんな提案を歓迎しています：",
     "suggestion1": "不正確な情報や古くなった情報の修正",
     "suggestion2": "ガイドをもっとわかりやすくするための改善",
     "suggestion3": "セキュリティに関するおすすめの改善",
@@ -405,9 +405,9 @@
     "sending": "送信中...",
     "sendMessage": "メッセージを送信",
     "privacyLabel": "プライバシー：",
-    "privacyText": "メッセージは安全に暗号化されて、私たちのProton Mailアカウントに送られます。個人情報は一切収集しません。",
-    "errorMessage": "メッセージを送信できませんでした。しばらくしてからもう一度お試しください。",
-    "responseNone": "返信は不要（メッセージは匿名のままです）",
+    "privacyText": "メッセージは安全に暗号化された上で私たちのProton Mailアカウント宛に送信されます。個人情報は一切収集しません。",
+    "errorMessage": "メッセージを送信できませんでした。しばらくしてからもう一度試してください。",
+    "responseNone": "返信は不要（メッセージは匿名のまま保たれます）",
     "responseSignalUsername": "Signalで返信（ユーザーネーム）",
     "responseSignalPhone": "Signalで返信（電話番号）",
     "responseEmail": "メールで返信",
@@ -415,11 +415,11 @@
   },
   "feedbackCta": {
     "heading": "質問がありますか？",
-    "description": "このガイドをもっと役立つものにしていくために、質問やフィードバックがあればお願いします。",
+    "description": "このガイドをもっと役立つものにしていくため、質問やフィードバックがあればお願いします。",
     "inputPlaceholder": "質問を入力…",
     "sendButton": "送信",
     "dialogTitle": "メッセージを送る",
-    "successMessage": "フィードバックありがとうございます！検討のうえ、ガイドの改善に活かさせてもらいます。このサイトが役に立ったら、ぜひまわりの人にも広めてください！"
+    "successMessage": "フィードバックありがとうございます！検討のうえ、ガイドの改善に活かします。このサイトが役に立ったら、ぜひまわりの人にも広めてください！"
   },
   "relatedGuides": {
     "headingBlock": "関連ガイドでさらに学ぼう",
@@ -427,14 +427,14 @@
   },
   "checklists": {
     "title": "チェックリスト",
-    "intro": "すべてのチェックリストと解説を、状況別にまとめています。初めての方は<link>セキュリティの基本</link>から始めてください。",
-    "documentTitle": "チェックリスト | アクティビストチェックリスト"
+    "intro": "すべてのチェックリストと解説を、状況別にまとめています。初めての人は<link>セキュリティの基本</link>からどうぞ。",
+    "documentTitle": "チェックリスト | Activist Checklist"
   },
   "checklistSections": {
     "basics": {
       "title": "基本",
       "heading": "誰もがやっておくべきこと",
-      "scope": "スマホ、アカウント、グループチャットの基本的な保護。"
+      "scope": "スマホ、アカウント、グループチャットの基本的安全対策。"
     },
     "goingOut": {
       "title": "抗議行動と移動",
@@ -444,15 +444,15 @@
     "targeted": {
       "title": "標的にされたとき",
       "heading": "標的にされないよう身を守る",
-      "scope": "ドクシング、嫌がらせ、捜査、または捜査官が家に来たとき。"
+      "scope": "ドクシング、嫌がらせ、捜査、または警察が家に来たとき。"
     },
     "organizing": {
       "title": "仲間を組織する",
       "heading": "仲間を組織する",
-      "scope": "行動の運営と、グループのセキュリティ強化。"
+      "scope": "行動の運営とグループのセキュリティ強化。"
     },
     "descriptions": {
-      "party": "グループで一緒にチェックリストを進めるための予定表のテンプレート。"
+      "party": "グループで一緒にチェックリストを進める用の予定表テンプレート。"
     },
     "allChecklists": "{count, plural, other {全#件のチェックリスト}}",
     "readMinutes": "{minutes}分で読めます",
@@ -463,11 +463,11 @@
     "lastReviewed": "最終確認日：{date}"
   },
   "news": {
-    "title": "監視ニュース",
+    "title": "監視に関するニュース",
     "description": "国家による監視や、社会運動が直面している脅威についての最新ニュース。",
     "tipInvitation": "載せるべきだと思うニュースはありますか？",
     "tipLink": "情報を送って",
-    "tipSuffix": "コミュニティに最新情報を届ける手助けをしてください。",
+    "tipSuffix": "コミュニティに最新情報を届ける手助けを。",
     "noItems": "ニュースが見つかりませんでした。",
     "paywallBypassNotice": "このリンクはペイウォールを回避します。",
     "seeOriginal": "元の記事を見る"
@@ -482,20 +482,20 @@
   },
   "updates": {
     "metaTitle": "あなたのデバイスはまだセキュリティアップデートを受け取れる？ | Activist Checklist",
-    "metaDescription": "スマホ、タブレット、スマートウォッチ、ノートパソコンがまだセキュリティアップデートを受け取れているか確認しよう。古いデバイスには公に知られた脆弱性がたまっていき、押収されたり標的にされたりしたときにハッキングされやすくなります。",
-    "title": "あなたのデバイスはまだセキュリティアップデートを受け取れる？",
-    "intro": "デバイスが最新のOSになっていないと、ハッカーや警察に侵入されて、データをすべて見られてしまうおそれがあります。",
+    "metaDescription": "スマホ、タブレット、スマートウォッチ、ノートパソコンがセキュリティアップデートを受けられているか確認しよう。古いデバイスには公に知られた脆弱性がたまっていき、押収されたり標的にされたりしたときにハッキングされやすくなります。",
+    "title": "デバイスのセキュリティアップデートはまだ大丈夫？",
+    "intro": "最新のOSになっていないと、ハッカーや警察に侵入されて、データをすべて見られてしまう危険があります。",
     "searchLabel": "デバイスのモデル名を入力",
     "searchHelpAriaLabel": "デバイスのモデル名の調べ方",
-    "searchHelp": "見つけ方がわからない？上でOSを選ぶと、調べ方を確認できます。",
+    "searchHelp": "わからない場合は、上でOSを選ぶと調べ方を確認できます。",
     "searchPlaceholder": "例：iPhone 12 Pro、Pixel 7、Windows 10",
     "searchAriaLabel": "デバイスまたはOSを検索",
     "clearAriaLabel": "検索をクリア",
     "editSelectionAriaLabel": "デバイスを変更して検索に戻る",
     "noMatches": "リストに一致するものがありません。",
-    "noMatchesHelp": "メーカーのシリーズ名も入れて検索してみてください（例：「A14」だけでなく「Galaxy A14」）。",
+    "noMatchesHelp": "製品名も入れて検索してみてください（例：「A14」ではなく「Galaxy A14」）。",
     "noMatchesSupported": "現在、Apple、Google、Samsung、Motorola、OnePlus、Nokia、そしてiOS、iPadOS、macOS、Android、Windowsに対応しています。",
-    "noMatchesWindowsLaptop": "Windowsノートパソコンのメーカーは、セキュリティアップデートの提供終了を発表しません。そのため、ノートパソコンの<b>機種</b>を調べてもわかりません。代わりにWindowsの<b>バージョン</b>を確認してください。アップデートをまだ受け取れるかどうかは、バージョンで決まります。",
+    "noMatchesWindowsLaptop": "Windowsノートパソコンのメーカーは、セキュリティアップデートの提供終了を発表しません。そのため、ノートパソコンの<b>機種</b>を調べてもわかりません。代わりにWindowsの<b>バージョン</b>を確認してください。アップデートをまだ受けられるかどうかは、バージョンで決まります。",
     "noMatchesWindowsPathLabel": "Windowsのバージョンの確認方法：",
     "loading": "デバイスリストを読み込み中...",
     "loadError": "デバイスリストを読み込めませんでした。<retryLink>もう一度試す</retryLink>か、<link>endoflife.date</link>で直接確認してください。",
@@ -511,14 +511,14 @@
     },
     "platform": {
       "prompt": "または、ここから選んでスタート：",
-      "helpPrompt": "デバイスの機種がわからない場合は？",
+      "helpPrompt": "デバイスのモデル名がわからない場合",
       "apple": "Apple",
       "android": "Android",
       "windows": "Windows",
       "other": "その他"
     },
     "subCategory": {
-      "prompt": "{platform}のどのデバイスですか？",
+      "prompt": "{platform}のどのデバイス？",
       "back": "戻る",
       "iphone": "iPhone",
       "ipad": "iPad",
@@ -541,64 +541,64 @@
     "findYourModel": {
       "label": "デバイスの機種を確認する方法：",
       "labelWindows": "Windowsのバージョンを確認する方法：",
-      "iphone": "ホーム画面の<settings>「設定」App</settings> →「一般」→「情報」→「機種名」",
-      "ipad": "ホーム画面の<settings>設定アプリ</settings> → 一般 → 情報 → 機種名",
-      "iphoneIpad": "ホーム画面の<settings>設定アプリ</settings> → 一般 → 情報 → 機種名",
-      "appleWatch": "iPhoneの「Watch」App →「マイウォッチ」→「一般」→「情報」→「モデル」",
+      "iphone": "ホーム画面の<settings>設定アプリ</settings> →「一般」→「情報」→「モデル番号」",
+      "ipad": "ホーム画面の<settings>設定アプリ</settings> →「一般」→「情報」→「モデル番号」",
+      "iphoneIpad": "ホーム画面の<settings>設定アプリ</settings> →「一般」→「情報」→「モデル番号」",
+      "appleWatch": "iPhoneのApple Watchアプリ →「マイウォッチ」→「一般」→「情報」→「モデル番号」",
       "mac": "画面上部のメニューバーにある<apple>Appleメニュー</apple> →「このMacについて」→「概要」",
       "samsung": "スマホの<settings>「設定」アプリ</settings> →「端末情報」→「モデル番号」",
-      "pixel": "スマホの<settings>「設定」アプリ</settings> →「デバイス情報」→「モデル」",
-      "motorola": "スマホの<settings>設定アプリ</settings> → デバイス情報 → モデル番号",
-      "oneplus": "スマホの<settings>「設定」アプリ</settings> →「デバイス情報」→「モデル番号」",
-      "nokia": "スマホの<settings>設定アプリ</settings> → デバイス情報 → モデル",
-      "android": "スマホの<settings>設定アプリ</settings> → デバイス情報 → モデル番号",
-      "androidOs": "スマホの<settings>「設定」アプリ</settings> →「デバイス情報」→「Android バージョン」",
-      "windows": "Windowsキー + R を押す → <code>winver</code> と入力 → Enter",
-      "windowsCaveat": "Windowsノートパソコンのメーカーは、セキュリティアップデートの提供終了を発表しません。だから、ノートパソコンの<b>モデル</b>を確認してもわかりません。代わりにWindowsの<b>バージョン</b>を確認しましょう。アップデートをまだ受け取れるかどうかは、バージョンで決まります。"
+      "pixel": "<settings>設定アプリ</settings> →「デバイス情報」→「規制ラベル」→「モデル名」",
+      "motorola": "<settings>設定アプリ</settings> →「 デバイス情報 」→「 モデル番号」",
+      "oneplus": "<settings>設定アプリ</settings> →「 デバイス情報 」→「 モデル番号」",
+      "nokia": "<settings>設定アプリ</settings> →「 デバイス情報 」→「 モデル番号」",
+      "android": "<settings>設定アプリ</settings> →「 デバイス情報 」→「 モデル番号」",
+      "androidOs": "<settings>設定アプリ</settings> →「デバイス情報」→「Android バージョン」",
+      "windows": "Windowsキー + R を押す → <code>winver</code> と入力 → Enterキーを押す",
+      "windowsCaveat": "Windowsノートパソコンのメーカーはセキュリティアップデートの提供終了を発表しません。そのためノートパソコンの<b>モデル名</b>を確認してもわかりません。代わりにWindowsの<b>バージョン</b>を確認しましょう。アップデートをまだ受け取れるかどうかはバージョンで決まります。"
     },
     "otherInfo": {
       "title": "その他のデバイス",
-      "body": "現在、Apple、Google、Samsung、Motorola、OnePlus、Nokiaのデバイスと、iOS、iPadOS、macOS、Android、Windowsに対応しています。それ以外のデバイスについては、「[デバイスの機種名] セキュリティアップデート まだ提供されている」などで<link>ネット検索</link>してみてください。"
+      "body": "現在、Apple、Google、Samsung、Motorola、OnePlus、Nokiaのデバイスと、iOS、iPadOS、macOS、Android、Windowsに対応しています。それ以外のデバイスについては、「[デバイスのモデル名] セキュリティアップデート いつまで」などで<link>ネット検索</link>してみてください。"
     },
     "result": {
       "checkAnother": "別のデバイスを確認する",
       "source": "出典：<link>endoflife.date</link>",
       "settingsPath": {
-        "ios": "ホーム画面の<settings>「設定」App</settings> →「一般」→「ソフトウェアアップデート」→「今すぐアップデート」",
-        "ipados": "ホーム画面の<settings>設定アプリ</settings> → 一般 → ソフトウェアアップデート → 今すぐアップデート",
-        "macos": "画面上部のメニューバーにある<apple>Appleメニュー</apple> →「システム設定」→「一般」→「ソフトウェアアップデート」→「今すぐアップデート」",
-        "android": "スマホの<settings>「設定」アプリ</settings> →「システム」→「ソフトウェア アップデート」→「アップデートをチェック」",
-        "windows": "<windows>スタート メニュー</windows> → <settings>設定</settings> → Windows Update → 更新プログラムのチェック",
-        "watchos": "iPhoneの「Watch」App → マイウォッチ → 一般 → ソフトウェア・アップデート → インストール",
-        "oneplus": "スマホの<settings>設定アプリ</settings> → システム → システムアップデート → アップデートを確認"
+        "ios": "ホーム画面の<settings>設定アプリ</settings> →「一般」→「ソフトウェアアップデート」→「ダウンロードしてインストール」",
+        "ipados": "ホーム画面の<settings>設定アプリ</settings> →「一般」→「ソフトウェアアップデート」→「ダウンロードしてインストール」",
+        "macos": "画面上部のメニューバーにある<apple>アップルメニュー</apple> →「システム設定」→「一般」→「ソフトウェアアップデート」→「今すぐアップデート」",
+        "android": "スマホの<settings>設定アプリ</settings> →「システム」→「ソフトウェア アップデート」",
+        "windows": "<windows>スタート メニュー</windows> → <settings>設定</settings> → 「Windows Update」 → 「Windows更新プログラムの確認」",
+        "watchos": "iPhoneのApple Watchアプリ → 「マイウォッチ」 → 「一般」 → 「ソフトウェアアップデート」",
+        "oneplus": "<settings>設定アプリ</settings> → 「システム」 → 「ソフトウェアアップデート」"
       },
       "osVersionPath": {
-        "ios": "ホーム画面の<settings>設定アプリ</settings> → 一般 → 情報 → iOSバージョン",
-        "ipados": "ホーム画面の<settings>設定アプリ</settings> → 一般 → 情報 → ソフトウェアバージョン",
-        "macos": "画面上部のメニューバーにある<apple>アップルメニュー</apple> → このMacについて",
-        "android": "スマホの<settings>設定アプリ</settings> → デバイス情報 → Android バージョン",
-        "windows": "Windows キー + R を押す → <code>winver</code> と入力 → Enter",
-        "watchos": "iPhoneの「Watch」App → マイウォッチ → 一般 → 情報 → バージョン"
+        "ios": "ホーム画面の<settings>「設定」</settings> →「 一般」 →「 情報」 → iOSバージョン",
+        "ipados": "ホーム画面の<settings>「設定」</settings> →「 一般」 →「 情報」 → iPadOSバージョン",
+        "macos": "画面上部のメニューバーにある<apple>アップルメニュー</apple> → 「このMacについて」",
+        "android": "<settings>設定アプリ</settings> → 「デバイス情報」 → 「Android バージョン」",
+        "windows": "Windows キー + R を押す → <code>winver</code> と入力 → Enterキーを押す",
+        "watchos": "iPhoneのApple Watchアプリ → 「マイウォッチ」 → 「一般」 → 「情報」 → 「モデル番号」"
       },
       "deviceSupportedTitle": "{label}は引き続きセキュリティアップデートを受け取れます。",
       "deviceSupportedSubtitleUntil": "<b>{date}</b>までアップデートが提供される見込みです。",
       "deviceSupportedSubtitleRecent": "サポート終了日はまだ発表されていません。",
-      "deviceUnsupportedTitle": "{label}はもうセキュリティアップデートを受け取れません。",
+      "deviceUnsupportedTitle": "{label} はもうセキュリティアップデートを受け取れません。",
       "deviceUnsupportedTitleAgoMonths": "{label}のセキュリティ<nowrap>アップデートは<mark>{months, plural, other {#か月}}前</mark>に終了しています</nowrap>。",
       "deviceUnsupportedTitleAgoYears": "{label}のセキュリティ<nowrap>アップデートは<mark>{years, plural, other {#年}}前</mark>に終了しています</nowrap>。",
       "deviceUnsupportedSubtitleEnded": "セキュリティサポートは<b>{date}</b>に終了しました。",
       "deviceUnsupportedSubtitleUnmaintained": "{manufacturer}はセキュリティアップデートの提供を終了しています。",
-      "deviceUnsupportedSubtitleAge": "発売は{age}。サポート終了日は公表されておらず、{manufacturer}もアップデートを提供していないようです。",
+      "deviceUnsupportedSubtitleAge": "発売は{age}。サポート終了日は公表されていませんが、{manufacturer}はアップデートを提供していないようです。",
       "manufacturerFallback": "メーカー",
       "manufacturerFallbackLower": "メーカー",
       "ageYearsAgo": "{years, plural, =0 {今年} =1 {1年前} other {#年前}}",
       "deviceUncertainTitle": "{label}が今後もアップデートを受け取れるかどうかは確認できません。",
-      "deviceUncertainSubtitle": "発売は{age}。{manufacturer}はサポート終了日を公表しておらず、これほど古いデバイスだと、まだアップデートが届いているかどうかはわかりません。",
+      "deviceUncertainSubtitle": "発売は{age}。{manufacturer}はサポート終了日を公表していませんが、これほど古いデバイスだと、まだアップデートが提供されているかどうかはわかりません。",
       "deviceUncertainCheck": "メーカーのサポートページを確認してください：<link></link>。",
       "manufacturerSupport": {
         "apple": {
           "label": "Apple サポート",
-          "url": "https://support.apple.com/"
+          "url": "https://support.apple.com/ja-jp"
         },
         "google": {
           "label": "Google Pixel サポート",
@@ -622,29 +622,29 @@
         }
       },
       "osConfirmedShort": "{label} は引き続きセキュリティアップデートを受け取れます。",
-      "osConfirmedShortYears": "{label} は<nowrap><mark>あと{years, plural, one {1年} other {#年}}</mark></nowrap>セキュリティアップデートを受け取れます。",
-      "osConfirmedShortMonths": "{label} は<nowrap><mark>あと{months, plural, one {1か月} other {#か月}}</mark></nowrap>セキュリティアップデートを受け取れます。",
+      "osConfirmedShortYears": "{label}は<nowrap><mark>あと{years, plural, =1 {1年} other {#年}}</mark></nowrap>セキュリティアップデートを受け取れます。",
+      "osConfirmedShortMonths": "{label} は<nowrap><mark>あと{months, plural, =1 {1か月} other {#か月}}</mark></nowrap>セキュリティアップデートを受け取れます。",
       "osConfirmedSubtitleUntil": "アップデートは <b>{date}</b> まで提供される見込みです。",
       "osEolSoon": {
-        "titleMonths": "{label} は<nowrap><mark>約{months, plural, =1 {1か月} other {#か月}}後</mark>に</nowrap>セキュリティアップデートが終了します。",
-        "titleSoon": "{label} は<nowrap><mark>まもなく</mark></nowrap>セキュリティアップデートが終了します。",
+        "titleMonths": "{label}は<nowrap><mark>約{months, plural, =1 {1か月} other {#か月}}後</mark>に</nowrap>セキュリティアップデートが終了します。",
+        "titleSoon": "{label}は<nowrap><mark>まもなく</mark></nowrap>セキュリティアップデートが終了します。",
         "subtitleDate": "アップデートは<b>{date}</b>に終了する見込みです。"
       },
-      "osEoasNote": "このバージョンは、メーカーによってセキュリティアップデートのみの提供に移行しています。都合のいいときにアップグレードを計画しましょう。",
-      "osUnsupportedTitle": "{label} はもうセキュリティアップデートを受け取れません。",
+      "osEoasNote": "このバージョンはセキュリティアップデートのみの提供に移行しています。都合のよいときにアップグレードを計画しましょう。",
+      "osUnsupportedTitle": "{label}はもうセキュリティアップデートを受け取れません。",
       "osUnsupportedSubtitleEnded": "サポートは<b>{date}</b>に終了しました。",
       "osUpgradeAdvice": {
         "ios": "最新の iOS にアップデートしましょう。",
         "ipados": "最新の iPadOS にアップデートしましょう。",
-        "macos": "より新しい macOS にアップデートしましょう。",
-        "android": "より新しい Android にアップデートしましょう。",
+        "macos": "新しい macOS にアップデートしましょう。",
+        "android": "新しい Android にアップデートしましょう。",
         "windows": "Windows 11 にアップグレードしましょう。"
       },
       "osCheckDeviceHint": "または、上のボックスにデバイスのモデル名を入力すると、まだセキュリティアップデートを受け取れるかどうかを確認できます。",
       "latestOsReminderTitle": "最新の状態になっているか確認しよう",
-      "latestOsReminderWithVersion": "{os} {version} を使っているか確認しましょう。",
-      "latestOsReminderFamilyLatest": "最新の {os}（現在は {version}）を使っているか確認しましょう。",
-      "latestOsReminderGeneric": "デバイスが完全にアップデートされているか確認しましょう。",
+      "latestOsReminderWithVersion": "{os} {version}を使っているか確認しましょう。",
+      "latestOsReminderFamilyLatest": "最新の{os}（現在は{version}）を使っているか確認しましょう。",
+      "latestOsReminderGeneric": "デバイスが完全にアップデートされているか確認しよう。",
       "supportedOsLabel": {
         "ios": "iOS",
         "ipados": "iPadOS",
@@ -652,17 +652,17 @@
         "android": "Android",
         "windows": "Windows"
       },
-      "deviceMaxOsWarningTitle": "お使いのデバイスのOSについての注意",
-      "deviceMaxOsWarning": "お使いの{label}は{os} {maxVersion}までしか対応していません。{os} {maxVersion}は、{os} {latestVersion}より先にセキュリティアップデートの提供が終わります。新しいデバイスのほうが、より長くアップデートを受け取れます。",
-      "deviceMaxOsWarningWithDate": "お使いの{label}は{os} {maxVersion}までしか対応していません。このバージョンは{eolDate}頃にセキュリティアップデートの提供が終わる見込みです。{os} {latestVersion}を実行できる新しいデバイスのほうが、より長くアップデートを受け取れます。",
-      "deviceMaxOsEolWarning": "お使いの{label}は{os} {maxVersion}までしか対応しておらず、このバージョンは公式サポートがすでに終了しています。今後もたまにアップデートが届くことはあるかもしれませんが、センシティブな作業には信頼性の低いデバイスとして扱い、買い替えを計画しましょう。",
-      "deviceUpgradePlan": "活動のために長期的なセキュリティが重要なら、ハードウェアの買い替えを計画しましょう。",
-      "threatModelHeader": "なぜこれが重要なのか",
-      "threatModel": "アップデートしないまま週を重ねるごとに、デバイスに侵入する方法が次々と世間に知られていきます。<protestLink>抗議行動</protestLink>や<borderLink>国境通過</borderLink>の際に警察にスマホを押収されたら（あるいは誰かに<spywareLink>スパイウェア</spywareLink>で狙われたら）、そうした既知の弱点を突かれて中に侵入され、すべてを読まれてしまいます。  ",
+      "deviceMaxOsWarningTitle": "デバイスのOSについてのメモ",
+      "deviceMaxOsWarning": "{label}は{os} {maxVersion}までしか対応していません。{os} {maxVersion}は、{os} {latestVersion}より先にセキュリティアップデートの提供が終わります。新しいデバイスのほうが、より長くアップデートを受け取れます。",
+      "deviceMaxOsWarningWithDate": "{label}は{os} {maxVersion}までしか対応していません。このバージョンは{eolDate}ごろにセキュリティアップデートの提供が終わる見込みです。{os} {latestVersion}を動かせる新しいデバイスのほうが、より長くアップデートを受け取れます。",
+      "deviceMaxOsEolWarning": "{label}は{os} {maxVersion}までしか対応しておらず、このバージョンは公式サポートがすでに終了しています。今後もたまにアップデートが届くことはあるかもしれませんが、センシティブな作業をするには信頼性の低いデバイスとして扱い、新しい機種への変更を計画しましょう。",
+      "deviceUpgradePlan": "活動のために長期的なセキュリティが重要なら、ハードウェアのアップグレードを計画しましょう。",
+      "threatModelHeader": "なぜこれが大事なのか",
+      "threatModel": "アップデートしないままだとどうなるか。毎週ごとにデバイスに侵入する方法が次々と公開されていきます。<protestLink>抗議行動</protestLink>や<borderLink>国境通過</borderLink>の際に警察にスマホを押収されたら（あるいは誰かに<spywareLink>スパイウェア</spywareLink>で狙われたら）、そうした既知の弱点を突かれて中に侵入され、データを全部見られてしまいます。  ",
       "threatModelSoft": "確認できるまでは、このデバイスは古いままの可能性があるものとして、センシティブな作業には使わないようにしましょう。",
-      "viewEssentialsCta": "デジタルセキュリティの基本を見る →",
+      "viewEssentialsCta": "デジタルセキュリティの基本へ →",
       "essentialsNextSteps": {
-        "title": "データとデバイスを守るための、取り組みやすいステップをもっと見る"
+        "title": "データとデバイスを守るためのわかりやすいステップへ"
       },
       "startOver": "最初からやり直す",
       "deviceInfo": {
@@ -681,12 +681,12 @@
       "eolSoon": {
         "titleMonths": "{label} は<nowrap><mark>あと約{months, plural, =1 {1か月} other {#か月}}</mark>でセキュリティアップデート</nowrap>が終了します。",
         "titleSoon": "{label} は<nowrap><mark>まもなく</mark>セキュリティアップデート</nowrap>が終了します。",
-        "subtitleDate": "アップデートは <b>{date}</b> に終了する見込みです。",
+        "subtitleDate": "アップデートは<b>{date}</b>に終了する見込みです。",
         "actionHeading": "やるべきこと",
-        "action": "今のうちに買い替えの計画を始めましょう。アップデートが止まると、デバイスには世間に知られた脆弱性がどんどんたまっていきます。"
+        "action": "新しい機種への変更を今から検討しましょう。アップデートが止まると、デバイスには既知の脆弱性がどんどんたまっていきます。"
       },
       "buyingGuidance": {
-        "heading": "買い替えるときは",
+        "heading": "機種を変更するときは",
         "yearsPattern": "ほとんどの{deviceLabel}は、発売日から{min}〜{max}年間セキュリティアップデートを受けられます。",
         "deviceLabel": {
           "phone": "スマホ",
@@ -694,27 +694,27 @@
           "tablet": "タブレット",
           "watch": "スマートウォッチ"
         },
-        "checkBeforeBuying": "中古で買う場合は、まずここでモデルを検索して、あとどのくらいアップデートが提供されるか確認しましょう。"
+        "checkBeforeBuying": "中古で買う場合は、まずここでモデルを検索して、あとどのくらいアップデートが提供されるかを確認しましょう。"
       },
       "ctaReplace": {
-        "phone": "新しいスマホへの買い替えをおすすめします。",
-        "tablet": "新しいタブレットへの買い替えをおすすめします。",
-        "laptop": "新しいノートパソコンへの買い替えをおすすめします。",
-        "desktop": "新しいMacへの買い替えをおすすめします。",
-        "watch": "新しいウォッチへの買い替えをおすすめします。",
-        "generic": "新しいデバイスへの買い替えをおすすめします。"
+        "phone": "新しいスマホの入手をおすすめします。",
+        "tablet": "新しいタブレットの入手をおすすめします。",
+        "laptop": "新しいノートパソコンの入手をおすすめします。",
+        "desktop": "新しいMacの入手をおすすめします。",
+        "watch": "新しいウォッチの入手をおすすめします。",
+        "generic": "新しいデバイスの入手をおすすめします。"
       },
       "ctaPlan": {
-        "phone": "次のスマホへの買い替えを考え始めましょう。",
-        "tablet": "次のタブレットへの買い替えを考え始めましょう。",
-        "laptop": "次のノートパソコンへの買い替えを考え始めましょう。",
-        "desktop": "次のMacへの買い替えを考え始めましょう。",
-        "watch": "次のウォッチへの買い替えを考え始めましょう。",
-        "generic": "次のデバイスへの買い替えを考え始めましょう。"
+        "phone": "次のスマホの入手を検討しはじめましょう。",
+        "tablet": "次のタブレットの入手を検討しはじめましょう。",
+        "laptop": "次のノートパソコンの入手を検討しはじめましょう。",
+        "desktop": "次のMacの入手を検討しはじめましょう。",
+        "watch": "次のウォッチの入手を検討しはじめましょう。",
+        "generic": "次のデバイスの入手を検討しはじめましょう。"
       },
-      "deviceConfirmedShort": "{label} は引き続きセキュリティアップデートを受け取れます。",
-      "deviceConfirmedShortYears": "{label} は<nowrap><mark>あと{years, plural, one {1年} other {#年}}</mark></nowrap>セキュリティアップデートを受け取れます。",
-      "deviceConfirmedShortMonths": "{label} は<nowrap><mark>あと{months, plural, one {1か月} other {#か月}}</mark></nowrap>セキュリティアップデートを受け取れます。",
+      "deviceConfirmedShort": "{label}は引き続きセキュリティアップデートを受け取れます。",
+      "deviceConfirmedShortYears": "{label}は<nowrap><mark>あと{years, plural, =1 {1年} other {#年}}</mark></nowrap>セキュリティアップデートを受け取れます。",
+      "deviceConfirmedShortMonths": "{label}は<nowrap><mark>あと{months, plural, =1 {1か月} other {#か月}}</mark></nowrap>セキュリティアップデートを受け取れます。",
       "deviceConfirmedShortApproxYears": "{label}は、<nowrap><mark>あと約{years, plural, other {#年}}</mark>間</nowrap>セキュリティアップデートを受け取れます。",
       "deviceConfirmedShortApproxMonths": "{label}は、<nowrap><mark>あと約{months, plural, other {#か月}}</mark>間</nowrap>セキュリティアップデートを受け取れます。",
       "appleEstimate": {
@@ -726,12 +726,12 @@
         "headingGeneric": "デバイスのバージョンは？",
         "headingUpdatesAvailable": "{device}に利用可能なアップデートはありますか？",
         "headingUpdatesAvailableForRelease": "{label}に利用可能なアップデートはありますか？",
-        "subheadingHelp": "デバイスで開いて確認してください：",
-        "subheadingUpdatesHelp": "デバイスでアップデートを確認してください：",
+        "subheadingHelp": "自分のデバイスで開いて確認してください：",
+        "subheadingUpdatesHelp": "自分のデバイスでアップデートを確認してください：",
         "optionLatestShort": "{version}を使っています",
         "optionLatestVersion": "{version}（最新）を使っています",
         "optionOlderShort": "{version}より古い",
-        "optionOlderVersion": "{version} より古い",
+        "optionOlderVersion": "{version}より古い",
         "optionBetweenShort": "{major}.0.0〜{previousVersion}",
         "optionThisVersion": "このバージョンを使っている",
         "optionNoUpdatesAvailable": "利用できるアップデートが表示されない",
@@ -760,7 +760,7 @@
         "noUpdatesAvailableButton": "利用できるアップデートがなく、{os} {major}より古いバージョンを使っている",
         "noUpdatesAvailableButtonCodename": "利用できるアップデートがなく、{os} {major}（{codename}）より古いバージョンを使っている"
       },
-      "deviceUnsupportedSubtitleStuckOnOs": "このデバイスでは新しいセキュリティアップデートを受け取れません。つまり、データを守るためのパッチがもう届かない状態です。",
+      "deviceUnsupportedSubtitleStuckOnOs": "このデバイスでは新しいセキュリティアップデートを受け取れません。つまり、データを守るための修正パッチがもう届かない状態です。",
       "finalSuccess": {
         "heading": "最新の状態です。",
         "deviceCheck": "{label} は引き続きセキュリティアップデートを受け取れます。",
@@ -781,70 +781,70 @@
   },
   "tools": {
     "metaTitle": "私たちが作ったツール | Activist Checklist",
-    "metaDescription": "チェックリストと一緒に使えるように作ったツール。アクション前のリスクの洗い出し、SNSのロックダウン、スマホがまだセキュリティアップデートを受け取れるかの確認ができます。",
+    "metaDescription": "チェックリストと一緒に使えるように作ったツール。行動前のリスクの洗い出し、ソーシャルメディアへの鍵のかけ方、スマホがまだセキュリティアップデートを受け取れるかの確認ができます。",
     "documentTitle": "私たちが作ったツール | Activist Checklist",
     "title": "私たちが作ったツール",
     "intro": "チェックリストと一緒に使えるように作った4つのツール。どれも、文章の説明だけではやり遂げにくいステップをサポートします。",
     "items": {
       "riskMapper": {
-        "eyebrow": "アクションを計画する",
+        "eyebrow": "行動を計画する",
         "name": "Risk Mapper",
         "short": "活動に潜むリスクと、取れる対策を洗い出す。",
-        "lede": "アクションの前に、起こりうるトラブルを洗い出し、グループとしてどう対処するかを決めましょう。",
+        "lede": "行動の前に、起こりうる問題を洗い出し、グループとしてどう対処するかを決めよう。",
         "bullet1": "まず全員が、気になっているリスクを書き出します。次に、それぞれをグリッド上にドラッグ。どのくらい起こりやすいか、起きたらどのくらい深刻か？",
-        "bullet2": "右上に来たリスクについては、2つのことを書き出します。起こりにくくする方法と、それでも起きてしまった場合に被害を抑える方法です。",
+        "bullet2": "右上に来たリスクについては、二つのことを書き出そう。起こりにくくする方法と、それでも起きてしまった場合に被害を抑える方法です。",
         "bullet3": "エンドツーエンド暗号化されたリンクでグループに共有したり、ミーティングに参加できなかった人向けにPDFで書き出したりできます。",
         "cta": "Risk Mapperを開く",
         "shotAlt": "使用中のRisk Mapper。起こりやすさと深刻さのグリッド上にリスクが配置されている。"
       },
       "socialScrub": {
-        "eyebrow": "プロフィールをロックダウンする",
+        "eyebrow": "プロフィールに鍵をかける。",
         "name": "Social Scrub",
-        "short": "SNSアカウントを1つずつロックダウンする。",
-        "lede": "持っているすべてのSNSアカウントで、同じ8つのプライバシー対策を順番に案内します。",
-        "bullet1": "130のサイトのリストから、使っているプラットフォームを選びましょう。忘れていたものも見つかるはず。リストにないものは追加できます。",
-        "bullet2": "各アカウントについて：削除するか残すかを決め、表示名とユーザー名を変更し、写真を削除し、自己紹介から居住地と勤務先を消し、プライバシー設定をロックダウンします。",
+        "short": "ソーシャルメディアアカウントに一つずつ鍵をかける。",
+        "lede": "アカウントを持っているすべてのソーシャルメディアで、同じ八つのプライバシー対策を案内します。",
+        "bullet1": "130のサイトのリストから、使っているプラットフォームを選ぼう。忘れていたものも見つかるはず。リストにないものは追加できます。",
+        "bullet2": "各アカウントについて。削除するか残すかを決め、表示名とユーザー名を変更し、写真を削除し、自己紹介から居住地と勤務先を消し、プライバシー設定に鍵をかけます。",
         "bullet3": "どこまで進んだかを記憶するので、数アカウントずつ進められます。",
         "cta": "Social Scrubを開く",
         "secondaryCta": "ドクシング対策ガイド",
-        "shotAlt": "スクラブ前と後のサンプルプロフィール。名前、写真、ユーザー名、自己紹介、友達リスト、居住地がすべて変更または非表示になっている。"
+        "shotAlt": "鍵かけ前と後のサンプルプロフィール。名前、写真、ユーザー名、自己紹介、友達リスト、居住地がすべて変更または非表示になっている。"
       },
       "updates": {
         "eyebrow": "デバイスをチェックする",
         "name": "セキュリティアップデートチェッカー",
         "short": "スマホがまだセキュリティアップデートを受け取れるか確認する。",
-        "lede": "スマホ、タブレット、ノートパソコンがまだセキュリティアップデートを受け取れているかを確認しましょう。",
-        "bullet1": "機種名を入力してください。わからない場合は、設定のどこで確認できるかをページで案内します。",
-        "bullet2": "デバイスへのアップデートが止まると、新しく見つかったセキュリティホールはずっと放置されたままになります。そうなると、スパイウェアやハッカー、警察のフォレンジックツールにずっと侵入されやすくなります。",
-        "bullet3": "Apple、Google、Samsung、Motorola、OnePlus、Nokiaのデバイスに加え、iOS、Android、macOS、Windowsに対応しています。",
+        "lede": "スマホ、タブレット、ノートパソコンがまだセキュリティアップデートを受け取れているかを確認しよう。",
+        "bullet1": "機種名を入力してください。わからない場合は、設定のどこで確認できるかを案内します。",
+        "bullet2": "デバイスへのアップデートが止まると、セキュリティホールが新しく見つかってもそのままになってしまいます。そうなると、スパイウェアやハッカー、警察のフォレンジックツールにより侵入されやすくなります。",
+        "bullet3": "Apple、Google、Samsung、Motorola、OnePlus、Nokiaのデバイスと、iOS、Android、macOS、Windowsに対応しています。",
         "cta": "自分のデバイスをチェック",
-        "shotAlt": "検索したスマホのセキュリティアップデートが終了していることを示すアップデートチェッカーの画面と、その対処法のアドバイス。"
+        "shotAlt": "アップデートチェッカーの画面。検索したスマホのセキュリティアップデートが終了していることと、対処法のアドバイスが表示されている。"
       },
       "autoDelete": {
         "eyebrow": "古いAIチャットを削除",
-        "name": "AIチャット自動削除",
-        "short": "古いClaudeのチャットを定期的に削除します。",
-        "lede": "古いClaudeの会話を、自分で決めたスケジュールで削除してくれるChrome拡張機能です。",
-        "bullet1": "どのくらいの期間残しておくかは自分で選べます。デフォルトでは30日より古いものが削除されます。",
-        "bullet2": "残しておきたいチャットにスターを付ければ、削除されません。削除前に確認させることも、自動で実行させることもできます。",
-        "bullet3": "記録するのは削除したチャットの数だけで、どのチャットを削除したかは記録しません。私たちには何も送信されません。",
+        "name": "AI chat auto-delete",
+        "short": "古いClaudeのチャットを定期的に削除。",
+        "lede": "古いClaudeとの会話を、自分で決めたスケジュールで削除してくれるChrome拡張機能。",
+        "bullet1": "どのくらいの期間残しておくかは自分で選べます。デフォルトでは30日。",
+        "bullet2": "残しておきたいチャットにはスターを付けて。削除前に確認させることも、自動実行も可能。",
+        "bullet3": "記録するのは削除したチャットの数だけ。どのチャットを削除したかは記録しません。外部には何も送信されません。",
         "cta": "Chromeに追加",
-        "shotAlt": "30日より古いチャットを毎週削除するよう設定された拡張機能と、削除待ちのチャットがあるときにclaude.aiに表示されるバー。"
+        "shotAlt": "この拡張機能は30日より古いチャットを毎週削除し、削除待ちのチャットがあるときにはclaude.aiにバーを表示します。"
       }
     },
     "closing": {
       "title": "どれが必要かわからない？",
-      "body": "どのツールも、私たちのチェックリストのどれかから生まれたものです。まずはチェックリストから始めてみてください。該当するステップまで進めば、そのツールを案内します。",
+      "body": "どのツールもチェックリストの中から生まれました。まずはチェックリストを始めてみてください。該当するステップまで進んだらツールを紹介します。",
       "primaryCta": "デジタルセキュリティの基本",
       "secondaryCta": "ドクシング対策チェックリスト",
-      "openSource": "四つとも<repos>オープンソース</repos>です。うまく動かないものがあったり、まだ作っていないツールが必要だったりしたら、<contact>ぜひ教えてください</contact>。"
+      "openSource": "四つとも<repos>オープンソース</repos>です。うまく動かないものがあったり、必要な新しいツールがあれば<contact>ぜひ教えてください</contact>。"
     }
   },
   "terms": {
     "metaTitle": "用語集 | Activist Checklist",
-    "metaDescription": "ドクシングやデータブローカーから、スティングレイやジオフェンス令状まで、アクティビストが出会うデジタルセキュリティと監視に関する用語を、わかりやすい言葉で解説します。",
+    "metaDescription": "アクティビストに関わるデジタルセキュリティと監視に関する用語を、わかりやすい言葉で解説します。ドクシング、データブローカーから、スティングレイ・Imsiキャッチャー、ジオフェンス令状まで。",
     "title": "用語集",
-    "intro": "チェックリストやガイドで使われているセキュリティと監視に関する用語を、わかりやすい言葉で解説しています。サイト内で点線の下線が付いている用語をクリックすると、ポップアップでこの解説が表示されます。",
+    "intro": "チェックリストやガイドで使われているセキュリティと監視に関する用語を、わかりやすい言葉で解説。サイト内で点線の下線が付いている用語をクリックすると、ポップアップでこの解説が表示されます。",
     "copyLink": "この用語へのリンクをコピー"
   },
   "definitions": {
@@ -852,20 +852,20 @@
     "backAriaLabel": "{term}に戻る",
     "learnMore": "詳しくはこちら：<link>{source}</link>",
     "doxxing": {
-      "term": "ドクシング（Doxxing／Doxing）",
-      "definition": "誰かがあなたの本名、自宅の住所、電話番号、勤務先などの個人情報を公開し、他の人がネット上で（ときには直接）あなたに嫌がらせをしたり脅したりできるようにすること。アクティビストに対して使われることがますます増えている手口です。",
+      "term": "ドクシング（Doxxing／Doxing／晒し）",
+      "definition": "本名、自宅の住所、電話番号、勤務先などの個人情報を勝手に公開し、他の人がネット上で（ときには直接）嫌がらせをしたり脅したりできるようにすること。アクティビストに対して使われることがますます増えている手口。",
       "source": "ドクシング対策チェックリスト",
       "url": "/doxxing/"
     },
     "data-broker": {
       "term": "データブローカー",
-      "definition": "住所、電話番号、親族といった個人情報を公的記録などから集めて販売する企業。警察やストーカー、あなたを[ドクシング](term:doxxing)しようとする人たちも、このデータを買うことができます。",
+      "definition": "住所、電話番号、親族といった個人情報を公的記録などから集めて販売する企業。警察やストーカー、[ドクシング](term:doxxing)しようとする人たちはこのデータを買うことが可能。",
       "source": "ドクシング対策チェックリスト",
       "url": "/doxxing/"
     },
     "people-search-sites": {
       "term": "人物検索サイト",
-      "definition": "個人情報（住所、電話番号、親族など）を集めて、お金を払う人なら誰にでも売るウェブサイト。警察やストーカー、あなたを[ドクシング](term:doxxing)しようとする人たちも、このデータを買うことができます。",
+      "definition": "個人情報（住所、電話番号、親族など）を集め、誰にでも売るウェブサイト。警察やストーカー、[ドクシング](term:doxxing)しようとする人たちもこのデータを買うことが可能。",
       "source": "ドクシング対策チェックリスト",
       "url": "/doxxing/"
     },
@@ -1018,8 +1018,8 @@
       "definition": "どちらも、企業にあなたのデータを提出させることができる法的な命令です。令状（warrant）は、犯罪の相当な理由（probable cause）があると認めた裁判官の署名が必要で、警察があなたの家やスマホを捜索することも可能になります。召喚状（subpoena）の多くは裁判官をまったく必要としませんが、捜査側が入手できる情報は令状ほど多くありません。ICEは、裁判官ではなくICE職員が署名した「行政令状（administrative warrant）」をよく使います。行政令状では、あなたの許可なく家に入る権利は認められていません。"
     },
     "jail-support": {
-      "term": "ジェイルサポート（拘置所サポート）",
-      "definition": "逮捕の可能性があるアクションや抗議行動でのサポート役。アクションの最中と終了後に、逮捕された人をサポートします。誰が逮捕されたかを把握し、弁護士と連絡を取り合い、拘置所の外で待機し、釈放されたら本人のスマホや食べ物を届け、家まで送ります。"
+      "term": "警察施設・監獄サポート",
+      "definition": "逮捕の可能性があるアクションや抗議行動でのサポート役。行動の最中と終了後に、逮捕された人をサポートします。誰が逮捕されたかを把握し、弁護士と連絡を取り、警察施設の外で待機し、釈放されたら本人のスマホや食べ物を届け、家まで送ります。"
     }
   }
 }
