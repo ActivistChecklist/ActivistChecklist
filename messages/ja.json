@@ -781,10 +781,10 @@
   },
   "tools": {
     "metaTitle": "私たちが作ったツール | Activist Checklist",
-    "metaDescription": "チェックリストと一緒に使えるように作ったツール。行動前のリスクの洗い出し、ソーシャルメディアへの鍵のかけ方、スマホがまだセキュリティアップデートを受け取れるかの確認ができます。",
+    "metaDescription": "Tools we built to go with our checklists: map your risks before an action, check if your phone still gets security updates, and clear out old AI chats.",
     "documentTitle": "私たちが作ったツール | Activist Checklist",
     "title": "私たちが作ったツール",
-    "intro": "チェックリストと一緒に使えるように作った4つのツール。どれも、文章の説明だけではやり遂げにくいステップをサポートします。",
+    "intro": "Three tools we built to go along with the checklists. Each one covers a step that is hard to finish from written instructions alone.",
     "items": {
       "riskMapper": {
         "eyebrow": "行動を計画する",
@@ -796,18 +796,6 @@
         "bullet3": "エンドツーエンド暗号化されたリンクでグループに共有したり、ミーティングに参加できなかった人向けにPDFで書き出したりできます。",
         "cta": "Risk Mapperを開く",
         "shotAlt": "使用中のRisk Mapper。起こりやすさと深刻さのグリッド上にリスクが配置されている。"
-      },
-      "socialScrub": {
-        "eyebrow": "プロフィールに鍵をかける。",
-        "name": "Social Scrub",
-        "short": "ソーシャルメディアアカウントに一つずつ鍵をかける。",
-        "lede": "アカウントを持っているすべてのソーシャルメディアで、同じ八つのプライバシー対策を案内します。",
-        "bullet1": "130のサイトのリストから、使っているプラットフォームを選ぼう。忘れていたものも見つかるはず。リストにないものは追加できます。",
-        "bullet2": "各アカウントについて。削除するか残すかを決め、表示名とユーザー名を変更し、写真を削除し、自己紹介から居住地と勤務先を消し、プライバシー設定に鍵をかけます。",
-        "bullet3": "どこまで進んだかを記憶するので、数アカウントずつ進められます。",
-        "cta": "Social Scrubを開く",
-        "secondaryCta": "ドクシング対策ガイド",
-        "shotAlt": "鍵かけ前と後のサンプルプロフィール。名前、写真、ユーザー名、自己紹介、友達リスト、居住地がすべて変更または非表示になっている。"
       },
       "updates": {
         "eyebrow": "デバイスをチェックする",
@@ -837,7 +825,7 @@
       "body": "どのツールもチェックリストの中から生まれました。まずはチェックリストを始めてみてください。該当するステップまで進んだらツールを紹介します。",
       "primaryCta": "デジタルセキュリティの基本",
       "secondaryCta": "ドクシング対策チェックリスト",
-      "openSource": "四つとも<repos>オープンソース</repos>です。うまく動かないものがあったり、必要な新しいツールがあれば<contact>ぜひ教えてください</contact>。"
+      "openSource": "All three are <repos>open source</repos>. If one is broken, or you need something we have not built yet, <contact>let us know</contact>."
     }
   },
   "terms": {
