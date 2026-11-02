@@ -781,10 +781,10 @@
   },
   "tools": {
     "metaTitle": "Herramientas que hicimos | Activist Checklist",
-    "metaDescription": "Herramientas que creamos para acompañar nuestras listas: mapear riesgos antes de una acción, blindar tus redes sociales y revisar si tu teléfono sigue recibiendo actualizaciones de seguridad.",
+    "metaDescription": "Herramientas que creamos para acompañar nuestras listas de verificación: mapea tus riesgos antes de una acción, revisa si tu teléfono todavía recibe actualizaciones de seguridad y borra tus chats viejos con IA.",
     "documentTitle": "Herramientas que creamos | Activist Checklist",
     "title": "Herramientas que creamos",
-    "intro": "Cuatro herramientas que creamos para acompañar las listas. Cada una cubre un paso que cuesta terminar solo con instrucciones escritas.",
+    "intro": "Tres herramientas que creamos para acompañar las listas de verificación. Cada una te ayuda con un paso que cuesta completar solo con instrucciones escritas.",
     "items": {
       "riskMapper": {
         "eyebrow": "Planifica una acción",
@@ -796,18 +796,6 @@
         "bullet3": "Compártelo con tu grupo por un enlace cifrado de extremo a extremo, o exporta un PDF para las personas que no estuvieron en la reunión.",
         "cta": "Abrir Risk Mapper",
         "shotAlt": "Risk Mapper a mitad de sesión, con riesgos ubicados en una cuadrícula de qué tan probables son y qué tan graves serían."
-      },
-      "socialScrub": {
-        "eyebrow": "Blinda tus perfiles",
-        "name": "Social Scrub",
-        "short": "Blinda tus cuentas de redes sociales, una a la vez.",
-        "lede": "Te guía por los mismos ocho pasos de privacidad en cada cuenta de red social que tengas.",
-        "bullet1": "Elige tus plataformas de una lista de 130 sitios, incluidos los que olvidaste. Agrega cualquiera que nos haya faltado.",
-        "bullet2": "Para cada cuenta: bórrala o déjala, cambia tu nombre visible y nombre de usuario, quita tu foto, saca tu ubicación y empleador de la bio, y blinda tus ajustes de privacidad.",
-        "bullet3": "Recuerda dónde quedaste, así puedes hacer unas cuantas cuentas por vez.",
-        "cta": "Abrir Social Scrub",
-        "secondaryCta": "Guía de defensa contra doxxing",
-        "shotAlt": "Un perfil de ejemplo antes y después de un scrub. El nombre, foto, nombre de usuario, bio, lista de amistades y ubicación están cambiados u ocultos."
       },
       "updates": {
         "eyebrow": "Verifica tu dispositivo",
@@ -837,7 +825,7 @@
       "body": "Cada una sale de alguna de nuestras listas. Empieza por la lista y te llevará a la herramienta cuando llegues a ese paso.",
       "primaryCta": "Fundamentos de seguridad digital",
       "secondaryCta": "Lista de defensa contra doxxing",
-      "openSource": "Las cuatro son <repos>open source</repos>. Si alguna no funciona, o necesitas algo que todavía no hemos creado, <contact>avísanos</contact>."
+      "openSource": "Las tres son de <repos>código abierto</repos>. Si alguna no funciona, o necesitas algo que todavía no hemos creado, <contact>avísanos</contact>."
     }
   },
   "terms": {
