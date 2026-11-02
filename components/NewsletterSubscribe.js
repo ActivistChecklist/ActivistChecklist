@@ -7,6 +7,7 @@ import { Loader2 } from 'lucide-react';
 import { Alert } from '@/components/ui/alert';
 import { useTranslations } from 'next-intl';
 import { useAnalytics } from '@/hooks/use-analytics';
+import { markNewsletterPromptDone } from '@/lib/newsletter-prompt';
 
 /**
  * @param {string} context - where the subscribe form is rendered (e.g. 'footer',
@@ -35,6 +36,7 @@ export function useNewsletterSubscribe(context = 'unknown') {
 
       if (result.success) {
         setStatus('success');
+        markNewsletterPromptDone();
         trackEvent({
           name: 'newsletter_subscribed',
           data: { context },
@@ -90,7 +92,7 @@ export function NewsletterSubscribeForm({ onSuccess, context = 'form' }) {
       )}
 
       {showForm && (
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form method="post" onSubmit={handleSubmit} className="space-y-4">
           <div className="flex gap-2">
             <Input
               type="email"
@@ -146,7 +148,7 @@ export function CompactNewsletterSubscribe({ context = 'footer' } = {}) {
       )}
 
       {showForm && (
-        <form onSubmit={handleSubmit} className="flex gap-2">
+        <form method="post" onSubmit={handleSubmit} className="flex gap-2">
           <Input
             type="email"
             name="email"
