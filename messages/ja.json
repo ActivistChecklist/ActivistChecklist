@@ -179,7 +179,7 @@
     "dontCareDescription": "大規模監視はすべての人に影響します。自分のデータが、コミュニティのプロファイリングや抗議行動の予測、自分の大切な人たちを標的にするために使われるかもしれません。自分の通信を守ることは、私たちみんなを守ることにつながります。"
   },
   "featured": {
-    "sectionTitle": "掲載先"
+    "sectionTitle": "Sites that have shared our guides"
   },
   "homepage": {
     "browseAll": "チェックリストをすべて見る",
@@ -263,7 +263,8 @@
     "description": "ICE、警察、そして企業による監視は、次々と新しいツールを取り入れています。私たちもそれに追いつくため、ガイドを更新し続けています。重要な変化があったときに知らせを受け取るには、登録してください。",
     "buttonText": "登録する",
     "emailAriaLabel": "メールアドレス",
-    "privacyLink": "プライバシーポリシー"
+    "privacyLink": "プライバシーポリシー",
+    "dismissLabel": "Don't show this again"
   },
   "common": {
     "loading": "読み込み中...",
