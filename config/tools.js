@@ -1,4 +1,4 @@
-import { LayoutGrid, Smartphone, Trash2, UserX } from 'lucide-react';
+import { LayoutGrid, Smartphone, Trash2 } from 'lucide-react';
 
 /**
  * The tools we build alongside the checklists, in the order they appear on
@@ -6,12 +6,9 @@ import { LayoutGrid, Smartphone, Trash2, UserX } from 'lucide-react';
  * apart on names, links or order.
  *
  * Copy lives in messages/en.json under `tools.items.<key>`. `accent` colors the
- * icon only: on the alternating `bg-muted` panels on /tools/, primary and
- * success both land near 4.1:1, which passes the 3:1 graphics threshold but
- * fails for small colored text.
- *
- * `secondaryHref` is optional. Only Social Scrub has one, because the doxxing
- * checklist is the thing you actually want to read alongside it.
+ * icon only: on the alternating `bg-muted` panels on /tools/, primary lands
+ * near 4.1:1, which passes the 3:1 graphics threshold but fails for small
+ * colored text.
  */
 export const TOOLS = [
   {
@@ -21,15 +18,6 @@ export const TOOLS = [
     accent: 'text-primary',
     href: 'https://riskmapper.app',
     shotUrl: 'riskmapper.app',
-  },
-  {
-    key: 'socialScrub',
-    id: 'social-scrub',
-    icon: UserX,
-    accent: 'text-success',
-    href: 'https://socialscrub.app',
-    secondaryHref: '/doxxing/',
-    shotUrl: 'socialscrub.app',
   },
   {
     key: 'updates',
