@@ -144,7 +144,7 @@ export default function HomePageContent({
             </div>
           </section>
 
-          {/* Featured In - orgs that have linked to us */}
+          {/* Sites that have shared our guides */}
           <section className="mb-16">
             <h2 className="text-2xl font-bold mb-6">{t('featured.sectionTitle')}</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
