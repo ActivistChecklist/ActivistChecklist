@@ -179,7 +179,7 @@
     "dontCareDescription": "La sorveglianza di massa colpisce tuttə. I tuoi dati possono servire a schedare intere comunità, prevedere proteste o prendere di mira le persone a cui tieni. Proteggere le tue comunicazioni aiuta a proteggere tuttə noi."
   },
   "featured": {
-    "sectionTitle": "Parlano di noi"
+    "sectionTitle": "Siti che hanno condiviso le nostre guide"
   },
   "homepage": {
     "browseAll": "Vedi tutte le checklist",
@@ -263,7 +263,8 @@
     "description": "L'ICE, gli sbirri e la sorveglianza aziendale aggiungono continuamente nuovi strumenti. Noi aggiorniamo queste guide per stare al passo. Iscriviti per sapere quando cambia qualcosa di importante.",
     "buttonText": "Iscriviti",
     "emailAriaLabel": "Indirizzo email",
-    "privacyLink": "Informativa sulla privacy"
+    "privacyLink": "Informativa sulla privacy",
+    "dismissLabel": "Non mostrarlo più"
   },
   "common": {
     "loading": "Caricamento...",
