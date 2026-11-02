@@ -3155,8 +3155,8 @@ packages:
     peerDependencies:
       react: ^15.0.2 || ^16.0.0 || ^17.0.0
 
-  follow-redirects@1.16.1:
-    resolution: {integrity: sha512-FNvFGzoMLWmE6Yj9spb/zjd7yiNCHiAW9/Tg9CXrQ8wuu32HtlJOwWO11OJafl5FfY3DxTdQ0vj42zU1kvv5jg==}
+  follow-redirects@1.16.2:
+    resolution: {integrity: sha512-/kVP2U8z596Ia0gwFrwyIeo74ta5aVmSeU1FfAUMAmcEP5EP7zydmag3SLiN64NaRKef3lxsq7i/g7ltJQDGow==}
     engines: {node: '>=4.0'}
     peerDependencies:
       debug: '*'
@@ -7409,7 +7409,7 @@ snapshots:
 
   extrareqp2@1.0.0(debug@4.3.7(supports-color@10.2.2)):
     dependencies:
-      follow-redirects: 1.16.1(debug@4.3.7(supports-color@10.2.2))
+      follow-redirects: 1.16.2(debug@4.3.7(supports-color@10.2.2))
     transitivePeerDependencies:
       - debug
 
@@ -7553,7 +7553,7 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  follow-redirects@1.16.1(debug@4.3.7(supports-color@10.2.2)):
+  follow-redirects@1.16.2(debug@4.3.7(supports-color@10.2.2)):
     optionalDependencies:
       debug: 4.3.7(supports-color@10.2.2)
 
@@ -7724,7 +7724,7 @@ snapshots:
   http-proxy@1.18.1(debug@4.3.7(supports-color@10.2.2)):
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.16.1(debug@4.3.7(supports-color@10.2.2))
+      follow-redirects: 1.16.2(debug@4.3.7(supports-color@10.2.2))
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
