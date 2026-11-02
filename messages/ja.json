@@ -865,13 +865,13 @@
     },
     "people-search-sites": {
       "term": "人物検索サイト",
-      "definition": "個人情報（住所、電話番号、親族など）を集め、誰にでも売るウェブサイト。警察やストーカー、[ドクシング](term:doxxing)しようとする人たちもこのデータを買うことが可能。",
+      "definition": "個人情報（住所、電話番号、親族についてなど）を集め、誰にでも売るウェブサイト。警察やストーカー、[ドクシング](term:doxxing)しようとする人たちもこのデータを買うことが可能。",
       "source": "ドクシング対策チェックリスト",
       "url": "/doxxing/"
     },
     "encryption": {
       "term": "暗号化",
-      "definition": "パスワードやパスコードなど、正しい鍵を持つ人だけが読めるように情報を変換すること。それ以外の人には、暗号化されたデータは意味のない読めない文字列にしか見えません。",
+      "definition": "パスワードやパスコードなど、鍵を持つ人だけが読めるように情報をスクランブルすること。それ以外の人には、暗号化されたデータはランダムで判読不能な文字列にしか見えない。",
       "source": "EFF Surveillance Self-Defense",
       "url": "https://ssd.eff.org/module/what-should-i-know-about-encryption"
     },
