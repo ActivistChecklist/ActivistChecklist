@@ -179,7 +179,7 @@
     "dontCareDescription": "La surveillance de masse touche tout le monde. Tes données peuvent servir à ficher des communautés, anticiper des manifs ou cibler tes proches. Protéger tes communications, c'est nous protéger tou·tes."
   },
   "featured": {
-    "sectionTitle": "Ils parlent de nous"
+    "sectionTitle": "Sites qui ont partagé nos guides"
   },
   "homepage": {
     "browseAll": "Voir toutes les checklists",
@@ -263,7 +263,8 @@
     "description": "L'ICE, les flics et la surveillance des entreprises ajoutent sans cesse de nouveaux outils. On met à jour ces guides pour suivre le rythme. Abonne-toi pour être prévenu·e quand quelque chose d'important change.",
     "buttonText": "S'abonner",
     "emailAriaLabel": "Adresse e-mail",
-    "privacyLink": "Politique de confidentialité"
+    "privacyLink": "Politique de confidentialité",
+    "dismissLabel": "Ne plus afficher"
   },
   "common": {
     "loading": "Chargement...",
