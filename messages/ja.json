@@ -179,7 +179,7 @@
     "dontCareDescription": "大規模監視はすべての人に影響します。自分のデータが、コミュニティのプロファイリングや抗議行動の予測、自分の大切な人たちを標的にするために使われるかもしれません。自分の通信を守ることは、私たちみんなを守ることにつながります。"
   },
   "featured": {
-    "sectionTitle": "Sites that have shared our guides"
+    "sectionTitle": "このガイドをシェアしてくれたサイト"
   },
   "homepage": {
     "browseAll": "チェックリストをすべて見る",
@@ -264,7 +264,7 @@
     "buttonText": "登録する",
     "emailAriaLabel": "メールアドレス",
     "privacyLink": "プライバシーポリシー",
-    "dismissLabel": "Don't show this again"
+    "dismissLabel": "今後表示しない"
   },
   "common": {
     "loading": "読み込み中...",
@@ -782,10 +782,10 @@
   },
   "tools": {
     "metaTitle": "私たちが作ったツール | Activist Checklist",
-    "metaDescription": "Tools we built to go with our checklists: map your risks before an action, check if your phone still gets security updates, and clear out old AI chats.",
+    "metaDescription": "チェックリストと一緒に使うために作ったツール。行動の前にリスクを洗い出し、スマホがセキュリティアップデートを受け取れているか確認し、古いAIチャットを消去しよう。",
     "documentTitle": "私たちが作ったツール | Activist Checklist",
     "title": "私たちが作ったツール",
-    "intro": "Three tools we built to go along with the checklists. Each one covers a step that is hard to finish from written instructions alone.",
+    "intro": "チェックリストと一緒に使えるように作った三つのツール。文章の説明だけではやり遂げにくいステップをサポート。",
     "items": {
       "riskMapper": {
         "eyebrow": "行動を計画する",
@@ -826,7 +826,7 @@
       "body": "どのツールもチェックリストの中から生まれました。まずはチェックリストを始めてみてください。該当するステップまで進んだらツールを紹介します。",
       "primaryCta": "デジタルセキュリティの基本",
       "secondaryCta": "ドクシング対策チェックリスト",
-      "openSource": "All three are <repos>open source</repos>. If one is broken, or you need something we have not built yet, <contact>let us know</contact>."
+      "openSource": "三つとも<repos>オープンソース</repos>のツール。うまく動かないものがあったり、必要な新しいツールがあれば<contact>ぜひ教えてもらえれば</contact>。"
     }
   },
   "terms": {
