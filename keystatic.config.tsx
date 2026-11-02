@@ -347,6 +347,11 @@ const checklistItemComponent = block({
         'Show this item already expanded on page load (useful when it is the only item on a page).',
       defaultValue: false,
     }),
+    important: fields.checkbox({
+      label: 'Important',
+      description: 'Show the Important badge before the title on this page.',
+      defaultValue: false,
+    }),
   },
   ContentView(props) {
     return (
@@ -362,7 +367,7 @@ const checklistItemComponent = block({
           background: '#fff',
         }}
       >
-        <ChecklistItemEditorPreview slug={props.value.slug} />
+        <ChecklistItemEditorPreview slug={props.value.slug} important={props.value.important} />
       </div>
     );
   },
@@ -629,10 +634,6 @@ export default config({
         preview: fields.markdoc.inline({ label: 'Preview text', multiline: true }),
         do: fields.markdoc.inline({ label: '✅ DO:' }),
         dont: fields.markdoc.inline({ label: "❌ DON'T:" }),
-        titleBadges: fields.multiselect({
-          label: 'Title Badges',
-          options: [{ label: 'Important', value: 'important' }],
-        }),
         firstPublished: fields.date({ label: 'First Published' }),
         lastUpdated: fields.date({ label: 'Last Updated' }),
         body: fields.mdx({

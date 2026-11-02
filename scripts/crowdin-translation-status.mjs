@@ -229,7 +229,7 @@ async function fetchAllFileProgress(languageIdForApi) {
 
 function extractChecklistItemSlugs(mdxContent) {
   const refs = [];
-  const regex = /<ChecklistItem\s+slug=["']([^"']+)["']\s*\/?>/g;
+  const regex = /<ChecklistItem\b[^>]*?\bslug=["']([^"']+)["'][^>]*?\/?>/g;
   let match;
   while ((match = regex.exec(mdxContent)) !== null) {
     refs.push(match[1]);

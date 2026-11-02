@@ -26,7 +26,7 @@ function normalizeSlug(value) {
   return String(value);
 }
 
-export default function ChecklistItemEditorPreview({ slug: slugProp }) {
+export default function ChecklistItemEditorPreview({ slug: slugProp, important = false }) {
   const slug = normalizeSlug(slugProp);
   const [state, setState] = useState({ status: 'idle', data: null, error: null });
   const editHref = useKeystaticCollectionItemEditHref(KEYSTATIC_COLLECTION_CHECKLIST_ITEMS, slug);
@@ -110,7 +110,7 @@ export default function ChecklistItemEditorPreview({ slug: slugProp }) {
           why={fm.preview ?? fm.why}
           tools={fm.do ?? fm.tools}
           stop={fm.dont ?? fm.stop}
-          titleBadges={fm.titleBadges ?? fm.title_badges ?? []}
+          important={important}
           serializedBody={serializedBody}
           bodyComponents={checklistItemBodyComponents}
           expandTrigger={null}
