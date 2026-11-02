@@ -781,10 +781,10 @@
   },
   "tools": {
     "metaTitle": "Tools we built | Activist Checklist",
-    "metaDescription": "Tools we built to go with our checklists: map your risks before an action, lock down your social media, and check if your phone still gets security updates.",
+    "metaDescription": "Tools we built to go with our checklists: map your risks before an action, check if your phone still gets security updates, and clear out old AI chats.",
     "documentTitle": "Tools we built | Activist Checklist",
     "title": "Tools we built",
-    "intro": "Four tools we built to go along with the checklists. Each one covers a step that is hard to finish from written instructions alone.",
+    "intro": "Three tools we built to go along with the checklists. Each one covers a step that is hard to finish from written instructions alone.",
     "items": {
       "riskMapper": {
         "eyebrow": "Plan an action",
@@ -796,18 +796,6 @@
         "bullet3": "Share it with your group over an end-to-end encrypted link, or export a PDF for the people who were not at the meeting.",
         "cta": "Open Risk Mapper",
         "shotAlt": "Risk Mapper mid-session, with risks placed on a grid of how likely they are and how bad they would be."
-      },
-      "socialScrub": {
-        "eyebrow": "Lock down your profiles",
-        "name": "Social Scrub",
-        "short": "Lock down your social media accounts, one at a time.",
-        "lede": "Walks you through the same eight privacy steps on every social media account you have.",
-        "bullet1": "Pick your platforms from a list of 130 sites, including the ones you forgot about. Add any we missed.",
-        "bullet2": "For each account: delete it or keep it, change your display name and username, remove your photo, take your location and employer out of your bio, and lock down your privacy settings.",
-        "bullet3": "It remembers where you left off, so you can do a few accounts at a time.",
-        "cta": "Open Social Scrub",
-        "secondaryCta": "Doxxing defense guide",
-        "shotAlt": "A sample profile before and after a scrub. The name, photo, username, bio, friends list and location are all changed or hidden."
       },
       "updates": {
         "eyebrow": "Check your device",
@@ -837,7 +825,7 @@
       "body": "Each of these comes out of one of our checklists. Start with the checklist and it will point you to the tool when you get to that step.",
       "primaryCta": "Digital Security Essentials",
       "secondaryCta": "Doxxing Defense Checklist",
-      "openSource": "All four are <repos>open source</repos>. If one is broken, or you need something we have not built yet, <contact>let us know</contact>."
+      "openSource": "All three are <repos>open source</repos>. If one is broken, or you need something we have not built yet, <contact>let us know</contact>."
     }
   },
   "terms": {

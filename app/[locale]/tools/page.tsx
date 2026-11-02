@@ -7,7 +7,6 @@ import Link from '@/components/Link';
 import { Button } from '@/components/ui/button';
 import BrowserFrame from '@/components/tools/BrowserFrame';
 import RiskMapperShot from '@/components/tools/RiskMapperShot';
-import SocialScrubShot from '@/components/tools/SocialScrubShot';
 import UpdateCheckerShot from '@/components/tools/UpdateCheckerShot';
 import AutoDeleteShot from '@/components/tools/AutoDeleteShot';
 import { DEFAULT_LOCALE } from '@/lib/i18n-config';
@@ -19,7 +18,6 @@ import { cn } from '@/lib/utils';
 /** Each tool's illustration. Everything else about them lives in config/tools. */
 const SHOTS = {
   riskMapper: RiskMapperShot,
-  socialScrub: SocialScrubShot,
   updates: UpdateCheckerShot,
   autoDelete: AutoDeleteShot,
 };
@@ -63,7 +61,7 @@ export async function generateMetadata({ params }) {
 }
 
 function ToolRow({ tool, tinted, reversed, t }) {
-  const { key, id, icon: Icon, accent, href, secondaryHref, shotUrl } = tool;
+  const { key, id, icon: Icon, accent, href, shotUrl } = tool;
   const Shot = SHOTS[key];
   const item = (field) => t(`tools.items.${key}.${field}`);
 
@@ -114,11 +112,6 @@ function ToolRow({ tool, tinted, reversed, t }) {
                 )}
               </Link>
             </Button>
-            {secondaryHref && (
-              <Button asChild variant="outline">
-                <Link href={secondaryHref}>{item('secondaryCta')}</Link>
-              </Button>
-            )}
           </div>
         </div>
 
@@ -189,7 +182,7 @@ export default async function ToolsPage({ params }) {
         </div>
         <p className="mt-5 border-t border-border pt-4 text-sm text-muted-foreground">
           {t.rich('tools.closing.openSource', {
-            /* The claim needs somewhere to go: the org page carries all four repos. */
+            /* The claim needs somewhere to go: the org page carries all three repos. */
             repos: (chunks) => (
               <Link href="https://github.com/ActivistChecklist" className="link">
                 {chunks}
