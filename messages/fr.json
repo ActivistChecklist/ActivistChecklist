@@ -781,10 +781,10 @@
   },
   "tools": {
     "metaTitle": "Nos outils | Activist Checklist",
-    "metaDescription": "Des outils créés pour accompagner nos checklists : cartographie tes risques avant une action, verrouille tes réseaux sociaux et vérifie si ton téléphone reçoit encore des mises à jour de sécurité.",
+    "metaDescription": "Des outils qu'on a créés pour accompagner nos checklists : évaluer tes risques avant une action, vérifier si ton téléphone reçoit encore des mises à jour de sécurité et faire le ménage dans tes vieilles conversations avec l'IA.",
     "documentTitle": "Nos outils | Activist Checklist",
     "title": "Nos outils",
-    "intro": "Quatre outils qu'on a créés pour accompagner les checklists. Chacun couvre une étape difficile à faire avec de simples instructions écrites.",
+    "intro": "Trois outils qu'on a créés pour accompagner les checklists. Chacun t'aide à franchir une étape difficile à mener à bien avec de simples instructions écrites.",
     "items": {
       "riskMapper": {
         "eyebrow": "Préparer une action",
@@ -796,18 +796,6 @@
         "bullet3": "Partage-la avec ton groupe via un lien chiffré de bout en bout, ou exporte un PDF pour les personnes absentes de la réunion.",
         "cta": "Ouvrir Risk Mapper",
         "shotAlt": "Risk Mapper en cours de session, avec des risques placés sur une grille selon leur probabilité et leur gravité."
-      },
-      "socialScrub": {
-        "eyebrow": "Verrouiller tes profils",
-        "name": "Social Scrub",
-        "short": "Verrouille tes comptes de réseaux sociaux, un par un.",
-        "lede": "Te guide à travers les huit mêmes étapes de confidentialité sur chacun de tes comptes de réseaux sociaux.",
-        "bullet1": "Choisis tes plateformes dans une liste de 130 sites, y compris ceux que tu as oubliés. Ajoute ceux qu'on aurait ratés.",
-        "bullet2": "Pour chaque compte : supprime-le ou garde-le, change ton nom affiché et ton nom d'utilisateur, retire ta photo, enlève ta localisation et ton employeur de ta bio, et verrouille tes paramètres de confidentialité.",
-        "bullet3": "L'outil se souvient où tu t'es arrêté·e, donc tu peux faire quelques comptes à la fois.",
-        "cta": "Ouvrir Social Scrub",
-        "secondaryCta": "Guide de défense contre le doxxing",
-        "shotAlt": "Un exemple de profil avant et après le nettoyage. Le nom, la photo, le nom d'utilisateur, la bio, la liste d'ami·es et la localisation sont tous modifiés ou masqués."
       },
       "updates": {
         "eyebrow": "Vérifier ton appareil",
@@ -837,7 +825,7 @@
       "body": "Chacun de ces outils vient d'une de nos checklists. Commence par la checklist : elle t'orientera vers l'outil quand tu arriveras à cette étape.",
       "primaryCta": "Les bases de la sécurité numérique",
       "secondaryCta": "Checklist de défense contre le doxxing",
-      "openSource": "Les quatre sont <repos>open source</repos>. Si l'un d'eux ne marche pas, ou s'il te faut quelque chose qu'on n'a pas encore créé, <contact>dis-le-nous</contact>."
+      "openSource": "Les trois sont <repos>open source</repos>. Si l'un d'eux ne marche pas, ou s'il te faut quelque chose qu'on n'a pas encore créé, <contact>fais-nous signe</contact>."
     }
   },
   "terms": {
