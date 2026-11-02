@@ -263,7 +263,8 @@
     "description": "ICE, police, and corporate surveillance keep adding new tools. We update these guides to keep pace. Subscribe to hear when something important shifts.",
     "buttonText": "Subscribe",
     "emailAriaLabel": "Email address",
-    "privacyLink": "Privacy policy"
+    "privacyLink": "Privacy policy",
+    "dismissLabel": "Don't show this again"
   },
   "common": {
     "loading": "Loading...",
