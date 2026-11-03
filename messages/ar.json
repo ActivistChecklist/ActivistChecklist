@@ -261,9 +261,9 @@
     "ariaLabel": "انسخ إلى الحافظة"
   },
   "expandableList": {
-    "more": "Show {count} more",
-    "moreWithLabel": "{label} ({count} more)",
-    "less": "Show less"
+    "more": "عرض {count} إضافية",
+    "moreWithLabel": "{label} (+{count})",
+    "less": "عرض أقل"
   },
   "contact": {
     "title": "اتصل بنا",
@@ -317,7 +317,9 @@
   },
   "relatedGuides": {
     "headingBlock": "واصل التعلّم مع هذه الأدلّة ذات الصلة",
-    "headingFooter": "إذا وجدت هذا مفيدًا، فاطّلع أيضًا على هذه الأدلّة"
+    "headingFooter": "إذا وجدت هذا مفيدًا، فاطّلع أيضًا على هذه الأدلّة",
+    "readMore": "اقرأ المزيد",
+    "viewPrintable": "عرض النسخة القابلة للطباعة"
   },
   "checklists": {
     "title": "قوائم التدقيق",
