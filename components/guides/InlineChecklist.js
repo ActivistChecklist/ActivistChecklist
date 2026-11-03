@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useId } from 'react';
 import { cn } from '@/lib/utils';
 import { Check } from 'lucide-react';
 
@@ -13,6 +13,7 @@ const BREAK_TYPES = ['p', 'br', 'ul', 'ol'];
  * provided storageKey (or a generated one based on content).
  */
 export function InlineChecklist({ children, storageKey, className }) {
+  const baseId = useId();
   const [checkedItems, setCheckedItems] = useState({});
   const [mounted, setMounted] = useState(false);
   // Store children in state to ensure consistent rendering after mount
@@ -113,6 +114,7 @@ export function InlineChecklist({ children, storageKey, className }) {
           {items.map((item, idx) => {
             if (React.isValidElement(item) && item.type === 'li') {
               const itemIndex = `${path}-${idx}`;
+              const labelId = `${baseId}${itemIndex}`;
               const isChecked = checkedItems[itemIndex] || false;
               const { firstLine, rest } = splitFirstLine(item.props.children);
 
@@ -130,18 +132,35 @@ export function InlineChecklist({ children, storageKey, className }) {
                     isChecked && 'bg-primary/10',
                   )}
                 >
+                  {/* The box is the checkbox for keyboard and screen readers (the
+                      item text can hold links, so the whole row can't be one).
+                      Clicks anywhere on the row still toggle it via the li. */}
                   <span
+                    role="checkbox"
+                    aria-checked={isChecked}
+                    aria-labelledby={labelId}
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === ' ' || e.key === 'Enter') {
+                        e.preventDefault();
+                        toggleItem(itemIndex);
+                      }
+                    }}
                     className={cn(
                       'shrink-0 size-4 mt-1.5 rounded-sm border-2 flex items-center justify-center transition-colors duration-300',
+                      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
                       isChecked
                         ? 'bg-primary border-primary text-primary-foreground'
                         : 'border-muted-foreground/40 hover:border-primary',
                     )}
                   >
-                    {isChecked && <Check className="w-3 h-3" />}
+                    {isChecked && <Check className="w-3 h-3" aria-hidden />}
                   </span>
                   <span className="flex-1 transition-all">
-                    <span className={cn(isChecked && 'line-through text-muted-foreground')}>
+                    <span
+                      id={labelId}
+                      className={cn(isChecked && 'line-through text-muted-foreground')}
+                    >
                       {firstLine}
                     </span>
                     {rest && (
