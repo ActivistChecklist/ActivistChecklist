@@ -16,7 +16,6 @@ describe('OG Image Configuration', () => {
         'secondary',
         'emergency',
         'spyware',
-        'organizing',
         'research',
         'federal',
         'doxxing',
@@ -223,7 +222,6 @@ describe('OG Image Configuration', () => {
         { slug: 'protest', expectedKey: 'protest' },
         { slug: 'signal', expectedKey: 'signal' },
         { slug: 'secondary', expectedKey: 'secondary' },
-        { slug: 'organizing', expectedKey: 'organizing' },
         { slug: 'spyware', expectedKey: 'spyware' },
         { slug: 'doxxing', expectedKey: 'doxxing' },
         { slug: 'action', expectedKey: 'action' },
@@ -243,6 +241,14 @@ describe('OG Image Configuration', () => {
 
         expect(matchedKey, `Slug "${slug}" should match key "${expectedKey}"`).toBe(expectedKey);
       }
+    });
+
+    it('prefers an exact key over a shorter key the slug contains', async () => {
+      const { getIconForSlug } = await import('../lib/og-image.js');
+
+      const actionSafety = getIconForSlug('/action-safety/');
+      expect(actionSafety.elements.length).toBeGreaterThan(0);
+      expect(actionSafety).not.toEqual(getIconForSlug('action'));
     });
   });
 

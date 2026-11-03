@@ -27,6 +27,15 @@ describe('applyHeadingIds', () => {
     expect(applyHeadingIds(src)).toBe('text before\n\n<h2 id="x">Heading</h2>\n\ntext after');
   });
 
+  it('rewrites an indented heading inside a JSX wrapper and keeps the indent', () => {
+    // Regression: content inside <Section> is indented, and an unmatched
+    // {#id} there reaches MDX as a JS expression and fails to compile.
+    const src = '<Section title="T" slug="t">\n  ### Top steps {#top-steps}\n</Section>';
+    expect(applyHeadingIds(src)).toBe(
+      '<Section title="T" slug="t">\n\n  <h3 id="top-steps">Top steps</h3>\n\n</Section>',
+    );
+  });
+
   it('leaves headings without the marker untouched', () => {
     expect(applyHeadingIds('## Plain heading')).toBe('## Plain heading');
   });

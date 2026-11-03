@@ -49,7 +49,6 @@ describe('Navigation paths (config/navigation.json)', () => {
     expect(NAV_ITEMS.SECONDARY.href).toBe('/secondary/');
     expect(NAV_ITEMS.SPYWARE.href).toBe('/spyware/');
     expect(NAV_ITEMS.RESEARCH.href).toBe('/research/');
-    expect(NAV_ITEMS.ORGANIZING.href).toBe('/organizing/');
     expect(NAV_ITEMS.FEDERAL.href).toBe('/federal/');
     expect(NAV_ITEMS.ACTION.href).toBe('/action/');
   });
