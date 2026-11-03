@@ -2,7 +2,9 @@ import {
   assertWorktreeName,
   buildSandboxProfile,
   classifyChanges,
+  gitSandboxPaths,
   installConfigChanges,
+  parseCreateArgs,
   parseTarget,
   sbplString,
   scrubbedEnv,
@@ -38,6 +40,50 @@ describe('parseTarget', () => {
       'https://evil.example/pull/1',
     ]) {
       expect(() => parseTarget(arg)).toThrow();
+    }
+  });
+});
+
+describe('parseCreateArgs', () => {
+  it('takes a lone PR number and names the worktree after it', () => {
+    expect(parseCreateArgs(['797'])).toEqual({
+      arg: '797',
+      target: { kind: 'pr', number: 797, name: 'pr-797' },
+      name: 'pr-797',
+      install: true,
+      allowInstallConfig: false,
+    });
+  });
+
+  it('reads --name before or after the target', () => {
+    for (const args of [
+      ['797', '--name', 'l10n'],
+      ['--name', 'l10n', '797'],
+    ]) {
+      expect(parseCreateArgs(args)).toMatchObject({ arg: '797', name: 'l10n' });
+    }
+  });
+
+  it('reads the install flags in any position', () => {
+    expect(
+      parseCreateArgs(['--no-install', 'origin/l10n_main', '--allow-install-config']),
+    ).toMatchObject({
+      target: { kind: 'ref', ref: 'origin/l10n_main' },
+      name: 'origin-l10n_main',
+      install: false,
+      allowInstallConfig: true,
+    });
+  });
+
+  it('rejects a missing or extra target, a bare --name and unknown flags', () => {
+    for (const args of [
+      [],
+      ['--name', '797'],
+      ['797', '798'],
+      ['797', '--name'],
+      ['797', '--no-instal'],
+    ]) {
+      expect(() => parseCreateArgs(args)).toThrow();
     }
   });
 });
@@ -166,7 +212,15 @@ describe('scrubbedEnv', () => {
       LC_ALL: 'C',
       HUSKY: '0',
       NEXT_TELEMETRY_DISABLED: '1',
+      GIT_CONFIG_GLOBAL: '/dev/null',
+      GIT_CONFIG_NOSYSTEM: '1',
     });
+  });
+
+  it('keeps git off the user and system config, whatever the parent set', () => {
+    expect(
+      scrubbedEnv({ GIT_CONFIG_GLOBAL: '/Users/x/.gitconfig', GIT_CONFIG_NOSYSTEM: '0' }),
+    ).toMatchObject({ GIT_CONFIG_GLOBAL: '/dev/null', GIT_CONFIG_NOSYSTEM: '1' });
   });
 
   it('applies overrides last', () => {
@@ -218,5 +272,54 @@ describe('buildSandboxProfile', () => {
     expect(index('(deny network*)')).toBeLessThan(index('(allow network*'));
     expect(lines[index('(allow network*')]).not.toMatch(/\*:\*/);
     expect(profile).toContain('com.apple.SecurityServer');
+  });
+
+  it('keeps readOnly paths unwritable, after the write allow that covers them', () => {
+    const guarded = buildSandboxProfile({
+      home: '/Users/x',
+      readable: [],
+      writable: ['/Users/x/wt'],
+      readOnly: ['/Users/x/wt/.git'],
+    }).split('\n');
+    const allow = guarded.findIndex((l) => l.startsWith('(allow file-write*'));
+    const deny = guarded.indexOf('(deny file-write* (subpath "/Users/x/wt/.git"))');
+    expect(deny).toBeGreaterThan(allow);
+    expect(lines.filter((l) => l.startsWith('(deny file-write*'))).toEqual([
+      '(deny file-write* (subpath "/"))',
+    ]);
+  });
+
+  it('opens a listable directory itself, not what is inside it', () => {
+    const withListable = buildSandboxProfile({
+      home: '/Users/x',
+      readable: [],
+      listable: ['/Users/x/repo/.git/objects/pack'],
+      writable: ['/Users/x/wt'],
+    });
+    expect(withListable).toContain(
+      '(allow file-read-data (literal "/Users/x/repo/.git/objects/pack"))',
+    );
+    expect(withListable).not.toContain('(subpath "/Users/x/repo/.git/objects');
+    expect(profile).not.toContain('(literal');
+  });
+});
+
+describe('gitSandboxPaths', () => {
+  const commonDir = '/Users/x/repo/.git';
+  const gitDir = `${commonDir}/worktrees/pr-797`;
+  const { readable, listable } = gitSandboxPaths({ commonDir, gitDir });
+
+  it("opens the worktree's own git dir and the files git cannot start without", () => {
+    expect(readable).toEqual([gitDir, `${commonDir}/config`, `${commonDir}/info/exclude`]);
+  });
+
+  it('never opens the shared objects, refs or other worktrees for reading', () => {
+    for (const p of readable) {
+      expect(p).not.toBe(commonDir);
+      expect(`${commonDir}/objects/pack/x.pack`.startsWith(`${p}/`)).toBe(false);
+      expect(`${commonDir}/refs/heads/main`.startsWith(`${p}/`)).toBe(false);
+      expect(`${commonDir}/worktrees/other/index`.startsWith(`${p}/`)).toBe(false);
+    }
+    expect(listable).toEqual([`${commonDir}/objects/pack`]);
   });
 });

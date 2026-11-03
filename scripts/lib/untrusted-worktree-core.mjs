@@ -30,6 +30,33 @@ export function parseTarget(arg) {
   return { kind: 'ref', ref: s, name: s.replace(/[^A-Za-z0-9._-]+/g, '-').replace(/^[-.]+/, '') };
 }
 
+/**
+ * Arguments to `create`: one target, in any position among the flags.
+ * Throws on a missing or extra target, a --name with no value, or an unknown
+ * flag, so a typo like --no-instal never quietly installs.
+ */
+export function parseCreateArgs(args) {
+  const positional = [];
+  let name;
+  let install = true;
+  let allowInstallConfig = false;
+  for (let i = 0; i < args.length; i++) {
+    const a = args[i];
+    if (a === '--name') {
+      name = args[++i];
+      if (name === undefined) throw new Error('--name needs a value');
+    } else if (a === '--no-install') install = false;
+    else if (a === '--allow-install-config') allowInstallConfig = true;
+    else if (a.startsWith('--')) throw new Error(`Unknown option ${a}`);
+    else positional.push(a);
+  }
+  if (positional.length !== 1) {
+    throw new Error(`Expected one PR number or ref, got ${positional.length}`);
+  }
+  const target = parseTarget(positional[0]);
+  return { arg: positional[0], target, name: name ?? target.name, install, allowInstallConfig };
+}
+
 /** Worktree names become directory names under the untrusted root, so keep them boring. */
 export function assertWorktreeName(name) {
   if (!/^[a-z0-9][\w.-]{0,99}$/i.test(String(name)) || name.includes('..')) {
@@ -163,7 +190,37 @@ export function scrubbedEnv(env, overrides = {}) {
   for (const [k, v] of Object.entries(env)) {
     if (v !== undefined && (ENV_ALLOW.includes(k) || k.startsWith('LC_'))) out[k] = v;
   }
-  return { ...out, HUSKY: '0', NEXT_TELEMETRY_DISABLED: '1', ...overrides };
+  return {
+    ...out,
+    HUSKY: '0',
+    NEXT_TELEMETRY_DISABLED: '1',
+    // No user or system git config: the sandbox denies ~/.gitconfig and git
+    // exits rather than skip it, and the system config's credential helper is
+    // the Keychain.
+    GIT_CONFIG_GLOBAL: '/dev/null',
+    GIT_CONFIG_NOSYSTEM: '1',
+    ...overrides,
+  };
+}
+
+/**
+ * What the sandbox opens in the main checkout's .git so git works in a linked
+ * worktree: the worktree's own git dir (HEAD, index), the repository config,
+ * which git will not start without, and info/exclude. The shared objects, refs
+ * and other worktrees stay closed, since they hold every local branch, stash
+ * and unpushed commit. objects/pack is listable but not readable: git grep
+ * lists it before starting threads and prints an error when it cannot, but a
+ * working-tree search never reads a pack.
+ *
+ * @param {object} p
+ * @param {string} p.commonDir  the main checkout's .git
+ * @param {string} p.gitDir  the worktree's own dir under commonDir/worktrees
+ */
+export function gitSandboxPaths({ commonDir, gitDir }) {
+  return {
+    readable: [gitDir, path.join(commonDir, 'config'), path.join(commonDir, 'info', 'exclude')],
+    listable: [path.join(commonDir, 'objects', 'pack')],
+  };
 }
 
 /** SBPL string literal. Seatbelt strings use C-style escapes. */
@@ -177,9 +234,11 @@ export function sbplString(s) {
 /**
  * A Seatbelt profile for `sandbox-exec -f`. Starts from allow-default (system
  * frameworks, dyld and node need far more than is worth enumerating), then:
- *   - no reading file contents anywhere under $HOME except `readable`
+ *   - no reading file contents anywhere under $HOME except `readable`, and the
+ *     entries (names only) of each `listable` directory
  *     (metadata stays readable so path resolution works)
- *   - no writing anywhere except `writable` and /dev
+ *   - no writing anywhere except `writable` and /dev, and never to `readOnly`
+ *     paths inside them (this also blocks rename, unlink and hard links)
  *   - no network except localhost, so the dev server can listen and the browser
  *     pane can reach it; this also blocks DNS and the SSH agent's unix socket
  *   - no Keychain lookups
@@ -188,17 +247,22 @@ export function sbplString(s) {
  * @param {object} p
  * @param {string} p.home
  * @param {string[]} p.readable  absolute paths re-opened for reading under home
+ * @param {string[]} [p.listable]  directories whose entries may be listed, not read
  * @param {string[]} p.writable  absolute paths that may be written
+ * @param {string[]} [p.readOnly]  paths inside `writable` that may not be
  */
-export function buildSandboxProfile({ home, readable, writable }) {
+export function buildSandboxProfile({ home, readable, listable = [], writable, readOnly = [] }) {
   const subpaths = (list) => list.map((p) => `(subpath ${sbplString(p)})`).join(' ');
+  const literals = (list) => list.map((p) => `(literal ${sbplString(p)})`).join(' ');
   return [
     '(version 1)',
     '(allow default)',
     `(deny file-read-data (subpath ${sbplString(home)}))`,
     `(allow file-read-data ${subpaths([...readable, ...writable])})`,
+    ...(listable.length ? [`(allow file-read-data ${literals(listable)})`] : []),
     '(deny file-write* (subpath "/"))',
     `(allow file-write* ${subpaths(writable)} (subpath "/dev"))`,
+    ...(readOnly.length ? [`(deny file-write* ${subpaths(readOnly)})`] : []),
     '(deny network*)',
     '(allow network* (local ip "localhost:*") (remote ip "localhost:*"))',
     '(deny mach-lookup (global-name "com.apple.SecurityServer") (global-name "com.apple.securityd.xpc"))',
