@@ -4,6 +4,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Check } from 'lucide-react';
 
+const BREAK_TYPES = ['p', 'br', 'ul', 'ol'];
+
 /**
  * InlineChecklist - Converts bullet points into interactive checklist items
  *
@@ -73,37 +75,24 @@ export function InlineChecklist({ children, storageKey, className }) {
   };
 
   // Split children into first line and rest
-  // First line = first paragraph, or if no paragraphs, all content
+  // First line = first paragraph, or if no paragraphs, all content (so inline
+  // links and formatting get crossed out with the text around them)
   const splitFirstLine = (itemChildren) => {
     const childArray = React.Children.toArray(itemChildren);
 
-    // If only one child, that's the first line
-    if (childArray.length <= 1) {
-      return { firstLine: itemChildren, rest: null };
-    }
-
-    // Look for paragraph or br break point
-    let breakIndex = -1;
+    // Split at the first paragraph, line break or nested list that follows
+    // some content. Whitespace-only text between blocks doesn't count.
+    let seenContent = false;
     for (let i = 0; i < childArray.length; i++) {
       const child = childArray[i];
-      // If we find a second paragraph or a br, split there
-      if (i > 0 && React.isValidElement(child)) {
-        if (child.type === 'p' || child.type === 'br') {
-          breakIndex = i;
-          break;
-        }
+      const isBreak = React.isValidElement(child) && BREAK_TYPES.includes(child.type);
+      if (isBreak && seenContent) {
+        return { firstLine: childArray.slice(0, i), rest: childArray.slice(i) };
       }
+      if (typeof child !== 'string' || child.trim()) seenContent = true;
     }
 
-    if (breakIndex === -1) {
-      // No break found, first child is the first line
-      return { firstLine: childArray[0], rest: childArray.slice(1) };
-    }
-
-    return {
-      firstLine: childArray.slice(0, breakIndex),
-      rest: childArray.slice(breakIndex),
-    };
+    return { firstLine: itemChildren, rest: null };
   };
 
   // Transform bullet list items into checklist items
