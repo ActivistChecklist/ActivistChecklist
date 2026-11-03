@@ -416,9 +416,8 @@
   },
   "feedbackCta": {
     "heading": "Des questions ?",
-    "description": "Dis-nous si tu as des questions ou des retours, pour qu'on rende ces guides aussi utiles que possible.",
-    "inputPlaceholder": "Écris ta question...",
-    "sendButton": "Envoyer",
+    "barText": "Dis-nous tout pour qu'on puisse rendre ces guides plus utiles.",
+    "buttonText": "Envoyer un message",
     "dialogTitle": "Envoie-nous un message",
     "successMessage": "Merci pour ton retour ! On va le lire et s'en servir pour améliorer les guides. Si le site t'est utile, aide-nous à le faire connaître !"
   },
