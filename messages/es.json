@@ -261,9 +261,9 @@
     "ariaLabel": "Copiar al portapapeles"
   },
   "expandableList": {
-    "more": "Show {count} more",
-    "moreWithLabel": "{label} ({count} more)",
-    "less": "Show less"
+    "more": "Mostrar {count} más",
+    "moreWithLabel": "{label} ({count} más)",
+    "less": "Mostrar menos"
   },
   "contact": {
     "title": "Contáctanos",
@@ -317,7 +317,9 @@
   },
   "relatedGuides": {
     "headingBlock": "Sigue aprendiendo con estas guías relacionadas",
-    "headingFooter": "Si esto te sirvió, también mira estas guías"
+    "headingFooter": "Si esto te sirvió, también mira estas guías",
+    "readMore": "Leer más",
+    "viewPrintable": "Ver versión para imprimir"
   },
   "checklists": {
     "title": "Listas",
