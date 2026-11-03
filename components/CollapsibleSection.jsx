@@ -28,6 +28,8 @@ export const CollapsibleSection = ({
           isMore
             ? 'gap-1 rounded-sm text-sm font-medium text-link hover:underline'
             : 'w-full gap-2 -mx-2 px-2 py-1.5 rounded-md font-heading text-base font-semibold text-foreground hover:bg-muted/60 transition-colors',
+          // The gray hover tint clashes with an alert's colored background
+          '[[role=alert]_&]:hover:bg-transparent',
         )}
       >
         <ChevronRight
