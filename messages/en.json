@@ -415,10 +415,9 @@
     "mostSecure": "Most Secure"
   },
   "feedbackCta": {
-    "heading": "Have Questions?",
-    "description": "Let us know if you have questions or feedback so we can make these guides as useful as possible.",
-    "inputPlaceholder": "Type your question...",
-    "sendButton": "Send",
+    "heading": "Have questions?",
+    "barText": "Let us know so we can make these guides more useful.",
+    "buttonText": "Send a message",
     "dialogTitle": "Send us a message",
     "successMessage": "Thanks for your feedback! We'll review it and use it to improve the guides. If you're finding the site valuable, please help spread the word!"
   },
