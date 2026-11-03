@@ -260,6 +260,11 @@
     "copied": "تمّ النسخ",
     "ariaLabel": "انسخ إلى الحافظة"
   },
+  "expandableList": {
+    "more": "Show {count} more",
+    "moreWithLabel": "{label} ({count} more)",
+    "less": "Show less"
+  },
   "contact": {
     "title": "اتصل بنا",
     "intro": "ملاحظاتك تساعد في جعل هذا المورد أكثر فائدة وأمانًا للجميع. نرحب بالاقتراحات لـ:",
