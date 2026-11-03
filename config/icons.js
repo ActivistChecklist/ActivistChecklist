@@ -15,6 +15,7 @@ import {
   IoLockClosed,
   IoHandRight,
   IoCafe,
+  IoMedkit,
 } from 'react-icons/io5';
 import { BookOpen, Landmark, Printer, Smartphone } from 'lucide-react';
 import React from 'react';
@@ -56,6 +57,12 @@ const IoPhonePortraitFixed = (props) =>
     }),
   );
 
+// IoMedkit is a solid block that covers more of its box than the other guide
+// icons, so it looked heavier on the cards. The padded viewBox draws it at about
+// 82% size. Called directly (not via createElement) so og-image.js can still
+// read its paths.
+const IoMedkitSmaller = (props) => IoMedkit({ viewBox: '-56 -56 624 624', ...props });
+
 // Map guide keys to their icons (solid variants)
 // Keys should match item keys in config/navigation.json (checklist slugs)
 export const GUIDE_ICONS = {
@@ -72,6 +79,7 @@ export const GUIDE_ICONS = {
   federal: Landmark,
   doxxing: IoLockClosedThick,
   action: IoHandRight,
+  'action-safety': IoMedkitSmaller,
   ice: IoVideocam,
 };
 

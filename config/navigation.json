@@ -48,6 +48,9 @@
     "action": {
       "href": "/action/"
     },
+    "action-safety": {
+      "href": "/action-safety/"
+    },
     "ice": {
       "href": "/ice/"
     },
@@ -134,6 +137,7 @@
         "protest",
         "ice",
         "action",
+        "action-safety",
         "doxxing",
         "travel",
         "emergency",
@@ -171,8 +175,8 @@
     },
     {
       "key": "organizing",
-      "items": ["organizing", "research"],
-      "featured": ["party"],
+      "items": ["action-safety", "organizing", "research"],
+      "featured": ["action-safety", "party"],
       "reads": []
     }
   ],

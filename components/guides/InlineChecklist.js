@@ -107,7 +107,9 @@ export function InlineChecklist({ children, storageKey, className }) {
     if (type === 'ul') {
       const items = React.Children.toArray(props.children);
       return (
-        <ul className={cn('checklist-items list-none pl-0 space-y-2', props.className)}>
+        // No list indent: the box plus gap (1rem + 0.5rem) takes the place of the
+        // bullet lists' ml-6, so item text lines up with bullet text
+        <ul className={cn('checklist-items list-none pl-0 ml-0 space-y-2', props.className)}>
           {items.map((item, idx) => {
             if (React.isValidElement(item) && item.type === 'li') {
               const itemIndex = `${path}-${idx}`;
@@ -123,14 +125,14 @@ export function InlineChecklist({ children, storageKey, className }) {
                     toggleItem(itemIndex);
                   }}
                   className={cn(
-                    'flex items-start gap-3 cursor-pointer select-none transition-all',
+                    'flex items-start gap-2 cursor-pointer select-none transition-all',
                     'hover:bg-muted/40 -mx-2 px-2 py-1 rounded-md',
                     isChecked && 'bg-primary/10',
                   )}
                 >
                   <span
                     className={cn(
-                      'shrink-0 w-5 h-5 mt-0.5 rounded-sm border-2 flex items-center justify-center transition-colors duration-300',
+                      'shrink-0 size-4 mt-1.5 rounded-sm border-2 flex items-center justify-center transition-colors duration-300',
                       isChecked
                         ? 'bg-primary border-primary text-primary-foreground'
                         : 'border-muted-foreground/40 hover:border-primary',

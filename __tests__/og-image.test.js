@@ -244,6 +244,14 @@ describe('OG Image Configuration', () => {
         expect(matchedKey, `Slug "${slug}" should match key "${expectedKey}"`).toBe(expectedKey);
       }
     });
+
+    it('prefers an exact key over a shorter key the slug contains', async () => {
+      const { getIconForSlug } = await import('../lib/og-image.js');
+
+      const actionSafety = getIconForSlug('/action-safety/');
+      expect(actionSafety.elements.length).toBeGreaterThan(0);
+      expect(actionSafety).not.toEqual(getIconForSlug('action'));
+    });
   });
 
   describe('Navigation Icons Consistency', () => {
