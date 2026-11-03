@@ -18,6 +18,7 @@ import { underlineIcon } from '@keystar/ui/icon/icons/underlineIcon';
 import ChecklistItemEditorPreview from '@/components/keystatic/ChecklistItemEditorPreview';
 import AlertEditorPreview from '@/components/keystatic/AlertEditorPreview';
 import { escapeHeadingIds, unescapeHeadingIds } from '@/lib/mdx-heading-ids';
+import { parseShowCount } from '@/lib/expandable-list';
 
 export const showKeystaticUI = process.env.BUILD_MODE !== 'static';
 export const showAdminUI = showKeystaticUI;
@@ -403,7 +404,8 @@ const expandableListComponent = wrapper({
           suppressContentEditableWarning
           style={{ fontSize: 12, color: '#94a3b8' }}
         >
-          Shows the first {props.value.show || '1'}, the rest behind &ldquo;Show more&rdquo;
+          Shows the first {parseShowCount(props.value.show)}, the rest behind &ldquo;Show
+          more&rdquo;
         </div>
         {props.children}
       </div>
