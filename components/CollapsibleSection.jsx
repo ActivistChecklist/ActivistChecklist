@@ -28,14 +28,18 @@ export const CollapsibleSection = ({
           isMore
             ? 'gap-1 rounded-sm text-sm font-medium text-link hover:underline'
             : 'w-full gap-2 -mx-2 px-2 py-1.5 rounded-md font-heading text-base font-semibold text-foreground hover:bg-muted/60 transition-colors',
-          // The gray hover tint clashes with an alert's colored background
-          '[[role=alert]_&]:hover:bg-transparent',
+          // The gray hover tint clashes with an alert's colored background, so
+          // inside an alert hover underlines the title instead
+          '[[role=alert]_&]:hover:bg-transparent [[role=alert]_&]:hover:underline underline-offset-4',
         )}
       >
         <ChevronRight
           className={cn(
             'h-4 w-4 shrink-0 transition-transform duration-200',
             !isMore && 'text-muted-foreground',
+            // Inside an alert a muted chevron fades into the color, and it is
+            // the only sign this opens on touch screens
+            '[[role=alert]_&]:text-current',
           )}
           aria-hidden="true"
         />
