@@ -11,6 +11,9 @@ import { flushSync } from 'react-dom';
  * at all while closed, so a print stylesheet has nothing to show. flushSync is
  * what makes this work, because the browser lays out the print copy as soon as
  * the `beforeprint` handlers return, before a normally scheduled render.
+ *
+ * Capture phase, so these run before every ordinary `beforeprint` listener:
+ * PrintEndnotes needs the opened sections' links in the DOM to number them.
  */
 export function useIsPrinting() {
   const [isPrinting, setIsPrinting] = useState(false);
@@ -18,10 +21,10 @@ export function useIsPrinting() {
   useEffect(() => {
     const before = () => flushSync(() => setIsPrinting(true));
     const after = () => setIsPrinting(false);
-    window.addEventListener('beforeprint', before);
+    window.addEventListener('beforeprint', before, { capture: true });
     window.addEventListener('afterprint', after);
     return () => {
-      window.removeEventListener('beforeprint', before);
+      window.removeEventListener('beforeprint', before, { capture: true });
       window.removeEventListener('afterprint', after);
     };
   }, []);

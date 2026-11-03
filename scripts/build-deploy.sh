@@ -155,6 +155,11 @@ while :; do
   # matches pnpm-lock.yaml exactly (no stale nested folders shadowing top-level versions,
   # unlike yarn v1). So no hash-based clean-install dance is needed here.
   nvm_pnpm install --frozen-lockfile --prefer-offline --fetch-timeout 100000
+  # The guide PDF step needs the Chromium build that matches this Playwright
+  # version. A no-op when it is already there; after a Playwright bump it
+  # downloads the new one. Its system libraries are in ~/.local/lib/chromium-deps
+  # (see scripts/build-pdfs.mjs).
+  nvm_pnpm exec playwright install chromium-headless-shell
   export NODE_ENV=production
 
   # Last abort checkpoint. `buildstatic` itself is not interruptible: killing it

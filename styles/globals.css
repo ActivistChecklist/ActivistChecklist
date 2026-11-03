@@ -582,54 +582,45 @@
       color: #000 !important;
     }
 
-    /* Show URLs for links (except for internal anchor links) */
-    a[href^='http']:after {
-      content: ' (' attr(href) ')';
-      font-size: 90%;
-      font-style: italic;
-    }
-
-    /* Build-time PDFs (scripts/build-pdfs.mjs) keep links clickable and move
-       the printed URLs into numbered endnotes instead of inline text. */
-    html.pdf-export a[href^='http']:after {
-      content: none;
-    }
-
-    .pdf-endnote-ref {
+    /* Printed links get a superscript number (set on beforeprint by
+       components/PrintEndnotes.js) pointing to the URL list at the end of the
+       page, instead of the address spelled out mid-sentence. In a PDF the link
+       itself stays clickable. */
+    a[data-endnote]::after {
+      content: attr(data-endnote);
+      /* inline-block keeps the link's underline from running under the number */
+      display: inline-block;
       font-size: 65%;
+      vertical-align: super;
       line-height: 0;
       margin-left: 1px;
       color: hsl(var(--muted-foreground));
     }
 
-    .pdf-endnotes {
+    .print-endnotes {
       margin-top: 2rem;
       padding-top: 1rem;
       border-top: 1px solid hsl(var(--border));
       break-before: auto;
     }
 
-    .pdf-endnotes h2 {
+    .print-endnotes h2 {
       margin: 0 0 0.5rem;
       padding: 0;
     }
 
-    .pdf-endnotes ol {
+    .print-endnotes ol {
       list-style: decimal;
       padding-left: 1.5rem;
       columns: 2;
       column-gap: 1.5rem;
     }
 
-    .pdf-endnotes li {
+    .print-endnotes li {
       font-size: 7.5pt !important;
       line-height: 1.35 !important;
       overflow-wrap: anywhere;
       break-inside: avoid;
-    }
-
-    a.no-print-url:after {
-      content: none !important;
     }
 
     /* Adjust colors for better print readability */

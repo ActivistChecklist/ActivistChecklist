@@ -12,6 +12,7 @@ import { ChecklistProgressProvider } from '@/contexts/ChecklistProgressContext';
 import { TableOfContentsSidebar } from '@/components/layout/TableOfContentsSidebar';
 import { LayoutProvider, useLayout } from '@/contexts/LayoutContext';
 import SkipLink from './SkipLink';
+import PrintEndnotes from '@/components/PrintEndnotes';
 import PageCounter from './PageCounter';
 import AnnouncementBar from './AnnouncementBar';
 import LanguageDetectionBanner from '@/components/LanguageDetectionBanner';
@@ -84,6 +85,7 @@ const LayoutContent = ({
                         {...(searchable && { 'data-pagefind-body': true })}
                       >
                         {children}
+                        <PrintEndnotes />
                       </main>
                     </div>
                   </div>

@@ -16,19 +16,24 @@
  * Env:
  *   PDF_EXPORT=off    skip entirely (next.config.js also hides the download link)
  *   PDF_EXPORT_FORCE=1  ignore the cache and re-render everything
+ *   PDF_CHROMIUM_LIBS=dir  extra shared libraries for Chromium (Linux). Defaults
+ *                     to ~/.local/lib/chromium-deps when that exists: the May
+ *                     First server has no libnss3/libnspr4 and no root to
+ *                     install them, so they are unpacked from Debian's .debs
+ *                     there (apt-get download, then dpkg-deb -x).
  *
  * Usage: node scripts/build-pdfs.mjs
  */
 import crypto from 'crypto';
 import fs from 'fs';
 import http from 'http';
+import os from 'os';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
 
 import { LOCALES } from '../lib/i18n-config.mjs';
 import {
-  assignEndnotes,
   normalizeHtmlForHash,
   pdfPaperFormat,
   pdfPathFor,
@@ -76,6 +81,13 @@ const FONT_ROUTE = '/__pdf-fonts/';
 
 const fontDir = (locale) => path.dirname(require.resolve(`${PDF_FONTS[locale].pkg}/package.json`));
 
+const PRINT_SOURCES = [
+  'lib/pdf-export.mjs',
+  'components/PrintEndnotes.js',
+  'components/guides/PrintNotice.js',
+  'hooks/use-is-printing.js',
+];
+
 /** Anything that changes how every PDF renders, folded into each hash. */
 function renderSalt() {
   const versions = ['playwright', ...Object.values(PDF_FONTS).map((f) => f.pkg)].map(
@@ -83,7 +95,9 @@ function renderSalt() {
   );
   return sha256(
     fs.readFileSync(__filename),
-    fs.readFileSync(path.join(ROOT, 'lib', 'pdf-export.mjs')),
+    // Print-only output the static HTML doesn't show: the JS bundle is left
+    // out of the page hash, since its filenames change on every build.
+    ...PRINT_SOURCES.map((file) => fs.readFileSync(path.join(ROOT, file))),
     ...versions,
   );
 }
@@ -137,7 +151,7 @@ function collectTargets(slugs, salt) {
         key: `${locale}/${slug}`,
         locale,
         slug,
-        hash: sha256(salt, body, assetHashes, linksHeading(locale)),
+        hash: sha256(salt, body, assetHashes),
       });
     }
   }
@@ -242,71 +256,6 @@ function footerTemplate(displayUrl) {
     </div>`;
 }
 
-/** "Links in this guide", in the PDF's language when Crowdin has translated it. */
-function linksHeading(locale) {
-  for (const loc of [locale, 'en']) {
-    try {
-      const messages = JSON.parse(
-        fs.readFileSync(path.join(ROOT, 'messages', `${loc}.json`), 'utf8'),
-      );
-      const heading = messages.printNotice?.linksHeading;
-      if (heading) return heading;
-    } catch {
-      // fall through to English
-    }
-  }
-  return 'Links';
-}
-
-/**
- * Replace inline "(url)" text with a superscript number on each link and a
- * numbered list of URLs at the end. Runs after print media and beforeprint, so
- * it only numbers links the PDF actually shows (opened FAQs included, print:hidden
- * buttons excluded). Block links such as guide cards are skipped: they are
- * clickable, and a footnote marker on a whole card reads as noise.
- */
-async function addEndnotes(page, canonical, heading) {
-  const hrefs = await page.evaluate(() => {
-    const links = [...document.querySelectorAll('main a[href^="http"]:not(.no-print-url)')].filter(
-      (a) => a.getClientRects().length > 0 && getComputedStyle(a).display.startsWith('inline'),
-    );
-    links.forEach((a, i) => a.setAttribute('data-endnote-index', String(i)));
-    return links.map((a) => a.getAttribute('href'));
-  });
-  const { refs, notes } = assignEndnotes(hrefs, canonical);
-  if (notes.length === 0) return;
-
-  await page.evaluate(
-    ({ refs, notes, heading }) => {
-      for (const a of document.querySelectorAll('[data-endnote-index]')) {
-        const n = refs[Number(a.getAttribute('data-endnote-index'))];
-        if (!n) continue;
-        const sup = document.createElement('sup');
-        sup.className = 'pdf-endnote-ref';
-        sup.textContent = String(n);
-        a.after(sup);
-      }
-
-      const section = document.createElement('section');
-      section.className = 'pdf-endnotes';
-      const h2 = document.createElement('h2');
-      h2.textContent = heading;
-      const ol = document.createElement('ol');
-      for (const note of notes) {
-        const li = document.createElement('li');
-        const a = document.createElement('a');
-        a.href = note.href;
-        a.textContent = note.text;
-        li.append(a);
-        ol.append(li);
-      }
-      section.append(h2, ol);
-      document.querySelector('main').append(section);
-    },
-    { refs, notes, heading },
-  );
-}
-
 async function renderPdf(context, origin, target) {
   const page = await context.newPage();
   try {
@@ -316,7 +265,6 @@ async function renderPdf(context, origin, target) {
     if (!response?.ok()) throw new Error(`HTTP ${response?.status()}`);
 
     const { canonical, hrefs } = await page.evaluate(() => {
-      document.documentElement.classList.add('pdf-export');
       document.documentElement.classList.remove('dark');
       return {
         canonical: document.querySelector('link[rel="canonical"]')?.href,
@@ -350,12 +298,10 @@ async function renderPdf(context, origin, target) {
     }, links);
 
     // Components that print differently (open collapsibles, the "this copy was
-    // made on" notice) listen for beforeprint. Print media first, so they never
+    // made on" notice, link endnotes) listen for beforeprint. Print media first, so they never
     // animate open in screen styles.
     await page.emulateMedia({ media: 'print' });
     await page.evaluate(() => window.dispatchEvent(new Event('beforeprint')));
-
-    await addEndnotes(page, canonical, linksHeading(target.locale));
 
     // Lazy images below the fold never scroll into view in a headless page.
     await page.evaluate(async () => {
@@ -402,6 +348,17 @@ async function renderPdf(context, origin, target) {
   }
 }
 
+/** Process env for Chromium, with PDF_CHROMIUM_LIBS on the library path. */
+function chromiumEnv() {
+  const libs =
+    process.env.PDF_CHROMIUM_LIBS || path.join(os.homedir(), '.local', 'lib', 'chromium-deps');
+  if (process.platform !== 'linux' || !fs.existsSync(libs)) return process.env;
+  return {
+    ...process.env,
+    LD_LIBRARY_PATH: [libs, process.env.LD_LIBRARY_PATH].filter(Boolean).join(':'),
+  };
+}
+
 async function renderAll(stale, manifest) {
   let chromium;
   try {
@@ -412,7 +369,7 @@ async function renderAll(stale, manifest) {
 
   let browser;
   try {
-    browser = await chromium.launch();
+    browser = await chromium.launch({ env: chromiumEnv() });
   } catch (err) {
     throw new Error(
       `could not start Chromium: ${err.message.split('\n')[0]}\n` +
