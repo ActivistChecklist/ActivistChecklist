@@ -261,9 +261,9 @@
     "ariaLabel": "Copia negli appunti"
   },
   "expandableList": {
-    "more": "Show {count} more",
-    "moreWithLabel": "{label} ({count} more)",
-    "less": "Show less"
+    "more": "Mostra altri {count}",
+    "moreWithLabel": "{label} (altri {count})",
+    "less": "Mostra meno"
   },
   "contact": {
     "title": "Contattaci",
@@ -317,7 +317,9 @@
   },
   "relatedGuides": {
     "headingBlock": "Continua a imparare con queste guide correlate",
-    "headingFooter": "Se ti è stato utile, dai un'occhiata anche a queste guide"
+    "headingFooter": "Se ti è stato utile, dai un'occhiata anche a queste guide",
+    "readMore": "Leggi di più",
+    "viewPrintable": "Versione da stampare"
   },
   "checklists": {
     "title": "Checklist",
