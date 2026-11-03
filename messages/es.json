@@ -15,10 +15,6 @@
     "browseAllChecklists": "Ver todas las listas"
   },
   "navItems": {
-    "essentials": {
-      "title": "Fundamentos de seguridad",
-      "description": "Prácticas básicas de seguridad que toda persona activista debería seguir."
-    },
     "search": {
       "dialogTitle": "Buscar en el sitio",
       "dialogDescription": "Usa la barra de búsqueda para encontrar contenido relevante en el sitio.",
@@ -27,54 +23,6 @@
       "popularHeading": "Búsquedas populares",
       "topGuidesHeading": "Guías principales",
       "pressEnter": "Pulsa {kbd} para buscar"
-    },
-    "signal": {
-      "title": "Seguridad en Signal",
-      "description": "Asegura la app de mensajería Signal para tener comunicaciones más seguras."
-    },
-    "protest": {
-      "title": "Prepárate para una protesta",
-      "description": "Seguridad digital para quienes asisten a una protesta."
-    },
-    "ice": {
-      "title": "Seguridad digital para monitoreo de ICE",
-      "description": "Seguridad digital para redes de monitoreo de ICE y respuesta rápida."
-    },
-    "doxxing": {
-      "title": "Defensa contra doxxing",
-      "description": "Protégete del doxxing y del acoso en línea."
-    },
-    "travel": {
-      "title": "Seguridad en viajes y vuelos",
-      "description": "Prácticas de seguridad digital para activistas que viajan."
-    },
-    "emergency": {
-      "title": "Planificación de emergencia",
-      "description": "Arma una red de apoyo de emergencia en caso de que te detengan o te amenacen."
-    },
-    "secondary": {
-      "title": "Teléfono secundario",
-      "description": "Configura un teléfono extra para activismo y protestas."
-    },
-    "links": {
-      "title": "Eliminar rastreo de enlaces",
-      "label": "Eliminar rastreo de enlaces"
-    },
-    "policeDoorPoster": {
-      "title": "Póster \"La poli en la puerta\"",
-      "label": "Póster \"La poli en la puerta\""
-    },
-    "flyer": {
-      "title": "Volante imprimible",
-      "label": "Volante imprimible"
-    },
-    "vpn": {
-      "title": "VPNs para activistas",
-      "label": "VPNs para activistas"
-    },
-    "movies": {
-      "title": "Películas, libros y pódcasts",
-      "label": "Películas, libros y pódcasts"
     },
     "updates": {
       "title": "Verificador de actualizaciones de seguridad",
@@ -88,17 +36,6 @@
       "title": "Términos y definiciones",
       "label": "Términos y definiciones"
     },
-    "resources": {
-      "title": "Recursos",
-      "label": "Recursos"
-    },
-    "about": {
-      "title": "Acerca de este sitio",
-      "label": "Acerca de"
-    },
-    "contribute": {
-      "title": "Contribuye"
-    },
     "changelog": {
       "title": "Actualizaciones recientes del sitio",
       "label": "Actualizaciones recientes del sitio"
@@ -106,54 +43,6 @@
     "contact": {
       "title": "Contacto",
       "label": "Contacto"
-    },
-    "privacy": {
-      "title": "Privacidad",
-      "label": "Privacidad"
-    },
-    "whatsapp": {
-      "title": "Seguridad en WhatsApp",
-      "description": "Configura WhatsApp para proteger tus mensajes, grupos y contactos."
-    },
-    "spyware": {
-      "title": "Protección contra spyware",
-      "description": "Protégete del spyware y los programas de vigilancia."
-    },
-    "action": {
-      "title": "Seguridad digital para acciones con riesgo de arresto",
-      "description": "Protege tu celular y a tu grupo cuando te arriesgas a que te arresten."
-    },
-    "organizing": {
-      "title": "Organiza una acción con riesgo de arresto",
-      "description": "Para organizadores y coordinadores de movimientos."
-    },
-    "research": {
-      "title": "Investigación y reconocimiento para acciones",
-      "description": "Cómo investigar y navegar por la web de forma anónima."
-    },
-    "federal": {
-      "title": "Trabajadores federales",
-      "description": "Guía de seguridad digital para empleados federales."
-    },
-    "party": {
-      "title": "Organiza una security party",
-      "label": "Organiza una security party"
-    },
-    "proton": {
-      "title": "Cómo usar Proton de forma segura",
-      "label": "Cómo usar Proton de forma segura"
-    },
-    "lockdown": {
-      "title": "Ventajas y desventajas del Modo de aislamiento",
-      "label": "Ventajas y desventajas del Modo de aislamiento"
-    },
-    "signalSecure": {
-      "title": "¿Es Signal seguro?",
-      "label": "¿Es Signal seguro?"
-    },
-    "signalAi": {
-      "title": "¿Apple Intelligence está leyendo mis mensajes de Signal?",
-      "label": "¿Apple Intelligence está leyendo mis mensajes de Signal?"
     }
   },
   "hero": {
@@ -415,9 +304,9 @@
     "mostSecure": "Lo más seguro"
   },
   "feedbackCta": {
-    "heading": "Have questions?",
-    "barText": "Let us know so we can make these guides more useful.",
-    "buttonText": "Send a message",
+    "heading": "¿Tienes preguntas?",
+    "barText": "Cuéntanos para que podamos hacer estas guías más útiles.",
+    "buttonText": "Envía un mensaje",
     "dialogTitle": "Envíanos un mensaje",
     "successMessage": "¡Gracias por tu comentario! Lo revisaremos y lo usaremos para mejorar las guías. Si el sitio te está sirviendo, ¡ayúdanos a correr la voz!"
   },
@@ -450,9 +339,6 @@
       "title": "Organizar a otres",
       "heading": "Organizar a otres",
       "scope": "Realizar acciones y asegurar a tu grupo."
-    },
-    "descriptions": {
-      "party": "Una agenda modelo para recorrer los checklists en grupo."
     },
     "allChecklists": "Los {count, plural, one {# checklist} other {# checklists}}",
     "readMinutes": "{minutes} min de lectura",
