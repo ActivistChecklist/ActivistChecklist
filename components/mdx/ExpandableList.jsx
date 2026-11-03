@@ -63,18 +63,18 @@ export default function ExpandableList({ show = '1', label, children }) {
         aria-controls={listId}
         onClick={() => setExpanded((open) => !open)}
         className={cn(
-          'print:hidden mt-2 mb-4 flex w-fit items-center gap-1 rounded-sm cursor-pointer',
+          'print:hidden mt-2 mb-4 flex w-fit items-center rounded-sm cursor-pointer',
           'text-sm font-medium text-link hover:underline',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
         )}
       >
-        <ChevronDown
-          className={cn(
-            'h-4 w-4 shrink-0 transition-transform duration-200',
-            expanded && 'rotate-180',
-          )}
-          aria-hidden="true"
-        />
+        {/* Same width as the list's ml-6 indent, so the chevron sits in the
+            bullet column and the text lines up with the item text */}
+        <span className="flex w-6 shrink-0 justify-center" aria-hidden="true">
+          <ChevronDown
+            className={cn('h-4 w-4 transition-transform duration-200', expanded && 'rotate-180')}
+          />
+        </span>
         <span>{buttonText}</span>
       </button>
       {childArray.slice(listIndex + 1)}
