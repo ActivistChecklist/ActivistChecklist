@@ -4,7 +4,6 @@
  */
 import {
   IoShield,
-  IoMegaphone,
   IoGlobe,
   IoPeople,
   IoChatbubble,
@@ -74,7 +73,6 @@ export const GUIDE_ICONS = {
   secondary: IoPhonePortraitFixed,
   emergency: IoNotifications,
   spyware: IoEyeOff,
-  organizing: IoMegaphone,
   research: IoGlobe,
   federal: Landmark,
   doxxing: IoLockClosedThick,

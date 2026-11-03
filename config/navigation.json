@@ -33,9 +33,6 @@
     "spyware": {
       "href": "/spyware/"
     },
-    "organizing": {
-      "href": "/organizing/"
-    },
     "research": {
       "href": "/research/"
     },
@@ -175,7 +172,7 @@
     },
     {
       "key": "organizing",
-      "items": ["action-safety", "organizing", "research"],
+      "items": ["action-safety", "research"],
       "featured": ["action-safety", "party"],
       "reads": []
     }
