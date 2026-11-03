@@ -518,20 +518,19 @@
       print-color-adjust: exact;
     }
 
-    /* Reduce overall text size for printing without affecting layout */
-    html,
-    body {
-      /* Use scale transform to reduce text size without affecting layout units */
-      font-size: 16px !important; /* Keep the default font size */
+    /* Shrink the whole page in proportion. Sizes and spacing are in rem, so a
+       smaller root keeps the screen's type hierarchy and tightens padding along
+       with the text. Shrinking only some elements left menu paths and callouts
+       looking oversized next to tiny body text. */
+    html {
+      font-size: 12.5px !important;
     }
 
-    /* Target text elements only for size reduction */
-    p,
-    li,
-    td,
-    th {
-      font-size: 9pt !important; /* This reduces just the text size */
-      line-height: 1.3 !important; /* Adjust line height for readability */
+    /* body is a fixed 17px on screen (Source Sans runs small); keep that same
+       ratio to the root so body text lands near 10pt. */
+    body {
+      font-size: 1.0625rem !important;
+      line-height: 1.4;
     }
 
     /* Hide navigation and interactive elements */
@@ -547,20 +546,6 @@
     tr {
       orphans: 3;
       widows: 3;
-    }
-
-    /* Inline code otherwise keeps its screen size next to 9pt body text. */
-    code {
-      font-size: 8pt !important;
-    }
-
-    /* Screen heading sizes eat a printed page. */
-    h1 {
-      font-size: 24pt !important;
-    }
-
-    h2 {
-      font-size: 17pt !important;
     }
 
     /* Keep a heading on the same page as what it introduces. */

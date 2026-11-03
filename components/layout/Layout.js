@@ -74,7 +74,8 @@ const LayoutContent = ({
                       <main
                         id="main-content"
                         className={cn(
-                          'flex-1 min-w-0 m-auto mb-12',
+                          // print scales the rem root down, which would shrink this column too
+                          'flex-1 min-w-0 m-auto mb-12 print:max-w-none',
                           fullWidthMain ? 'max-w-full' : 'max-w-3xl',
                           className,
                         )}
