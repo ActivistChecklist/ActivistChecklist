@@ -16,11 +16,19 @@
 //   (scripts/lib/untrusted-worktree-core.mjs says which files count); otherwise
 //   it stops so a human can read those diffs first.
 // run: runs one command in the worktree under sandbox-exec (macOS Seatbelt): no
-//   reads under $HOME except the worktree and node itself, no writes
-//   outside the worktree, no network except localhost, no Keychain, a scrubbed
-//   environment, and the worktree's node_modules/.bin first on PATH. That covers
-//   next dev, vitest, prettier and anything they import. pnpm itself cannot run
-//   inside (it writes to its shared store), so call the binaries directly.
+//   reads under $HOME except the worktree, node itself and the worktree's git
+//   metadata (never the shared objects), no writes outside the worktree or to
+//   its .git file, no network except localhost, no Keychain, a scrubbed
+//   environment without your git config, and the worktree's node_modules/.bin
+//   first on PATH. That covers next dev, vitest, prettier, git grep and anything
+//   they import. pnpm itself cannot run inside (it writes to its shared store),
+//   so call the binaries directly. git commands that read objects (status,
+//   diff, log) fail inside.
+//
+// git outside the sandbox: run it at the worktree root (git -C <worktree>),
+//   never from a subdirectory. The root's .git is read-only to sandboxed code,
+//   but that code can plant a repository in any subdirectory, and git looking
+//   upward from there would find it first and run whatever its config says.
 //
 // Set UNTRUSTED_WORKTREE_ROOT to keep the worktrees somewhere else.
 
@@ -32,8 +40,9 @@ import {
   assertWorktreeName,
   buildSandboxProfile,
   classifyChanges,
+  gitSandboxPaths,
   installConfigChanges,
-  parseTarget,
+  parseCreateArgs,
   scrubbedEnv,
   untrustedRootFor,
 } from './lib/untrusted-worktree-core.mjs';
@@ -45,7 +54,8 @@ const git = (args, opts = {}) =>
     ...opts,
   }).trim();
 
-const mainRoot = path.dirname(git(['rev-parse', '--path-format=absolute', '--git-common-dir']));
+const commonDir = fs.realpathSync(git(['rev-parse', '--path-format=absolute', '--git-common-dir']));
+const mainRoot = path.dirname(commonDir);
 const root = path.resolve(process.env.UNTRUSTED_WORKTREE_ROOT || untrustedRootFor(mainRoot));
 if (root === mainRoot || root.startsWith(mainRoot + path.sep)) {
   fail(`The untrusted root must be outside the main checkout, got ${root}`);
@@ -68,6 +78,47 @@ function registeredWorktrees() {
     .filter((p) => p.startsWith(root + path.sep));
 }
 
+/**
+ * The worktree's own git dir, found from the main checkout's records. Never
+ * from <wt>/.git: sandboxed code can rewrite that file to point anywhere.
+ */
+function gitDirOf(wt) {
+  const dir = path.join(commonDir, 'worktrees');
+  const want = path.join(fs.realpathSync(wt), '.git');
+  const id = fs.readdirSync(dir).find((id) => {
+    try {
+      // Relative when worktree.useRelativePaths is on.
+      const recorded = fs.readFileSync(path.join(dir, id, 'gitdir'), 'utf8').trim();
+      return path.resolve(dir, id, recorded) === want;
+    } catch {
+      return false;
+    }
+  });
+  if (!id) fail(`No git dir for ${wt} under ${dir}`);
+  return path.join(dir, id);
+}
+
+/**
+ * Fails unless <wt>/.git is still the one-line file git wrote, pointing at
+ * gitDir. A rewritten .git (or a hard link to it, which makes it writable
+ * under another name) lets sandboxed code choose the config, and so the
+ * fsmonitor or pager, of the next plain git command run there, outside the
+ * sandbox. The profile makes .git read-only, so this trips only on a worktree
+ * run before that rule existed, or on a way around it.
+ */
+function checkDotGit(wt, gitDir) {
+  const file = path.join(wt, '.git');
+  const st = fs.lstatSync(file, { throwIfNoEntry: false });
+  const target =
+    st?.isFile() && st.nlink === 1 && /^gitdir: (.+)\n?$/.exec(fs.readFileSync(file, 'utf8'))?.[1];
+  if (!target || path.resolve(wt, target) !== gitDir) {
+    fail(
+      `${file} is not the file git wrote, so git there could run code outside the sandbox. ` +
+        `Run no git in it. Delete it: rm -rf ${wt}, then pnpm untrusted remove ${path.basename(wt)}`,
+    );
+  }
+}
+
 function showJson(rev, file) {
   try {
     return JSON.parse(git(['show', `${rev}:${file}`], { stdio: ['ignore', 'pipe', 'ignore'] }));
@@ -87,14 +138,15 @@ function changedEntries(base, head) {
 }
 
 function create(args) {
-  const opt = (flag) => args.includes(flag);
-  const nameIdx = args.indexOf('--name');
-  const positional = args.filter((a, i) => !a.startsWith('--') && i !== nameIdx + 1);
-  if (positional.length !== 1)
-    fail('usage: create <pr-number|ref> [--name NAME] [--no-install] [--allow-install-config]');
-
-  const target = parseTarget(positional[0]);
-  const name = nameIdx >= 0 ? args[nameIdx + 1] : target.name;
+  let parsed;
+  try {
+    parsed = parseCreateArgs(args);
+  } catch (err) {
+    fail(
+      `${err.message}\nusage: create <pr-number|ref> [--name NAME] [--no-install] [--allow-install-config]`,
+    );
+  }
+  const { arg, target, name, install, allowInstallConfig } = parsed;
   const wt = worktreePath(name);
   if (fs.existsSync(wt))
     fail(`${wt} already exists. Remove it first: pnpm untrusted remove ${name}`);
@@ -124,7 +176,7 @@ function create(args) {
 
   console.log(`\nUntrusted worktree: ${wt}`);
   console.log(
-    `  HEAD ${head.slice(0, 10)} (${positional[0]}), compared with its merge-base on origin/main ${base.slice(0, 10)}\n`,
+    `  HEAD ${head.slice(0, 10)} (${arg}), compared with its merge-base on origin/main ${base.slice(0, 10)}\n`,
   );
   for (const group of classifyChanges(changedEntries(base, head))) {
     console.log(`${group.label}:`);
@@ -136,7 +188,7 @@ function create(args) {
   }
 
   let exitCode = 0;
-  if (opt('--no-install')) {
+  if (!install) {
     console.log('\nSkipped pnpm install (--no-install).');
   } else {
     const reasons = installConfigChanges({
@@ -144,7 +196,7 @@ function create(args) {
       basePackage: showJson(base, 'package.json'),
       headPackage: showJson(head, 'package.json'),
     });
-    if (reasons.length && !opt('--allow-install-config')) {
+    if (reasons.length && !allowInstallConfig) {
       console.log(`\nNot installing: this change touches install config (${reasons.join('; ')}).`);
       console.log(
         `Read those diffs. If they are fine: pnpm untrusted remove ${name}, then create again with --allow-install-config.`,
@@ -183,15 +235,30 @@ function run(args) {
   if (!registeredWorktrees().includes(wt))
     fail(`No untrusted worktree at ${wt}. See: pnpm untrusted list`);
 
+  const realWt = fs.realpathSync(wt);
+  const gitDir = gitDirOf(wt);
+  checkDotGit(realWt, gitDir);
+
   const home = fs.realpathSync(os.homedir());
   const tmp = path.join(wt, '.untrusted-tmp');
   fs.mkdirSync(tmp, { recursive: true });
-  // The command needs this node's install prefix to start; nothing else under $HOME.
-  const readable = [fs.realpathSync(path.dirname(path.dirname(process.execPath)))];
+  // The command needs this node's install prefix to start, and git needs a few
+  // files from the main checkout's .git; nothing else under $HOME.
+  const gitPaths = gitSandboxPaths({ commonDir, gitDir });
+  const readable = [
+    fs.realpathSync(path.dirname(path.dirname(process.execPath))),
+    ...gitPaths.readable,
+  ];
   const profile = path.join(root, `${name}.sb`);
   fs.writeFileSync(
     profile,
-    buildSandboxProfile({ home, readable, writable: [fs.realpathSync(wt)] }),
+    buildSandboxProfile({
+      home,
+      readable,
+      listable: gitPaths.listable,
+      writable: [realWt],
+      readOnly: [path.join(realWt, '.git')],
+    }),
     { mode: 0o600 },
   );
 
@@ -201,10 +268,14 @@ function run(args) {
     // PR's packageManager. The worktree's own bin dir gives next, vitest, prettier.
     env: scrubbedEnv(process.env, {
       TMPDIR: tmp,
+      // git reads a global ignore file from here, and warns on every run when
+      // the default, ~/.config/git/ignore, is denied.
+      XDG_CONFIG_HOME: tmp,
       PATH: `${path.join(wt, 'node_modules', '.bin')}:${process.env.PATH}`,
     }),
     stdio: 'inherit',
   });
+  checkDotGit(realWt, gitDir);
   process.exit(r.status ?? 1);
 }
 
