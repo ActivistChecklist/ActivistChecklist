@@ -540,6 +540,12 @@
       line-height: 1.4;
     }
 
+    /* Japanese needs the extra line spacing it gets on screen (:root:lang(ja)),
+       which the body rule above would otherwise override. */
+    :lang(ja) body {
+      line-height: 1.7;
+    }
+
     /* Hide navigation and interactive elements */
     nav,
     .no-print,
@@ -635,9 +641,11 @@
       } */
 
     /* Make images and tables fit within page */
+    /* Not !important: that overrode each image's own max-width and blew
+       screenshots up to the full page width. */
     img,
     table {
-      max-width: 100% !important;
+      max-width: 100%;
     }
 
     /* Improve table readability */

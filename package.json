@@ -144,6 +144,7 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@fontsource/noto-sans-jp": "^5.3.1",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "26.6.6",
     "@types/react": "19.3.0",

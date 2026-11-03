@@ -58,14 +58,52 @@ function sha256(...parts) {
   return h.digest('hex');
 }
 
+// The site has no webfont for these scripts and leaves them to the visitor's
+// system fonts (a Japanese webfont runs to several MB). A PDF can't rely on the
+// build machine's fonts: the server's only Japanese font is Droid Sans Fallback,
+// so the same guide would look different depending on where it was built. These
+// fonts are devDependencies, loaded only while rendering that locale's PDFs.
+const PDF_FONTS = {
+  // Static weights, not the variable font: Chromium can't embed that one and
+  // falls back to drawing each glyph, which made the PDFs five times larger.
+  ja: {
+    pkg: '@fontsource/noto-sans-jp',
+    family: 'Noto Sans JP',
+    weights: [400, 500, 600, 700],
+  },
+};
+const FONT_ROUTE = '/__pdf-fonts/';
+
+const fontDir = (locale) => path.dirname(require.resolve(`${PDF_FONTS[locale].pkg}/package.json`));
+
 /** Anything that changes how every PDF renders, folded into each hash. */
 function renderSalt() {
-  const playwrightVersion = require('playwright/package.json').version;
+  const versions = ['playwright', ...Object.values(PDF_FONTS).map((f) => f.pkg)].map(
+    (pkg) => `${pkg}@${require(`${pkg}/package.json`).version}`,
+  );
   return sha256(
     fs.readFileSync(__filename),
     fs.readFileSync(path.join(ROOT, 'lib', 'pdf-export.mjs')),
-    playwrightVersion,
+    ...versions,
   );
+}
+
+/**
+ * The font package's @font-face rules, pointed at the local server, and font
+ * stacks that try it right after the site's Latin fonts. Unlayered, so it wins
+ * over the :root:lang(ja) stacks in globals.css.
+ */
+function pdfFontCss(locale) {
+  const font = PDF_FONTS[locale];
+  const faces = font.weights
+    .map((w) => fs.readFileSync(path.join(fontDir(locale), `${w}.css`), 'utf8'))
+    .join('\n')
+    .replaceAll('url(./files/', `url(${FONT_ROUTE}${locale}/`);
+  return `${faces}
+:root {
+  --font-heading: 'Libre Franklin', '${font.family}', sans-serif;
+  --font-body: 'Source Sans 3', '${font.family}', sans-serif;
+}`;
 }
 
 async function listGuideSlugs() {
@@ -152,7 +190,15 @@ function startServer() {
       return;
     }
     let file = path.join(OUT_DIR, urlPath);
-    if (file !== OUT_DIR && !file.startsWith(OUT_DIR + path.sep)) {
+    if (urlPath.startsWith(FONT_ROUTE)) {
+      // /__pdf-fonts/<locale>/<file>; basename keeps it inside the package
+      const [locale, name = ''] = urlPath.slice(FONT_ROUTE.length).split('/');
+      if (!Object.hasOwn(PDF_FONTS, locale)) {
+        res.writeHead(404).end();
+        return;
+      }
+      file = path.join(fontDir(locale), 'files', path.basename(name));
+    } else if (file !== OUT_DIR && !file.startsWith(OUT_DIR + path.sep)) {
       res.writeHead(403).end();
       return;
     }
@@ -281,6 +327,8 @@ async function renderPdf(context, origin, target) {
     });
     if (!canonical) throw new Error('page has no canonical URL');
 
+    if (PDF_FONTS[target.locale]) await page.addStyleTag({ content: pdfFontCss(target.locale) });
+
     // Resolve every link against the public URL. Left alone, relative links
     // would be baked into the PDF pointing at this throwaway localhost server.
     const links = hrefs.map((href) => {
@@ -316,6 +364,20 @@ async function renderPdf(context, origin, target) {
       await Promise.all(imgs.map((img) => (img.complete ? null : img.decode().catch(() => null))));
       await document.fonts.ready;
     });
+
+    // A missing font file fails silently into the system fallback, which is
+    // exactly what bundling the font is meant to avoid.
+    const pdfFont = PDF_FONTS[target.locale]?.family;
+    if (
+      pdfFont &&
+      !(await page.evaluate(
+        (family) =>
+          [...document.fonts].some((f) => f.family.includes(family) && f.status === 'loaded'),
+        pdfFont,
+      ))
+    ) {
+      throw new Error(`${pdfFont} did not load`);
+    }
 
     const pdf = await page.pdf({
       format: pdfPaperFormat(target.locale),

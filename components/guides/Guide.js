@@ -123,7 +123,7 @@ export default function Guide({
           <GuideIcon className="h-5/6 w-5/6 text-primary/15 dark:text-primary/40" />
         </div>
         <SectionBreadcrumb section={section} className="relative mb-3" />
-        <h1 className="relative mb-3 print:mb-0">{frontmatter.title}</h1>
+        <h1 className="relative mb-3 print:mb-0 print:pr-[260px]">{frontmatter.title}</h1>
         {metaBarItems.length > 0 && (
           <div className="relative flex flex-wrap items-center gap-y-2 gap-x-6 text-sm text-muted-foreground print:mb-0">
             {metaBarItems.map((item, index) => (

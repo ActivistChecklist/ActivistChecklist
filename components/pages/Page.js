@@ -57,7 +57,7 @@ export default function Page({ frontmatter, serializedBody, locale, slug, notice
   return (
     <>
       <SectionBreadcrumb section={section} className="mb-3" />
-      <h1 className="mb-6">{frontmatter.title}</h1>
+      <h1 className="mb-6 print:pr-[260px]">{frontmatter.title}</h1>
       <PageNotices initialNotices={notices} />
       {metaBarItems.length > 0 && <MetaBar items={metaBarItems} />}
       {frontmatter.showToc === true && <MobileTableOfContents />}
