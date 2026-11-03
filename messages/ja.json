@@ -415,10 +415,9 @@
     "mostSecure": "最も安全"
   },
   "feedbackCta": {
-    "heading": "質問がありますか？",
-    "description": "このガイドをもっと役立つものにしていくため、質問やフィードバックがあればお願いします。",
-    "inputPlaceholder": "質問を入力…",
-    "sendButton": "送信",
+    "heading": "Have questions?",
+    "barText": "Let us know so we can make these guides more useful.",
+    "buttonText": "Send a message",
     "dialogTitle": "メッセージを送る",
     "successMessage": "フィードバックありがとうございます！検討のうえ、ガイドの改善に活かします。このサイトが役に立ったら、ぜひまわりの人にも広めてください！"
   },
