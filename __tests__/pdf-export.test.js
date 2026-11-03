@@ -105,6 +105,13 @@ describe('normalizeHtmlForHash', () => {
     expect(a.body).toBe(b.body);
   });
 
+  it('drops scripts whatever their end tag looks like', () => {
+    const { body } = normalizeHtmlForHash(
+      '<body><p>a</p><script>x("<script>")</script ><p>b</p><script>y</SCRIPT></body>',
+    );
+    expect(body).toBe('<body><p>a</p><p>b</p></body>');
+  });
+
   it('changes when the visible content changes', () => {
     const a = normalizeHtmlForHash(page('main-111', '<main><p>Use Signal</p></main>'));
     const b = normalizeHtmlForHash(page('main-111', '<main><p>Use Signal daily</p></main>'));
