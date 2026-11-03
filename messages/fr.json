@@ -261,9 +261,9 @@
     "ariaLabel": "Copier dans le presse-papiers"
   },
   "expandableList": {
-    "more": "Show {count} more",
-    "moreWithLabel": "{label} ({count} more)",
-    "less": "Show less"
+    "more": "Afficher {count} de plus",
+    "moreWithLabel": "{label} ({count} de plus)",
+    "less": "Afficher moins"
   },
   "contact": {
     "title": "Nous contacter",
@@ -317,7 +317,9 @@
   },
   "relatedGuides": {
     "headingBlock": "Continue d'apprendre avec ces guides",
-    "headingFooter": "Si ça t'a été utile, jette aussi un œil à ces guides"
+    "headingFooter": "Si ça t'a été utile, jette aussi un œil à ces guides",
+    "readMore": "Lire la suite",
+    "viewPrintable": "Version imprimable"
   },
   "checklists": {
     "title": "Listes de contrôle",
