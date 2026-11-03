@@ -260,6 +260,11 @@
     "copied": "Copied",
     "ariaLabel": "Copy to clipboard"
   },
+  "expandableList": {
+    "more": "Show {count} more",
+    "moreWithLabel": "{label} ({count} more)",
+    "less": "Show less"
+  },
   "contact": {
     "title": "Contact Us",
     "intro": "Your feedback helps make this resource more useful and secure for everyone. We welcome suggestions for:",

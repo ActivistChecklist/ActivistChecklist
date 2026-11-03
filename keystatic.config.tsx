@@ -325,14 +325,6 @@ const collapsibleComponent = wrapper({
   schema: {
     title: fields.text({ label: 'Title', validation: { isRequired: true } }),
     defaultOpen: fields.checkbox({ label: 'Open by default', defaultValue: false }),
-    variant: fields.select({
-      label: 'Style',
-      options: [
-        { label: 'Default', value: 'default' },
-        { label: 'More (quiet link under a list, e.g. "7 more resources")', value: 'more' },
-      ],
-      defaultValue: 'default',
-    }),
     className: fields.text({ label: 'CSS classes (optional)' }),
   },
   ContentView(props) {
@@ -386,6 +378,36 @@ const listLabelComponent = mark({
     fontWeight: '600',
     textTransform: 'uppercase',
     letterSpacing: '0.05em',
+  },
+});
+
+/**
+ * A bullet list that shows its first items and hides the rest behind "Show N
+ * more" (components/mdx/ExpandableList.jsx). `show` is a text field because
+ * the site's MDX strips `{expressions}`, so a number would be lost as show={2}.
+ */
+const expandableListComponent = wrapper({
+  label: 'Expandable list',
+  description: 'Bullet list that shows the first items and hides the rest behind "Show N more"',
+  schema: {
+    show: fields.text({ label: 'Items to show before "Show more" (blank = 1)' }),
+    label: fields.text({
+      label: 'Button prefix (optional), e.g. "Go deeper" gives "Go deeper (4 more)"',
+    }),
+  },
+  ContentView(props) {
+    return (
+      <div>
+        <div
+          contentEditable={false}
+          suppressContentEditableWarning
+          style={{ fontSize: 12, color: '#94a3b8' }}
+        >
+          Shows the first {props.value.show || '1'}, the rest behind &ldquo;Show more&rdquo;
+        </div>
+        {props.children}
+      </div>
+    );
   },
 });
 
@@ -449,6 +471,7 @@ const contentComponents = {
   Collapsible: collapsibleComponent,
   InlineChecklist: inlineChecklistComponent,
   ListLabel: listLabelComponent,
+  ExpandableList: expandableListComponent,
   u: underlineComponent,
   mark: highlightComponent,
   blockquote: blockquoteComponent,
