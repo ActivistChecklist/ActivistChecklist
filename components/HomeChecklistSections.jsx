@@ -105,7 +105,7 @@ export default function HomeChecklistSections({ readMinutes = {}, estimatedTimes
 
 /**
  * Adds the time each card shows: the guide's own estimate, or reading time for
- * a featured how-to, which also gets its own button text.
+ * a featured how-to.
  */
 function toCardItem(item, t, estimatedTimes, readMinutes) {
   if (item.kind !== 'howto') return { ...item, duration: estimatedTimes[item.key] };
@@ -113,6 +113,5 @@ function toCardItem(item, t, estimatedTimes, readMinutes) {
   return {
     ...item,
     duration: minutes ? t('checklistSections.readMinutes', { minutes }) : undefined,
-    ctaLabel: t('checklistSections.readGuide'),
   };
 }

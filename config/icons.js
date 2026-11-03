@@ -79,12 +79,6 @@ export const GUIDE_ICONS = {
   action: IoHandRight,
   'action-safety': IoMedkitSmaller,
   ice: IoVideocam,
-};
-
-// Pages (not guides) that appear next to checklists, like the security party
-// how-to featured in the "Organizing others" section. Kept out of GUIDE_ICONS
-// so OG images and guide-only lookups don't pick them up.
-export const PAGE_ICONS = {
   party: IoCafe,
 };
 
