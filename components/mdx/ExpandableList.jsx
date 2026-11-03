@@ -4,6 +4,7 @@ import React, { useId, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { parseShowCount } from '@/lib/expandable-list';
 
 /**
  * A bullet list that shows its first few items and hides the rest behind a
@@ -25,8 +26,7 @@ export default function ExpandableList({ show = '1', label, children }) {
   const listId = useId();
   const [expanded, setExpanded] = useState(false);
 
-  const parsed = Number.parseInt(show, 10);
-  const visibleCount = Number.isFinite(parsed) && parsed >= 0 ? parsed : 1;
+  const visibleCount = parseShowCount(show);
 
   const childArray = React.Children.toArray(children);
   const listIndex = childArray.findIndex((c) => React.isValidElement(c) && c.type === 'ul');
