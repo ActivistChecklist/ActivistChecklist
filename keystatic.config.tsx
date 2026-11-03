@@ -655,6 +655,36 @@ const navDescriptionField = fields.text({
   multiline: true,
 });
 
+// relatedGuides can name pages too (an explainer, a printable); the site shows
+// them as reading cards beside the guide cards (lib/nav-copy.js
+// getRelatedPages). Keystatic's relationship field picks from one collection,
+// so each item shows its guide picker and its page picker over the same slug.
+// Each picker only shows the slug when it is one of its own entries.
+const relatedGuidePicker = fields.relationship({ label: 'Guide', collection: 'guides' });
+const relatedPagePicker = fields.relationship({
+  label: 'Or a page',
+  description: 'Shows as a reading card instead of a checklist card.',
+  collection: 'pages',
+});
+const relatedGuidesField = fields.array(
+  {
+    ...relatedGuidePicker,
+    label: 'Related guide or page',
+    Input(props) {
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+          <relatedGuidePicker.Input {...props} />
+          <relatedPagePicker.Input {...props} autoFocus={false} />
+        </div>
+      );
+    },
+  },
+  {
+    label: 'Related guides and pages',
+    itemLabel: (props) => props.value || 'Select a guide or page...',
+  },
+);
+
 const relatedGuidesComponent = wrapper({
   label: 'Related Guides',
   description: 'Block of related guide cards',
@@ -867,13 +897,7 @@ export default config({
             '40–60 word direct answer to this page’s implicit search question. Renders at the top of the guide. AI engines often quote this verbatim.',
           multiline: true,
         }),
-        relatedGuides: fields.array(
-          fields.relationship({
-            label: 'Related Guide',
-            collection: 'guides',
-          }),
-          { label: 'Related Guides', itemLabel: (props) => props.value || 'Select guide...' },
-        ),
+        relatedGuides: relatedGuidesField,
         firstPublished: fields.date({ label: 'First Published' }),
         lastUpdated: fields.date({ label: 'Last Updated' }),
         // Untranslatable: sync UNTRANSLATABLE_FRONTMATTER_SCALARS in scripts/crowdin-hide-strings.mjs
@@ -975,13 +999,7 @@ export default config({
           directory: 'public/images/content',
           publicPath: '/images/content/',
         }),
-        relatedGuides: fields.array(
-          fields.relationship({
-            label: 'Related Guide',
-            collection: 'guides',
-          }),
-          { label: 'Related Guides', itemLabel: (props) => props.value || 'Select guide...' },
-        ),
+        relatedGuides: relatedGuidesField,
         firstPublished: fields.date({ label: 'First Published' }),
         lastUpdated: fields.date({ label: 'Last Updated' }),
         // Untranslatable frontmatter: if you add/remove fields here, sync UNTRANSLATABLE_FRONTMATTER_SCALARS in scripts/crowdin-hide-strings.mjs (see lib/content.js readMdxFile).
