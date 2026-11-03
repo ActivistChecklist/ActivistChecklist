@@ -260,6 +260,11 @@
     "copied": "コピーしました",
     "ariaLabel": "クリップボードにコピー"
   },
+  "expandableList": {
+    "more": "Show {count} more",
+    "moreWithLabel": "{label} ({count} more)",
+    "less": "Show less"
+  },
   "contact": {
     "title": "コンタクト",
     "intro": "もらったフィードバックは、このリソースをもっと役立つ、安全なものにするために活かします。こんな提案を歓迎しています：",
