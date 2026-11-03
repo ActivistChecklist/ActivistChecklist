@@ -15,10 +15,6 @@
     "browseAllChecklists": "Voir toutes les checklists"
   },
   "navItems": {
-    "essentials": {
-      "title": "Les bases de la sécurité",
-      "description": "Les pratiques de sécurité essentielles pour tou·tes les militant·es."
-    },
     "search": {
       "dialogTitle": "Rechercher dans le site",
       "dialogDescription": "Utilise la barre de recherche pour trouver du contenu sur tout le site.",
@@ -27,54 +23,6 @@
       "popularHeading": "Recherches populaires",
       "topGuidesHeading": "Guides populaires",
       "pressEnter": "Appuie sur {kbd} pour rechercher"
-    },
-    "signal": {
-      "title": "Sécuriser Signal",
-      "description": "Sécurise ton application Signal pour communiquer plus sûrement."
-    },
-    "protest": {
-      "title": "Se préparer pour une manif",
-      "description": "Sécurité numérique pour toute personne qui va en manif."
-    },
-    "ice": {
-      "title": "Sécurité numérique pour la veille ICE",
-      "description": "Sécurité numérique pour la veille ICE et les réseaux d'intervention rapide."
-    },
-    "doxxing": {
-      "title": "Se défendre contre le doxxing",
-      "description": "Protège-toi du doxxing et du harcèlement en ligne."
-    },
-    "travel": {
-      "title": "Sécurité en voyage et en avion",
-      "description": "Pratiques de sécurité numérique pour les militant·es en déplacement."
-    },
-    "emergency": {
-      "title": "Plan d'urgence",
-      "description": "Mets en place un réseau de soutien d'urgence au cas où tu serais arrêté·e ou menacé·e."
-    },
-    "secondary": {
-      "title": "Téléphone secondaire",
-      "description": "Configure un téléphone en plus pour le militantisme et les manifs."
-    },
-    "links": {
-      "title": "Supprimer le pistage des liens",
-      "label": "Supprimer le pistage des liens"
-    },
-    "policeDoorPoster": {
-      "title": "Affiche « Les flics à ta porte »",
-      "label": "Affiche « Les flics à ta porte »"
-    },
-    "flyer": {
-      "title": "Tract à imprimer",
-      "label": "Tract à imprimer"
-    },
-    "vpn": {
-      "title": "Les VPN pour militant·es",
-      "label": "Les VPN pour militant·es"
-    },
-    "movies": {
-      "title": "Films, livres et podcasts",
-      "label": "Films, livres et podcasts"
     },
     "updates": {
       "title": "Vérificateur de mises à jour de sécurité",
@@ -88,17 +36,6 @@
       "title": "Termes et définitions",
       "label": "Termes et définitions"
     },
-    "resources": {
-      "title": "Ressources",
-      "label": "Ressources"
-    },
-    "about": {
-      "title": "À propos du site",
-      "label": "À propos"
-    },
-    "contribute": {
-      "title": "Contribuer"
-    },
     "changelog": {
       "title": "Mises à jour récentes du site",
       "label": "Mises à jour récentes du site"
@@ -106,54 +43,6 @@
     "contact": {
       "title": "Nous contacter",
       "label": "Nous contacter"
-    },
-    "privacy": {
-      "title": "Confidentialité",
-      "label": "Confidentialité"
-    },
-    "whatsapp": {
-      "title": "Sécuriser WhatsApp",
-      "description": "Configure WhatsApp pour protéger tes messages, tes groupes et tes contacts."
-    },
-    "spyware": {
-      "title": "Se protéger des logiciels espions",
-      "description": "Protège-toi des logiciels espions et des logiciels de surveillance."
-    },
-    "action": {
-      "title": "Sécurité numérique pour les actions à risque d'arrestation",
-      "description": "Protège ton téléphone et ton groupe quand tu risques de te faire arrêter."
-    },
-    "organizing": {
-      "title": "Organiser une action avec risque d'arrestation",
-      "description": "Pour les organisateur·rices et coordinateur·rices de mouvements."
-    },
-    "research": {
-      "title": "Recherches et repérages pour une action",
-      "description": "Comment faire des recherches et naviguer sur le web de façon anonyme."
-    },
-    "federal": {
-      "title": "Fonctionnaires fédéraux",
-      "description": "Conseils de sécurité numérique pour les employé·es fédéraux."
-    },
-    "party": {
-      "title": "Organiser une soirée sécurité",
-      "label": "Organiser une soirée sécurité"
-    },
-    "proton": {
-      "title": "Comment utiliser Proton en toute sécurité",
-      "label": "Comment utiliser Proton en toute sécurité"
-    },
-    "lockdown": {
-      "title": "Les compromis du Mode Isolement",
-      "label": "Les compromis du Mode Isolement"
-    },
-    "signalSecure": {
-      "title": "Signal est-il sécurisé ?",
-      "label": "Signal est-il sécurisé ?"
-    },
-    "signalAi": {
-      "title": "Apple Intelligence lit-elle mes messages Signal ?",
-      "label": "Apple Intelligence lit-elle mes messages Signal ?"
     }
   },
   "hero": {
@@ -450,9 +339,6 @@
       "title": "Organiser les autres",
       "heading": "Organiser les autres",
       "scope": "Mener des actions et sécuriser ton groupe."
-    },
-    "descriptions": {
-      "party": "Un modèle d'ordre du jour pour faire les checklists ensemble avec ton groupe."
     },
     "allChecklists": "{count, plural, one {# checklist au total} other {Les # checklists}}",
     "readMinutes": "{minutes} min de lecture",
