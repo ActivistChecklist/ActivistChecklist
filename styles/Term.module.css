@@ -8,6 +8,17 @@
   @apply ml-[3px] mt-0.5 text-primary;
 }
 
+/* On paper the popup can't open, so the term reads as plain text. */
+@media print {
+  .term {
+    @apply inline p-0 no-underline;
+  }
+
+  .termIcon {
+    @apply hidden;
+  }
+}
+
 .def[popover] {
   @apply m-auto w-[min(20rem,calc(100vw-2rem))] rounded-xl border border-border bg-popover p-4 shadow-lg;
 }

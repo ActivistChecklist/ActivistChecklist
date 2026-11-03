@@ -58,6 +58,10 @@ buildbackups/
 # Generated OG share images
 public/images/og/
 
+# Guide PDFs (scripts/build-pdfs.mjs): rendered cache and its content hashes
+public/pdf/
+.pdf-cache.json
+
 # Auto-generated endoflife.date snapshot (regenerated daily by scripts/fetch-endoflife-snapshot.mjs)
 public/data/eol-snapshot.json
 

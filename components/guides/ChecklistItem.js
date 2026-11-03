@@ -239,7 +239,7 @@ const ChecklistItem = ({
     >
       <CardHeader
         className={cn(
-          'p-3 pl-3 md:pl-5',
+          'p-3 pl-3 md:pl-5 print:break-after-avoid',
           !alwaysExpanded && 'cursor-pointer',
           expanded && 'rounded-t-lg',
         )}
@@ -380,6 +380,8 @@ const ChecklistItem = ({
           'grid mt-2',
           enableTransitions ? 'transition-all duration-300' : 'transition-none',
           expanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
+          // Print every item open: a printed checklist is read, not clicked.
+          'print:grid-rows-[1fr]',
           isChecked && `opacity-${checkedOpacity}`,
         )}
       >
@@ -411,7 +413,7 @@ const ChecklistItem = ({
                 <div
                   data-pagefind-ignore
                   className={cn(
-                    'pt-4 border-muted-foreground/20',
+                    'pt-4 border-muted-foreground/20 print:hidden',
                     'flex flex-col sm:flex-row items-start sm:items-center gap-3',
                     'w-full',
                   )}

@@ -56,7 +56,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
 
   return (
     <>
-      {/* If printing, show the logo */}
+      {/* If printing, show the logo. Page titles reserve print:pr-[260px] so a long one never runs under it. */}
       <div className="hidden print:block print:relative">
         <Image
           className="print:absolute print:top-0 print:right-0 dark:hidden"
