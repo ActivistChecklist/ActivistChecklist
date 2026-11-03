@@ -114,7 +114,13 @@
   "meta": {
     "lastUpdatedOn": "Dernière mise à jour le",
     "takesAbout": "Durée : environ",
-    "viewLatestGuideAt": "Consulte la dernière version du guide sur"
+    "viewLatestGuideAt": "Consulte la dernière version du guide sur",
+    "downloadPdf": "Télécharger le PDF"
+  },
+  "printNotice": {
+    "madeOn": "Cette copie a été faite le {date}.",
+    "updatesOften": "On met souvent nos guides à jour, au fil de l'évolution des menaces et des nouvelles façons de se protéger. Pour la version la plus récente, rends-toi sur",
+    "linksHeading": "Liens"
   },
   "footer": {
     "branding": {
