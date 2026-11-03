@@ -264,44 +264,35 @@ async function renderPdf(context, origin, target) {
     });
     if (!response?.ok()) throw new Error(`HTTP ${response?.status()}`);
 
-    const { canonical, hrefs } = await page.evaluate(() => {
+    const canonical = await page.evaluate(() => {
       document.documentElement.classList.remove('dark');
-      return {
-        canonical: document.querySelector('link[rel="canonical"]')?.href,
-        hrefs: [
-          ...new Set([...document.querySelectorAll('a[href]')].map((a) => a.getAttribute('href'))),
-        ],
-      };
+      return document.querySelector('link[rel="canonical"]')?.href;
     });
     if (!canonical) throw new Error('page has no canonical URL');
 
     if (PDF_FONTS[target.locale]) await page.addStyleTag({ content: pdfFontCss(target.locale) });
-
-    // Resolve every link against the public URL. Left alone, relative links
-    // would be baked into the PDF pointing at this throwaway localhost server.
-    const links = hrefs.map((href) => {
-      if (href.startsWith('#')) return { href, absolute: href, printUrl: null };
-      let absolute = href;
-      try {
-        absolute = new URL(href, canonical).href;
-      } catch {
-        // leave as written
-      }
-      return { href, absolute };
-    });
-    await page.evaluate((links) => {
-      const byHref = new Map(links.map((l) => [l.href, l.absolute]));
-      for (const a of document.querySelectorAll('a[href]')) {
-        const absolute = byHref.get(a.getAttribute('href'));
-        if (absolute) a.setAttribute('href', absolute);
-      }
-    }, links);
 
     // Components that print differently (open collapsibles, the "this copy was
     // made on" notice, link endnotes) listen for beforeprint. Print media first, so they never
     // animate open in screen styles.
     await page.emulateMedia({ media: 'print' });
     await page.evaluate(() => window.dispatchEvent(new Event('beforeprint')));
+
+    // Resolve every link against the public URL. Left alone, relative links
+    // would be baked into the PDF pointing at this throwaway localhost server.
+    // After beforeprint, so links in sections that only open for print are
+    // included. In-page #anchors stay as they are and become PDF-internal jumps.
+    await page.evaluate((canonical) => {
+      for (const a of document.querySelectorAll('a[href]')) {
+        const href = a.getAttribute('href');
+        if (href.startsWith('#')) continue;
+        try {
+          a.setAttribute('href', new URL(href, canonical).href);
+        } catch {
+          // leave as written
+        }
+      }
+    }, canonical);
 
     // Lazy images below the fold never scroll into view in a headless page.
     await page.evaluate(async () => {
@@ -428,6 +419,8 @@ async function main() {
   for (const key of orphaned) {
     delete manifest[key];
     fs.rmSync(cacheFile(key), { force: true });
+    // next build already copied the cache in public/ to out/
+    fs.rmSync(path.join(OUT_DIR, pdfPathFor(...key.split('/'))), { force: true });
   }
 
   console.log(

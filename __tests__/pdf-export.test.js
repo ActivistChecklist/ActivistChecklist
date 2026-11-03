@@ -167,10 +167,10 @@ describe('assignEndnotes', () => {
     ]);
   });
 
-  it('gives endnotes more room than the inline print limit', () => {
-    const long = `https://example.com/${'a'.repeat(80)}`;
+  it('never truncates an endnote URL, which is all a paper reader has', () => {
+    const long = `https://example.com/files/${'a'.repeat(150)}/One_Pager.pdf`;
     const { notes } = assignEndnotes([long], PAGE);
-    expect(notes[0].text).toBe(`example.com/${'a'.repeat(80)}`);
+    expect(notes[0].text).toBe(`example.com/files/${'a'.repeat(150)}/One_Pager.pdf`);
   });
 
   it('skips links that need no endnote', () => {
