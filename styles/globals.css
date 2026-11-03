@@ -8,6 +8,13 @@
 
 @config '../tailwind.config.js';
 
+/* `topnav:` is where the header swaps the hamburger for the full nav. It is sized
+   for the widest locale's nav labels (Japanese needs ~1075px), so check it when
+   adding a top-level nav item or a locale with longer labels. */
+@theme {
+  --breakpoint-topnav: 70rem;
+}
+
 /*
   The default border color has changed to `currentcolor` in Tailwind CSS v4,
   so we've added these compatibility styles to make sure everything still

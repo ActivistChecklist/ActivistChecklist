@@ -18,13 +18,14 @@ import { createIntlTranslator, getTranslatedNavItemFields } from '@/lib/navigati
 const GuideCard = ({ guideItem, size = 'medium' }) => {
   const t = useTranslations();
   const translateText = createIntlTranslator(t);
-  const { href, icon, iconKey, title, description, copyFromContent, ctaLabel, duration } =
-    guideItem;
+  const { href, icon, iconKey, kind, title, description, copyFromContent, duration } = guideItem;
   const { title: displayTitle, description: displayDescription } = copyFromContent
     ? { title, description }
     : getTranslatedNavItemFields(guideItem.key ?? iconKey, { title, description }, translateText);
   // Accept either a React component (icon) or a string key (iconKey) for server→client boundary
   const Icon = icon || getGuideIcon(iconKey);
+  // A how-to (the security party) has no checklist to view.
+  const cta = kind === 'howto' ? t('checklistSections.readGuide') : t('common.viewChecklist');
 
   if (size === 'large') {
     return (
@@ -55,7 +56,7 @@ const GuideCard = ({ guideItem, size = 'medium' }) => {
           </CardContent>
           <CardFooter className="relative mt-auto pt-0">
             <span className="text-primary font-medium inline-flex items-center text-base">
-              {ctaLabel || t('common.viewChecklist')}{' '}
+              {cta}{' '}
               <ArrowRight className="ml-2 transition-transform duration-300 ease-out group-hover:translate-x-1" />
             </span>
           </CardFooter>
@@ -80,7 +81,7 @@ const GuideCard = ({ guideItem, size = 'medium' }) => {
         </CardContent>
         <CardFooter className="py-3 px-4 pt-0 mt-auto print:hidden">
           <span className="text-primary font-medium inline-flex items-center text-sm">
-            {ctaLabel || t('common.viewChecklist')}{' '}
+            {cta}{' '}
             <ArrowRight className="ml-2 transition-transform duration-300 ease-out group-hover:translate-x-1" />
           </span>
         </CardFooter>

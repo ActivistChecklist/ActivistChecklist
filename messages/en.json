@@ -15,10 +15,6 @@
     "browseAllChecklists": "Browse all checklists"
   },
   "navItems": {
-    "essentials": {
-      "title": "Security essentials",
-      "description": "Core security practices every activist should follow."
-    },
     "search": {
       "dialogTitle": "Search the site",
       "dialogDescription": "Use the search bar to find relevant content across the site.",
@@ -27,54 +23,6 @@
       "popularHeading": "Popular searches",
       "topGuidesHeading": "Top guides",
       "pressEnter": "Press {kbd} to search"
-    },
-    "signal": {
-      "title": "Signal security",
-      "description": "Secure your Signal messaging app for safer communications."
-    },
-    "protest": {
-      "title": "Prepare for a protest",
-      "description": "Digital security for anyone attending a protest."
-    },
-    "ice": {
-      "title": "ICE watch digital security",
-      "description": "Digital security for ICE watch and rapid response networks."
-    },
-    "doxxing": {
-      "title": "Doxxing defense",
-      "description": "Protect yourself from doxxing and online harassment."
-    },
-    "travel": {
-      "title": "Travel & flight security",
-      "description": "Digital security practices for activists traveling."
-    },
-    "emergency": {
-      "title": "Emergency planning",
-      "description": "Establish an emergency support network in case you're detained or threatened."
-    },
-    "secondary": {
-      "title": "Secondary phone",
-      "description": "Set up an extra phone for activism and protests."
-    },
-    "links": {
-      "title": "Remove link tracking",
-      "label": "Remove link tracking"
-    },
-    "policeDoorPoster": {
-      "title": "Police at the door poster",
-      "label": "\"Police at the door\" poster"
-    },
-    "flyer": {
-      "title": "Printable flyer",
-      "label": "Printable flyer"
-    },
-    "vpn": {
-      "title": "VPNs for activists",
-      "label": "VPNs for activists"
-    },
-    "movies": {
-      "title": "Movies, books, & podcasts",
-      "label": "Movies, books, & podcasts"
     },
     "updates": {
       "title": "Security update checker",
@@ -88,17 +36,6 @@
       "title": "Terms & definitions",
       "label": "Terms & definitions"
     },
-    "resources": {
-      "title": "Resources",
-      "label": "Resources"
-    },
-    "about": {
-      "title": "About this site",
-      "label": "About"
-    },
-    "contribute": {
-      "title": "Contribute"
-    },
     "changelog": {
       "title": "Recent site updates",
       "label": "Recent site updates"
@@ -106,54 +43,6 @@
     "contact": {
       "title": "Contact",
       "label": "Contact"
-    },
-    "privacy": {
-      "title": "Privacy",
-      "label": "Privacy"
-    },
-    "whatsapp": {
-      "title": "WhatsApp security",
-      "description": "Configure WhatsApp to protect your messages, groups, and contacts."
-    },
-    "spyware": {
-      "title": "Spyware protection",
-      "description": "Protect yourself from spyware and surveillance software."
-    },
-    "action": {
-      "title": "Digital security for arrestable actions",
-      "description": "Protect your phone and your crew when you risk arrest."
-    },
-    "organizing": {
-      "title": "Organize an arrestable action",
-      "description": "For movement organizers and coordinators."
-    },
-    "research": {
-      "title": "Action research & scouting",
-      "description": "How to conduct research and browse the web anonymously."
-    },
-    "federal": {
-      "title": "Federal workers",
-      "description": "Digital security guidance for federal employees."
-    },
-    "party": {
-      "title": "Host a security party",
-      "label": "Host a security party"
-    },
-    "proton": {
-      "title": "How to use Proton safely",
-      "label": "How to use Proton safely"
-    },
-    "lockdown": {
-      "title": "Lockdown Mode trade-offs",
-      "label": "Lockdown Mode trade-offs"
-    },
-    "signalSecure": {
-      "title": "Is Signal secure?",
-      "label": "Is Signal secure?"
-    },
-    "signalAi": {
-      "title": "Is Apple Intelligence reading my Signal messages?",
-      "label": "Is Apple Intelligence reading my Signal messages?"
     }
   },
   "hero": {
@@ -179,7 +68,7 @@
     "dontCareDescription": "Mass surveillance affects everyone. Your data can be used to profile communities, predict protests, or target those you care about. Protecting your communications helps protect all of us."
   },
   "featured": {
-    "sectionTitle": "Featured In"
+    "sectionTitle": "Sites that have shared our guides"
   },
   "homepage": {
     "browseAll": "See all checklists",
@@ -269,7 +158,8 @@
     "description": "ICE, police, and corporate surveillance keep adding new tools. We update these guides to keep pace. Subscribe to hear when something important shifts.",
     "buttonText": "Subscribe",
     "emailAriaLabel": "Email address",
-    "privacyLink": "Privacy policy"
+    "privacyLink": "Privacy policy",
+    "dismissLabel": "Don't show this again"
   },
   "common": {
     "loading": "Loading...",
@@ -376,6 +266,11 @@
     "copied": "Copied",
     "ariaLabel": "Copy to clipboard"
   },
+  "expandableList": {
+    "more": "Show {count} more",
+    "moreWithLabel": "{label} ({count} more)",
+    "less": "Show less"
+  },
   "contact": {
     "title": "Contact Us",
     "intro": "Your feedback helps make this resource more useful and secure for everyone. We welcome suggestions for:",
@@ -420,10 +315,9 @@
     "mostSecure": "Most Secure"
   },
   "feedbackCta": {
-    "heading": "Have Questions?",
-    "description": "Let us know if you have questions or feedback so we can make these guides as useful as possible.",
-    "inputPlaceholder": "Type your question...",
-    "sendButton": "Send",
+    "heading": "Have questions?",
+    "barText": "Let us know so we can make these guides more useful.",
+    "buttonText": "Send a message",
     "dialogTitle": "Send us a message",
     "successMessage": "Thanks for your feedback! We'll review it and use it to improve the guides. If you're finding the site valuable, please help spread the word!"
   },
@@ -456,9 +350,6 @@
       "title": "Organizing others",
       "heading": "Organizing others",
       "scope": "Running actions and getting your group secure."
-    },
-    "descriptions": {
-      "party": "A template agenda for getting your group through the checklists together."
     },
     "allChecklists": "All {count, plural, one {# checklist} other {# checklists}}",
     "readMinutes": "{minutes} min read",
@@ -787,10 +678,10 @@
   },
   "tools": {
     "metaTitle": "Tools we built | Activist Checklist",
-    "metaDescription": "Tools we built to go with our checklists: map your risks before an action, lock down your social media, and check if your phone still gets security updates.",
+    "metaDescription": "Tools we built to go with our checklists: map your risks before an action, check if your phone still gets security updates, and clear out old AI chats.",
     "documentTitle": "Tools we built | Activist Checklist",
     "title": "Tools we built",
-    "intro": "Four tools we built to go along with the checklists. Each one covers a step that is hard to finish from written instructions alone.",
+    "intro": "Three tools we built to go along with the checklists. Each one covers a step that is hard to finish from written instructions alone.",
     "items": {
       "riskMapper": {
         "eyebrow": "Plan an action",
@@ -802,18 +693,6 @@
         "bullet3": "Share it with your group over an end-to-end encrypted link, or export a PDF for the people who were not at the meeting.",
         "cta": "Open Risk Mapper",
         "shotAlt": "Risk Mapper mid-session, with risks placed on a grid of how likely they are and how bad they would be."
-      },
-      "socialScrub": {
-        "eyebrow": "Lock down your profiles",
-        "name": "Social Scrub",
-        "short": "Lock down your social media accounts, one at a time.",
-        "lede": "Walks you through the same eight privacy steps on every social media account you have.",
-        "bullet1": "Pick your platforms from a list of 130 sites, including the ones you forgot about. Add any we missed.",
-        "bullet2": "For each account: delete it or keep it, change your display name and username, remove your photo, take your location and employer out of your bio, and lock down your privacy settings.",
-        "bullet3": "It remembers where you left off, so you can do a few accounts at a time.",
-        "cta": "Open Social Scrub",
-        "secondaryCta": "Doxxing defense guide",
-        "shotAlt": "A sample profile before and after a scrub. The name, photo, username, bio, friends list and location are all changed or hidden."
       },
       "updates": {
         "eyebrow": "Check your device",
@@ -843,7 +722,7 @@
       "body": "Each of these comes out of one of our checklists. Start with the checklist and it will point you to the tool when you get to that step.",
       "primaryCta": "Digital Security Essentials",
       "secondaryCta": "Doxxing Defense Checklist",
-      "openSource": "All four are <repos>open source</repos>. If one is broken, or you need something we have not built yet, <contact>let us know</contact>."
+      "openSource": "All three are <repos>open source</repos>. If one is broken, or you need something we have not built yet, <contact>let us know</contact>."
     }
   },
   "terms": {

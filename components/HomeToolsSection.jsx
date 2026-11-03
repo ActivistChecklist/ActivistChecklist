@@ -12,12 +12,12 @@ import { TOOLS, TOOLS_HREF } from '@/config/tools';
  * Compact teaser for /tools/ near the bottom of the homepage.
  *
  * Each card opens with a small preview distilled from that tool's full
- * illustration on /tools/ (see ToolThumb). Not an icon badge: a heat grid, a
- * before and after pair, an alert, a list of chats clearing out. They give the
- * card a bit of the tool's character without pretending to be a screenshot.
+ * illustration on /tools/ (see ToolThumb). Not an icon badge: a heat grid, an
+ * alert, a list of chats clearing out. They give the card a bit of the tool's
+ * character without pretending to be a screenshot.
  *
  * The one glyph that earns its place is the small external mark after the name:
- * three of the four leave the site, and readers should know that before they
+ * two of the three leave the site, and readers should know that before they
  * click.
  */
 function ToolCard({ tool }) {
@@ -62,7 +62,7 @@ export default function HomeToolsSection() {
         </Button>
       </div>
       <p className="mb-6 text-lg text-muted-foreground">{t('homepage.toolsDescription')}</p>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         {TOOLS.map((tool) => (
           <ToolCard key={tool.key} tool={tool} />
         ))}

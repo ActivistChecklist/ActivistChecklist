@@ -128,7 +128,7 @@ function buildItemParentMap(guides) {
   return map;
 }
 
-const CHECKLIST_ITEM_RE = /<ChecklistItem\s+slug=["']([^"']+)["']\s*\/?>/g;
+const CHECKLIST_ITEM_RE = /<ChecklistItem\b[^>]*?\bslug=["']([^"']+)["'][^>]*?\/?>/g;
 function extractChecklistItemSlugs(mdxContent) {
   if (!mdxContent) return [];
   const seen = new Set();

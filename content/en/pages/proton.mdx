@@ -87,7 +87,7 @@ We strongly recommend folks use [IVPN](https://www.ivpn.net/) if they are able t
 
 We must understand Proton's limitations in order to use it safely.
 
-<h3 id="anonymous">❌ Misunderstanding #1: You are anonymous when you use Proton</h3>
+### ❌ Misunderstanding #1: You are anonymous when you use Proton {#anonymous}
 
 People often think that "end-to-end encryption" also means that your identity is protected. While this is (mostly) true when using Signal, it's not the case with any email provider because of the way email works. Encryption of messages/docs is not the same as anonymity.
 
@@ -98,7 +98,7 @@ People often think that "end-to-end encryption" also means that your identity is
 
 **It *is* possible to use Proton anonymously**, but you have to be very deliberate. Always complete setup and access Proton through [Tor Browser](https://www.torproject.org/download/), never use a credit card, and never enter a phone number or recovery email tied to your identity.
 
-<h3 id="limitations">❌ Misunderstanding #2: 100% of your emails are encrypted</h3>
+### ❌ Misunderstanding #2: 100% of your emails are encrypted {#limitations}
 
 Proton's email encryption only works on the **contents** of the email (not the subject or recipient) AND only when the emails are **between Proton users** (not Gmail or basically any other email provider).
 
@@ -109,7 +109,7 @@ Here's how the encryption actually works, and its limitations:
 * ❌ The subject lines and recipient are never encrypted (even when messaging with other Proton users).
 * 🟡 Incoming emails (from any email provider) get encrypted after they arrive in your account, but Proton technically can see them briefly before they get encrypted. There hasn't been a public case of this happening, but they could be compelled to keep an active log of incoming emails (from non-Proton accounts like Gmail) before they get encrypted. This would be a pretty extraordinary step because unlike the publicized case of the [IP address of a climate activist](https://techcrunch.com/2021/09/06/protonmail-logged-ip-address-of-french-activist-after-order-by-swiss-authorities/) being turned over, this would require writing new code.
 
-<h3 id="swiss">❌ Misunderstanding #3: Proton being based in Switzerland protects you from US law enforcement getting your account data</h3>
+### ❌ Misunderstanding #3: Proton being based in Switzerland protects you from US law enforcement getting your account data {#swiss}
 
 The US government uses something called a Mutual Legal Assistance Treaty (MLAT) to carry out court orders in other countries.
 

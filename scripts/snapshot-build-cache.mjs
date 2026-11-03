@@ -46,7 +46,7 @@ export function isValidStaticCache(cacheDir) {
 }
 
 /**
- * Move worktree build output (out-*) into the cache dir for this commit.
+ * Move worktree build output (out/) into the cache dir for this commit.
  * @returns {string} Absolute cache dir path
  */
 export function moveBuildOutputToCache(repoRoot, fullSha, builtOutDir) {

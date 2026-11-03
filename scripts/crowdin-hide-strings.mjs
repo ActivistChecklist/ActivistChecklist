@@ -8,7 +8,7 @@
  *
  * This includes:
  *   - JSX attributes: slug, type, size, level, mode, alignment, target, variant, icon, href, src, className
- *   - Frontmatter arrays: relatedGuides, titleBadges
+ *   - Frontmatter arrays: relatedGuides
  *   - Frontmatter scalars: slug, type, date, firstPublished, lastUpdated, image, imageOverride, url, source, tags, showToc, tocDepth
  *
  * Usage:
@@ -136,8 +136,8 @@ function extractUntranslatableStrings(contentDir) {
   const attrPattern = UNTRANSLATABLE_ATTRIBUTES.join('|');
   const attrRegex = new RegExp(`\\b(${attrPattern})=["']([^"']+)["']`, 'g');
 
-  // Frontmatter array patterns (relatedGuides, titleBadges, etc.)
-  const frontmatterArrayRegex = /^(relatedGuides|titleBadges):\s*\n((?:\s+-\s+.+\n?)+)/gm;
+  // Frontmatter array patterns (relatedGuides)
+  const frontmatterArrayRegex = /^(relatedGuides):\s*\n((?:\s+-\s+.+\n?)+)/gm;
   const arrayItemRegex = /^\s+-\s+(.+)$/gm;
 
   const scalarFieldPattern = UNTRANSLATABLE_FRONTMATTER_SCALARS.join('|');

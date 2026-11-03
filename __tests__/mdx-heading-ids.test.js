@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { applyHeadingIds } from '../lib/mdx-heading-ids';
+import { applyHeadingIds, escapeHeadingIds, unescapeHeadingIds } from '../lib/mdx-heading-ids';
 
 describe('applyHeadingIds', () => {
   it('rewrites an h2 with a trailing {#id} to a raw HTML heading', () => {
@@ -25,6 +25,15 @@ describe('applyHeadingIds', () => {
     // is invalid and breaks hydration.
     const src = 'text before\n## Heading {#x}\ntext after';
     expect(applyHeadingIds(src)).toBe('text before\n\n<h2 id="x">Heading</h2>\n\ntext after');
+  });
+
+  it('rewrites an indented heading inside a JSX wrapper and keeps the indent', () => {
+    // Regression: content inside <Section> is indented, and an unmatched
+    // {#id} there reaches MDX as a JS expression and fails to compile.
+    const src = '<Section title="T" slug="t">\n  ### Top steps {#top-steps}\n</Section>';
+    expect(applyHeadingIds(src)).toBe(
+      '<Section title="T" slug="t">\n\n  <h3 id="top-steps">Top steps</h3>\n\n</Section>',
+    );
   });
 
   it('leaves headings without the marker untouched', () => {
@@ -85,5 +94,37 @@ describe('applyHeadingIds', () => {
   it('short-circuits when no marker is present', () => {
     const src = '# Title\n\nBody with no ids at all.';
     expect(applyHeadingIds(src)).toBe(src);
+  });
+});
+
+describe('escapeHeadingIds / unescapeHeadingIds', () => {
+  it('escapes a heading marker so MDX reads it as text, and back', () => {
+    expect(escapeHeadingIds('## Downsides {#downsides}')).toBe('## Downsides \\{#downsides}');
+    expect(unescapeHeadingIds('## Downsides \\{#downsides}')).toBe('## Downsides {#downsides}');
+  });
+
+  it('round-trips a body with marked and plain headings unchanged', () => {
+    const src = '# Title\n\n## One **bold** {#one}\n\ntext\n\n#### Two {#two}\n\n## Plain\n';
+    expect(unescapeHeadingIds(escapeHeadingIds(src))).toBe(src);
+  });
+
+  it('handles indented headings inside a component like <Section>', () => {
+    expect(escapeHeadingIds('  ## Steps {#steps}')).toBe('  ## Steps \\{#steps}');
+    expect(unescapeHeadingIds('  ## Steps \\{#steps}')).toBe('  ## Steps {#steps}');
+  });
+
+  it('does not double-escape a marker that is already escaped', () => {
+    expect(escapeHeadingIds('## A \\{#a}')).toBe('## A \\{#a}');
+  });
+
+  it('also unescapes a closing brace escaped as \\}', () => {
+    expect(unescapeHeadingIds('## A \\{#a\\}')).toBe('## A {#a}');
+  });
+
+  it('leaves non-heading lines and fenced code alone', () => {
+    const src = 'A paragraph {#id}\n\n```\n## Not a heading {#nope}\n```\n';
+    expect(escapeHeadingIds(src)).toBe(src);
+    const escaped = 'A paragraph \\{#id}\n\n```\n## Not a heading \\{#nope}\n```\n';
+    expect(unescapeHeadingIds(escaped)).toBe(escaped);
   });
 });

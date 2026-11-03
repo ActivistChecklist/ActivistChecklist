@@ -1,8 +1,10 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useId } from 'react';
 import { cn } from '@/lib/utils';
 import { Check } from 'lucide-react';
+
+const BREAK_TYPES = ['p', 'br', 'ul', 'ol'];
 
 /**
  * InlineChecklist - Converts bullet points into interactive checklist items
@@ -11,6 +13,7 @@ import { Check } from 'lucide-react';
  * provided storageKey (or a generated one based on content).
  */
 export function InlineChecklist({ children, storageKey, className }) {
+  const baseId = useId();
   const [checkedItems, setCheckedItems] = useState({});
   const [mounted, setMounted] = useState(false);
   // Store children in state to ensure consistent rendering after mount
@@ -73,37 +76,24 @@ export function InlineChecklist({ children, storageKey, className }) {
   };
 
   // Split children into first line and rest
-  // First line = first paragraph, or if no paragraphs, all content
+  // First line = first paragraph, or if no paragraphs, all content (so inline
+  // links and formatting get crossed out with the text around them)
   const splitFirstLine = (itemChildren) => {
     const childArray = React.Children.toArray(itemChildren);
 
-    // If only one child, that's the first line
-    if (childArray.length <= 1) {
-      return { firstLine: itemChildren, rest: null };
-    }
-
-    // Look for paragraph or br break point
-    let breakIndex = -1;
+    // Split at the first paragraph, line break or nested list that follows
+    // some content. Whitespace-only text between blocks doesn't count.
+    let seenContent = false;
     for (let i = 0; i < childArray.length; i++) {
       const child = childArray[i];
-      // If we find a second paragraph or a br, split there
-      if (i > 0 && React.isValidElement(child)) {
-        if (child.type === 'p' || child.type === 'br') {
-          breakIndex = i;
-          break;
-        }
+      const isBreak = React.isValidElement(child) && BREAK_TYPES.includes(child.type);
+      if (isBreak && seenContent) {
+        return { firstLine: childArray.slice(0, i), rest: childArray.slice(i) };
       }
+      if (typeof child !== 'string' || child.trim()) seenContent = true;
     }
 
-    if (breakIndex === -1) {
-      // No break found, first child is the first line
-      return { firstLine: childArray[0], rest: childArray.slice(1) };
-    }
-
-    return {
-      firstLine: childArray.slice(0, breakIndex),
-      rest: childArray.slice(breakIndex),
-    };
+    return { firstLine: itemChildren, rest: null };
   };
 
   // Transform bullet list items into checklist items
@@ -118,10 +108,13 @@ export function InlineChecklist({ children, storageKey, className }) {
     if (type === 'ul') {
       const items = React.Children.toArray(props.children);
       return (
-        <ul className={cn('checklist-items list-none pl-0 space-y-2', props.className)}>
+        // No list indent: the box plus gap (1rem + 0.5rem) takes the place of the
+        // bullet lists' ml-6, so item text lines up with bullet text
+        <ul className={cn('checklist-items list-none pl-0 ml-0 space-y-2', props.className)}>
           {items.map((item, idx) => {
             if (React.isValidElement(item) && item.type === 'li') {
               const itemIndex = `${path}-${idx}`;
+              const labelId = `${baseId}${itemIndex}`;
               const isChecked = checkedItems[itemIndex] || false;
               const { firstLine, rest } = splitFirstLine(item.props.children);
 
@@ -134,23 +127,40 @@ export function InlineChecklist({ children, storageKey, className }) {
                     toggleItem(itemIndex);
                   }}
                   className={cn(
-                    'flex items-start gap-3 cursor-pointer select-none transition-all',
+                    'flex items-start gap-2 cursor-pointer select-none transition-all',
                     'hover:bg-muted/40 -mx-2 px-2 py-1 rounded-md',
                     isChecked && 'bg-primary/10',
                   )}
                 >
+                  {/* The box is the checkbox for keyboard and screen readers (the
+                      item text can hold links, so the whole row can't be one).
+                      Clicks anywhere on the row still toggle it via the li. */}
                   <span
+                    role="checkbox"
+                    aria-checked={isChecked}
+                    aria-labelledby={labelId}
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === ' ' || e.key === 'Enter') {
+                        e.preventDefault();
+                        toggleItem(itemIndex);
+                      }
+                    }}
                     className={cn(
-                      'shrink-0 w-5 h-5 mt-0.5 rounded-sm border-2 flex items-center justify-center transition-colors duration-300',
+                      'shrink-0 size-4 mt-1.5 rounded-sm border-2 flex items-center justify-center transition-colors duration-300',
+                      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
                       isChecked
                         ? 'bg-primary border-primary text-primary-foreground'
                         : 'border-muted-foreground/40 hover:border-primary',
                     )}
                   >
-                    {isChecked && <Check className="w-3 h-3" />}
+                    {isChecked && <Check className="w-3 h-3" aria-hidden />}
                   </span>
                   <span className="flex-1 transition-all">
-                    <span className={cn(isChecked && 'line-through text-muted-foreground')}>
+                    <span
+                      id={labelId}
+                      className={cn(isChecked && 'line-through text-muted-foreground')}
+                    >
                       {firstLine}
                     </span>
                     {rest && (
@@ -179,35 +189,8 @@ export function InlineChecklist({ children, storageKey, className }) {
     return node;
   };
 
-  // Count total and checked items
-  const countItems = (node, count = { total: 0 }) => {
-    if (!React.isValidElement(node)) return count;
-
-    const { type, props } = node;
-
-    if (type === 'ul') {
-      React.Children.forEach(props.children, (child) => {
-        if (React.isValidElement(child) && child.type === 'li') {
-          count.total++;
-        }
-      });
-    }
-
-    if (props.children) {
-      React.Children.forEach(props.children, (child) => {
-        countItems(child, count);
-      });
-    }
-
-    return count;
-  };
-
   // Use stableChildren after mount to ensure consistent rendering
   const childrenToRender = mounted && stableChildren ? stableChildren : children;
-
-  const { total } = countItems(childrenToRender);
-  const checkedCount = Object.values(checkedItems).filter(Boolean).length;
-  const allChecked = total > 0 && checkedCount >= total;
 
   // Render a simple placeholder on the server to avoid hydration mismatch
   // The complex transformChildren logic only runs on client after mount
@@ -228,31 +211,7 @@ export function InlineChecklist({ children, storageKey, className }) {
   }
 
   return (
-    <div
-      className={cn(
-        'inline-checklist my-2 p-0 rounded-lg',
-        // allChecked ? "bg-primary/5" : "bg-muted/30",
-        className,
-      )}
-    >
-      {total > 0 && (
-        <div className="flex items-center justify-between mb-3 text-sm text-muted-foreground">
-          <span className="font-medium">
-            {allChecked ? '✓ All done!' : `${checkedCount} of ${total} completed`}
-          </span>
-          {checkedCount > 0 && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setCheckedItems({});
-              }}
-              className="text-xs text-muted-foreground/60 hover:text-muted-foreground underline"
-            >
-              Reset
-            </button>
-          )}
-        </div>
-      )}
+    <div className={cn('inline-checklist my-2 p-0 rounded-lg', className)}>
       {React.Children.map(childrenToRender, (child, idx) =>
         transformChildren(child, `root-${idx}`),
       )}

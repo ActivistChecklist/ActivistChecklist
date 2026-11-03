@@ -68,17 +68,33 @@ const INLINE_FIELDS = new Set(['preview', 'do', 'dont', 'excerpt']);
 const COLLECTION_SCHEMAS = [
   {
     match: '/checklist-items/',
-    order: ['title', 'preview', 'do', 'dont', 'titleBadges', 'firstPublished', 'lastUpdated'],
-    defaults: { titleBadges: [] },
+    order: ['title', 'preview', 'do', 'dont', 'firstPublished', 'lastUpdated'],
+    defaults: {},
   },
   {
     match: '/guides/',
-    order: ['title', 'estimatedTime', 'excerpt', 'relatedGuides', 'firstPublished', 'lastUpdated'],
+    order: [
+      'title',
+      'navTitle',
+      'navDescription',
+      'estimatedTime',
+      'excerpt',
+      'relatedGuides',
+      'firstPublished',
+      'lastUpdated',
+    ],
     defaults: {},
   },
   {
     match: '/pages/',
-    order: ['title', 'relatedGuides', 'firstPublished', 'lastUpdated'],
+    order: [
+      'title',
+      'navTitle',
+      'navDescription',
+      'relatedGuides',
+      'firstPublished',
+      'lastUpdated',
+    ],
     defaults: {},
   },
   {
