@@ -11,8 +11,13 @@ import { config, collection, fields, singleton } from '@keystatic/core';
 import { wrapper, block, inline, repeating, mark } from '@keystatic/core/content-components';
 import { Icon } from '@keystar/ui/icon';
 import { boldIcon } from '@keystar/ui/icon/icons/boldIcon';
+import { chevronsRightIcon } from '@keystar/ui/icon/icons/chevronsRightIcon';
+import { headingIcon } from '@keystar/ui/icon/icons/headingIcon';
+import { highlighterIcon } from '@keystar/ui/icon/icons/highlighterIcon';
+import { underlineIcon } from '@keystar/ui/icon/icons/underlineIcon';
 import ChecklistItemEditorPreview from '@/components/keystatic/ChecklistItemEditorPreview';
 import AlertEditorPreview from '@/components/keystatic/AlertEditorPreview';
+import { escapeHeadingIds, unescapeHeadingIds } from '@/lib/mdx-heading-ids';
 
 export const showKeystaticUI = process.env.BUILD_MODE !== 'static';
 export const showAdminUI = showKeystaticUI;
@@ -24,6 +29,34 @@ const mdxEditorOptionsContent = {
     publicPath: '/images/content/',
   },
 };
+
+const textDecoder = new TextDecoder();
+const textEncoder = new TextEncoder();
+
+/**
+ * `fields.mdx` for entry bodies that also accepts `## Heading {#id}` anchors
+ * (lib/mdx-heading-ids.js). The editor's MDX parser reads a bare `{` as code
+ * and refuses to open the entry, so the marker is escaped before it parses and
+ * unescaped in what it saves. Editors see and edit it as `{#id}` in the heading.
+ */
+function mdxBody(options) {
+  const field = fields.mdx(options);
+  return {
+    ...field,
+    parse: (value, args) =>
+      field.parse(value, {
+        ...args,
+        content: textEncoder.encode(escapeHeadingIds(textDecoder.decode(args.content))),
+      }),
+    serialize(value, args) {
+      const out = field.serialize(value, args);
+      return {
+        ...out,
+        content: textEncoder.encode(unescapeHeadingIds(textDecoder.decode(out.content))),
+      };
+    },
+  };
+}
 
 // ─── Shared content components ────────────────────────────────────────────────
 
@@ -167,6 +200,8 @@ const imageEmbedComponent = wrapper({
       ],
       defaultValue: 'medium',
     }),
+    // Keystatic writes every prop on save, so defaults must match
+    // components/ImageEmbed.jsx or saving an entry silently restyles its images.
     alignment: fields.select({
       label: 'Alignment',
       options: [
@@ -174,7 +209,12 @@ const imageEmbedComponent = wrapper({
         { label: 'Center', value: 'center' },
         { label: 'Right', value: 'right' },
       ],
-      defaultValue: 'left',
+      defaultValue: 'center',
+    }),
+    raw: fields.checkbox({
+      label: 'Raw',
+      description: 'No styling, shown at its own size (for badges and similar).',
+      defaultValue: false,
     }),
   },
   ContentView(props) {
@@ -259,6 +299,143 @@ const styledSpanComponent = mark({
   className: ({ value }) => value.className || '',
 });
 
+/**
+ * Wraps selected text; serializes as &lt;MenuPath&gt;…&lt;/MenuPath&gt;. Content always
+ * uses it inside a paragraph, even when it sits on its own line, so it is a
+ * mark rather than a wrapper. See components/guides/MenuPath.jsx.
+ */
+const menuPathComponent = mark({
+  label: 'Menu path',
+  icon: <Icon src={chevronsRightIcon} />,
+  tag: 'span',
+  schema: {
+    inline: fields.checkbox({
+      label: 'Inline',
+      description:
+        'Keep the path inside the sentence. Leave off for the block form, where a leading *iPhone:* style label becomes a header.',
+      defaultValue: false,
+    }),
+  },
+  style: { borderBottom: '1px dashed #94a3b8' },
+});
+
+const collapsibleComponent = wrapper({
+  label: 'Collapsible',
+  description: 'Hidden content the reader clicks to expand',
+  schema: {
+    title: fields.text({ label: 'Title', validation: { isRequired: true } }),
+    defaultOpen: fields.checkbox({ label: 'Open by default', defaultValue: false }),
+    variant: fields.select({
+      label: 'Style',
+      options: [
+        { label: 'Default', value: 'default' },
+        { label: 'More (quiet link under a list, e.g. "7 more resources")', value: 'more' },
+      ],
+      defaultValue: 'default',
+    }),
+    className: fields.text({ label: 'CSS classes (optional)' }),
+  },
+  ContentView(props) {
+    return (
+      <div>
+        <div
+          contentEditable={false}
+          suppressContentEditableWarning
+          style={{ fontWeight: 600, fontSize: 14, marginBottom: 4 }}
+        >
+          ▸ {props.value.title || 'Collapsible'}
+        </div>
+        {props.children}
+      </div>
+    );
+  },
+});
+
+const inlineChecklistComponent = wrapper({
+  label: 'Inline Checklist',
+  description: 'Converts bullet list into interactive checklist',
+  schema: {
+    storageKey: fields.text({ label: 'Storage key (for localStorage)' }),
+  },
+  ContentView(props) {
+    return (
+      <div>
+        {props.value.storageKey && (
+          <div
+            contentEditable={false}
+            suppressContentEditableWarning
+            style={{ fontSize: 11, color: '#94a3b8' }}
+          >
+            key: {props.value.storageKey}
+          </div>
+        )}
+        {props.children}
+      </div>
+    );
+  },
+});
+
+/** Small muted label above a list; renders as an h3 (components/mdx/ListLabel.jsx). */
+const listLabelComponent = mark({
+  label: 'List label',
+  icon: <Icon src={headingIcon} />,
+  tag: 'span',
+  schema: {},
+  style: {
+    fontSize: '0.8em',
+    fontWeight: '600',
+    textTransform: 'uppercase',
+    letterSpacing: '0.05em',
+  },
+});
+
+// ─── Plain HTML tags ──────────────────────────────────────────────────────────
+// The editor rejects any JSX tag it has no definition for, HTML tags included,
+// and then refuses to open the whole entry. These only let tags that content
+// already uses pass through unchanged; the site renders them as plain HTML.
+
+const underlineComponent = mark({
+  label: 'Underline',
+  icon: <Icon src={underlineIcon} />,
+  tag: 'u',
+  schema: {},
+});
+
+const highlightComponent = mark({
+  label: 'Highlight',
+  icon: <Icon src={highlighterIcon} />,
+  tag: 'mark',
+  schema: {},
+});
+
+const blockquoteComponent = wrapper({
+  label: 'Quote block',
+  description: 'Use when the quote holds components, like a message with a Copy Button',
+  schema: {},
+});
+
+const anchorSectionComponent = wrapper({
+  label: 'Anchor section',
+  description: 'Makes the content inside a #link target',
+  schema: {
+    id: fields.text({ label: 'Anchor id', validation: { isRequired: true } }),
+  },
+  ContentView(props) {
+    return (
+      <div>
+        <div
+          contentEditable={false}
+          suppressContentEditableWarning
+          style={{ fontSize: 12, color: '#94a3b8' }}
+        >
+          #{props.value.id}
+        </div>
+        {props.children}
+      </div>
+    );
+  },
+});
+
 // Shared set used in most collections
 const contentComponents = {
   Alert: alertComponent,
@@ -268,6 +445,14 @@ const contentComponents = {
   VideoEmbed: videoEmbedComponent,
   CopyButton: copyButtonComponent,
   StyledSpan: styledSpanComponent,
+  MenuPath: menuPathComponent,
+  Collapsible: collapsibleComponent,
+  InlineChecklist: inlineChecklistComponent,
+  ListLabel: listLabelComponent,
+  u: underlineComponent,
+  mark: highlightComponent,
+  blockquote: blockquoteComponent,
+  section: anchorSectionComponent,
 };
 
 // ─── Badge components (checklist items only) ──────────────────────────────────
@@ -350,6 +535,12 @@ const checklistItemComponent = block({
     important: fields.checkbox({
       label: 'Important',
       description: 'Show the Important badge before the title on this page.',
+      defaultValue: false,
+    }),
+    alwaysExpanded: fields.checkbox({
+      label: 'Always expanded',
+      description:
+        'Pin the item open with no collapse control. Use when the item is the body of a page section.',
       defaultValue: false,
     }),
   },
@@ -474,6 +665,64 @@ const relatedGuideComponent = block({
     );
   },
 });
+
+// ─── Guide and page components ────────────────────────────────────────────────
+// Rendered in guides and pages but not inside checklist items (lib/mdx-components.js).
+
+const faqItemComponent = block({
+  label: 'FAQ item',
+  schema: {
+    question: fields.text({ label: 'Question', validation: { isRequired: true } }),
+    answer: fields.text({
+      label: 'Answer',
+      description: 'Plain text, no Markdown. Search engines copy it verbatim into FAQ results.',
+      multiline: true,
+      validation: { isRequired: true },
+    }),
+  },
+  ContentView(props) {
+    return (
+      <div contentEditable={false} suppressContentEditableWarning style={{ fontSize: 13 }}>
+        <div style={{ fontWeight: 600 }}>{props.value.question || 'Question'}</div>
+        <div style={{ color: '#64748b' }}>{props.value.answer}</div>
+      </div>
+    );
+  },
+});
+
+// No title field: an empty one would serialize as title="" and blank out the
+// default "Frequently asked questions" heading.
+const faqComponent = repeating({
+  label: 'FAQ',
+  description: 'Frequently asked questions. Select it and use Insert to add another item.',
+  children: ['FAQItem'],
+  schema: {},
+});
+
+const inlineCtaComponent = block({
+  label: 'Newsletter signup',
+  description: 'Compact newsletter signup box',
+  schema: {},
+  ContentView() {
+    return <div style={{ fontSize: 13, color: '#64748b' }}>✉️ Newsletter signup</div>;
+  },
+});
+
+const translationStatsComponent = block({
+  label: 'Translation stats',
+  description: 'Live translation progress per language',
+  schema: {},
+  ContentView() {
+    return <div style={{ fontSize: 13, color: '#64748b' }}>🌐 Translation progress</div>;
+  },
+});
+
+const guideAndPageComponents = {
+  FAQ: faqComponent,
+  FAQItem: faqItemComponent,
+  InlineCta: inlineCtaComponent,
+  TranslationStats: translationStatsComponent,
+};
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 // PageClient imports this file; use NEXT_PUBLIC_KEYSTATIC_STORAGE so server and browser agree.
@@ -605,15 +854,11 @@ export default config({
         firstPublished: fields.date({ label: 'First Published' }),
         lastUpdated: fields.date({ label: 'Last Updated' }),
         // Untranslatable: sync UNTRANSLATABLE_FRONTMATTER_SCALARS in scripts/crowdin-hide-strings.mjs
-        tocDepth: fields.select({
+        tocDepth: fields.integer({
           label: 'Left TOC depth',
           description:
-            'Which heading levels appear in “On this page” (2 = ## only, 3 = ## and ###).',
-          options: [
-            { label: '2 — ## only', value: '2' },
-            { label: '3 — ## and ###', value: '3' },
-          ],
-          defaultValue: '2',
+            'Which heading levels appear in “On this page”: 2 = ## only (the default when blank), 3 = ## and ###.',
+          validation: { min: 2, max: 3 },
         }),
         hideInlineCta: fields.checkbox({
           label: 'Hide inline newsletter CTA',
@@ -621,11 +866,12 @@ export default config({
             'By default, a compact newsletter signup is inserted after the first section with checklist items. Check to suppress on this guide.',
           defaultValue: false,
         }),
-        body: fields.mdx({
+        body: mdxBody({
           label: 'Guide Content',
           options: mdxEditorOptionsContent,
           components: {
             ...contentComponents,
+            ...guideAndPageComponents,
             Section: sectionComponent,
             ChecklistItem: checklistItemComponent,
             ChecklistItemGroup: checklistItemGroupComponent,
@@ -652,35 +898,12 @@ export default config({
         dont: fields.markdoc.inline({ label: "❌ DON'T:" }),
         firstPublished: fields.date({ label: 'First Published' }),
         lastUpdated: fields.date({ label: 'Last Updated' }),
-        body: fields.mdx({
+        body: mdxBody({
           label: 'Body',
           options: mdxEditorOptionsContent,
           components: {
             ...contentComponents,
             Badge: badgeComponent,
-            InlineChecklist: wrapper({
-              label: 'Inline Checklist',
-              description: 'Converts bullet list into interactive checklist',
-              schema: {
-                storageKey: fields.text({ label: 'Storage key (for localStorage)' }),
-              },
-              ContentView(props) {
-                return (
-                  <div>
-                    {props.value.storageKey && (
-                      <div
-                        contentEditable={false}
-                        suppressContentEditableWarning
-                        style={{ fontSize: 11, color: '#94a3b8' }}
-                      >
-                        key: {props.value.storageKey}
-                      </div>
-                    )}
-                    {props.children}
-                  </div>
-                );
-              },
-            }),
           },
         }),
       },
@@ -710,6 +933,18 @@ export default config({
             '140–160 chars. Answer-first. Lead with what the reader will do. Plain language, no jargon, no marketing words, no em-dashes.',
           multiline: true,
         }),
+        excerpt: fields.text({
+          label: 'Summary (optional)',
+          description:
+            'One or two plain sentences. Used as the meta description when SEO meta description is blank.',
+          multiline: true,
+        }),
+        answerCapsule: fields.text({
+          label: 'Answer capsule (optional)',
+          description:
+            '40–60 word direct answer to this page’s implicit search question. Renders at the top of the page. AI engines often quote this verbatim.',
+          multiline: true,
+        }),
         image: fields.image({
           label: 'Open Graph Image (optional)',
           description:
@@ -733,20 +968,17 @@ export default config({
             'Shows the left “On this page” table of contents (same as guides). Use TOC depth below for ## vs ###.',
           defaultValue: false,
         }),
-        tocDepth: fields.select({
+        tocDepth: fields.integer({
           label: 'Left TOC depth (when “On this page” is on)',
-          description: '2 = ## only. 3 = ## and ###.',
-          options: [
-            { label: '2 — ## only', value: '2' },
-            { label: '3 — ## and ###', value: '3' },
-          ],
-          defaultValue: '2',
+          description: '2 = ## only (the default when blank). 3 = ## and ###.',
+          validation: { min: 2, max: 3 },
         }),
-        body: fields.mdx({
+        body: mdxBody({
           label: 'Body',
           options: mdxEditorOptionsContent,
           components: {
             ...contentComponents,
+            ...guideAndPageComponents,
             ChecklistItem: checklistItemComponent,
             ChecklistItemGroup: checklistItemGroupComponent,
           },
@@ -779,7 +1011,7 @@ export default config({
         }),
         firstPublished: fields.ignored(),
         lastUpdated: fields.ignored(),
-        body: fields.mdx({
+        body: mdxBody({
           label: 'Comment (optional)',
           options: mdxEditorOptionsContent,
           components: {},
@@ -790,16 +1022,22 @@ export default config({
     // ── Changelog ───────────────────────────────────────────────────────────
     changelog: collection({
       label: 'Changelog',
-      slugField: 'date',
+      // The slug is only the file name (Keystatic never writes it to front
+      // matter), and it doubles as the entry's #anchor in the changelog RSS
+      // feed. `date` must stay a separate front matter field: the site sorts
+      // and dates entries by it.
+      slugField: 'slug',
       path: 'content/en/changelog/*',
       previewUrl: KEYSTATIC_PREVIEW_TO_CHANGELOG,
       format: { contentField: 'body' },
       columns: ['type', 'date'],
       schema: {
-        date: fields.text({
-          label: 'Date (YYYY-MM-DD)',
-          validation: { isRequired: true, length: { min: 10, max: 10 } },
+        slug: fields.text({
+          label: 'File name',
+          description: 'Date plus a few words, e.g. 2026-10-27-glossary-page',
+          validation: { isRequired: true },
         }),
+        date: fields.date({ label: 'Date', validation: { isRequired: true } }),
         type: fields.select({
           label: 'Type',
           options: [
@@ -808,7 +1046,7 @@ export default config({
           ],
           defaultValue: 'minor',
         }),
-        body: fields.mdx({
+        body: mdxBody({
           label: 'Body',
           options: mdxEditorOptionsContent,
           components: {},
