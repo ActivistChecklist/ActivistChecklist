@@ -317,7 +317,9 @@
   },
   "relatedGuides": {
     "headingBlock": "関連ガイドでさらに学ぼう",
-    "headingFooter": "こちらのガイドもチェックしてみてください"
+    "headingFooter": "こちらのガイドもチェックしてみてください",
+    "readMore": "Read more",
+    "viewPrintable": "View printable"
   },
   "checklists": {
     "title": "チェックリスト",
