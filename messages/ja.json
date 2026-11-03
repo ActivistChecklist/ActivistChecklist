@@ -114,7 +114,13 @@
   "meta": {
     "lastUpdatedOn": "最終更新日：",
     "takesAbout": "所要時間の目安：",
-    "viewLatestGuideAt": "最新版のガイドはこちら："
+    "viewLatestGuideAt": "最新版のガイドはこちら：",
+    "downloadPdf": "Download PDF"
+  },
+  "printNotice": {
+    "madeOn": "This copy was made on {date}.",
+    "updatesOften": "We update our guides often as threats change and as better ways to protect yourself become available. For the latest version, visit",
+    "linksHeading": "Links"
   },
   "footer": {
     "branding": {
