@@ -26,7 +26,10 @@ export const CollapsibleSection = ({ title, defaultOpen = false, className, chil
         />
         <span>{title}</span>
       </CollapsibleTrigger>
-      <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down print:animate-none">
+      {/* print:animate-none! must be important: the data-[state=open] rule is more
+          specific, and its animated height (measured at screen width) clips the
+          content once print layout wraps it onto more lines. */}
+      <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down print:animate-none!">
         <div className="pl-6 pt-2">{children}</div>
       </CollapsibleContent>
     </Collapsible>

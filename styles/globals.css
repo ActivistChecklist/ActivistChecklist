@@ -577,8 +577,9 @@
       break-inside: avoid;
     }
 
-    /* Optimize links for print */
-    a {
+    /* Optimize links for print. Buttons keep their own colors: forcing black
+       text onto a filled button makes it unreadable. */
+    a:not(.button) {
       text-decoration: none;
       color: #000 !important;
     }
@@ -590,14 +591,43 @@
       font-style: italic;
     }
 
-    /* Build-time PDFs (scripts/build-pdfs.mjs) make every href absolute and
-       put a short, typeable form in data-print-url. Print that instead. */
+    /* Build-time PDFs (scripts/build-pdfs.mjs) keep links clickable and move
+       the printed URLs into numbered endnotes instead of inline text. */
     html.pdf-export a[href^='http']:after {
       content: none;
     }
 
-    html.pdf-export a[data-print-url]:after {
-      content: ' (' attr(data-print-url) ')';
+    .pdf-endnote-ref {
+      font-size: 65%;
+      line-height: 0;
+      margin-left: 1px;
+      color: hsl(var(--muted-foreground));
+    }
+
+    .pdf-endnotes {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid hsl(var(--border));
+      break-before: auto;
+    }
+
+    .pdf-endnotes h2 {
+      margin: 0 0 0.5rem;
+      padding: 0;
+    }
+
+    .pdf-endnotes ol {
+      list-style: decimal;
+      padding-left: 1.5rem;
+      columns: 2;
+      column-gap: 1.5rem;
+    }
+
+    .pdf-endnotes li {
+      font-size: 7.5pt !important;
+      line-height: 1.35 !important;
+      overflow-wrap: anywhere;
+      break-inside: avoid;
     }
 
     a.no-print-url:after {

@@ -28,7 +28,9 @@ import { createRequire } from 'module';
 
 import { LOCALES } from '../lib/i18n-config.mjs';
 import {
+  assignEndnotes,
   normalizeHtmlForHash,
+  pdfPaperFormat,
   pdfPathFor,
   planPdfBuild,
   shortenUrlForPrint,
@@ -97,7 +99,7 @@ function collectTargets(slugs, salt) {
         key: `${locale}/${slug}`,
         locale,
         slug,
-        hash: sha256(salt, body, assetHashes),
+        hash: sha256(salt, body, assetHashes, linksHeading(locale)),
       });
     }
   }
@@ -194,6 +196,71 @@ function footerTemplate(displayUrl) {
     </div>`;
 }
 
+/** "Links in this guide", in the PDF's language when Crowdin has translated it. */
+function linksHeading(locale) {
+  for (const loc of [locale, 'en']) {
+    try {
+      const messages = JSON.parse(
+        fs.readFileSync(path.join(ROOT, 'messages', `${loc}.json`), 'utf8'),
+      );
+      const heading = messages.printNotice?.linksHeading;
+      if (heading) return heading;
+    } catch {
+      // fall through to English
+    }
+  }
+  return 'Links';
+}
+
+/**
+ * Replace inline "(url)" text with a superscript number on each link and a
+ * numbered list of URLs at the end. Runs after print media and beforeprint, so
+ * it only numbers links the PDF actually shows (opened FAQs included, print:hidden
+ * buttons excluded). Block links such as guide cards are skipped: they are
+ * clickable, and a footnote marker on a whole card reads as noise.
+ */
+async function addEndnotes(page, canonical, heading) {
+  const hrefs = await page.evaluate(() => {
+    const links = [...document.querySelectorAll('main a[href^="http"]:not(.no-print-url)')].filter(
+      (a) => a.getClientRects().length > 0 && getComputedStyle(a).display.startsWith('inline'),
+    );
+    links.forEach((a, i) => a.setAttribute('data-endnote-index', String(i)));
+    return links.map((a) => a.getAttribute('href'));
+  });
+  const { refs, notes } = assignEndnotes(hrefs, canonical);
+  if (notes.length === 0) return;
+
+  await page.evaluate(
+    ({ refs, notes, heading }) => {
+      for (const a of document.querySelectorAll('[data-endnote-index]')) {
+        const n = refs[Number(a.getAttribute('data-endnote-index'))];
+        if (!n) continue;
+        const sup = document.createElement('sup');
+        sup.className = 'pdf-endnote-ref';
+        sup.textContent = String(n);
+        a.after(sup);
+      }
+
+      const section = document.createElement('section');
+      section.className = 'pdf-endnotes';
+      const h2 = document.createElement('h2');
+      h2.textContent = heading;
+      const ol = document.createElement('ol');
+      for (const note of notes) {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = note.href;
+        a.textContent = note.text;
+        li.append(a);
+        ol.append(li);
+      }
+      section.append(h2, ol);
+      document.querySelector('main').append(section);
+    },
+    { refs, notes, heading },
+  );
+}
+
 async function renderPdf(context, origin, target) {
   const page = await context.newPage();
   try {
@@ -224,15 +291,13 @@ async function renderPdf(context, origin, target) {
       } catch {
         // leave as written
       }
-      return { href, absolute, printUrl: shortenUrlForPrint(href, canonical) };
+      return { href, absolute };
     });
     await page.evaluate((links) => {
-      const byHref = new Map(links.map((l) => [l.href, l]));
+      const byHref = new Map(links.map((l) => [l.href, l.absolute]));
       for (const a of document.querySelectorAll('a[href]')) {
-        const link = byHref.get(a.getAttribute('href'));
-        if (!link) continue;
-        a.setAttribute('href', link.absolute);
-        if (link.printUrl) a.setAttribute('data-print-url', link.printUrl);
+        const absolute = byHref.get(a.getAttribute('href'));
+        if (absolute) a.setAttribute('href', absolute);
       }
     }, links);
 
@@ -241,6 +306,8 @@ async function renderPdf(context, origin, target) {
     // animate open in screen styles.
     await page.emulateMedia({ media: 'print' });
     await page.evaluate(() => window.dispatchEvent(new Event('beforeprint')));
+
+    await addEndnotes(page, canonical, linksHeading(target.locale));
 
     // Lazy images below the fold never scroll into view in a headless page.
     await page.evaluate(async () => {
@@ -251,7 +318,7 @@ async function renderPdf(context, origin, target) {
     });
 
     const pdf = await page.pdf({
-      format: 'Letter',
+      format: pdfPaperFormat(target.locale),
       printBackground: true,
       displayHeaderFooter: true,
       headerTemplate: '<span></span>',

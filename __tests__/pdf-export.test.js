@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import {
+  assignEndnotes,
   normalizeHtmlForHash,
   pdfDownloadName,
+  pdfPaperFormat,
   pdfPathFor,
   planPdfBuild,
   shortenUrlForPrint,
@@ -18,6 +20,22 @@ describe('pdfPathFor / pdfDownloadName', () => {
   it('suffixes the download name only for non-default locales', () => {
     expect(pdfDownloadName('en', 'protest')).toBe('activist-checklist-protest.pdf');
     expect(pdfDownloadName('es', 'protest')).toBe('activist-checklist-protest-es.pdf');
+  });
+});
+
+describe('pdfPaperFormat', () => {
+  it('uses Letter where the locale region uses it', () => {
+    expect(pdfPaperFormat('en')).toBe('Letter');
+    expect(pdfPaperFormat('es')).toBe('Letter');
+  });
+
+  it('uses A4 elsewhere', () => {
+    expect(pdfPaperFormat('fr')).toBe('A4');
+    expect(pdfPaperFormat('it')).toBe('A4');
+  });
+
+  it('falls back to the default locale for unknown locales', () => {
+    expect(pdfPaperFormat('xx')).toBe('Letter');
   });
 });
 
@@ -50,6 +68,15 @@ describe('shortenUrlForPrint', () => {
     expect(
       shortenUrlForPrint('https://web.archive.org/web/0/https://www.404media.co/some-story/', PAGE),
     ).toBe('404media.co/some-story/');
+  });
+
+  it('unwraps archive links with no timestamp or a suffixed one', () => {
+    expect(
+      shortenUrlForPrint('https://web.archive.org/web/https://www.forbes.com/sites/x/', PAGE),
+    ).toBe('forbes.com/sites/x/');
+    expect(
+      shortenUrlForPrint('https://web.archive.org/web/20230301id_/https://example.com/a', PAGE),
+    ).toBe('example.com/a');
   });
 
   it('keeps the query string, which can be what identifies the page', () => {
@@ -124,5 +151,32 @@ describe('planPdfBuild', () => {
       () => true,
     );
     expect(orphaned).toEqual(['en/old-guide']);
+  });
+});
+
+describe('assignEndnotes', () => {
+  it('numbers links in order and reuses a number for the same page', () => {
+    const { refs, notes } = assignEndnotes(
+      ['https://signal.org/', '/party/', 'https://signal.org/#download', '#faq'],
+      PAGE,
+    );
+    expect(refs).toEqual([1, 2, 1, null]);
+    expect(notes).toEqual([
+      { href: 'https://signal.org/', text: 'signal.org' },
+      { href: 'https://activistchecklist.org/party/', text: 'activistchecklist.org/party/' },
+    ]);
+  });
+
+  it('gives endnotes more room than the inline print limit', () => {
+    const long = `https://example.com/${'a'.repeat(80)}`;
+    const { notes } = assignEndnotes([long], PAGE);
+    expect(notes[0].text).toBe(`example.com/${'a'.repeat(80)}`);
+  });
+
+  it('skips links that need no endnote', () => {
+    expect(assignEndnotes(['mailto:a@b.org', '#top'], PAGE)).toEqual({
+      refs: [null, null],
+      notes: [],
+    });
   });
 });

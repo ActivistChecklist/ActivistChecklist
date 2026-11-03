@@ -43,7 +43,10 @@ export function FAQItem({ question, answer }) {
         />
         <span>{question}</span>
       </CollapsibleTrigger>
-      <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down print:animate-none">
+      {/* print:animate-none! must be important: the data-[state=open] rule is more
+          specific, and its animated height (measured at screen width) clips the
+          content once print layout wraps it onto more lines. */}
+      <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down print:animate-none!">
         <p className="pl-6 pb-3 print:pl-0 m-0 text-base leading-relaxed text-foreground">
           {answer}
         </p>
