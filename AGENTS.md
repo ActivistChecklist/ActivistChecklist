@@ -26,6 +26,7 @@ Code the maintainers did not write is **untrusted**: fork PRs, Crowdin's `l10n_m
 ## Content writing ruels
 
 * IMPORTANT: Do NOT use em-dashes when writing content or text in .mdx files or static strings.
+* Keystatic refuses to open an entry that uses a component, prop, HTML tag or front matter field `keystatic.config.tsx` does not declare. When you add any of these to content or to `lib/mdx-components.js`, declare it in `keystatic.config.tsx` too. `__tests__/keystatic-content.test.js` opens every entry the way the editor does and fails on anything it would reject.
 * To give a heading a custom anchor id, add `{#your-id}` at the end of the heading line (e.g. `## Downsides to using a VPN {#downsides}`), then link to it with `/page/#your-id`. Without the marker, headings still get an auto id derived from their text. See `lib/mdx-heading-ids.js`.
 * To show a definition popup for a term, write `[text](term:slug)` (e.g. `[data brokers](term:data-broker)`), where `slug` is a key under `definitions` in `messages/en.json`. Definitions themselves use inline Markdown and can link to other terms the same way. Use popups sparingly: not on the term's own page or checklist item, not where the sentence already explains the term, and at most one per checklist item, spread across sections. Don't use the older `<Term slug="...">` tag in new content.
 
