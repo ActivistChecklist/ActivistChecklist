@@ -487,6 +487,11 @@ async function main() {
     const dest = path.join(OUT_DIR, pdfPathFor(...key.split('/')));
     fs.mkdirSync(path.dirname(dest), { recursive: true });
     fs.copyFileSync(src, dest);
+    // Keep the date the PDF was rendered. A fresh copy date on every deploy
+    // would change Last-Modified and the ETag, so a browser revalidating an
+    // unchanged PDF would download it again instead of getting a 304.
+    const { atime, mtime } = fs.statSync(src);
+    fs.utimesSync(dest, atime, mtime);
   }
 
   if (failures.length > 0) {

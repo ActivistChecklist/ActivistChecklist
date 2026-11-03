@@ -71,6 +71,10 @@ ErrorDocument 404 /404/index.html
 #                    file — it just has to revalidate, which is a cheap 304 for
 #                    as long as the page is unchanged.
 #
+#   /pdf/*           Guide PDFs keep the same URL so shared links stay good, but
+#                    their content changes with the guide. Same "no-cache" as
+#                    HTML, so nobody is handed an old copy of a guide.
+#
 # Matched on the request URI rather than with <FilesMatch> because a request for
 # /proton/ reaches index.html through an internal subrequest (and because
 # <LocationMatch> is not permitted in .htaccess). Directory requests all end in
@@ -80,10 +84,12 @@ ErrorDocument 404 /404/index.html
 <IfModule mod_setenvif.c>
   SetEnvIf Request_URI "^/_next/static/" AC_IMMUTABLE_ASSET
   SetEnvIf Request_URI "(/|\.html)$" AC_HTML_DOC
+  SetEnvIf Request_URI "^/pdf/" AC_REVALIDATE
 </IfModule>
 <IfModule mod_headers.c>
   Header set Cache-Control "public, max-age=31536000, immutable" env=AC_IMMUTABLE_ASSET
   Header set Cache-Control "no-cache" env=AC_HTML_DOC
+  Header set Cache-Control "no-cache" env=AC_REVALIDATE
 </IfModule>
 
 # Security Headers
