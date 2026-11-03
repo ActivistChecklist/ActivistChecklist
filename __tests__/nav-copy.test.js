@@ -1,5 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { getNavCopy, resolveNavCopy, withNavCopy } from '../lib/nav-copy';
+import {
+  getNavCopy,
+  getRelatedPages,
+  resolveNavCopy,
+  resolveRelatedPageCopy,
+  withNavCopy,
+} from '../lib/nav-copy';
 import { navItemMessageId } from '../lib/navigation-i18n';
 import navData from '../config/navigation.json';
 import enMessages from '../messages/en.json';
@@ -135,5 +141,66 @@ describe('withNavCopy', () => {
   it('ignores stale en.json entries for English', () => {
     const stale = { ...enMessages, navItems: { protest: { title: 'Old' } } };
     expect(withNavCopy(stale, 'en').navItems.protest.title).toBe('Prepare for a protest');
+  });
+});
+
+describe('resolveRelatedPageCopy', () => {
+  const page = {
+    title: 'VPNs for Activists',
+    navTitle: 'VPNs for activists',
+    excerpt: 'A trusted VPN makes you harder to track.',
+    seoDescription: 'Why activists might use a VPN, and which ones.',
+  };
+
+  it('uses navDescription when the page has one', () => {
+    expect(resolveRelatedPageCopy({ ...page, navDescription: 'Short one.' }, null)).toEqual({
+      title: 'VPNs for activists',
+      description: 'Short one.',
+    });
+  });
+
+  it('falls back to the summary, then the SEO description', () => {
+    expect(resolveRelatedPageCopy(page, null).description).toBe(page.excerpt);
+    expect(resolveRelatedPageCopy({ ...page, excerpt: '' }, null).description).toBe(
+      page.seoDescription,
+    );
+  });
+
+  it("prefers the locale's own summary over the English one", () => {
+    const translated = { title: 'VPN para activistas', excerpt: 'Una VPN confiable.' };
+    expect(resolveRelatedPageCopy(page, translated)).toEqual({
+      title: 'VPN para activistas',
+      description: 'Una VPN confiable.',
+    });
+  });
+
+  it('leaves the description out when there is nothing to show', () => {
+    const out = resolveRelatedPageCopy({ title: 'Bare page' }, null);
+    expect(out).toEqual({ title: 'Bare page' });
+  });
+});
+
+describe('getRelatedPages over the real content', () => {
+  const pages = getRelatedPages(['essentials', 'vpn', '/police/', 'onion', 'no-such-page'], 'en');
+
+  it('resolves pages and leaves out guides and unknown slugs', () => {
+    expect(Object.keys(pages)).toEqual(['vpn', '/police/', 'onion']);
+  });
+
+  it("takes the kind from the page's navigation item, keyed by the slug as written", () => {
+    expect(pages.vpn).toMatchObject({ href: '/vpn/', kind: 'explainer' });
+    expect(pages['/police/']).toMatchObject({ href: '/police/', kind: 'printable' });
+    expect(pages.onion.kind).toBeUndefined();
+  });
+
+  it('gives every page a title and description', () => {
+    for (const [slug, { title, description }] of Object.entries(pages)) {
+      expect(title, slug).toBeTruthy();
+      expect(description, slug).toBeTruthy();
+    }
+  });
+
+  it("uses a translated page's own words", () => {
+    expect(getRelatedPages(['vpn'], 'es').vpn.title).not.toBe(pages.vpn.title);
   });
 });

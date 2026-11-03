@@ -317,7 +317,9 @@
   },
   "relatedGuides": {
     "headingBlock": "Keep learning with these related guides",
-    "headingFooter": "If you found this helpful, also check out these guides"
+    "headingFooter": "If you found this helpful, also check out these guides",
+    "readMore": "Read more",
+    "viewPrintable": "View printable"
   },
   "checklists": {
     "title": "Checklists",
