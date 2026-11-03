@@ -82,16 +82,17 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
           'print:hidden',
         )}
       >
-        {/* Normal top nav bar */}
+        {/* Normal top nav bar. From `topnav:` up the logo keeps its full width and the
+            search field is the only thing that narrows (see the breakpoint in globals.css). */}
         <div className={cn(maxWidth, 'mx-auto px-4')}>
           <div className="flex h-14 items-center justify-between">
-            <div className="flex items-center">
+            <div className="flex items-center topnav:shrink-0">
               <Sheet>
                 <SheetTrigger asChild>
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="md:hidden mr-2 text-foreground hover:text-foreground/80"
+                    className="topnav:hidden mr-2 text-foreground hover:text-foreground/80"
                     aria-label="Open navigation menu"
                   >
                     <Menu className="h-6 w-6" aria-hidden="true" />
@@ -189,8 +190,8 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                 />
               </Link>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="hidden md:flex items-center space-x-4">
+            <div className="flex min-w-0 items-center gap-4">
+              <div className="hidden topnav:flex items-center space-x-4">
                 <NavigationMenu>
                   <NavigationMenuList>
                     {translatedMainNav.map((item, mainIndex) => (
@@ -290,7 +291,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                   </NavigationMenuList>
                 </NavigationMenu>
               </div>
-              <div className="flex items-center md:gap-2">
+              <div className="flex min-w-0 items-center md:gap-2">
                 <Search variant="header" />
                 <LanguageSwitcher />
                 <DarkModeToggle className="h-9 w-9 hover:bg-muted" />

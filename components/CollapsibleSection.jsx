@@ -15,10 +15,18 @@ export const CollapsibleSection = ({ title, defaultOpen = false, className, chil
           'hover:bg-muted/60 transition-colors cursor-pointer',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
           '[&[data-state=open]>svg]:rotate-90',
+          // The gray hover tint clashes with an alert's colored background, so
+          // inside an alert hover underlines the title instead
+          '[[role=alert]_&]:hover:bg-transparent [[role=alert]_&]:hover:underline underline-offset-4',
         )}
       >
         <ChevronRight
-          className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200"
+          className={cn(
+            'h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200',
+            // Inside an alert a muted chevron fades into the color, and it is
+            // the only sign this opens on touch screens
+            '[[role=alert]_&]:text-current',
+          )}
           aria-hidden="true"
         />
         <span>{title}</span>

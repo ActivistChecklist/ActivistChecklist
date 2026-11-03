@@ -96,6 +96,14 @@ describe('extractChecklistItemSlugsFromMdx', () => {
     expect(extractChecklistItemSlugsFromMdx(mdx)).toEqual(['signal-disappearing', 'location']);
   });
 
+  it('includes items whose tag carries other attributes', () => {
+    const mdx = `
+      <ChecklistItem slug="phone-off" important />
+      <ChecklistItem defaultExpanded slug="vpn" />
+    `;
+    expect(extractChecklistItemSlugsFromMdx(mdx)).toEqual(['phone-off', 'vpn']);
+  });
+
   it('returns empty array for empty/null input', () => {
     expect(extractChecklistItemSlugsFromMdx('')).toEqual([]);
     expect(extractChecklistItemSlugsFromMdx(null)).toEqual([]);

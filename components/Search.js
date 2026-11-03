@@ -347,14 +347,14 @@ const Search = ({ variant = 'icon', className }) => {
           aria-label={t('search.dialogTitle')}
           aria-keyshortcuts="Meta+K Control+K"
           className={cn(
-            'hidden lg:flex h-9 w-52 items-center gap-2 rounded-md border border-input bg-background px-3',
+            'hidden topnav:flex h-9 w-52 min-w-9 items-center gap-2 rounded-md border border-input bg-background px-3',
             'text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground',
             'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring',
             className,
           )}
         >
           <IoSearch className="h-4 w-4 shrink-0" aria-hidden />
-          <span className="flex-1 text-left">{t('search.placeholder')}</span>
+          <span className="flex-1 truncate text-left">{t('search.placeholder')}</span>
         </button>
       )}
       <Button
@@ -365,7 +365,7 @@ const Search = ({ variant = 'icon', className }) => {
         onFocus={warmUp}
         aria-haspopup="dialog"
         aria-label={t('search.dialogTitle')}
-        className={cn('h-9 w-9 hover:bg-muted', variant === 'header' && 'lg:hidden', className)}
+        className={cn('h-9 w-9 hover:bg-muted', variant === 'header' && 'topnav:hidden', className)}
       >
         <IoSearch className="h-5 w-5" />
       </Button>

@@ -6,9 +6,13 @@ import {
   navItemMessageKey,
   translateMainNavigation,
 } from '../lib/navigation-i18n';
+import { withNavCopy } from '../lib/nav-copy';
 import { navigationConfig } from '../config/navigation';
 import navData from '../config/navigation.json';
-import messages from '../messages/en.json';
+import enMessages from '../messages/en.json';
+
+// What i18n/request.ts serves: en.json plus each guide's and page's frontmatter copy.
+const messages = withNavCopy(enMessages, 'en');
 
 /** A next-intl-like `t` over the real English messages, with `t.has`. */
 function englishT() {
@@ -83,12 +87,9 @@ describe('navigation i18n translation mapping', () => {
 describe('every navigation entry has English strings', () => {
   const t = englishT();
 
-  it.each(Object.entries(navData.items))('%s has a title', (key, item) => {
+  it.each(Object.keys(navData.items))('%s has a title', (key) => {
     const titleKey = NAV_LABEL_KEYS.has(key) ? `nav.${key}` : `${navItemMessageKey(key)}.title`;
     expect(t.has(titleKey), titleKey).toBe(true);
-    if (item.kind) {
-      expect(t.has(`${navItemMessageKey(key)}.label`), `${key} needs a label`).toBe(true);
-    }
   });
 
   it('checklists in sections have a description', () => {

@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
  * Everything inside is a hand-built recreation of the tool's interface, not a
  * captured screenshot. That keeps the text crisp at any width, lets the
  * illustrations follow the site's light/dark theme, and means nobody has to
- * re-shoot four screenshots every time one of the tools ships a change. The
+ * re-shoot screenshots every time one of the tools ships a change. The
  * trade-off is that these drift from the real products, so treat them as
  * marketing illustrations and re-check them when a tool's UI changes.
  *

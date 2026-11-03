@@ -27,5 +27,14 @@ if [ -n "$FORMAT" ]; then
   echo "$FORMAT" | tr '\n' '\0' | xargs -0 git add -f --
 fi
 
+# One line when everything passes, full output when something fails. The
+# reporter is hook-only; `pnpm test` and CI still use Vitest's default.
+# --experimental.diagnostics=false drops the "Isolate ... workers spawned" hint.
+# Worktrees run this hook from the main checkout, so a branch cut before the
+# reporter existed falls back to plain `pnpm test`.
 echo "→ pre-commit: unit tests"
-pnpm test
+if [ -f scripts/lib/vitest-hook-reporter.mjs ]; then
+  pnpm exec vitest run --reporter=./scripts/lib/vitest-hook-reporter.mjs --experimental.diagnostics=false
+else
+  pnpm test
+fi
