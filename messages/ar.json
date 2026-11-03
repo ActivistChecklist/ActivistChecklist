@@ -114,7 +114,13 @@
   "meta": {
     "lastUpdatedOn": "آخر تحديث في",
     "takesAbout": "يستغرق حوالي",
-    "viewLatestGuideAt": "عرض أحدث نسخة من الدليل على"
+    "viewLatestGuideAt": "عرض أحدث نسخة من الدليل على",
+    "downloadPdf": "تنزيل PDF"
+  },
+  "printNotice": {
+    "madeOn": "أُعدّت هذه النسخة بتاريخ {date}.",
+    "updatesOften": "نحدّث أدلّتنا باستمرار مع تغيّر التهديدات وظهور طرق أفضل لحماية أنفسكم. للاطلاع على أحدث نسخة، زوروا",
+    "linksHeading": "الروابط"
   },
   "footer": {
     "branding": {
