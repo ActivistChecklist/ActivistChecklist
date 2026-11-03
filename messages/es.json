@@ -415,10 +415,9 @@
     "mostSecure": "Lo más seguro"
   },
   "feedbackCta": {
-    "heading": "¿Tienes preguntas?",
-    "description": "Cuéntanos si tienes preguntas o comentarios para que hagamos estas guías lo más útiles posible.",
-    "inputPlaceholder": "Escribe tu pregunta...",
-    "sendButton": "Enviar",
+    "heading": "Have questions?",
+    "barText": "Let us know so we can make these guides more useful.",
+    "buttonText": "Send a message",
     "dialogTitle": "Envíanos un mensaje",
     "successMessage": "¡Gracias por tu comentario! Lo revisaremos y lo usaremos para mejorar las guías. Si el sitio te está sirviendo, ¡ayúdanos a correr la voz!"
   },
