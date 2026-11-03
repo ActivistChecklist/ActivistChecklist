@@ -179,35 +179,8 @@ export function InlineChecklist({ children, storageKey, className }) {
     return node;
   };
 
-  // Count total and checked items
-  const countItems = (node, count = { total: 0 }) => {
-    if (!React.isValidElement(node)) return count;
-
-    const { type, props } = node;
-
-    if (type === 'ul') {
-      React.Children.forEach(props.children, (child) => {
-        if (React.isValidElement(child) && child.type === 'li') {
-          count.total++;
-        }
-      });
-    }
-
-    if (props.children) {
-      React.Children.forEach(props.children, (child) => {
-        countItems(child, count);
-      });
-    }
-
-    return count;
-  };
-
   // Use stableChildren after mount to ensure consistent rendering
   const childrenToRender = mounted && stableChildren ? stableChildren : children;
-
-  const { total } = countItems(childrenToRender);
-  const checkedCount = Object.values(checkedItems).filter(Boolean).length;
-  const allChecked = total > 0 && checkedCount >= total;
 
   // Render a simple placeholder on the server to avoid hydration mismatch
   // The complex transformChildren logic only runs on client after mount
@@ -228,31 +201,7 @@ export function InlineChecklist({ children, storageKey, className }) {
   }
 
   return (
-    <div
-      className={cn(
-        'inline-checklist my-2 p-0 rounded-lg',
-        // allChecked ? "bg-primary/5" : "bg-muted/30",
-        className,
-      )}
-    >
-      {total > 0 && (
-        <div className="flex items-center justify-between mb-3 text-sm text-muted-foreground">
-          <span className="font-medium">
-            {allChecked ? '✓ All done!' : `${checkedCount} of ${total} completed`}
-          </span>
-          {checkedCount > 0 && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setCheckedItems({});
-              }}
-              className="text-xs text-muted-foreground/60 hover:text-muted-foreground underline"
-            >
-              Reset
-            </button>
-          )}
-        </div>
-      )}
+    <div className={cn('inline-checklist my-2 p-0 rounded-lg', className)}>
       {React.Children.map(childrenToRender, (child, idx) =>
         transformChildren(child, `root-${idx}`),
       )}
