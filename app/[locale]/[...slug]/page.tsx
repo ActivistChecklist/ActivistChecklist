@@ -28,6 +28,8 @@ import { LOCALES, DEFAULT_LOCALE } from '@/lib/i18n-config';
 import JsonLd from '@/components/JsonLd';
 import { buildContentPageGraph, buildHowTo, TOP_GUIDE_SLUGS } from '@/lib/structured-data';
 import { getSectionReadMinutes } from '@/lib/section-reads';
+import { getRelatedPages } from '@/lib/nav-copy';
+import { parseRelatedGuides } from '@/lib/related-guides';
 
 const DEFAULT_DESCRIPTION =
   'Plain language steps for digital security, because protecting yourself helps keep your whole community safer. Built by activists, for activists with field-tested, community-verified guides.';
@@ -317,6 +319,7 @@ export default async function SlugPage({ params }) {
           locale={locale}
           notices={guideNotices}
           readMinutes={getSectionReadMinutes(locale)}
+          relatedPages={getRelatedPages(parseRelatedGuides(guideFm.relatedGuides), locale)}
         />
       </Layout>
     );
@@ -393,6 +396,7 @@ export default async function SlugPage({ params }) {
             locale={locale}
             slug={slug}
             notices={pageNotices}
+            relatedPages={getRelatedPages(parseRelatedGuides(fm.relatedGuides), locale)}
           />
         </ChecklistItemsProvider>
       </Layout>

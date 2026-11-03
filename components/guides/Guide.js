@@ -22,19 +22,11 @@ import {
   getNextInSection,
 } from '@/lib/checklist-sections';
 import { LOCALES } from '@/lib/i18n-config';
+import { parseRelatedGuides } from '@/lib/related-guides';
 import { formatContentDate } from '@/lib/utils';
 import PageNotices from '@/components/layout/PageNotices';
 import AnswerCapsule from '@/components/AnswerCapsule';
 import { MobileTableOfContents } from '@/components/layout/TableOfContentsSidebar';
-
-function parseRelatedGuides(value) {
-  if (Array.isArray(value)) return value.filter(Boolean);
-  if (typeof value !== 'string') return [];
-  return value
-    .split(',')
-    .map((slug) => slug.trim())
-    .filter(Boolean);
-}
 
 /**
  * Renders a guide page sourced from MDX files.
@@ -44,6 +36,7 @@ function parseRelatedGuides(value) {
  *   - serializedBody: next-mdx-remote compiled MDX (contains <Section> + <ChecklistItem> tags)
  *   - checklistItems: { [slug]: { frontmatter, serializedBody } } map for ChecklistItemsContext
  *   - locale: BCP 47 locale string for date formatting (provided by parent Server Component)
+ *   - relatedPages: card data for the pages in relatedGuides (lib/nav-copy.js getRelatedPages)
  */
 export default function Guide({
   frontmatter,
@@ -56,6 +49,7 @@ export default function Guide({
   locale,
   notices = [],
   readMinutes = {},
+  relatedPages = {},
 }) {
   const t = useTranslations();
   // Prefer locale from NextIntlClientProvider (set by the locale layout), fall back to prop
@@ -164,6 +158,7 @@ export default function Guide({
             <RelatedGuides
               isBlock
               guideSlugs={relatedGuideSlugs}
+              pages={relatedPages}
               reads={endReads}
               readMinutes={readMinutes}
             />
