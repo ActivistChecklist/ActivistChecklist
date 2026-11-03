@@ -1,7 +1,6 @@
 'use client';
-import { Send } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { useState, lazy, Suspense } from 'react';
 import { useTranslations } from 'next-intl';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -15,28 +14,20 @@ export function FeedbackCTA() {
   const t = useTranslations();
 
   return (
-    <div className="print:hidden mt-8 px-8 py-12 bg-neutral-900 text-neutral-50 rounded-xl">
-      <div className="max-w-2xl mx-auto text-center space-y-6">
-        <h3 className="text-2xl font-bold">{t('feedbackCta.heading')}</h3>
-        <p className="text-neutral-300 max-w-md mx-auto">{t('feedbackCta.description')}</p>
-        <div className="flex gap-2 max-w-md mx-auto">
-          <Input
-            type="text"
-            placeholder={t('feedbackCta.inputPlaceholder')}
-            className="flex-1 bg-neutral-800 border-neutral-700 text-neutral-100 placeholder:text-neutral-400 ring-offset-neutral-900 focus-visible:ring-white"
-            onClick={() => setIsDialogOpen(true)}
-            readOnly
-          />
-          <Button
-            variant="default"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground"
-            onClick={() => setIsDialogOpen(true)}
-          >
-            <Send className="w-4 h-4" />
-            <span>{t('feedbackCta.sendButton')}</span>
-          </Button>
-        </div>
-      </div>
+    <div className="print:hidden mt-8 flex flex-col gap-3 rounded-lg border border-border px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+      <p className="text-sm text-muted-foreground">
+        <span className="font-semibold text-foreground">{t('feedbackCta.heading')}</span>{' '}
+        {t('feedbackCta.barText')}
+      </p>
+      <Button
+        variant="outline"
+        size="sm"
+        className="self-start sm:self-auto shrink-0"
+        onClick={() => setIsDialogOpen(true)}
+      >
+        <MessageCircle aria-hidden="true" />
+        {t('feedbackCta.buttonText')}
+      </Button>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
