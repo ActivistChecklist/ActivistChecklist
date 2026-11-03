@@ -15,10 +15,6 @@
     "browseAllChecklists": "Browse all checklists"
   },
   "navItems": {
-    "essentials": {
-      "title": "Security essentials",
-      "description": "Core security practices every activist should follow."
-    },
     "search": {
       "dialogTitle": "Search the site",
       "dialogDescription": "Use the search bar to find relevant content across the site.",
@@ -27,54 +23,6 @@
       "popularHeading": "Popular searches",
       "topGuidesHeading": "Top guides",
       "pressEnter": "Press {kbd} to search"
-    },
-    "signal": {
-      "title": "Signal security",
-      "description": "Secure your Signal messaging app for safer communications."
-    },
-    "protest": {
-      "title": "Prepare for a protest",
-      "description": "Digital security for anyone attending a protest."
-    },
-    "ice": {
-      "title": "ICE watch digital security",
-      "description": "Digital security for ICE watch and rapid response networks."
-    },
-    "doxxing": {
-      "title": "Doxxing defense",
-      "description": "Protect yourself from doxxing and online harassment."
-    },
-    "travel": {
-      "title": "Travel & flight security",
-      "description": "Digital security practices for activists traveling."
-    },
-    "emergency": {
-      "title": "Emergency planning",
-      "description": "Establish an emergency support network in case you're detained or threatened."
-    },
-    "secondary": {
-      "title": "Secondary phone",
-      "description": "Set up an extra phone for activism and protests."
-    },
-    "links": {
-      "title": "Remove link tracking",
-      "label": "Remove link tracking"
-    },
-    "policeDoorPoster": {
-      "title": "Police at the door poster",
-      "label": "\"Police at the door\" poster"
-    },
-    "flyer": {
-      "title": "Printable flyer",
-      "label": "Printable flyer"
-    },
-    "vpn": {
-      "title": "VPNs for activists",
-      "label": "VPNs for activists"
-    },
-    "movies": {
-      "title": "Movies, books, & podcasts",
-      "label": "Movies, books, & podcasts"
     },
     "updates": {
       "title": "Security update checker",
@@ -88,17 +36,6 @@
       "title": "Terms & definitions",
       "label": "Terms & definitions"
     },
-    "resources": {
-      "title": "Resources",
-      "label": "Resources"
-    },
-    "about": {
-      "title": "About this site",
-      "label": "About"
-    },
-    "contribute": {
-      "title": "Contribute"
-    },
     "changelog": {
       "title": "Recent site updates",
       "label": "Recent site updates"
@@ -106,54 +43,6 @@
     "contact": {
       "title": "Contact",
       "label": "Contact"
-    },
-    "privacy": {
-      "title": "Privacy",
-      "label": "Privacy"
-    },
-    "whatsapp": {
-      "title": "WhatsApp security",
-      "description": "Configure WhatsApp to protect your messages, groups, and contacts."
-    },
-    "spyware": {
-      "title": "Spyware protection",
-      "description": "Protect yourself from spyware and surveillance software."
-    },
-    "action": {
-      "title": "Digital security for arrestable actions",
-      "description": "Protect your phone and your crew when you risk arrest."
-    },
-    "actionSafety": {
-      "title": "Safety resources for action organizers",
-      "description": "Physical, digital, and legal safety for organizers and participants."
-    },
-    "research": {
-      "title": "Action research & scouting",
-      "description": "How to conduct research and browse the web anonymously."
-    },
-    "federal": {
-      "title": "Federal workers",
-      "description": "Digital security guidance for federal employees."
-    },
-    "party": {
-      "title": "Host a security party",
-      "label": "Host a security party"
-    },
-    "proton": {
-      "title": "How to use Proton safely",
-      "label": "How to use Proton safely"
-    },
-    "lockdown": {
-      "title": "Lockdown Mode trade-offs",
-      "label": "Lockdown Mode trade-offs"
-    },
-    "signalSecure": {
-      "title": "Is Signal secure?",
-      "label": "Is Signal secure?"
-    },
-    "signalAi": {
-      "title": "Is Apple Intelligence reading my Signal messages?",
-      "label": "Is Apple Intelligence reading my Signal messages?"
     }
   },
   "hero": {
@@ -450,9 +339,6 @@
       "title": "Organizing others",
       "heading": "Organizing others",
       "scope": "Running actions and getting your group secure."
-    },
-    "descriptions": {
-      "party": "A template agenda for getting your group through the checklists together."
     },
     "allChecklists": "All {count, plural, one {# checklist} other {# checklists}}",
     "readMinutes": "{minutes} min read",

@@ -1,9 +1,10 @@
 // @ts-nocheck
 import '@/styles/globals.css';
 import NotFoundContent from '@/components/pages/NotFoundContent';
+import { withNavCopy } from '@/lib/nav-copy';
 
 export default async function NotFound() {
-  const messages = (await import('@/messages/en.json')).default;
+  const messages = withNavCopy((await import('@/messages/en.json')).default, 'en');
 
   return (
     <html lang="en">

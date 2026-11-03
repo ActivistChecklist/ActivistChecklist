@@ -58,9 +58,7 @@ export default function ChecklistSectionList({ staleReviewDates = {}, readMinute
                 const isChecklist = !item.kind;
                 const isHowTo = item.kind === 'howto';
                 const Icon = item.icon || READ_KIND_ICONS[item.kind];
-                const description = isHowTo
-                  ? t(`checklistSections.descriptions.${item.key}`)
-                  : fields.description;
+                const { description } = fields;
                 const staleDate = staleReviewDates[item.key];
                 const meta = isChecklist
                   ? staleDate &&
