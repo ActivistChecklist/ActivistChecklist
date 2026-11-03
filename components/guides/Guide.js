@@ -18,6 +18,7 @@ import { CHECKLIST_SECTIONS, CHECKLIST_SECTION_KEYS, NAV_ITEM_DATA } from '@/con
 import {
   findPairedExplainer,
   findSectionForGuide,
+  findSectionForPage,
   getNextInSection,
 } from '@/lib/checklist-sections';
 import { LOCALES } from '@/lib/i18n-config';
@@ -74,8 +75,11 @@ export default function Guide({
   // Section wayfinding: a breadcrumb back to the guide's section, one
   // "Understand why" explainer near the top, and the section's explainers at
   // the end. Editors' relatedGuides win; without them, suggest the next
-  // checklists in the same section.
-  const sectionKeys = findSectionForGuide(CHECKLIST_SECTION_KEYS, slug);
+  // checklists in the same section. A how-to guide (the security party) isn't
+  // among a section's checklists, only featured in it, so it's found like a page.
+  const sectionKeys =
+    findSectionForGuide(CHECKLIST_SECTION_KEYS, slug) ||
+    findSectionForPage(CHECKLIST_SECTION_KEYS, NAV_ITEM_DATA, slug);
   const section = sectionKeys && CHECKLIST_SECTIONS.find((s) => s.key === sectionKeys.key);
   const pairedKey = findPairedExplainer(NAV_ITEM_DATA, slug);
   const pairedExplainer = CHECKLIST_SECTIONS.flatMap((s) => s.reads).find(
