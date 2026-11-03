@@ -15,10 +15,6 @@
     "browseAllChecklists": "すべてのチェックリストを見る"
   },
   "navItems": {
-    "essentials": {
-      "title": "セキュリティの基本",
-      "description": "すべてのアクティビストに実践してほしい、基本のセキュリティ対策。"
-    },
     "search": {
       "dialogTitle": "サイト内を検索",
       "dialogDescription": "検索バーを使って、サイト内の関連コンテンツを探せます。",
@@ -27,54 +23,6 @@
       "popularHeading": "よく検索されている語",
       "topGuidesHeading": "人気のガイド",
       "pressEnter": "{kbd} を押して検索"
-    },
-    "signal": {
-      "title": "Signalのセキュリティ",
-      "description": "Signalメッセージアプリの設定を見直して、より安全な通信を。"
-    },
-    "protest": {
-      "title": "デモや行動に参加する前の準備",
-      "description": "デモや行動に参加するすべての人のためのデジタルセキュリティ。"
-    },
-    "ice": {
-      "title": "ICE監視行動のデジタルセキュリティ",
-      "description": "ICE監視行動や緊急対応ネットワークのためのデジタルセキュリティ。"
-    },
-    "doxxing": {
-      "title": "ドクシング対策",
-      "description": "ドクシングやネット上のハラスメントから身を守ろう。"
-    },
-    "travel": {
-      "title": "旅行・飛行機移動のセキュリティ",
-      "description": "移動・旅行するアクティビストのためのデジタルセキュリティ対策。"
-    },
-    "emergency": {
-      "title": "緊急時への備え",
-      "description": "拘束されたり脅威にさらされたときに備え、緊急時の支援ネットワークをつくろう。"
-    },
-    "secondary": {
-      "title": "サブのスマートフォン",
-      "description": "活動やデモ・行動用に、もう一台スマホを用意しよう。"
-    },
-    "links": {
-      "title": "リンクのトラッキングを削除する",
-      "label": "リンクのトラッキングを削除する"
-    },
-    "policeDoorPoster": {
-      "title": "「警察が家に来たら」ポスター",
-      "label": "「警察が家に来たら」ポスター"
-    },
-    "flyer": {
-      "title": "印刷用フライヤー",
-      "label": "印刷用フライヤー"
-    },
-    "vpn": {
-      "title": "アクティビストのためのVPN",
-      "label": "アクティビストのためのVPN"
-    },
-    "movies": {
-      "title": "映画・本・ポッドキャスト",
-      "label": "映画・本・ポッドキャスト"
     },
     "updates": {
       "title": "セキュリティアップデート確認ツール",
@@ -88,17 +36,6 @@
       "title": "用語集",
       "label": "用語集"
     },
-    "resources": {
-      "title": "リソース",
-      "label": "リソース"
-    },
-    "about": {
-      "title": "このサイトについて",
-      "label": "このサイトについて"
-    },
-    "contribute": {
-      "title": "協力する"
-    },
     "changelog": {
       "title": "最近のサイト更新",
       "label": "最近のサイト更新"
@@ -106,54 +43,6 @@
     "contact": {
       "title": "コンタクト",
       "label": "コンタクト"
-    },
-    "privacy": {
-      "title": "プライバシー",
-      "label": "プライバシー"
-    },
-    "whatsapp": {
-      "title": "WhatsAppのセキュリティ",
-      "description": "WhatsAppの設定を見直して、メッセージ・グループ・連絡先を守ろう。"
-    },
-    "spyware": {
-      "title": "スパイウェア対策",
-      "description": "スパイウェアや監視ソフトウェアから身を守ろう。"
-    },
-    "action": {
-      "title": "逮捕される可能性がある行動のためのデジタルセキュリティ",
-      "description": "逮捕の危険があるときに、スマホと仲間を守ろう。"
-    },
-    "organizing": {
-      "title": "逮捕の可能性がある行動を組織する",
-      "description": "運動のオーガナイザーやコーディネーターのために。"
-    },
-    "research": {
-      "title": "行動のための調査と下見",
-      "description": "匿名で調査やウェブ閲覧をする方法。"
-    },
-    "federal": {
-      "title": "連邦政府職員",
-      "description": "連邦政府職員のためのデジタルセキュリティガイド。"
-    },
-    "party": {
-      "title": "セキュリティパーティーを開こう",
-      "label": "セキュリティパーティーを開こう"
-    },
-    "proton": {
-      "title": "Protonを安全に使う方法",
-      "label": "Protonを安全に使う方法"
-    },
-    "lockdown": {
-      "title": "ロックダウンモードのメリットとデメリット",
-      "label": "ロックダウンモードのメリットとデメリット"
-    },
-    "signalSecure": {
-      "title": "Signalは安全？",
-      "label": "Signalは安全？"
-    },
-    "signalAi": {
-      "title": "Apple IntelligenceはSignalのメッセージを読んでいる？",
-      "label": "Apple IntelligenceはSignalのメッセージを読んでいる？"
     }
   },
   "hero": {
@@ -450,9 +339,6 @@
       "title": "仲間を組織する",
       "heading": "仲間を組織する",
       "scope": "行動の運営とグループのセキュリティ強化。"
-    },
-    "descriptions": {
-      "party": "グループで一緒にチェックリストを進める用の予定表テンプレート。"
     },
     "allChecklists": "{count, plural, other {全#件のチェックリスト}}",
     "readMinutes": "{minutes}分で読めます",
