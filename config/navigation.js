@@ -5,8 +5,9 @@ import navData from './navigation.json';
 
 // --- Resolve helpers ---
 //
-// navigation.json holds structure only (hrefs, kinds, menus, sections). Every
-// visible string comes from messages/en.json by key: see lib/navigation-i18n.js.
+// navigation.json holds structure only (hrefs, kinds, menus, sections). Visible
+// strings come from the guide's or page's frontmatter (lib/nav-copy.js) or, for
+// items with no MDX file, messages/en.json: see lib/navigation-i18n.js.
 
 const SOCIAL_ICON_MAP = {
   bluesky: SiBluesky,

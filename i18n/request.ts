@@ -1,5 +1,6 @@
 import { hasLocale } from 'next-intl';
 import { getRequestConfig } from 'next-intl/server';
+import { withNavCopy } from '@/lib/nav-copy';
 import { routing } from './routing';
 
 function deepMerge(base: Record<string, any>, override: Record<string, any>): Record<string, any> {
@@ -31,6 +32,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
 
   return {
     locale,
-    messages: localeMessages,
+    // Guides' and pages' nav titles and descriptions live in their frontmatter.
+    messages: withNavCopy(localeMessages, locale),
   };
 });

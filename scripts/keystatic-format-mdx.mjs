@@ -73,12 +73,28 @@ const COLLECTION_SCHEMAS = [
   },
   {
     match: '/guides/',
-    order: ['title', 'estimatedTime', 'excerpt', 'relatedGuides', 'firstPublished', 'lastUpdated'],
+    order: [
+      'title',
+      'navTitle',
+      'navDescription',
+      'estimatedTime',
+      'excerpt',
+      'relatedGuides',
+      'firstPublished',
+      'lastUpdated',
+    ],
     defaults: {},
   },
   {
     match: '/pages/',
-    order: ['title', 'relatedGuides', 'firstPublished', 'lastUpdated'],
+    order: [
+      'title',
+      'navTitle',
+      'navDescription',
+      'relatedGuides',
+      'firstPublished',
+      'lastUpdated',
+    ],
     defaults: {},
   },
   {

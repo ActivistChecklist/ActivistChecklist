@@ -427,6 +427,20 @@ const riskLevelComponent = wrapper({
   },
 });
 
+// How a guide or page is listed in menus, the footer, cards and /checklists/
+// (lib/nav-copy.js). Translated by Crowdin like the title.
+const navTitleField = fields.text({
+  label: 'Short title (optional)',
+  description:
+    'Shown in menus, the footer, homepage cards, /checklists/ and search. Sentence case. Leave blank to use Title.',
+});
+const navDescriptionField = fields.text({
+  label: 'Short description (optional)',
+  description:
+    'One sentence under the short title on homepage cards, related guides and /checklists/. Leave blank for none.',
+  multiline: true,
+});
+
 const relatedGuidesComponent = wrapper({
   label: 'Related Guides',
   description: 'Block of related guide cards',
@@ -560,6 +574,8 @@ export default config({
       columns: ['title', 'lastUpdated'],
       schema: {
         title: fields.slug({ name: { label: 'Title' } }),
+        navTitle: navTitleField,
+        navDescription: navDescriptionField,
         estimatedTime: fields.text({ label: 'Estimated Time' }),
         excerpt: fields.mdx.inline({ label: 'Summary', options: mdxEditorOptionsContent }),
         seoTitle: fields.text({
@@ -681,6 +697,8 @@ export default config({
       columns: ['title', 'lastUpdated'],
       schema: {
         title: fields.slug({ name: { label: 'Title' } }),
+        navTitle: navTitleField,
+        navDescription: navDescriptionField,
         seoTitle: fields.text({
           label: 'SEO title (optional)',
           description:
