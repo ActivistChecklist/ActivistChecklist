@@ -5,7 +5,13 @@ import { IoCopyOutline, IoCheckmarkSharp } from 'react-icons/io5';
 import { useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipPortal,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import styles from './CopyButton.module.css';
 
 /**
@@ -104,7 +110,12 @@ export default function CopyButton({ className = '' }) {
             <span className={styles.label}>{label}</span>
           </button>
         </TooltipTrigger>
-        <TooltipContent>{tooltipText}</TooltipContent>
+        {/* Portaled so the open tooltip isn't inside the blockquote: there it
+            took the `.button + *` margin reset from the first paragraph, and
+            its "Copy text" label ended up in the copied text. */}
+        <TooltipPortal>
+          <TooltipContent>{tooltipText}</TooltipContent>
+        </TooltipPortal>
       </Tooltip>
     </TooltipProvider>
   );
