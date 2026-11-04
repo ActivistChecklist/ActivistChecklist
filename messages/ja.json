@@ -115,12 +115,12 @@
     "lastUpdatedOn": "最終更新日：",
     "takesAbout": "所要時間の目安：",
     "viewLatestGuideAt": "最新版のガイドはこちら：",
-    "downloadPdf": "Download PDF"
+    "downloadPdf": "PDFをダウンロード"
   },
   "printNotice": {
-    "madeOn": "This copy was made on {date}.",
-    "updatesOften": "We update our guides often as threats change and as better ways to protect yourself become available. For the latest version, visit",
-    "linksHeading": "Links"
+    "madeOn": "このコピーは {date} に作成。",
+    "updatesOften": "脅威が変化するにつれ、また自分の身を守るより良い方法が利用可能になるにつれ、ガイドを頻繁に更新します。最新バージョンはこちらから。",
+    "linksHeading": "リンク"
   },
   "footer": {
     "branding": {
@@ -267,9 +267,9 @@
     "ariaLabel": "クリップボードにコピー"
   },
   "expandableList": {
-    "more": "Show {count} more",
-    "moreWithLabel": "{label} ({count} more)",
-    "less": "Show less"
+    "more": "さらに{count}件表示",
+    "moreWithLabel": "{label} ({count} 件以上 )",
+    "less": "少なく表示"
   },
   "contact": {
     "title": "コンタクト",
@@ -324,8 +324,8 @@
   "relatedGuides": {
     "headingBlock": "関連ガイドでさらに学ぼう",
     "headingFooter": "こちらのガイドもチェックしてみてください",
-    "readMore": "Read more",
-    "viewPrintable": "View printable"
+    "readMore": "もっと見る",
+    "viewPrintable": "印刷可能なページを表示"
   },
   "checklists": {
     "title": "チェックリスト",
@@ -339,9 +339,9 @@
       "scope": "スマホ、アカウント、グループチャットの基本的安全対策。"
     },
     "goingOut": {
-      "title": "Protests, actions & travel",
-      "heading": "Protests, actions & travel",
-      "scope": "Showing up or organizing anywhere police or border agents could take your phone."
+      "title": "抗議行動・アクションおよび旅行",
+      "heading": "抗議行動・アクションおよび旅行",
+      "scope": "警察や出入国管理職員からスマホを押収される可能性のある場所に行くときの対策。"
     },
     "targeted": {
       "title": "標的にされたとき",
