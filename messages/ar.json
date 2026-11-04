@@ -339,27 +339,21 @@
       "scope": "حماية أساسية لهاتفك وحساباتك ومحادثاتك الجماعية."
     },
     "goingOut": {
-      "title": "الاحتجاجات والسفر",
-      "heading": "الاحتجاجات والسفر",
-      "scope": "أي مكان قد تأخذ فيه الشرطة أو عناصر الحدود هاتفك."
+      "title": "Protests, actions & travel",
+      "heading": "Protests, actions & travel",
+      "scope": "Showing up or organizing anywhere police or border agents could take your phone."
     },
     "targeted": {
       "title": "عندما تكون مستهدفًا",
       "heading": "احمِ نفسك من الاستهداف",
       "scope": "الدوكسينغ وكشف معلوماتك الشخصية، أو التحرش، أو التحقيقات، أو عناصر الأمن على بابك."
     },
-    "organizing": {
-      "title": "تنظيم الآخرين",
-      "heading": "تنظيم الآخرين",
-      "scope": "إدارة الفعاليات وتأمين مجموعتك."
-    },
     "allChecklists": "{count, plural, zero {كل القوائم} one {القائمة الوحيدة} two {كلتا القائمتين} few {كل القوائم الـ#} many {كل القوائم الـ#} other {كل القوائم الـ#}}",
     "readMinutes": "قراءة في {minutes} دقيقة",
     "explainer": "شرح",
     "howTo": "دليل عملي",
     "readGuide": "اقرأ الدليل",
-    "understandWhy": "افهم السبب",
-    "lastReviewed": "آخر مراجعة: {date}"
+    "understandWhy": "افهم السبب"
   },
   "news": {
     "title": "أخبار المراقبة",
