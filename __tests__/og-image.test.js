@@ -103,11 +103,14 @@ describe('OG Image Configuration', () => {
         'utf-8',
       );
 
-      // Check that both files contain the same pages
-      for (const page of expectedPages) {
-        expect(ogImageContent).toContain(`'${page}'`);
-        expect(apiContent).toContain(`'${page}'`);
-      }
+      // Both files must hold exactly this list, so a slug added to or left in
+      // only one of them fails here.
+      const parseDefaultOgSlugs = (source) => {
+        const match = source.match(/USE_DEFAULT_OG_IMAGE\s*=\s*\[([^\]]*)\]/);
+        return [...match[1].matchAll(/'([^']*)'/g)].map((m) => m[1]);
+      };
+      expect(parseDefaultOgSlugs(ogImageContent)).toEqual(expectedPages);
+      expect(parseDefaultOgSlugs(apiContent)).toEqual(expectedPages);
     });
   });
 

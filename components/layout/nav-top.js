@@ -143,15 +143,16 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                               {item.label}
                             </Link>
                           ) : (
-                            // A menu with no landing page of its own (Resources) gets a plain heading.
-                            <p
+                            // A menu with no landing page of its own (Resources) gets a plain
+                            // heading, in the body font so it matches the linked labels.
+                            <h3
                               className={cn(
-                                'text-lg font-semibold pl-2 py-2 border-l-2 border-l-transparent',
+                                'font-body text-lg font-semibold pl-2 py-2 border-l-2 border-l-transparent',
                                 isNavItemActive(item, pathname) && 'border-link text-link',
                               )}
                             >
                               {item.label}
-                            </p>
+                            </h3>
                           )}
                           {item.key === 'checklists' ? (
                             <ChecklistsMenu

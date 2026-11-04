@@ -142,31 +142,12 @@ function pathResolvesInBuild(cleaned) {
   return false;
 }
 
-/**
- * Redirects from lib/redirects.config.cjs, as the `Redirect` lines Apache serves
- * in production: each source is a path prefix matched by whole segments, with
- * the rest of the path appended to the destination.
- */
-const REDIRECT_PREFIXES = redirectsConfig.REDIRECTS.map((entry) => {
-  const [, , from, to] = redirectsConfig.toApacheRedirectLine(entry).split(' ');
-  return { from, to };
-});
-
-function redirectTarget(cleaned) {
-  for (const { from, to } of REDIRECT_PREFIXES) {
-    if (cleaned === from || cleaned.startsWith(`${from}/`)) {
-      return to + cleaned.slice(from.length);
-    }
-  }
-  return null;
-}
-
 function pathResolves(localPath) {
   const cleaned = stripQueryAndFragment(localPath);
   if (pathResolvesInBuild(cleaned)) return true;
   // A link to a redirected path (e.g. an old changelog entry pointing at a
   // retired page) works on the live site, as long as the page it lands on exists.
-  const target = redirectTarget(cleaned);
+  const target = redirectsConfig.redirectTarget(cleaned);
   if (target === null) return false;
   return URI_SCHEME.test(target) || pathResolvesInBuild(target);
 }
