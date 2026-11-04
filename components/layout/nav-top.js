@@ -132,15 +132,27 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                         </Link>
                       ) : (
                         <div key={item.key} className="space-y-2">
-                          <Link
-                            href={item.href || '#'}
-                            className={cn(
-                              'block text-lg font-semibold pl-2 py-2 border-l-2 border-l-transparent hover:border-l-foreground/20',
-                              isNavItemActive(item, pathname) && 'border-link text-link',
-                            )}
-                          >
-                            {item.label}
-                          </Link>
+                          {item.href ? (
+                            <Link
+                              href={item.href}
+                              className={cn(
+                                'block text-lg font-semibold pl-2 py-2 border-l-2 border-l-transparent hover:border-l-foreground/20',
+                                isNavItemActive(item, pathname) && 'border-link text-link',
+                              )}
+                            >
+                              {item.label}
+                            </Link>
+                          ) : (
+                            // A menu with no landing page of its own (Resources) gets a plain heading.
+                            <p
+                              className={cn(
+                                'text-lg font-semibold pl-2 py-2 border-l-2 border-l-transparent',
+                                isNavItemActive(item, pathname) && 'border-link text-link',
+                              )}
+                            >
+                              {item.label}
+                            </p>
+                          )}
                           {item.key === 'checklists' ? (
                             <ChecklistsMenu
                               variant="mobile"

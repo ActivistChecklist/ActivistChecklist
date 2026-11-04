@@ -94,16 +94,7 @@ describe('OG Image Configuration', () => {
   describe('Default OG Image Pages', () => {
     it('should have matching lists in og-image.js and api/og-image.js', () => {
       // These pages should use the default OG image
-      const expectedPages = [
-        'home',
-        '',
-        'privacy',
-        'contact',
-        'resources',
-        'about',
-        'checklists',
-        'flyer',
-      ];
+      const expectedPages = ['home', '', 'privacy', 'contact', 'about', 'checklists', 'flyer'];
 
       // Read the files to check the lists match
       const ogImageContent = fs.readFileSync(path.join(process.cwd(), 'lib/og-image.js'), 'utf-8');
