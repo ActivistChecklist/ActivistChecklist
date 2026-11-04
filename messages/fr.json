@@ -114,7 +114,13 @@
   "meta": {
     "lastUpdatedOn": "Dernière mise à jour le",
     "takesAbout": "Durée : environ",
-    "viewLatestGuideAt": "Consulte la dernière version du guide sur"
+    "viewLatestGuideAt": "Consulte la dernière version du guide sur",
+    "downloadPdf": "Télécharger le PDF"
+  },
+  "printNotice": {
+    "madeOn": "Cette copie a été faite le {date}.",
+    "updatesOften": "On met souvent nos guides à jour, au fil de l'évolution des menaces et des nouvelles façons de se protéger. Pour la version la plus récente, rends-toi sur",
+    "linksHeading": "Liens"
   },
   "footer": {
     "branding": {
@@ -333,27 +339,21 @@
       "scope": "Une protection de base pour ton téléphone, tes comptes et tes discussions de groupe."
     },
     "goingOut": {
-      "title": "Manifs et déplacements",
-      "heading": "Manifs et déplacements",
-      "scope": "Partout où les flics ou les agents aux frontières pourraient prendre ton téléphone."
+      "title": "Manifs, actions et voyages",
+      "heading": "Manifs, actions et voyages",
+      "scope": "Quand tu participes ou que tu t'organises là où les flics ou les agents de la frontière pourraient te prendre ton téléphone."
     },
     "targeted": {
       "title": "Être ciblé·e",
       "heading": "Protège-toi si tu es ciblé·e",
       "scope": "Doxxing, harcèlement, enquêtes ou agents à ta porte."
     },
-    "organizing": {
-      "title": "Organiser les autres",
-      "heading": "Organiser les autres",
-      "scope": "Mener des actions et sécuriser ton groupe."
-    },
     "allChecklists": "{count, plural, one {# checklist au total} other {Les # checklists}}",
     "readMinutes": "{minutes} min de lecture",
     "explainer": "Explication",
     "howTo": "Guide pratique",
     "readGuide": "Lire le guide",
-    "understandWhy": "Comprendre pourquoi",
-    "lastReviewed": "Dernière relecture : {date}"
+    "understandWhy": "Comprendre pourquoi"
   },
   "news": {
     "title": "Actus sur la surveillance",
