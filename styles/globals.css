@@ -519,20 +519,31 @@
       margin: 0.9cm;
     }
 
-    /* Reduce overall text size for printing without affecting layout */
-    html,
-    body {
-      /* Use scale transform to reduce text size without affecting layout units */
-      font-size: 16px !important; /* Keep the default font size */
+    /* Keep callout, badge and do/don't colors; browsers drop backgrounds by default. */
+    html {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
 
-    /* Target text elements only for size reduction */
-    p,
-    li,
-    td,
-    th {
-      font-size: 9pt !important; /* This reduces just the text size */
-      line-height: 1.3 !important; /* Adjust line height for readability */
+    /* Shrink the whole page in proportion. Sizes and spacing are in rem, so a
+       smaller root keeps the screen's type hierarchy and tightens padding along
+       with the text. Shrinking only some elements left menu paths and callouts
+       looking oversized next to tiny body text. */
+    html {
+      font-size: 12.5px !important;
+    }
+
+    /* body is a fixed 17px on screen (Source Sans runs small); keep that same
+       ratio to the root so body text lands near 10pt. */
+    body {
+      font-size: 1.0625rem !important;
+      line-height: 1.4;
+    }
+
+    /* Japanese needs the extra line spacing it gets on screen (:root:lang(ja)),
+       which the body rule above would otherwise override. */
+    :lang(ja) body {
+      line-height: 1.7;
     }
 
     /* Hide navigation and interactive elements */
@@ -550,17 +561,66 @@
       widows: 3;
     }
 
-    /* Optimize links for print */
-    a {
+    /* Keep a heading on the same page as what it introduces. */
+    h1,
+    h2,
+    h3,
+    h4 {
+      break-after: avoid;
+    }
+
+    tr,
+    img,
+    figure {
+      break-inside: avoid;
+    }
+
+    /* Optimize links for print. Buttons keep their own colors: forcing black
+       text onto a filled button makes it unreadable. */
+    a:not(.button) {
       text-decoration: none;
       color: #000 !important;
     }
 
-    /* Show URLs for links (except for internal anchor links) */
-    a[href^='http']:after {
-      content: ' (' attr(href) ')';
-      font-size: 90%;
-      font-style: italic;
+    /* Printed links get a superscript number (set on beforeprint by
+       components/PrintEndnotes.js) pointing to the URL list at the end of the
+       page, instead of the address spelled out mid-sentence. In a PDF the link
+       itself stays clickable. */
+    a[data-endnote]::after {
+      content: attr(data-endnote);
+      /* inline-block keeps the link's underline from running under the number */
+      display: inline-block;
+      font-size: 65%;
+      vertical-align: super;
+      line-height: 0;
+      margin-left: 1px;
+      color: hsl(var(--muted-foreground));
+    }
+
+    .print-endnotes {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid hsl(var(--border));
+      break-before: auto;
+    }
+
+    .print-endnotes h2 {
+      margin: 0 0 0.5rem;
+      padding: 0;
+    }
+
+    .print-endnotes ol {
+      list-style: decimal;
+      padding-left: 1.5rem;
+      columns: 2;
+      column-gap: 1.5rem;
+    }
+
+    .print-endnotes li {
+      font-size: 7.5pt !important;
+      line-height: 1.35 !important;
+      overflow-wrap: anywhere;
+      break-inside: avoid;
     }
 
     /* Adjust colors for better print readability */
@@ -572,9 +632,11 @@
       } */
 
     /* Make images and tables fit within page */
+    /* Not !important: that overrode each image's own max-width and blew
+       screenshots up to the full page width. */
     img,
     table {
-      max-width: 100% !important;
+      max-width: 100%;
     }
 
     /* Improve table readability */

@@ -12,6 +12,7 @@ import { ChecklistProgressProvider } from '@/contexts/ChecklistProgressContext';
 import { TableOfContentsSidebar } from '@/components/layout/TableOfContentsSidebar';
 import { LayoutProvider, useLayout } from '@/contexts/LayoutContext';
 import SkipLink from './SkipLink';
+import PrintEndnotes from '@/components/PrintEndnotes';
 import PageCounter from './PageCounter';
 import AnnouncementBar from './AnnouncementBar';
 import LanguageDetectionBanner from '@/components/LanguageDetectionBanner';
@@ -74,7 +75,8 @@ const LayoutContent = ({
                       <main
                         id="main-content"
                         className={cn(
-                          'flex-1 min-w-0 m-auto mb-12',
+                          // print scales the rem root down, which would shrink this column too
+                          'flex-1 min-w-0 m-auto mb-12 print:max-w-none',
                           fullWidthMain ? 'max-w-full' : 'max-w-3xl',
                           className,
                         )}
@@ -83,6 +85,7 @@ const LayoutContent = ({
                         {...(searchable && { 'data-pagefind-body': true })}
                       >
                         {children}
+                        <PrintEndnotes />
                       </main>
                     </div>
                   </div>

@@ -35,6 +35,7 @@
     "build": "NEXT_TELEMETRY_DISABLED=1 next build --webpack",
     "buildstatic": "BUILD_MODE=static pnpm build && pnpm check-build && pnpm check-links && pnpm validate-build",
     "postbuild": "bash scripts/postbuild.sh",
+    "pdfs": "node scripts/build-pdfs.mjs",
     "og-images": "node scripts/generate-og-images.mjs",
     "og-images:clean": "node scripts/generate-og-images.mjs --clean",
     "index": "NODE_ENV=${NODE_ENV} bash scripts/build-search-index.sh",
@@ -143,6 +144,7 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@fontsource/noto-sans-jp": "^5.3.1",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "26.6.6",
     "@types/react": "19.3.0",
@@ -158,6 +160,7 @@
     "node-fetch": "^3.3.2",
     "open-graph-scraper": "^6.13.0",
     "pagefind": "^1.5.2",
+    "playwright": "^1.64.0",
     "postcss": "^8.5.32",
     "prettier": "3.9.10",
     "react-json-view": "^1.21.3",

@@ -56,7 +56,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
 
   return (
     <>
-      {/* If printing, show the logo */}
+      {/* If printing, show the logo. Page titles reserve print:pr-[260px] so a long one never runs under it. */}
       <div className="hidden print:block print:relative">
         <Image
           className="print:absolute print:top-0 print:right-0 dark:hidden"
@@ -132,15 +132,28 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                         </Link>
                       ) : (
                         <div key={item.key} className="space-y-2">
-                          <Link
-                            href={item.href || '#'}
-                            className={cn(
-                              'block text-lg font-semibold pl-2 py-2 border-l-2 border-l-transparent hover:border-l-foreground/20',
-                              isNavItemActive(item, pathname) && 'border-link text-link',
-                            )}
-                          >
-                            {item.label}
-                          </Link>
+                          {item.href ? (
+                            <Link
+                              href={item.href}
+                              className={cn(
+                                'block text-lg font-semibold pl-2 py-2 border-l-2 border-l-transparent hover:border-l-foreground/20',
+                                isNavItemActive(item, pathname) && 'border-link text-link',
+                              )}
+                            >
+                              {item.label}
+                            </Link>
+                          ) : (
+                            // A menu with no landing page of its own (Resources) gets a plain
+                            // heading, in the body font so it matches the linked labels.
+                            <h3
+                              className={cn(
+                                'font-body text-lg font-semibold pl-2 py-2 border-l-2 border-l-transparent',
+                                isNavItemActive(item, pathname) && 'border-link text-link',
+                              )}
+                            >
+                              {item.label}
+                            </h3>
+                          )}
                           {item.key === 'checklists' ? (
                             <ChecklistsMenu
                               variant="mobile"

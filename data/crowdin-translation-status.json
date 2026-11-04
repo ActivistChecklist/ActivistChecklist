@@ -430,23 +430,6 @@
         "showUnreviewedNotice": true
       }
     },
-    "resources": {
-      "es": {
-        "translationPercent": 100,
-        "approvalPercent": 0,
-        "showUnreviewedNotice": true
-      },
-      "fr": {
-        "translationPercent": 100,
-        "approvalPercent": 0,
-        "showUnreviewedNotice": true
-      },
-      "it": {
-        "translationPercent": 100,
-        "approvalPercent": 0,
-        "showUnreviewedNotice": true
-      }
-    },
     "signal-ai": {
       "es": {
         "translationPercent": 100,

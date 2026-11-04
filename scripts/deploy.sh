@@ -14,5 +14,8 @@ source "$SCRIPT_DIR/load-env.sh"
 export NODE_ENV=production
 
 cd "$ROOT"
+# The guide PDF step needs Chromium, which `pnpm install` does not download.
+# A no-op once the right version is installed.
+pnpm exec playwright install chromium-headless-shell
 pnpm buildstatic
 bash "$SCRIPT_DIR/deploy-remote.sh"

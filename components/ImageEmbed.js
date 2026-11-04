@@ -86,7 +86,13 @@ export const ImageEmbed = ({
       alt={alt || 'Embedded image'}
       width={800}
       height={600}
-      className={cn('rounded-lg shadow-xs w-full h-auto', getSizeClass(), getAlignmentClass())}
+      className={cn(
+        'rounded-lg shadow-xs w-full h-auto',
+        // a tall phone screenshot at full width runs past the bottom of a printed page
+        'print:w-auto print:max-h-[4.5in] print:shadow-none',
+        getSizeClass(),
+        getAlignmentClass(),
+      )}
       loading="lazy"
       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
       {...props}
