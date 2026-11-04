@@ -58,9 +58,6 @@
     "movies": {
       "href": "/movies/"
     },
-    "resources": {
-      "href": "/resources/"
-    },
     "police-door-poster": {
       "href": "/police/",
       "kind": "printable"
@@ -143,8 +140,7 @@
       "footerLink": true
     },
     "resources": {
-      "href": "/resources/",
-      "items": ["news", "tools", "links", "flyer", "movies", "glossary", "resources"]
+      "items": ["news", "tools", "links", "flyer", "movies", "glossary"]
     },
     "about": {
       "href": "/about/",
@@ -189,7 +185,6 @@
           "news",
           "about",
           "movies",
-          "resources",
           "changelog",
           "contact",
           "privacy"

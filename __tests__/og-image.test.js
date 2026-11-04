@@ -94,16 +94,7 @@ describe('OG Image Configuration', () => {
   describe('Default OG Image Pages', () => {
     it('should have matching lists in og-image.js and api/og-image.js', () => {
       // These pages should use the default OG image
-      const expectedPages = [
-        'home',
-        '',
-        'privacy',
-        'contact',
-        'resources',
-        'about',
-        'checklists',
-        'flyer',
-      ];
+      const expectedPages = ['home', '', 'privacy', 'contact', 'about', 'checklists', 'flyer'];
 
       // Read the files to check the lists match
       const ogImageContent = fs.readFileSync(path.join(process.cwd(), 'lib/og-image.js'), 'utf-8');
@@ -112,11 +103,14 @@ describe('OG Image Configuration', () => {
         'utf-8',
       );
 
-      // Check that both files contain the same pages
-      for (const page of expectedPages) {
-        expect(ogImageContent).toContain(`'${page}'`);
-        expect(apiContent).toContain(`'${page}'`);
-      }
+      // Both files must hold exactly this list, so a slug added to or left in
+      // only one of them fails here.
+      const parseDefaultOgSlugs = (source) => {
+        const match = source.match(/USE_DEFAULT_OG_IMAGE\s*=\s*\[([^\]]*)\]/);
+        return [...match[1].matchAll(/'([^']*)'/g)].map((m) => m[1]);
+      };
+      expect(parseDefaultOgSlugs(ogImageContent)).toEqual(expectedPages);
+      expect(parseDefaultOgSlugs(apiContent)).toEqual(expectedPages);
     });
   });
 
