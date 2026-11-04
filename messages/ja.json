@@ -339,27 +339,21 @@
       "scope": "スマホ、アカウント、グループチャットの基本的安全対策。"
     },
     "goingOut": {
-      "title": "抗議行動と移動",
-      "heading": "抗議行動と移動",
-      "scope": "警察や出入国管理当局にスマホを取り上げられる可能性があるあらゆる場面で。"
+      "title": "Protests, actions & travel",
+      "heading": "Protests, actions & travel",
+      "scope": "Showing up or organizing anywhere police or border agents could take your phone."
     },
     "targeted": {
       "title": "標的にされたとき",
       "heading": "標的にされないよう身を守る",
       "scope": "ドクシング、嫌がらせ、捜査、または警察が家に来たとき。"
     },
-    "organizing": {
-      "title": "仲間を組織する",
-      "heading": "仲間を組織する",
-      "scope": "行動の運営とグループのセキュリティ強化。"
-    },
     "allChecklists": "{count, plural, other {全#件のチェックリスト}}",
     "readMinutes": "{minutes}分で読めます",
     "explainer": "解説",
     "howTo": "ハウツーガイド",
     "readGuide": "ガイドを読む",
-    "understandWhy": "理由を知る",
-    "lastReviewed": "最終確認日：{date}"
+    "understandWhy": "理由を知る"
   },
   "news": {
     "title": "監視に関するニュース",
