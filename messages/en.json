@@ -333,27 +333,21 @@
       "scope": "Baseline protection for your phone, accounts, and group chats."
     },
     "goingOut": {
-      "title": "Protests & travel",
-      "heading": "Protests & travel",
-      "scope": "Anywhere police or border agents could take your phone."
+      "title": "Protests, actions & travel",
+      "heading": "Protests, actions & travel",
+      "scope": "Showing up or organizing anywhere police or border agents could take your phone."
     },
     "targeted": {
       "title": "Being targeted",
       "heading": "Protect yourself from being targeted",
       "scope": "Doxxing, harassment, investigations, or agents at your door."
     },
-    "organizing": {
-      "title": "Organizing others",
-      "heading": "Organizing others",
-      "scope": "Running actions and getting your group secure."
-    },
     "allChecklists": "All {count, plural, one {# checklist} other {# checklists}}",
     "readMinutes": "{minutes} min read",
     "explainer": "Explainer",
     "howTo": "How-to guide",
     "readGuide": "Read the guide",
-    "understandWhy": "Understand why",
-    "lastReviewed": "Last reviewed {date}"
+    "understandWhy": "Understand why"
   },
   "news": {
     "title": "Surveillance News",
