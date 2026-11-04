@@ -15,7 +15,11 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 export function extractHeaders(content, enableH3 = true) {
   if (!content) return [];
 
-  const headerElements = Array.from(content.querySelectorAll(enableH3 ? 'h2, h3' : 'h2'));
+  // `data-toc-ignore` marks headings that are not part of the page on screen,
+  // such as the print-only list of links (PrintEndnotes).
+  const headerElements = Array.from(content.querySelectorAll(enableH3 ? 'h2, h3' : 'h2')).filter(
+    (header) => !header.closest('[data-toc-ignore]'),
+  );
   const ids = assignHeadingIds(
     headerElements.map((header) => ({ id: header.id, text: header.innerText })),
   );

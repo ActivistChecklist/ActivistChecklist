@@ -65,6 +65,7 @@ export default function PrintEndnotes() {
     <section
       data-endnotes
       data-pagefind-ignore
+      data-toc-ignore
       className={notes.length > 0 ? 'hidden print:block print-endnotes' : 'hidden'}
     >
       <h2>{t('printNotice.linksHeading')}</h2>
