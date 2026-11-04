@@ -23,6 +23,7 @@ function resolveItem(key) {
     key,
     href: raw.href,
     ...(raw.kind && { kind: raw.kind }),
+    ...(raw.lowPriority && { lowPriority: true }),
     ...(icon && { icon }),
   };
 }
@@ -74,10 +75,12 @@ export const NAV_ITEMS = Object.fromEntries(
 export const SECURITY_CHECKLISTS = resolveMenu('checklists');
 
 /**
- * The four groups every checklist, explainer, and printable sits in. `items`
- * are the section's checklists; `featured` get full cards on the homepage and
- * a bold row in the menu (a how-to can be featured too); `reads` are the
- * explainers and printables listed under them. See lib/checklist-sections.js.
+ * The groups every checklist, explainer, and printable sits in. `items` are
+ * the section's checklists; `featured` get full cards on the homepage and a
+ * bold row in the menu (a how-to can be featured too); `reads` are the
+ * explainers and printables listed under them. A checklist whose item has
+ * `lowPriority` stays in its section on /checklists/ but is left out of the
+ * Checklists menu and the homepage. See lib/checklist-sections.js.
  */
 export const CHECKLIST_SECTIONS = navData.checklistSections.map((section) => ({
   key: section.key,

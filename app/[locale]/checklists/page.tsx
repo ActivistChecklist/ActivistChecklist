@@ -4,8 +4,6 @@ import Layout from '@/components/layout/Layout';
 import PageNotices from '@/components/layout/PageNotices';
 import Link from '@/components/Link';
 import ChecklistSectionList from '@/components/ChecklistSectionList';
-import { getAllGuides } from '@/lib/content';
-import { getGuideStaleness } from '@/lib/content-staleness';
 import { getSectionReadMinutes } from '@/lib/section-reads';
 import { NAV_ITEMS } from '@/config/navigation';
 
@@ -23,12 +21,6 @@ export default async function ChecklistsPage({ params }) {
   setRequestLocale(locale);
   const t = await getTranslations();
 
-  const staleReviewDates = {};
-  for (const guide of getAllGuides(locale)) {
-    const staleness = getGuideStaleness(guide.frontmatter.lastUpdated);
-    if (staleness) staleReviewDates[guide.frontmatter.slug || guide.slug] = staleness.reviewDate;
-  }
-
   return (
     <Layout searchable={false} sidebarType="toc">
       <h1 className="page-title">{t('checklists.title')}</h1>
@@ -44,10 +36,7 @@ export default async function ChecklistsPage({ params }) {
 
       <PageNotices />
 
-      <ChecklistSectionList
-        staleReviewDates={staleReviewDates}
-        readMinutes={getSectionReadMinutes(locale)}
-      />
+      <ChecklistSectionList readMinutes={getSectionReadMinutes(locale)} />
     </Layout>
   );
 }

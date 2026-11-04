@@ -56,44 +56,53 @@ export default function ChecklistsMenu({ variant = 'desktop', pathname, footerLi
     </li>
   );
 
+  const sectionBlock = (section) => {
+    const featuredKeys = new Set(section.featured.map((item) => item.key));
+    // A featured how-to (the security party) sits with the featured checklists.
+    const checklists = [
+      ...section.items.filter((item) => featuredKeys.has(item.key)),
+      ...section.featured.filter((item) => item.kind),
+      ...section.items.filter((item) => !featuredKeys.has(item.key)),
+    ].filter((item) => !item.lowPriority);
+    // Two per section keeps the menu scannable; /checklists/ lists them all.
+    const reads = section.reads.slice(0, 2);
+    return (
+      <div key={section.key}>
+        <Wrap>
+          <Link
+            href={section.href}
+            className="block px-2 mb-1 text-sm font-semibold uppercase tracking-wider text-muted-foreground hover:text-link"
+          >
+            {t(`checklistSections.${section.key}.title`)}
+          </Link>
+        </Wrap>
+        <ul>{checklists.map((item) => row(item, item.icon, 'text-primary'))}</ul>
+        {reads.length > 0 && (
+          <ul className="mt-2 border-t border-border pt-2">
+            {reads.map((item) =>
+              row(item, READ_KIND_ICONS[item.kind] || READ_KIND_ICONS.explainer, 'text-success'),
+            )}
+          </ul>
+        )}
+      </div>
+    );
+  };
+
+  // On desktop, sections alternate between two columns that stack on their
+  // own, so a short section doesn't leave a gap the height of a long one next
+  // to it. The mobile menu is a single column in section order.
+  const columns = isDesktop
+    ? [0, 1].map((col) => CHECKLIST_SECTIONS.filter((_, i) => i % 2 === col))
+    : [CHECKLIST_SECTIONS];
+
   return (
     <div className={cn(isDesktop && 'w-[620px] p-4')}>
-      <div className={cn('grid gap-x-6 gap-y-6', isDesktop && 'grid-cols-2')}>
-        {CHECKLIST_SECTIONS.map((section) => {
-          const featuredKeys = new Set(section.featured.map((item) => item.key));
-          // A featured how-to (the security party) sits with the featured checklists.
-          const checklists = [
-            ...section.items.filter((item) => featuredKeys.has(item.key)),
-            ...section.featured.filter((item) => item.kind),
-            ...section.items.filter((item) => !featuredKeys.has(item.key)),
-          ];
-          // Two per section keeps the menu scannable; /checklists/ lists them all.
-          const reads = section.reads.slice(0, 2);
-          return (
-            <div key={section.key}>
-              <Wrap>
-                <Link
-                  href={section.href}
-                  className="block px-2 mb-1 text-sm font-semibold uppercase tracking-wider text-muted-foreground hover:text-link"
-                >
-                  {t(`checklistSections.${section.key}.title`)}
-                </Link>
-              </Wrap>
-              <ul>{checklists.map((item) => row(item, item.icon, 'text-primary'))}</ul>
-              {reads.length > 0 && (
-                <ul className="mt-2 border-t border-border pt-2">
-                  {reads.map((item) =>
-                    row(
-                      item,
-                      READ_KIND_ICONS[item.kind] || READ_KIND_ICONS.explainer,
-                      'text-success',
-                    ),
-                  )}
-                </ul>
-              )}
-            </div>
-          );
-        })}
+      <div className={cn('grid gap-x-6', isDesktop && 'grid-cols-2')}>
+        {columns.map((sections, col) => (
+          <div key={col} className="space-y-6">
+            {sections.map(sectionBlock)}
+          </div>
+        ))}
       </div>
       {footerLink && (
         <Wrap>

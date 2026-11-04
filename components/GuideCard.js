@@ -15,7 +15,7 @@ import { useTranslations } from 'next-intl';
 import { getGuideIcon } from '@/config/icons';
 import { createIntlTranslator, getTranslatedNavItemFields } from '@/lib/navigation-i18n';
 
-const GuideCard = ({ guideItem, size = 'medium' }) => {
+const GuideCard = ({ guideItem, size = 'medium', className }) => {
   const t = useTranslations();
   const translateText = createIntlTranslator(t);
   const { href, icon, iconKey, kind, title, description, copyFromContent, duration } = guideItem;
@@ -29,7 +29,7 @@ const GuideCard = ({ guideItem, size = 'medium' }) => {
 
   if (size === 'large') {
     return (
-      <Link href={href} className="block group">
+      <Link href={href} className={cn('block group', className)}>
         <Card className="relative h-full overflow-hidden rounded-lg border border-primary/15 shadow-xs transition-all duration-200 hover:shadow-xl hover:scale-[1.01] hover:border-primary/40 flex flex-col bg-linear-to-br from-card via-card to-primary/15 dark:to-primary/45">
           {/* Watermark icon. From md up (two cards per row) it sits large on
               the right with the text kept clear of it. Below md the card is
@@ -66,7 +66,7 @@ const GuideCard = ({ guideItem, size = 'medium' }) => {
   }
 
   return (
-    <Link href={href} className="block group">
+    <Link href={href} className={cn('block group', className)}>
       <Card className="h-full transition-all duration-200 ease-in-out transform hover:scale-101 hover:shadow-xl border-primary/10 hover:border-primary/30 bg-linear-to-br from-card via-card to-primary/5 dark:to-primary/35 flex flex-col print:shadow-none print:bg-none print:break-inside-avoid">
         <CardHeader className="py-3 px-4 print:pb-1">
           <div className="flex items-center gap-3">
