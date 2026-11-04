@@ -40,6 +40,7 @@ import {
   planPdfBuild,
   shortenUrlForPrint,
 } from '../lib/pdf-export.mjs';
+import { NON_US_NOTICE_STORAGE_KEY } from '../lib/us-timezone.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const ROOT = path.resolve(path.dirname(__filename), '..');
@@ -379,6 +380,16 @@ async function renderAll(stale, manifest) {
     await context.route('**/*', (route) =>
       route.request().url().startsWith(origin) ? route.continue() : route.abort(),
     );
+    // The "outside the US?" notice is picked per visitor from their browser's
+    // timezone. A PDF is one copy for every reader, rendered on a server whose
+    // timezone says nothing about them, so every page starts with it dismissed.
+    await context.addInitScript((key) => {
+      try {
+        localStorage.setItem(key, 'true');
+      } catch {
+        // about:blank and aborted frames have no storage
+      }
+    }, NON_US_NOTICE_STORAGE_KEY);
 
     const queue = [...stale];
     const worker = async () => {
