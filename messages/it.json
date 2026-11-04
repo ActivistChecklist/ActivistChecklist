@@ -339,27 +339,21 @@
       "scope": "Protezione di base per telefono, account e chat di gruppo."
     },
     "goingOut": {
-      "title": "Proteste e viaggi",
-      "heading": "Proteste e viaggi",
-      "scope": "Ovunque gli sbirri o gli agenti di frontiera potrebbero prenderti il telefono."
+      "title": "Protests, actions & travel",
+      "heading": "Protests, actions & travel",
+      "scope": "Showing up or organizing anywhere police or border agents could take your phone."
     },
     "targeted": {
       "title": "Se sei nel mirino",
       "heading": "Proteggiti se sei nel mirino",
       "scope": "Doxxing, molestie, indagini o agenti alla tua porta."
     },
-    "organizing": {
-      "title": "Organizzare altre persone",
-      "heading": "Organizzare altre persone",
-      "scope": "Gestire le azioni e mettere in sicurezza il tuo gruppo."
-    },
     "allChecklists": "{count, plural, one {# checklist} other {Tutte le # checklist}}",
     "readMinutes": "{minutes} min di lettura",
     "explainer": "Guida",
     "howTo": "Guida pratica",
     "readGuide": "Leggi la guida",
-    "understandWhy": "Capisci perché",
-    "lastReviewed": "Ultima revisione: {date}"
+    "understandWhy": "Capisci perché"
   },
   "news": {
     "title": "Notizie sulla sorveglianza",
