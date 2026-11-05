@@ -17,8 +17,8 @@ All in the `main-only` environment:
 | `HEALTHCHECKS_DEPLOY_PING_URL` | secret | `deploy-webhook.yml` |
 | `CROWDIN_PERSONAL_TOKEN` | secret | `crowdin-sync-main.yml` |
 | `CROWDIN_PROJECT_ID` | secret | `crowdin-sync-main.yml` |
-| `AUTOFIX_APP_PRIVATE_KEY` | secret | `security-autofix.yml`, `node-bump.yml` |
-| `AUTOFIX_APP_CLIENT_ID` | variable | `security-autofix.yml`, `node-bump.yml` |
+| `AUTOFIX_APP_PRIVATE_KEY` | secret | `security-autofix.yml`, `node-bump.yml`, `pnpm-bump.yml` |
+| `AUTOFIX_APP_CLIENT_ID` | variable | `security-autofix.yml`, `node-bump.yml`, `pnpm-bump.yml` |
 
 Repository level: nothing. `GITHUB_TOKEN` is automatic and needs no secret.
 
@@ -28,10 +28,11 @@ Repository level: nothing. `GITHUB_TOKEN` is automatic and needs no secret.
   `workflow_dispatch` (GitHub refuses a dispatch on any other branch). Never on
   `pull_request` or `pull_request_target`.
 - Run no code from outside `main` in that job. That is why
-  `security-autofix.yml` has two jobs: the one that runs `pnpm update`, tests
-  and the build gets no secrets, and a second job applies only the lockfile
-  diff and opens the PR. It is also why `crowdin-sync-main.yml` refuses a
-  `head_sha` that is not already on main.
+  `security-autofix.yml` and `pnpm-bump.yml` each have two jobs: the one that
+  runs newly published code (`pnpm update`, tests and the build there; the new
+  pnpm and its install here) gets no secrets, and a second job applies only
+  the lockfile and package.json diff and opens the PR. It is also why
+  `crowdin-sync-main.yml` refuses a `head_sha` that is not already on main.
 - Pass `${{ }}` inputs through `env:`, never inline in `run:`.
 - A job that names an environment which does not exist makes GitHub create it
   with no protection. Create it first (below).
@@ -40,9 +41,9 @@ Repository level: nothing. `GITHUB_TOKEN` is automatic and needs no secret.
 
 ## The autofix GitHub App
 
-`security-autofix.yml` and `node-bump.yml` open PRs, and PRs opened with
-`GITHUB_TOKEN` do not trigger other workflows, so `pr-checks.yml` would never
-run on them. They used to use an org owner's personal access token. That token
+`security-autofix.yml`, `node-bump.yml` and `pnpm-bump.yml` open PRs, and PRs
+opened with `GITHUB_TOKEN` do not trigger other workflows, so `pr-checks.yml`
+would never run on them. They used to use an org owner's personal access token. That token
 acted as an org admin, whom the approval ruleset does not apply to, and any
 write collaborator could read it. An App installation token works only on this
 repo, has only the two permissions below, expires after an hour, and its PRs
@@ -70,10 +71,11 @@ One-time setup, by an org owner:
    rm ~/Downloads/KEY.pem
    ```
 
-5. Run both workflows once from main and check they finish:
+5. Run the workflows once from main and check they finish:
 
    ```bash
    gh workflow run node-bump.yml --ref main
+   gh workflow run pnpm-bump.yml --ref main
    gh workflow run security-autofix.yml --ref main
    ```
 
