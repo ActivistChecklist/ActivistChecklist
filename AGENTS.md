@@ -24,12 +24,16 @@ Code the maintainers did not write is **untrusted**: fork PRs, Crowdin's `l10n_m
 * Skip tests for: trivial glue code, presentational components without logic, one-line wrappers, and things that are exclusively tested by integration (build-time scripts where running the script IS the test).
 * When adding a non-trivial feature, mention test coverage in your final summary so the user knows what's covered and what's not.
 
-## Content writing ruels
+## Content files
 
-* IMPORTANT: Do NOT use em-dashes when writing content or text in .mdx files or static strings.
-* Keystatic refuses to open an entry that uses a component, prop, HTML tag or front matter field `keystatic.config.tsx` does not declare. When you add any of these to content or to `lib/mdx-components.js`, declare it in `keystatic.config.tsx` too. `__tests__/keystatic-content.test.js` opens every entry the way the editor does and fails on anything it would reject.
-* To give a heading a custom anchor id, add `{#your-id}` at the end of the heading line (e.g. `## Downsides to using a VPN {#downsides}`), then link to it with `/page/#your-id`. Without the marker, headings still get an auto id derived from their text. See `lib/mdx-heading-ids.js`.
-* To show a definition popup for a term, write `[text](term:slug)` (e.g. `[data brokers](term:data-broker)`), where `slug` is a key under `definitions` in `messages/en.json`. Definitions themselves use inline Markdown and can link to other terms the same way. Use popups sparingly: not on the term's own page or checklist item, not where the sentence already explains the term, and at most one per checklist item, spread across sections. Don't use the older `<Term slug="...">` tag in new content.
+(Note for folks reading this file: Everything on this site is written by humans. The rules below are for routine tasks that interact with the content files. Some examples of where we might use AI to help with content tweaks: copy editing, drafting changelog entries, writing git commit messages, finding places to add term-definition hovers, cross-linking between pages, writing SEO descriptions, etc. We review and edit 100% of reader-facing text.)
+
+* Custom heading anchors: `{#your-id}` at the end of a heading line (e.g. `## Downsides to using a VPN {#downsides}`) sets its id, linked as `/page/#your-id`. Headings without the marker get an auto id derived from their text. See `lib/mdx-heading-ids.js`.
+* Definition popups: `[text](term:slug)` (e.g. `[data brokers](term:data-broker)`), where `slug` is a key under `definitions` in `messages/en.json`. Definitions are inline Markdown and can link to other terms the same way. Placement rules, when a task adds popups: sparingly, not on the term's own page or checklist item, not where the sentence already explains the term, and at most one per checklist item, spread across sections. Don't add the older `<Term slug="...">` tag; use the link syntax.
+
+## Keystatic
+* Keystatic refuses to open an entry that uses a component, prop, HTML tag or front matter field `keystatic.config.tsx` does not declare. When a change adds any of these to an entry or to `lib/mdx-components.js`, declare it in `keystatic.config.tsx` too. `__tests__/keystatic-content.test.js` opens every entry the way the editor does and fails on anything it would reject.
+
 
 ## Git commit rules
 
@@ -53,7 +57,7 @@ Code the maintainers did not write is **untrusted**: fork PRs, Crowdin's `l10n_m
 * Use `useTranslations()` in client components and `await getTranslations()` in server components (from `next-intl` and `next-intl/server` respectively).
 * The convention in this project is `const t = useTranslations()` without a namespace, using full dot-notation paths (e.g., `t('contact.title')`).
 * This does not apply to admin/Keystatic interfaces, scripts, or internal tooling.
-* IMPORTANT: Do not manually edit or add non-English mdx files while editing/adding English files
+* IMPORTANT: When a change touches files in `content/en/`, leave the matching files in the other `content/<locale>/` folders alone. Crowdin updates them from the English source.
 * **Internal links:** use `import Link from '@/components/Link'`, not `next/link`, so paths get the right locale prefix (`/es/…`, etc.). Exception: root-only URLs that must not be prefixed (e.g. `/rss/*.xml`) — note why in a comment if you use `next/link`.
 
 ## Coding security principles
