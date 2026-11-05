@@ -1,0 +1,156 @@
+# Daily check for a newer pnpm release on the major we pin.
+#
+# Dependabot cannot do this: its npm updater never touches the packageManager
+# field in package.json (dependabot/dependabot-core#4830, open since 2022). So
+# the pin only moved when someone remembered, which is how it sat on 12.4.1 from
+# 2026-09-19 until a manual bump to 12.16.1 on 2026-11-04.
+#
+# scripts/pnpm-bump.mjs reads `npm view pnpm dist-tags time versions` and picks
+# the newest release on the pinned major that is no newer than the
+# `latest-<major>` tag (pnpm trials releases on `next-<major>` first) and has
+# been out as long as Dependabot's cooldown in .github/dependabot.yml: 3 days
+# for a minor, 2 for a patch. Then `corepack use pnpm@<version>` rewrites
+# packageManager, with its +sha512 hash, and pnpm's own entry in pnpm-lock.yaml
+# together. It never crosses a major. Merging the PR is the whole upgrade: CI
+# (pnpm/action-setup), Railway and corepack on the May First host all read
+# packageManager.
+#
+# Two jobs, like security-autofix.yml. `bump` downloads and runs the new pnpm,
+# and `corepack use` runs a full `pnpm install` with install scripts, so it gets
+# no secrets. `open-pr` takes only the package.json and pnpm-lock.yaml diff,
+# checks it with code from main and the npm registry (`pnpm-bump.mjs --verify`),
+# then opens the PR with the autofix App token, which lives in the main-only
+# environment (see .github/ACTIONS-SECRETS.md).
+#
+# The only output is ONE pull request on a fixed branch that later runs refresh
+# in place, so three releases in a week are one PR, not three. pr-checks.yml
+# tests and builds it on the new pnpm. Runs daily at 08:30 UTC, after
+# node-bump.yml, plus manual `workflow_dispatch`.
+
+name: pnpm version bump
+
+on:
+  schedule:
+    - cron: '30 8 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pnpm-bump
+  cancel-in-progress: false
+
+jobs:
+  bump:
+    if: github.repository == 'ActivistChecklist/ActivistChecklist'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      version: ${{ steps.bump.outputs.version }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # No pnpm/action-setup: corepack, bundled with this Node, fetches the new
+      # pnpm itself, and on a day with nothing due nothing gets installed.
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+
+      - name: Check for a newer release
+        id: bump
+        run: node scripts/pnpm-bump.mjs
+
+      # open-pr takes only these two files. If pnpm starts writing another one
+      # (pnpm-workspace.yaml, say), stop rather than open a PR without it.
+      - name: Assert only the pin files changed
+        if: steps.bump.outputs.version != ''
+        run: git diff --exit-code -- . ':(exclude)package.json' ':(exclude)pnpm-lock.yaml'
+
+      - name: Save the bump
+        if: steps.bump.outputs.version != ''
+        run: git diff --binary -- package.json pnpm-lock.yaml > pnpm-bump.patch
+
+      - name: Upload the bump
+        if: steps.bump.outputs.version != ''
+        uses: actions/upload-artifact@v7
+        with:
+          name: pnpm-bump-patch
+          path: pnpm-bump.patch
+          if-no-files-found: error
+          retention-days: 1
+
+  open-pr:
+    needs: bump
+    if: needs.bump.outputs.version != ''
+    # Holds the autofix App key, so it only runs on main.
+    # See .github/ACTIONS-SECRETS.md.
+    environment: main-only
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # The verify step has no dependencies, so no pnpm install.
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+
+      - name: Download the bump
+        uses: actions/download-artifact@v8
+        with:
+          name: pnpm-bump-patch
+
+      # The patch came from a job that ran the new pnpm and every install
+      # script, so take only the two files this workflow is allowed to change.
+      - name: Apply the bump
+        run: |
+          git apply --include=package.json --include=pnpm-lock.yaml pnpm-bump.patch
+          rm pnpm-bump.patch
+
+      # Picks the release again here and fails unless the patch is exactly a
+      # bump to it: npm's own hash in packageManager, no other package.json
+      # change, and the dependency half of pnpm-lock.yaml untouched. It also
+      # writes the PR title and body, so no text from the bump job reaches the PR.
+      # A release that comes due in the minutes between the two jobs makes this
+      # fail once; the next day's run picks it up.
+      - name: Verify the bump
+        id: verify
+        run: node scripts/pnpm-bump.mjs --verify
+
+      # An App token, not GITHUB_TOKEN: PRs opened with GITHUB_TOKEN do not
+      # trigger other workflows, so pr-checks.yml would never run on them.
+      # Shared with security-autofix.yml and node-bump.yml. Setup:
+      # .github/ACTIONS-SECRETS.md.
+      - name: Mint autofix App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ vars.AUTOFIX_APP_CLIENT_ID }}
+          private-key: ${{ secrets.AUTOFIX_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+
+      # Fixed branch name, so a later run updates this PR instead of opening
+      # another.
+      - name: Open PR
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          add-paths: |
+            package.json
+            pnpm-lock.yaml
+          commit-message: ${{ steps.verify.outputs.title }}
+          title: ${{ steps.verify.outputs.title }}
+          # Built by scripts/pnpm-bump.mjs --verify: release-note links, what
+          # changed, and what happens after merge.
+          body: ${{ steps.verify.outputs.body }}
+          branch: automation/pnpm-bump
+          delete-branch: true
+          labels: dependencies
