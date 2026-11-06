@@ -30,7 +30,10 @@ module.exports = {
       // log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
 
       // Process management
-      instances: 1, // Single instance for simplicity
+      // Keep this at 1. The analytics relay's IP key lives only in this process's
+      // memory, so each extra instance would split every visitor into one
+      // Umami session per instance.
+      instances: 1,
       exec_mode: 'fork', // Fork mode (vs cluster)
 
       // Health monitoring

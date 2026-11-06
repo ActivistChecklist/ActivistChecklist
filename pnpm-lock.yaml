@@ -177,8 +177,8 @@ importers:
         specifier: ^0.3.1
         version: 0.3.1(@types/react@19.3.0)(next@16.4.2(@types/node@26.6.6)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(socks@2.8.9)
       '@activistchecklist/umami-extra-privacy':
-        specifier: github:ActivistChecklist/umami-extra-privacy#7669154d772ecbf3410c1243e8014ac8a0e74c5e
-        version: https://codeload.github.com/ActivistChecklist/umami-extra-privacy/tar.gz/7669154d772ecbf3410c1243e8014ac8a0e74c5e(fastify@5.12.8)
+        specifier: github:ActivistChecklist/umami-extra-privacy#cdc7422d143c17ca647133200785d52ac589e259
+        version: https://codeload.github.com/ActivistChecklist/umami-extra-privacy/tar.gz/cdc7422d143c17ca647133200785d52ac589e259(fastify@5.12.8)
       '@fastify/cors':
         specifier: ^11.4.0
         version: 11.4.0
@@ -474,9 +474,9 @@ packages:
       react: ^18.2.0 || ^19.0.0
       react-dom: ^18.2.0 || ^19.0.0
 
-  '@activistchecklist/umami-extra-privacy@https://codeload.github.com/ActivistChecklist/umami-extra-privacy/tar.gz/7669154d772ecbf3410c1243e8014ac8a0e74c5e':
-    resolution: {gitHosted: true, integrity: sha512-6H+16gCCgVK9Y7cyJpnsQUnDuNQjFPjExUAFH4jRYpW7mmGODfEgUEg9gV4Q2nNVvaaqYKRwvvwdp5J+Uc8QVg==, tarball: https://codeload.github.com/ActivistChecklist/umami-extra-privacy/tar.gz/7669154d772ecbf3410c1243e8014ac8a0e74c5e}
-    version: 0.1.0
+  '@activistchecklist/umami-extra-privacy@https://codeload.github.com/ActivistChecklist/umami-extra-privacy/tar.gz/cdc7422d143c17ca647133200785d52ac589e259':
+    resolution: {gitHosted: true, integrity: sha512-Qo0XFVI6tsWZlMO7NHYi6St+wjEJzyJYrAPMBhNFxW1v7daY8JKb8PF3oeOTYmsmxsLrCy6UDcb5P4P7KsA7mw==, tarball: https://codeload.github.com/ActivistChecklist/umami-extra-privacy/tar.gz/cdc7422d143c17ca647133200785d52ac589e259}
+    version: 1.0.0
     engines: {node: '>=18'}
     peerDependencies:
       fastify: '>=4'
@@ -5003,7 +5003,7 @@ snapshots:
       - snappy
       - socks
 
-  '@activistchecklist/umami-extra-privacy@https://codeload.github.com/ActivistChecklist/umami-extra-privacy/tar.gz/7669154d772ecbf3410c1243e8014ac8a0e74c5e(fastify@5.12.8)':
+  '@activistchecklist/umami-extra-privacy@https://codeload.github.com/ActivistChecklist/umami-extra-privacy/tar.gz/cdc7422d143c17ca647133200785d52ac589e259(fastify@5.12.8)':
     optionalDependencies:
       fastify: 5.12.8
 

@@ -35,6 +35,16 @@ Code the maintainers did not write is **untrusted**: fork PRs, Crowdin's `l10n_m
 * Keystatic refuses to open an entry that uses a component, prop, HTML tag or front matter field `keystatic.config.tsx` does not declare. When a change adds any of these to an entry or to `lib/mdx-components.js`, declare it in `keystatic.config.tsx` too. `__tests__/keystatic-content.test.js` opens every entry the way the editor does and fails on anything it would reject.
 
 
+## Updating umami-extra-privacy
+
+`@activistchecklist/umami-extra-privacy` is our own package behind `api/counter.js` (the analytics relay). It is installed from GitHub by commit SHA and is not on npm, so `pnpm update` and Dependabot never move it. Its release steps are in that repo's `AGENTS.md`. To pick up a release:
+
+1. Use the full 40-character SHA of the release commit on the package's `main`, which is also tagged `vX.Y.Z`: `git ls-remote https://github.com/ActivistChecklist/umami-extra-privacy.git refs/heads/main refs/tags/vX.Y.Z`. Never pin a PR-branch commit. The package squash-merges, so a branch commit never lands on `main`.
+2. Put that SHA in both `package.json` (`github:ActivistChecklist/umami-extra-privacy#<sha>`) and the matching `allowBuilds` tarball entry in `pnpm-workspace.yaml`. If they differ, pnpm refuses to run the package's `prepare` build (`ERR_PNPM_GIT_DEP_PREPARE_NOT_ALLOWED`).
+3. Run `pnpm install`. Check that `pnpm-lock.yaml` no longer mentions the old SHA and that `node_modules/@activistchecklist/umami-extra-privacy/package.json` shows the new version.
+4. Run `pnpm vitest run`, then commit `package.json`, `pnpm-workspace.yaml` and `pnpm-lock.yaml` together.
+5. After the PR merges and the merge deploy finishes, restart the API. The merge deploy runs `pnpm install` on the server but never restarts `ac-api`, so the old package stays loaded until something restarts it. With `REMOTE_SSH_HOST` and `REMOTE_REPO_PATH` from your `.env`: `ssh "$REMOTE_SSH_HOST" "bash -lc 'cd $REMOTE_REPO_PATH && ./scripts/run-with-repo-node.sh api:restart'"`. Running `api:status` the same way should then show an uptime of seconds. SSH to the web host lapses until someone logs in to the May First control panel as the site user, so if it is refused with a message about the control panel, do that first.
+
 ## Git commit rules
 
 * IMPORTANT: Do not do any automatic commits for this project unless explicitly instructed.
