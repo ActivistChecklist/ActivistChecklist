@@ -53,12 +53,6 @@ declare(strict_types=1);
 
 header('Content-Type: text/plain; charset=UTF-8');
 
-function getClientIp(): string {
-  // Best-effort; on shared hosts this may be behind a proxy.
-  $ip = $_SERVER['REMOTE_ADDR'] ?? '';
-  return is_string($ip) ? $ip : '';
-}
-
 function jsonOut(int $status, array $data): void {
   http_response_code($status);
   header('Content-Type: application/json; charset=UTF-8');
@@ -121,7 +115,6 @@ function earlyLog(string $event, array $meta = []): void {
   $base = [
     'ts' => gmdate('c'),
     'event' => $event,
-    'ip' => getClientIp(),
     'delivery' => $_SERVER['HTTP_X_GITHUB_DELIVERY'] ?? '',
   ];
   $record = array_merge($base, $meta);
@@ -141,10 +134,9 @@ function appendRepoAuthLog(?string $repoRootConfigured, string $event, array $me
   $base = [
     'ts' => gmdate('c'),
     'event' => $event,
-    'ip' => getClientIp(),
     'delivery' => $_SERVER['HTTP_X_GITHUB_DELIVERY'] ?? '',
   ];
-  $line = (json_encode(array_merge($base, $meta), JSON_UNESCAPED_SLASHES) ?: '{}') . "\n";
+  $line =(json_encode(array_merge($base, $meta), JSON_UNESCAPED_SLASHES) ?: '{}') . "\n";
   @file_put_contents($path, $line, FILE_APPEND | LOCK_EX);
 }
 
@@ -211,8 +203,6 @@ if ($configPath === '') {
 
 /** @var array{secret:string,repo_root:string,allowed_ref?:string,allowed_repository?:string,deploy_script?:string,script_parent_dir?:string,deploy_command_prefix?:list<string>,deploy_env?:array<string,string>,log_file?:string|false} $config */
 $config = require $configPath;
-
-$clientIp = getClientIp();
 
 $secret = $config['secret'] ?? '';
 if ($secret === '' || strlen($secret) < 16) {

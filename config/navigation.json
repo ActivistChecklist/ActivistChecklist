@@ -76,6 +76,9 @@
     "privacy": {
       "href": "/privacy/"
     },
+    "security": {
+      "href": "/security/"
+    },
     "changelog": {
       "href": "/changelog/"
     },
@@ -146,7 +149,7 @@
     },
     "about": {
       "href": "/about/",
-      "items": ["about", "contribute", "changelog", "contact", "privacy"]
+      "items": ["about", "contribute", "changelog", "contact", "privacy", "security"]
     }
   },
   "checklistSections": [
