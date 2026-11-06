@@ -365,7 +365,11 @@ const Search = ({ variant = 'icon', className }) => {
         onFocus={warmUp}
         aria-haspopup="dialog"
         aria-label={t('search.dialogTitle')}
-        className={cn('h-9 w-9 hover:bg-muted', variant === 'header' && 'topnav:hidden', className)}
+        className={cn(
+          'h-9 w-9 hover:bg-muted',
+          variant === 'header' && 'shrink-0 topnav:hidden',
+          className,
+        )}
       >
         <IoSearch className="h-5 w-5" />
       </Button>
