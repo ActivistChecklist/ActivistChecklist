@@ -99,6 +99,10 @@ ErrorDocument 404 /404/index.html
   ForceType "text/plain; charset=utf-8"
 </Files>
 
+# The PGP files set their own types in per-folder rules: files/.htaccess
+# (clearsigned messages and the public key) and .well-known/openpgpkey/.htaccess
+# (Web Key Directory).
+
 # Security Headers
 <IfModule mod_headers.c>
   Header set Content-Security-Policy "default-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; font-src 'self'; connect-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"

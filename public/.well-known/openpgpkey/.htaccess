@@ -1,0 +1,11 @@
+# Web Key Directory (draft-koch-openpgp-webkey-service). The key files under
+# hu/ have no extension, so Apache would send no Content-Type at all; the draft
+# asks for application/octet-stream. policy is a plain text file. Browser-based
+# OpenPGP clients look keys up from other origins, so every file here gets CORS.
+ForceType application/octet-stream
+<Files "policy">
+  ForceType "text/plain; charset=utf-8"
+</Files>
+<IfModule mod_headers.c>
+  Header set Access-Control-Allow-Origin "*"
+</IfModule>
