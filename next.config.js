@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const createNextIntlPlugin = require('next-intl/plugin');
 const { REDIRECTS } = require('./lib/redirects.config.cjs');
+const { designedPdfVersions } = require('./lib/pdf/versions.cjs');
 const linkedReviewCommentsRoot = require('./scripts/rrc-linked-root.cjs');
 
 /**
@@ -36,6 +37,8 @@ const pdfExportEnabled =
 const baseConfig = {
   env: {
     NEXT_PUBLIC_PDF_EXPORT: pdfExportEnabled ? '1' : '0',
+    // ?v= for designed PDFs and their previews; see lib/pdf/versions.cjs.
+    NEXT_PUBLIC_DESIGNED_PDF_VERSIONS: JSON.stringify(designedPdfVersions(__dirname)),
   },
   async redirects() {
     return REDIRECTS.map(({ source, destination, permanent = true }) => ({

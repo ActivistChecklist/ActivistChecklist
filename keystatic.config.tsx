@@ -793,6 +793,10 @@ const pdfDownloadComponent = block({
       defaultValue: Object.keys(PDFS)[0],
     }),
     title: fields.text({ label: 'Main button text', validation: { isRequired: true } }),
+    preview: fields.checkbox({
+      label: 'Show a preview of the PDF below the buttons',
+      defaultValue: false,
+    }),
   },
   ContentView({ value }) {
     return (
