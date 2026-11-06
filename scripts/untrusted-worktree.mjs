@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Check out and run code we did not write (fork PRs, Crowdin's l10n branches,
-// Dependabot bumps) without handing it our secrets. See AGENTS.md "Untrusted code".
+// Dependabot bumps) without handing it our secrets. See CLAUDE.md "Untrusted code".
 //
 //   pnpm untrusted create <pr-number|ref> [--name NAME] [--no-install] [--allow-install-config]
 //   pnpm untrusted run <name> -- <command...>     e.g. -- next dev --turbopack, -- vitest run
