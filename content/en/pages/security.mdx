@@ -1,0 +1,102 @@
+---
+title: How We Keep This Site Secure
+navTitle: Security
+seoDescription: How we protect Activist Checklist and the people who read it, from where the site is hosted to how we lock down the newsletter, forms and analytics.
+firstPublished: 2026-11-06
+lastUpdated: 2026-11-06
+showToc: true
+---
+We know that sites like this can become the target of state surveillance and hacking, so we've gone to great lengths to protect this site and the people who use it. This page explains the main things we've done.
+
+If you want to know what information we collect, see our [privacy page](/privacy/).
+
+Our entire [website's code is open source](https://github.com/ActivistChecklist/ActivistChecklist) if you (or someone with coding skills that you trust) want to review it.
+
+**The security (and privacy) principles we follow:**
+
+* We do not collect anything that could easily be used to identify you. (It's impossible to fully prevent this, but we reduce it as much as possible.)
+* We never log true IP addresses, email addresses, or anything you type into a form.
+* We don't load any external services or third-party libraries in your browser that could expose your IP address.
+* We don't use third-party services (like Mailchimp) that would come with a risk of a court order we aren't told about.
+* We encrypt contact form messages before they leave our server, and we encrypt our newsletter and analytics database backups.
+
+## Server {#server}
+
+We chose [May First](https://mayfirst.coop) as our web host specifically because they support activist projects like ours. We've also disabled logging on our hosting account (no visitor logs, no IP address logs, no error logs) so if the government tries to subpoena us or May First to see who has visited the site, we have nothing to turn over.
+
+<Collapsible title="Technical details">
+
+  * May First does temporarily store IP addresses in memory only for up to 24 hours to help prevent DDoS attacks. They never write IP addresses to the disk and they will be purged if the server is ever powered down.
+  * It's managed hosting, so May First keeps the server software up to date and we don't need to do upgrades ourselves.
+  * Most of the site is a static build, which means every page is a plain HTML file. There's no database or login on it, so there's very little for an attacker to target in the first place.
+  * HSTS (`Strict-Transport-Security`) so browsers only connect to us over HTTPS, and a strict Content Security Policy that blocks scripts on our pages from connecting to any other domain and stops other sites from framing ours. We also send `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, a `strict-origin-when-cross-origin` Referrer-Policy, and a Permissions-Policy that turns off camera, microphone and geolocation.
+  * New deployments get triggered through a webhook, which we locked down with some cryptographic magic so only the GitHub Actions pipeline can trigger a deployment.
+
+</Collapsible>
+
+## Newsletter
+
+Our subscriber list is the most sensitive thing we have, so we went to greater lengths to lock it down. We run our own newsletter software on our own servers instead of handing your email to a company like Mailchimp (which would come with a risk of a court order we aren't told about). We protect access to it with Cloudflare, so it's much harder for a hacker to use some undisclosed exploit to get into the database and steal everyone's email addresses.
+
+*Why do we run a newsletter at all? Well, if you want to get updates, the options are (A) an RSS feed, which most people don't use, (B) social media, which makes it very easy for the state to know you're interested in activist digital security, or (C) an email list, which requires a lot more work for them to access.*
+
+<Collapsible title="Technical details">
+
+  * We use [Listmonk](https://github.com/knadh/listmonk), an open source newsletter tool, on its own hosting account that's separate from the main site.
+  * [Cloudflare Access](https://www.cloudflare.com/zero-trust/products/access/) requires a login before anyone can reach the admin panel or the subscriber database. The only things left open are the pages you need as a subscriber (like unsubscribing).
+  * The server refuses any request that didn't come through Cloudflare, so no one can get around the login wall by going straight to the server.
+  * The Listmonk admin login also requires two-factor authentication.
+  * When you sign up on our site, our API adds you using a separate API key that can only manage subscribers on our one public list. It can't send email, read other lists, or change settings.
+  * The subscriber database is backed up daily, which poses additional risks that we needed to tend to. So we encrypt the backups using asymmetric encryption. Old backups are deleted after 6 months.
+
+</Collapsible>
+
+## Forms
+
+If you message us using our [contact form](/contact/), our server encrypts your message (using our PGP key), along with any contact details you give us, before it leaves our server. Only we can read it.
+
+<Collapsible title="Technical details">
+
+  * We use [Resend](https://resend.com/) to deliver the encrypted message to our Proton Mail account. Resend only sees the encrypted message and the time it was sent. It does not see your IP address, because the message comes from our server, not from your browser. Resend also doesn't see your email, your phone number, or your Signal username because that is all encrypted in the content of the email.
+  * The email subject line is just a reference number, so nothing you wrote shows up there (which would be unencrypted).
+  * The code that handles our forms (the contact form, newsletter signups, page view counts, etc.) doesn't live inside a full Next.js server, because we wanted to reduce the attack surface by limiting the number of packages on the API. So it runs through a small API stack built on top of [Fastify](https://fastify.dev/).
+  * We have a strict rule that this code never logs IP addresses, email addresses, or anything you type into a form.
+
+</Collapsible>
+
+## Privacy {#privacy}
+
+We don't load any external services or third-party libraries in your browser that could expose your IP address to sites that would log it.
+
+We do track a bit of information in an anonymous way to help us understand how folks are using this site, but our server replaces about half of your IP address with random data before it reaches our analytics.
+
+You can read our [privacy page](/privacy/) for more info.
+
+For extra network privacy, you can also visit the site [using Tor](/onion/).
+
+<Collapsible title="Technical details">
+
+  * We host our fonts ourselves instead of loading them from Google.
+  * We don't link to images, JavaScript, or anything else that would automatically load in your browser and reveal your IP address to other services.
+  * Our page view stats are stored on a privacy-focused analytics platform called [Umami](https://umami.is/), which we run ourselves. Your browser sends page views to our own server, not to an analytics company.
+  * Before passing a page view along, our server replaces part of your IP address with random data. The random part changes every 24 hours, and the key used to create it only exists in our server's memory and gets wiped every night. So you aren't identifiable across visits on different days, and the stored address can't be traced back to your real IP address (either by us or by the state if they force us to turn over our analytics database). We released this as an open source tool called [umami-extra-privacy](https://github.com/ActivistChecklist/umami-extra-privacy) if you want to review it.
+  * Your checklist progress stays in your browser's local storage and never leaves it.
+
+</Collapsible>
+
+## Security practices
+
+We also protect the accounts we use to run the site, and we run automated checks on changes before they go live.
+
+And we maintain a [warrant canary](/privacy/#canary), which we update every 4 months to confirm that we haven't been forced to modify the site or been gagged from telling you about a legal demand for user data.
+
+<Collapsible title="Technical details">
+
+  * We use 2FA on every account that allows it.
+  * We wait 2 to 7 days before installing new versions of the software packages we use, because malicious packages are often caught and removed within a few days. (This is needed in an era where GitHub supply chain attacks are more and more common.)
+
+</Collapsible>
+
+## Found a security problem?
+
+You can report security problems privately [on GitHub](https://github.com/ActivistChecklist/ActivistChecklist/security/advisories/new) (you'll need a GitHub account) or through our [contact form](/contact/), which is encrypted.
