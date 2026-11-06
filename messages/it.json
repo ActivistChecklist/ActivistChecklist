@@ -271,6 +271,11 @@
     "moreWithLabel": "{label} (altri {count})",
     "less": "Mostra meno"
   },
+  "canaryStatus": {
+    "current": "<b>Aggiornato.</b> Il nostro warrant canary è stato aggiornato l'ultima volta il {date} ed è valido fino al {validThrough}. (Dopo quella data, questo indicatore diventerà rosso se non ci sarà un canary più recente.)",
+    "overdue": "<b>Scaduto.</b> Il nostro warrant canary è stato aggiornato l'ultima volta il {date} ed era valido fino al {validThrough}. È un segnale che è il caso di fare domande, come spiegato qui sotto.",
+    "unknown": "Non siamo riuscitə a verificare la data del nostro warrant canary. La trovi all'inizio di <link>canary.txt</link>."
+  },
   "contact": {
     "title": "Contattaci",
     "intro": "Il tuo feedback ci aiuta a rendere questa risorsa più utile e sicura per tuttə. Accogliamo volentieri suggerimenti per:",
