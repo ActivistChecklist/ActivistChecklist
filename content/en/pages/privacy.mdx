@@ -57,11 +57,15 @@ We do the most minimal tracking of page views to understand which sections of ou
 
 * We only record the following pieces of information and store them on our server:
   * **pageview info:** which page was viewed and when
-  * **browser info:** browser type, operating system, referring page, and device screen size
-  * **checkbox statistics:** checkbox items clicked and checkbox sections expanded
+  * **browser info:** browser type, browser language, operating system, referring page, device type, and device screen size
+  * **checkbox statistics:** checkbox items clicked, checkbox sections expanded, and when you click the "copy link" button on a checklist item
   * **file downloads:** which file was downloaded
-  * **searches:** the text of your search query
-  * **generic location:** We send a version of your IP address that has about half of the IP address info removed before it reaches our servers. This allows us to approximate your location to a country but not ever store your specific location. We randomize a part of the IP address that changes every 24 hours, so you aren't identifiable across visits on different days.
+  * **searches:** the text of your search query and how many results it found (we remove anything that looks like an email address or phone number before it's sent to our server)
+  * **broken links:** if you visit a page that doesn't exist, the address you tried to visit (including anything after a "?" in it), the referring page, and which page we sent you to if we could guess the page you meant
+  * **newsletter:** when you sign up for the newsletter and which signup box you used (but not your email address), and when you close the newsletter box that shows up partway through our guides
+  * **contact form:** when you send us a message (but not the message itself or any contact info), whether you used the contact page or the "Have questions?" form at the end of a guide, and which reply option you picked (no response, Signal username, Signal phone number, or email)
+  * **security update checker:** if you use our [security update checker](/updates/), whether your device is still getting security updates, will stop soon, has already stopped, or we couldn't tell (but not which device you picked), and whether you said you're on the latest version or an older one
+  * **generic location:** Our server removes about half of the IP address info before it's stored. This allows us to approximate your location to a country, region, and city, but not ever store your specific location. We randomize a part of the IP address that changes every 24 hours, so you aren't identifiable across visits on different days.
 * We do not collect or store any personal information like full IP addresses or exact location
 * We do not track you across different websites or have any services on our site that could track your usage of our site
 * We do not sell or give any of this information to any other entity
