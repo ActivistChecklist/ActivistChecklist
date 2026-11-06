@@ -11,8 +11,9 @@ import {
 import { Button } from '@/components/ui/button';
 import { LOCALES } from '@/lib/i18n-config';
 import { usePathname, useRouter } from '@/i18n/navigation';
+import { cn } from '@/lib/utils';
 
-export default function LanguageSwitcher() {
+export default function LanguageSwitcher({ className } = {}) {
   const router = useRouter();
   const pathname = usePathname();
   const locale = useLocale();
@@ -36,7 +37,7 @@ export default function LanguageSwitcher() {
         <Button
           variant="ghost"
           size="icon"
-          className="h-9 w-9 hover:bg-muted"
+          className={cn('h-9 w-9 hover:bg-muted', className)}
           aria-label={t('languageSwitcher.ariaLabel')}
         >
           <Globe className="h-5 w-5" />

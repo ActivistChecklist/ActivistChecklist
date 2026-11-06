@@ -83,7 +83,9 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
         )}
       >
         {/* Normal top nav bar. From `topnav:` up the logo keeps its full width and the
-            search field is the only thing that narrows (see the breakpoint in globals.css). */}
+            search field is the only thing that narrows (see the breakpoint in globals.css).
+            Below it the logo narrows instead. The icon buttons are shrink-0 so they keep
+            their full tap size at every width. */}
         <div className={cn(maxWidth, 'mx-auto px-4')}>
           <div className="flex h-14 items-center justify-between">
             <div className="flex items-center topnav:shrink-0">
@@ -92,7 +94,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="topnav:hidden mr-2 text-foreground hover:text-foreground/80"
+                    className="topnav:hidden mr-2 shrink-0 text-foreground hover:text-foreground/80"
                     aria-label="Open navigation menu"
                   >
                     <Menu className="h-6 w-6" aria-hidden="true" />
@@ -306,8 +308,8 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
               </div>
               <div className="flex min-w-0 items-center md:gap-2">
                 <Search variant="header" />
-                <LanguageSwitcher />
-                <DarkModeToggle className="h-9 w-9 hover:bg-muted" />
+                <LanguageSwitcher className="shrink-0" />
+                <DarkModeToggle className="h-9 w-9 shrink-0 hover:bg-muted" />
               </div>
             </div>
           </div>
