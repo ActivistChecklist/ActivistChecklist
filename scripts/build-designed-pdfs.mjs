@@ -16,8 +16,11 @@
  * Output, keyed by a hash of everything that changes it, so an unchanged PDF
  * never starts a browser:
  *   public/files/pdf/<locale>/<slug>.pdf   cache, gitignored; also lets `pnpm dev` serve them
+ *   public/files/pdf/<locale>/<slug>.webp  preview image, a screenshot of the same page
+ *                                          right after it was printed, so it always
+ *                                          matches the PDF
  *   .designed-pdf-cache.json               hash per PDF, gitignored
- *   out/files/pdf/<locale>/<slug>.pdf      what ships, copied when out/ exists
+ *   out/files/pdf/<locale>/<slug>.*        what ships, copied when out/ exists
  *
  * Options:
  *   --only <slug>      just this PDF
@@ -35,6 +38,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
 import { parseArgs } from 'util';
+import sharp from 'sharp';
 
 import { DEFAULT_LOCALE, LOCALES } from '../lib/i18n-config.mjs';
 import { pdfPaperFormat, planPdfBuild } from '../lib/pdf-export.mjs';
@@ -144,8 +148,11 @@ function fontFaces(list) {
 
 // ── Targets ──────────────────────────────────────────────────────────────
 
-// Same layout as designedPdfPath() in lib/pdf/catalog.mjs, which the site links to.
-const pdfFile = (dir, locale, slug) => path.join(dir, locale, `${slug}.pdf`);
+// Same layout as designedPdfPath() and designedPreviewPath() in lib/pdf/catalog.mjs.
+const OUTPUTS = ['pdf', 'webp'];
+const pdfFile = (dir, locale, slug, ext = 'pdf') => path.join(dir, locale, `${slug}.${ext}`);
+// The preview shows at up to 448 CSS px wide; 1.5x the page gives ~1200 px, sharp on retina.
+const PREVIEW_SCALE = 1.5;
 
 async function loadLayout(name) {
   if (!/^[a-z0-9-]+$/.test(name)) throw new Error(`bad layout name "${name}"`);
@@ -229,6 +236,10 @@ const FONT_TYPES = { '.woff2': 'font/woff2', '.woff': 'font/woff', '.ttf': 'font
 async function renderPdf(context, target) {
   const page = await context.newPage();
   try {
+    await page.setViewportSize({
+      width: Math.ceil(target.paper.width),
+      height: Math.ceil(target.paper.height),
+    });
     await page.route('**/*', (route) => {
       const url = new URL(route.request().url());
       if (url.origin !== ORIGIN) return route.abort();
@@ -263,7 +274,9 @@ async function renderPdf(context, target) {
       margin: { top: 0, right: 0, bottom: 0, left: 0 },
       tagged: true,
     });
-    return { pdf, fit };
+    const shot = await page.locator('.sheet').screenshot({ type: 'png' });
+    const preview = await sharp(shot).webp({ quality: 82 }).toBuffer();
+    return { pdf, preview, fit };
   } finally {
     await page.close();
   }
@@ -300,12 +313,16 @@ async function renderAll(stale, manifest) {
   }
   const failures = [];
   try {
-    const context = await browser.newContext({ colorScheme: 'light' });
+    const context = await browser.newContext({
+      colorScheme: 'light',
+      deviceScaleFactor: PREVIEW_SCALE,
+    });
     for (const target of stale) {
       const started = Date.now();
       try {
-        const { pdf, fit } = await renderPdf(context, target);
-        writeAtomic(pdfFile(CACHE_DIR, target.locale, target.slug), pdf);
+        const { pdf, preview, fit } = await renderPdf(context, target);
+        writeAtomic(pdfFile(CACHE_DIR, target.locale, target.slug, 'pdf'), pdf);
+        writeAtomic(pdfFile(CACHE_DIR, target.locale, target.slug, 'webp'), preview);
         manifest[target.key] = target.hash;
         const shrunk = Object.entries(fit.zooms)
           .filter(([, z]) => z !== 1)
@@ -346,15 +363,17 @@ async function main() {
 
   const manifest = readManifest();
   const { stale, fresh, orphaned } = planPdfBuild(targets, manifest, (key) =>
-    fs.existsSync(pdfFile(CACHE_DIR, ...key.split('/'))),
+    OUTPUTS.every((ext) => fs.existsSync(pdfFile(CACHE_DIR, ...key.split('/'), ext))),
   );
   // A partial run (--only, --locale) sees only some targets, so it must not
   // treat the rest as deleted.
   if (!args.only && !args.locale) {
     for (const key of orphaned) {
       delete manifest[key];
-      fs.rmSync(pdfFile(CACHE_DIR, ...key.split('/')), { force: true });
-      fs.rmSync(pdfFile(OUT_DIR, ...key.split('/')), { force: true });
+      for (const ext of OUTPUTS) {
+        fs.rmSync(pdfFile(CACHE_DIR, ...key.split('/'), ext), { force: true });
+        fs.rmSync(pdfFile(OUT_DIR, ...key.split('/'), ext), { force: true });
+      }
     }
   }
 
@@ -366,14 +385,16 @@ async function main() {
 
   if (fs.existsSync(path.dirname(OUT_DIR))) {
     for (const { locale, slug } of targets) {
-      const src = pdfFile(CACHE_DIR, locale, slug);
-      if (!fs.existsSync(src)) continue;
-      const dest = pdfFile(OUT_DIR, locale, slug);
-      fs.mkdirSync(path.dirname(dest), { recursive: true });
-      fs.copyFileSync(src, dest);
-      // Keep the render date, so an unchanged PDF keeps its Last-Modified/ETag.
-      const { atime, mtime } = fs.statSync(src);
-      fs.utimesSync(dest, atime, mtime);
+      for (const ext of OUTPUTS) {
+        const src = pdfFile(CACHE_DIR, locale, slug, ext);
+        if (!fs.existsSync(src)) continue;
+        const dest = pdfFile(OUT_DIR, locale, slug, ext);
+        fs.mkdirSync(path.dirname(dest), { recursive: true });
+        fs.copyFileSync(src, dest);
+        // Keep the render date, so an unchanged file keeps its Last-Modified/ETag.
+        const { atime, mtime } = fs.statSync(src);
+        fs.utimesSync(dest, atime, mtime);
+      }
     }
   }
 

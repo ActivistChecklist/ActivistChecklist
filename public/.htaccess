@@ -73,8 +73,10 @@ ErrorDocument 404 /404/index.html
 #                    as long as the page is unchanged.
 #
 #   /pdf/*           Guide PDFs keep the same URL so shared links stay good, but
-#                    their content changes with the guide. Same "no-cache" as
-#                    HTML, so nobody is handed an old copy of a guide.
+#   /files/pdf/*     their content changes with the guide. Same "no-cache" as
+#                    HTML, so nobody is handed an old copy of a guide. Designed
+#                    PDFs (posters) and their preview images work the same way;
+#                    the site also links them with a ?v= content hash.
 #
 # Matched on the request URI rather than with <FilesMatch> because a request for
 # /proton/ reaches index.html through an internal subrequest (and because
@@ -86,6 +88,7 @@ ErrorDocument 404 /404/index.html
   SetEnvIf Request_URI "^/_next/static/" AC_IMMUTABLE_ASSET
   SetEnvIf Request_URI "(/|\.html)$" AC_HTML_DOC
   SetEnvIf Request_URI "^/pdf/" AC_REVALIDATE
+  SetEnvIf Request_URI "^/files/pdf/" AC_REVALIDATE
 </IfModule>
 <IfModule mod_headers.c>
   Header set Cache-Control "public, max-age=31536000, immutable" env=AC_IMMUTABLE_ASSET
