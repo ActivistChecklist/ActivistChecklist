@@ -3,12 +3,12 @@ title: あなたのプライバシーを守るために
 navTitle: プライバシー
 seoDescription: 私たちが収集するもの（ほぼゼロ）とその理由。 Activist Checklistは、たとえ裁判所から情報の提出命令を受けても、渡せる役に立つ情報が何もないように作られています。
 firstPublished: 2025-01-09
-lastUpdated: 2026-10-27
+lastUpdated: 2026-11-06
 showToc: true
 ---
 
 <Alert type="info">
-  要約：私たちはほとんど何も収集していません。生のIPアドレスは記録しないし、あなたに関するデータをどこにも送信しません。保存されるデータは、チェックリストの進捗（あなたのデバイス内にのみ保存）と、基本的なページ閲覧統計（個人情報は含みません）だけです。それ以外の情報は、あなたのプライバシーを守るために、あえて一切収集していません。
+  要約：私たちはほとんど何も収集していません。生のIPアドレスは記録しないし、あなたに関するデータをどこにも送信しません。 The only data stored is your checklist progress and a few settings (saved locally on your device) and basic page view stats (with no personal info). それ以外の情報は、あなたのプライバシーを守るために、あえて一切収集していません。
 </Alert>
 
 私たちのプライバシーポリシーは一般的なものとは違います。あなたを特定できる情報を収集しないために、私たちがどこまで徹底しているかを説明します。
@@ -37,9 +37,14 @@ showToc: true
 
 [May Firstのプライバシーポリシー](https://mayfirst.coop/en/privacy-policy/)もあわせて読むことができます。
 
-## あなたのデバイスに保存する唯一のデータ：チェックリストの完了状況
+## The only data we store on your device: checklist progress and settings
 
-あなたのデバイスに保存されるデータはチェックリストの進捗だけです。これはブラウザのローカルストレージに保存され、外部に送信されることは一切ありません。
+The only data stored on your device is your checklist progress and a few settings, which stay in your browser's local storage and never leave it:
+
+* **checklist progress:** which checklist items you've checked off, and which ones you've expanded
+* **light/dark mode:** which one you picked, if you changed it
+* **closed notices:** which notices you've closed (the banner saying this site is available in your language, the announcement bar at the top of the page, or the note for people outside the US)
+* **newsletter box:** how many times it has shown up for you and when it last did, so we can wait a week between showings and stop after 3. (We don't store your email address. Signing up and closing the box both just mark it as done, so someone going through your device can't tell whether you signed up.)
 
 **ブラウザに保存された情報を削除したい場合は、次の手順で行えます：**
 
@@ -103,9 +108,7 @@ showToc: true
 
 [ワラント・カナリアを見る →](/files/canary.txt)
 
-<ImageEmbed src="https://img.shields.io/endpoint?url=https://healthchecks.io/b/2/f424e66f-06c3-463a-8d54-e5b4749a55e9.shields&label=Warrant%20canary" alt="ワラント・カナリア" raw />
-
-（このバッジが緑から赤に変わって「down」と表示されたら、以下で説明しているように問い合わせてみるべきサインです。）
+<CanaryStatus />
 
 このカナリアは3か月ごとに更新します。更新がないまま4か月以上経っていて、なおかつ[コードリポジトリ](https://github.com/ActivistChecklist/ActivistChecklist)は定期的に更新されている場合、それは確実に何かが起きた証拠というより、問い合わせてみるべきサインです。まずは私たちに[連絡](/contact/)して、単に更新が遅れているだけかどうか確認してください。
 
