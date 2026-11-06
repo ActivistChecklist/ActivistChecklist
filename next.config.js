@@ -53,6 +53,10 @@ const baseConfig = {
   // not exported from @radix-ui/react-slot". Setting this anchors module
   // resolution to THIS project's directory regardless of what's around it.
   outputFileTracingRoot: __dirname,
+  // Agent rules live in CLAUDE.md, and AGENTS.md is a symlink to it. Without
+  // this, `next dev` writes its own copy of the Next.js note into AGENTS.md
+  // (and so into CLAUDE.md) whenever an AI agent runs it.
+  agentRules: false,
   // Smaller server/client bundles and faster compiles for barrel-import icon packages.
   experimental: {
     optimizePackageImports: ['lucide-react', 'react-icons'],
