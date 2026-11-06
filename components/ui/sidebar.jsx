@@ -18,12 +18,9 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 
-const SIDEBAR_COOKIE_NAME = "sidebar:state"
-const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
 const SIDEBAR_WIDTH = "16rem"
 const SIDEBAR_WIDTH_MOBILE = "18rem"
 const SIDEBAR_WIDTH_ICON = "3rem"
-const SIDEBAR_KEYBOARD_SHORTCUT = "b"
 
 const SidebarContext = React.createContext(null)
 
@@ -53,6 +50,9 @@ const SidebarProvider = React.forwardRef((
 
   // This is the internal state of the sidebar.
   // We use openProp and setOpenProp for control from outside the component.
+  // It lives in memory only. Upstream shadcn saves it in a sidebar:state cookie;
+  // we dropped that because the privacy page promises no cookies. Keep it out
+  // when updating this component.
   const [_open, _setOpen] = React.useState(defaultOpen)
   const open = openProp ?? _open
   const setOpen = React.useCallback((value) => {
@@ -62,9 +62,6 @@ const SidebarProvider = React.forwardRef((
     } else {
       _setOpen(openState)
     }
-
-    // This sets the cookie to keep the sidebar state.
-    document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
   }, [setOpenProp, open])
 
   // Helper to toggle the sidebar.
@@ -74,21 +71,9 @@ const SidebarProvider = React.forwardRef((
       : setOpen((open) => !open);
   }, [isMobile, setOpen, setOpenMobile])
 
-  // Adds a keyboard shortcut to toggle the sidebar.
-  React.useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (
-        event.key === SIDEBAR_KEYBOARD_SHORTCUT &&
-        (event.metaKey || event.ctrlKey)
-      ) {
-        event.preventDefault()
-        toggleSidebar()
-      }
-    }
-
-    window.addEventListener("keydown", handleKeyDown)
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [toggleSidebar])
+  // Upstream shadcn also binds Cmd/Ctrl+B on window to toggle the sidebar. We
+  // dropped it: no page shows a collapsible sidebar, so it did nothing visible
+  // while blocking the browser's own Cmd/Ctrl+B. Keep it out when updating.
 
   // We add a state so that we can do data-state="expanded" or "collapsed".
   // This makes it easier to style the sidebar with Tailwind classes.
