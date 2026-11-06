@@ -271,6 +271,11 @@
     "moreWithLabel": "{label} ({count} más)",
     "less": "Mostrar menos"
   },
+  "canaryStatus": {
+    "current": "<b>Al día.</b> Nuestro warrant canary —aviso de órdenes judiciales— se actualizó por última vez el {date} y es válido hasta el {validThrough}. (Después de esa fecha, esto se pondrá en rojo si no hay un canary más reciente).",
+    "overdue": "<b>Vencido.</b> Nuestro warrant canary —aviso de órdenes judiciales— se actualizó por última vez el {date} y era válido hasta el {validThrough}. Es una señal para hacer preguntas, como explicamos más abajo.",
+    "unknown": "No pudimos comprobar la fecha de nuestro warrant canary —aviso de órdenes judiciales—. Puedes encontrarla al principio de <link>canary.txt</link>."
+  },
   "contact": {
     "title": "Contáctanos",
     "intro": "Tus comentarios ayudan a hacer este recurso más útil y seguro para todes. Agradecemos sugerencias para:",

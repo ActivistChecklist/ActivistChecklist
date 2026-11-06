@@ -3,12 +3,12 @@ title: Protegiendo tu privacidad
 navTitle: Privacidad
 seoDescription: Lo que recopilamos (casi nada) y por qué. Activist Checklist está construido de tal forma que, aunque reciba una citación, no hay nada útil que entregar.
 firstPublished: 2025-01-09
-lastUpdated: 2026-10-27
+lastUpdated: 2026-11-06
 showToc: true
 ---
 
 <Alert type="info">
-  TL;DR: Casi no recopilamos nada. No registramos direcciones IP en bruto y no enviamos ningún dato sobre ti a ningún lado. Los únicos datos guardados son tu progreso en la lista de tareas (guardado localmente en tu dispositivo) y estadísticas básicas de visitas a páginas (sin información personal). Todo lo demás NO se recopila de manera deliberada para proteger tu privacidad.
+  TL;DR: Casi no recopilamos nada. No registramos direcciones IP en bruto y no enviamos ningún dato sobre ti a ningún lado. Los únicos datos que se guardan son tu progreso en las listas, algunos ajustes (guardados localmente en tu dispositivo) y estadísticas básicas de visitas a las páginas (sin información personal). Todo lo demás NO se recopila de manera deliberada para proteger tu privacidad.
 </Alert>
 
 Nuestra política de privacidad es distinta: te explicamos hasta dónde llegamos para no recopilar información que te pueda identificar.
@@ -17,11 +17,13 @@ Nuestro enfoque de privacidad no se trata de cumplir con la ley, se trata de hac
 
 Sabemos que sitios como este pueden convertirse en blanco de vigilancia estatal, así que nos esforzamos mucho para recopilar la menor cantidad posible de información identificable y protegerte mientras navegas por este sitio.
 
+(Si quieres saber cómo protegemos el sitio en sí, desde nuestros servidores hasta nuestro boletín, consulta nuestra [página de seguridad](/security/).)
+
 ## Lo que NO rastreamos
 
 Diseñamos este sitio a propósito para que proteja tu privacidad al máximo:
 
-* ❌ Nunca se registran direcciones IP
+* ❌ Tu dirección IP real nunca se registra ni se guarda ([más información](/security/#privacy))
 * ❌ No se guardan cookies en tu dispositivo
 * ❌ No se cargan servicios externos ni bibliotecas de terceros en tu navegador que puedan exponer tu información personal (dirección IP)
 * ❌ Nunca recolectamos tu información personal en nuestros servidores ni la enviamos a servidores de terceros. La única excepción es un mensaje que decidas enviarnos por nuestro formulario de contacto, que se cifra antes de salir de nuestro servidor ([ver abajo](#contact-form)).
@@ -37,9 +39,14 @@ Diseñamos este sitio a propósito para que proteja tu privacidad al máximo:
 
 También puedes leer la [política de privacidad de May First](https://mayfirst.coop/en/privacy-policy/).
 
-## Los únicos datos que guardamos en tu dispositivo: las tareas completadas de la lista
+## Los únicos datos que guardamos en tu dispositivo: tu progreso en las listas y tus ajustes
 
-Los únicos datos guardados en tu dispositivo son tu progreso en la lista de tareas, que se queda en el almacenamiento local de tu navegador y nunca sale de ahí.
+Los únicos datos que se guardan en tu dispositivo son tu progreso en las listas y algunos ajustes, que se quedan en el almacenamiento local de tu navegador y nunca salen de ahí:
+
+* **progreso en las listas:** qué puntos de las listas ya marcaste y cuáles abriste
+* **modo claro/oscuro:** cuál elegiste, si lo cambiaste
+* **avisos cerrados:** qué avisos cerraste (el banner que dice que este sitio está disponible en tu idioma, la barra de anuncios en la parte de arriba de la página o la nota para personas fuera de EE. UU.)
+* **recuadro del boletín:** cuántas veces te ha aparecido y cuándo fue la última vez, para que podamos esperar una semana entre una vez y otra y dejar de mostrarlo después de 3. (No guardamos tu correo electrónico. Tanto suscribirte como cerrar el recuadro solo lo marcan como listo, así que si alguien revisa tu dispositivo no puede saber si te suscribiste.)
 
 **Si quieres borrar la información que guardamos en tu navegador, así lo puedes hacer:**
 
@@ -53,11 +60,15 @@ Hacemos el rastreo más mínimo posible de las visitas para entender qué seccio
 
 * Solo registramos la siguiente información y la guardamos en nuestro servidor:
   * **info de la visita:** qué página se vio y cuándo
-  * **info del navegador:** tipo de navegador, sistema operativo, página de referencia y tamaño de pantalla del dispositivo
-  * **estadísticas de casillas de verificación:** casillas marcadas y secciones de casillas expandidas
+  * **información del navegador:** tipo de navegador, idioma del navegador, sistema operativo, página de origen, tipo de dispositivo y tamaño de pantalla del dispositivo
+  * **estadísticas de las casillas:** casillas que marcas, secciones de casillas que abres y cuando haces clic en el botón "copiar enlace" de un elemento de la lista
   * **descargas de archivos:** qué archivo se descargó
-  * **búsquedas:** el texto de tu consulta
-  * **ubicación genérica:** Enviamos una versión de tu dirección IP a la que le quitamos aproximadamente la mitad de la información antes de que llegue a nuestros servidores. Esto nos permite aproximar tu ubicación a un país, pero nunca guardar tu ubicación específica. Aleatorizamos una parte de la dirección IP que cambia cada 24 horas, así no eres identificable entre visitas en días diferentes.
+  * **búsquedas:** el texto de tu búsqueda y cuántos resultados encontró (quitamos todo lo que parezca un correo electrónico o un número de teléfono antes de que se envíe a nuestro servidor)
+  * **enlaces rotos:** si visitas una página que no existe, la dirección que intentaste visitar (incluido todo lo que vaya después de un "?"), la página de origen y a qué página te mandamos si pudimos adivinar cuál buscabas
+  * **boletín:** cuando te suscribes al boletín y qué casilla de suscripción usaste (pero no tu correo electrónico), y cuando cierras el recuadro del boletín que aparece a mitad de nuestras guías
+  * **formulario de contacto:** cuando nos mandas un mensaje (pero no el mensaje en sí ni ningún dato de contacto), si usaste la página de contacto o el formulario "¿Tienes preguntas?" al final de una guía, y qué opción de respuesta elegiste (sin respuesta, nombre de usuario de Signal, número de teléfono de Signal o correo electrónico)
+  * **verificador de actualizaciones de seguridad:** si usas nuestro [verificador de actualizaciones de seguridad](/updates/), si tu dispositivo todavía recibe actualizaciones de seguridad, si dejará de recibirlas pronto, si ya dejó de recibirlas o si no pudimos saberlo (pero no qué dispositivo elegiste), y si dijiste que tienes la versión más reciente o una más vieja
+  * **ubicación general:** Nuestro servidor borra más o menos la mitad de la información de la dirección IP antes de guardarla. Esto nos permite calcular de forma aproximada tu país, región y ciudad, pero nunca guardar tu ubicación exacta. Aleatorizamos una parte de la dirección IP que cambia cada 24 horas, así no eres identificable entre visitas en días diferentes.
 * No recopilamos ni almacenamos ningún tipo de información personal como direcciones IP completas o ubicación exacta
 * No te rastreamos en otros sitios web ni tenemos servicios en nuestro sitio que puedan rastrear tu uso del mismo
 * No vendemos ni entregamos nada de esta información a otra entidad
@@ -103,11 +114,9 @@ Mantenemos un warrant canary para dejar constancia de que no nos han obligado a 
 
 [Ver nuestro canario de órdenes judiciales →](/files/canary.txt)
 
-<ImageEmbed src="https://img.shields.io/endpoint?url=https://healthchecks.io/b/2/f424e66f-06c3-463a-8d54-e5b4749a55e9.shields&label=Warrant%20canary" alt="Warrant canary" raw />
+<CanaryStatus />
 
-(Si esta insignia cambia de verde a rojo y dice "down", esa es una señal para hacer preguntas como se describe abajo.)
-
-Actualizaremos este canario cada 3 meses. Si pasan más de 4 meses sin una actualización Y seguimos actualizando regularmente nuestro [repositorio de código](https://github.com/ActivistChecklist/ActivistChecklist), eso es una señal para hacer preguntas más que para confirmar un compromiso. Empieza por [contactarnos](/contact/) para ver si simplemente vamos atrasades con una actualización.
+Actualizaremos este canario cada 4 meses. Si pasan más de 4 meses sin una actualización Y seguimos actualizando regularmente nuestro [repositorio de código](https://github.com/ActivistChecklist/ActivistChecklist), eso es una señal para hacer preguntas más que para confirmar un compromiso. Empieza por [contactarnos](/contact/) para ver si simplemente vamos atrasades con una actualización.
 
 Para verificar, descarga [`canary.txt`](/files/canary.txt), obtén nuestra clave pública desde una de las fuentes de abajo y ejecuta `gpg --verify canary.txt`. Si es válida, deberías ver algo como `Good signature from "contact@activistchecklist.org \<contact@activistchecklist.org>"`
 

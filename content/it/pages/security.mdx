@@ -1,0 +1,103 @@
+---
+title: Come proteggiamo questo sito
+navTitle: Sicurezza
+seoDescription: "Come proteggiamo Activist Checklist e chi lo legge: da dove è ospitato il sito a come blindiamo la newsletter, i moduli e le statistiche."
+firstPublished: 2026-11-06
+lastUpdated: 2026-11-06
+showToc: true
+---
+
+Sappiamo che siti come questo possono finire nel mirino della sorveglianza statale e degli attacchi informatici, per questo abbiamo fatto di tutto per proteggere il sito e chi lo usa. In questa pagina ti spieghiamo le cose principali che abbiamo fatto.
+
+Se vuoi sapere quali informazioni raccogliamo, dai un'occhiata alla nostra [pagina sulla privacy](/privacy/).
+
+Tutto il [codice del nostro sito è open source](https://github.com/ActivistChecklist/ActivistChecklist), se vuoi controllarlo tu (o una persona di cui ti fidi che sa programmare).
+
+**I principi di sicurezza (e privacy) che seguiamo:**
+
+* Non raccogliamo nulla che possa essere usato facilmente per identificarti. (Impedirlo del tutto è impossibile, ma riduciamo il rischio il più possibile.)
+* Non registriamo mai i veri indirizzi IP, gli indirizzi email o qualsiasi cosa scrivi in un modulo.
+* Nel tuo browser non carichiamo nessun servizio esterno o libreria di terze parti che potrebbe esporre il tuo indirizzo IP.
+* Non usiamo servizi di terze parti (come Mailchimp) che comporterebbero il rischio di un ordine del tribunale di cui non verremmo nemmeno a sapere.
+* Criptiamo i messaggi del modulo di contatto prima che lascino il nostro server, e criptiamo i backup del database della newsletter e delle statistiche.
+
+## Server {#server}
+
+Abbiamo scelto [May First](https://mayfirst.coop) come hosting proprio perché sostiene progetti attivisti come il nostro. Abbiamo anche disattivato i log sul nostro account di hosting (niente log dei visitatori, niente log degli indirizzi IP, niente log degli errori), così, se il governo prova a mandare a noi o a May First una subpoena, cioè un'ingiunzione legale, per sapere chi ha visitato il sito, non abbiamo niente da consegnare.
+
+<Collapsible title="Dettagli tecnici">
+
+  * May First conserva temporaneamente gli indirizzi IP solo in memoria, per un massimo di 24 ore, per aiutare a prevenire gli attacchi DDoS. Gli indirizzi IP non vengono mai scritti su disco e vengono cancellati se il server viene spento.
+  * È un hosting gestito, quindi è May First a tenere aggiornato il software del server e non dobbiamo fare noi gli aggiornamenti.
+  * Quasi tutto il sito è generato in modo statico, cioè ogni pagina è un semplice file HTML. Non c'è nessun database né login, quindi chi vuole attaccarci ha ben poco da prendere di mira.
+  * HSTS (`Strict-Transport-Security`), così i browser si collegano a noi solo tramite HTTPS, e una Content Security Policy rigorosa che impedisce agli script delle nostre pagine di collegarsi a qualsiasi altro dominio e impedisce ad altri siti di incorporare il nostro in un frame. Inviamo anche `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, una Referrer-Policy `strict-origin-when-cross-origin` e una Permissions-Policy che disattiva fotocamera, microfono e geolocalizzazione.
+  * I nuovi deploy vengono avviati tramite un webhook, che abbiamo blindato con un po' di magia crittografica in modo che solo la pipeline di GitHub Actions possa avviare un deploy.
+
+</Collapsible>
+
+## Newsletter
+
+La lista degli iscritti è la cosa più sensibile che abbiamo, quindi abbiamo fatto ancora di più per proteggerla. Usiamo un nostro software per la newsletter sui nostri server, invece di consegnare la tua email a un'azienda come Mailchimp (che comporterebbe il rischio di un ordine del tribunale di cui non verremmo nemmeno a sapere). Proteggiamo l'accesso con Cloudflare, così per un hacker è molto più difficile sfruttare qualche vulnerabilità non ancora nota per entrare nel database e rubare gli indirizzi email di tutti.
+
+*Ma perché abbiamo una newsletter? Beh, se vuoi ricevere aggiornamenti, le opzioni sono (A) un feed RSS, che quasi nessuno usa, (B) i social, che rendono facilissimo per lo Stato sapere che ti interessa la sicurezza digitale per chi fa attivismo, oppure (C) una mailing list, che per loro è molto più faticosa da raggiungere.*
+
+<Collapsible title="Dettagli tecnici">
+
+  * Usiamo [Listmonk](https://github.com/knadh/listmonk), uno strumento open source per newsletter, su un account di hosting dedicato, separato da quello del sito principale.
+  * [Cloudflare Access](https://www.cloudflare.com/zero-trust/products/access/) richiede un login prima che chiunque possa raggiungere il pannello di amministrazione o il database degli iscritti. Le uniche cose lasciate aperte sono le pagine che ti servono come iscritto/a (per esempio per disiscriverti).
+  * Il server rifiuta qualsiasi richiesta che non passi da Cloudflare, quindi nessuno può aggirare il login andando direttamente al server.
+  * Anche il login di amministrazione di Listmonk richiede l'autenticazione a due fattori.
+  * Quando ti iscrivi sul nostro sito, la nostra API ti aggiunge usando una chiave API separata che può gestire solo gli iscritti della nostra unica lista pubblica. Non può inviare email, leggere altre liste o modificare le impostazioni.
+  * Ogni giorno facciamo un backup del database delle persone iscritte, e questo comporta rischi in più di cui dovevamo occuparci. Per questo cifriamo i backup con la crittografia asimmetrica. I backup vecchi vengono cancellati dopo 6 mesi.
+
+</Collapsible>
+
+## Moduli
+
+Se ci scrivi tramite il nostro [modulo di contatto](/contact/), il nostro server cifra il tuo messaggio (con la nostra chiave PGP), insieme ai recapiti che ci lasci, prima che esca dal nostro server. Solo noi possiamo leggerlo.
+
+<Collapsible title="Dettagli tecnici">
+
+  * Usiamo [Resend](https://resend.com/) per consegnare il messaggio cifrato al nostro account Proton Mail. Resend vede solo il messaggio cifrato e l'orario in cui è stato inviato. Non vede il tuo indirizzo IP, perché il messaggio parte dal nostro server, non dal tuo browser. Resend non vede nemmeno la tua email, il tuo numero di telefono o il tuo nome utente Signal, perché sono tutti cifrati nel contenuto dell'email.
+  * L'oggetto dell'email è solo un numero di riferimento, quindi lì non compare niente di quello che hai scritto (che altrimenti non sarebbe cifrato).
+  * Il codice che gestisce i nostri moduli (il modulo di contatto, le iscrizioni alla newsletter, il conteggio delle visualizzazioni delle pagine, ecc.) non gira dentro un server Next.js completo, perché volevamo ridurre la superficie di attacco limitando il numero di pacchetti nell'API. Per questo passa da un piccolo stack API costruito su [Fastify](https://fastify.dev/).
+  * Abbiamo una regola rigida: questo codice non registra mai indirizzi IP, indirizzi email o qualsiasi cosa tu scriva in un modulo.
+
+</Collapsible>
+
+## Privacy {#privacy}
+
+Non carichiamo nel tuo browser servizi esterni o librerie di terze parti che potrebbero esporre il tuo indirizzo IP a siti che lo registrerebbero.
+
+Raccogliamo qualche informazione in forma anonima per capire come le persone usano questo sito, ma il nostro server sostituisce circa metà del tuo indirizzo IP con dati casuali prima che arrivi ai nostri strumenti di analisi.
+
+Per saperne di più, leggi la nostra [pagina sulla privacy](/privacy/).
+
+Per avere ancora più privacy in rete, puoi anche visitare il sito [usando Tor](/onion/).
+
+<Collapsible title="Dettagli tecnici">
+
+  * Ospitiamo i nostri font direttamente sul nostro server invece di caricarli da Google.
+  * Non usiamo link a immagini, JavaScript o qualsiasi altra cosa che si caricherebbe automaticamente nel tuo browser rivelando il tuo indirizzo IP ad altri servizi.
+  * Le statistiche sulle visualizzazioni delle pagine sono conservate su una piattaforma di analisi attenta alla privacy chiamata [Umami](https://umami.is/), che gestiamo direttamente noi. Il tuo browser invia le visualizzazioni delle pagine al nostro server, non a un'azienda di analisi dati.
+  * Prima di inoltrare una visualizzazione, il nostro server sostituisce una parte del tuo indirizzo IP con dati casuali. La parte casuale cambia ogni 24 ore, e la chiave usata per generarla esiste solo nella memoria del nostro server e viene cancellata ogni notte. Così non sei identificabile tra visite fatte in giorni diversi, e l'indirizzo salvato non può essere ricondotto al tuo vero indirizzo IP (né da noi né dallo Stato, se ci costringesse a consegnare il nostro database di analisi). Se vuoi dargli un'occhiata, l'abbiamo pubblicato come strumento open source chiamato [umami-extra-privacy](https://github.com/ActivistChecklist/umami-extra-privacy).
+  * I tuoi progressi nelle checklist restano nella memoria locale del tuo browser e non ne escono mai.
+
+</Collapsible>
+
+## Pratiche di sicurezza
+
+Proteggiamo anche gli account che usiamo per gestire il sito, ed eseguiamo controlli automatici sulle modifiche prima che vengano pubblicate.
+
+E manteniamo un [warrant canary](/privacy/#canary), che aggiorniamo ogni 4 mesi per confermare che nessuno ci ha costretto a modificare il sito o ci ha imposto il silenzio su una richiesta legale di dati di chi usa il sito.
+
+<Collapsible title="Dettagli tecnici">
+
+  * Usiamo la 2FA su ogni account che lo permette.
+  * Aspettiamo da 2 a 7 giorni prima di installare nuove versioni dei pacchetti software che usiamo, perché i pacchetti malevoli spesso vengono scoperti e rimossi nel giro di pochi giorni. (È una precauzione necessaria in un'epoca in cui gli attacchi alla supply chain del software sono sempre più frequenti.)
+
+</Collapsible>
+
+## Hai trovato un problema di sicurezza?
+
+Puoi segnalare problemi di sicurezza in modo privato [su GitHub](https://github.com/ActivistChecklist/ActivistChecklist/security/advisories/new) (ti servirà un account GitHub) oppure tramite il nostro [modulo di contatto](/contact/), che è crittografato.
