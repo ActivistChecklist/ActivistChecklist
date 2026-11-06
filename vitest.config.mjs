@@ -15,6 +15,10 @@ export default defineConfig({
       ...configDefaults.exclude,
       // Workspace packages run their own Vitest (e.g. jsdom for highlightDom).
       'packages/**',
+      // Claude Code worktrees sit under .claude/worktrees/, each with its own
+      // copy of __tests__ from whatever branch it is on. Run from the main
+      // checkout, those tests read the main checkout's files and fail.
+      '.claude/**',
       ...(isGitHubActions ? ['__tests__/og-image.test.js'] : []),
     ],
   },
