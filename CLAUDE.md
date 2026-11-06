@@ -123,4 +123,4 @@ local account to read.
 
 This version has breaking changes: APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
 
-`next dev` would normally write this note into an `AGENTS.md` of its own. `agentRules: false` in `next.config.js` turns that off so these rules stay in one file.
+`AGENTS.md` is a symlink to this file, so agents that only read `AGENTS.md` get the same rules. Edit this file, not the link. `next dev` would normally write its own copy of this note into `AGENTS.md`; `agentRules: false` in `next.config.js` turns that off.

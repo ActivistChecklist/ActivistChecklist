@@ -20,7 +20,9 @@ fi
 # Format staged files with the repo's Prettier config, so the result does not
 # depend on which editor (or editor settings) the contributor used.
 # Files in .prettierignore and types Prettier does not know are skipped.
-FORMAT=$(git diff --cached --name-only --diff-filter=ACM || true)
+# Symlinks (AGENTS.md) are left out: Prettier errors on a symlink passed by
+# name, and the file it points at is checked under its own name.
+FORMAT=$(git diff --cached --name-only --diff-filter=ACM | while IFS= read -r f; do [ -L "$f" ] || printf '%s\n' "$f"; done || true)
 if [ -n "$FORMAT" ]; then
   echo "→ pre-commit: prettier"
   echo "$FORMAT" | tr '\n' '\0' | xargs -0 pnpm exec prettier --write --ignore-unknown --log-level warn
