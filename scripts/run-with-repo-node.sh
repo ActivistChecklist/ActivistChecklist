@@ -2,7 +2,7 @@
 #
 # Run pnpm (or any trailing command) using the repo Node version (.nvmrc + nvm).
 # Use from SSH/cron when login shells do not load nvm:
-#   ./scripts/run-with-repo-node.sh api:restart
+#   ./scripts/run-with-repo-node.sh api:status
 #
 set -euo pipefail
 

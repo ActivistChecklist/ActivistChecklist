@@ -93,6 +93,16 @@ ErrorDocument 404 /404/index.html
   Header set Cache-Control "no-cache" env=AC_REVALIDATE
 </IfModule>
 
+# RFC 9116 wants security.txt served as text/plain with charset=utf-8. Apache's
+# default type for .txt carries no charset, and scanners flag that.
+<Files "security.txt">
+  ForceType "text/plain; charset=utf-8"
+</Files>
+
+# The PGP files set their own types in per-folder rules: files/.htaccess
+# (clearsigned messages and the public key) and .well-known/openpgpkey/.htaccess
+# (Web Key Directory).
+
 # Security Headers
 <IfModule mod_headers.c>
   Header set Content-Security-Policy "default-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; font-src 'self'; connect-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"

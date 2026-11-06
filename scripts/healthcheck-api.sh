@@ -10,6 +10,11 @@
 # It also replaces the PM2 daemon when it runs a different Node than .nvmrc
 # pins, which is how a Node bump reaches ac-api (see "PM2 daemon Node version").
 #
+# With --restart it restarts ac-api even when it is healthy, through the same
+# daemon placement, Node check and probes. scripts/restart-api.sh runs it that
+# way, and scripts/build-deploy.sh calls that after a deploy that changed what
+# ac-api runs. Runs take turns on a lock (see "One run at a time" below).
+#
 # The second probe is the one that catches real outages. "online" in `pm2 status`
 # only means PM2 has a child it has not seen exit: it says nothing about whether
 # Fastify bound the port, whether the routes registered, or whether a wedged
@@ -57,6 +62,18 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+# Arguments rather than env vars, because load-env.sh below lets the repo's env
+# file override the environment, and neither of these belongs in there.
+FORCE_RESTART=false
+HOLDING_LOCK=false
+for arg in "$@"; do
+  case "$arg" in
+    --restart) FORCE_RESTART=true ;;
+    --holding-lock) HOLDING_LOCK=true ;; # internal: see "One run at a time"
+    *) echo "healthcheck-api.sh: ignoring unknown argument: $arg" >&2 ;;
+  esac
+done
 
 # Optional: keep compatibility with environments that rely on ~/.bashrc for nvm/pnpm.
 if [[ "${API_HEALTH_SOURCE_BASHRC:-0}" == "1" ]] && [[ -f "${HOME}/.bashrc" ]]; then
@@ -380,6 +397,30 @@ pm2_is_online() {
 
 # --- main ---
 
+# One run at a time. The timer's run and one a deploy starts with --restart must
+# not interleave: one run's probe would catch the other's restart halfway and
+# restart again, and a `pm2 kill` in one could let the other's next pm2 call
+# respawn the daemon in its own cgroup.
+#
+# flock -o keeps the lock in the flock process and closes it for the script it
+# runs, so a PM2 daemon spawned below can never inherit it. A daemon holding the
+# lock would hold it for good and time out every later run. No flock (macOS dev
+# machines) means no lock.
+LOCK_FILE="$PM2_HOME/healthcheck-api.lock"
+LOCK_WAIT_SECONDS=300
+if [[ "$HOLDING_LOCK" == false ]] && command -v flock >/dev/null 2>&1; then
+  inner_args=(--holding-lock)
+  if [[ "$FORCE_RESTART" == true ]]; then inner_args+=(--restart); fi
+  lock_rc=0
+  flock -o -E 75 -w "$LOCK_WAIT_SECONDS" "$LOCK_FILE" \
+    /bin/bash "$SCRIPT_DIR/$(basename "${BASH_SOURCE[0]}")" "${inner_args[@]}" || lock_rc=$?
+  if [[ "$lock_rc" == 75 ]]; then
+    log_echo "ERROR: another run held $LOCK_FILE for ${LOCK_WAIT_SECONDS}s; giving up"
+    hc_fail "$(printf 'api-health failed (%s)\nreason=lock_timeout\nlock_file=%s\n' "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" "$LOCK_FILE")"
+  fi
+  exit "$lock_rc"
+fi
+
 log_echo "=== API Health Monitor Started ==="
 log_echo "Project: $PROJECT_DIR"
 log_echo "App: $APP_NAME"
@@ -446,6 +487,11 @@ if [[ "$pm2_online" == false ]]; then
 elif [[ "$PROBE_VERDICT" == "FAIL" || "$PROBE_VERDICT" == "DOWN" ]]; then
   log_echo "PM2 reports $APP_NAME online but it is not serving; restarting anyway."
   needs_restart=true
+elif [[ "$FORCE_RESTART" == true ]]; then
+  # api:start restarts a running app with ecosystem.config.js re-read, so a
+  # change to that file lands too, which a bare `pm2 restart` would miss.
+  log_echo "Restart requested (--restart); restarting $APP_NAME so it loads the code on disk."
+  needs_restart=true
 fi
 
 if [[ "$needs_restart" == true ]]; then
@@ -503,7 +549,7 @@ if pm2_daemon_node_stale; then
   service_online=false
 fi
 
-status_line="pm2_online=$pm2_online probe=$PROBE_VERDICT daemon_placed=$PM2_DAEMON_PLACED restart_attempted=$needs_restart node_cycled=$node_cycled node_current=$node_current"
+status_line="pm2_online=$pm2_online probe=$PROBE_VERDICT daemon_placed=$PM2_DAEMON_PLACED restart_attempted=$needs_restart restart_requested=$FORCE_RESTART node_cycled=$node_cycled node_current=$node_current"
 
 if [[ "$service_online" == true ]]; then
   hc_ok "api-health ok $(date -u +"%Y-%m-%dT%H:%M:%SZ") app=$APP_NAME $status_line"
