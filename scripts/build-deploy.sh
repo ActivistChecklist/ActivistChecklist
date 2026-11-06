@@ -269,7 +269,10 @@ while :; do
   SMOKE_GUIDE_PATH="${SMOKE_GUIDE_PATH:-/essentials/}"
   SMOKE_FAILED=0
 
-  if ! curl -fsS --max-time 15 "$SITE_URL/" | grep -qi "Activist Checklist"; then
+  # grep without -q, so it reads the whole page. With -q it stops at the first
+  # match, curl then fails writing the rest (exit 23), and pipefail turns that
+  # into a failed check: it warned on every deploy while the site was fine.
+  if ! curl -fsS --max-time 15 "$SITE_URL/" | grep -i "Activist Checklist" >/dev/null; then
     log "WARN: smoke check failed for $SITE_URL/"
     SMOKE_FAILED=1
   fi
