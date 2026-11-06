@@ -17,11 +17,13 @@ Notre approche de la vie privée, ce n'est pas une question de conformité léga
 
 On sait que des sites comme celui-ci peuvent devenir la cible de la surveillance de l'État, alors on s'est donné beaucoup de mal pour collecter le moins d'informations identifiantes possible et te protéger quand tu navigues sur ce site.
 
+(Si tu veux savoir comment on protège le site lui-même, de nos serveurs à notre newsletter, consulte notre [page sur la sécurité](/security/).)
+
 ## Ce qu'on ne suit PAS
 
 On a volontairement conçu ce site pour qu'il protège ta vie privée au maximum :
 
-* ❌ Aucune adresse IP n'est jamais enregistrée
+* ❌ Ta vraie adresse IP n'est jamais enregistrée ni conservée ([en savoir plus](/security/#privacy))
 * ❌ Aucun cookie n'est stocké sur ton appareil
 * ❌ Aucun service externe ni bibliothèque tierce n'est chargé dans ton navigateur, rien qui pourrait exposer tes informations personnelles (adresse IP)
 * ❌ Aucune de tes informations personnelles n'est jamais collectée sur nos serveurs ni envoyée à des serveurs tiers. La seule exception, c'est un message que tu choisis de nous envoyer via notre formulaire de contact : il est chiffré avant de quitter notre serveur ([voir plus bas](#contact-form)).
@@ -114,7 +116,7 @@ On tient à jour un canari de mandat pour attester qu'on n'a pas été contraint
 
 <CanaryStatus />
 
-On mettra à jour ce canari tous les 3 mois. Si plus de 4 mois passent sans mise à jour ET qu'on continue à mettre à jour régulièrement notre [dépôt de code](https://github.com/ActivistChecklist/ActivistChecklist), c'est un signal pour poser des questions, pas la confirmation qu'on a été compromis·es. Commence par nous [contacter](/contact/) pour voir si on a juste du retard sur une mise à jour.
+On mettra à jour ce canari tous les 4 mois. Si plus de 4 mois passent sans mise à jour ET qu'on continue à mettre à jour régulièrement notre [dépôt de code](https://github.com/ActivistChecklist/ActivistChecklist), c'est un signal pour poser des questions, pas la confirmation qu'on a été compromis·es. Commence par nous [contacter](/contact/) pour voir si on a juste du retard sur une mise à jour.
 
 Pour vérifier, télécharge [`canary.txt`](/files/canary.txt), récupère notre clé publique depuis l'une des sources ci-dessous, puis lance `gpg --verify canary.txt`. Si elle est valide, tu devrais voir quelque chose comme `Good signature from "contact@activistchecklist.org \<contact@activistchecklist.org>"`
 
