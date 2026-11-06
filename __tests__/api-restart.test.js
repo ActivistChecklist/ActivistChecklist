@@ -1,5 +1,6 @@
 import { spawnSync } from 'node:child_process';
 import {
+  copyFileSync,
   existsSync,
   mkdirSync,
   mkdtempSync,
@@ -37,18 +38,20 @@ function scratchEnv() {
   };
 }
 
-// Runs a lib function from inside `dir` and returns its exit status and output.
-function runLib(dir, fn, ...args) {
-  const res = spawnSync(
-    'bash',
-    ['-c', 'source "$1" && cd "$2" && shift 2 && "$@"', 'bash', LIB, dir, fn, ...args],
-    { cwd: REPO_ROOT, encoding: 'utf8', env: scratchEnv() },
-  );
+// Runs a lib function in `cwd` and returns its exit status and output. `lib` is
+// the lib's path relative to `cwd`: directories reach the shell only as cwd,
+// never in its argv, for the same reason LIB is relative.
+function runLib({ cwd = REPO_ROOT, lib = LIB } = {}, fn, ...args) {
+  const res = spawnSync('bash', ['-c', 'source "$1" && shift && "$@"', 'bash', lib, fn, ...args], {
+    cwd,
+    encoding: 'utf8',
+    env: scratchEnv(),
+  });
   if (res.error) throw res.error;
   return { status: res.status, out: res.stdout };
 }
 
-const needsRestart = (p) => runLib(REPO_ROOT, 'api_path_needs_restart', p).status === 0;
+const needsRestart = (p) => runLib({}, 'api_path_needs_restart', p).status === 0;
 
 describe('api_path_needs_restart', () => {
   it('restarts for the API code, its PM2 config, its dependencies and its Node', () => {
@@ -135,10 +138,14 @@ describe('the files the API loads', () => {
 });
 
 describe('api_restart_reason', () => {
+  // scratch/ holds the git checkout (scratch/repo) and a copy of the lib beside
+  // it, so the shell reaches the lib by a literal relative path from the repo.
+  let scratch;
   let repo;
 
   afterEach(() => {
-    if (repo) rmSync(repo, { recursive: true, force: true });
+    if (scratch) rmSync(scratch, { recursive: true, force: true });
+    scratch = undefined;
     repo = undefined;
   });
 
@@ -166,7 +173,10 @@ describe('api_restart_reason', () => {
 
   // A checkout with the API and some content, as of the commit ac-api runs.
   function deployedRepo() {
-    repo = mkdtempSync(path.join(os.tmpdir(), 'api-restart-'));
+    scratch = mkdtempSync(path.join(os.tmpdir(), 'api-restart-'));
+    repo = path.join(scratch, 'repo');
+    mkdirSync(repo);
+    copyFileSync(path.join(REPO_ROOT, LIB), path.join(scratch, 'api-restart.sh'));
     git('init', '-q', '-b', 'main');
     return commit({
       write: {
@@ -179,7 +189,8 @@ describe('api_restart_reason', () => {
     });
   }
 
-  const reason = (rev) => runLib(repo, 'api_restart_reason', rev);
+  const reason = (rev) =>
+    runLib({ cwd: repo, lib: '../api-restart.sh' }, 'api_restart_reason', rev);
 
   it('leaves the API alone after a content-only deploy', () => {
     const running = deployedRepo();
