@@ -23,6 +23,7 @@ on:
     paths:
       - 'content/en/**/*.mdx'
       - 'messages/en.json'
+      - 'content/en/pdf/*.json'
 
   workflow_dispatch:
     inputs:

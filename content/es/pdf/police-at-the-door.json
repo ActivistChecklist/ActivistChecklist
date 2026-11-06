@@ -1,0 +1,67 @@
+{
+  "title": "La policía en la puerta",
+  "intro": "Pasos a seguir si la policía está en tu puerta — policía local, FBI, ICE o cualquier otro agente del gobierno",
+  "fillIn": {
+    "whoToCall": {
+      "heading": "A quién llamar (llena aquí)",
+      "fields": {
+        "emergencyContact1": "Contacto de emergencia 1",
+        "emergencyContact2": "Contacto de emergencia 2",
+        "emergencyContact3": "Contacto de emergencia 3",
+        "legalSupport": "Apoyo legal"
+      }
+    },
+    "otherNumbers": {
+      "heading": "Otros números",
+      "fields": {
+        "iceRaidHotline": "Línea de alerta de la migra",
+        "other": "Otro:"
+      }
+    }
+  },
+  "moreInfo": "Más información y otras guías en:",
+  "steps": {
+    "doNotInvite": {
+      "heading": "1. No los invites a entrar",
+      "bullets": {
+        "doNotOpen": "<b>NO abras la puerta</b> a menos que tengan una orden firmada por un juez (no por un agente)",
+        "ifOpened": "<b>Si abriste la puerta,</b> sal y ciérrala detrás de ti. Di \"No doy mi consentimiento para un registro\"",
+        "remainSilent": "<b>Guarda silencio</b> para proteger tus derechos"
+      }
+    },
+    "magicWords": {
+      "heading": "2. Usa las palabras mágicas",
+      "intro": "Di estas frases para proteger tus derechos:",
+      "phrases": {
+        "noConsent": "\"No doy mi consentimiento para un registro\"",
+        "remainSilent": "\"Voy a guardar silencio\"",
+        "attorney": "\"Quiero hablar con un abogado\"",
+        "card": "\"¿Me puede dar su tarjeta?\""
+      }
+    },
+    "warrant": {
+      "heading": "3. Si tienen una orden judicial...",
+      "numbered": {
+        "ask": "Pregunta: \"<b>¿Tiene orden judicial?</b>\" Revisa que diga \"corte\", no \"agencia\"",
+        "doNotInterfere": "Si la tienen, no interfieras con el registro/arresto",
+        "phoneOff": "<b>Apaga tu teléfono</b> para proteger tus datos",
+        "video": "Pide a alguien que <b>grabe video</b> si es posible",
+        "callContacts": "Pide a alguien que <b>llame a tus contactos</b>"
+      }
+    },
+    "afterTheyLeave": {
+      "heading": "4. Después de que se vayan",
+      "numbered": {
+        "callContacts": "<b>Llama o envía mensaje a los contactos</b>",
+        "writeDown": "<b>Escribe todo</b> lo que pasó"
+      }
+    },
+    "remember": {
+      "heading": "Recuerda",
+      "bullets": {
+        "copsLie": "<b>La policía puede mentirte</b> para obtener información. No les mientas tú.",
+        "solidarity": "<b>No hablamos con la policía.</b> Nuestra solidaridad nos protege a todos."
+      }
+    }
+  }
+}

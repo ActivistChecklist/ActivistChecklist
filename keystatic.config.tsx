@@ -19,6 +19,7 @@ import ChecklistItemEditorPreview from '@/components/keystatic/ChecklistItemEdit
 import AlertEditorPreview from '@/components/keystatic/AlertEditorPreview';
 import { escapeHeadingIds, unescapeHeadingIds } from '@/lib/mdx-heading-ids';
 import { parseShowCount } from '@/lib/expandable-list';
+import { PDFS } from '@/config/pdfs.mjs';
 
 export const showKeystaticUI = process.env.BUILD_MODE !== 'static';
 export const showAdminUI = showKeystaticUI;
@@ -781,12 +782,34 @@ const canaryStatusComponent = block({
   },
 });
 
+const pdfDownloadComponent = block({
+  label: 'PDF download',
+  description:
+    'Download buttons for a designed PDF (config/pdfs.mjs), in the reader’s language first',
+  schema: {
+    slug: fields.select({
+      label: 'PDF',
+      options: Object.keys(PDFS).map((slug) => ({ label: slug, value: slug })),
+      defaultValue: Object.keys(PDFS)[0],
+    }),
+    title: fields.text({ label: 'Main button text', validation: { isRequired: true } }),
+  },
+  ContentView({ value }) {
+    return (
+      <div style={{ fontSize: 13, color: '#64748b' }}>
+        ⬇ {value.title} ({value.slug})
+      </div>
+    );
+  },
+});
+
 const guideAndPageComponents = {
   FAQ: faqComponent,
   FAQItem: faqItemComponent,
   InlineCta: inlineCtaComponent,
   TranslationStats: translationStatsComponent,
   CanaryStatus: canaryStatusComponent,
+  PdfDownload: pdfDownloadComponent,
 };
 
 // ─── Config ───────────────────────────────────────────────────────────────────

@@ -154,8 +154,15 @@ for (const { status, path } of changes) {
     try {
       before = JSON.parse(show(base, path) ?? '{}');
     } catch {}
+    // messages/<locale>.json keys stand alone; any other JSON file (designed
+    // PDFs in content/<locale>/pdf/) is named, so its keys aren't mistaken for UI strings.
+    const prefix = path === `messages/${target.locale}.json` ? '' : `${path}: `;
     for (const change of diffMessages(before, tr)) {
-      entry.strings.push({ ...change, english: enFlat[change.key] ?? '' });
+      entry.strings.push({
+        ...change,
+        key: `${prefix}${change.key}`,
+        english: enFlat[change.key] ?? '',
+      });
     }
   } else {
     for (const message of compareMarkup(source, translated)) errors.push({ path, message });
@@ -200,7 +207,7 @@ if (summaryFile) {
     }
     out.push('', '</details>', '');
     if (strings.length) {
-      out.push(`${strings.length} UI string(s) changed in messages/${locale}.json.`, '');
+      out.push(`${strings.length} string(s) changed in JSON files.`, '');
       out.push('| Key | Change | English | Translation |', '|---|---|---|---|');
       for (const s of strings.slice(0, MAX_ROWS_PER_LOCALE)) {
         out.push(`| \`${cell(s.key, 80)}\` | ${s.kind} | ${cell(s.english)} | ${cell(s.value)} |`);
