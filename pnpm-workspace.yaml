@@ -1,6 +1,6 @@
 allowBuilds:
   # pnpm 12 will not run a git-hosted package's prepare scripts off a bare name. ERR_PNPM_GIT_DEP_PREPARE_NOT_ALLOWED wants the resolved tarball URL, commit SHA and all, so the allowance names one immutable tree rather than "whatever that ref points at today". It must be updated in lockstep with the `github:...#<sha>` spec in package.json; the bare-name entry below stays for the published copy of the same package.
-  "@activistchecklist/umami-extra-privacy@https://codeload.github.com/ActivistChecklist/umami-extra-privacy/tar.gz/7669154d772ecbf3410c1243e8014ac8a0e74c5e": true
+  "@activistchecklist/umami-extra-privacy@https://codeload.github.com/ActivistChecklist/umami-extra-privacy/tar.gz/cdc7422d143c17ca647133200785d52ac589e259": true
   "@activistchecklist/umami-extra-privacy": true
   '@parcel/watcher': true
   '@swc/core': true

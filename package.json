@@ -77,7 +77,7 @@
   },
   "dependencies": {
     "@activistchecklist/react-review-comments": "^0.3.1",
-    "@activistchecklist/umami-extra-privacy": "github:ActivistChecklist/umami-extra-privacy#7669154d772ecbf3410c1243e8014ac8a0e74c5e",
+    "@activistchecklist/umami-extra-privacy": "github:ActivistChecklist/umami-extra-privacy#cdc7422d143c17ca647133200785d52ac589e259",
     "@fastify/cors": "^11.4.0",
     "@fastify/helmet": "^13.2.0",
     "@fastify/rate-limit": "^11.2.2",
