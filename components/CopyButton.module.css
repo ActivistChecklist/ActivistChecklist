@@ -99,3 +99,10 @@ blockquote .label {
   white-space: nowrap;
   border: 0;
 }
+
+/* Nothing to copy from paper, and in a blockquote the icon sits over the text. */
+@media print {
+  .button {
+    display: none;
+  }
+}

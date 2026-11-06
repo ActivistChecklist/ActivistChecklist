@@ -57,7 +57,11 @@ export default function HomePageContent({
   const isDefault = currentLocale === DEFAULT_LOCALE;
 
   return (
-    <div>
+    // The hero breaks out of the page container with w-dvw, which counts the
+    // scrollbar, so it overhangs the page by half a scrollbar on each side where
+    // scrollbars take up space. Clip (not hidden) trims that without creating a
+    // scroll container, so the sticky header still sticks.
+    <div className="overflow-x-clip">
       <Layout sidebarType={null} searchable={false} fullWidthMain={true}>
         <div className="max-w-6xl mx-auto px-4 py-8 -my-6 container">
           {/* Hero Section */}
@@ -144,7 +148,7 @@ export default function HomePageContent({
             </div>
           </section>
 
-          {/* Featured In - orgs that have linked to us */}
+          {/* Sites that have shared our guides */}
           <section className="mb-16">
             <h2 className="text-2xl font-bold mb-6">{t('featured.sectionTitle')}</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

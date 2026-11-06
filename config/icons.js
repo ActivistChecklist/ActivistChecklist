@@ -4,7 +4,6 @@
  */
 import {
   IoShield,
-  IoMegaphone,
   IoGlobe,
   IoPeople,
   IoChatbubble,
@@ -15,6 +14,7 @@ import {
   IoLockClosed,
   IoHandRight,
   IoCafe,
+  IoMegaphone,
 } from 'react-icons/io5';
 import { BookOpen, Landmark, Printer, Smartphone } from 'lucide-react';
 import React from 'react';
@@ -67,18 +67,12 @@ export const GUIDE_ICONS = {
   secondary: IoPhonePortraitFixed,
   emergency: IoNotifications,
   spyware: IoEyeOff,
-  organizing: IoMegaphone,
   research: IoGlobe,
   federal: Landmark,
   doxxing: IoLockClosedThick,
   action: IoHandRight,
+  'action-safety': IoMegaphone,
   ice: IoVideocam,
-};
-
-// Pages (not guides) that appear next to checklists, like the security party
-// how-to featured in the "Organizing others" section. Kept out of GUIDE_ICONS
-// so OG images and guide-only lookups don't pick them up.
-export const PAGE_ICONS = {
   party: IoCafe,
 };
 

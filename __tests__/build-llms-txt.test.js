@@ -41,6 +41,11 @@ describe('extractChecklistItemSlugs', () => {
     expect(extractChecklistItemSlugs(mdx)).toEqual(['a', 'b']);
   });
 
+  it('includes items whose tag carries other attributes', () => {
+    const mdx = `<ChecklistItem slug="a" important />\n<ChecklistItem alwaysExpanded slug="b" />`;
+    expect(extractChecklistItemSlugs(mdx)).toEqual(['a', 'b']);
+  });
+
   it('returns empty array for empty content', () => {
     expect(extractChecklistItemSlugs('')).toEqual([]);
   });

@@ -25,7 +25,7 @@ const TOP_GUIDE_SLUGS = [
   'secondary',
   'emergency',
 ];
-const FAQ_GUIDE_SLUGS = ['signal', 'essentials', 'travel'];
+const FAQ_GUIDE_SLUGS = ['signal', 'travel'];
 
 const DESC_MIN = 70;
 const DESC_MAX = 160;

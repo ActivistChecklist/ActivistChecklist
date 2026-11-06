@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import chalk from 'chalk';
 import { LOCALES } from '../lib/i18n-config.mjs';
+import redirectsConfig from '../lib/redirects.config.cjs';
 import { sectionStart, sectionEnd, detail, subsection } from './lib/build-cli.mjs';
 
 const LOCALE_SEGMENTS = new Set(Object.keys(LOCALES));
@@ -132,14 +133,23 @@ function pathResolvesExact(cleaned) {
   return false;
 }
 
-function pathResolves(localPath) {
-  const cleaned = stripQueryAndFragment(localPath);
+function pathResolvesInBuild(cleaned) {
   if (pathResolvesExact(cleaned)) return true;
   const unlocaled = withoutLeadingLocaleSegment(cleaned);
   if (unlocaled !== null && unlocaled !== cleaned) {
     return pathResolvesExact(unlocaled);
   }
   return false;
+}
+
+function pathResolves(localPath) {
+  const cleaned = stripQueryAndFragment(localPath);
+  if (pathResolvesInBuild(cleaned)) return true;
+  // A link to a redirected path (e.g. an old changelog entry pointing at a
+  // retired page) works on the live site, as long as the page it lands on exists.
+  const target = redirectsConfig.redirectTarget(cleaned);
+  if (target === null) return false;
+  return URI_SCHEME.test(target) || pathResolvesInBuild(target);
 }
 
 function extractPaths(htmlContent) {

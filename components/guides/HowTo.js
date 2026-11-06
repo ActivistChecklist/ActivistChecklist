@@ -10,7 +10,7 @@ export const HowTo = ({ title, children }) => {
     <div
       className={cn(
         'how-to-container',
-        'print:border print:border-border print:rounded-md',
+        'print:border print:border-border print:rounded-md print:break-inside-avoid',
         'mt-4 first:mt-0',
       )}
     >
@@ -27,7 +27,7 @@ export const HowTo = ({ title, children }) => {
             <>
               <Settings
                 className={cn(
-                  'rounded-full absolute top-0',
+                  'rounded-full absolute top-0 print:hidden',
                   'text-muted-foreground',
                   'md:bg-background md:-left-12 md:w-12 md:h-12 md:p-3 md:my-0',
                   'right-0 bg-transparent px-0 my-3 w-6 h-6',

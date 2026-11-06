@@ -17,10 +17,6 @@ import { useTranslations } from 'next-intl';
 import { useChecklistProgressActions } from '@/contexts/ChecklistProgressContext';
 import { checklistItemAnchorId } from '@/lib/search';
 
-const TITLE_BADGE_VARIANTS = {
-  important: 'destructive',
-};
-
 const InfoItemIcon = () => {
   const t = useTranslations();
   return (
@@ -55,6 +51,10 @@ const InfoItemIcon = () => {
  * - `alwaysExpanded` removes collapsing entirely (no chevron, no expand button,
  *   header is not clickable, nothing persisted). Use when the item is embedded
  *   as the body of a page section rather than as one row in a checklist.
+ *
+ * `important` shows the Important badge before the title. It is set on the
+ * `<ChecklistItem>` tag in each guide, so one item can be important in one
+ * guide and not in another.
  */
 const ChecklistItem = ({
   slug: itemSlug,
@@ -63,7 +63,7 @@ const ChecklistItem = ({
   why: itemWhy,
   tools: itemTools,
   stop: itemStop,
-  titleBadges: itemTitleBadges = [],
+  important = false,
   serializedBody,
   bodyComponents,
   expandTrigger,
@@ -239,7 +239,7 @@ const ChecklistItem = ({
     >
       <CardHeader
         className={cn(
-          'p-3 pl-3 md:pl-5',
+          'p-3 pl-3 md:pl-5 print:break-after-avoid',
           !alwaysExpanded && 'cursor-pointer',
           expanded && 'rounded-t-lg',
         )}
@@ -283,27 +283,17 @@ const ChecklistItem = ({
                     id={hasMounted ? itemSlug : checklistItemAnchorId(itemSlug)}
                     data-slug={itemSlug}
                   >
-                    {itemTitleBadges && itemTitleBadges.length > 0 && (
-                      <>
-                        {itemTitleBadges.map((badgeType, index) => {
-                          const variant = TITLE_BADGE_VARIANTS[badgeType];
-                          if (!variant) return null;
-
-                          return (
-                            <Badge
-                              key={index}
-                              variant={variant}
-                              data-pagefind-ignore
-                              className={cn(
-                                'text-xs inline mr-2 align-middle',
-                                isChecked && 'opacity-50',
-                              )}
-                            >
-                              {t('checklistItem.importantBadge')}
-                            </Badge>
-                          );
-                        })}
-                      </>
+                    {important && (
+                      <Badge
+                        variant="destructive"
+                        data-pagefind-ignore
+                        className={cn(
+                          'text-xs inline mr-2 align-middle',
+                          isChecked && 'opacity-50',
+                        )}
+                      >
+                        {t('checklistItem.importantBadge')}
+                      </Badge>
                     )}
                     {itemTitle}
                     <span
@@ -390,6 +380,8 @@ const ChecklistItem = ({
           'grid mt-2',
           enableTransitions ? 'transition-all duration-300' : 'transition-none',
           expanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
+          // Print every item open: a printed checklist is read, not clicked.
+          'print:grid-rows-[1fr]',
           isChecked && `opacity-${checkedOpacity}`,
         )}
       >
@@ -421,7 +413,7 @@ const ChecklistItem = ({
                 <div
                   data-pagefind-ignore
                   className={cn(
-                    'pt-4 border-muted-foreground/20',
+                    'pt-4 border-muted-foreground/20 print:hidden',
                     'flex flex-col sm:flex-row items-start sm:items-center gap-3',
                     'w-full',
                   )}

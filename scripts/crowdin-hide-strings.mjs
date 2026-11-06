@@ -8,7 +8,7 @@
  *
  * This includes:
  *   - JSX attributes: slug, type, size, level, mode, alignment, target, variant, icon, href, src, className
- *   - Frontmatter arrays: relatedGuides, titleBadges
+ *   - Frontmatter arrays: relatedGuides
  *   - Frontmatter scalars: slug, type, date, firstPublished, lastUpdated, image, imageOverride, url, source, tags, showToc, tocDepth
  *
  * Usage:
@@ -20,6 +20,8 @@
  * (e.g. riskLevel.everyoneLabel vs level="everyone" in MDX) must not be hidden or cleared.
  * Unhide is conservative (obsolete MDX matches or messages/en.json collisions only), so a path
  * bug cannot mass-unhide every hidden string.
+ *
+ * Exits 1 if any Crowdin call fails, after trying the rest.
  *
  * Add to package.json:
  *   "scripts": {
@@ -136,8 +138,8 @@ function extractUntranslatableStrings(contentDir) {
   const attrPattern = UNTRANSLATABLE_ATTRIBUTES.join('|');
   const attrRegex = new RegExp(`\\b(${attrPattern})=["']([^"']+)["']`, 'g');
 
-  // Frontmatter array patterns (relatedGuides, titleBadges, etc.)
-  const frontmatterArrayRegex = /^(relatedGuides|titleBadges):\s*\n((?:\s+-\s+.+\n?)+)/gm;
+  // Frontmatter array patterns (relatedGuides)
+  const frontmatterArrayRegex = /^(relatedGuides):\s*\n((?:\s+-\s+.+\n?)+)/gm;
   const arrayItemRegex = /^\s+-\s+(.+)$/gm;
 
   const scalarFieldPattern = UNTRANSLATABLE_FRONTMATTER_SCALARS.join('|');
@@ -236,6 +238,15 @@ const crowdinPatch = (path, data) => crowdinFetch(path, { method: 'PATCH', body:
 const crowdinDelete = (path) => crowdinFetch(path, { method: 'DELETE' });
 
 // --- Step 3: Find and hide strings / clear translations in Crowdin ---
+
+// Each per-string call is tried on its own so one rejection doesn't stop the rest, but any
+// failure fails the run. A token missing the string write scope once left every hide failing
+// while the sync job stayed green.
+const failures = [];
+function reportFailure(label, err) {
+  failures.push(err.message);
+  console.log(`  ${c.red}✗${c.reset} ${label}${c.red}: ${err.message}${c.reset}`);
+}
 
 // Run up to `concurrency` async tasks at once
 async function runConcurrent(concurrency, tasks) {
@@ -510,9 +521,7 @@ async function run() {
           ]);
           console.log(`  ${c.magenta}✓${c.reset} ${c.white}"${text}"${c.reset}`);
         } catch (err) {
-          console.log(
-            `  ${c.red}✗${c.reset} ${c.white}"${text}"${c.reset} ${c.red}— ${err.message}${c.reset}`,
-          );
+          reportFailure(`${c.white}"${text}"${c.reset}`, err);
         }
       }
     }
@@ -521,6 +530,7 @@ async function run() {
   }
 
   // --- Hide strings that should be hidden ---
+  let hidden = 0;
   if (toHide.length > 0) {
     console.log(
       `${c.bold}${DRY_RUN ? 'Would hide' : 'Hiding'} ${toHide.length} strings:${c.reset}\n`,
@@ -538,13 +548,12 @@ async function run() {
           await crowdinPatch(`/projects/${PROJECT_ID}/strings/${id}`, [
             { op: 'replace', path: '/isHidden', value: true },
           ]);
+          hidden++;
           console.log(
             `  ${c.green}✓${c.reset} ${c.white}"${text}"${c.reset} ${c.gray}← ${sourceInfo}${c.reset}`,
           );
         } catch (err) {
-          console.log(
-            `  ${c.red}✗${c.reset} ${c.white}"${text}"${c.reset} ${c.red}— ${err.message}${c.reset}`,
-          );
+          reportFailure(`${c.white}"${text}"${c.reset}`, err);
         }
       }
     }
@@ -588,9 +597,7 @@ async function run() {
               perString.set(text, (perString.get(text) || 0) + translations.length);
             }
           } catch (err) {
-            console.log(
-              `  ${c.red}✗${c.reset} [${lang}] ${c.white}"${text}"${c.reset} ${c.red}— ${err.message}${c.reset}`,
-            );
+            reportFailure(`[${lang}] ${c.white}"${text}"${c.reset}`, err);
           }
         });
       }
@@ -633,9 +640,7 @@ async function run() {
               totalCleared += count;
             }
           } catch (err) {
-            console.log(
-              `  ${c.red}✗${c.reset} [${lang}] ${c.white}"${text}"${c.reset} ${c.red}— ${err.message}${c.reset}`,
-            );
+            reportFailure(`[${lang}] ${c.white}"${text}"${c.reset}`, err);
           }
         });
       }
@@ -651,13 +656,23 @@ async function run() {
     }
   }
 
+  if (failures.length > 0) {
+    console.log(`${c.red}${c.bold}✗ ${failures.length} Crowdin call(s) failed:${c.reset}`);
+    for (const reason of new Set(failures)) {
+      console.log(`  ${c.red}${reason}${c.reset}`);
+    }
+    console.log();
+    process.exitCode = 1;
+    return;
+  }
+
   if (DRY_RUN) {
     console.log(
       `${c.yellow}${c.bold}Dry run complete.${c.reset} Run with ${c.cyan}--apply${c.reset} to hide strings and clear translations.\n`,
     );
   } else {
     console.log(
-      `${c.green}${c.bold}✓ Done!${c.reset} Hidden ${c.bold}${toHide.length}${c.reset} strings, cleared existing translations.\n`,
+      `${c.green}${c.bold}✓ Done!${c.reset} Hidden ${c.bold}${hidden}${c.reset} strings, cleared existing translations.\n`,
     );
   }
 }

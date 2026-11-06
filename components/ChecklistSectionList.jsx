@@ -1,13 +1,12 @@
 'use client';
 
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import Link from '@/components/Link';
 import { MobileTableOfContents } from '@/components/layout/TableOfContentsSidebar';
 import { CHECKLIST_SECTIONS } from '@/config/navigation';
 import { READ_KIND_ICONS } from '@/config/icons';
-import { LOCALES } from '@/lib/i18n-config';
 import { createIntlTranslator, getTranslatedNavItemFields } from '@/lib/navigation-i18n';
-import { cn, formatContentDate } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 const KIND_LABELS = {
   explainer: 'checklistSections.explainer',
@@ -19,15 +18,11 @@ const KIND_LABELS = {
  * printable, grouped by section. A list rather than cards, because people use
  * this page to scan and compare (mostly on laptops), not to be sold on one.
  *
- * @param {Record<string, string>} staleReviewDates - guide key -> YYYY-MM-DD, only for
- *   guides overdue for review. Worked out on the server so the client never
- *   disagrees with the static HTML about which side of the cutoff "now" is.
  * @param {Record<string, number>} readMinutes - from getSectionReadMinutes
  */
-export default function ChecklistSectionList({ staleReviewDates = {}, readMinutes = {} }) {
+export default function ChecklistSectionList({ readMinutes = {} }) {
   const t = useTranslations();
   const translateText = createIntlTranslator(t);
-  const dateLocale = LOCALES[useLocale()]?.intlLocale || 'en-US';
 
   return (
     <div className="space-y-12">
@@ -36,10 +31,11 @@ export default function ChecklistSectionList({ staleReviewDates = {}, readMinute
       <MobileTableOfContents />
       {CHECKLIST_SECTIONS.map((section) => {
         const featuredKeys = new Set(section.featured.map((item) => item.key));
+        // Same order as the menu: a featured how-to sits with the featured checklists.
         const rows = [
           ...section.items.filter((item) => featuredKeys.has(item.key)),
-          ...section.items.filter((item) => !featuredKeys.has(item.key)),
           ...section.featured.filter((item) => item.kind),
+          ...section.items.filter((item) => !featuredKeys.has(item.key)),
           ...section.reads,
         ];
         return (
@@ -58,18 +54,9 @@ export default function ChecklistSectionList({ staleReviewDates = {}, readMinute
                 const isChecklist = !item.kind;
                 const isHowTo = item.kind === 'howto';
                 const Icon = item.icon || READ_KIND_ICONS[item.kind];
-                const description = isHowTo
-                  ? t(`checklistSections.descriptions.${item.key}`)
-                  : fields.description;
-                const staleDate = staleReviewDates[item.key];
+                const { description } = fields;
                 const meta = isChecklist
-                  ? staleDate &&
-                    t('checklistSections.lastReviewed', {
-                      date: formatContentDate(staleDate, dateLocale, {
-                        year: 'numeric',
-                        month: 'short',
-                      }),
-                    })
+                  ? null
                   : [
                       KIND_LABELS[item.kind] && t(KIND_LABELS[item.kind]),
                       readMinutes[item.key] &&

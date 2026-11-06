@@ -15,10 +15,6 @@
     "browseAllChecklists": "Ver todas las listas"
   },
   "navItems": {
-    "essentials": {
-      "title": "Fundamentos de seguridad",
-      "description": "Prácticas básicas de seguridad que toda persona activista debería seguir."
-    },
     "search": {
       "dialogTitle": "Buscar en el sitio",
       "dialogDescription": "Usa la barra de búsqueda para encontrar contenido relevante en el sitio.",
@@ -27,54 +23,6 @@
       "popularHeading": "Búsquedas populares",
       "topGuidesHeading": "Guías principales",
       "pressEnter": "Pulsa {kbd} para buscar"
-    },
-    "signal": {
-      "title": "Seguridad en Signal",
-      "description": "Asegura la app de mensajería Signal para tener comunicaciones más seguras."
-    },
-    "protest": {
-      "title": "Prepárate para una protesta",
-      "description": "Seguridad digital para quienes asisten a una protesta."
-    },
-    "ice": {
-      "title": "Seguridad digital para monitoreo de ICE",
-      "description": "Seguridad digital para redes de monitoreo de ICE y respuesta rápida."
-    },
-    "doxxing": {
-      "title": "Defensa contra doxxing",
-      "description": "Protégete del doxxing y del acoso en línea."
-    },
-    "travel": {
-      "title": "Seguridad en viajes y vuelos",
-      "description": "Prácticas de seguridad digital para activistas que viajan."
-    },
-    "emergency": {
-      "title": "Planificación de emergencia",
-      "description": "Arma una red de apoyo de emergencia en caso de que te detengan o te amenacen."
-    },
-    "secondary": {
-      "title": "Teléfono secundario",
-      "description": "Configura un teléfono extra para activismo y protestas."
-    },
-    "links": {
-      "title": "Eliminar rastreo de enlaces",
-      "label": "Eliminar rastreo de enlaces"
-    },
-    "policeDoorPoster": {
-      "title": "Póster \"La poli en la puerta\"",
-      "label": "Póster \"La poli en la puerta\""
-    },
-    "flyer": {
-      "title": "Volante imprimible",
-      "label": "Volante imprimible"
-    },
-    "vpn": {
-      "title": "VPNs para activistas",
-      "label": "VPNs para activistas"
-    },
-    "movies": {
-      "title": "Películas, libros y pódcasts",
-      "label": "Películas, libros y pódcasts"
     },
     "updates": {
       "title": "Verificador de actualizaciones de seguridad",
@@ -88,17 +36,6 @@
       "title": "Términos y definiciones",
       "label": "Términos y definiciones"
     },
-    "resources": {
-      "title": "Recursos",
-      "label": "Recursos"
-    },
-    "about": {
-      "title": "Acerca de este sitio",
-      "label": "Acerca de"
-    },
-    "contribute": {
-      "title": "Contribuye"
-    },
     "changelog": {
       "title": "Actualizaciones recientes del sitio",
       "label": "Actualizaciones recientes del sitio"
@@ -106,54 +43,6 @@
     "contact": {
       "title": "Contacto",
       "label": "Contacto"
-    },
-    "privacy": {
-      "title": "Privacidad",
-      "label": "Privacidad"
-    },
-    "whatsapp": {
-      "title": "Seguridad en WhatsApp",
-      "description": "Configura WhatsApp para proteger tus mensajes, grupos y contactos."
-    },
-    "spyware": {
-      "title": "Protección contra spyware",
-      "description": "Protégete del spyware y los programas de vigilancia."
-    },
-    "action": {
-      "title": "Prepárate para una acción con riesgo de arresto",
-      "description": "Seguridad digital para acciones con riesgo de arresto y desobediencia civil."
-    },
-    "organizing": {
-      "title": "Organiza una acción con riesgo de arresto",
-      "description": "Para organizadores y coordinadores de movimientos."
-    },
-    "research": {
-      "title": "Investigación y reconocimiento para acciones",
-      "description": "Cómo investigar y navegar por la web de forma anónima."
-    },
-    "federal": {
-      "title": "Trabajadores federales",
-      "description": "Guía de seguridad digital para empleados federales."
-    },
-    "party": {
-      "title": "Organiza una security party",
-      "label": "Organiza una security party"
-    },
-    "proton": {
-      "title": "Cómo usar Proton de forma segura",
-      "label": "Cómo usar Proton de forma segura"
-    },
-    "lockdown": {
-      "title": "Ventajas y desventajas del Modo de aislamiento",
-      "label": "Ventajas y desventajas del Modo de aislamiento"
-    },
-    "signalSecure": {
-      "title": "¿Es Signal seguro?",
-      "label": "¿Es Signal seguro?"
-    },
-    "signalAi": {
-      "title": "¿Apple Intelligence está leyendo mis mensajes de Signal?",
-      "label": "¿Apple Intelligence está leyendo mis mensajes de Signal?"
     }
   },
   "hero": {
@@ -179,7 +68,7 @@
     "dontCareDescription": "La vigilancia masiva nos afecta a todes. Tus datos pueden usarse para perfilar comunidades, anticipar protestas o ir contra personas que te importan. Proteger tus comunicaciones ayuda a protegernos a todes."
   },
   "featured": {
-    "sectionTitle": "Nos han mencionado en"
+    "sectionTitle": "Sitios que han compartido nuestras guías"
   },
   "homepage": {
     "browseAll": "Ver todas las listas",
@@ -225,7 +114,13 @@
   "meta": {
     "lastUpdatedOn": "Última actualización",
     "takesAbout": "Toma unos",
-    "viewLatestGuideAt": "Consulta la versión más reciente de esta guía en"
+    "viewLatestGuideAt": "Consulta la versión más reciente de esta guía en",
+    "downloadPdf": "Descargar PDF"
+  },
+  "printNotice": {
+    "madeOn": "Esta copia se hizo el {date}.",
+    "updatesOften": "Actualizamos nuestras guías seguido, a medida que cambian las amenazas y surgen mejores formas de protegerte. Para ver la versión más reciente, visita",
+    "linksHeading": "Enlaces"
   },
   "footer": {
     "branding": {
@@ -263,7 +158,8 @@
     "description": "ICE, la cops y la vigilancia corporativa no paran de sumar nuevas herramientas. Actualizamos estas guías para seguirles el ritmo. Suscríbete para enterarte cuando algo importante cambie.",
     "buttonText": "Suscribirse",
     "emailAriaLabel": "Correo electrónico",
-    "privacyLink": "Política de privacidad"
+    "privacyLink": "Política de privacidad",
+    "dismissLabel": "No volver a mostrar"
   },
   "common": {
     "loading": "Cargando...",
@@ -370,6 +266,11 @@
     "copied": "Copiado",
     "ariaLabel": "Copiar al portapapeles"
   },
+  "expandableList": {
+    "more": "Mostrar {count} más",
+    "moreWithLabel": "{label} ({count} más)",
+    "less": "Mostrar menos"
+  },
   "contact": {
     "title": "Contáctanos",
     "intro": "Tus comentarios ayudan a hacer este recurso más útil y seguro para todes. Agradecemos sugerencias para:",
@@ -415,15 +316,16 @@
   },
   "feedbackCta": {
     "heading": "¿Tienes preguntas?",
-    "description": "Cuéntanos si tienes preguntas o comentarios para que hagamos estas guías lo más útiles posible.",
-    "inputPlaceholder": "Escribe tu pregunta...",
-    "sendButton": "Enviar",
+    "barText": "Cuéntanos para que podamos hacer estas guías más útiles.",
+    "buttonText": "Envía un mensaje",
     "dialogTitle": "Envíanos un mensaje",
     "successMessage": "¡Gracias por tu comentario! Lo revisaremos y lo usaremos para mejorar las guías. Si el sitio te está sirviendo, ¡ayúdanos a correr la voz!"
   },
   "relatedGuides": {
     "headingBlock": "Sigue aprendiendo con estas guías relacionadas",
-    "headingFooter": "Si esto te sirvió, también mira estas guías"
+    "headingFooter": "Si esto te sirvió, también mira estas guías",
+    "readMore": "Leer más",
+    "viewPrintable": "Ver versión para imprimir"
   },
   "checklists": {
     "title": "Listas",
@@ -437,30 +339,21 @@
       "scope": "Protección básica para tu teléfono, cuentas y chats grupales."
     },
     "goingOut": {
-      "title": "Protestas y viajes",
-      "heading": "Protestas y viajes",
-      "scope": "Cualquier lugar donde los cops o agentes fronterizos puedan quitarte el teléfono."
+      "title": "Protestas, acciones y viajes",
+      "heading": "Protestas, acciones y viajes",
+      "scope": "Cuando participas u organizas en cualquier lugar donde la policía o agentes fronterizos puedan quitarte el teléfono."
     },
     "targeted": {
       "title": "Si te están apuntando",
       "heading": "Protégete de ser blanco de ataques",
       "scope": "Doxxing, acoso, investigaciones o agentes en tu puerta."
     },
-    "organizing": {
-      "title": "Organizar a otres",
-      "heading": "Organizar a otres",
-      "scope": "Realizar acciones y asegurar a tu grupo."
-    },
-    "descriptions": {
-      "party": "Una agenda modelo para recorrer los checklists en grupo."
-    },
     "allChecklists": "Los {count, plural, one {# checklist} other {# checklists}}",
     "readMinutes": "{minutes} min de lectura",
     "explainer": "Explicación",
     "howTo": "Guía práctica",
     "readGuide": "Leer la guía",
-    "understandWhy": "Entiende por qué",
-    "lastReviewed": "Última revisión: {date}"
+    "understandWhy": "Entiende por qué"
   },
   "news": {
     "title": "Noticias sobre vigilancia",
@@ -781,10 +674,10 @@
   },
   "tools": {
     "metaTitle": "Herramientas que hicimos | Activist Checklist",
-    "metaDescription": "Herramientas que creamos para acompañar nuestras listas: mapear riesgos antes de una acción, blindar tus redes sociales y revisar si tu teléfono sigue recibiendo actualizaciones de seguridad.",
+    "metaDescription": "Herramientas que creamos para acompañar nuestras listas de verificación: mapea tus riesgos antes de una acción, revisa si tu teléfono todavía recibe actualizaciones de seguridad y borra tus chats viejos con IA.",
     "documentTitle": "Herramientas que creamos | Activist Checklist",
     "title": "Herramientas que creamos",
-    "intro": "Cuatro herramientas que creamos para acompañar las listas. Cada una cubre un paso que cuesta terminar solo con instrucciones escritas.",
+    "intro": "Tres herramientas que creamos para acompañar las listas de verificación. Cada una te ayuda con un paso que cuesta completar solo con instrucciones escritas.",
     "items": {
       "riskMapper": {
         "eyebrow": "Planifica una acción",
@@ -796,18 +689,6 @@
         "bullet3": "Compártelo con tu grupo por un enlace cifrado de extremo a extremo, o exporta un PDF para las personas que no estuvieron en la reunión.",
         "cta": "Abrir Risk Mapper",
         "shotAlt": "Risk Mapper a mitad de sesión, con riesgos ubicados en una cuadrícula de qué tan probables son y qué tan graves serían."
-      },
-      "socialScrub": {
-        "eyebrow": "Blinda tus perfiles",
-        "name": "Social Scrub",
-        "short": "Blinda tus cuentas de redes sociales, una a la vez.",
-        "lede": "Te guía por los mismos ocho pasos de privacidad en cada cuenta de red social que tengas.",
-        "bullet1": "Elige tus plataformas de una lista de 130 sitios, incluidos los que olvidaste. Agrega cualquiera que nos haya faltado.",
-        "bullet2": "Para cada cuenta: bórrala o déjala, cambia tu nombre visible y nombre de usuario, quita tu foto, saca tu ubicación y empleador de la bio, y blinda tus ajustes de privacidad.",
-        "bullet3": "Recuerda dónde quedaste, así puedes hacer unas cuantas cuentas por vez.",
-        "cta": "Abrir Social Scrub",
-        "secondaryCta": "Guía de defensa contra doxxing",
-        "shotAlt": "Un perfil de ejemplo antes y después de un scrub. El nombre, foto, nombre de usuario, bio, lista de amistades y ubicación están cambiados u ocultos."
       },
       "updates": {
         "eyebrow": "Verifica tu dispositivo",
@@ -837,7 +718,7 @@
       "body": "Cada una sale de alguna de nuestras listas. Empieza por la lista y te llevará a la herramienta cuando llegues a ese paso.",
       "primaryCta": "Fundamentos de seguridad digital",
       "secondaryCta": "Lista de defensa contra doxxing",
-      "openSource": "Las cuatro son <repos>open source</repos>. Si alguna no funciona, o necesitas algo que todavía no hemos creado, <contact>avísanos</contact>."
+      "openSource": "Las tres son de <repos>código abierto</repos>. Si alguna no funciona, o necesitas algo que todavía no hemos creado, <contact>avísanos</contact>."
     }
   },
   "terms": {

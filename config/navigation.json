@@ -22,7 +22,8 @@
       "href": "/signal/"
     },
     "whatsapp": {
-      "href": "/whatsapp/"
+      "href": "/whatsapp/",
+      "lowPriority": true
     },
     "secondary": {
       "href": "/secondary/"
@@ -33,20 +34,21 @@
     "spyware": {
       "href": "/spyware/"
     },
-    "organizing": {
-      "href": "/organizing/"
-    },
     "research": {
       "href": "/research/"
     },
     "federal": {
-      "href": "/federal/"
+      "href": "/federal/",
+      "lowPriority": true
     },
     "doxxing": {
       "href": "/doxxing/"
     },
     "action": {
       "href": "/action/"
+    },
+    "action-safety": {
+      "href": "/action-safety/"
     },
     "ice": {
       "href": "/ice/"
@@ -57,9 +59,6 @@
     },
     "movies": {
       "href": "/movies/"
-    },
-    "resources": {
-      "href": "/resources/"
     },
     "police-door-poster": {
       "href": "/police/",
@@ -134,6 +133,7 @@
         "protest",
         "ice",
         "action",
+        "action-safety",
         "doxxing",
         "travel",
         "emergency",
@@ -142,8 +142,7 @@
       "footerLink": true
     },
     "resources": {
-      "href": "/resources/",
-      "items": ["news", "tools", "links", "flyer", "movies", "glossary", "resources"]
+      "items": ["news", "tools", "flyer", "movies", "glossary"]
     },
     "about": {
       "href": "/about/",
@@ -154,13 +153,13 @@
     {
       "key": "basics",
       "items": ["essentials", "signal", "whatsapp"],
-      "featured": ["essentials", "signal"],
-      "reads": ["updates", "vpn", "party", "proton", "links", "signal-secure", "signal-ai"]
+      "featured": ["essentials", "signal", "party"],
+      "reads": ["vpn", "updates", "proton", "links", "signal-secure", "signal-ai"]
     },
     {
       "key": "goingOut",
-      "items": ["protest", "action", "ice", "travel", "secondary"],
-      "featured": ["protest", "action", "ice", "travel", "secondary"],
+      "items": ["protest", "action", "action-safety", "ice", "travel", "secondary", "research"],
+      "featured": ["protest", "action", "action-safety", "ice", "travel", "secondary"],
       "reads": []
     },
     {
@@ -168,12 +167,6 @@
       "items": ["doxxing", "emergency", "spyware", "federal"],
       "featured": ["doxxing", "emergency"],
       "reads": ["lockdown", "police-door-poster"]
-    },
-    {
-      "key": "organizing",
-      "items": ["organizing", "research"],
-      "featured": ["party"],
-      "reads": []
     }
   ],
   "mainNav": ["home", "checklists", "resources", "about"],
@@ -188,7 +181,6 @@
           "news",
           "about",
           "movies",
-          "resources",
           "changelog",
           "contact",
           "privacy"

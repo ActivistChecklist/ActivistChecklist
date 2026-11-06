@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import GuideCard from '@/components/GuideCard';
+import PageCard from '@/components/PageCard';
 import SectionReadLinks from '@/components/SectionReadLinks';
 import { NAV_ITEMS } from '@/config/navigation';
 import { cn } from '@/lib/utils';
@@ -16,12 +17,17 @@ function findGuideBySlug(slug) {
 /**
  * RelatedGuides — <RelatedGuides><RelatedGuide slug="essentials" />...</RelatedGuides>
  *
+ * A slug can name a page instead of a guide when `pages` has its card data
+ * (from getRelatedPages, which only the server can build). It keeps its place
+ * in the list as a PageCard.
+ *
  * `reads` (explainers and printables, as resolved navigation items) are listed
  * under the cards; the end of a guide passes its section's.
  */
 const RelatedGuides = ({
   children,
   guideSlugs = [],
+  pages = {},
   isBlock = false,
   reads = [],
   readMinutes = {},
@@ -33,19 +39,25 @@ const RelatedGuides = ({
 
   const slugs = [...guideSlugs, ...slugsFromChildren];
 
-  const guideItems = slugs.map((slug) => findGuideBySlug(slug)).filter(Boolean);
+  const cards = slugs
+    .map((slug) => {
+      if (pages[slug]) return <PageCard key={slug} page={pages[slug]} />;
+      const guideItem = findGuideBySlug(slug);
+      return guideItem && <GuideCard key={slug} guideItem={guideItem} size="medium" />;
+    })
+    .filter(Boolean);
 
-  if (guideItems.length === 0) {
+  if (cards.length === 0) {
     return null;
   }
 
   const getGridClass = () => {
-    if (guideItems.length === 1) return 'grid grid-cols-1 max-w-md mx-auto';
-    return 'grid grid-cols-1 lg:grid-cols-2 gap-8';
+    if (cards.length === 1) return 'grid grid-cols-1 max-w-md mx-auto';
+    return 'grid grid-cols-1 lg:grid-cols-2 gap-8 print:grid-cols-2 print:gap-3';
   };
 
   const containerClass = isBlock
-    ? 'not-prose bg-muted/50 border border-border/50 rounded-lg p-6 my-8'
+    ? 'not-prose bg-muted/50 border border-border/50 rounded-lg p-6 my-8 print:break-inside-avoid'
     : 'not-prose mt-12 pt-8 border-t border-border/50';
 
   const titleClass = isBlock ? 'text-xl font-semibold text-foreground mb-4' : '';
@@ -60,11 +72,7 @@ const RelatedGuides = ({
         </h3>
       </div>
 
-      <div className={getGridClass()}>
-        {guideItems.map((guideItem, index) => (
-          <GuideCard key={index} guideItem={guideItem} size="medium" />
-        ))}
-      </div>
+      <div className={getGridClass()}>{cards}</div>
       <SectionReadLinks items={reads} readMinutes={readMinutes} className="mt-6" />
     </div>
   );

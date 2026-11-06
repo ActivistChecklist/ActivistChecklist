@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { CHECKLIST_SECTIONS, SECURITY_CHECKLISTS } from '@/config/navigation';
 import { createIntlTranslator, getTranslatedNavItemFields } from '@/lib/navigation-i18n';
+import { cn } from '@/lib/utils';
 
 /**
  * Homepage checklists, grouped by section. The section heading sits in a left
@@ -26,7 +27,12 @@ export default function HomeChecklistSections({ readMinutes = {}, estimatedTimes
       <div className="divide-y divide-border">
         {CHECKLIST_SECTIONS.map((section) => {
           const featuredKeys = new Set(section.featured.map((item) => item.key));
-          const rest = section.items.filter((item) => !featuredKeys.has(item.key));
+          const rest = section.items.filter(
+            (item) => !featuredKeys.has(item.key) && !item.lowPriority,
+          );
+          // An odd number of cards would leave a gap. The section's smaller
+          // checklists fill it, or with none to show, the last card goes full width.
+          const fillGap = section.featured.length % 2 === 1;
           // Three at most: past that they start to compete with the cards.
           const reads = section.reads.filter((item) => !featuredKeys.has(item.key)).slice(0, 3);
           return (
@@ -48,16 +54,20 @@ export default function HomeChecklistSections({ readMinutes = {}, estimatedTimes
               </div>
               <div className="min-w-0">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {section.featured.map((item) => (
+                  {section.featured.map((item, i) => (
                     <GuideCard
                       key={item.key}
                       guideItem={toCardItem(item, t, estimatedTimes, readMinutes)}
                       size="large"
+                      className={cn(
+                        fillGap &&
+                          rest.length === 0 &&
+                          i === section.featured.length - 1 &&
+                          'md:col-span-2',
+                      )}
                     />
                   ))}
-                  {/* An odd number of cards would leave a gap; the section's
-                  smaller checklists fill it instead. */}
-                  {section.featured.length % 2 === 1 && rest.length > 0 && (
+                  {fillGap && rest.length > 0 && (
                     <Card className="h-full p-2">
                       <ul>
                         {rest.map((item) => {
@@ -105,7 +115,7 @@ export default function HomeChecklistSections({ readMinutes = {}, estimatedTimes
 
 /**
  * Adds the time each card shows: the guide's own estimate, or reading time for
- * a featured how-to, which also gets its own description and button text.
+ * a featured how-to.
  */
 function toCardItem(item, t, estimatedTimes, readMinutes) {
   if (item.kind !== 'howto') return { ...item, duration: estimatedTimes[item.key] };
@@ -113,7 +123,5 @@ function toCardItem(item, t, estimatedTimes, readMinutes) {
   return {
     ...item,
     duration: minutes ? t('checklistSections.readMinutes', { minutes }) : undefined,
-    description: t(`checklistSections.descriptions.${item.key}`),
-    ctaLabel: t('checklistSections.readGuide'),
   };
 }
