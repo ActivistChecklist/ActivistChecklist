@@ -77,6 +77,10 @@ export default function PdfDownload({ slug, title, preview = false }) {
           onError={(e) => {
             e.currentTarget.hidden = true;
           }}
+          // An error before hydration fires no onError, so check on mount too.
+          ref={(img) => {
+            if (img?.complete && img.naturalWidth === 0) img.hidden = true;
+          }}
           className="mt-1 h-auto w-full max-w-sm rounded-lg border border-border shadow-xs sm:max-w-md print:max-h-[4.5in] print:w-auto print:shadow-none"
         />
       )}
