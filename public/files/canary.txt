@@ -1,7 +1,7 @@
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA256
 
-ActivistChecklist.org Warrant Canary · 2026-11-06 17:40:53 UTC
+ActivistChecklist.org Warrant Canary · 2026-11-06 18:12:34 UTC
 
 As of November 6, 2026, ActivistChecklist.org:
 
@@ -10,17 +10,17 @@ As of November 6, 2026, ActivistChecklist.org:
 * retains sole control over its infrastructure and signing keys
 
 This canary is valid through March 6, 2027. After that date, the absence of a newer
-indicates either a missed update or compromise.
+canary indicates either a missed update or compromise.
 
 Datestamp Proof:
   News headline: What happens after the ‘blue wave’? Our team answers your midterm election results question
   News URL:      https://www.theguardian.com/community/live/2026/nov/05/what-happens-after-the-blue-wave-our-reporters-answer-your-midterm-election-results-questions
-  XMR block:     #3800583, 2026-11-06 17:39:47 UTC
-  Block hash:    1bb3f5a7c7ac8f31a030c824fb77f771e59988b9f8b473faa09ed94ab86651ca
+  XMR block:     #3800593, 2026-11-06 18:03:17 UTC
+  Block hash:    f6b63ba49b1daae54784c77721a4eded36d8fc83e5441e8b9b4201b436a4486c
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYIAB0WIQS3qluewPA1HZ+344fQN7sOiHIG7AUCau4RKwAKCRDQN7sOiHIG
-7Hb4AQDeLEX2Us9kCgUUqQ3BMm6O28rCM7HNzny3KnAh3XgJAQEAiDbXRwzrNe26
-fmGloB4k2ynfu9KIuh9koysXh7keJgk=
-=QNXk
+iHUEARYIAB0WIQS3qluewPA1HZ+344fQN7sOiHIG7AUCau4YlQAKCRDQN7sOiHIG
+7AXEAQCb8LL5EpdfeUHdrTFwUWcBcASQ04eZV4H5OVgSAaRxhwEA/OQRCkOi1zyo
+0e+YMPCMzccTBtHoRPZB1TFkxvtQlg8=
+=LMwV
 -----END PGP SIGNATURE-----
