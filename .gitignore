@@ -81,6 +81,9 @@ public/webhooks/deploy-webhook.error.log
 # Set by a webhook delivery that arrived mid-build; the running deploy rebuilds for it
 .build-deploy.pending
 
+# The commit ac-api last started from, kept by scripts/build-deploy.sh
+.build-deploy.api-rev
+
 # GitHub webhook deploy log (default path written by public/webhooks/deploy.php)
 .deploy-webhook.log
 .deploy-webhook-auth.log
