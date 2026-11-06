@@ -345,7 +345,7 @@ async function buildMessage() {
   }
   if (note) msg += `\nNOTE: ${note}\n`;
   msg += `\nThis canary is valid through ${expiryStr}. After that date, the absence of a newer\n`;
-  msg += `indicates either a missed update or compromise.\n`;
+  msg += `canary indicates either a missed update or compromise.\n`;
   msg += '\nDatestamp Proof:\n';
   msg += `  News headline: ${rss.title}\n`;
   msg += `  News URL:      ${rss.link}\n`;
