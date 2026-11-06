@@ -1,0 +1,7 @@
+Contact: https://github.com/ActivistChecklist/ActivistChecklist/security/advisories/new
+Contact: https://activistchecklist.org/contact/
+Expires: 2027-11-01T00:00:00.000Z
+Encryption: https://activistchecklist.org/files/publickey.contact@activistchecklist.org.asc
+Encryption: openpgp4fpr:B7AA5B9EC0F0351D9FB7E387D037BB0E887206EC
+Preferred-Languages: en
+Canonical: https://activistchecklist.org/.well-known/security.txt
