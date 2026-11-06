@@ -41,7 +41,7 @@ function scratchEnv() {
 // Runs a lib function in `cwd` and returns its exit status and output. `lib` is
 // the lib's path relative to `cwd`: directories reach the shell only as cwd,
 // never in its argv, for the same reason LIB is relative.
-function runLib({ cwd = REPO_ROOT, lib = LIB } = {}, fn, ...args) {
+function runLib({ cwd, lib }, fn, ...args) {
   const res = spawnSync('bash', ['-c', 'source "$1" && shift && "$@"', 'bash', lib, fn, ...args], {
     cwd,
     encoding: 'utf8',
@@ -51,11 +51,28 @@ function runLib({ cwd = REPO_ROOT, lib = LIB } = {}, fn, ...args) {
   return { status: res.status, out: res.stdout };
 }
 
-const needsRestart = (p) => runLib({}, 'api_path_needs_restart', p).status === 0;
+// Of `paths`, the ones api_path_needs_restart would leave the API alone for.
+// The paths go in on stdin rather than argv: apiLoadedFiles builds some of them
+// from REPO_ROOT, so they count as environment values too.
+function pathsThatSkipRestart(paths) {
+  const res = spawnSync(
+    'bash',
+    [
+      '-c',
+      'source "$1" && while IFS= read -r p; do api_path_needs_restart "$p" || printf "%s\\n" "$p"; done',
+      'bash',
+      LIB,
+    ],
+    { cwd: REPO_ROOT, encoding: 'utf8', env: scratchEnv(), input: `${paths.join('\n')}\n` },
+  );
+  if (res.error) throw res.error;
+  if (res.status !== 0) throw new Error(`bash exited ${res.status}: ${res.stderr}`);
+  return res.stdout.split('\n').filter(Boolean);
+}
 
 describe('api_path_needs_restart', () => {
   it('restarts for the API code, its PM2 config, its dependencies and its Node', () => {
-    for (const p of [
+    const paths = [
       'api/server.js',
       'api/counter.js',
       'api/README.md',
@@ -65,13 +82,12 @@ describe('api_path_needs_restart', () => {
       'pnpm-lock.yaml',
       'pnpm-workspace.yaml',
       '.nvmrc',
-    ]) {
-      expect(needsRestart(p), p).toBe(true);
-    }
+    ];
+    expect(pathsThatSkipRestart(paths)).toEqual([]);
   });
 
   it('leaves content and the static site alone', () => {
-    for (const p of [
+    const paths = [
       'content/en/pages/privacy.mdx',
       'content/es/guides/essentials.mdx',
       'messages/en.json',
@@ -84,9 +100,8 @@ describe('api_path_needs_restart', () => {
       'docs/api/server.js',
       'packages/highlight/package.json',
       'lib/listmonk.js.bak',
-    ]) {
-      expect(needsRestart(p), p).toBe(false);
-    }
+    ];
+    expect(pathsThatSkipRestart(paths)).toEqual(paths);
   });
 });
 
@@ -133,7 +148,7 @@ describe('the files the API loads', () => {
     const files = apiLoadedFiles();
     expect(files).toContain('api/server.js');
     expect(files).toContain('lib/listmonk.js');
-    expect(files.filter((f) => !needsRestart(f))).toEqual([]);
+    expect(pathsThatSkipRestart(files)).toEqual([]);
   });
 });
 
