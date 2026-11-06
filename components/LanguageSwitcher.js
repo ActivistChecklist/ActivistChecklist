@@ -22,9 +22,8 @@ export default function LanguageSwitcher() {
   if (availableLocales.length <= 1) return null;
 
   /**
-   * Must use next-intl's router.replace(..., { locale }) so NEXT_LOCALE is updated
-   * before navigation. Raw push() to unprefixed / URLs leaves the cookie on Spanish
-   * with localePrefix: 'as-needed' (see next-intl navigation docs).
+   * next-intl's router.replace(..., { locale }) builds the target URL with the
+   * right prefix for that locale (none for English, with localePrefix: 'as-needed').
    */
   const switchLocale = (newLocale) => {
     const path = pathname === '' ? '/' : pathname;
