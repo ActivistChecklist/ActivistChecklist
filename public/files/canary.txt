@@ -1,7 +1,7 @@
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA256
 
-ActivistChecklist.org Warrant Canary · 2026-11-06 17:08:12 UTC
+ActivistChecklist.org Warrant Canary · 2026-11-06 17:40:53 UTC
 
 As of November 6, 2026, ActivistChecklist.org:
 
@@ -9,18 +9,18 @@ As of November 6, 2026, ActivistChecklist.org:
 * has not been served with any legal demand for user data accompanied by a gag order
 * retains sole control over its infrastructure and signing keys
 
-This canary is valid through February 14, 2027. After that date, the absence of a newer
+This canary is valid through March 6, 2027. After that date, the absence of a newer
 indicates either a missed update or compromise.
 
 Datestamp Proof:
-  News headline: US midterm elections 2026 live: all eyes on last two razor-thin Senate races as Democrats vie to expand blue wave
-  News URL:      https://www.theguardian.com/us-news/live/2026/nov/06/us-midterm-elections-2026-democrats-blue-wave-congress-latest-news-updates
-  XMR block:     #3800567, 2026-11-06 17:07:00 UTC
-  Block hash:    c450f85dbccaf86bb60558a3eb90ec3464c27f8d357e7379e484e2ffe3677f06
+  News headline: What happens after the ‘blue wave’? Our team answers your midterm election results question
+  News URL:      https://www.theguardian.com/community/live/2026/nov/05/what-happens-after-the-blue-wave-our-reporters-answer-your-midterm-election-results-questions
+  XMR block:     #3800583, 2026-11-06 17:39:47 UTC
+  Block hash:    1bb3f5a7c7ac8f31a030c824fb77f771e59988b9f8b473faa09ed94ab86651ca
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYIAB0WIQS3qluewPA1HZ+344fQN7sOiHIG7AUCau4JiwAKCRDQN7sOiHIG
-7CJIAP97It3p8R1NU3pbnc06BSYv3rEsM8zgZ/meE39nuSMAYgD/fq4ZBAI9AtO9
-vbkYgsRRD1Zh90glyOOtImc3MjQwPgg=
-=GDDK
+iHUEARYIAB0WIQS3qluewPA1HZ+344fQN7sOiHIG7AUCau4RKwAKCRDQN7sOiHIG
+7Hb4AQDeLEX2Us9kCgUUqQ3BMm6O28rCM7HNzny3KnAh3XgJAQEAiDbXRwzrNe26
+fmGloB4k2ynfu9KIuh9koysXh7keJgk=
+=QNXk
 -----END PGP SIGNATURE-----

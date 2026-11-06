@@ -271,6 +271,11 @@
     "moreWithLabel": "{label} ({count} more)",
     "less": "Show less"
   },
+  "canaryStatus": {
+    "current": "<b>Up to date.</b> Our warrant canary was last updated on {date}, and is valid through {validThrough}. (After that date, this will turn red if there's no newer canary.)",
+    "overdue": "<b>Overdue.</b> Our warrant canary was last updated on {date}, and was valid through {validThrough}. That's a sign to ask questions as described below.",
+    "unknown": "We couldn't check the date of our warrant canary. You can find it at the top of <link>canary.txt</link>."
+  },
   "contact": {
     "title": "Contact Us",
     "intro": "Your feedback helps make this resource more useful and secure for everyone. We welcome suggestions for:",

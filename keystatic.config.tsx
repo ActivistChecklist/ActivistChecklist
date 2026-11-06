@@ -772,11 +772,21 @@ const translationStatsComponent = block({
   },
 });
 
+const canaryStatusComponent = block({
+  label: 'Warrant canary status',
+  description: 'Green or red depending on the date of the canary in /files/canary.txt',
+  schema: {},
+  ContentView() {
+    return <div style={{ fontSize: 13, color: '#64748b' }}>🐤 Warrant canary status</div>;
+  },
+});
+
 const guideAndPageComponents = {
   FAQ: faqComponent,
   FAQItem: faqItemComponent,
   InlineCta: inlineCtaComponent,
   TranslationStats: translationStatsComponent,
+  CanaryStatus: canaryStatusComponent,
 };
 
 // ─── Config ───────────────────────────────────────────────────────────────────
