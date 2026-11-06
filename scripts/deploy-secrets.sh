@@ -74,7 +74,7 @@ else
   : "${REMOTE_SSH_HOST:?Set REMOTE_SSH_HOST in .env (or REMOTE_SKIP_API=1)}"
   : "${REMOTE_REPO_PATH:?Set REMOTE_REPO_PATH in .env (or REMOTE_SKIP_API=1)}"
   echo "===> [site] Restarting API so it reads the new .env.production..."
-  ssh "$REMOTE_SSH_HOST" "bash -lc \"cd $(printf %q "$REMOTE_REPO_PATH") && ./scripts/run-with-repo-node.sh api:restart\""
+  ssh "$REMOTE_SSH_HOST" "bash -lc \"cd $(printf %q "$REMOTE_REPO_PATH") && ./scripts/restart-api.sh\""
 fi
 
 # ---------------------------------------------------------------------------

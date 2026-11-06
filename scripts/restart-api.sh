@@ -16,7 +16,8 @@
 # Clean environment: `pm2 start ecosystem.config.js` copies the caller's whole
 # environment into ac-api. From the deploy that would be PHP's environment and
 # the webhook's config; from SSH it would include SSH_CONNECTION, which holds the
-# admin's IP address. So the health check gets only what it needs to find Node
+# admin's IP address, and SSH_AUTH_SOCK (an ac-api restarted over SSH was found
+# carrying it, 2026-11-06). So the health check gets only what it needs to find Node
 # and pnpm, and reads everything else from the repo's env file, the same way its
 # timer run does.
 #
