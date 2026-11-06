@@ -61,6 +61,9 @@ public/images/og/
 # Guide PDFs (scripts/build-pdfs.mjs): rendered cache and its content hashes
 public/pdf/
 .pdf-cache.json
+# Designed PDFs (scripts/build-designed-pdfs.mjs): same idea, from content/<locale>/pdf/
+public/files/pdf/
+.designed-pdf-cache.json
 
 # Auto-generated endoflife.date snapshot (regenerated daily by scripts/fetch-endoflife-snapshot.mjs)
 public/data/eol-snapshot.json

@@ -1,0 +1,67 @@
+{
+  "title": "Police at the door",
+  "intro": "Steps to follow if the cops are at your door — local police, FBI, ICE, or any other government agent",
+  "fillIn": {
+    "whoToCall": {
+      "heading": "Who to call (fill in)",
+      "fields": {
+        "emergencyContact1": "Emergency contact 1",
+        "emergencyContact2": "Emergency contact 2",
+        "emergencyContact3": "Emergency contact 3",
+        "legalSupport": "Legal support"
+      }
+    },
+    "otherNumbers": {
+      "heading": "Other numbers",
+      "fields": {
+        "iceRaidHotline": "Local ICE raid hotline",
+        "other": "Other:"
+      }
+    }
+  },
+  "moreInfo": "More info and other guides at:",
+  "steps": {
+    "doNotInvite": {
+      "heading": "1. Do not invite them in",
+      "bullets": {
+        "doNotOpen": "<b>Do NOT open the door</b> unless they have a warrant signed by a judge (not an agent)",
+        "ifOpened": "<b>If you opened the door,</b> step outside and close it behind you. Say “I do not consent to a search”",
+        "remainSilent": "<b>Remain silent</b> to protect your rights"
+      }
+    },
+    "magicWords": {
+      "heading": "2. Use the magic words",
+      "intro": "Say these phrases to protect your rights:",
+      "phrases": {
+        "noConsent": "“I do not consent to a search”",
+        "remainSilent": "“I am going to remain silent”",
+        "attorney": "“I want to speak to an attorney”",
+        "card": "“May I have your card?”"
+      }
+    },
+    "warrant": {
+      "heading": "3. If they have a warrant…",
+      "numbered": {
+        "ask": "Ask, <b>“Do you have a warrant?”</b> Check that it’s <b>signed by a judge</b> (says “court” not “agency”)",
+        "doNotInterfere": "If so, do not interfere with their search/arrest",
+        "phoneOff": "<b>Turn off your phone</b> to protect your data",
+        "video": "Ask a housemate to <b>take a video</b> if possible",
+        "callContacts": "Ask a housemate to <b>call emergency contacts</b>"
+      }
+    },
+    "afterTheyLeave": {
+      "heading": "4. After they leave",
+      "numbered": {
+        "callContacts": "<b>Call/text your emergency contacts</b>",
+        "writeDown": "<b>Write down everything</b> that happened"
+      }
+    },
+    "remember": {
+      "heading": "Remember",
+      "bullets": {
+        "copsLie": "<b>Cops can lie to you</b> and frequently do lie to get information they want. Do not lie to them.",
+        "solidarity": "<b>We don’t talk to the cops</b>. Our solidarity against state repression helps protect everyone."
+      }
+    }
+  }
+}
