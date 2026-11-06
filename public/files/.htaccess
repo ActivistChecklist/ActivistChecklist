@@ -1,1 +1,9 @@
 AddCharset UTF-8 .txt .asc
+
+# Clearsigned text (*.txt.asc, like onion-address.txt.asc) is meant to be read
+# in the browser. The server types .asc as application/pgp-keys, which makes
+# browsers download it instead. The public key (publickey.*.asc) is a real key
+# file and keeps application/pgp-keys.
+<FilesMatch "\.txt\.asc$">
+  ForceType "text/plain; charset=utf-8"
+</FilesMatch>
