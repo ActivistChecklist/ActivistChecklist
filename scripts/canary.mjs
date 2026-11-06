@@ -29,6 +29,7 @@ import { createInterface } from 'node:readline/promises';
 import { stdin, stdout, env } from 'node:process';
 import dgram from 'node:dgram';
 import Parser from 'rss-parser';
+import { canaryValidThrough } from '../lib/canary-status.mjs';
 
 const execFileAsync = promisify(execFile);
 
@@ -45,11 +46,11 @@ const ATTESTATIONS = [
   'retains sole control over its infrastructure and signing keys',
 ];
 
-// Number of days the canary remains valid after release. Should be slightly
-// longer than the re-sign cadence (currently ~3 months) to allow for slack
-// when a scheduled re-sign is delayed by travel, illness, or infrastructure
-// issues. If no fresher canary appears past this date, assume compromise.
-const VALIDITY_DAYS = 100;
+// The canary is valid for 4 months (CANARY_VALID_MONTHS) after it is signed: a month
+// of slack over the 3 month re-sign cadence, for when a re-sign is delayed by
+// travel, illness, or infrastructure issues. The "valid through" date comes
+// from lib/canary-status.mjs, which the privacy page also uses to turn its
+// canary status red, so the two always show the same date.
 
 // ---------- Paths ----------
 
@@ -173,15 +174,14 @@ async function getNtpTime() {
     try {
       console.log(`Fetching time from NTP server ${server}...`);
       const date = await queryNtp(server);
-      const formatted = formatUtc(date);
-      console.log(`Successfully fetched NTP time: ${formatted}`);
-      return formatted;
+      console.log(`Successfully fetched NTP time: ${formatUtc(date)}`);
+      return date;
     } catch (err) {
       console.log(`NTP error from ${server}: ${err.message}`);
     }
   }
   console.log('Could not fetch NTP time. Falling back to system time.');
-  return formatUtc(new Date());
+  return new Date();
 }
 
 // ---------- RSS ----------
@@ -302,15 +302,15 @@ async function collectAttestations() {
 }
 
 async function buildMessage() {
-  const [nistTime, rss, monero] = await Promise.all([
+  const [signedAt, rss, monero] = await Promise.all([
     getNtpTime(),
     getRssHeadline(),
     getMoneroLatestBlock(),
   ]);
 
-  if (!nistTime || !rss || !monero) {
+  if (!signedAt || !rss || !monero) {
     const missing = [
-      !nistTime && 'NTP time',
+      !signedAt && 'NTP time',
       !rss && 'RSS headline',
       !monero && 'Monero block',
     ].filter(Boolean);
@@ -329,10 +329,16 @@ async function buildMessage() {
 
   const now = new Date();
   const dateStr = formatDate(now);
-  const expiryDate = new Date(now.getTime() + VALIDITY_DAYS * 24 * 60 * 60 * 1000);
-  const expiryStr = formatDate(expiryDate);
+  // Worked out from the same datestamp as the header line below, in UTC, so it
+  // matches the date the privacy page shows
+  const expiryStr = canaryValidThrough(signedAt).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'UTC',
+  });
 
-  let msg = `${ORGANIZATION} Warrant Canary · ${nistTime}\n\n`;
+  let msg = `${ORGANIZATION} Warrant Canary · ${formatUtc(signedAt)}\n\n`;
   msg += `As of ${dateStr}, ${ORGANIZATION}:\n\n`;
   for (const att of selected) {
     msg += `* ${att}\n`;
