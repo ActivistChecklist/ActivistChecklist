@@ -32,6 +32,8 @@ MAX_BUILD_ITERATIONS="${MAX_BUILD_ITERATIONS:-3}"
 GIT_UPDATE_MODE="${GIT_UPDATE_MODE:-ff-only}"
 # Set on the server (export, systemd Environment=, etc.) to your site docroot
 DEPLOY_TARGET="${DEPLOY_TARGET:-$HOME/public_html}"
+# The commit ac-api last started from, as far as deploys know. See restart_api_if_needed.
+API_REV_FILE="${API_REV_FILE:-$REPO_DIR/.build-deploy.api-rev}"
 
 # shellcheck disable=SC1091
 source "$SCRIPT_DIR/log.sh"
@@ -44,6 +46,9 @@ source "$SCRIPT_DIR/lib/nvm-pnpm.sh"
 nvm_pnpm_err() {
   log "$1"
 }
+
+# shellcheck disable=SC1091
+source "$SCRIPT_DIR/lib/api-restart.sh"
 
 if [[ "$GIT_UPDATE_MODE" != "ff-only" && "$GIT_UPDATE_MODE" != "hard-reset" ]]; then
   log "ERROR: GIT_UPDATE_MODE must be 'ff-only' or 'hard-reset' (got: $GIT_UPDATE_MODE)"
@@ -99,9 +104,10 @@ log "Deploy user=$(whoami) HOME=$HOME"
 
 # Resolve Node from the tree just synced, not the one we started in, so the
 # deploy that bumps .nvmrc already builds on the new version. With nvm, a version
-# the server lacks is installed first (see nvm_pnpm__ensure_installed). ac-api
-# moves when scripts/healthcheck-api.sh next runs and finds its PM2 daemon on a
-# different Node.
+# the server lacks is installed first (see nvm_pnpm__ensure_installed). A .nvmrc
+# change also restarts ac-api at the end of the deploy (restart_api_if_needed),
+# and scripts/healthcheck-api.sh, which does the restart, moves its PM2 daemon
+# to the new Node.
 init_node() {
   if ! nvm_pnpm_init; then
     log "ERROR: nvm_pnpm_init failed. whoami=$(whoami) HOME=$HOME PATH=$PATH"
@@ -136,6 +142,46 @@ superseded() {
     return 0
   fi
   return 1
+}
+
+# Restart ac-api when this deploy changed what it runs. It keeps whatever it
+# loaded at its last start, so without this a change to api/ or a dependency
+# bump sits on disk unused. scripts/lib/api-restart.sh says what counts, and
+# content-only deploys leave the API alone.
+#
+# API_REV_FILE moves to HEAD only after a restart that worked, or when nothing
+# the API runs changed. A failed restart is therefore retried by the next
+# deploy instead of forgotten, and fails this one (see the end of the script).
+#
+# Runs after the publish, so the API and the pages that call it change
+# together, and before the smoke checks, so they probe the restarted API.
+API_RESTART_FAILED=0
+restart_api_if_needed() {
+  local head running="" reason
+  head="$(git rev-parse HEAD)"
+  if [[ -r "$API_REV_FILE" ]]; then
+    running="$(tr -d '[:space:]' <"$API_REV_FILE")"
+  fi
+
+  if ! reason="$(api_restart_reason "$running")"; then
+    log "ac-api restart not needed: nothing it runs changed since ${running:0:12}"
+    printf '%s\n' "$head" >"$API_REV_FILE"
+    API_RESTART_FAILED=0
+    return 0
+  fi
+
+  log "Restarting ac-api: $reason"
+  # 9>&- keeps the deploy lock out of the restart. A PM2 daemon spawned during
+  # it would otherwise inherit the descriptor and hold the lock for as long as
+  # it lives, and every later deploy would queue behind it.
+  if /bin/bash "$REPO_DIR/scripts/restart-api.sh" 9>&-; then
+    printf '%s\n' "$head" >"$API_REV_FILE"
+    API_RESTART_FAILED=0
+    log "ac-api restarted on $(git rev-parse --short HEAD)"
+  else
+    API_RESTART_FAILED=1
+    log "ERROR: ac-api restart failed (output above). The next deploy will try again."
+  fi
 }
 
 while :; do
@@ -216,6 +262,8 @@ while :; do
   log "Publishing pass 2/2 (prune files the new build dropped) → $DEPLOY_TARGET"
   rsync -a --delete "${RSYNC_EXCLUDE[@]}" "$REPO_DIR/out/" "$DEPLOY_TARGET/"
 
+  restart_api_if_needed
+
   # Post-deploy smoke checks (informational only; deploy already published).
   SITE_URL="${SITE_URL:-https://activistchecklist.org}"
   SMOKE_GUIDE_PATH="${SMOKE_GUIDE_PATH:-/essentials/}"
@@ -253,3 +301,10 @@ while :; do
   fi
   log "A newer push arrived during this run; rebuilding."
 done
+
+# Fail the deploy so it shows up on the GitHub run, even though the site itself
+# is live: the API is still on code this deploy was meant to replace.
+if [[ "$API_RESTART_FAILED" == 1 ]]; then
+  log "ERROR: the site is published, but ac-api did not restart onto it. scripts/restart-api.sh on the server retries it by hand."
+  exit 1
+fi
