@@ -3,12 +3,12 @@ title: Protéger ta vie privée
 navTitle: Confidentialité
 seoDescription: Ce qu'on collecte (presque rien) et pourquoi. Activist Checklist est conçu pour que, même en cas d'injonction judiciaire, il n'y ait rien d'utile à remettre.
 firstPublished: 2025-01-09
-lastUpdated: 2026-10-27
+lastUpdated: 2026-11-06
 showToc: true
 ---
 
 <Alert type="info">
-  En bref : on ne collecte presque rien. On n'enregistre pas les adresses IP brutes, et on n'envoie aucune donnée te concernant nulle part. Les seules données stockées sont ta progression dans les checklists (enregistrée localement sur ton appareil) et des statistiques basiques de pages vues (sans aucune info personnelle). Tout le reste n'est volontairement PAS collecté, pour protéger ta vie privée.
+  En bref : on ne collecte presque rien. On n'enregistre pas les adresses IP brutes, et on n'envoie aucune donnée te concernant nulle part. The only data stored is your checklist progress and a few settings (saved locally on your device) and basic page view stats (with no personal info). Tout le reste n'est volontairement PAS collecté, pour protéger ta vie privée.
 </Alert>
 
 Notre politique de confidentialité est différente : on t'explique tout ce qu'on fait pour ne pas collecter d'informations permettant de t'identifier.
@@ -37,9 +37,14 @@ On a volontairement conçu ce site pour qu'il protège ta vie privée au maximum
 
 Tu peux aussi lire la [politique de confidentialité de May First](https://mayfirst.coop/en/privacy-policy/).
 
-## Les seules données qu'on stocke sur ton appareil : les cases cochées des checklists
+## The only data we store on your device: checklist progress and settings
 
-Les seules données stockées sur ton appareil sont ta progression dans les checklists, qui reste dans le stockage local de ton navigateur et n'en sort jamais.
+The only data stored on your device is your checklist progress and a few settings, which stay in your browser's local storage and never leave it:
+
+* **checklist progress:** which checklist items you've checked off, and which ones you've expanded
+* **light/dark mode:** which one you picked, if you changed it
+* **closed notices:** which notices you've closed (the banner saying this site is available in your language, the announcement bar at the top of the page, or the note for people outside the US)
+* **newsletter box:** how many times it has shown up for you and when it last did, so we can wait a week between showings and stop after 3. (We don't store your email address. Signing up and closing the box both just mark it as done, so someone going through your device can't tell whether you signed up.)
 
 **Si tu veux supprimer les informations qu'on stocke dans ton navigateur, voici comment faire :**
 
@@ -103,9 +108,7 @@ On tient à jour un canari de mandat pour attester qu'on n'a pas été contraint
 
 [Voir notre canari de mandat →](/files/canary.txt)
 
-<ImageEmbed src="https://img.shields.io/endpoint?url=https://healthchecks.io/b/2/f424e66f-06c3-463a-8d54-e5b4749a55e9.shields&label=Warrant%20canary" alt="Canari de mandat (warrant canary)" raw />
-
-(Si ce badge passe du vert au rouge et affiche « down », c'est un signal pour poser des questions, comme expliqué ci-dessous.)
+<CanaryStatus />
 
 On mettra à jour ce canari tous les 3 mois. Si plus de 4 mois passent sans mise à jour ET qu'on continue à mettre à jour régulièrement notre [dépôt de code](https://github.com/ActivistChecklist/ActivistChecklist), c'est un signal pour poser des questions, pas la confirmation qu'on a été compromis·es. Commence par nous [contacter](/contact/) pour voir si on a juste du retard sur une mise à jour.
 
