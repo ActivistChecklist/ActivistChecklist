@@ -50,6 +50,107 @@ nvm_pnpm_err() {
 # shellcheck disable=SC1091
 source "$SCRIPT_DIR/lib/api-restart.sh"
 
+# --- Healthchecks deploy check ---
+#
+# public/webhooks/deploy.php answers 202 before the build starts (see
+# scripts/deploy-detached.sh), so GitHub never learns how a deploy went. This
+# script reports it instead: /start once it holds the lock, then its exit code
+# when it ends. A run that dies without reaching the EXIT trap (SIGKILL, a
+# reboot) leaves the check started, and Healthchecks marks it down once the
+# check's grace time passes, so keep the grace time longer than the slowest
+# deploy.
+#
+# DEPLOY_HEALTHCHECK_PING_URL comes from the environment (deploy_env in the
+# webhook config) or else from the repo's env file. Set it to empty to turn the
+# pings off for a manual run. Only that one variable is read from the env file:
+# sourcing the whole file here would change the build's environment.
+#
+# A delivery that coalesces into a running build sends nothing; the running
+# build reports for both.
+if [[ -z "${DEPLOY_HEALTHCHECK_PING_URL+x}" ]]; then
+  DEPLOY_HEALTHCHECK_PING_URL="$(
+    # shellcheck disable=SC1091
+    source "$SCRIPT_DIR/load-env.sh" >/dev/null 2>&1 || true
+    printf '%s' "${DEPLOY_HEALTHCHECK_PING_URL:-}"
+  )"
+fi
+DEPLOY_PING_ACTIVE=1
+
+# Never let a failed ping change the deploy's result.
+deploy_ping() {
+  local suffix="$1" body_file="${2:-}" url
+  [[ -n "$DEPLOY_HEALTHCHECK_PING_URL" ]] || return 0
+  # The URL is a credential (anyone holding it can mark the check up), so it
+  # reaches curl on stdin, not in argv where other accounts on the host can see
+  # it. Its quoting is curl config syntax, so refuse anything that would need
+  # escaping there.
+  local plain_url='^https://[A-Za-z0-9._~:/?#@!$&()*+,;=%-]+$'
+  if [[ ! "$DEPLOY_HEALTHCHECK_PING_URL" =~ $plain_url ]]; then
+    log "WARN: DEPLOY_HEALTHCHECK_PING_URL is not a plain https URL; skipping the Healthchecks ping"
+    return 0
+  fi
+  url="${DEPLOY_HEALTHCHECK_PING_URL%/}/$suffix"
+  local -a data=()
+  if [[ -n "$body_file" ]]; then
+    data=(--data-binary "@$body_file")
+  fi
+  printf 'url = "%s"\n' "$url" |
+    curl -fsS -o /dev/null --max-time 30 --retry 3 -K - ${data[@]+"${data[@]}"} ||
+    log "WARN: Healthchecks deploy ping ($suffix) failed"
+  return 0
+}
+
+# Body for the final ping: a summary line and the tail of this run's output.
+# Healthchecks keeps the first 100 kB. $HOME is collapsed to ~ and the values of
+# secret-looking environment variables are redacted, the same as the webhook
+# used to do before it put a log in the GitHub run.
+deploy_ping_body() {
+  local code="$1" out="$2" tail="" name value
+  if [[ -n "${DEPLOY_RUN_LOG:-}" && -r "$DEPLOY_RUN_LOG" ]]; then
+    tail="$(tail -c 95000 "$DEPLOY_RUN_LOG" 2>/dev/null || true)"
+  fi
+  for name in $(compgen -e); do
+    [[ "$name" =~ (SECRET|TOKEN|PASSWORD|PASS|KEY|CREDENTIAL|HMAC|PING_URL) ]] || continue
+    value="${!name:-}"
+    (( ${#value} >= 8 )) || continue
+    tail="${tail//"$value"/[REDACTED]}"
+  done
+  if [[ -n "${HOME:-}" && "$HOME" != "/" ]]; then
+    tail="${tail//"${HOME%/}"/\~}"
+  fi
+  {
+    printf 'exit=%s head=%s delivery=%s\n' \
+      "$code" "$(git -C "$REPO_DIR" rev-parse --short HEAD 2>/dev/null || echo unknown)" \
+      "${GITHUB_DELIVERY:-unknown}"
+    if [[ -n "$tail" ]]; then
+      printf -- '--- deploy output (tail) ---\n%s\n' "$tail"
+    else
+      printf '(no run log; see the deploy log on the server)\n'
+    fi
+  } >"$out"
+}
+
+deploy_ping_on_exit() {
+  local code=$? body_file="" body_dir=""
+  trap - EXIT
+  if [[ "$DEPLOY_PING_ACTIVE" == 1 && -n "$DEPLOY_HEALTHCHECK_PING_URL" ]]; then
+    if body_dir="$(mktemp -d 2>/dev/null)"; then
+      body_file="$body_dir/body.txt"
+      deploy_ping_body "$code" "$body_file" 2>/dev/null || body_file=""
+    fi
+    # Healthchecks reads /<exit code> as success for 0 and failure otherwise.
+    deploy_ping "$code" "$body_file"
+    [[ -z "$body_dir" ]] || rm -rf "$body_dir"
+  fi
+  exit "$code"
+}
+trap deploy_ping_on_exit EXIT
+# Bash skips the EXIT trap when a signal kills it, so turn the usual ones into
+# an exit. systemd stops a unit with SIGTERM.
+trap 'exit 129' HUP
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
 if [[ "$GIT_UPDATE_MODE" != "ff-only" && "$GIT_UPDATE_MODE" != "hard-reset" ]]; then
   log "ERROR: GIT_UPDATE_MODE must be 'ff-only' or 'hard-reset' (got: $GIT_UPDATE_MODE)"
   exit 1
@@ -79,6 +180,8 @@ if ! flock -n 9; then
   if printf '%s coalesced delivery=%s\n' \
       "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" "${GITHUB_DELIVERY:-unknown}" > "$PENDING_FILE"; then
     log "Another deploy is in flight; queued a pending rebuild and exiting 0. The running deploy will re-sync and build these commits. lock=$LOCK_FILE holder=${holder:-unknown}"
+    # The running build reports to Healthchecks for this push too.
+    DEPLOY_PING_ACTIVE=0
     exit 0
   fi
   # Without the marker the running build would never learn about this push, so
@@ -86,6 +189,8 @@ if ! flock -n 9; then
   log "ERROR: another deploy holds the lock and the pending marker is not writable: $PENDING_FILE (whoami=$(whoami))"
   exit 1
 fi
+
+deploy_ping start
 
 if [[ ! -d "$REPO_DIR/content" ]] || [[ ! -d "$REPO_DIR/.git" ]]; then
   log "REPO_DIR does not look like this project root: $REPO_DIR"

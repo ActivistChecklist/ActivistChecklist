@@ -22,9 +22,14 @@
  *   4. Ensure PHP may execute the deploy script, or use sudoers (see below).
  * 5. GitHub: Webhook → JSON, secret = same as in webhook-secrets.local.php, push only.
  *
- * Long builds: this request blocks until the script exits. Raise nginx/apache
- * proxy_read_timeout (and GitHub will retry on 5xx) or switch to a queue that
- * returns 202 immediately.
+ * Long builds: this request does NOT wait for the build. It starts
+ * scripts/deploy-detached.sh (which runs the deploy script) in a systemd user unit,
+ * or with setsid when there is no user manager, and returns 202 at once. May
+ * First's front proxy returns 504 after about 5 minutes, and dependency-bump
+ * deploys take longer than that. The build reports its own result to the
+ * Healthchecks deploy check (DEPLOY_HEALTHCHECK_PING_URL, see build-deploy.sh) and
+ * its output is appended to the deploy log, so a failed build no longer shows in
+ * the GitHub run: look at the Healthchecks check, or the log on the server.
  *
  * Overlapping deliveries: builds are serialized by flock(2) on repo root
  * .build-deploy.lock, held by scripts/build-deploy.sh. A push that lands mid-build
@@ -32,13 +37,14 @@
  * running build re-syncs to the tip of the branch and builds it before exiting.
  * This file probes that same lock before its git pre-sync, so the pre-sync can never
  * hard-reset the working tree out from under a build that is already running.
- * Worst case a single request runs up to MAX_BUILD_ITERATIONS builds back to back,
- * so size proxy_read_timeout / request_terminate_timeout accordingly.
+ * Worst case a single delivery runs up to MAX_BUILD_ITERATIONS builds back to back,
+ * so the Healthchecks check's grace time should cover that.
  *
  * Hardening notes:
  *   - Secret never appears in this file; use webhook-secrets.local.php (not in git).
  *   - Signature verified with hash_equals before parsing JSON.
- *   - Deploy output is not echoed to the client (reduces information leakage).
+ *   - Deploy output is never sent to the client (the response surfaces in public GitHub logs).
+ *   - Secrets in deploy_env reach the build through the environment, never argv.
  *   - Each run is appended to repo root .deploy-webhook.log by default (override or disable in config).
  *   - Failed auth (403) may append to repo root .deploy-webhook-auth.log and include/logs/deploy-webhook.error.log.
  *   - Deploy script defaults to repo scripts/build-deploy.sh; must stay under repo root.
@@ -359,7 +365,7 @@ $env = array_merge($_ENV, [
 // script does it, running as the deploy user — the only account guaranteed to be able
 // to write in the repo root (PHP-FPM often runs as www-data). A delivery that lands
 // mid-build just skips the pre-sync; the script then records a pending rebuild and
-// exits 0, so GitHub still sees a successful deploy.
+// exits 0, and the running build reports to Healthchecks for both.
 $lockPath = $repoRoot . DIRECTORY_SEPARATOR . '.build-deploy.lock';
 $lockFh = null;
 // A missing lock file means build-deploy.sh has never run (it creates the file and
@@ -509,190 +515,120 @@ foreach ($prefix as $part) {
   }
 }
 
-// Resolve where to archive each run's output (the persistent log). May be null
-// if logging is explicitly disabled in config.
+// Resolve where the run's output is archived (the persistent log). Empty if
+// logging is explicitly disabled in config. scripts/deploy-detached.sh appends
+// to it once the build ends.
 $logRaw = $config['log_file'] ?? null;
-$logFallback = $repoRoot . DIRECTORY_SEPARATOR . '.deploy-webhook.log';
-$persistentLog = null;
+$persistentLog = '';
 if ($logRaw === false) {
-  // Logging explicitly disabled — keep $persistentLog null.
+  // Logging explicitly disabled.
 } elseif (is_string($logRaw) && $logRaw !== '') {
   $persistentLog = $logRaw;
 } elseif ($logRaw === null || $logRaw === '') {
-  $persistentLog = $logFallback;
+  $persistentLog = $repoRoot . DIRECTORY_SEPARATOR . '.deploy-webhook.log';
 } else {
   error_log('deploy-webhook: log_file must be false, a non-empty string, or omitted');
   http_response_code(500);
   exit('Configuration error');
 }
 
-// Always stream this run's output to its own per-run temp file. We append the
-// captured block to the persistent log atomically after the build finishes.
-// Why per-run instead of writing straight to the persistent log:
-//   1. Concurrent webhook deliveries can't interleave each other's output (no
-//      offset math to race against filesize() between runs).
-//   2. The failure response reads exactly this run's bytes, never another run's.
-$runLog = @tempnam(sys_get_temp_dir(), 'deploy-webhook-run-');
-if (!is_string($runLog) || $runLog === '') {
-  error_log('deploy-webhook: tempnam failed for per-run log');
-  http_response_code(500);
-  exit('Deploy failed');
+// The runner lives beside the default deploy script, in the repo.
+$runner = realpath($repoRoot . DIRECTORY_SEPARATOR . 'scripts' . DIRECTORY_SEPARATOR . 'deploy-detached.sh');
+if ($runner === false || !is_file($runner)) {
+  failConfig('deploy_runner_missing', ['repoRoot' => $repoRoot]);
 }
 
-$bash = ['/bin/bash', '--noprofile', '--norc', $realScript];
-$resolvedCmd = array_merge($prefix, $bash);
+$env['DEPLOY_SCRIPT'] = $realScript;
+$env['DEPLOY_WEBHOOK_LOG'] = $persistentLog;
+// Only plain variable names reach the child: systemd-run takes them as
+// --setenv=NAME, and anything odd in $_ENV is not ours to pass on.
+$env = array_filter(
+  $env,
+  fn($v, $k) => is_string($k) && preg_match('/^[A-Za-z_][A-Za-z0-9_]*$/', $k) === 1 && is_scalar($v),
+  ARRAY_FILTER_USE_BOTH
+);
+$env = array_map('strval', $env);
 
-// Stream stdout+stderr directly into the per-run temp file via OS-level
-// descriptors so output is visible as the build runs (not buffered in PHP
-// until proc_close). Combining streams into one file gives chronological
-// ordering, which is what you want for debugging.
-$descriptorspec = [
-  0 => ['pipe', 'r'],
-  1 => ['file', $runLog, 'a'],
-  2 => ['file', $runLog, 'a'],
-];
+$runnerCmd = array_merge($prefix, ['/bin/bash', '--noprofile', '--norc', $runner]);
 
-$cwd = $realParent;
-$startTime = microtime(true);
-$process = proc_open($resolvedCmd, $descriptorspec, $pipes, $cwd, $env);
-if (!is_resource($process)) {
-  error_log('deploy-webhook: proc_open failed');
-  @unlink($runLog);
-  http_response_code(500);
-  exit('Deploy failed');
-}
+/**
+ * Start $cmd so it outlives this request, and return how, or null on failure.
+ *
+ * The build used to run inside this request, and May First's front proxy
+ * returns 504 after about 5 minutes, so a slow deploy was reported as failed
+ * while it went on to publish. Now the request only starts it. See
+ * scripts/deploy-detached.sh for why each method is used.
+ *
+ * Secrets in $env never reach argv (other accounts on the host can read it):
+ * systemd-run gets --setenv=NAME, which copies the value from its own
+ * environment, and setsid passes the environment through unchanged.
+ */
+function launchDetached(array $cmd, array &$env, string $cwd): ?string {
+  $quiet = [
+    0 => ['file', '/dev/null', 'r'],
+    1 => ['file', '/dev/null', 'w'],
+    2 => ['file', '/dev/null', 'w'],
+  ];
 
-if (isset($pipes[0])) fclose($pipes[0]);
-$code = proc_close($process);
-$durationMs = (int) round((microtime(true) - $startTime) * 1000);
+  $systemdRun = null;
+  foreach (['/usr/bin/systemd-run', '/bin/systemd-run'] as $candidate) {
+    if (is_executable($candidate)) {
+      $systemdRun = $candidate;
+      break;
+    }
+  }
+  $uid = function_exists('posix_geteuid') ? posix_geteuid() : null;
+  $runtimeDir = is_int($uid) ? "/run/user/$uid" : '';
+  if ($systemdRun !== null && $runtimeDir !== '' && is_dir($runtimeDir)) {
+    $unitEnv = $env;
+    $unitEnv['DEPLOY_LAUNCHER'] = 'systemd-run';
+    $args = [
+      $systemdRun, '--user', '--quiet', '--collect',
+      '--unit=ac-deploy-' . gmdate('Ymd-His') . '-' . bin2hex(random_bytes(3)),
+      '--working-directory=' . $cwd,
+    ];
+    foreach (array_keys($unitEnv) as $name) {
+      $args[] = '--setenv=' . $name;
+    }
+    $args[] = '--';
+    $args = array_merge($args, $cmd);
+    // XDG_RUNTIME_DIR tells systemd-run where the user manager listens. It is
+    // set on systemd-run only, not handed to the unit.
+    $p = proc_open($args, $quiet, $pipes, $cwd, $unitEnv + ['XDG_RUNTIME_DIR' => $runtimeDir]);
+    if (is_resource($p) && proc_close($p) === 0) {
+      return 'systemd-run';
+    }
+    // The user manager can be down (after a May First reboot it has stopped
+    // even with Linger on). Fall through rather than drop the deploy.
+    error_log('deploy-webhook: systemd-run failed; starting the deploy with setsid');
+  }
 
-// Archive this run to the persistent log atomically. file_put_contents with
-// LOCK_EX serializes appends from concurrent webhook deliveries.
-$archived = false;
-if (is_string($persistentLog)) {
-  $startLine = sprintf("\n[%s] START delivery=%s\n", gmdate('c'), $delivery);
-  $endLine = sprintf("[%s] END exit=%d duration=%dms\n", gmdate('c'), $code, $durationMs);
-  $runOutput = (string) @file_get_contents($runLog);
-  $block = $startLine . $runOutput . $endLine;
-  if (@file_put_contents($persistentLog, $block, FILE_APPEND | LOCK_EX) !== false) {
-    $archived = true;
+  $env['DEPLOY_LAUNCHER'] = 'setsid';
+  $setsid = is_executable('/usr/bin/setsid') ? '/usr/bin/setsid' : null;
+  if ($setsid !== null) {
+    // -f forks, so setsid returns at once and the deploy runs in a new session.
+    $args = array_merge([$setsid, '-f'], $cmd);
   } else {
-    error_log('deploy-webhook: could not write to log_file; falling back to ' . $logFallback);
-    if ($persistentLog !== $logFallback
-        && @file_put_contents($logFallback, $block, FILE_APPEND | LOCK_EX) !== false) {
-      $archived = true;
-    }
+    // No setsid (macOS dev machines): a plain background job.
+    $env['DEPLOY_LAUNCHER'] = 'sh-background';
+    $args = array_merge(['/bin/sh', '-c', '"$@" </dev/null >/dev/null 2>&1 &', 'sh'], $cmd);
   }
-}
-// If we never managed to archive this run's output, KEEP the temp file so it
-// can be recovered manually. Log the path via PHP's error_log so it's findable.
-$preserveRunLog = is_string($persistentLog) && !$archived;
-if ($preserveRunLog) {
-  error_log('deploy-webhook: archive failed; per-run log preserved at ' . $runLog);
+  $p = proc_open($args, $quiet, $pipes, $cwd, $env);
+  if (is_resource($p) && proc_close($p) === 0) {
+    return $env['DEPLOY_LAUNCHER'];
+  }
+  return null;
 }
 
-if ($code !== 0) {
-  error_log('deploy-webhook: deploy script exited ' . $code);
+$launcher = launchDetached($runnerCmd, $env, $realParent);
+if ($launcher === null) {
+  error_log('deploy-webhook: could not start the deploy');
   http_response_code(500);
-  header('Content-Type: text/plain; charset=UTF-8');
-  $deliveryLine = is_string($delivery) && $delivery !== '' ? $delivery : '(unknown)';
-  // Don't include the path in the response — it surfaces in GitHub Actions
-  // logs and may be public. The log is at a known location on the server.
-  $logStatus = is_string($persistentLog) ? 'archived to server log' : 'disabled';
-
-  // Read this run's complete output (capped) for the failure response. No
-  // offset math: the temp file is exclusively this run's bytes.
-  $tailBytes = 50000;
-  $combined = '';
-  if (file_exists($runLog)) {
-    $size = (int) @filesize($runLog);
-    $readFrom = $size > $tailBytes ? $size - $tailBytes : 0;
-    $fh = @fopen($runLog, 'rb');
-    if (is_resource($fh)) {
-      @fseek($fh, $readFrom);
-      $combined = (string) stream_get_contents($fh);
-      @fclose($fh);
-    }
-  }
-
-  // Sanitize before embedding in the HTTP response (which surfaces in the GitHub
-  // Actions log and could be public). Collect every plausible username and home
-  // directory from PHP-side detection AND from the script's own output (in case
-  // PHP-FPM runs as a different user than the deploy command, or POSIX is disabled).
-  $homesForSan = [];
-  $usersForSan = [];
-  if (isset($env['HOME']) && is_string($env['HOME']) && $env['HOME'] !== '') {
-    $homesForSan[] = $env['HOME'];
-  }
-  if (isset($env['USER']) && is_string($env['USER']) && $env['USER'] !== '') {
-    $usersForSan[] = $env['USER'];
-  }
-  if (function_exists('posix_geteuid') && function_exists('posix_getpwuid')) {
-    $info = @posix_getpwuid(posix_geteuid());
-    if (is_array($info)) {
-      if (isset($info['name']) && is_string($info['name'])) $usersForSan[] = $info['name'];
-      if (isset($info['dir']) && is_string($info['dir'])) $homesForSan[] = $info['dir'];
-    }
-  }
-  if (preg_match_all('/\b(?:user|whoami|USER|LOGNAME)=(\S+)/', $combined, $matches)) {
-    foreach ($matches[1] as $u) $usersForSan[] = $u;
-  }
-  if (preg_match_all('/\bHOME=(\S+)/', $combined, $matches)) {
-    foreach ($matches[1] as $h) {
-      // Skip already-sanitized values from prior log lines if any.
-      if ($h !== '~' && $h !== '') $homesForSan[] = $h;
-    }
-  }
-  // Longest paths first so /home/x/y is replaced before /home/x.
-  $homesForSan = array_values(array_unique($homesForSan));
-  $usersForSan = array_values(array_unique($usersForSan));
-  usort($homesForSan, fn($a, $b) => strlen($b) - strlen($a));
-
-  $sanitize = function (string $s) use ($homesForSan, $usersForSan, $secret, $deployEnv): string {
-    if ($secret !== '' && strlen($secret) >= 8) {
-      $s = str_replace($secret, '[REDACTED]', $s);
-    }
-    foreach ($deployEnv as $k => $v) {
-      if (!is_string($v) || $v === '') continue;
-      if (preg_match('/(SECRET|TOKEN|PASSWORD|PASS|KEY|CREDENTIAL|HMAC)/i', (string) $k)) {
-        $s = str_replace($v, '[REDACTED]', $s);
-      }
-    }
-    foreach ($usersForSan as $u) {
-      if ($u === '' || $u === 'root' || strlen($u) < 3) continue;
-      $s = preg_replace('/\b' . preg_quote($u, '/') . '\b/', '[user]', $s) ?? $s;
-    }
-    foreach ($homesForSan as $h) {
-      if ($h === '' || $h === '/' || $h === DIRECTORY_SEPARATOR) continue;
-      $s = str_replace(rtrim($h, DIRECTORY_SEPARATOR), '~', $s);
-    }
-    return $s;
-  };
-
-  $combinedTail = $combined === '' ? '(empty)' : $sanitize($combined);
-
-  $body = <<<TXT
-Deploy failed (exit code {$code}).
-
-GitHub delivery: {$deliveryLine}
-Server log: {$logStatus}
-Duration: {$durationMs}ms
-
-Output below: \$HOME paths collapsed to ~, secrets redacted.
-
---- script output (last {$tailBytes} bytes, stdout+stderr combined) ---
-{$combinedTail}
-TXT;
-  if (!$preserveRunLog) {
-    @unlink($runLog);
-  }
-  exit($body);
+  exit('Deploy failed to start');
 }
 
-if (!$preserveRunLog) {
-  @unlink($runLog);
-}
-
-http_response_code(200);
+// 202: the build is running. scripts/build-deploy.sh reports the result to the
+// Healthchecks deploy check, and the output lands in the deploy log.
+http_response_code(202);
 header('Content-Type: text/plain; charset=UTF-8');
-echo 'OK';
+echo "Accepted: deploy started ({$launcher}). The server reports the result to the Healthchecks deploy check.";
