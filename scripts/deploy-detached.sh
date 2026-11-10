@@ -76,6 +76,17 @@ if [[ -n "$DEPLOY_WEBHOOK_LOG" ]]; then
   } 2>/dev/null; then
     archived=1
   fi
+  # Cap the log the way deploy.php caps its early log: past 1 MB, keep the last
+  # 200 kB. Still under the lock, and rewritten in place so the file keeps its
+  # owner and mode.
+  if [[ "$archived" == 1 ]]; then
+    log_size="$(wc -c <"$DEPLOY_WEBHOOK_LOG" 2>/dev/null | tr -d '[:space:]')"
+    if [[ "$log_size" =~ ^[0-9]+$ ]] && ((log_size > 1000000)); then
+      if tail -c 200000 "$DEPLOY_WEBHOOK_LOG" >"$run_dir/log.tail" 2>/dev/null; then
+        { printf -- '---- truncated ----\n'; cat "$run_dir/log.tail"; } >"$DEPLOY_WEBHOOK_LOG" 2>/dev/null || true
+      fi
+    fi
+  fi
   exec 8>&- 2>/dev/null || true
 fi
 
