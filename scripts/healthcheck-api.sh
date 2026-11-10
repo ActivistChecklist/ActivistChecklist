@@ -8,7 +8,8 @@
 #   2. HTTP probe - does the API actually serve its expected payload?
 #
 # It also replaces the PM2 daemon when it runs a different Node than .nvmrc
-# pins, which is how a Node bump reaches ac-api (see "PM2 daemon Node version").
+# pins, or a different pm2 than the repo has installed, which is how a Node or
+# pm2 bump reaches ac-api (see "PM2 daemon Node and pm2 versions").
 #
 # With --restart it restarts ac-api even when it is healthy, through the same
 # daemon placement, Node check and probes. scripts/restart-api.sh runs it that
@@ -308,7 +309,7 @@ ensure_pm2_daemon() {
   PM2_DAEMON_PLACED="bad"
 }
 
-# --- PM2 daemon Node version ---
+# --- PM2 daemon Node and pm2 versions ---
 #
 # ac-api runs on the PM2 God daemon's Node: ecosystem.config.js sets no
 # interpreter, and `pm2 restart` reuses the daemon. So a .nvmrc bump reaches the
@@ -341,6 +342,48 @@ pm2_daemon_node_stale() {
   running="$(pm2_daemon_node)"
   wanted="$(wanted_node)"
   [[ -n "$running" && -n "$wanted" && "$running" != "$wanted" ]]
+}
+
+# The same problem for pm2 itself. The daemon forks every app through
+# lib/ProcessContainerFork.js under the pm2 install it was started from, and a
+# pnpm install that bumps pm2 deletes that directory. From then on every start
+# of ac-api dies with MODULE_NOT_FOUND while the daemon stays up, and no restart
+# can fix it. A Dependabot bump of pm2 took the API down for 19 hours this way
+# (2026-11-09), so a version change has to replace the daemon too.
+
+# Version the running daemon reports in its process title, e.g.
+# "PM2 v7.1.2: God Daemon (...)". Empty when unknown.
+pm2_daemon_version() {
+  local pid
+  pid="$(pm2_daemon_pid)" || return 0
+  [[ -r "/proc/$pid/cmdline" ]] || return 0
+  tr '\0' ' ' <"/proc/$pid/cmdline" 2>/dev/null |
+    sed -n 's/^PM2 v\([0-9][^:]*\): God Daemon.*/\1/p' || true
+}
+
+# Version of the pm2 the repo has installed now. Empty when unknown.
+wanted_pm2_version() {
+  local pkg="$PROJECT_DIR/node_modules/pm2/package.json"
+  [[ -r "$pkg" ]] || return 0
+  sed -n 's/^  "version": "\([^"]*\)".*/\1/p' "$pkg" | head -n 1 || true
+}
+
+pm2_daemon_pm2_stale() {
+  local running wanted
+  running="$(pm2_daemon_version)"
+  wanted="$(wanted_pm2_version)"
+  [[ -n "$running" && -n "$wanted" && "$running" != "$wanted" ]]
+}
+
+# 0 when the daemon has to be replaced; says why on stdout.
+pm2_daemon_stale_reason() {
+  if pm2_daemon_node_stale; then
+    printf 'it runs %s but the repo pins %s' "$(pm2_daemon_node)" "$(wanted_node)"
+  elif pm2_daemon_pm2_stale; then
+    printf 'it is pm2 %s but the repo has pm2 %s installed' "$(pm2_daemon_version)" "$(wanted_pm2_version)"
+  else
+    return 1
+  fi
 }
 
 # Replace the daemon (and ac-api with it) so the next start uses wanted_node.
@@ -460,11 +503,11 @@ ensure_pm2_daemon
 
 # A misplaced daemon is about to be reaped anyway, and cycling cannot place it
 # any better, so only replace one that would otherwise survive.
-node_cycled=false
-if [[ "$PM2_DAEMON_PLACED" != "bad" ]] && pm2_daemon_node_stale; then
-  log_echo "PM2 daemon runs $(pm2_daemon_node) but the repo pins $(wanted_node); replacing the daemon"
+daemon_cycled=false
+if [[ "$PM2_DAEMON_PLACED" != "bad" ]] && stale_reason="$(pm2_daemon_stale_reason)"; then
+  log_echo "Replacing the PM2 daemon: $stale_reason"
   cycle_pm2_daemon
-  node_cycled=true
+  daemon_cycled=true
 fi
 
 PM2_OUTPUT=""
@@ -542,14 +585,14 @@ fi
 
 # Red rather than green-on-the-old-Node: a daemon that will not move would get
 # replaced on every run, so someone needs to look.
-node_current=true
-if pm2_daemon_node_stale; then
-  log_echo "ERROR: PM2 daemon still runs $(pm2_daemon_node), not $(wanted_node)"
-  node_current=false
+daemon_current=true
+if stale_reason="$(pm2_daemon_stale_reason)"; then
+  log_echo "ERROR: PM2 daemon was not replaced: $stale_reason"
+  daemon_current=false
   service_online=false
 fi
 
-status_line="pm2_online=$pm2_online probe=$PROBE_VERDICT daemon_placed=$PM2_DAEMON_PLACED restart_attempted=$needs_restart restart_requested=$FORCE_RESTART node_cycled=$node_cycled node_current=$node_current"
+status_line="pm2_online=$pm2_online probe=$PROBE_VERDICT daemon_placed=$PM2_DAEMON_PLACED restart_attempted=$needs_restart restart_requested=$FORCE_RESTART daemon_cycled=$daemon_cycled daemon_current=$daemon_current"
 
 if [[ "$service_online" == true ]]; then
   hc_ok "api-health ok $(date -u +"%Y-%m-%dT%H:%M:%SZ") app=$APP_NAME $status_line"
