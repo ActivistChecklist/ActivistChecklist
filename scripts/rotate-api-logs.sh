@@ -11,6 +11,10 @@
 # Truncates in place with `: >` rather than deleting: PM2 holds the file open, so
 # unlinking it would leave the daemon writing to an invisible inode until restart.
 #
+# Also caps PM2's own daemon log ($PM2_HOME/pm2.log), which sits beside the app
+# logs rather than among them, at its last 256 kB once it passes 1 MB. It records
+# process starts, stops and crashes, not requests, so it keeps more history.
+#
 # Scheduler example (daily):
 #   /absolute/path/to/repo/scripts/rotate-api-logs.sh
 #
@@ -75,6 +79,19 @@ for f in "$LOG_DIR_TARGET"/*.log; do
   rm -f "$kept"
   log_echo "trimmed $(basename "$f"): $size -> $new_size bytes"
 done
+
+daemon_log="$PM2_HOME_DIR/pm2.log"
+if [[ -f "$daemon_log" ]]; then
+  size=$(wc -c <"$daemon_log" | tr -d ' ')
+  if (( size > 1048576 )); then
+    # tail -n +2 drops the line the byte cut landed in the middle of.
+    kept="$(mktemp)"
+    tail -c 262144 "$daemon_log" | tail -n +2 >"$kept"
+    cat "$kept" >"$daemon_log"
+    rm -f "$kept"
+    log_echo "trimmed pm2.log: $size -> $(wc -c <"$daemon_log" | tr -d ' ') bytes"
+  fi
+fi
 
 log_echo "=== rotate-api-logs done ==="
 trim_log
