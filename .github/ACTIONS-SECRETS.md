@@ -13,8 +13,6 @@ All in the `main-only` environment:
 
 | Name | Kind | Used by |
 | --- | --- | --- |
-| `DEPLOY_SECRET` | secret | `deploy-webhook.yml` |
-| `HEALTHCHECKS_DEPLOY_PING_URL` | secret | `deploy-webhook.yml` |
 | `CROWDIN_PERSONAL_TOKEN` | secret | `crowdin-sync-main.yml` |
 | `CROWDIN_PROJECT_ID` | secret | `crowdin-sync-main.yml` |
 | `AUTOFIX_APP_PRIVATE_KEY` | secret | `security-autofix.yml`, `node-bump.yml`, `pnpm-bump.yml` |

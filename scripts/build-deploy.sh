@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 #
 # Pulled from the repo at scripts/build-deploy.sh.
-# scripts/deploy-poll.sh starts this when the branch moves, and so does
-# public/webhooks/deploy.php while it is still in use. Both set REPO_DIR.
+# scripts/deploy-poll.sh starts this when the branch moves, and sets REPO_DIR.
 #
-# Concurrency model (deploy-poll.sh and deploy.php implement the matching half):
+# Concurrency model (deploy-poll.sh implements the matching half):
 #
-#   * flock still guarantees one build at a time.
-#   * A delivery that finds the lock held no longer fails. It writes PENDING_FILE
-#     and exits 0, so overlapping pushes coalesce instead of reporting a failed
-#     deploy to GitHub. Ten pushes in a row cost at most one extra build.
+#   * flock guarantees one build at a time.
+#   * A run that finds the lock held does not fail. It writes PENDING_FILE and
+#     exits 0, so overlapping runs coalesce. deploy-poll.sh writes the same
+#     marker when the branch moves during a build. Ten pushes in a row cost at
+#     most one extra build.
 #   * The builder loops: sync git, clear the marker, build, publish, and if a new
 #     marker appeared it goes around again (up to MAX_BUILD_ITERATIONS).
 #
@@ -39,7 +39,6 @@ API_REV_FILE="${API_REV_FILE:-$REPO_DIR/.build-deploy.api-rev}"
 # branch is on any other commit.
 LIVE_REV_FILE="${LIVE_REV_FILE:-$REPO_DIR/.build-deploy.live-rev}"
 # What started this run, for the log and the Healthchecks ping.
-DEPLOY_TRIGGER="${DEPLOY_TRIGGER:-${GITHUB_DELIVERY:+webhook $GITHUB_DELIVERY}}"
 DEPLOY_TRIGGER="${DEPLOY_TRIGGER:-manual}"
 
 # shellcheck disable=SC1091
@@ -74,7 +73,7 @@ source "$SCRIPT_DIR/lib/hc-ping.sh"
 # for a manual run. Only that one variable is read from the env file:
 # sourcing the whole file here would change the build's environment.
 #
-# A delivery that coalesces into a running build sends nothing; the running
+# A run that coalesces into a running build sends nothing; the running
 # build reports for both.
 if [[ -z "${DEPLOY_HEALTHCHECK_PING_URL+x}" ]]; then
   DEPLOY_HEALTHCHECK_PING_URL="$(
@@ -92,8 +91,7 @@ deploy_ping() {
 
 # Body for the final ping: a summary line and the tail of this run's output.
 # Healthchecks keeps the first 100 kB. $HOME is collapsed to ~ and the values of
-# secret-looking environment variables are redacted, the same as the webhook
-# used to do before it put a log in the GitHub run.
+# secret-looking environment variables are redacted.
 deploy_ping_body() {
   local code="$1" out="$2" tail="" name value
   if [[ -n "${DEPLOY_RUN_LOG:-}" && -r "$DEPLOY_RUN_LOG" ]]; then
@@ -444,7 +442,7 @@ while :; do
   log "A newer push arrived during this run; rebuilding."
 done
 
-# Fail the deploy so it shows up on the GitHub run, even though the site itself
+# Fail the deploy so it shows up on the deploy check, even though the site itself
 # is live: the API is still on code this deploy was meant to replace.
 if [[ "$API_RESTART_FAILED" == 1 ]]; then
   log "ERROR: the site is published, but ac-api did not restart onto it. scripts/restart-api.sh on the server retries it by hand."

@@ -1,27 +1,10 @@
 #!/usr/bin/env bash
 #
-# Runs the deploy script in the background and archives its output.
-# scripts/deploy-poll.sh starts it when the branch moves, as a transient systemd
-# user unit, and public/webhooks/deploy.php starts it after answering 202 while
-# that webhook is still in use.
-#
-# Why detached: May First's front proxy gives up on a request after about 5
-# minutes and returns 504. A deploy that bumps dependencies (pnpm install, the
-# static build, an ac-api restart) can take longer than that, and the 504 used to
-# turn the GitHub run and the Healthchecks deploy check red while the build was
-# still running and went on to publish. Now deploy.php starts this script and
-# returns at once, and scripts/build-deploy.sh pings the deploy check itself with
-# the real result (see "Healthchecks deploy check" there).
-#
-# How deploy.php starts it, best first:
-#   1. `systemd-run --user --unit=ac-deploy-…`: a transient unit of the site
-#      user's systemd manager. PHP-FPM runs in php8.4-fpm.service, a system unit
-#      with KillMode=control-group, so anything left in its cgroup dies when
-#      PHP-FPM restarts. A transient unit has its own cgroup. (`--scope` does not
-#      work on May First; see the systemd notes in scripts/healthcheck-api.sh.)
-#   2. `setsid -f`, when there is no user manager (it can be down after a reboot).
-#      It survives the request ending but not a PHP-FPM restart.
-# DEPLOY_LAUNCHER says which one, and is written to the log.
+# Runs the deploy script and archives its output. scripts/deploy-poll.sh starts
+# it as a transient systemd user unit when the branch moves, so the build runs
+# apart from the scheduled job that noticed the new commit. Nothing waits on the
+# result: scripts/build-deploy.sh reports it to the Healthchecks deploy check
+# itself (see "Healthchecks deploy check" there).
 #
 # The unit is Type=simple with KillMode=control-group, so when this script exits
 # systemd kills anything still in its cgroup. The ac-api restart is safe: the
@@ -31,10 +14,8 @@
 #   REPO_DIR            repo checkout (required)
 #   DEPLOY_SCRIPT       deploy script to run (default: scripts/build-deploy.sh)
 #   DEPLOY_LOG          file to append this run's output to; empty disables it
-#                       (deploy.php sets DEPLOY_WEBHOOK_LOG instead)
 #   DEPLOY_LAUNCHER     how this run was started, for the log
-#   DEPLOY_TRIGGER      what started it, for the log (deploy.php sets
-#                       GITHUB_DELIVERY instead)
+#   DEPLOY_TRIGGER      what started it, for the log
 #
 set -uo pipefail
 
@@ -42,8 +23,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_DIR="${REPO_DIR:-$(cd "$SCRIPT_DIR/.." && pwd)}"
 export REPO_DIR
 DEPLOY_SCRIPT="${DEPLOY_SCRIPT:-$SCRIPT_DIR/build-deploy.sh}"
-DEPLOY_LOG="${DEPLOY_LOG:-${DEPLOY_WEBHOOK_LOG:-}}"
-DEPLOY_TRIGGER="${DEPLOY_TRIGGER:-${GITHUB_DELIVERY:+webhook $GITHUB_DELIVERY}}"
+DEPLOY_LOG="${DEPLOY_LOG:-}"
 export DEPLOY_TRIGGER="${DEPLOY_TRIGGER:-manual}"
 
 utc_now() { date -u +"%Y-%m-%dT%H:%M:%SZ"; }
@@ -82,9 +62,8 @@ if [[ -n "$DEPLOY_LOG" ]]; then
   } 2>/dev/null; then
     archived=1
   fi
-  # Cap the log the way deploy.php caps its early log: past 1 MB, keep the last
-  # 200 kB. Still under the lock, and rewritten in place so the file keeps its
-  # owner and mode.
+  # Cap the log: past 1 MB, keep the last 200 kB. Still under the lock, and
+  # rewritten in place so the file keeps its owner and mode.
   if [[ "$archived" == 1 ]]; then
     log_size="$(wc -c <"$DEPLOY_LOG" 2>/dev/null | tr -d '[:space:]')"
     if [[ "$log_size" =~ ^[0-9]+$ ]] && ((log_size > 1000000)); then

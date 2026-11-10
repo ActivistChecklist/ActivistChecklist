@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Shared NVM + pnpm for cron, webhooks, and SSH one-liners.
+# Shared NVM + pnpm for scheduled jobs, deploys, and SSH one-liners.
 # Source this file (do not run standalone):
 #   source "$SCRIPT_DIR/lib/nvm-pnpm.sh"
 #
@@ -60,7 +60,7 @@ nvm_pnpm__prepend_path() {
 # download against the release's SHASUMS256.txt.
 #
 # Every job on the host shares one nvm dir, and the 5-minute healthchecks can
-# land on the same version as a webhook deploy, so installs are serialized with
+# land on the same version as a deploy, so installs are serialized with
 # flock. Whoever gets the lock second re-checks and finds it already installed.
 # A partial version ("22") resolves to the newest installed 22.x and never
 # triggers an install unless no 22.x exists at all.

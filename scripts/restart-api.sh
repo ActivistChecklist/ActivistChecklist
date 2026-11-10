@@ -14,8 +14,8 @@
 # waits until the new process actually serves, and fails loudly when it does not.
 #
 # Clean environment: `pm2 start ecosystem.config.js` copies the caller's whole
-# environment into ac-api. From the deploy that would be PHP's environment and
-# the webhook's config; from SSH it would include SSH_CONNECTION, which holds the
+# environment into ac-api. From the deploy that would be everything the deploy
+# was given; from SSH it would include SSH_CONNECTION, which holds the
 # admin's IP address. So the health check gets only what it needs to find Node
 # and pnpm, and reads everything else from the repo's env file, the same way its
 # timer run does. This covers the caller's environment only: what the systemd

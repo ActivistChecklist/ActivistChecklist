@@ -127,7 +127,7 @@ const CATEGORIES = [
     key: 'automation',
     label: 'Hooks, CI, deploy and scripts (run outside any sandbox once merged)',
     test: (p) =>
-      /^(\.husky|\.github|scripts|public\/webhooks)\//.test(p) ||
+      /^(\.husky|\.github|scripts)\//.test(p) ||
       [
         'railway.toml',
         'railpack.json',
