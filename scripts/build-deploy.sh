@@ -19,6 +19,14 @@
 #
 set -euo pipefail
 
+# The web server runs as another account, so everything this publishes has to
+# be readable by others. A launcher's private umask (077) once reached the build
+# and git checkout, rsync -a copied the owner-only modes to the docroot, and
+# Apache answered every page with 403. RSYNC_PERMS below fixes the modes at
+# publish time too, for files an earlier run already wrote owner-only.
+umask 022
+RSYNC_PERMS=(--chmod=D755,F644)
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # The launcher passes REPO_DIR; for a manual run from a checkout: export REPO_DIR="$(pwd)" first.
 if [[ -z "${REPO_DIR:-}" ]]; then
@@ -346,7 +354,7 @@ while :; do
   # build no longer references, by which point every page on disk is new. It
   # transfers nothing, so it is quick.
   log "Publishing pass 1/2 (add and update, no deletes) → $DEPLOY_TARGET"
-  rsync -a "${RSYNC_EXCLUDE[@]}" "$REPO_DIR/out/" "$DEPLOY_TARGET/"
+  rsync -a "${RSYNC_PERMS[@]}" "${RSYNC_EXCLUDE[@]}" "$REPO_DIR/out/" "$DEPLOY_TARGET/"
 
   # A page fetched in the closing moments of pass 1 still has to come back for
   # its chunks. Hold briefly so those requests land before pass 2 deletes the
@@ -358,7 +366,7 @@ while :; do
   fi
 
   log "Publishing pass 2/2 (prune files the new build dropped) → $DEPLOY_TARGET"
-  rsync -a --delete "${RSYNC_EXCLUDE[@]}" "$REPO_DIR/out/" "$DEPLOY_TARGET/"
+  rsync -a --delete "${RSYNC_PERMS[@]}" "${RSYNC_EXCLUDE[@]}" "$REPO_DIR/out/" "$DEPLOY_TARGET/"
 
   # Recorded as soon as the docroot holds it, before the steps below that can
   # still fail the run: those are retried by the next deploy, and a rebuild
@@ -428,7 +436,7 @@ while :; do
       log "ERROR: some deferred guide PDFs failed to render (output above); their previous PDFs stay live."
     fi
     # Publishes whatever did render, even after a partial failure.
-    rsync -a "$REPO_DIR/out/pdf/" "$DEPLOY_TARGET/pdf/"
+    rsync -a "${RSYNC_PERMS[@]}" "$REPO_DIR/out/pdf/" "$DEPLOY_TARGET/pdf/"
     log "Published the re-rendered guide PDFs"
   else
     PDF_REFRESH_FAILED=0
