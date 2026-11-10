@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 #
 # Pulled from the repo at scripts/build-deploy.sh.
-# public/webhooks/deploy.php runs this and sets REPO_DIR from webhook-secrets.local.php (repo_root).
+# scripts/deploy-poll.sh starts this when the branch moves, and so does
+# public/webhooks/deploy.php while it is still in use. Both set REPO_DIR.
 #
-# Concurrency model (deploy.php implements the matching half):
+# Concurrency model (deploy-poll.sh and deploy.php implement the matching half):
 #
 #   * flock still guarantees one build at a time.
 #   * A delivery that finds the lock held no longer fails. It writes PENDING_FILE
@@ -19,7 +20,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# Webhook passes REPO_DIR; for a manual run from a checkout: export REPO_DIR="$(pwd)" first.
+# The launcher passes REPO_DIR; for a manual run from a checkout: export REPO_DIR="$(pwd)" first.
 if [[ -z "${REPO_DIR:-}" ]]; then
   REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 fi
@@ -28,12 +29,18 @@ LOCK_FILE="${LOCK_FILE:-$REPO_DIR/.build-deploy.lock}"
 PENDING_FILE="${PENDING_FILE:-$REPO_DIR/.build-deploy.pending}"
 # Total builds one invocation will run. Caps the worst case if pushes keep landing.
 MAX_BUILD_ITERATIONS="${MAX_BUILD_ITERATIONS:-3}"
-# deploy.php forwards its git_update_mode; manual runs default to the safer ff-only.
+# The launchers pass hard-reset; manual runs default to the safer ff-only.
 GIT_UPDATE_MODE="${GIT_UPDATE_MODE:-ff-only}"
 # Set on the server (export, systemd Environment=, etc.) to your site docroot
 DEPLOY_TARGET="${DEPLOY_TARGET:-$HOME/public_html}"
 # The commit ac-api last started from, as far as deploys know. See restart_api_if_needed.
 API_REV_FILE="${API_REV_FILE:-$REPO_DIR/.build-deploy.api-rev}"
+# The commit the last publish put live. scripts/deploy-poll.sh builds when the
+# branch is on any other commit.
+LIVE_REV_FILE="${LIVE_REV_FILE:-$REPO_DIR/.build-deploy.live-rev}"
+# What started this run, for the log and the Healthchecks ping.
+DEPLOY_TRIGGER="${DEPLOY_TRIGGER:-${GITHUB_DELIVERY:+webhook $GITHUB_DELIVERY}}"
+DEPLOY_TRIGGER="${DEPLOY_TRIGGER:-manual}"
 
 # shellcheck disable=SC1091
 source "$SCRIPT_DIR/log.sh"
@@ -50,19 +57,21 @@ nvm_pnpm_err() {
 # shellcheck disable=SC1091
 source "$SCRIPT_DIR/lib/api-restart.sh"
 
+# shellcheck disable=SC1091
+source "$SCRIPT_DIR/lib/hc-ping.sh"
+
 # --- Healthchecks deploy check ---
 #
-# public/webhooks/deploy.php answers 202 before the build starts (see
-# scripts/deploy-detached.sh), so GitHub never learns how a deploy went. This
-# script reports it instead: /start once it holds the lock, then its exit code
-# when it ends. A run that dies without reaching the EXIT trap (SIGKILL, a
-# reboot) leaves the check started, and Healthchecks marks it down once the
-# check's grace time passes, so keep the grace time longer than the slowest
-# deploy.
+# Whatever starts this runs it detached (see scripts/deploy-detached.sh) and
+# never learns how the deploy went. This script reports it instead: /start once
+# it holds the lock, then its exit code when it ends. A run that dies without
+# reaching the EXIT trap (SIGKILL, a reboot) leaves the check started, and
+# Healthchecks marks it down once the check's grace time passes, so keep the
+# grace time longer than the slowest deploy.
 #
-# DEPLOY_HEALTHCHECK_PING_URL comes from the environment (deploy_env in the
-# webhook config) or else from the repo's env file. Set it to empty to turn the
-# pings off for a manual run. Only that one variable is read from the env file:
+# DEPLOY_HEALTHCHECK_PING_URL comes from the environment (the launcher passes it
+# on) or else from the repo's env file. Set it to empty to turn the pings off
+# for a manual run. Only that one variable is read from the env file:
 # sourcing the whole file here would change the build's environment.
 #
 # A delivery that coalesces into a running build sends nothing; the running
@@ -76,28 +85,9 @@ if [[ -z "${DEPLOY_HEALTHCHECK_PING_URL+x}" ]]; then
 fi
 DEPLOY_PING_ACTIVE=1
 
-# Never let a failed ping change the deploy's result.
+# scripts/lib/hc-ping.sh never lets a failed ping change the deploy's result.
 deploy_ping() {
-  local suffix="$1" body_file="${2:-}" url
-  [[ -n "$DEPLOY_HEALTHCHECK_PING_URL" ]] || return 0
-  # The URL is a credential (anyone holding it can mark the check up), so it
-  # reaches curl on stdin, not in argv where other accounts on the host can see
-  # it. Its quoting is curl config syntax, so refuse anything that would need
-  # escaping there.
-  local plain_url='^https://[A-Za-z0-9._~:/?#@!$&()*+,;=%-]+$'
-  if [[ ! "$DEPLOY_HEALTHCHECK_PING_URL" =~ $plain_url ]]; then
-    log "WARN: DEPLOY_HEALTHCHECK_PING_URL is not a plain https URL; skipping the Healthchecks ping"
-    return 0
-  fi
-  url="${DEPLOY_HEALTHCHECK_PING_URL%/}/$suffix"
-  local -a data=()
-  if [[ -n "$body_file" ]]; then
-    data=(--data-binary "@$body_file")
-  fi
-  printf 'url = "%s"\n' "$url" |
-    curl -fsS -o /dev/null --max-time 30 --retry 3 -K - ${data[@]+"${data[@]}"} ||
-    log "WARN: Healthchecks deploy ping ($suffix) failed"
-  return 0
+  hc_ping "$DEPLOY_HEALTHCHECK_PING_URL" "$@"
 }
 
 # Body for the final ping: a summary line and the tail of this run's output.
@@ -119,9 +109,9 @@ deploy_ping_body() {
     tail="${tail//"${HOME%/}"/\~}"
   fi
   {
-    printf 'exit=%s head=%s delivery=%s\n' \
+    printf 'exit=%s head=%s trigger=%s\n' \
       "$code" "$(git -C "$REPO_DIR" rev-parse --short HEAD 2>/dev/null || echo unknown)" \
-      "${GITHUB_DELIVERY:-unknown}"
+      "$DEPLOY_TRIGGER"
     if [[ -n "$tail" ]]; then
       printf -- '--- deploy output (tail) ---\n%s\n' "$tail"
     else
@@ -177,8 +167,8 @@ if ! flock -n 9; then
   elif command -v lsof >/dev/null 2>&1; then
     holder="$(lsof "$LOCK_FILE" 2>&1 || true)"
   fi
-  if printf '%s coalesced delivery=%s\n' \
-      "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" "${GITHUB_DELIVERY:-unknown}" > "$PENDING_FILE"; then
+  if printf '%s coalesced trigger=%s\n' \
+      "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" "$DEPLOY_TRIGGER" > "$PENDING_FILE"; then
     log "Another deploy is in flight; queued a pending rebuild and exiting 0. The running deploy will re-sync and build these commits. lock=$LOCK_FILE holder=${holder:-unknown}"
     # The running build reports to Healthchecks for this push too.
     DEPLOY_PING_ACTIVE=0
@@ -369,6 +359,15 @@ while :; do
 
   log "Publishing pass 2/2 (prune files the new build dropped) → $DEPLOY_TARGET"
   rsync -a --delete "${RSYNC_EXCLUDE[@]}" "$REPO_DIR/out/" "$DEPLOY_TARGET/"
+
+  # Recorded as soon as the docroot holds it, before the steps below that can
+  # still fail the run: those are retried by the next deploy, and a rebuild
+  # would not fix them. A missing record costs one rebuild, so it only warns.
+  if git rev-parse HEAD >"$LIVE_REV_FILE.tmp" && mv -f "$LIVE_REV_FILE.tmp" "$LIVE_REV_FILE"; then
+    log "Live: $(git rev-parse --short HEAD)"
+  else
+    log "WARN: could not record the live commit in $LIVE_REV_FILE"
+  fi
 
   # A newer push is queued and the next iteration will publish it, so leave the
   # API restart, smoke checks and deferred PDFs to that iteration rather than
