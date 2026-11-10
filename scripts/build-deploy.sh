@@ -261,6 +261,7 @@ superseded() {
 # Runs after the publish, so the API and the pages that call it change
 # together, and before the smoke checks, so they probe the restarted API.
 API_RESTART_FAILED=0
+PDF_REFRESH_FAILED=0
 restart_api_if_needed() {
   local head running="" reason
   head="$(git rev-parse HEAD)"
@@ -319,8 +320,10 @@ while :; do
   # let the next iteration handle anything newer still.
   if superseded "the static build"; then continue; fi
 
-  # Non-interactive: no URL approval prompt; does not write .approved-urls.json
-  CHECKBUILD_URL_APPROVAL=allow BUILD_MODE=static nvm_pnpm buildstatic
+  # Non-interactive: no URL approval prompt; does not write .approved-urls.json.
+  # PDF_DEFER: guide PDFs that changed but have an older copy ship that copy
+  # now and are rendered after the publish below (see scripts/build-pdfs.mjs).
+  CHECKBUILD_URL_APPROVAL=allow BUILD_MODE=static PDF_DEFER=1 nvm_pnpm buildstatic
 
   if [[ ! -d "$REPO_DIR/out" ]]; then
     log "Build did not produce out/: $REPO_DIR/out"
@@ -367,6 +370,18 @@ while :; do
   log "Publishing pass 2/2 (prune files the new build dropped) → $DEPLOY_TARGET"
   rsync -a --delete "${RSYNC_EXCLUDE[@]}" "$REPO_DIR/out/" "$DEPLOY_TARGET/"
 
+  # A newer push is queued and the next iteration will publish it, so leave the
+  # API restart, smoke checks and deferred PDFs to that iteration rather than
+  # doing them twice. API_REV_FILE does not move, so the API still restarts
+  # when that iteration (or, if it fails, the next deploy) reaches this point.
+  # Until then the API runs the code it had before this deploy, as it did
+  # during the build. A PDF left stale here stays stale in .pdf-cache.json, so
+  # the next build lists it again.
+  if [[ -e "$PENDING_FILE" ]] && (( iteration < MAX_BUILD_ITERATIONS )); then
+    log "Published $(git rev-parse --short HEAD). A newer push is queued, so the API restart, smoke checks and PDF refresh wait for its build."
+    continue
+  fi
+
   restart_api_if_needed
 
   # Post-deploy smoke checks (informational only; deploy already published).
@@ -400,6 +415,26 @@ while :; do
     log "Post-deploy smoke checks passed"
   fi
 
+  # Guide PDFs the build deferred: their pages are live with the previous PDF,
+  # so render the new ones now and copy them over it. rsync writes each file
+  # under a temporary name and renames it, so a download never gets half a
+  # PDF. A failure keeps the previous PDF live and fails this deploy, and the
+  # next build lists the PDF again.
+  if [[ -s "$REPO_DIR/.pdf-deferred.json" ]]; then
+    log "Rendering the guide PDFs this build deferred"
+    if nvm_pnpm pdfs:deferred; then
+      PDF_REFRESH_FAILED=0
+    else
+      PDF_REFRESH_FAILED=1
+      log "ERROR: some deferred guide PDFs failed to render (output above); their previous PDFs stay live."
+    fi
+    # Publishes whatever did render, even after a partial failure.
+    rsync -a "$REPO_DIR/out/pdf/" "$DEPLOY_TARGET/pdf/"
+    log "Published the re-rendered guide PDFs"
+  else
+    PDF_REFRESH_FAILED=0
+  fi
+
   log "Deploy finished → $DEPLOY_TARGET"
 
   [[ -e "$PENDING_FILE" ]] || break
@@ -414,5 +449,10 @@ done
 # is live: the API is still on code this deploy was meant to replace.
 if [[ "$API_RESTART_FAILED" == 1 ]]; then
   log "ERROR: the site is published, but ac-api did not restart onto it. scripts/restart-api.sh on the server retries it by hand."
+  exit 1
+fi
+# Same for guide PDFs: the pages are new, but some of their PDFs are not.
+if [[ "$PDF_REFRESH_FAILED" == 1 ]]; then
+  log "ERROR: the site is published, but some guide PDFs are still the previous version. The next deploy renders them again."
   exit 1
 fi

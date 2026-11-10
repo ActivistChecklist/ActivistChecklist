@@ -61,6 +61,7 @@ public/images/og/
 # Guide PDFs (scripts/build-pdfs.mjs): rendered cache and its content hashes
 public/pdf/
 .pdf-cache.json
+.pdf-deferred.json
 # Designed PDFs (scripts/build-designed-pdfs.mjs): same idea, from content/<locale>/pdf/
 public/files/pdf/
 .designed-pdf-cache.json
