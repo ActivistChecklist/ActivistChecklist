@@ -90,5 +90,6 @@ metadata-cleaner/
 .build-deploy.live-rev.tmp
 .build-deploy.poll
 
-# Deploy log written by scripts/deploy-detached.sh
+# Deploy log and one-line-per-run history written by scripts/deploy-detached.sh
 .deploy.log
+.deploy-history.log

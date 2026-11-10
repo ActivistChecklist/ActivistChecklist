@@ -17,6 +17,9 @@
 #   DEPLOY_LAUNCHER     how this run was started, for the log
 #   DEPLOY_TRIGGER      what started it, for the log
 #
+# Each run also adds one line (start time, exit code, duration, trigger) to
+# .deploy-history.log at the repo root.
+#
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -80,6 +83,21 @@ if [[ -n "$DEPLOY_LOG" ]]; then
   fi
   exec 8>&- 2>/dev/null || true
 fi
+
+# One line per run, kept for the last 1000 runs. The log above holds only the
+# last few builds once it is trimmed, and this is what shows how long deploys
+# take over time.
+history_log="$REPO_DIR/.deploy-history.log"
+{
+  exec 7>>"$history_log" &&
+    flock 7 &&
+    printf '%s exit=%d duration=%ds trigger=%s launcher=%s\n' \
+      "$started_at" "$code" "$duration_s" "$DEPLOY_TRIGGER" "${DEPLOY_LAUNCHER:-unknown}" >&7 &&
+    if (($(wc -l <"$history_log") > 1000)); then
+      tail -n 1000 "$history_log" >"$run_dir/history.tail" && cat "$run_dir/history.tail" >"$history_log"
+    fi
+} 2>/dev/null
+exec 7>&- 2>/dev/null || true
 
 if [[ -z "$DEPLOY_LOG" || "$archived" == 1 ]]; then
   rm -rf "$run_dir"
