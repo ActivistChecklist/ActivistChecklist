@@ -75,11 +75,6 @@ metadata-cleaner/
 # SSL check log
 .ssl-check.log
 
-# Config for the deploy webhook this repo no longer has. Kept ignored so a
-# leftover local copy (it holds 1Password references) is never committed.
-# Delete this rule once `ls public/webhooks` in the main checkout finds nothing.
-public/webhooks/webhook-secrets.local.php
-
 # Deploy lock file (flock in scripts/build-deploy.sh)
 .build-deploy.lock
 
