@@ -53,7 +53,7 @@ function prBody(upgrade, current, engines) {
     '- `railpack.json` (Railway)',
     `- \`engines.node\`: \`${engines.from}\` → \`${engines.to}\``,
     '',
-    'Merging is the whole upgrade. The May First host installs the new version on first use, and `scripts/healthcheck-api.sh` moves ac-api onto it within one 5-minute run; its Healthchecks ping says `node_current=true` once that has happened. pr-checks on this PR already run on the new Node.',
+    'Merging is the whole upgrade. The May First host installs the new version on first use, and `scripts/healthcheck-api.sh` moves ac-api onto it within one 5-minute run; its Healthchecks ping says `daemon_current=true` once that has happened. pr-checks on this PR already run on the new Node.',
     '',
     '*Opened automatically by `.github/workflows/node-bump.yml`. Later runs update this PR in place rather than opening another. It never moves to a new major.*',
   ].join('\n');
