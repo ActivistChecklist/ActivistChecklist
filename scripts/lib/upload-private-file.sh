@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Sourced by deploy-secrets.sh and deploy-remote.sh to push a secrets file
-# (.env.production, webhook-secrets.local.php) to a server as owner-only.
+# (.env.production) to a server as owner-only.
 #
 # The local file may hold 1Password secret references instead of values:
 #   RESEND_API_KEY={{ op://<vault>/<item-id>/password }}
@@ -20,7 +20,7 @@ upload_private_file() {
     echo "===> Reading $(basename "$src") secrets from 1Password..."
     # Bracket each reference with a marker so an item whose field is still empty
     # shows up as an empty pair, instead of shipping a blank secret. A blank
-    # webhook secret would be worse than an outage.
+    # secret can be worse than an outage.
     content="$(sed -E 's/\{\{ *op:\/\/[^}]*\}\}/@@OP@@&@@OP@@/g' "$src" | op inject)" || return 1
     if [[ "$content" == *@@OP@@@@OP@@* ]]; then
       echo "Refusing to upload $src: a 1Password reference has an empty value" >&2
@@ -34,15 +34,8 @@ upload_private_file() {
     echo "Refusing to upload an empty $src" >&2
     return 1
   fi
-  # The webhook config sits in the docroot with no .htaccess guarding it. Keep
-  # .php last on the temp name so a request for it runs PHP (which prints
-  # nothing) rather than serving the secrets as text.
-  case "$dest" in
-    *.php) tmp="${dest%.php}.upload.php" ;;
-    *) tmp="$dest.upload" ;;
-  esac
-  # umask 077: the file is created 600. PHP on the site host runs as the same
-  # account, so the webhook config stays readable to it.
+  tmp="$dest.upload"
+  # umask 077: the file is created 600.
   printf '%s\n' "$content" |
     ssh "$target" "umask 077 && cat > $(printf %q "$tmp") && mv -f $(printf %q "$tmp") $(printf %q "$dest")"
 }

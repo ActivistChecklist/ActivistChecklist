@@ -49,10 +49,17 @@ if [ "$BUILD_MODE" = "static" ]; then
 
   find out -name '.DS_Store' -delete 2>/dev/null || true
 
+  # The commit this build is from. .github/workflows/deploy.yml reads it from
+  # the live site to see whether a push has been deployed.
+  if rev="$(git rev-parse HEAD 2>/dev/null)"; then
+    printf '%s\n' "$rev" >out/version.txt
+  fi
+
   build_section_done 0 \
     ".htaccess copied to out/" \
     "English routes mirrored to site root" \
-    "Removed .DS_Store from out/"
+    "Removed .DS_Store from out/" \
+    "version.txt: ${rev:-not written (no git)}"
 
   build_section "📄" "Post-build — guide PDFs"
   build_detail "Renders each guide with the print stylesheet; unchanged guides come from the cache"

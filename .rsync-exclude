@@ -26,13 +26,8 @@ node_modules
 .gitignore
 .gitattributes
 
-# Webhook (server-managed; must be protected from rsync --delete)
-# Without these, `out/webhooks/` lacks gitignored files, so --delete would remove them from docroot.
-webhooks/deploy-webhook.error.log
-webhooks/webhook-secrets.local.php
-
 # Large files only on the server (scp or SFTP into docroot large-assets/).
-# Same rule as webhooks: excluded paths are not deleted by rsync --delete.
+# Excluded paths are not deleted by rsync --delete.
 large-assets/***
 
 # EOL snapshot is server-owned: the daily cron and the build's prebuild step both

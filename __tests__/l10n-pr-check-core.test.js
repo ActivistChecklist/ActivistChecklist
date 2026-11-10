@@ -87,11 +87,11 @@ describe('checkChangedPaths', () => {
   it('flags any file outside the translation paths', () => {
     const changes = [
       change('content/es/guides/signal.mdx'),
-      change('.github/workflows/deploy-webhook.yml'),
+      change('.github/workflows/deploy.yml'),
     ];
     expect(checkChangedPaths(changes, patterns)).toEqual([
       {
-        path: '.github/workflows/deploy-webhook.yml',
+        path: '.github/workflows/deploy.yml',
         reason: expect.stringMatching(/not a Crowdin/),
       },
     ]);

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Push secrets/config that are deliberately not in git:
-#   1. .env.production + public/webhooks/ to the main site server
+#   1. .env.production to the main site server
 #   2. .env.production to the newsletter server (the listmonk host)
 #
 # The two servers are different accounts with different absolute paths, so each
@@ -36,7 +36,6 @@ resolve_local_file() {
 # ---------------------------------------------------------------------------
 : "${FTP_HOST:?Set FTP_HOST in .env}"
 : "${FTP_USER:?Set FTP_USER in .env}"
-: "${FTP_DIR:?Set FTP_DIR in .env (remote web root, e.g. web or /public_html)}"
 : "${ENV_PRODUCTION_PATH:?Set ENV_PRODUCTION_PATH in .env (remote .env.production file path)}"
 : "${LOCAL_ENV_PRODUCTION_FILE:=./.env.production.local}"
 LOCAL_ENV_PRODUCTION_FILE="$(resolve_local_file "$LOCAL_ENV_PRODUCTION_FILE")"
@@ -45,28 +44,8 @@ if [[ ! -f "$LOCAL_ENV_PRODUCTION_FILE" ]]; then
   exit 1
 fi
 
-WEBHOOK_SECRETS_LOCAL="$ROOT/public/webhooks/webhook-secrets.local.php"
-if [[ ! -f "$WEBHOOK_SECRETS_LOCAL" ]]; then
-  echo "Missing $WEBHOOK_SECRETS_LOCAL" >&2
-  echo "Copy public/webhooks/webhook-secrets.example.php → webhook-secrets.local.php and fill in secrets." >&2
-  exit 1
-fi
-
 echo "===> [site] Uploading remote .env.production from $LOCAL_ENV_PRODUCTION_FILE..."
 upload_private_file "$LOCAL_ENV_PRODUCTION_FILE" "$FTP_USER@$FTP_HOST" "$ENV_PRODUCTION_PATH"
-
-echo "===> [site] Syncing public/webhooks/ to $FTP_HOST:$FTP_DIR/webhooks/ ..."
-# Exclude webhook-secrets.local.php from this pass: with --delete, an absent local copy would
-# remove the file from the server; we upload it in the next step instead.
-rsync -avz --delete \
-  --exclude 'deploy-webhook.error.log' \
-  --exclude '*.log' \
-  --exclude 'webhook-secrets.local.php' \
-  "$ROOT/public/webhooks/" \
-  "$FTP_USER@$FTP_HOST:$FTP_DIR/webhooks/"
-
-echo "===> [site] Uploading webhook-secrets.local.php..."
-upload_private_file "$WEBHOOK_SECRETS_LOCAL" "$FTP_USER@$FTP_HOST" "$FTP_DIR/webhooks/webhook-secrets.local.php"
 
 if [[ "${REMOTE_SKIP_API:-0}" == "1" ]]; then
   echo "===> [site] Skipping API restart (REMOTE_SKIP_API=1); new values apply on its next restart."
@@ -80,7 +59,7 @@ fi
 # ---------------------------------------------------------------------------
 # Newsletter server (listmonk host)
 # ---------------------------------------------------------------------------
-# Optional: skipped cleanly when unconfigured. This box runs no webhooks - it
+# Optional: skipped cleanly when unconfigured. This box does not deploy - it
 # only needs its own .env.production for the listmonk cron scripts.
 NEWSLETTER_SSH_HOST="${NEWSLETTER_SSH_HOST:-}"
 NEWSLETTER_ENV_PRODUCTION_PATH="${NEWSLETTER_ENV_PRODUCTION_PATH:-}"

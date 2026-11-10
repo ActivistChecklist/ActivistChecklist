@@ -2,8 +2,8 @@
 #
 # Keep a server checkout of this repo in sync with the remote.
 #
-# The newsletter server runs cron scripts straight out of a clone but has no
-# deploy webhook, so an hourly pull is how it picks up changes.
+# The newsletter server runs cron scripts straight out of a clone but does not
+# deploy, so an hourly pull is how it picks up changes.
 #
 # Cron example:
 #   17 * * * * /path/to/repo/scripts/sync-repo.sh

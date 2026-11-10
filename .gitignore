@@ -75,9 +75,10 @@ metadata-cleaner/
 # SSL check log
 .ssl-check.log
 
-# GitHub deploy webhook secrets (local/server-only; never commit)
+# Config for the deploy webhook this repo no longer has. Kept ignored so a
+# leftover local copy (it holds 1Password references) is never committed.
+# Delete this rule once `ls public/webhooks` in the main checkout finds nothing.
 public/webhooks/webhook-secrets.local.php
-public/webhooks/deploy-webhook.error.log
 
 # Deploy lock file (flock in scripts/build-deploy.sh)
 .build-deploy.lock
@@ -96,7 +97,3 @@ public/webhooks/deploy-webhook.error.log
 
 # Deploy log written by scripts/deploy-detached.sh
 .deploy.log
-
-# GitHub webhook deploy log (default path written by public/webhooks/deploy.php)
-.deploy-webhook.log
-.deploy-webhook-auth.log
