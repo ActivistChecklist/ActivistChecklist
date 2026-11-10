@@ -49,7 +49,10 @@ export DEPLOY_TRIGGER="${DEPLOY_TRIGGER:-manual}"
 utc_now() { date -u +"%Y-%m-%dT%H:%M:%SZ"; }
 
 # The run's output stays private until it is archived: it can name paths and
-# accounts on the server.
+# accounts on the server. The private umask is for this script's own files
+# only. The deploy script runs with the umask this script was started with,
+# since it builds files the web server has to read.
+caller_umask="$(umask)"
 umask 077
 run_dir="$(mktemp -d)" || {
   echo "deploy-detached: mktemp -d failed" >&2
@@ -61,9 +64,12 @@ started_at="$(utc_now)"
 start_s="$(date +%s)"
 
 # build-deploy.sh reads DEPLOY_RUN_LOG to attach its own output to the
-# Healthchecks ping.
-DEPLOY_RUN_LOG="$run_log" /bin/bash --noprofile --norc "$DEPLOY_SCRIPT" \
-  </dev/null >"$run_log" 2>&1
+# Healthchecks ping. The redirections open run.log before the subshell's umask
+# changes, so it is still created owner-only.
+(
+  umask "$caller_umask"
+  DEPLOY_RUN_LOG="$run_log" exec /bin/bash --noprofile --norc "$DEPLOY_SCRIPT"
+) </dev/null >"$run_log" 2>&1
 code=$?
 duration_s=$(($(date +%s) - start_s))
 
