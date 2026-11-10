@@ -1,3 +1,5 @@
+const crypto = require('crypto');
+const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const createNextIntlPlugin = require('next-intl/plugin');
@@ -11,6 +13,37 @@ const linkedReviewCommentsRoot = require('./scripts/rrc-linked-root.cjs');
  */
 function shouldStubKeystaticWebpackModules() {
   return process.env.BUILD_MODE === 'static';
+}
+
+/**
+ * What the webpack persistent cache is keyed on, in place of the build
+ * dependencies Next.js would give it.
+ *
+ * With a custom `webpack` hook, Next.js makes this file a webpack build
+ * dependency, and webpack then snapshots everything it resolved while loading
+ * it, the root package.json included. Any change to package.json (even a
+ * devDependency bump) or to a file this config requires (redirects, designed
+ * PDF versions) threw the whole cache away, and a deploy compiled from
+ * scratch: about 60 s instead of 18 s on the server. Webpack's own module
+ * snapshots already notice changed sources and package versions, and env
+ * values reach the bundle through DefinePlugin, which tracks them per module.
+ * What they cannot see is this hook, so the key is this file's bytes plus the
+ * version of next-intl, whose plugin adds to the config. Next.js adds its own
+ * version and the config keys that affect compilation.
+ *
+ * Delete this, and the override in the `webpack` hook, once the production
+ * build moves to Turbopack, which keeps its own cache.
+ */
+function webpackCacheKey() {
+  return (
+    crypto
+      .createHash('sha256')
+      .update(fs.readFileSync(__filename))
+      // next-intl's exports map hides its package.json from require().
+      .update(fs.readFileSync(path.join(__dirname, 'node_modules', 'next-intl', 'package.json')))
+      .digest('hex')
+      .slice(0, 16)
+  );
 }
 
 /** When stubs apply, real app modules are swapped for `lib/stubs/*` (see webpack block below). */
@@ -73,6 +106,11 @@ const baseConfig = {
     unoptimized: true,
   },
   webpack: (config) => {
+    if (config.cache && config.cache.type === 'filesystem') {
+      config.cache.buildDependencies = { defaultWebpack: [] };
+      config.cache.version = `${config.cache.version}|config:${webpackCacheKey()}`;
+    }
+
     config.resolve.alias = {
       ...config.resolve.alias,
       '@': path.resolve(__dirname),

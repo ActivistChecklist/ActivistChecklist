@@ -43,3 +43,27 @@ build_section_done() {
 build_detail() {
   printf '     \033[2m%s\033[0m\n' "$1"
 }
+
+# build_parallel <function> [<function> ...]
+# Runs each function at once, then prints each one's output in the order given,
+# as if they had run one after another. Fails if any of them failed. For steps
+# that neither read nor write each other's files.
+build_parallel() {
+  local dir i failed=0
+  local -a pids=()
+  dir="$(mktemp -d)"
+  for i in "$@"; do
+    "$i" >"$dir/$i.log" 2>&1 &
+    pids+=("$!")
+  done
+  local n=0
+  for i in "$@"; do
+    if ! wait "${pids[$n]}"; then
+      failed=1
+    fi
+    cat "$dir/$i.log" || true
+    n=$((n + 1))
+  done
+  rm -rf "$dir"
+  return "$failed"
+}

@@ -13,16 +13,26 @@
  *   .pdf-cache.json                 hash per PDF, gitignored
  *   out/pdf/<locale>/<slug>.pdf     what ships
  *
+ * Deploys render after they publish. With PDF_DEFER=1 the build renders only
+ * PDFs that have no older copy at all, ships the older copy of every other
+ * stale one, and lists those in .pdf-deferred.json. scripts/build-deploy.sh
+ * then runs this with --deferred once the site is live, which renders that
+ * list into the cache and out/, and copies the new PDFs to the docroot. A
+ * changed guide's PDF is a few minutes behind its page, and a change to the
+ * shared CSS no longer holds every deploy up by two minutes.
+ *
  * Env:
  *   PDF_EXPORT=off    skip entirely (next.config.js also hides the download link)
  *   PDF_EXPORT_FORCE=1  ignore the cache and re-render everything
+ *   PDF_DEFER=1       render what can wait later, with --deferred (see above)
+ *   PDF_CONCURRENCY=n guides rendered at once; default is cores - 2, at most 8
  *   PDF_CHROMIUM_LIBS=dir  extra shared libraries for Chromium (Linux). Defaults
  *                     to ~/.local/lib/chromium-deps when that exists: the May
  *                     First server has no libnss3/libnspr4 and no root to
  *                     install them, so they are unpacked from Debian's .debs
  *                     there (apt-get download, then dpkg-deb -x).
  *
- * Usage: node scripts/build-pdfs.mjs
+ * Usage: node scripts/build-pdfs.mjs [--deferred]
  */
 import crypto from 'crypto';
 import fs from 'fs';
@@ -36,9 +46,11 @@ import { LOCALES } from '../lib/i18n-config.mjs';
 import {
   normalizeHtmlForHash,
   pdfPaperFormat,
+  pdfConcurrency,
   pdfPathFor,
   planPdfBuild,
   shortenUrlForPrint,
+  splitDeferrablePdfs,
 } from '../lib/pdf-export.mjs';
 import { NON_US_NOTICE_STORAGE_KEY } from '../lib/us-timezone.js';
 
@@ -47,7 +59,8 @@ const ROOT = path.resolve(path.dirname(__filename), '..');
 const OUT_DIR = path.join(ROOT, 'out');
 const CACHE_DIR = path.join(ROOT, 'public');
 const MANIFEST_PATH = path.join(ROOT, '.pdf-cache.json');
-const CONCURRENCY = 4;
+const DEFERRED_PATH = path.join(ROOT, '.pdf-deferred.json');
+const CONCURRENCY = pdfConcurrency(process.env.PDF_CONCURRENCY, os.availableParallelism());
 
 const require = createRequire(import.meta.url);
 
@@ -170,10 +183,27 @@ function readManifest() {
   }
 }
 
+function writeJsonAtomic(file, value) {
+  const tmp = `${file}.tmp`;
+  fs.writeFileSync(tmp, `${JSON.stringify(value, null, 2)}\n`);
+  fs.renameSync(tmp, file);
+}
+
 function writeManifest(entries) {
-  const tmp = `${MANIFEST_PATH}.tmp`;
-  fs.writeFileSync(tmp, `${JSON.stringify({ version: 1, entries }, null, 2)}\n`);
-  fs.renameSync(tmp, MANIFEST_PATH);
+  writeJsonAtomic(MANIFEST_PATH, { version: 1, entries });
+}
+
+/**
+ * The PDFs a PDF_DEFER build left for later, with the hashes it computed. The
+ * later pass must not hash out/ again: scripts/check-build.mjs rewrites the
+ * HTML in between, so every hash would differ from the next build's.
+ */
+function readDeferred() {
+  try {
+    return JSON.parse(fs.readFileSync(DEFERRED_PATH, 'utf8')).targets ?? [];
+  } catch {
+    return [];
+  }
 }
 
 // ── Local server for out/ ────────────────────────────────────────────────
@@ -418,8 +448,44 @@ async function renderAll(stale, manifest) {
 
 // ── Main ─────────────────────────────────────────────────────────────────
 
+/** Ship each cached PDF in out/, keeping the date it was rendered. */
+function copyToOut(keys) {
+  for (const key of keys) {
+    const src = cacheFile(key);
+    if (!fs.existsSync(src)) continue;
+    const dest = path.join(OUT_DIR, pdfPathFor(...key.split('/')));
+    fs.mkdirSync(path.dirname(dest), { recursive: true });
+    fs.copyFileSync(src, dest);
+    // Keep the date the PDF was rendered. A fresh copy date on every deploy
+    // would change Last-Modified and the ETag, so a browser revalidating an
+    // unchanged PDF would download it again instead of getting a 304.
+    const { atime, mtime } = fs.statSync(src);
+    fs.utimesSync(dest, atime, mtime);
+  }
+}
+
+/** --deferred: render what a PDF_DEFER build left, into the cache and out/. */
+async function renderDeferred() {
+  const deferred = readDeferred();
+  console.log(`Deferred guide PDFs: ${deferred.length} to render (${CONCURRENCY} at a time)`);
+  if (deferred.length === 0) {
+    fs.rmSync(DEFERRED_PATH, { force: true });
+    return;
+  }
+  const manifest = readManifest();
+  const failures = await renderAll(deferred, manifest);
+  writeManifest(manifest);
+  copyToOut(deferred.filter((t) => !failures.includes(t.key)).map((t) => t.key));
+  // Failed ones stay stale in the manifest, so the next build tries them again.
+  fs.rmSync(DEFERRED_PATH, { force: true });
+  if (failures.length > 0) {
+    throw new Error(`${failures.length} PDF(s) failed: ${failures.join(', ')}`);
+  }
+}
+
 async function main() {
   if (!fs.existsSync(OUT_DIR)) throw new Error('out/ not found; run a static build first');
+  if (process.argv.includes('--deferred')) return renderDeferred();
 
   const targets = collectTargets(await listGuideSlugs(), renderSalt());
   const manifest = readManifest();
@@ -434,26 +500,31 @@ async function main() {
     fs.rmSync(path.join(OUT_DIR, pdfPathFor(...key.split('/'))), { force: true });
   }
 
+  const { deferred, now } =
+    process.env.PDF_DEFER === '1'
+      ? splitDeferrablePdfs(stale, (key) => fs.existsSync(cacheFile(key)))
+      : { deferred: [], now: stale };
+
   console.log(
-    `Guide PDFs: ${targets.length} total, ${fresh.length} unchanged, ${stale.length} to render`,
+    `Guide PDFs: ${targets.length} total, ${fresh.length} unchanged, ${now.length} to render` +
+      (deferred.length > 0 ? `, ${deferred.length} after publishing` : '') +
+      (now.length > 0 ? ` (${CONCURRENCY} at a time)` : ''),
   );
 
   let failures = [];
-  if (stale.length > 0) failures = await renderAll(stale, manifest);
+  if (now.length > 0) failures = await renderAll(now, manifest);
   writeManifest(manifest);
-
-  for (const { key } of targets) {
-    const src = cacheFile(key);
-    if (!fs.existsSync(src)) continue;
-    const dest = path.join(OUT_DIR, pdfPathFor(...key.split('/')));
-    fs.mkdirSync(path.dirname(dest), { recursive: true });
-    fs.copyFileSync(src, dest);
-    // Keep the date the PDF was rendered. A fresh copy date on every deploy
-    // would change Last-Modified and the ETag, so a browser revalidating an
-    // unchanged PDF would download it again instead of getting a 304.
-    const { atime, mtime } = fs.statSync(src);
-    fs.utimesSync(dest, atime, mtime);
+  // Removed when there is nothing to defer, so an earlier build's list never lingers.
+  if (deferred.length > 0) {
+    writeJsonAtomic(DEFERRED_PATH, {
+      version: 1,
+      targets: deferred.map(({ key, locale, slug, hash }) => ({ key, locale, slug, hash })),
+    });
+  } else {
+    fs.rmSync(DEFERRED_PATH, { force: true });
   }
+
+  copyToOut(targets.map((t) => t.key));
 
   if (failures.length > 0) {
     throw new Error(`${failures.length} PDF(s) failed: ${failures.join(', ')}`);
