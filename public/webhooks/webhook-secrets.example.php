@@ -60,6 +60,11 @@ return [
     'DEPLOY_TARGET' => '/home/you/web',
     // Helps tools that rely on $HOME (ssh keys, etc.)
     'HOME' => '/home/you',
+    // Healthchecks.io ping URL for the deploy check. The webhook returns 202 before
+    // the build runs, so scripts/build-deploy.sh pings this with the real result.
+    // If omitted, it is read from the repo's env file instead (.env.production).
+    // Give the check a grace time longer than the slowest deploy.
+    // 'DEPLOY_HEALTHCHECK_PING_URL' => 'https://hc-ping.com/your-deploy-check-uuid',
     // Optional: set PATH explicitly if your PHP/FPM environment is minimal.
     // Example (May First-style nvm + user bin):
     // 'PATH' => '/home/sites/360449/include/.nvm/versions/node/v22.23.4/bin:/home/sites/360449/bin:/usr/local/bin:/usr/bin:/bin',
