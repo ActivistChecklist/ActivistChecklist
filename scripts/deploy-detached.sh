@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 #
-# Runs the deploy script for public/webhooks/deploy.php after the webhook has
-# already answered 202, and archives its output.
+# Runs the deploy script in the background and archives its output.
+# scripts/deploy-poll.sh starts it when the branch moves, as a transient systemd
+# user unit, and public/webhooks/deploy.php starts it after answering 202 while
+# that webhook is still in use.
 #
 # Why detached: May First's front proxy gives up on a request after about 5
 # minutes and returns 504. A deploy that bumps dependencies (pnpm install, the
@@ -25,12 +27,14 @@
 # systemd kills anything still in its cgroup. The ac-api restart is safe: the
 # health check it runs puts the PM2 daemon in a unit of its own first.
 #
-# Environment (all set by deploy.php):
+# Environment (all set by whatever starts it):
 #   REPO_DIR            repo checkout (required)
 #   DEPLOY_SCRIPT       deploy script to run (default: scripts/build-deploy.sh)
-#   DEPLOY_WEBHOOK_LOG  file to append this run's output to; empty disables it
+#   DEPLOY_LOG          file to append this run's output to; empty disables it
+#                       (deploy.php sets DEPLOY_WEBHOOK_LOG instead)
 #   DEPLOY_LAUNCHER     how this run was started, for the log
-#   GITHUB_DELIVERY     delivery id, for the log
+#   DEPLOY_TRIGGER      what started it, for the log (deploy.php sets
+#                       GITHUB_DELIVERY instead)
 #
 set -uo pipefail
 
@@ -38,7 +42,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_DIR="${REPO_DIR:-$(cd "$SCRIPT_DIR/.." && pwd)}"
 export REPO_DIR
 DEPLOY_SCRIPT="${DEPLOY_SCRIPT:-$SCRIPT_DIR/build-deploy.sh}"
-DEPLOY_WEBHOOK_LOG="${DEPLOY_WEBHOOK_LOG:-}"
+DEPLOY_LOG="${DEPLOY_LOG:-${DEPLOY_WEBHOOK_LOG:-}}"
+DEPLOY_TRIGGER="${DEPLOY_TRIGGER:-${GITHUB_DELIVERY:+webhook $GITHUB_DELIVERY}}"
+export DEPLOY_TRIGGER="${DEPLOY_TRIGGER:-manual}"
 
 utc_now() { date -u +"%Y-%m-%dT%H:%M:%SZ"; }
 
@@ -62,14 +68,14 @@ code=$?
 duration_s=$(($(date +%s) - start_s))
 
 archived=0
-if [[ -n "$DEPLOY_WEBHOOK_LOG" ]]; then
+if [[ -n "$DEPLOY_LOG" ]]; then
   # flock serializes appends with any other run finishing at the same moment.
   if {
-    exec 8>>"$DEPLOY_WEBHOOK_LOG" &&
+    exec 8>>"$DEPLOY_LOG" &&
       flock 8 &&
       {
-        printf '\n[%s] START delivery=%s launcher=%s\n' \
-          "$started_at" "${GITHUB_DELIVERY:-unknown}" "${DEPLOY_LAUNCHER:-unknown}"
+        printf '\n[%s] START trigger=%s launcher=%s\n' \
+          "$started_at" "$DEPLOY_TRIGGER" "${DEPLOY_LAUNCHER:-unknown}"
         cat "$run_log"
         printf '[%s] END exit=%d duration=%ds\n' "$(utc_now)" "$code" "$duration_s"
       } >&8
@@ -80,17 +86,17 @@ if [[ -n "$DEPLOY_WEBHOOK_LOG" ]]; then
   # 200 kB. Still under the lock, and rewritten in place so the file keeps its
   # owner and mode.
   if [[ "$archived" == 1 ]]; then
-    log_size="$(wc -c <"$DEPLOY_WEBHOOK_LOG" 2>/dev/null | tr -d '[:space:]')"
+    log_size="$(wc -c <"$DEPLOY_LOG" 2>/dev/null | tr -d '[:space:]')"
     if [[ "$log_size" =~ ^[0-9]+$ ]] && ((log_size > 1000000)); then
-      if tail -c 200000 "$DEPLOY_WEBHOOK_LOG" >"$run_dir/log.tail" 2>/dev/null; then
-        { printf -- '---- truncated ----\n'; cat "$run_dir/log.tail"; } >"$DEPLOY_WEBHOOK_LOG" 2>/dev/null || true
+      if tail -c 200000 "$DEPLOY_LOG" >"$run_dir/log.tail" 2>/dev/null; then
+        { printf -- '---- truncated ----\n'; cat "$run_dir/log.tail"; } >"$DEPLOY_LOG" 2>/dev/null || true
       fi
     fi
   fi
   exec 8>&- 2>/dev/null || true
 fi
 
-if [[ -z "$DEPLOY_WEBHOOK_LOG" || "$archived" == 1 ]]; then
+if [[ -z "$DEPLOY_LOG" || "$archived" == 1 ]]; then
   rm -rf "$run_dir"
 else
   # Keep the output so it can be recovered by hand. This lands in the unit's
