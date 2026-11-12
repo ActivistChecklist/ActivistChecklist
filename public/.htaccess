@@ -5,6 +5,10 @@ ErrorDocument 404 /404/index.html
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
+  # No PHP runs on this site. Refuse .php requests outright, so a stray file in
+  # the docroot is never run or served as source.
+  RewriteRule \.php$ - [NC,F]
+
   # Capture REQUEST_URI into an env var so mod_headers can reference it (it can't
   # access REQUEST_URI directly, only env vars). Used by the Onion-Location header
   # below. The "-" target is a no-op pass-through; only the [E=...] flag has effect.
@@ -78,6 +82,10 @@ ErrorDocument 404 /404/index.html
 #                    PDFs (posters) and their preview images work the same way;
 #                    the site also links them with a ?v= content hash.
 #
+#   /version.txt     The commit the site was built from, which changes with
+#                    every deploy. "no-cache", so the deploy check in
+#                    .github/workflows/deploy.yml sees a new one at once.
+#
 # Matched on the request URI rather than with <FilesMatch> because a request for
 # /proton/ reaches index.html through an internal subrequest (and because
 # <LocationMatch> is not permitted in .htaccess). Directory requests all end in
@@ -89,6 +97,7 @@ ErrorDocument 404 /404/index.html
   SetEnvIf Request_URI "(/|\.html)$" AC_HTML_DOC
   SetEnvIf Request_URI "^/pdf/" AC_REVALIDATE
   SetEnvIf Request_URI "^/files/pdf/" AC_REVALIDATE
+  SetEnvIf Request_URI "^/version\.txt$" AC_REVALIDATE
 </IfModule>
 <IfModule mod_headers.c>
   Header set Cache-Control "public, max-age=31536000, immutable" env=AC_IMMUTABLE_ASSET

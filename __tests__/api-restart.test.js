@@ -94,7 +94,7 @@ describe('api_path_needs_restart', () => {
       'components/Header.jsx',
       'lib/utils.js',
       'scripts/build-deploy.sh',
-      'public/webhooks/deploy.php',
+      'scripts/deploy-poll.sh',
       // Look-alikes of the real paths.
       'apiary/notes.md',
       'docs/api/server.js',

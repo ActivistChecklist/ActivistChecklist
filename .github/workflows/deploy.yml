@@ -1,0 +1,67 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+# The web host deploys main on its own: scripts/deploy-poll.sh runs there every
+# minute and builds any commit of main that is not live yet. Nothing here can
+# start a deploy, so this workflow needs no secrets.
+#
+# It waits until the site serves this commit, or a later one that contains it,
+# and fails if that takes longer than a deploy should. So a push that never goes
+# live turns this run red. Why it did not is in the Healthchecks deploy check
+# (scripts/build-deploy.sh pings it) and the deploy log on the server.
+#
+# The site publishes the commit it was built from at /version.txt
+# (scripts/postbuild.sh).
+
+permissions:
+  contents: read
+
+# A newer push's run covers this one: once that commit is live, so is this one.
+concurrency:
+  group: deploy-live-check
+  cancel-in-progress: true
+
+jobs:
+  wait_until_live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - name: Wait for the site to serve this commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+          VERSION_URL: https://activistchecklist.org/version.txt
+          # Room for a build already running on an older commit, then this one.
+          WAIT_MINUTES: '45'
+        run: |
+          set -uo pipefail
+          deadline=$(($(date +%s) + WAIT_MINUTES * 60))
+          seen=""
+          while :; do
+            # A fresh query string each time, so no cache on the way answers.
+            live="$(curl -fsS --max-time 15 "$VERSION_URL?check=$GITHUB_RUN_ID-$(date +%s)" | tr -d '[:space:]')" || live=""
+            if [[ "$live" == "$SHA" ]]; then
+              echo "Live: $SHA"
+              exit 0
+            fi
+            if [[ "$live" =~ ^[0-9a-f]{40}$ && "$live" != "$seen" ]]; then
+              seen="$live"
+              # "ahead" means the live commit already contains this one.
+              status="$(gh api "repos/$REPO/compare/$SHA...$live" --jq .status 2>/dev/null)" || status="unknown"
+              if [[ "$status" == ahead ]]; then
+                echo "Live: $live, which contains $SHA"
+                exit 0
+              fi
+              echo "The site is on ${live:0:12} ($status); waiting for ${SHA:0:12}"
+            fi
+            if (($(date +%s) >= deadline)); then
+              echo "::error::${SHA:0:12} is still not live ${WAIT_MINUTES} minutes after it reached main (the site is on ${seen:-an unknown commit}). See the Healthchecks deploy check and the deploy log on the server."
+              exit 1
+            fi
+            sleep 30
+          done

@@ -5,8 +5,10 @@ import {
   pdfDownloadName,
   pdfPaperFormat,
   pdfPathFor,
+  pdfConcurrency,
   planPdfBuild,
   shortenUrlForPrint,
+  splitDeferrablePdfs,
 } from '../lib/pdf-export.mjs';
 
 const PAGE = 'https://activistchecklist.org/essentials/';
@@ -158,6 +160,41 @@ describe('planPdfBuild', () => {
       () => true,
     );
     expect(orphaned).toEqual(['en/old-guide']);
+  });
+});
+
+describe('splitDeferrablePdfs', () => {
+  it('defers stale PDFs that have an older copy and renders the rest now', () => {
+    const stale = [{ key: 'en/essentials' }, { key: 'ja/new-guide' }, { key: 'es/protest' }];
+    const has = (key) => key !== 'ja/new-guide';
+    const { deferred, now } = splitDeferrablePdfs(stale, has);
+    expect(deferred.map((t) => t.key)).toEqual(['en/essentials', 'es/protest']);
+    expect(now.map((t) => t.key)).toEqual(['ja/new-guide']);
+  });
+
+  it('renders everything now on an empty cache', () => {
+    const { deferred, now } = splitDeferrablePdfs([{ key: 'en/essentials' }], () => false);
+    expect(deferred).toEqual([]);
+    expect(now).toHaveLength(1);
+  });
+});
+
+describe('pdfConcurrency', () => {
+  it('leaves two cores free and stays between 1 and 8', () => {
+    expect(pdfConcurrency(undefined, 8)).toBe(6);
+    expect(pdfConcurrency(undefined, 32)).toBe(8);
+    expect(pdfConcurrency(undefined, 2)).toBe(1);
+    expect(pdfConcurrency(undefined, 1)).toBe(1);
+    expect(pdfConcurrency(undefined, undefined)).toBe(1);
+  });
+
+  it('takes a positive override and ignores anything else', () => {
+    expect(pdfConcurrency('3', 8)).toBe(3);
+    expect(pdfConcurrency('12', 8)).toBe(12);
+    expect(pdfConcurrency('0', 8)).toBe(6);
+    expect(pdfConcurrency('-2', 8)).toBe(6);
+    expect(pdfConcurrency('lots', 8)).toBe(6);
+    expect(pdfConcurrency('', 8)).toBe(6);
   });
 });
 

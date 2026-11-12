@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 #
 # Pulled from the repo at scripts/build-deploy.sh.
-# public/webhooks/deploy.php runs this and sets REPO_DIR from webhook-secrets.local.php (repo_root).
+# scripts/deploy-poll.sh starts this when the branch moves, and sets REPO_DIR.
 #
-# Concurrency model (deploy.php implements the matching half):
+# Concurrency model (deploy-poll.sh implements the matching half):
 #
-#   * flock still guarantees one build at a time.
-#   * A delivery that finds the lock held no longer fails. It writes PENDING_FILE
-#     and exits 0, so overlapping pushes coalesce instead of reporting a failed
-#     deploy to GitHub. Ten pushes in a row cost at most one extra build.
+#   * flock guarantees one build at a time.
+#   * A run that finds the lock held does not fail. It writes PENDING_FILE and
+#     exits 0, so overlapping runs coalesce. deploy-poll.sh writes the same
+#     marker when the branch moves during a build. Ten pushes in a row cost at
+#     most one extra build.
 #   * The builder loops: sync git, clear the marker, build, publish, and if a new
 #     marker appeared it goes around again (up to MAX_BUILD_ITERATIONS).
 #
@@ -18,8 +19,16 @@
 #
 set -euo pipefail
 
+# The web server runs as another account, so everything this publishes has to
+# be readable by others. A launcher's private umask (077) once reached the build
+# and git checkout, rsync -a copied the owner-only modes to the docroot, and
+# Apache answered every page with 403. RSYNC_PERMS below fixes the modes at
+# publish time too, for files an earlier run already wrote owner-only.
+umask 022
+RSYNC_PERMS=(--chmod=D755,F644)
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# Webhook passes REPO_DIR; for a manual run from a checkout: export REPO_DIR="$(pwd)" first.
+# The launcher passes REPO_DIR; for a manual run from a checkout: export REPO_DIR="$(pwd)" first.
 if [[ -z "${REPO_DIR:-}" ]]; then
   REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 fi
@@ -28,12 +37,17 @@ LOCK_FILE="${LOCK_FILE:-$REPO_DIR/.build-deploy.lock}"
 PENDING_FILE="${PENDING_FILE:-$REPO_DIR/.build-deploy.pending}"
 # Total builds one invocation will run. Caps the worst case if pushes keep landing.
 MAX_BUILD_ITERATIONS="${MAX_BUILD_ITERATIONS:-3}"
-# deploy.php forwards its git_update_mode; manual runs default to the safer ff-only.
+# The launchers pass hard-reset; manual runs default to the safer ff-only.
 GIT_UPDATE_MODE="${GIT_UPDATE_MODE:-ff-only}"
 # Set on the server (export, systemd Environment=, etc.) to your site docroot
 DEPLOY_TARGET="${DEPLOY_TARGET:-$HOME/public_html}"
 # The commit ac-api last started from, as far as deploys know. See restart_api_if_needed.
 API_REV_FILE="${API_REV_FILE:-$REPO_DIR/.build-deploy.api-rev}"
+# The commit the last publish put live. scripts/deploy-poll.sh builds when the
+# branch is on any other commit.
+LIVE_REV_FILE="${LIVE_REV_FILE:-$REPO_DIR/.build-deploy.live-rev}"
+# What started this run, for the log and the Healthchecks ping.
+DEPLOY_TRIGGER="${DEPLOY_TRIGGER:-manual}"
 
 # shellcheck disable=SC1091
 source "$SCRIPT_DIR/log.sh"
@@ -49,6 +63,89 @@ nvm_pnpm_err() {
 
 # shellcheck disable=SC1091
 source "$SCRIPT_DIR/lib/api-restart.sh"
+
+# shellcheck disable=SC1091
+source "$SCRIPT_DIR/lib/hc-ping.sh"
+
+# --- Healthchecks deploy check ---
+#
+# Whatever starts this runs it detached (see scripts/deploy-detached.sh) and
+# never learns how the deploy went. This script reports it instead: /start once
+# it holds the lock, then its exit code when it ends. A run that dies without
+# reaching the EXIT trap (SIGKILL, a reboot) leaves the check started, and
+# Healthchecks marks it down once the check's grace time passes, so keep the
+# grace time longer than the slowest deploy.
+#
+# DEPLOY_HEALTHCHECK_PING_URL comes from the environment (the launcher passes it
+# on) or else from the repo's env file. Set it to empty to turn the pings off
+# for a manual run. Only that one variable is read from the env file:
+# sourcing the whole file here would change the build's environment.
+#
+# A run that coalesces into a running build sends nothing; the running
+# build reports for both.
+if [[ -z "${DEPLOY_HEALTHCHECK_PING_URL+x}" ]]; then
+  DEPLOY_HEALTHCHECK_PING_URL="$(
+    # shellcheck disable=SC1091
+    source "$SCRIPT_DIR/load-env.sh" >/dev/null 2>&1 || true
+    printf '%s' "${DEPLOY_HEALTHCHECK_PING_URL:-}"
+  )"
+fi
+DEPLOY_PING_ACTIVE=1
+
+# scripts/lib/hc-ping.sh never lets a failed ping change the deploy's result.
+deploy_ping() {
+  hc_ping "$DEPLOY_HEALTHCHECK_PING_URL" "$@"
+}
+
+# Body for the final ping: a summary line and the tail of this run's output.
+# Healthchecks keeps the first 100 kB. $HOME is collapsed to ~ and the values of
+# secret-looking environment variables are redacted.
+deploy_ping_body() {
+  local code="$1" out="$2" tail="" name value
+  if [[ -n "${DEPLOY_RUN_LOG:-}" && -r "$DEPLOY_RUN_LOG" ]]; then
+    tail="$(tail -c 95000 "$DEPLOY_RUN_LOG" 2>/dev/null || true)"
+  fi
+  for name in $(compgen -e); do
+    [[ "$name" =~ (SECRET|TOKEN|PASSWORD|PASS|KEY|CREDENTIAL|HMAC|PING_URL) ]] || continue
+    value="${!name:-}"
+    (( ${#value} >= 8 )) || continue
+    tail="${tail//"$value"/[REDACTED]}"
+  done
+  if [[ -n "${HOME:-}" && "$HOME" != "/" ]]; then
+    tail="${tail//"${HOME%/}"/\~}"
+  fi
+  {
+    printf 'exit=%s head=%s trigger=%s\n' \
+      "$code" "$(git -C "$REPO_DIR" rev-parse --short HEAD 2>/dev/null || echo unknown)" \
+      "$DEPLOY_TRIGGER"
+    if [[ -n "$tail" ]]; then
+      printf -- '--- deploy output (tail) ---\n%s\n' "$tail"
+    else
+      printf '(no run log; see the deploy log on the server)\n'
+    fi
+  } >"$out"
+}
+
+deploy_ping_on_exit() {
+  local code=$? body_file="" body_dir=""
+  trap - EXIT
+  if [[ "$DEPLOY_PING_ACTIVE" == 1 && -n "$DEPLOY_HEALTHCHECK_PING_URL" ]]; then
+    if body_dir="$(mktemp -d 2>/dev/null)"; then
+      body_file="$body_dir/body.txt"
+      deploy_ping_body "$code" "$body_file" 2>/dev/null || body_file=""
+    fi
+    # Healthchecks reads /<exit code> as success for 0 and failure otherwise.
+    deploy_ping "$code" "$body_file"
+    [[ -z "$body_dir" ]] || rm -rf "$body_dir"
+  fi
+  exit "$code"
+}
+trap deploy_ping_on_exit EXIT
+# Bash skips the EXIT trap when a signal kills it, so turn the usual ones into
+# an exit. systemd stops a unit with SIGTERM.
+trap 'exit 129' HUP
+trap 'exit 130' INT
+trap 'exit 143' TERM
 
 if [[ "$GIT_UPDATE_MODE" != "ff-only" && "$GIT_UPDATE_MODE" != "hard-reset" ]]; then
   log "ERROR: GIT_UPDATE_MODE must be 'ff-only' or 'hard-reset' (got: $GIT_UPDATE_MODE)"
@@ -76,9 +173,11 @@ if ! flock -n 9; then
   elif command -v lsof >/dev/null 2>&1; then
     holder="$(lsof "$LOCK_FILE" 2>&1 || true)"
   fi
-  if printf '%s coalesced delivery=%s\n' \
-      "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" "${GITHUB_DELIVERY:-unknown}" > "$PENDING_FILE"; then
+  if printf '%s coalesced trigger=%s\n' \
+      "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" "$DEPLOY_TRIGGER" > "$PENDING_FILE"; then
     log "Another deploy is in flight; queued a pending rebuild and exiting 0. The running deploy will re-sync and build these commits. lock=$LOCK_FILE holder=${holder:-unknown}"
+    # The running build reports to Healthchecks for this push too.
+    DEPLOY_PING_ACTIVE=0
     exit 0
   fi
   # Without the marker the running build would never learn about this push, so
@@ -86,6 +185,8 @@ if ! flock -n 9; then
   log "ERROR: another deploy holds the lock and the pending marker is not writable: $PENDING_FILE (whoami=$(whoami))"
   exit 1
 fi
+
+deploy_ping start
 
 if [[ ! -d "$REPO_DIR/content" ]] || [[ ! -d "$REPO_DIR/.git" ]]; then
   log "REPO_DIR does not look like this project root: $REPO_DIR"
@@ -156,6 +257,7 @@ superseded() {
 # Runs after the publish, so the API and the pages that call it change
 # together, and before the smoke checks, so they probe the restarted API.
 API_RESTART_FAILED=0
+PDF_REFRESH_FAILED=0
 restart_api_if_needed() {
   local head running="" reason
   head="$(git rev-parse HEAD)"
@@ -214,8 +316,10 @@ while :; do
   # let the next iteration handle anything newer still.
   if superseded "the static build"; then continue; fi
 
-  # Non-interactive: no URL approval prompt; does not write .approved-urls.json
-  CHECKBUILD_URL_APPROVAL=allow BUILD_MODE=static nvm_pnpm buildstatic
+  # Non-interactive: no URL approval prompt; does not write .approved-urls.json.
+  # PDF_DEFER: guide PDFs that changed but have an older copy ship that copy
+  # now and are rendered after the publish below (see scripts/build-pdfs.mjs).
+  CHECKBUILD_URL_APPROVAL=allow BUILD_MODE=static PDF_DEFER=1 nvm_pnpm buildstatic
 
   if [[ ! -d "$REPO_DIR/out" ]]; then
     log "Build did not produce out/: $REPO_DIR/out"
@@ -248,7 +352,7 @@ while :; do
   # build no longer references, by which point every page on disk is new. It
   # transfers nothing, so it is quick.
   log "Publishing pass 1/2 (add and update, no deletes) → $DEPLOY_TARGET"
-  rsync -a "${RSYNC_EXCLUDE[@]}" "$REPO_DIR/out/" "$DEPLOY_TARGET/"
+  rsync -a "${RSYNC_PERMS[@]}" "${RSYNC_EXCLUDE[@]}" "$REPO_DIR/out/" "$DEPLOY_TARGET/"
 
   # A page fetched in the closing moments of pass 1 still has to come back for
   # its chunks. Hold briefly so those requests land before pass 2 deletes the
@@ -260,7 +364,28 @@ while :; do
   fi
 
   log "Publishing pass 2/2 (prune files the new build dropped) → $DEPLOY_TARGET"
-  rsync -a --delete "${RSYNC_EXCLUDE[@]}" "$REPO_DIR/out/" "$DEPLOY_TARGET/"
+  rsync -a --delete "${RSYNC_PERMS[@]}" "${RSYNC_EXCLUDE[@]}" "$REPO_DIR/out/" "$DEPLOY_TARGET/"
+
+  # Recorded as soon as the docroot holds it, before the steps below that can
+  # still fail the run: those are retried by the next deploy, and a rebuild
+  # would not fix them. A missing record costs one rebuild, so it only warns.
+  if git rev-parse HEAD >"$LIVE_REV_FILE.tmp" && mv -f "$LIVE_REV_FILE.tmp" "$LIVE_REV_FILE"; then
+    log "Live: $(git rev-parse --short HEAD)"
+  else
+    log "WARN: could not record the live commit in $LIVE_REV_FILE"
+  fi
+
+  # A newer push is queued and the next iteration will publish it, so leave the
+  # API restart, smoke checks and deferred PDFs to that iteration rather than
+  # doing them twice. API_REV_FILE does not move, so the API still restarts
+  # when that iteration (or, if it fails, the next deploy) reaches this point.
+  # Until then the API runs the code it had before this deploy, as it did
+  # during the build. A PDF left stale here stays stale in .pdf-cache.json, so
+  # the next build lists it again.
+  if [[ -e "$PENDING_FILE" ]] && (( iteration < MAX_BUILD_ITERATIONS )); then
+    log "Published $(git rev-parse --short HEAD). A newer push is queued, so the API restart, smoke checks and PDF refresh wait for its build."
+    continue
+  fi
 
   restart_api_if_needed
 
@@ -295,6 +420,26 @@ while :; do
     log "Post-deploy smoke checks passed"
   fi
 
+  # Guide PDFs the build deferred: their pages are live with the previous PDF,
+  # so render the new ones now and copy them over it. rsync writes each file
+  # under a temporary name and renames it, so a download never gets half a
+  # PDF. A failure keeps the previous PDF live and fails this deploy, and the
+  # next build lists the PDF again.
+  if [[ -s "$REPO_DIR/.pdf-deferred.json" ]]; then
+    log "Rendering the guide PDFs this build deferred"
+    if nvm_pnpm pdfs:deferred; then
+      PDF_REFRESH_FAILED=0
+    else
+      PDF_REFRESH_FAILED=1
+      log "ERROR: some deferred guide PDFs failed to render (output above); their previous PDFs stay live."
+    fi
+    # Publishes whatever did render, even after a partial failure.
+    rsync -a "${RSYNC_PERMS[@]}" "$REPO_DIR/out/pdf/" "$DEPLOY_TARGET/pdf/"
+    log "Published the re-rendered guide PDFs"
+  else
+    PDF_REFRESH_FAILED=0
+  fi
+
   log "Deploy finished → $DEPLOY_TARGET"
 
   [[ -e "$PENDING_FILE" ]] || break
@@ -305,9 +450,14 @@ while :; do
   log "A newer push arrived during this run; rebuilding."
 done
 
-# Fail the deploy so it shows up on the GitHub run, even though the site itself
+# Fail the deploy so it shows up on the deploy check, even though the site itself
 # is live: the API is still on code this deploy was meant to replace.
 if [[ "$API_RESTART_FAILED" == 1 ]]; then
   log "ERROR: the site is published, but ac-api did not restart onto it. scripts/restart-api.sh on the server retries it by hand."
+  exit 1
+fi
+# Same for guide PDFs: the pages are new, but some of their PDFs are not.
+if [[ "$PDF_REFRESH_FAILED" == 1 ]]; then
+  log "ERROR: the site is published, but some guide PDFs are still the previous version. The next deploy renders them again."
   exit 1
 fi

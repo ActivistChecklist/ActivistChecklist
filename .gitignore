@@ -61,6 +61,7 @@ public/images/og/
 # Guide PDFs (scripts/build-pdfs.mjs): rendered cache and its content hashes
 public/pdf/
 .pdf-cache.json
+.pdf-deferred.json
 # Designed PDFs (scripts/build-designed-pdfs.mjs): same idea, from content/<locale>/pdf/
 public/files/pdf/
 .designed-pdf-cache.json
@@ -74,19 +75,21 @@ metadata-cleaner/
 # SSL check log
 .ssl-check.log
 
-# GitHub deploy webhook secrets (local/server-only; never commit)
-public/webhooks/webhook-secrets.local.php
-public/webhooks/deploy-webhook.error.log
-
 # Deploy lock file (flock in scripts/build-deploy.sh)
 .build-deploy.lock
 
-# Set by a webhook delivery that arrived mid-build; the running deploy rebuilds for it
+# Set when a newer commit arrives mid-build; the running deploy rebuilds for it
 .build-deploy.pending
 
 # The commit ac-api last started from, kept by scripts/build-deploy.sh
 .build-deploy.api-rev
 
-# GitHub webhook deploy log (default path written by public/webhooks/deploy.php)
-.deploy-webhook.log
-.deploy-webhook-auth.log
+# The commit the last publish put live, and what scripts/deploy-poll.sh last
+# started a build for
+.build-deploy.live-rev
+.build-deploy.live-rev.tmp
+.build-deploy.poll
+
+# Deploy log and one-line-per-run history written by scripts/deploy-detached.sh
+.deploy.log
+.deploy-history.log

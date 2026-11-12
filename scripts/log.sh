@@ -19,7 +19,7 @@
 #   trim_log
 #   scripts_log_file_failure_block "FAILED" "$multiline_body"
 #
-# Stderr-only UTC (deploy logs, webhook output):
+# Stderr-only UTC (deploy logs):
 #   source "$SCRIPT_DIR/log.sh"
 #   log() { log_stderr_utc "$@"; }
 #
