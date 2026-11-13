@@ -31,7 +31,6 @@ Abbiamo scelto [May First](https://mayfirst.coop) come hosting proprio perché s
   * È un hosting gestito, quindi è May First a tenere aggiornato il software del server e non dobbiamo fare noi gli aggiornamenti.
   * Quasi tutto il sito è generato in modo statico, cioè ogni pagina è un semplice file HTML. Non c'è nessun database né login, quindi chi vuole attaccarci ha ben poco da prendere di mira.
   * HSTS (`Strict-Transport-Security`), così i browser si collegano a noi solo tramite HTTPS, e una Content Security Policy rigorosa che impedisce agli script delle nostre pagine di collegarsi a qualsiasi altro dominio e impedisce ad altri siti di incorporare il nostro in un frame. Inviamo anche `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, una Referrer-Policy `strict-origin-when-cross-origin` e una Permissions-Policy che disattiva fotocamera, microfono e geolocalizzazione.
-  * I nuovi deploy vengono avviati tramite un webhook, che abbiamo blindato con un po' di magia crittografica in modo che solo la pipeline di GitHub Actions possa avviare un deploy.
 
 </Collapsible>
 

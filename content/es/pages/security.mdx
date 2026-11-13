@@ -31,7 +31,6 @@ Elegimos [May First](https://mayfirst.coop) como nuestro proveedor de hosting ju
   * Es un hosting administrado, así que May First mantiene actualizado el software del servidor y no tenemos que hacer las actualizaciones nosotres.
   * Casi todo el sitio es estático, o sea que cada página es un simple archivo HTML. No tiene base de datos ni inicio de sesión, así que hay muy poco que alguien pueda atacar en primer lugar.
   * HSTS (`Strict-Transport-Security`) para que los navegadores solo se conecten a nosotres por HTTPS, y una Content Security Policy estricta que impide que los scripts de nuestras páginas se conecten a cualquier otro dominio y que otros sitios incrusten el nuestro en un marco. También enviamos `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, una Referrer-Policy `strict-origin-when-cross-origin` y una Permissions-Policy que desactiva la cámara, el micrófono y la geolocalización.
-  * Las nuevas publicaciones del sitio se activan con un webhook, que protegimos con un poco de magia criptográfica para que solo el pipeline de GitHub Actions pueda activar una publicación.
 
 </Collapsible>
 
