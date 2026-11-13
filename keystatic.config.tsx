@@ -369,6 +369,15 @@ const inlineChecklistComponent = wrapper({
   },
 });
 
+const stepListComponent = wrapper({
+  label: 'Step List',
+  description: 'Converts a numbered list into a sequence of steps',
+  schema: {},
+  ContentView(props) {
+    return <div>{props.children}</div>;
+  },
+});
+
 /** Small muted label above a list; renders as an h3 (components/mdx/ListLabel.jsx). */
 const listLabelComponent = mark({
   label: 'List label',
@@ -473,6 +482,7 @@ const contentComponents = {
   MenuPath: menuPathComponent,
   Collapsible: collapsibleComponent,
   InlineChecklist: inlineChecklistComponent,
+  StepList: stepListComponent,
   ListLabel: listLabelComponent,
   ExpandableList: expandableListComponent,
   u: underlineComponent,
