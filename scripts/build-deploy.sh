@@ -222,9 +222,16 @@ init_node() {
 }
 
 GIT_BRANCH="${GIT_BRANCH:-main}"
+# Every build here rewrites this tracked file from Crowdin (`pnpm build` runs
+# crowdin-translation-status.mjs --prebuild). Put it back before pulling, or
+# `git pull --ff-only` refuses any commit that changes it.
+TRANSLATION_STATUS_FILE=data/crowdin-translation-status.json
 
 git_sync() {
   git fetch origin --prune
+  if ! git diff --quiet -- "$TRANSLATION_STATUS_FILE"; then
+    git checkout -- "$TRANSLATION_STATUS_FILE"
+  fi
   git checkout "$GIT_BRANCH"
   if [[ "$GIT_UPDATE_MODE" == "hard-reset" ]]; then
     git reset --hard "origin/$GIT_BRANCH"

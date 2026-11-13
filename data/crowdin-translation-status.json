@@ -1,29 +1,51 @@
 {
   "version": 2,
-  "generatedAt": "2026-10-28T16:53:40.464Z",
+  "generatedAt": "2026-11-13T23:25:22.687Z",
   "thresholds": {
     "unreviewedNoticeMaxApprovalPercent": 80
   },
   "routes": {
-    "action": {
+    "action-safety": {
       "es": {
-        "translationPercent": 97,
-        "approvalPercent": 4,
+        "translationPercent": 100,
+        "approvalPercent": 0,
         "showUnreviewedNotice": true
       },
       "fr": {
-        "translationPercent": 97,
+        "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
       },
       "it": {
-        "translationPercent": 97,
+        "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
       },
       "ja": {
         "translationPercent": 100,
         "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      }
+    },
+    "action": {
+      "es": {
+        "translationPercent": 100,
+        "approvalPercent": 3,
+        "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "ja": {
+        "translationPercent": 100,
+        "approvalPercent": 7,
         "showUnreviewedNotice": true
       }
     },
@@ -45,7 +67,7 @@
       },
       "ja": {
         "translationPercent": 100,
-        "approvalPercent": 0,
+        "approvalPercent": 7,
         "showUnreviewedNotice": true
       }
     },
@@ -89,7 +111,7 @@
       },
       "ja": {
         "translationPercent": 100,
-        "approvalPercent": 0,
+        "approvalPercent": 12,
         "showUnreviewedNotice": true
       }
     },
@@ -111,7 +133,7 @@
       },
       "ja": {
         "translationPercent": 100,
-        "approvalPercent": 0,
+        "approvalPercent": 19,
         "showUnreviewedNotice": true
       }
     },
@@ -133,58 +155,58 @@
       },
       "ja": {
         "translationPercent": 100,
-        "approvalPercent": 0,
+        "approvalPercent": 6,
         "showUnreviewedNotice": true
       }
     },
-    "organizing": {
+    "party": {
       "es": {
-        "translationPercent": 97,
-        "approvalPercent": 2,
+        "translationPercent": 100,
+        "approvalPercent": 0,
         "showUnreviewedNotice": true
       },
       "fr": {
-        "translationPercent": 97,
+        "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
       },
       "it": {
-        "translationPercent": 97,
+        "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
       },
       "ja": {
         "translationPercent": 100,
-        "approvalPercent": 0,
-        "showUnreviewedNotice": true
+        "approvalPercent": 100,
+        "showUnreviewedNotice": false
       }
     },
     "protest": {
       "es": {
-        "translationPercent": 99,
+        "translationPercent": 100,
         "approvalPercent": 15,
         "showUnreviewedNotice": true
       },
       "fr": {
-        "translationPercent": 99,
+        "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
       },
       "it": {
-        "translationPercent": 99,
+        "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
       },
       "ja": {
         "translationPercent": 100,
-        "approvalPercent": 0,
+        "approvalPercent": 5,
         "showUnreviewedNotice": true
       }
     },
     "research": {
       "es": {
         "translationPercent": 100,
-        "approvalPercent": 0,
+        "approvalPercent": 2,
         "showUnreviewedNotice": true
       },
       "fr": {
@@ -199,7 +221,7 @@
       },
       "ja": {
         "translationPercent": 100,
-        "approvalPercent": 0,
+        "approvalPercent": 6,
         "showUnreviewedNotice": true
       }
     },
@@ -221,7 +243,7 @@
       },
       "ja": {
         "translationPercent": 100,
-        "approvalPercent": 0,
+        "approvalPercent": 5,
         "showUnreviewedNotice": true
       }
     },
@@ -243,29 +265,29 @@
       },
       "ja": {
         "translationPercent": 100,
-        "approvalPercent": 0,
+        "approvalPercent": 25,
         "showUnreviewedNotice": true
       }
     },
     "spyware": {
       "es": {
-        "translationPercent": 98,
+        "translationPercent": 100,
         "approvalPercent": 9,
         "showUnreviewedNotice": true
       },
       "fr": {
-        "translationPercent": 98,
+        "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
       },
       "it": {
-        "translationPercent": 98,
+        "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
       },
       "ja": {
         "translationPercent": 100,
-        "approvalPercent": 0,
+        "approvalPercent": 1,
         "showUnreviewedNotice": true
       }
     },
@@ -287,29 +309,29 @@
       },
       "ja": {
         "translationPercent": 100,
-        "approvalPercent": 0,
+        "approvalPercent": 1,
         "showUnreviewedNotice": true
       }
     },
     "whatsapp": {
       "es": {
-        "translationPercent": 99,
-        "approvalPercent": 36,
+        "translationPercent": 100,
+        "approvalPercent": 35,
         "showUnreviewedNotice": true
       },
       "fr": {
-        "translationPercent": 99,
+        "translationPercent": 100,
         "approvalPercent": 33,
         "showUnreviewedNotice": true
       },
       "it": {
-        "translationPercent": 99,
+        "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
       },
       "ja": {
         "translationPercent": 100,
-        "approvalPercent": 0,
+        "approvalPercent": 1,
         "showUnreviewedNotice": true
       }
     },
@@ -331,8 +353,8 @@
       },
       "ja": {
         "translationPercent": 100,
-        "approvalPercent": 0,
-        "showUnreviewedNotice": true
+        "approvalPercent": 97,
+        "showUnreviewedNotice": false
       }
     },
     "contribute": {
@@ -353,7 +375,7 @@
       },
       "ja": {
         "translationPercent": 100,
-        "approvalPercent": 0,
+        "approvalPercent": 3,
         "showUnreviewedNotice": true
       }
     },
@@ -375,7 +397,7 @@
       },
       "ja": {
         "translationPercent": 100,
-        "approvalPercent": 0,
+        "approvalPercent": 6,
         "showUnreviewedNotice": true
       }
     },
@@ -397,7 +419,7 @@
       },
       "ja": {
         "translationPercent": 100,
-        "approvalPercent": 0,
+        "approvalPercent": 1,
         "showUnreviewedNotice": true
       }
     },
@@ -419,7 +441,7 @@
       },
       "ja": {
         "translationPercent": 100,
-        "approvalPercent": 0,
+        "approvalPercent": 3,
         "showUnreviewedNotice": true
       }
     },
@@ -441,33 +463,11 @@
       },
       "ja": {
         "translationPercent": 100,
-        "approvalPercent": 0,
+        "approvalPercent": 1,
         "showUnreviewedNotice": true
       }
     },
     "onion": {
-      "es": {
-        "translationPercent": 100,
-        "approvalPercent": 0,
-        "showUnreviewedNotice": true
-      },
-      "fr": {
-        "translationPercent": 100,
-        "approvalPercent": 0,
-        "showUnreviewedNotice": true
-      },
-      "it": {
-        "translationPercent": 100,
-        "approvalPercent": 0,
-        "showUnreviewedNotice": true
-      },
-      "ja": {
-        "translationPercent": 100,
-        "approvalPercent": 0,
-        "showUnreviewedNotice": true
-      }
-    },
-    "party": {
       "es": {
         "translationPercent": 100,
         "approvalPercent": 0,
@@ -507,29 +507,29 @@
       },
       "ja": {
         "translationPercent": 100,
-        "approvalPercent": 0,
+        "approvalPercent": 2,
         "showUnreviewedNotice": true
       }
     },
     "privacy": {
       "es": {
-        "translationPercent": 99,
+        "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
       },
       "fr": {
-        "translationPercent": 99,
+        "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
       },
       "it": {
-        "translationPercent": 99,
+        "translationPercent": 100,
         "approvalPercent": 0,
         "showUnreviewedNotice": true
       },
       "ja": {
         "translationPercent": 100,
-        "approvalPercent": 0,
+        "approvalPercent": 2,
         "showUnreviewedNotice": true
       }
     },
@@ -551,7 +551,29 @@
       },
       "ja": {
         "translationPercent": 100,
+        "approvalPercent": 100,
+        "showUnreviewedNotice": false
+      }
+    },
+    "security": {
+      "es": {
+        "translationPercent": 100,
         "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "fr": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "it": {
+        "translationPercent": 100,
+        "approvalPercent": 0,
+        "showUnreviewedNotice": true
+      },
+      "ja": {
+        "translationPercent": 100,
+        "approvalPercent": 42,
         "showUnreviewedNotice": true
       }
     },

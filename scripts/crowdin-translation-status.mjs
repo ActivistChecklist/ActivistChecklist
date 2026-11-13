@@ -12,17 +12,25 @@
  * locales Crowdin does not have yet are skipped with a note.
  *
  * pnpm crowdin:translation-status
+ *
+ * --prebuild (run by `pnpm build`) refreshes the file before every production build. It runs
+ * only where CROWDIN_TRANSLATION_STATUS_API_KEY is set, which should be the production server's
+ * .env.production and nowhere else. Other builds (CI, Railway previews, local) skip it and use
+ * the committed file. It never fails the build: on any error it warns and leaves the file alone.
+ * scripts/build-deploy.sh discards the rewritten file before each git pull on the server.
  */
-
-try {
-  process.loadEnvFile();
-} catch {}
 
 import fs from 'fs';
 import path from 'path';
+import pkg from '@next/env';
 import { parseFrontmatter } from '../lib/frontmatter.cjs';
 import { glob as globAsync } from 'node:fs/promises';
 import { LOCALES, DEFAULT_LOCALE } from '../lib/i18n-config.mjs';
+
+const { loadEnvConfig } = pkg;
+// Production mode loads .env.production, where the server keeps the key. Gate on NODE_ENV like
+// scripts/fetch-endoflife-snapshot.mjs so local runs only read the dev env files.
+loadEnvConfig(process.cwd(), process.env.NODE_ENV !== 'production');
 
 const c = {
   reset: '\x1b[0m',
@@ -37,9 +45,29 @@ const c = {
   white: '\x1b[97m',
 };
 
-const TOKEN = process.env.CROWDIN_TRANSLATION_STATUS_API_KEY || process.env.CROWDIN_PERSONAL_TOKEN;
-const PROJECT_ID = process.env.CROWDIN_PROJECT_ID;
+const PREBUILD = process.argv.includes('--prebuild');
+
+/**
+ * Reads the value straight from the environment. On the server, .env.production holds the real
+ * token. A local scripts/deploy.sh build (NODE_ENV=production) loads .env.production.local
+ * instead, whose values are {{ op://... }} placeholder text; treat that as unset so the
+ * placeholder is never sent to Crowdin as a token. Nothing here runs `op`.
+ */
+function envValue(name) {
+  const value = process.env[name]?.trim();
+  return value && !value.startsWith('{{') ? value : '';
+}
+
+// The build only uses the dedicated key, so local builds with a personal token in .env skip.
+const TOKEN = PREBUILD
+  ? envValue('CROWDIN_TRANSLATION_STATUS_API_KEY')
+  : envValue('CROWDIN_TRANSLATION_STATUS_API_KEY') || envValue('CROWDIN_PERSONAL_TOKEN');
+const PROJECT_ID = envValue('CROWDIN_PROJECT_ID');
 const BASE_URL = 'https://api.crowdin.com/api/v2';
+// Bounds a build that runs this: a hung request or a long Retry-After would stall the deploy.
+const REQUEST_TIMEOUT_MS = 30_000;
+const MAX_RATE_LIMIT_RETRIES = 5;
+const MAX_RETRY_AFTER_SEC = 30;
 /** Every non-default app locale; each is matched against project targetLanguageIds (e.g. es → es-ES). */
 const TARGET_LOCALES = Object.keys(LOCALES).filter((l) => l !== DEFAULT_LOCALE);
 /** Show PageNotices warning when aggregated approval is strictly below this percent. */
@@ -63,15 +91,19 @@ async function crowdinFetch(apiPath, { method = 'GET', body } = {}) {
     'Content-Type': 'application/json',
   };
 
-  while (true) {
+  for (let attempt = 0; ; attempt++) {
     const res = await fetch(url, {
       method,
       headers,
       body: body ? JSON.stringify(body) : undefined,
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
     });
 
-    if (res.status === 429) {
-      const retryAfter = parseFloat(res.headers.get('Retry-After') || '1');
+    if (res.status === 429 && attempt < MAX_RATE_LIMIT_RETRIES) {
+      const retryAfter = Math.min(
+        parseFloat(res.headers.get('Retry-After')) || 1,
+        MAX_RETRY_AFTER_SEC,
+      );
       console.log(`  ${c.yellow}Rate limited — waiting ${retryAfter}s...${c.reset}`);
       await new Promise((r) => setTimeout(r, retryAfter * 1000));
       continue;
@@ -271,6 +303,13 @@ function aggregateProgressRows(rows) {
 }
 
 async function run() {
+  if (PREBUILD && (!TOKEN || !PROJECT_ID)) {
+    console.log(
+      `${c.gray}Translation status: CROWDIN_TRANSLATION_STATUS_API_KEY or CROWDIN_PROJECT_ID not set; using the committed data.${c.reset}`,
+    );
+    return;
+  }
+
   console.log(`\n${c.bold}${c.cyan}=== Crowdin translation status (static JSON) ===${c.reset}\n`);
 
   if (!TOKEN || !PROJECT_ID) {
@@ -301,6 +340,10 @@ async function run() {
     const { file } = findCrowdinFile(repoPath, crowdinFiles);
     if (file?.id) fileIdByRepoPath.set(repoPath, file.id);
     else missingCrowdin.push(repoPath);
+  }
+  // Writing now would mark every route unknown, so every translated page would show a 0% notice.
+  if (fileIdByRepoPath.size === 0) {
+    throw new Error('no content file matched a Crowdin source file');
   }
 
   /** Route slug → repo paths whose progress rolls up into it (guides include their checklist items). */
@@ -405,6 +448,8 @@ async function run() {
       `${c.yellow}Warning:${c.reset} ${missingProgress.size} source files had no progress row in Crowdin.`,
     );
   }
+  // The per-locale route lists are for someone running this by hand, not the build log.
+  if (PREBUILD) return;
 
   for (const locale of TARGET_LOCALES) {
     const flagged = Object.entries(routes).filter(
@@ -424,6 +469,13 @@ async function run() {
 }
 
 run().catch((err) => {
+  if (PREBUILD) {
+    // The file is only written after every request succeeds, so it is still the committed copy.
+    console.warn(
+      `${c.yellow}Warning:${c.reset} could not refresh translation status (${err.message}); using the committed data.`,
+    );
+    return;
+  }
   console.error(`${c.red}Fatal:${c.reset}`, err.message);
   process.exit(1);
 });
