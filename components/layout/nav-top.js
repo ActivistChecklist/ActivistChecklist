@@ -189,11 +189,14 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                 className="flex items-center space-x-2 ml-0 font-bold text-xl"
                 aria-label={navigationConfig.logo.ariaLabel}
               >
+                {/* Eager because it's at the top of every page. Lazy loading left the
+                    header blank for a moment, which is longer on slow connections like Tor. */}
                 <Image
                   src={navigationConfig.logo.image}
                   alt={navigationConfig.logo.ariaLabel}
                   width={250}
                   height={30}
+                  loading="eager"
                   className="dark:hidden"
                 />
                 <Image
@@ -201,6 +204,7 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                   alt={navigationConfig.logo.ariaLabel}
                   width={250}
                   height={30}
+                  loading="eager"
                   className="hidden dark:block"
                 />
               </Link>

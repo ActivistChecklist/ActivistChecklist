@@ -33,7 +33,7 @@ const NewsBlock = ({ newsItems = [], limit = HOMEPAGE_NEWS_LIMIT }) => {
 
       <div className="space-y-4">
         {recentNews.map((item) => (
-          <NewsItem key={item.slug} entry={item} />
+          <NewsItem key={item.slug} entry={item} showTags={false} />
         ))}
       </div>
     </section>

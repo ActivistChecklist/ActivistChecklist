@@ -6,6 +6,7 @@ import { remark } from 'remark';
 import remarkGfm from 'remark-gfm';
 import remarkHtml from 'remark-html';
 import { applyPaywallBypassHref } from '../lib/paywall-bypass-url.js';
+import { stripSourceSuffix } from '../lib/news-title.cjs';
 import { sectionStart, sectionEnd, detail } from './lib/build-cli.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -135,7 +136,7 @@ async function generateNewsRSS() {
     await addMarkdownFeedItem(
       feed,
       {
-        title: fm.title || 'News Item',
+        title: stripSourceSuffix(fm.title, source) || 'News Item',
         id: canonicalArticleUrl,
         link: rssArticleUrl,
         author: [{ ...DEFAULT_AUTHOR, name: source || DEFAULT_AUTHOR.name }],

@@ -1,7 +1,7 @@
 {
   "site": {
     "title": "Digital Security Checklists for Activists",
-    "description": "Plain language steps for digital security. Because protecting yourself helps keep your whole community safer."
+    "description": "Plain language steps for digital security and protest safety."
   },
   "faq": {
     "defaultTitle": "Frequently asked questions"
@@ -47,33 +47,32 @@
   },
   "hero": {
     "title": "Digital Security Checklists for Activists",
-    "description": "Plain language steps for digital security. Because protecting yourself helps keep your whole community safer.",
+    "description": "Plain language steps for digital security and protest safety.",
     "primaryCta": "Digital Security Essentials",
     "secondaryCta": "Host a security party"
   },
   "trustPoints": {
-    "experienceTitle": "Built from experience",
-    "experienceDescription": "Our guides draw from real organizing work and direct feedback from activists. While every situation is unique, we aim to share practical insights that can help inform your decisions.",
-    "updatedTitle": "Regularly updated",
-    "updatedDescription": "Our content is regularly reviewed by organizers who understand security concerns. We work to keep information current as risks and technologies evolve."
+    "whyTitle": "Why we built this site",
+    "whyDescription": "Looking around, we found that existing resources were either too simple or too complicated. We wanted to create a way for folks to achieve better security without needing to become experts themselves.",
+    "reviewedTitle": "Reviewed by folks on the front lines",
+    "reviewedDescription": "All of our guides are reviewed by multiple experts in security and safety who are working closely with activists and organizers on the front lines.",
+    "privacyTitle": "Protecting your privacy",
+    "privacyDescription": "We know that sites like this can become the target of state surveillance, so we went to great lengths to <privacy>not collect identifiable information</privacy>. We also put a lot of energy into the site's <security>security</security>."
   },
   "misconceptions": {
-    "sectionTitle": "Common Misconceptions",
-    "sectionDescription": "When we start talking about digital security, we often hear these concerns. We think there's more to the story.",
     "nothingToHideTitle": "\"I have nothing to hide\"",
-    "nothingToHideDescription": "The more engaged you are in any social movement work, the more your data can be used to map networks of activists. The best time to start protecting yourself is <b>before</b> you're as deeply involved.",
-    "alreadyKnowTitle": "\"They already know everything\"",
-    "alreadyKnowDescription": "While data collection is widespread, you can significantly reduce your digital footprint and protect future activities.",
-    "dontCareTitle": "\"They don't care about what I'm doing\"",
-    "dontCareDescription": "Mass surveillance affects everyone. Your data can be used to profile communities, predict protests, or target those you care about. Protecting your communications helps protect all of us."
+    "nothingToHideNetworks": "We hear this concern a lot when training folks on activist privacy. Here's the deal: When police access one person's phone, they can map entire activist networks (your contacts, your Signal chats, your location history, and more). So it's not just about your personal security. Ask yourself: \"If my devices and data were in the hands of the government, is my security strong enough to keep the people in my network safe?\""
   },
   "featured": {
     "sectionTitle": "Sites that have shared our guides"
   },
   "homepage": {
+    "situationLinksLabel": "Checklists by situation",
     "browseAll": "See all checklists",
-    "trustHeading": "Simple guides to keep us more safe",
-    "trustDescription": "We built this because digital security shouldn't be overwhelming. We take a harm reduction approach: start where you are and do what you can.",
+    "whoBuiltHeading": "Who built this",
+    "whoBuiltDescription": "The crew that built this has been doing community organizing, activism, and direct actions for decades.",
+    "whoBuiltAnonymous": "We are currently choosing to remain anonymous in an attempt to preserve our own privacy given the risks involved in this kind of work.",
+    "aboutLink": "About this site",
     "latestNewsHeading": "Latest Surveillance News",
     "viewAllNews": "View all news",
     "toolsHeading": "Tools we built",
@@ -81,7 +80,8 @@
     "viewAllTools": "See all tools",
     "recentUpdatesHeading": "Recent Site Updates",
     "viewAllUpdates": "View all updates",
-    "noRecentChanges": "No recent changes available"
+    "noRecentChanges": "No recent changes available",
+    "newsletterDescription": "We host our own newsletter software so your email address is more protected. You can use an <link>email alias service</link> for additional privacy."
   },
   "translationFallback": {
     "message": "This page is not yet available in your language. You are viewing the English version.",
@@ -125,7 +125,7 @@
   "footer": {
     "branding": {
       "title": "Activist Checklist",
-      "description": "Plain language steps for digital security, because protecting yourself helps keep your whole community safer."
+      "description": "Plain language steps for digital security and protest safety."
     },
     "stayUpdated": "Stay Updated",
     "sections": {
