@@ -10,7 +10,6 @@ import RelatedGuides from '@/components/RelatedGuides';
 import { LOCALES } from '@/lib/i18n-config';
 import { parseRelatedGuides } from '@/lib/related-guides';
 import PageNotices from '@/components/layout/PageNotices';
-import AnswerCapsule from '@/components/AnswerCapsule';
 import SectionBreadcrumb from '@/components/SectionBreadcrumb';
 import { CHECKLIST_SECTIONS, CHECKLIST_SECTION_KEYS, NAV_ITEM_DATA } from '@/config/navigation';
 import { findSectionForPage } from '@/lib/checklist-sections';
@@ -61,7 +60,6 @@ export default function Page({
       <PageNotices initialNotices={notices} />
       {metaBarItems.length > 0 && <MetaBar items={metaBarItems} />}
       {frontmatter.showToc === true && <MobileTableOfContents />}
-      <AnswerCapsule text={frontmatter.answerCapsule} />
       <div className="prose prose-slate max-w-none">
         {serializedBody && <MDXRemote {...serializedBody} components={mdxComponents} />}
       </div>
