@@ -154,11 +154,9 @@
     }
   },
   "inlineCta": {
-    "heading": "Quand leurs tactiques changent, nos conseils aussi",
-    "description": "L'ICE, les flics et la surveillance des entreprises ajoutent sans cesse de nouveaux outils. On met à jour ces guides pour suivre le rythme. Abonne-toi pour être prévenu·e quand quelque chose d'important change.",
+    "title": "Reçois un e-mail quand on publie de nouveaux guides",
     "buttonText": "S'abonner",
     "emailAriaLabel": "Adresse e-mail",
-    "privacyLink": "Politique de confidentialité",
     "dismissLabel": "Ne plus afficher"
   },
   "common": {
