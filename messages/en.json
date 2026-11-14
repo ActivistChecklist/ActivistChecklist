@@ -154,11 +154,9 @@
     }
   },
   "inlineCta": {
-    "heading": "When their tactics change, our advice does too",
-    "description": "ICE, police, and corporate surveillance keep adding new tools. We update these guides to keep pace. Subscribe to hear when something important shifts.",
+    "title": "Get email updates when we add new guides",
     "buttonText": "Subscribe",
     "emailAriaLabel": "Email address",
-    "privacyLink": "Privacy policy",
     "dismissLabel": "Don't show this again"
   },
   "common": {
