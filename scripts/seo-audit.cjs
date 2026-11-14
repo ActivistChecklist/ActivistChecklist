@@ -25,7 +25,6 @@ const TOP_GUIDE_SLUGS = [
   'secondary',
   'emergency',
 ];
-const FAQ_GUIDE_SLUGS = ['signal', 'travel'];
 
 const DESC_MIN = 70;
 const DESC_MAX = 160;
@@ -35,16 +34,10 @@ const CONTENT_ROOT = path.join(process.cwd(), 'content', 'en');
 
 // ─── Pure rule evaluators (exported for tests) ─────────────────
 
-function hasFaqBlock(body) {
-  if (!body) return false;
-  return /<FAQ(\s|>)/.test(body);
-}
-
 function evaluatePage({ kind, slug, frontmatter, body }) {
   const findings = [];
   const fm = frontmatter || {};
   const isTopGuide = kind === 'guide' && TOP_GUIDE_SLUGS.includes(slug);
-  const isFaqGuide = kind === 'guide' && FAQ_GUIDE_SLUGS.includes(slug);
 
   // seoDescription required for all guides + pages
   const desc = fm.seoDescription;
@@ -93,14 +86,6 @@ function evaluatePage({ kind, slug, frontmatter, body }) {
     findings.push({
       severity: 'warn',
       message: `seoTitle is ${String(fm.seoTitle).length} chars; aim under ${TITLE_MAX}`,
-    });
-  }
-
-  // FAQ block warning for top-3 guides
-  if (isFaqGuide && !hasFaqBlock(body)) {
-    findings.push({
-      severity: 'warn',
-      message: 'top-3 guide is missing a <FAQ> block in the body',
     });
   }
 
@@ -226,8 +211,6 @@ module.exports = {
   evaluatePage,
   findDuplicateDescriptions,
   formatReport,
-  hasFaqBlock,
   runAudit,
   TOP_GUIDE_SLUGS,
-  FAQ_GUIDE_SLUGS,
 };

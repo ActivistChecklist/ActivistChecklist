@@ -24,7 +24,7 @@ feeds() {
 
 seo_audit() {
   build_section "🔍" "Post-build — SEO audit"
-  build_detail "Checks seoDescription / seoTitle / FAQ coverage"
+  build_detail "Checks seoDescription and seoTitle coverage"
   node scripts/seo-audit.cjs || true
   build_section_done 0 "SEO audit complete (non-blocking)"
 }
