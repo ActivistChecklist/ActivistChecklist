@@ -154,11 +154,9 @@
     }
   },
   "inlineCta": {
-    "heading": "Cuando cambian sus tácticas, también cambia nuestro consejo",
-    "description": "ICE, la cops y la vigilancia corporativa no paran de sumar nuevas herramientas. Actualizamos estas guías para seguirles el ritmo. Suscríbete para enterarte cuando algo importante cambie.",
+    "title": "Recibe novedades por correo cuando publiquemos nuevas guías",
     "buttonText": "Suscribirse",
     "emailAriaLabel": "Correo electrónico",
-    "privacyLink": "Política de privacidad",
     "dismissLabel": "No volver a mostrar"
   },
   "common": {
