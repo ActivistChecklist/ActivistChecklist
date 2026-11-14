@@ -1,7 +1,7 @@
 {
   "site": {
     "title": "Checklist di sicurezza digitale per attivistə",
-    "description": "Passi semplici e chiari per la sicurezza digitale. Perché proteggere te stessə aiuta a tenere più al sicuro tutta la tua comunità."
+    "description": "Passi chiari e semplici per la sicurezza digitale e la sicurezza alle proteste."
   },
   "faq": {
     "defaultTitle": "Domande frequenti"
@@ -47,33 +47,32 @@
   },
   "hero": {
     "title": "Checklist di sicurezza digitale per attivistə",
-    "description": "Passi semplici e chiari per la sicurezza digitale. Perché proteggere te stessə aiuta a tenere più al sicuro tutta la tua comunità.",
+    "description": "Passi chiari e semplici per la sicurezza digitale e la sicurezza alle proteste.",
     "primaryCta": "Le basi della sicurezza digitale",
     "secondaryCta": "Organizza un incontro sulla sicurezza"
   },
   "trustPoints": {
-    "experienceTitle": "Nato dall'esperienza",
-    "experienceDescription": "Le nostre guide nascono da un vero lavoro di organizzazione e dai riscontri diretti di chi fa attivismo. Ogni situazione è diversa, ma vogliamo condividere consigli pratici che ti aiutino a prendere le tue decisioni.",
-    "updatedTitle": "Aggiornato regolarmente",
-    "updatedDescription": "I nostri contenuti vengono rivisti regolarmente da persone che fanno organizzazione e conoscono bene i problemi di sicurezza. Facciamo il possibile per tenere le informazioni aggiornate man mano che i rischi e le tecnologie cambiano."
+    "whyTitle": "Perché abbiamo creato questo sito",
+    "whyDescription": "Guardandoci intorno, abbiamo visto che le risorse esistenti erano troppo semplici o troppo complicate. Volevamo creare un modo per aiutare le persone a proteggersi meglio senza dover diventare esperte.",
+    "reviewedTitle": "Revisionato da chi è in prima linea",
+    "reviewedDescription": "Tutte le nostre guide sono revisionate da più persone esperte di sicurezza che lavorano a stretto contatto con chi fa attivismo e organizzazione in prima linea.",
+    "privacyTitle": "Proteggere la tua privacy",
+    "privacyDescription": "Sappiamo che siti come questo possono finire nel mirino della sorveglianza statale, quindi ci siamo impegnati al massimo per <privacy>non raccogliere informazioni identificabili</privacy>. Abbiamo anche investito molte energie nella <security>sicurezza</security> del sito."
   },
   "misconceptions": {
-    "sectionTitle": "Falsi miti comuni",
-    "sectionDescription": "Quando iniziamo a parlare di sicurezza digitale, sentiamo spesso queste obiezioni. Secondo noi la questione è più complessa.",
     "nothingToHideTitle": "\"Non ho niente da nascondere\"",
-    "nothingToHideDescription": "Più ti impegni nei movimenti sociali, più i tuoi dati possono essere usati per mappare le reti di attivistə. Il momento migliore per iniziare a proteggerti è <b>prima</b> di esserci dentro fino al collo.",
-    "alreadyKnowTitle": "\"Sanno già tutto\"",
-    "alreadyKnowDescription": "La raccolta di dati è ovunque, ma puoi ridurre parecchio la tua impronta digitale e proteggere le tue attività future.",
-    "dontCareTitle": "\"Non gliene importa niente di quello che faccio\"",
-    "dontCareDescription": "La sorveglianza di massa colpisce tuttə. I tuoi dati possono servire a schedare intere comunità, prevedere proteste o prendere di mira le persone a cui tieni. Proteggere le tue comunicazioni aiuta a proteggere tuttə noi."
+    "nothingToHideNetworks": "Sentiamo spesso questa obiezione quando facciamo formazione sulla privacy a chi fa attivismo. Il punto è questo: quando gli sbirri mettono le mani sul telefono di una persona, possono ricostruire intere reti di militanti (i tuoi contatti, le tue chat su Signal, la cronologia delle tue posizioni e molto altro). Quindi non si tratta solo della tua sicurezza personale. Chiediti: \"Se i miei dispositivi e i miei dati finissero nelle mani del governo, la mia sicurezza sarebbe abbastanza solida da proteggere le persone della mia rete?\""
   },
   "featured": {
     "sectionTitle": "Siti che hanno condiviso le nostre guide"
   },
   "homepage": {
+    "situationLinksLabel": "Checklist per situazione",
     "browseAll": "Vedi tutte le checklist",
-    "trustHeading": "Guide semplici per stare più al sicuro",
-    "trustDescription": "Abbiamo creato questo sito perché la sicurezza digitale non dovrebbe essere opprimente. Seguiamo un approccio di riduzione del danno: parti da dove sei e fai quello che puoi.",
+    "whoBuiltHeading": "Chi ha creato questo sito",
+    "whoBuiltDescription": "Il gruppo che ha costruito questo sito fa organizzazione di comunità, attivismo e azione diretta da decenni.",
+    "whoBuiltAnonymous": "Per ora scegliamo di restare anonimi per proteggere la nostra privacy, visti i rischi che questo tipo di lavoro comporta.",
+    "aboutLink": "Su questo sito",
     "latestNewsHeading": "Ultime notizie sulla sorveglianza",
     "viewAllNews": "Vedi tutte le notizie",
     "toolsHeading": "Strumenti che abbiamo creato",
@@ -81,7 +80,8 @@
     "viewAllTools": "Vedi tutti gli strumenti",
     "recentUpdatesHeading": "Aggiornamenti recenti del sito",
     "viewAllUpdates": "Vedi tutti gli aggiornamenti",
-    "noRecentChanges": "Nessuna modifica recente"
+    "noRecentChanges": "Nessuna modifica recente",
+    "newsletterDescription": "Gestiamo in autonomia il software della nostra newsletter, così il tuo indirizzo email è più protetto. Per una privacy ancora maggiore, puoi usare un <link>servizio di alias email</link>."
   },
   "translationFallback": {
     "message": "Questa pagina non è ancora disponibile nella tua lingua. Stai vedendo la versione in inglese.",
@@ -125,7 +125,7 @@
   "footer": {
     "branding": {
       "title": "Activist Checklist",
-      "description": "Passi semplici e chiari per la sicurezza digitale, perché proteggere te stessə aiuta a rendere più sicura tutta la tua comunità."
+      "description": "Passi chiari e semplici per la sicurezza digitale e la sicurezza alle proteste."
     },
     "stayUpdated": "Resta aggiornatə",
     "sections": {
