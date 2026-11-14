@@ -1,7 +1,7 @@
 {
   "site": {
     "title": "Checklists de sécurité numérique pour militant·es",
-    "description": "Des étapes simples pour ta sécurité numérique. Parce que te protéger, c'est aussi protéger toute ta communauté."
+    "description": "Des étapes simples et claires pour la sécurité numérique et la sécurité en manif."
   },
   "faq": {
     "defaultTitle": "Questions fréquentes"
@@ -47,33 +47,32 @@
   },
   "hero": {
     "title": "Checklists de sécurité numérique pour militant·es",
-    "description": "Des étapes simples pour ta sécurité numérique. Parce que te protéger, c'est aussi protéger toute ta communauté.",
+    "description": "Des étapes simples et claires pour la sécurité numérique et la sécurité en manif.",
     "primaryCta": "Les bases de la sécurité numérique",
     "secondaryCta": "Organiser une soirée sécurité"
   },
   "trustPoints": {
-    "experienceTitle": "Basé sur l'expérience",
-    "experienceDescription": "Nos guides s'appuient sur un vrai travail d'organisation et sur les retours directs de militant·es. Chaque situation est unique, mais on essaie de partager des conseils pratiques pour t'aider à prendre tes décisions.",
-    "updatedTitle": "Mis à jour régulièrement",
-    "updatedDescription": "Notre contenu est régulièrement relu par des organisateur·rices qui connaissent bien les enjeux de sécurité. On s'efforce de garder les infos à jour à mesure que les risques et les technologies évoluent."
+    "whyTitle": "Pourquoi on a créé ce site",
+    "whyDescription": "En faisant le tour, on s'est rendu compte que les ressources existantes étaient soit trop simplistes, soit trop compliquées. On voulait permettre à tout le monde d'améliorer sa sécurité sans avoir à devenir expert·e.",
+    "reviewedTitle": "Relu par des personnes en première ligne",
+    "reviewedDescription": "Tous nos guides sont relus par plusieurs expert·es en sécurité qui travaillent main dans la main avec des militant·es et des organisateur·ices en première ligne.",
+    "privacyTitle": "Protéger ta vie privée",
+    "privacyDescription": "On sait que des sites comme celui-ci peuvent devenir la cible de la surveillance d'État, alors on a tout fait pour <privacy>ne collecter aucune information permettant de t'identifier</privacy>. On a aussi mis beaucoup d'énergie dans la <security>sécurité</security> du site."
   },
   "misconceptions": {
-    "sectionTitle": "Idées reçues",
-    "sectionDescription": "Quand on commence à parler de sécurité numérique, on entend souvent ces réactions. On pense qu'il y a plus à dire.",
     "nothingToHideTitle": "« Je n'ai rien à cacher »",
-    "nothingToHideDescription": "Plus tu t'impliques dans un mouvement social, plus tes données peuvent servir à cartographier les réseaux militants. Le meilleur moment pour commencer à te protéger, c'est <b>avant</b> d'être trop impliqué·e.",
-    "alreadyKnowTitle": "« Ils savent déjà tout »",
-    "alreadyKnowDescription": "La collecte de données est partout, mais tu peux réduire nettement ton empreinte numérique et protéger tes activités futures.",
-    "dontCareTitle": "« Ce que je fais ne les intéresse pas »",
-    "dontCareDescription": "La surveillance de masse touche tout le monde. Tes données peuvent servir à ficher des communautés, anticiper des manifs ou cibler tes proches. Protéger tes communications, c'est nous protéger tou·tes."
+    "nothingToHideNetworks": "On entend souvent cette inquiétude quand on forme des gens à la protection de la vie privée militante. Voilà le truc : quand les flics accèdent au téléphone d'une seule personne, ils peuvent cartographier des réseaux militants entiers (tes contacts, tes conversations Signal, ton historique de localisation, et plus encore). Donc ce n'est pas seulement une question de sécurité personnelle. Pose-toi la question : « Si mes appareils et mes données tombaient entre les mains du gouvernement, est-ce que ma sécurité serait assez solide pour protéger les personnes de mon réseau ? »"
   },
   "featured": {
     "sectionTitle": "Sites qui ont partagé nos guides"
   },
   "homepage": {
+    "situationLinksLabel": "Checklists par situation",
     "browseAll": "Voir toutes les checklists",
-    "trustHeading": "Des guides simples pour mieux nous protéger",
-    "trustDescription": "On a créé ce site parce que la sécurité numérique ne devrait pas être écrasante. On adopte une approche de réduction des risques : commence là où tu en es et fais ce que tu peux.",
+    "whoBuiltHeading": "Qui a créé ce site",
+    "whoBuiltDescription": "L'équipe derrière ce site fait de l'organisation communautaire, du militantisme et des actions directes depuis des décennies.",
+    "whoBuiltAnonymous": "Pour l'instant, on choisit de rester anonymes pour protéger notre propre vie privée, vu les risques liés à ce genre de travail.",
+    "aboutLink": "À propos de ce site",
     "latestNewsHeading": "Dernières actus sur la surveillance",
     "viewAllNews": "Voir toutes les actus",
     "toolsHeading": "Nos outils",
@@ -81,7 +80,8 @@
     "viewAllTools": "Voir tous les outils",
     "recentUpdatesHeading": "Mises à jour récentes du site",
     "viewAllUpdates": "Voir toutes les mises à jour",
-    "noRecentChanges": "Aucun changement récent"
+    "noRecentChanges": "Aucun changement récent",
+    "newsletterDescription": "On héberge notre propre logiciel de newsletter pour mieux protéger ton adresse e-mail. Tu peux utiliser un <link>service d'alias e-mail</link> pour encore plus de confidentialité."
   },
   "translationFallback": {
     "message": "Cette page n'est pas encore disponible dans ta langue. Tu consultes la version anglaise.",
@@ -125,7 +125,7 @@
   "footer": {
     "branding": {
       "title": "Activist Checklist",
-      "description": "Des étapes simples pour ta sécurité numérique, parce que te protéger, c'est aussi protéger toute ta communauté."
+      "description": "Des étapes simples et claires pour la sécurité numérique et la sécurité en manif."
     },
     "stayUpdated": "Reste informé·e",
     "sections": {
@@ -154,11 +154,9 @@
     }
   },
   "inlineCta": {
-    "heading": "Quand leurs tactiques changent, nos conseils aussi",
-    "description": "L'ICE, les flics et la surveillance des entreprises ajoutent sans cesse de nouveaux outils. On met à jour ces guides pour suivre le rythme. Abonne-toi pour être prévenu·e quand quelque chose d'important change.",
+    "title": "Reçois un e-mail quand on publie de nouveaux guides",
     "buttonText": "S'abonner",
     "emailAriaLabel": "Adresse e-mail",
-    "privacyLink": "Politique de confidentialité",
     "dismissLabel": "Ne plus afficher"
   },
   "common": {
