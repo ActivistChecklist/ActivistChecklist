@@ -30,19 +30,10 @@ const FAQ_GUIDE_SLUGS = ['signal', 'travel'];
 const DESC_MIN = 70;
 const DESC_MAX = 160;
 const TITLE_MAX = 60;
-const CAPSULE_WORDS_MIN = 30;
-const CAPSULE_WORDS_MAX = 90;
 
 const CONTENT_ROOT = path.join(process.cwd(), 'content', 'en');
 
 // ─── Pure rule evaluators (exported for tests) ─────────────────
-
-function wordCount(s) {
-  return String(s || '')
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean).length;
-}
 
 function hasFaqBlock(body) {
   if (!body) return false;
@@ -103,24 +94,6 @@ function evaluatePage({ kind, slug, frontmatter, body }) {
       severity: 'warn',
       message: `seoTitle is ${String(fm.seoTitle).length} chars; aim under ${TITLE_MAX}`,
     });
-  }
-
-  // answerCapsule warning for top guides
-  if (isTopGuide) {
-    if (!fm.answerCapsule || !String(fm.answerCapsule).trim()) {
-      findings.push({
-        severity: 'warn',
-        message: 'top-8 guide is missing answerCapsule',
-      });
-    } else {
-      const wc = wordCount(fm.answerCapsule);
-      if (wc < CAPSULE_WORDS_MIN || wc > CAPSULE_WORDS_MAX) {
-        findings.push({
-          severity: 'warn',
-          message: `answerCapsule is ${wc} words; aim ${CAPSULE_WORDS_MIN}–${CAPSULE_WORDS_MAX}`,
-        });
-      }
-    }
   }
 
   // FAQ block warning for top-3 guides
@@ -254,7 +227,6 @@ module.exports = {
   findDuplicateDescriptions,
   formatReport,
   hasFaqBlock,
-  wordCount,
   runAudit,
   TOP_GUIDE_SLUGS,
   FAQ_GUIDE_SLUGS,

@@ -930,12 +930,6 @@ export default config({
             '140–160 chars. Answer-first. Lead with what the reader will do. Plain language, no jargon, no marketing words, no em-dashes.',
           multiline: true,
         }),
-        answerCapsule: fields.text({
-          label: 'Answer capsule (optional)',
-          description:
-            '40–60 word direct answer to this page’s implicit search question. Renders at the top of the guide. AI engines often quote this verbatim.',
-          multiline: true,
-        }),
         relatedGuides: relatedGuidesField,
         firstPublished: fields.date({ label: 'First Published' }),
         lastUpdated: fields.date({ label: 'Last Updated' }),
@@ -1023,12 +1017,6 @@ export default config({
           label: 'Summary (optional)',
           description:
             'One or two plain sentences. Used as the meta description when SEO meta description is blank.',
-          multiline: true,
-        }),
-        answerCapsule: fields.text({
-          label: 'Answer capsule (optional)',
-          description:
-            '40–60 word direct answer to this page’s implicit search question. Renders at the top of the page. AI engines often quote this verbatim.',
           multiline: true,
         }),
         image: fields.image({

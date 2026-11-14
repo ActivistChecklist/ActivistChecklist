@@ -25,7 +25,6 @@ import { LOCALES } from '@/lib/i18n-config';
 import { parseRelatedGuides } from '@/lib/related-guides';
 import { formatContentDate } from '@/lib/utils';
 import PageNotices from '@/components/layout/PageNotices';
-import AnswerCapsule from '@/components/AnswerCapsule';
 import { MobileTableOfContents } from '@/components/layout/TableOfContentsSidebar';
 import PrintNotice from '@/components/guides/PrintNotice';
 import { pdfDownloadName, pdfPathFor } from '@/lib/pdf-export.mjs';
@@ -162,7 +161,6 @@ export default function Guide({
       {/* Body */}
       <div className="mx-auto">
         <div className="relative">
-          <AnswerCapsule text={frontmatter.answerCapsule} />
           {serializedIntro && (
             <div className="prose prose-slate max-w-none">
               <MDXRemote {...serializedIntro} components={mdxComponents} />
