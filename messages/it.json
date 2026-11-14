@@ -154,11 +154,9 @@
     }
   },
   "inlineCta": {
-    "heading": "Quando cambiano le loro tattiche, cambiano anche i nostri consigli",
-    "description": "L'ICE, gli sbirri e la sorveglianza aziendale aggiungono continuamente nuovi strumenti. Noi aggiorniamo queste guide per stare al passo. Iscriviti per sapere quando cambia qualcosa di importante.",
+    "title": "Ricevi aggiornamenti via email quando aggiungiamo nuove guide",
     "buttonText": "Iscriviti",
     "emailAriaLabel": "Indirizzo email",
-    "privacyLink": "Informativa sulla privacy",
     "dismissLabel": "Non mostrarlo più"
   },
   "common": {
