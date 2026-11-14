@@ -1,45 +1,39 @@
 'use client';
 
 import React from 'react';
-import { Shield, Users, ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, BadgeCheck, ShieldCheck, Sparkles, Users } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import PageNotices from '@/components/layout/PageNotices';
-import { Card, CardHeader, CardFooter, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { cn, getBaseUrl } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { NAV_ITEMS } from '@/config/navigation';
 import FEATURE_LOGOS from '@/config/featured.json';
 import FeatureLogo from '@/components/FeatureLogo';
 import ChangeLogRecentEntries from '@/components/ChangeLogRecentEntries';
 import HomeChecklistSections from '@/components/HomeChecklistSections';
+import HomeSituationLinks from '@/components/HomeSituationLinks';
 import HomeToolsSection from '@/components/HomeToolsSection';
+import { NewsletterSubscribeForm } from '@/components/NewsletterSubscribe';
 import Markdown from '@/components/Markdown';
 import { useTranslations } from 'next-intl';
-import { useLocale } from 'next-intl';
 import Link from '@/components/Link';
-import { LOCALES, DEFAULT_LOCALE } from '@/lib/i18n-config';
 
-const TrustPoint = ({ icon: Icon, title, description }) => (
-  <Card className="bg-transparent border-0 shadow-none transition-all duration-300">
-    <CardHeader className="flex flex-row items-start gap-3 sm:gap-6 space-y-0 p-3 sm:p-6">
-      <div className="p-2 rounded-lg bg-primary/10">
-        <Icon className="h-6 w-6 text-primary shrink-0" />
-      </div>
-      <div>
-        <CardTitle className="text-lg">{title}</CardTitle>
-        <CardDescription className="text-base">{description}</CardDescription>
-      </div>
-    </CardHeader>
-  </Card>
+const TrustPoint = ({ icon: Icon, title, children }) => (
+  <div className="flex items-start gap-3 sm:gap-5">
+    <div className="shrink-0 rounded-lg bg-primary/10 p-2">
+      <Icon className="h-6 w-6 text-primary" aria-hidden="true" />
+    </div>
+    <div>
+      <h3 className="text-lg font-semibold">{title}</h3>
+      <div className="mt-1 space-y-2 text-base text-muted-foreground">{children}</div>
+    </div>
+  </div>
 );
 
-const ConcernCard = ({ title, description }) => (
-  <Card className="bg-muted border-0">
-    <CardHeader>
-      <CardTitle className="text-lg font-semibold text-foreground">{title}</CardTitle>
-      <p className="text-base text-muted-foreground">{description}</p>
-    </CardHeader>
-  </Card>
+const inlineLink = (href) => (chunks) => (
+  <Link href={href} className="link">
+    {chunks}
+  </Link>
 );
 
 export default function HomePageContent({
@@ -48,13 +42,8 @@ export default function HomePageContent({
   latestMajorBodyText = null,
   readMinutes = {},
   estimatedTimes = {},
-  locale = 'en',
 }) {
   const t = useTranslations();
-  const currentLocale = useLocale() || locale;
-  const baseUrl = getBaseUrl();
-  const hrefLangLocales = Object.keys(LOCALES);
-  const isDefault = currentLocale === DEFAULT_LOCALE;
 
   return (
     // The hero breaks out of the page container with w-dvw, which counts the
@@ -69,7 +58,7 @@ export default function HomePageContent({
             <header
               className={cn(
                 'not-prose relative left-1/2 w-dvw max-w-none -translate-x-1/2',
-                'relative mb-16 -mt-8 pt-16 pb-32 px-4 overflow-hidden',
+                'relative mb-12 -mt-8 pt-16 pb-32 px-4 overflow-hidden',
                 /* Flat brand band, identical in both themes: --brand and
                  --brand-foreground are the two tokens we never flip for dark mode.
                  Every piece of text on it is full brand-foreground rather than a
@@ -120,74 +109,87 @@ export default function HomePageContent({
 
           <PageNotices />
 
-          <HomeChecklistSections readMinutes={readMinutes} estimatedTimes={estimatedTimes} />
+          <HomeSituationLinks />
 
-          {/* Why Trust Us Section */}
-          <section className="mb-16 bg-linear-to-br from-muted via-muted to-accent/5 p-5 sm:p-6 md:p-8 rounded-lg">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12">
-              <div className="space-y-4 md:space-y-6">
-                <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-linear-to-br from-primary to-primary/70 bg-clip-text text-transparent">
-                  {t('homepage.trustHeading')}
-                </h2>
-                <p className="text-lg sm:text-xl text-muted-foreground">
-                  {t('homepage.trustDescription')}
-                </p>
-              </div>
-              <div className="space-y-0">
-                <TrustPoint
-                  icon={Users}
-                  title={t('trustPoints.experienceTitle')}
-                  description={t('trustPoints.experienceDescription')}
-                />
-                <TrustPoint
-                  icon={Shield}
-                  title={t('trustPoints.updatedTitle')}
-                  description={t('trustPoints.updatedDescription')}
-                />
-              </div>
-            </div>
-          </section>
-
-          {/* Sites that have shared our guides */}
-          <section className="mb-16">
-            <h2 className="text-2xl font-bold mb-6">{t('featured.sectionTitle')}</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {FEATURE_LOGOS.map((logo, index) => (
-                <FeatureLogo key={index} logo={logo} />
+          {/* Sites that have shared our guides: kept near the top and compact,
+              since it's the quickest thing a new visitor can check us by. */}
+          <section className="mb-14">
+            <h2 className="mb-4 text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+              {t('featured.sectionTitle')}
+            </h2>
+            <div className="grid grid-cols-3 items-center gap-x-6 gap-y-4 md:grid-cols-6">
+              {FEATURE_LOGOS.map((logo) => (
+                <FeatureLogo key={logo.name} logo={logo} />
               ))}
             </div>
           </section>
 
-          {/* Common Misconceptions */}
-          <section className="mb-16">
-            <h2 className="text-2xl font-bold mb-6">{t('misconceptions.sectionTitle')}</h2>
-            <p className="text-lg text-muted-foreground mb-8">
-              {t('misconceptions.sectionDescription')}
+          <HomeChecklistSections readMinutes={readMinutes} estimatedTimes={estimatedTimes} />
+
+          {/* "I have nothing to hide": a bordered quote rather than a box, so it
+              doesn't run together with the boxed section under it. */}
+          <section className="mb-16 border-l-4 border-primary pl-5 sm:pl-6">
+            <h2 className="mb-3 text-2xl font-bold">{t('misconceptions.nothingToHideTitle')}</h2>
+            <p className="max-w-3xl text-lg text-muted-foreground">
+              {t('misconceptions.nothingToHideNetworks')}
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <ConcernCard
-                title={t('misconceptions.nothingToHideTitle')}
-                description={t.rich('misconceptions.nothingToHideDescription', {
-                  b: (chunks) => <b>{chunks}</b>,
-                })}
-              />
-              <ConcernCard
-                title={t('misconceptions.alreadyKnowTitle')}
-                description={t.rich('misconceptions.alreadyKnowDescription', {
-                  b: (chunks) => <b>{chunks}</b>,
-                })}
-              />
-              <ConcernCard
-                title={t('misconceptions.dontCareTitle')}
-                description={t.rich('misconceptions.dontCareDescription', {
-                  b: (chunks) => <b>{chunks}</b>,
-                })}
-              />
+          </section>
+
+          {/* Who built this */}
+          <section className="mb-16 rounded-lg bg-linear-to-br from-muted via-muted to-accent/5 p-5 sm:p-6 md:p-8">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-12">
+              <div className="space-y-4">
+                <h2 className="text-3xl font-extrabold tracking-tight text-balance">
+                  {t('homepage.whoBuiltHeading')}
+                </h2>
+                <p className="text-lg text-muted-foreground">{t('homepage.whoBuiltDescription')}</p>
+                <p className="text-lg text-muted-foreground">{t('homepage.whoBuiltAnonymous')}</p>
+                <Link
+                  href={NAV_ITEMS.ABOUT.href}
+                  className="group inline-flex items-center font-medium text-link"
+                >
+                  {t('homepage.aboutLink')}
+                  <ArrowRight className="ml-1.5 h-4 w-4 transition-transform duration-300 ease-out group-hover:translate-x-1" />
+                </Link>
+              </div>
+              <div className="space-y-6">
+                <TrustPoint icon={Users} title={t('trustPoints.whyTitle')}>
+                  <p>{t('trustPoints.whyDescription')}</p>
+                </TrustPoint>
+                <TrustPoint icon={BadgeCheck} title={t('trustPoints.reviewedTitle')}>
+                  <p>{t('trustPoints.reviewedDescription')}</p>
+                </TrustPoint>
+              </div>
+            </div>
+            <div className="mt-8 border-t border-border pt-8">
+              <TrustPoint icon={ShieldCheck} title={t('trustPoints.privacyTitle')}>
+                <p>
+                  {t.rich('trustPoints.privacyDescription', {
+                    privacy: inlineLink(NAV_ITEMS.PRIVACY.href),
+                    security: inlineLink(NAV_ITEMS.SECURITY.href),
+                  })}
+                </p>
+              </TrustPoint>
             </div>
           </section>
 
           {/* Latest News — loaded in server component HomeNewsSection (see app/[locale]/page.tsx) */}
           {children}
+
+          {/* Newsletter */}
+          <section className="mb-16 rounded-lg border border-border p-5 sm:p-6 md:p-8">
+            <div className="grid grid-cols-1 items-center gap-6 md:grid-cols-2 md:gap-12">
+              <div>
+                <h2 className="mb-2 text-2xl font-bold">{t('inlineCta.title')}</h2>
+                <p className="text-muted-foreground">
+                  {t.rich('homepage.newsletterDescription', {
+                    link: inlineLink('https://addy.io/'),
+                  })}
+                </p>
+              </div>
+              <NewsletterSubscribeForm context="homepage" />
+            </div>
+          </section>
 
           {/* Tools */}
           <HomeToolsSection />

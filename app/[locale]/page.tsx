@@ -9,6 +9,7 @@ import { getOgImagePathForSlug } from '@/lib/og-image';
 import JsonLd from '@/components/JsonLd';
 import { buildHomePageGraph } from '@/lib/structured-data';
 import { getSectionReadMinutes } from '@/lib/section-reads';
+import { pickHeroAnnouncement } from '@/lib/hero-announcement';
 
 function getMessageValue(messages, keyPath) {
   return keyPath
@@ -29,7 +30,7 @@ export async function generateMetadata({ params }) {
   const title = getMessageValue(messages, 'site.title') || 'Activist Checklist';
   const description =
     getMessageValue(messages, 'site.description') ||
-    'Plain language steps for digital security, because protecting yourself helps keep your whole community safer.';
+    'Plain language steps for digital security and protest safety.';
 
   const baseUrl = getBaseUrl();
   const canonical = locale === DEFAULT_LOCALE ? `${baseUrl}/` : `${baseUrl}/${locale}/`;
@@ -63,7 +64,7 @@ export default async function HomePage({ params }) {
   setRequestLocale(locale);
 
   const changelogEntries = getAllChangelogEntries(locale).map(toChangelogListEntry);
-  const latestMajor = changelogEntries.find((e) => e.type === 'major');
+  const latestMajor = pickHeroAnnouncement(changelogEntries);
   const homeGraph = buildHomePageGraph({ baseUrl: getBaseUrl(), locale });
 
   return (

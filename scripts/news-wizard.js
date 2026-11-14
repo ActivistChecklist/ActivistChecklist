@@ -21,6 +21,7 @@ const path = require('path');
 const readline = require('readline');
 const { execFileSync } = require('child_process');
 const { stringifyFrontmatter } = require('../lib/frontmatter.cjs');
+const { stripSourceSuffix } = require('../lib/news-title.cjs');
 const ogs = require('open-graph-scraper');
 
 const { loadNewsItems } = require('./fetch-news-images.js');
@@ -662,7 +663,7 @@ async function main() {
 
     // `\s` covers non-breaking spaces, common in page titles. Left in, YAML
     // stores one as `\_` and Crowdin's AI translates it to literal "\u00a0".
-    const title = (flagTitle || pickTitle(og) || titleFromUrlPath(articleUrl) || '')
+    let title = (flagTitle || pickTitle(og) || titleFromUrlPath(articleUrl) || '')
       .replace(/\s+/g, ' ')
       .trim();
     if (!title) {
@@ -687,6 +688,9 @@ async function main() {
         og.articlePublisher && String(og.articlePublisher).trim(),
       ].find(Boolean) || '';
     const sourceField = pickSourceDisplayName(articleUrl, publisherHint, explicitSource);
+    // The page title often ends with the publication's name, which the news
+    // list already shows next to it.
+    if (!flagTitle) title = stripSourceSuffix(title, sourceField);
 
     const baseSlug = slugify(title);
     const slug = uniqueSlug(baseSlug);
