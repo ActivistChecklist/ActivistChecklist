@@ -1,9 +1,20 @@
 {
-  "dropped": [],
-  "novel": [
-    "MacBook9,1"
+  "dropped": [
+    "iMac15,1"
   ],
-  "sofaCount": 98,
-  "watchlistCount": 95,
-  "fetchedAt": "2026-06-14T15:40:59.516Z"
+  "novel": [
+    "Mac17,10",
+    "Mac17,11",
+    "Mac17,12",
+    "Mac17,13",
+    "Mac17,14",
+    "Mac17,15",
+    "Mac17,16",
+    "Mac18,1",
+    "Mac18,2",
+    "Mac18,5"
+  ],
+  "sofaCount": 107,
+  "watchlistCount": 96,
+  "fetchedAt": "2026-11-15T19:29:05.344Z"
 }
