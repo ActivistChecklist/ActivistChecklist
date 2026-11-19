@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 
 export function getDateMetaItem(date, label = "Last updated on", dateLocale = 'en-US') {
   return {
-    icon: <Calendar className="h-4 w-4 mr-1" />,
+    icon: <Calendar className="h-4 w-4 mr-1 shrink-0" />,
     label,
     value: formatContentDate(date, dateLocale),
   };
@@ -38,16 +38,18 @@ export const MetaBar = ({
     {...props}
     >
       {items.map((item, index) => (
-        <div key={index} className="flex items-center whitespace-nowrap">
+        <div key={index} className="flex items-center">
           {item.icon && (
             <>
               {item.icon}
               &nbsp;
             </>
           )}
+          {/* Label and value each stay on one line, but a long translation can
+              break between them instead of running past a phone's edge. */}
           <span>
-            {item.label}&nbsp;
-            <span className={valueStyle}>
+            <span className="whitespace-nowrap">{item.label}</span>{' '}
+            <span className={cn(valueStyle, "whitespace-nowrap")}>
               {item.value}
             </span>
           </span>
