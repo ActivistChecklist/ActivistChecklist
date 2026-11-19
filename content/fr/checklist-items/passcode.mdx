@@ -3,31 +3,41 @@ title: Choisis un code de 8 à 10 chiffres aléatoires pour ton téléphone
 preview: |
   Il faut des années aux flics pour craquer un code aléatoire à 8 chiffres. Avec des outils automatisés, ils peuvent sans doute deviner ton code actuel en moins de 5 minutes.
 do: |
-  Utilise un [générateur de code aléatoire](https://strongphrase.net/passcode) pour créer un code de 8 à 10 chiffres
+  Utilise ton gestionnaire de mots de passe ou notre générateur de codes intégré pour créer un code aléatoire de 8 à 10 chiffres
 dont: |
-  Utiliser un code que tu as inventé toi-même (dates, motifs sur le clavier, etc.). N'utilise pas de code à 6 chiffres si possible.
+  Utiliser un code que tu as inventé toi-même (dates, motifs sur le clavier, etc.). Si possible, n'utilise pas de code à 6 chiffres.
 firstPublished: 2025-05-12
-lastUpdated: 2026-01-31
+lastUpdated: 2026-11-18
 ---
 
 <HowTo title="Comment changer ton code">
-  1. Génère un code aléatoire de 8 à 10 chiffres avec ce [générateur de code aléatoire](https://strongphrase.net/passcode). (Ne l'invente pas toi-même : les humains sont nuls pour choisir au hasard !)
+  1. **Choisis un code d'accès aléatoire de 8 à 10 chiffres.** Le moyen le plus sûr de générer un code aléatoire, c'est d'utiliser la fonction de génération de mots de passe aléatoires de ton gestionnaire de mots de passe (règle-la sur « chiffres uniquement »), mais tu peux aussi utiliser notre générateur de codes d'accès. (Les humains sont nuls pour inventer des codes aléatoires, donc on te conseille de ne pas essayer d'en trouver un toi-même.)
+
+     <PasscodeGenerator />
   2. Change ton code :
 
      <MenuPath>*iPhone :* **Réglages** > **Face ID et code** > **Modifier le code** > **Options de code** > **Code numérique personnalisé**</MenuPath>
 
      <MenuPath>*Android :* **Paramètres** > **Sécurité** > **Verrouillage de l'écran** > Saisis ton verrouillage actuel > **Code PIN/Mot de passe** > Saisis un code</MenuPath>
-  3. **Entraîne-toi à taper ton nouveau code** au moins 10 fois de suite, dès maintenant, pour avoir plus de chances de t'en souvenir. (Si tu désactives la biométrie, ton téléphone te demandera le code à chaque fois que tu le verrouilles.)
+  3. **Entraîne-toi à taper ton nouveau code** au moins 10 fois de suite, dès maintenant, pour avoir plus de chances de t'en souvenir. (Désactiver le déverrouillage par reconnaissance faciale ou empreinte digitale t'obligera à saisir ton code chaque fois que tu ouvres ton téléphone.)
   4. Écris ton nouveau code sur papier et garde-le en lieu sûr chez toi jusqu'à ce que tu l'aies mémorisé. Ensuite, détruis le papier au bout de 2 à 3 semaines. Programmer un rappel sur ton téléphone peut t'aider.
 </HowTo>
 
+<Collapsible title="Pour plus de sécurité, utilise un chronomètre pour choisir tes chiffres au hasard">
+  Utiliser un générateur de code en ligne comporte quelques petits risques. Si tu veux le niveau de sécurité le plus élevé, tu peux utiliser la fonction chronomètre de ton téléphone.
+
+  1. Lance le chronomètre et arrête-le sans regarder l'écran.
+  2. Note le dernier chiffre (les centièmes de seconde).
+  3. Recommence jusqu'à avoir 8 à 10 chiffres.
+</Collapsible>
+
 **Combien de temps faut-il pour craquer un code ?**
 
-| Type de code                              | Temps nécessaire pour le craquer (en moyenne) | Exemple                                                                                  |
-| ----------------------------------------- | --------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| Motif à 6 chiffres ***facile à deviner*** | **Moins de 24 heures** pour le craquer        | *333666 (schéma courant)* ou *110585 (date au format américain pour le 5 novembre 1982)* |
-| Code ***aléatoire*** à 6 chiffres         | **200 jours** pour le craquer                 | *238253*                                                                                 |
-| Code ***aléatoire*** à 8 chiffres         | **Plus de 40 ans** pour le craquer            | *34780026*                                                                               |
+| Type de code                              | Temps nécessaire pour le craquer (en moyenne) | Exemple                                                                  |
+| ----------------------------------------- | --------------------------------------------- | ------------------------------------------------------------------------ |
+| Motif à 6 chiffres ***facile à deviner*** | **Moins de 24 heures** pour le craquer        | *333666 (motif courant)* ou *051182 (motif de date pour le 5 nov. 1982)* |
+| Code ***aléatoire*** à 6 chiffres         | **200 jours** pour le craquer                 | *238253*                                                                 |
+| Code ***aléatoire*** à 8 chiffres         | **Plus de 40 ans** pour le craquer            | *34780026*                                                               |
 
 *Remarque* : ces durées ne s'appliquent qu'aux téléphones. Les ordinateurs se craquent beaucoup plus vite et ont besoin de mots de passe bien plus robustes.
 

@@ -269,6 +269,20 @@
     "moreWithLabel": "{label} ({count} de plus)",
     "less": "Afficher moins"
   },
+  "passcodeGenerator": {
+    "label": "Code d'accès généré aléatoirement",
+    "newPasscode": "Nouveau code d'accès",
+    "numberOfDigits": "Nombre de chiffres",
+    "digits": "chiffres",
+    "sixDigitWarning": "Un code d'accès à 6 chiffres généré aléatoirement vaut mieux qu'un code que tu as inventé toi-même, mais il est beaucoup plus facile à craquer qu'un code de 8 chiffres ou plus.",
+    "privacy": "Ce code est créé sur ton appareil et ne nous est jamais envoyé. Tu peux l'enregistrer dans ton <link>gestionnaire de mots de passe</link> (mais pas dans ton appli de notes ni en capture d'écran). Si tu l'écris sur papier, détruis-le une fois que tu l'as mémorisé.",
+    "page": {
+      "metaTitle": "Générateur de code de téléphone | Activist Checklist",
+      "metaDescription": "Obtiens un code aléatoire de 8 à 10 chiffres pour ton téléphone, créé sur ton appareil sans jamais nous être envoyé, avec les étapes pour le configurer sur un iPhone ou un Android.",
+      "title": "Générateur de code de téléphone",
+      "intro": "Avec un code d'au moins 8 chiffres généré au hasard, les flics auront beaucoup plus de mal à forcer l'accès à ton téléphone."
+    }
+  },
   "canaryStatus": {
     "current": "<b>À jour.</b> Notre warrant canary, ou « canari de mandat », a été mis à jour pour la dernière fois le {date} et reste valide jusqu'au {validThrough}. (Après cette date, cet indicateur passera au rouge s'il n'y a pas de canary plus récent.)",
     "overdue": "<b>En retard.</b> Notre warrant canary, ou « canari de mandat », a été mis à jour pour la dernière fois le {date} et était valide jusqu'au {validThrough}. C'est un signal pour poser des questions, comme expliqué ci-dessous.",

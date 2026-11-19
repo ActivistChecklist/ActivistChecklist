@@ -269,6 +269,20 @@
     "moreWithLabel": "{label} ({count} más)",
     "less": "Mostrar menos"
   },
+  "passcodeGenerator": {
+    "label": "Código de acceso generado al azar",
+    "newPasscode": "Nuevo código",
+    "numberOfDigits": "Número de dígitos",
+    "digits": "dígitos",
+    "sixDigitWarning": "Un código de 6 dígitos generado al azar es mejor que uno que inventes tú, pero es mucho más fácil de descifrar que uno de 8 dígitos o más.",
+    "privacy": "Este código se crea en tu dispositivo y nunca nos llega. Puedes guardarlo en tu <link>gestor de contraseñas</link> (pero no en tu app de notas ni en capturas de pantalla). Si lo escribes en papel, destrúyelo cuando te lo aprendas de memoria.",
+    "page": {
+      "metaTitle": "Generador de códigos para tu celular | Activist Checklist",
+      "metaDescription": "Obtén un código aleatorio de 8 a 10 dígitos para tu celular, creado en tu dispositivo y que nunca nos llega, además de los pasos para configurarlo en un iPhone o Android.",
+      "title": "Generador de códigos para tu celular",
+      "intro": "Un código aleatorio de 8 dígitos o más hace que a la policía le cueste mucho más entrar a tu celular."
+    }
+  },
   "canaryStatus": {
     "current": "<b>Al día.</b> Nuestro warrant canary —aviso de órdenes judiciales— se actualizó por última vez el {date} y es válido hasta el {validThrough}. (Después de esa fecha, esto se pondrá en rojo si no hay un canary más reciente).",
     "overdue": "<b>Vencido.</b> Nuestro warrant canary —aviso de órdenes judiciales— se actualizó por última vez el {date} y era válido hasta el {validThrough}. Es una señal para hacer preguntas, como explicamos más abajo.",

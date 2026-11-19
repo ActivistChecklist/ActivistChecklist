@@ -269,6 +269,20 @@
     "moreWithLabel": "{label} (altri {count})",
     "less": "Mostra meno"
   },
+  "passcodeGenerator": {
+    "label": "Codice di sblocco generato a caso",
+    "newPasscode": "Nuovo codice",
+    "numberOfDigits": "Numero di cifre",
+    "digits": "cifre",
+    "sixDigitWarning": "Un codice di 6 cifre generato a caso è meglio di uno inventato da te, ma è molto più facile da craccare di uno con 8 o più cifre.",
+    "privacy": "Questo codice di sblocco viene creato sul tuo dispositivo e non ci viene mai inviato. Puoi salvarlo nel tuo <link>gestore di password</link> (ma non nell'app delle note o in uno screenshot). Se lo scrivi su un foglio, distruggilo dopo averlo memorizzato.",
+    "page": {
+      "metaTitle": "Generatore di codici di sblocco per il telefono | Activist Checklist",
+      "metaDescription": "Ottieni un codice di sblocco casuale da 8 a 10 cifre per il tuo telefono, creato sul tuo dispositivo e mai inviato a noi, con i passaggi per impostarlo su iPhone o Android.",
+      "title": "Generatore di codici di sblocco per il telefono",
+      "intro": "Un codice di sblocco generato a caso di almeno 8 cifre rende molto più difficile per la polizia entrare nel tuo telefono."
+    }
+  },
   "canaryStatus": {
     "current": "<b>Aggiornato.</b> Il nostro warrant canary è stato aggiornato l'ultima volta il {date} ed è valido fino al {validThrough}. (Dopo quella data, questo indicatore diventerà rosso se non ci sarà un canary più recente.)",
     "overdue": "<b>Scaduto.</b> Il nostro warrant canary è stato aggiornato l'ultima volta il {date} ed era valido fino al {validThrough}. È un segnale che è il caso di fare domande, come spiegato qui sotto.",
