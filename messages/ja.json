@@ -270,12 +270,18 @@
     "less": "少なく表示"
   },
   "passcodeGenerator": {
-    "label": "Randomly generated passcode",
-    "newPasscode": "New passcode",
-    "numberOfDigits": "Number of digits",
-    "digits": "digits",
-    "sixDigitWarning": "A randomly generated 6-digit passcode is better than one you thought of yourself, but much easier to crack than one that is 8+ digits.",
-    "privacy": "This passcode is made on your device and is never sent to us. Do not save it digitally or screenshot it. If you make a paper copy, destroy it after you memorize it."
+    "label": "ランダムに生成されたパスコード",
+    "newPasscode": "新しいパスコード",
+    "numberOfDigits": "桁数",
+    "digits": "桁",
+    "sixDigitWarning": "ランダムに生成した6桁のパスコードは、自分で考えたものよりは安全です。でも、8桁以上のものに比べるとずっと破られやすくなります。",
+    "privacy": "このパスコードはあなたのデバイス上で作成され、私たちに送信されることは一切ありません。<link>パスワードマネージャー</link>に保存してもOKです（ただし、メモアプリやスクリーンショットには残さないこと）。紙に書き留めた場合は、覚えたらすぐに破棄しましょう。",
+    "page": {
+      "metaTitle": "スマホのパスコード生成ツール | Activist Checklist",
+      "metaDescription": "スマホ用の8〜10桁のランダムなパスコードを作成。パスコードはあなたのデバイス上で作られ、私たちに送信されることはありません。iPhoneやAndroidでの設定手順も紹介しています。",
+      "title": "スマホのパスコード生成ツール",
+      "intro": "ランダムに生成した8桁以上のパスコードを使えば、警察にスマホのロックを突破されにくくなります。"
+    }
   },
   "canaryStatus": {
     "current": "<b>最新の状態です。</b>ウォラント・カナリア（捜査令状を受け取っていないことを示す声明）の最終更新日は{date}で、{validThrough}まで有効です。（その日付を過ぎても新しいカナリアがない場合、この表示は赤に変わります。）",
