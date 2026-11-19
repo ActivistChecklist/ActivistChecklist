@@ -269,6 +269,14 @@
     "moreWithLabel": "{label} ({count} 件以上 )",
     "less": "少なく表示"
   },
+  "passcodeGenerator": {
+    "label": "Randomly generated passcode",
+    "newPasscode": "New passcode",
+    "numberOfDigits": "Number of digits",
+    "digits": "digits",
+    "sixDigitWarning": "A randomly generated 6-digit passcode is better than one you thought of yourself, but much easier to crack than one that is 8+ digits.",
+    "privacy": "This passcode is made on your device and is never sent to us. Do not save it digitally or screenshot it. If you make a paper copy, destroy it after you memorize it."
+  },
   "canaryStatus": {
     "current": "<b>最新の状態です。</b>ウォラント・カナリア（捜査令状を受け取っていないことを示す声明）の最終更新日は{date}で、{validThrough}まで有効です。（その日付を過ぎても新しいカナリアがない場合、この表示は赤に変わります。）",
     "overdue": "<b>期限切れです。</b>ウォラント・カナリア（捜査令状を受け取っていないことを示す声明）の最終更新日は{date}で、有効期限は{validThrough}まででした。これは、下で説明しているように問い合わせるべきサインです。",
