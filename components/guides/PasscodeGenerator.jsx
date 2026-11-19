@@ -74,6 +74,9 @@ export default function PasscodeGenerator({ variant = 'inline' }) {
   const [length, setLength] = useState(DEFAULT_PASSCODE_LENGTH);
   const [code, setCode] = useState(null);
   const [unavailable, setUnavailable] = useState(false);
+  // Counts New passcode clicks. Keying the refresh icon on it remounts the
+  // icon, so its one-turn spin plays on every click, not just the first.
+  const [refreshes, setRefreshes] = useState(0);
 
   useEffect(() => {
     // randomDigits throws rather than fall back to weak randomness. In a
@@ -107,6 +110,22 @@ export default function PasscodeGenerator({ variant = 'inline' }) {
     setCode(randomDigits(n));
     trackEvent({ name: 'passcode_generated' });
   };
+
+  const refresh = () => {
+    setRefreshes((n) => n + 1);
+    generate(length);
+  };
+
+  const refreshIcon = (
+    <RefreshCw
+      key={refreshes}
+      aria-hidden="true"
+      className={cn(
+        variant === 'inline' && 'h-5 w-5',
+        refreshes > 0 && 'motion-safe:animate-spin-once',
+      )}
+    />
+  );
 
   // Read one digit at a time, and announced again when it changes.
   // translate="no" here too, or browser translation still sends the code for
@@ -212,10 +231,10 @@ export default function PasscodeGenerator({ variant = 'inline' }) {
           <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
             <Button
               type="button"
-              onClick={() => generate(length)}
+              onClick={refresh}
               className="h-12 px-5 font-heading text-base font-semibold [&_svg]:size-[1.125rem]"
             >
-              <RefreshCw aria-hidden="true" />
+              {refreshIcon}
               {t('passcodeGenerator.newPasscode')}
             </Button>
             {lengthPicker}
@@ -270,12 +289,12 @@ export default function PasscodeGenerator({ variant = 'inline' }) {
           {announcement}
           <button
             type="button"
-            onClick={() => generate(length)}
+            onClick={refresh}
             aria-label={t('passcodeGenerator.newPasscode')}
             title={t('passcodeGenerator.newPasscode')}
             className="grid h-12 w-12 shrink-0 place-items-center rounded-md text-primary transition-colors hover:bg-primary/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
-            <RefreshCw className="h-5 w-5" aria-hidden="true" />
+            {refreshIcon}
           </button>
         </div>
         {lengthPicker}
