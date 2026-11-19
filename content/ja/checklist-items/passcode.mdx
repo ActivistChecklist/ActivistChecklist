@@ -3,31 +3,33 @@ title: スマホのパスコードを8〜10桁のランダムな数字にする
 preview: |
   8桁のランダムなパスコードを警察が解読するには何年もかかります。今のパスコードなら、自動化ツールを使えばおそらく5分もかからずに突破されてしまいます。
 do: |
-  [ランダムパスコード生成ツール](https://strongphrase.net/passcode)を使って8〜10桁のコードを作る
+  Use your password manager or our built-in passcode generator to create a random 8 to 10-digit code
 dont: |
-  自分で考えたパスコード（日付、キーボード上のパターンなど）を使う。できれば6桁のパスコードは使わない。
+  自分で考えたパスコード（日付、キーボード上のパターンなど）を使う。 If possible, do not use 6-digit passcodes.
 firstPublished: 2025-05-12
-lastUpdated: 2026-01-31
+lastUpdated: 2026-11-18
 ---
 
 <HowTo title="パスコードの変更方法">
-  1. この[ランダムパスコード生成ツール](https://strongphrase.net/passcode)を使って、8〜10桁のランダムなパスコードを作りましょう。（自分で考えるのはNG。人間はランダムに選ぶのが苦手です！）
+  1. **Select a random passcode that is 8 to 10 digits long.** The most secure way to generate a random passcode is to use your password manager's random password generator feature (set it to numbers only), but you can also use our passcode generator below. (Humans are bad at making up random passcodes, so we suggest not trying to think of one yourself.)
+
+     <PasscodeGenerator />
   2. パスコードを変更する：
 
      <MenuPath>*iPhone：* **設定** > **Face IDとパスコード** > **パスコードを変更** > **パスコードオプション** > **カスタムの数字コード**</MenuPath>
 
      <MenuPath>*Android：* **設定** > **セキュリティ** > **画面ロック** > 現在のロックを入力 > **PIN／パスワード** > パスコードを入力</MenuPath>
-  3. 覚えやすくするために、今すぐ**新しいパスコードを**少なくとも10回続けて**入力する練習をしましょう**。（生体認証をオフにすると、スマホをロックするたびにパスコードの入力が求められるようになります。）
+  3. 覚えやすくするために、今すぐ**新しいパスコードを**少なくとも10回続けて**入力する練習をしましょう**。 (Disabling face/fingerprint unlock will force you to enter the passcode every time you open your phone.)
   4. 覚えるまでは、新しいパスコードを紙に書いて自宅の安全な場所に保管しておきましょう。そして2〜3週間たったら、その紙は処分してください。スマホでリマインダーを設定しておくと便利です。
 </HowTo>
 
 **パスコードの解読にはどのくらい時間がかかる？**
 
-| 種類                  | 解読にかかる時間（平均）     | 例                                                    |
-| ------------------- | ---------------- | ---------------------------------------------------- |
-| 6桁の***推測しやすい***パターン | **24時間以内**に解読される | *333666（よくあるパターン）*または*110585（Nov 5, 1982を表す日付のパターン）* |
-| 6桁の***ランダムな***コード   | 解読に**200日**      | *238253*                                             |
-| 8桁の***ランダムな***コード   | 解読に**40年以上**     | *34780026*                                           |
+| 種類                  | 解読にかかる時間（平均）     | 例                                                                    |
+| ------------------- | ---------------- | -------------------------------------------------------------------- |
+| 6桁の***推測しやすい***パターン | **24時間以内**に解読される | *333666 (common pattern)* or *110582 (date pattern for Nov 5, 1982)* |
+| 6桁の***ランダムな***コード   | 解読に**200日**      | *238253*                                                             |
+| 8桁の***ランダムな***コード   | 解読に**40年以上**     | *34780026*                                                           |
 
 *注意*：これらの時間はスマホにのみ当てはまります。パソコンはずっと短時間で解読されてしまうので、はるかに強力なパスワードが必要です。
 
