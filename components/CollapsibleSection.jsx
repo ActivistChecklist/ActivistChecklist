@@ -14,7 +14,9 @@ export const CollapsibleSection = ({ title, defaultOpen = false, className, chil
       <CollapsibleTrigger
         className={cn(
           'flex w-full items-center gap-2 -mx-2 px-2 py-1.5 rounded-md text-left',
-          'font-heading text-base font-semibold text-foreground',
+          // Body font at the surrounding text size, so a long title reads as a
+          // line of text rather than a section heading
+          'font-body font-semibold text-foreground',
           'hover:bg-muted/60 transition-colors cursor-pointer',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
           '[&[data-state=open]>svg]:rotate-90',
