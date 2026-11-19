@@ -269,6 +269,14 @@
     "moreWithLabel": "{label} (+{count})",
     "less": "عرض أقل"
   },
+  "passcodeGenerator": {
+    "label": "Randomly generated passcode",
+    "newPasscode": "New passcode",
+    "numberOfDigits": "Number of digits",
+    "digits": "digits",
+    "sixDigitWarning": "A randomly generated 6-digit passcode is better than one you thought of yourself, but much easier to crack than one that is 8+ digits.",
+    "privacy": "This passcode is made on your device and is never sent to us. Do not save it digitally or screenshot it. If you make a paper copy, destroy it after you memorize it."
+  },
   "canaryStatus": {
     "current": "<b>محدَّث.</b> آخر تحديث لـ«كناري المذكرات» الخاص بنا كان بتاريخ {date}، وهو صالح حتى {validThrough}. (بعد هذا التاريخ، سيتحوّل هذا المؤشر إلى اللون الأحمر إذا لم يصدر كناري أحدث.)",
     "overdue": "<b>متأخر.</b> آخر تحديث لـ«كناري المذكرات» الخاص بنا كان بتاريخ {date}، وكان صالحًا حتى {validThrough}. هذه علامة على أنّ عليك طرح الأسئلة كما هو موضّح أدناه.",
