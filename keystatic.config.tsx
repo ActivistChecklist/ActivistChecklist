@@ -509,6 +509,18 @@ const badgeComponent = block({
   },
 });
 
+/** Random phone passcode made in the reader's browser (components/guides/PasscodeGenerator.jsx). */
+const passcodeGeneratorComponent = block({
+  label: 'Passcode generator',
+  description: "Random 6, 8 or 10-digit phone passcode, made in the reader's browser",
+  schema: {},
+  ContentView() {
+    return (
+      <div style={{ fontSize: 13, color: '#64748b' }}>🔢 Passcode generator (hidden in print)</div>
+    );
+  },
+});
+
 // ─── Guide-specific components ────────────────────────────────────────────────
 
 const sectionComponent = wrapper({
@@ -984,6 +996,7 @@ export default config({
           components: {
             ...contentComponents,
             Badge: badgeComponent,
+            PasscodeGenerator: passcodeGeneratorComponent,
           },
         }),
       },
