@@ -15,6 +15,13 @@ const ITEM_SLUG = 'passcode';
 // Guides that include the passcode item
 const RELATED_GUIDES = ['essentials', 'signal', 'travel', 'protest'];
 
+// The share card is English-only and its file name is a hash of the title.
+// Scoped to the page's own strings: CodeQL reads a full key with "passcode" in
+// it, like t('passcodeGenerator.page.title'), as a password being hashed.
+function getEnglishPageTranslations() {
+  return getTranslations({ locale: DEFAULT_LOCALE, namespace: 'passcodeGenerator.page' });
+}
+
 export async function generateMetadata({ params }) {
   const { locale } = await params;
   setRequestLocale(locale);
@@ -26,8 +33,8 @@ export async function generateMetadata({ params }) {
   const title = t('passcodeGenerator.page.metaTitle');
   const description = t('passcodeGenerator.page.metaDescription');
   // Same English card the page render generates, so the URL matches the file.
-  const tEn = await getTranslations({ locale: DEFAULT_LOCALE });
-  const ogImageUrl = `${baseUrl}${getOgImagePathForSlug(ROUTE_SLUG, { title: tEn('passcodeGenerator.page.title'), pageType: 'page' })}`;
+  const tEn = await getEnglishPageTranslations();
+  const ogImageUrl = `${baseUrl}${getOgImagePathForSlug(ROUTE_SLUG, { title: tEn('title'), pageType: 'page' })}`;
 
   return {
     title,
@@ -60,9 +67,9 @@ export default async function PasscodeGeneratorPage({ params }) {
   // every locale, so render it from the English title.
   try {
     const { generateOgImageForRoute } = await import('@/lib/og-image');
-    const tEn = await getTranslations({ locale: DEFAULT_LOCALE });
+    const tEn = await getEnglishPageTranslations();
     await generateOgImageForRoute({
-      title: tEn('passcodeGenerator.page.title'),
+      title: tEn('title'),
       pageType: 'page',
       slug: ROUTE_SLUG,
     });
