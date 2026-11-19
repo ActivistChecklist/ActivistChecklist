@@ -73,7 +73,7 @@ export default function PasscodeGenerator() {
           <span
             translate="no"
             aria-hidden="true"
-            className="grid font-heading text-xl font-semibold tabular-nums tracking-wide text-foreground sm:text-2xl"
+            className="grid font-mono text-xl font-semibold tabular-nums tracking-wide text-foreground sm:text-2xl"
           >
             <span className="invisible col-start-1 row-start-1 flex flex-wrap gap-x-[0.4em]">
               {groupDigits(LONGEST_PLACEHOLDER).map((group, i) => (
