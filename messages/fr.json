@@ -270,12 +270,18 @@
     "less": "Afficher moins"
   },
   "passcodeGenerator": {
-    "label": "Randomly generated passcode",
-    "newPasscode": "New passcode",
-    "numberOfDigits": "Number of digits",
-    "digits": "digits",
-    "sixDigitWarning": "A randomly generated 6-digit passcode is better than one you thought of yourself, but much easier to crack than one that is 8+ digits.",
-    "privacy": "This passcode is made on your device and is never sent to us. Do not save it digitally or screenshot it. If you make a paper copy, destroy it after you memorize it."
+    "label": "Code d'accès généré aléatoirement",
+    "newPasscode": "Nouveau code d'accès",
+    "numberOfDigits": "Nombre de chiffres",
+    "digits": "chiffres",
+    "sixDigitWarning": "Un code d'accès à 6 chiffres généré aléatoirement vaut mieux qu'un code que tu as inventé toi-même, mais il est beaucoup plus facile à craquer qu'un code de 8 chiffres ou plus.",
+    "privacy": "Ce code est créé sur ton appareil et ne nous est jamais envoyé. Tu peux l'enregistrer dans ton <link>gestionnaire de mots de passe</link> (mais pas dans ton appli de notes ni en capture d'écran). Si tu l'écris sur papier, détruis-le une fois que tu l'as mémorisé.",
+    "page": {
+      "metaTitle": "Générateur de code de téléphone | Activist Checklist",
+      "metaDescription": "Obtiens un code aléatoire de 8 à 10 chiffres pour ton téléphone, créé sur ton appareil sans jamais nous être envoyé, avec les étapes pour le configurer sur un iPhone ou un Android.",
+      "title": "Générateur de code de téléphone",
+      "intro": "Avec un code d'au moins 8 chiffres généré au hasard, les flics auront beaucoup plus de mal à forcer l'accès à ton téléphone."
+    }
   },
   "canaryStatus": {
     "current": "<b>À jour.</b> Notre warrant canary, ou « canari de mandat », a été mis à jour pour la dernière fois le {date} et reste valide jusqu'au {validThrough}. (Après cette date, cet indicateur passera au rouge s'il n'y a pas de canary plus récent.)",
