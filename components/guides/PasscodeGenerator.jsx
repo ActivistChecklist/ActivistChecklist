@@ -36,7 +36,14 @@ export default function PasscodeGenerator() {
   const [code, setCode] = useState(null);
 
   useEffect(() => {
-    setCode(randomDigits(DEFAULT_PASSCODE_LENGTH));
+    // randomDigits throws rather than fall back to weak randomness. In a
+    // browser without crypto.getRandomValues, show nothing instead of letting
+    // the error take down the page.
+    try {
+      setCode(randomDigits(DEFAULT_PASSCODE_LENGTH));
+    } catch {
+      setCode(null);
+    }
   }, []);
 
   if (isPrinting || !code) return null;
