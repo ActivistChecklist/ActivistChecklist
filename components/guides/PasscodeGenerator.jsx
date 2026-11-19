@@ -17,6 +17,23 @@ import {
 } from '@/lib/passcode-generator';
 
 const LONGEST_PLACEHOLDER = '0'.repeat(Math.max(...PASSCODE_LENGTHS));
+// Holds the first code's place until it is made. Non-breaking spaces take up
+// the same width as digits in the monospace font, and no stand-in digits end
+// up in the HTML where someone could mistake them for a passcode.
+const PENDING_PLACEHOLDER = '\u00a0'.repeat(DEFAULT_PASSCODE_LENGTH);
+const PENDING_CLASSES = 'rounded-md bg-foreground/10 motion-safe:animate-pulse';
+const NEW_CODE_CLASSES =
+  'motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1 motion-safe:duration-300';
+
+// Without JavaScript no code can ever be made, so hide the generator rather
+// than leave a placeholder and buttons that do nothing. A <noscript> style,
+// not a CSS media query, because Tor Browser's safest mode blocks scripts in
+// a way the `scripting` media feature doesn't report.
+const hideWithoutJs = (
+  <noscript>
+    <style>{'[data-passcode-generator]{display:none}'}</style>
+  </noscript>
+);
 
 function DigitGroups({ digits }) {
   return groupDigits(digits).map((group, i) => (
@@ -34,7 +51,9 @@ function DigitGroups({ digits }) {
  *   of /passcode/.
  * - The code is only made in the reader's browser, after mount. Making it
  *   during render would put one code into the static HTML (and the search
- *   index) for every reader.
+ *   index) for every reader. Until then the generator renders with a pulsing
+ *   placeholder the size of the first code, so the page doesn't shift when
+ *   the code appears.
  * - Renders nothing while printing. The PDF export runs this page's
  *   JavaScript and fires `beforeprint`, so without this one code would be
  *   printed into every guide PDF.
@@ -54,6 +73,7 @@ export default function PasscodeGenerator({ variant = 'inline' }) {
   const id = useId();
   const [length, setLength] = useState(DEFAULT_PASSCODE_LENGTH);
   const [code, setCode] = useState(null);
+  const [unavailable, setUnavailable] = useState(false);
 
   useEffect(() => {
     // randomDigits throws rather than fall back to weak randomness. In a
@@ -62,7 +82,7 @@ export default function PasscodeGenerator({ variant = 'inline' }) {
     try {
       setCode(randomDigits(DEFAULT_PASSCODE_LENGTH));
     } catch {
-      setCode(null);
+      setUnavailable(true);
     }
   }, []);
 
@@ -80,7 +100,7 @@ export default function PasscodeGenerator({ variant = 'inline' }) {
     return () => window.removeEventListener('pagehide', replaceOnPageHide);
   }, [length]);
 
-  if (isPrinting || !code) return null;
+  if (isPrinting || unavailable) return null;
 
   const generate = (n) => {
     setLength(n);
@@ -90,12 +110,18 @@ export default function PasscodeGenerator({ variant = 'inline' }) {
 
   // Read one digit at a time, and announced again when it changes.
   // translate="no" here too, or browser translation still sends the code for
-  // translating.
-  const announcement = (
+  // translating. Only mounted once there is a code, so the first code isn't
+  // announced on page load.
+  const announcement = code && (
     <span translate="no" className="sr-only" aria-live="polite">
       {code.split('').join(' ')}
     </span>
   );
+
+  // key restarts the fade-in each time the code changes
+  const codeKey = code ?? 'pending';
+  const codeClasses = code ? NEW_CODE_CLASSES : PENDING_CLASSES;
+  const shownDigits = <DigitGroups digits={code ?? PENDING_PLACEHOLDER} />;
 
   const lengthPicker = (
     <fieldset className="m-0 flex min-w-0 items-center gap-2 border-0 p-0">
@@ -153,7 +179,12 @@ export default function PasscodeGenerator({ variant = 'inline' }) {
 
   if (variant === 'hero') {
     return (
-      <div className="not-prose mx-auto grid w-full max-w-2xl gap-3.5 print:hidden">
+      <div
+        data-passcode-generator
+        data-pagefind-ignore
+        className="not-prose mx-auto grid w-full max-w-2xl gap-3.5 print:hidden"
+      >
+        {hideWithoutJs}
         <section
           aria-labelledby={`${id}-label`}
           className="grid justify-items-center gap-4 rounded-2xl border border-primary/20 bg-card p-4 shadow-sm sm:p-6"
@@ -165,14 +196,16 @@ export default function PasscodeGenerator({ variant = 'inline' }) {
             {t('passcodeGenerator.label')}
           </span>
           <div className="grid w-full place-items-center rounded-xl border border-primary/20 bg-muted px-3 py-4 sm:px-6">
-            {/* key restarts the fade-in each time the code changes */}
             <span
-              key={code}
+              key={codeKey}
               translate="no"
               aria-hidden="true"
-              className="flex flex-wrap justify-center gap-x-[0.4em] font-mono text-[2rem] font-semibold leading-tight tabular-nums tracking-wide text-foreground motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1 motion-safe:duration-300 sm:text-5xl"
+              className={cn(
+                'flex flex-wrap justify-center gap-x-[0.4em] font-mono text-[2rem] font-semibold leading-tight tabular-nums tracking-wide text-foreground sm:text-5xl',
+                codeClasses,
+              )}
             >
-              <DigitGroups digits={code} />
+              {shownDigits}
             </span>
             {announcement}
           </div>
@@ -195,7 +228,12 @@ export default function PasscodeGenerator({ variant = 'inline' }) {
   }
 
   return (
-    <div className="not-prose mt-3 mb-1 grid gap-2 print:hidden">
+    <div
+      data-passcode-generator
+      data-pagefind-ignore
+      className="not-prose mt-3 mb-1 grid gap-2 print:hidden"
+    >
+      {hideWithoutJs}
       <span
         id={`${id}-label`}
         className="font-heading text-xs font-bold uppercase tracking-wider text-muted-foreground"
@@ -219,12 +257,14 @@ export default function PasscodeGenerator({ variant = 'inline' }) {
             <span className="invisible col-start-1 row-start-1 flex flex-wrap gap-x-[0.4em]">
               <DigitGroups digits={LONGEST_PLACEHOLDER} />
             </span>
-            {/* key restarts the fade-in each time the code changes */}
             <span
-              key={code}
-              className="col-start-1 row-start-1 flex flex-wrap gap-x-[0.4em] motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1 motion-safe:duration-300"
+              key={codeKey}
+              className={cn(
+                'col-start-1 row-start-1 flex flex-wrap gap-x-[0.4em] justify-self-start',
+                codeClasses,
+              )}
             >
-              <DigitGroups digits={code} />
+              {shownDigits}
             </span>
           </span>
           {announcement}
