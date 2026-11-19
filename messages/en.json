@@ -269,6 +269,14 @@
     "moreWithLabel": "{label} ({count} more)",
     "less": "Show less"
   },
+  "passcodeGenerator": {
+    "label": "Randomly generated passcode",
+    "newPasscode": "New passcode",
+    "numberOfDigits": "Number of digits",
+    "digits": "digits",
+    "sixDigitWarning": "A randomly generated 6-digit passcode is better than one you thought of yourself, but much easier to crack than one that is 8+ digits.",
+    "privacy": "This passcode is made on your device and is never sent to us."
+  },
   "canaryStatus": {
     "current": "<b>Up to date.</b> Our warrant canary was last updated on {date}, and is valid through {validThrough}. (After that date, this will turn red if there's no newer canary.)",
     "overdue": "<b>Overdue.</b> Our warrant canary was last updated on {date}, and was valid through {validThrough}. That's a sign to ask questions as described below.",
