@@ -269,6 +269,14 @@
     "moreWithLabel": "{label} ({count} más)",
     "less": "Mostrar menos"
   },
+  "passcodeGenerator": {
+    "label": "Randomly generated passcode",
+    "newPasscode": "New passcode",
+    "numberOfDigits": "Number of digits",
+    "digits": "digits",
+    "sixDigitWarning": "A randomly generated 6-digit passcode is better than one you thought of yourself, but much easier to crack than one that is 8+ digits.",
+    "privacy": "This passcode is made on your device and is never sent to us. Do not save it digitally or screenshot it. If you make a paper copy, destroy it after you memorize it."
+  },
   "canaryStatus": {
     "current": "<b>Al día.</b> Nuestro warrant canary —aviso de órdenes judiciales— se actualizó por última vez el {date} y es válido hasta el {validThrough}. (Después de esa fecha, esto se pondrá en rojo si no hay un canary más reciente).",
     "overdue": "<b>Vencido.</b> Nuestro warrant canary —aviso de órdenes judiciales— se actualizó por última vez el {date} y era válido hasta el {validThrough}. Es una señal para hacer preguntas, como explicamos más abajo.",
