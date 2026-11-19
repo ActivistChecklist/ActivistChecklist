@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useId, useState } from 'react';
+import { flushSync } from 'react-dom';
 import { useTranslations } from 'next-intl';
 import { Lock, RefreshCw, TriangleAlert } from 'lucide-react';
 import Link from '@/components/Link';
@@ -65,6 +66,20 @@ export default function PasscodeGenerator({ variant = 'inline' }) {
     }
   }, []);
 
+  useEffect(() => {
+    // A full page navigation (to another site, say) can park this page in the
+    // back/forward cache with the code still on screen, and Back would show
+    // that same code again. Swap in a new one on the way out, as moving between
+    // pages of this site already does. flushSync, because the browser freezes
+    // the page as soon as this handler returns.
+    const replaceOnPageHide = (event) => {
+      if (!event.persisted) return;
+      flushSync(() => setCode((current) => (current ? randomDigits(length) : current)));
+    };
+    window.addEventListener('pagehide', replaceOnPageHide);
+    return () => window.removeEventListener('pagehide', replaceOnPageHide);
+  }, [length]);
+
   if (isPrinting || !code) return null;
 
   const generate = (n) => {
@@ -73,9 +88,11 @@ export default function PasscodeGenerator({ variant = 'inline' }) {
     trackEvent({ name: 'passcode_generated' });
   };
 
-  // Read one digit at a time, and announced again when it changes
+  // Read one digit at a time, and announced again when it changes.
+  // translate="no" here too, or browser translation still sends the code for
+  // translating.
   const announcement = (
-    <span className="sr-only" aria-live="polite">
+    <span translate="no" className="sr-only" aria-live="polite">
       {code.split('').join(' ')}
     </span>
   );
