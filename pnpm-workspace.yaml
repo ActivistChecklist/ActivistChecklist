@@ -32,9 +32,10 @@ overrides:
   # Last swept 2026-11-18, against pnpm 12.16.1 / next 16.4.6 / pm2 7.1.2 / satori 0.63.2. That sweep deleted 3 of 5 entries and added none; the 2026-09-03 sweep before it deleted 16 of 20. Expect that rot rate: the default answer to "should this be an override?" is no.
   # ─────────────────────────────────────────────────────────────────────
 
-  # NOT a security floor. 1.3.3 is current latest stable. Guards against a stale parallel node_modules resolving an old copy ("createSlot is not exported"); see the outputFileTracingRoot note in next.config.js.
+  # NOT a security floor. Guards against a stale parallel node_modules resolving an old copy ("createSlot is not exported"); see the outputFileTracingRoot note in next.config.js.
+  # The `$` makes it follow the version in package.json, so a Dependabot bump moves the lockfile too. It used to be a literal 1.3.3, which went stale when Dependabot moved package.json to 1.5.0 on 2026-10-19: the lockfile stayed on 1.3.3, and every daily Dependabot run after that failed with NoChangeError on this package.
   # Delete it when: never, unless outputFileTracingRoot stops pointing outside this directory.
-  "@radix-ui/react-slot": "1.3.3"
+  "@radix-ui/react-slot": "$@radix-ui/react-slot"
 
   # satori pins fflate EXACTLY at 0.7.3 (GHSA-px8p-9vwx-vf98, infinite loop in unzipSync on a malformed ZIP64 archive). An exact pin is a hard cap, so an override is the only thing that moves it. Re-checked 2026-11-18: satori 0.63.2 is latest and both it and satori's main branch still pin 0.7.3, so waiting for upstream is not a plan.
   # Not reachable today, for the record: the bug is in unzipSync, and the only two consumers here (satori and @shuding/opentype.js) import inflateSync and nothing else. Taken to clear the alert, not to close an exposure.
