@@ -249,6 +249,14 @@ jobs:
         if: steps.reaudit.outputs.cleared_count != '0' && steps.reaudit.outputs.cleared_count != ''
         run: pnpm test
 
+      # The build renders the guide and poster PDFs, same as pr-checks.yml.
+      # Without Chromium it failed on the first day there was something to fix
+      # (2026-11-18). PDF_EXPORT=off is no way around this: the pages still link
+      # the poster PDF, so check-links fails instead.
+      - name: Install Chromium for PDFs
+        if: steps.reaudit.outputs.cleared_count != '0' && steps.reaudit.outputs.cleared_count != ''
+        run: pnpm exec playwright install --with-deps chromium-headless-shell
+
       - name: Static export build
         if: steps.reaudit.outputs.cleared_count != '0' && steps.reaudit.outputs.cleared_count != ''
         run: pnpm buildstatic

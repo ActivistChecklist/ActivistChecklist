@@ -60,6 +60,15 @@ jobs:
         with:
           node-version-file: .nvmrc
 
+      # `corepack use` runs a full install, and pnpm 12 prepares the git-hosted
+      # @activistchecklist/umami-extra-privacy by running `pnpm install` inside
+      # it. It can't supply the pnpm that package pins, so it falls back to the
+      # `pnpm` on PATH, and without this shim there is none: every run from
+      # 2026-11-18 to 2026-11-20 died on "pnpm: not found". This only writes the
+      # shim, so a day with nothing due still downloads nothing.
+      - name: Put a pnpm shim on PATH
+        run: corepack enable pnpm
+
       - name: Check for a newer release
         id: bump
         run: node scripts/pnpm-bump.mjs
