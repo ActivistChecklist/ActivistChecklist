@@ -40,16 +40,6 @@
     }
   },
   {
-    "name": "National Lawyers Guild",
-    "lastWhenWrapped": true,
-    "image": {
-      "light": "/images/org-logos/NLG-logo-light.png",
-      "dark": "/images/org-logos/NLG-logo-dark.png",
-      "height": 129,
-      "width": 130
-    }
-  },
-  {
     "name": "Palestine Legal",
     "url": "https://palestinelegal.org/news/2023/10/12/resources-for-advocating-for-palestine-across-us",
     "image": {

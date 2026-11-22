@@ -117,7 +117,9 @@ export default function HomePageContent({
             <h2 className="mb-4 text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">
               {t('featured.sectionTitle')}
             </h2>
-            <div className="grid grid-cols-3 items-center gap-x-6 gap-y-4 md:grid-cols-6">
+            {/* Three per row on narrow screens with a short last row centered,
+                one row of equal columns from md up. */}
+            <div className="flex flex-wrap items-center justify-center gap-y-4 md:flex-nowrap">
               {FEATURE_LOGOS.map((logo) => (
                 <FeatureLogo key={logo.name} logo={logo} />
               ))}
