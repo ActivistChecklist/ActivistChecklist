@@ -80,8 +80,7 @@
     "viewAllTools": "Vedi tutti gli strumenti",
     "recentUpdatesHeading": "Aggiornamenti recenti del sito",
     "viewAllUpdates": "Vedi tutti gli aggiornamenti",
-    "noRecentChanges": "Nessuna modifica recente",
-    "newsletterDescription": "Gestiamo in autonomia il software della nostra newsletter, così il tuo indirizzo email è più protetto. Per una privacy ancora maggiore, puoi usare un <link>servizio di alias email</link>."
+    "noRecentChanges": "Nessuna modifica recente"
   },
   "translationFallback": {
     "message": "Questa pagina non è ancora disponibile nella tua lingua. Stai vedendo la versione in inglese.",
