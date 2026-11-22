@@ -80,8 +80,7 @@
     "viewAllTools": "すべてのツールを見る",
     "recentUpdatesHeading": "サイトの最近の更新",
     "viewAllUpdates": "更新をすべて見る",
-    "noRecentChanges": "最近の更新はありません",
-    "newsletterDescription": "メールアドレスをより安全に守るため、ニュースレターのソフトウェアは自前でホストしています。さらにプライバシーを高めたい場合は、<link>メールエイリアスサービス</link>を使ってください。"
+    "noRecentChanges": "最近の更新はありません"
   },
   "translationFallback": {
     "message": "このページはまだ日本語に対応していません。英語版を表示しています。",
