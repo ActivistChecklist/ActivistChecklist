@@ -22,9 +22,17 @@ export default function FeatureLogo({ logo }) {
     <Image {...imageProps} src={light} className={SIZE} />
   );
 
-  // url is optional: some orgs are listed without linking to a specific page
+  // url is optional: some orgs are listed without linking to a specific page.
+  // lastWhenWrapped moves a logo to the end of the 3-column grid on narrow
+  // screens, so square logos stack in one column. The 6-column row keeps the
+  // order from config/featured.json.
   return (
-    <div className="flex justify-center items-center py-1">
+    <div
+      className={cn(
+        'flex justify-center items-center py-1',
+        logo.lastWhenWrapped && 'order-last md:order-none',
+      )}
+    >
       {logo.url ? (
         <a href={logo.url} target="_blank">
           {image}
