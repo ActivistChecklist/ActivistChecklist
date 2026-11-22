@@ -14,6 +14,7 @@
     "url": "https://crimethinc.com/2025/12/03/when-the-feds-come-to-your-city-standing-up-to-ice-a-guide-from-chicago-organizers",
     "image": {
       "light": "/images/org-logos/CrimethInc-logo.png",
+      "dark": "/images/org-logos/CrimethInc-logo-dark.png",
       "height": 100,
       "width": 250
     }
@@ -23,6 +24,7 @@
     "url": "https://palestinelegal.org/news/2023/10/12/resources-for-advocating-for-palestine-across-us",
     "image": {
       "light": "/images/org-logos/PalestineLegal-logo.png",
+      "dark": "/images/org-logos/PalestineLegal-logo-dark.png",
       "height": 100,
       "width": 250
     }
