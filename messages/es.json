@@ -80,8 +80,7 @@
     "viewAllTools": "Ver todas las herramientas",
     "recentUpdatesHeading": "Actualizaciones recientes del sitio",
     "viewAllUpdates": "Ver todas las actualizaciones",
-    "noRecentChanges": "No hay cambios recientes disponibles",
-    "newsletterDescription": "Alojamos nuestro propio software de boletín para que tu correo electrónico esté más protegido. Para más privacidad, puedes usar un <link>servicio de alias de correo</link>."
+    "noRecentChanges": "No hay cambios recientes disponibles"
   },
   "translationFallback": {
     "message": "Esta página todavía no está disponible en tu idioma. Estás viendo la versión en inglés.",
