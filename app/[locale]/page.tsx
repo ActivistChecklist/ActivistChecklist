@@ -71,7 +71,7 @@ export default async function HomePage({ params }) {
     <>
       <JsonLd data={homeGraph} />
       <HomePageContent
-        changelogEntries={changelogEntries.slice(0, 5)}
+        changelogEntries={changelogEntries.slice(0, 3)}
         latestMajorBodyText={latestMajor?.bodyText ?? null}
         readMinutes={getSectionReadMinutes(locale)}
         estimatedTimes={Object.fromEntries(
