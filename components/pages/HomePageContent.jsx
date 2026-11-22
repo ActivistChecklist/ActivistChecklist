@@ -88,7 +88,7 @@ export default function HomePageContent({
                     asChild
                     variant="outline"
                     size="xl"
-                    className="border-2 border-brand-foreground/70 bg-transparent text-brand-foreground hover:bg-brand-foreground/10 shadow-xs"
+                    className="border-2 border-brand-foreground/70 bg-transparent text-brand-foreground hover:bg-brand-foreground/10 hover:text-brand-foreground shadow-xs"
                   >
                     <Link href={NAV_ITEMS.PARTY.href}>{t('hero.secondaryCta')}</Link>
                   </Button>
