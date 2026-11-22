@@ -80,8 +80,7 @@
     "viewAllTools": "See all tools",
     "recentUpdatesHeading": "Recent Site Updates",
     "viewAllUpdates": "View all updates",
-    "noRecentChanges": "No recent changes available",
-    "newsletterDescription": "We host our own newsletter software so your email address is more protected. You can use an <link>email alias service</link> for additional privacy."
+    "noRecentChanges": "No recent changes available"
   },
   "translationFallback": {
     "message": "This page is not yet available in your language. You are viewing the English version.",

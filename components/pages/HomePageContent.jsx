@@ -13,7 +13,6 @@ import ChangeLogRecentEntries from '@/components/ChangeLogRecentEntries';
 import HomeChecklistSections from '@/components/HomeChecklistSections';
 import HomeSituationLinks from '@/components/HomeSituationLinks';
 import HomeToolsSection from '@/components/HomeToolsSection';
-import { NewsletterSubscribeForm } from '@/components/NewsletterSubscribe';
 import Markdown from '@/components/Markdown';
 import { useTranslations } from 'next-intl';
 import Link from '@/components/Link';
@@ -111,21 +110,6 @@ export default function HomePageContent({
 
           <HomeSituationLinks />
 
-          {/* Sites that have shared our guides: kept near the top and compact,
-              since it's the quickest thing a new visitor can check us by. */}
-          <section className="mb-14">
-            <h2 className="mb-4 text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-              {t('featured.sectionTitle')}
-            </h2>
-            {/* Three per row on narrow screens with a short last row centered,
-                one row of equal columns from md up. */}
-            <div className="flex flex-wrap items-center justify-center gap-y-4 md:flex-nowrap">
-              {FEATURE_LOGOS.map((logo) => (
-                <FeatureLogo key={logo.name} logo={logo} />
-              ))}
-            </div>
-          </section>
-
           <HomeChecklistSections readMinutes={readMinutes} estimatedTimes={estimatedTimes} />
 
           {/* "I have nothing to hide": a bordered quote rather than a box, so it
@@ -175,23 +159,22 @@ export default function HomePageContent({
             </div>
           </section>
 
-          {/* Latest News — loaded in server component HomeNewsSection (see app/[locale]/page.tsx) */}
-          {children}
-
-          {/* Newsletter */}
-          <section className="mb-16 rounded-lg border border-border p-5 sm:p-6 md:p-8">
-            <div className="grid grid-cols-1 items-center gap-6 md:grid-cols-2 md:gap-12">
-              <div>
-                <h2 className="mb-2 text-2xl font-bold">{t('inlineCta.title')}</h2>
-                <p className="text-muted-foreground">
-                  {t.rich('homepage.newsletterDescription', {
-                    link: inlineLink('https://addy.io/'),
-                  })}
-                </p>
-              </div>
-              <NewsletterSubscribeForm context="homepage" />
+          {/* Sites that have shared our guides */}
+          <section className="mb-16">
+            <h2 className="mb-4 text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+              {t('featured.sectionTitle')}
+            </h2>
+            {/* Three per row on narrow screens with a short last row centered,
+                one row of equal columns from md up. */}
+            <div className="flex flex-wrap items-center justify-center gap-y-4 md:flex-nowrap">
+              {FEATURE_LOGOS.map((logo) => (
+                <FeatureLogo key={logo.name} logo={logo} />
+              ))}
             </div>
           </section>
+
+          {/* Latest News — loaded in server component HomeNewsSection (see app/[locale]/page.tsx) */}
+          {children}
 
           {/* Tools */}
           <HomeToolsSection />
