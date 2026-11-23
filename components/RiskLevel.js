@@ -5,9 +5,9 @@ import { cn } from '@/lib/utils';
 import styles from '../styles/RiskLevel.module.css';
 
 const LEVEL_CONFIG = {
-  everyone: { bars: 1 },
-  medium: { bars: 2 },
-  high: { bars: 3 },
+  everyone: { dots: 1 },
+  medium: { dots: 2 },
+  high: { dots: 3 },
 };
 
 /** Map MDX `level` values to LEVEL_CONFIG keys (same rules as the main callout). */
@@ -19,18 +19,17 @@ function resolveLevelKey(level) {
   return 'everyone';
 }
 
-function SignalBars({ filledCount, className }) {
-  const heights = [4, 8, 12];
+/** Three dots, the first `filledCount` solid and the rest drawn as outlines. */
+function RiskDots({ filledCount, className }) {
   return (
-    <span className={cn('inline-flex items-end gap-0.5', className)} aria-hidden>
-      {heights.map((h, i) => (
+    <span className={cn('inline-flex items-center gap-[3px]', className)} aria-hidden>
+      {[0, 1, 2].map((i) => (
         <span
           key={i}
           className={cn(
-            'w-1 rounded-sm min-w-[4px] bg-current',
-            i < filledCount ? 'opacity-90' : 'opacity-30',
+            'size-[7px] shrink-0 rounded-full',
+            i < filledCount ? 'bg-current' : 'border-[1.5px] border-current',
           )}
-          style={{ height: `${h}px` }}
         />
       ))}
     </span>
@@ -57,14 +56,13 @@ export function RiskLevelBadge({ level, className, showLabel = true }) {
     <span
       className={cn(
         styles.riskLevelBadge,
-        styles.riskLevelBadgeInline,
         toneClass,
-        !showLabel && styles.riskLevelBadgeBarsOnly,
+        !showLabel && styles.riskLevelBadgeIconOnly,
         className,
       )}
       title={!showLabel ? label : undefined}
     >
-      <SignalBars filledCount={config.bars} />
+      <RiskDots filledCount={config.dots} />
       {showLabel ? label : null}
     </span>
   );
@@ -90,39 +88,11 @@ export function RiskLevel({ level, mode = 'default', children, className, ...pro
         : t('riskLevel.everyoneDefault');
   const introText = mode === 'for_you' ? t('riskLevel.forYou') : t('riskLevel.forYouIf');
 
-  const bodyContent = children;
-
   return (
-    <div
-      className={cn(styles.riskLevel, levelClass, 'prose', className)}
-
-      {...props}
-    >
-      {useDefaultText ? (
-        <div className={styles.riskLevelFloatWrap}>
-          <span className={styles.riskLevelBadgeFloat}>
-            <RiskLevelBadge level={normalizedLevel} />
-          </span>
-          <div className={cn(styles.riskLevelBody, styles.riskLevelBodyInline)}>
-            <p>{defaultText}</p>
-          </div>
-        </div>
-      ) : showHeader ? (
-        <>
-          <div className={cn('flex flex-wrap items-baseline gap-2', styles.riskLevelFirstRow)}>
-            <RiskLevelBadge level={normalizedLevel} />
-            <strong className={styles.riskLevelIntro}>{introText}</strong>
-          </div>
-          <div className={styles.riskLevelBody}>{bodyContent}</div>
-        </>
-      ) : (
-        <div className={styles.riskLevelFloatWrap}>
-          <span className={styles.riskLevelBadgeFloat}>
-            <RiskLevelBadge level={normalizedLevel} />
-          </span>
-          <div className={cn(styles.riskLevelBody, styles.riskLevelBodyInline)}>{bodyContent}</div>
-        </div>
-      )}
+    <div className={cn(styles.riskLevel, levelClass, 'prose', className)} {...props}>
+      <RiskLevelBadge level={normalizedLevel} className="self-start" />
+      {showHeader && <strong className={styles.riskLevelIntro}>{introText}</strong>}
+      <div className={styles.riskLevelBody}>{useDefaultText ? <p>{defaultText}</p> : children}</div>
     </div>
   );
 }

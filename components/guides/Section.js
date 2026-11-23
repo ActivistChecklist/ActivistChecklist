@@ -267,10 +267,10 @@ const Section = ({ slug, title, description, children }) => {
                   {sectionRiskLevel != null &&
                     (mdUp ? (
                       <span aria-hidden className="inline-flex shrink-0">
-                        <RiskLevelBadge level={sectionRiskLevel} className="mr-0! shrink-0" />
+                        <RiskLevelBadge level={sectionRiskLevel} className="shrink-0" />
                       </span>
                     ) : (
-                      // Bars only fit on a phone, so tapping them opens the section's
+                      // Only the dots fit on a phone, so tapping them opens the section's
                       // risk callout to explain who the section is for.
                       <Sheet>
                         <SheetTrigger
@@ -280,7 +280,7 @@ const Section = ({ slug, title, description, children }) => {
                           <RiskLevelBadge
                             level={sectionRiskLevel}
                             showLabel={false}
-                            className="mr-0! shrink-0"
+                            className="shrink-0"
                           />
                         </SheetTrigger>
                         <SheetContent
