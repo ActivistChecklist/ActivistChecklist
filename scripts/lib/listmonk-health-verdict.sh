@@ -15,6 +15,31 @@
 # the same way if a successful restart counts as healthy. With this rule, a
 # restart loop is a continuous run of fail pings no matter what causes it.
 
+# restart_needed <liveness_ok> <roundtrip_verdict>
+#
+# Echoes true when restarting listmonk could fix what the probes saw:
+#   - the liveness probe got no answer, unless the round trip PASSED
+#   - listmonk answers, but the round trip says it refused the subscribe (FAIL)
+#
+# A round trip that PASSED means ac-api reached listmonk and listmonk accepted a
+# subscriber moments ago, so a liveness miss next to it is a problem on the
+# probe's own path from this host, and a restart only adds a real outage.
+#
+# Why (2026-11-23): the liveness probe got no answer twice in a row while the
+# round trip in the same run went through. The check restarted a listmonk that
+# had been serving for days and paged "down", then "up" five minutes later.
+restart_needed() {
+  local liveness_ok="$1" roundtrip="$2"
+
+  if [[ "$liveness_ok" != true ]]; then
+    [[ "$roundtrip" == PASS ]] && printf 'false' || printf 'true'
+  elif [[ "$roundtrip" == FAIL ]]; then
+    printf 'true'
+  else
+    printf 'false'
+  fi
+}
+
 # health_verdict <needed_restart> <liveness_ok> <roundtrip_verdict> <repo_stale>
 #
 # Echoes exactly one of:

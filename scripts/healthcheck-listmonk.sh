@@ -34,23 +34,33 @@
 # FAIL even when the restart worked, and so does a checkout that has stopped
 # syncing from main. See scripts/lib/listmonk-health-verdict.sh for why.
 #
+# A liveness probe that gets no answer is tried again after a pause before
+# anything is restarted. Now and then the probe from this host to listmonk's
+# public URL gets nothing back while listmonk is fine, and restarting on that one
+# miss took down a healthy listmonk and paged "down", then "up" five minutes
+# later. A real outage still fails the later probe and alerts a minute or so
+# later. Each ping's status line says which attempt answered, so blips stay
+# visible in Healthchecks without paging anyone.
+#
 # Required env (see .env.production on the newsletter server):
-#   LISTMONK_HEALTHCHECK_PING_URL — Healthchecks.io ping URL
-#   LISTMONK_ROOT_URL             — public base URL (falls back to LISTMONK_API_URL)
+#   LISTMONK_HEALTHCHECK_PING_URL: Healthchecks.io ping URL
+#   LISTMONK_ROOT_URL: public base URL (falls back to LISTMONK_API_URL)
 #
 # Optional env:
 #   LISTMONK_HEALTH_PATH / LISTMONK_SUBSCRIPTION_PATH
 #   LISTMONK_HEALTH_MARKER / LISTMONK_SUBSCRIPTION_MARKER
-#   LISTMONK_SUBSCRIBE_URL         — site subscribe endpoint; empty disables the round trip
-#   LISTMONK_SUBSCRIBE_TEST_EMAIL  — monitor address (default healthcheck@example.com)
-#   LISTMONK_SUBSCRIBE_TEST_NAME   — monitor display name
-#   LISTMONK_ROUNDTRIP_TIMEOUT     — seconds for the subscribe POST (default 20)
-#   LISTMONK_LAUNCH_SCRIPT         — default: <repo>/scripts/launch-listmonk.sh
-#   LISTMONK_LAUNCH_TIMEOUT        — seconds to allow the launcher (default 90)
-#   LISTMONK_START_ATTEMPTS        — post-start probes (default 6)
-#   LISTMONK_START_RETRY_SLEEP     — seconds between probes (default 5)
-#   LISTMONK_REPO_MAX_AGE_HOURS    — fail when the last git fetch is older (default 6, 0 disables)
-#   LOG_DIR / LOG_LINES_KEEP       — shared server log settings
+#   LISTMONK_SUBSCRIBE_URL: site subscribe endpoint; empty disables the round trip
+#   LISTMONK_SUBSCRIBE_TEST_EMAIL: monitor address (default healthcheck@example.com)
+#   LISTMONK_SUBSCRIBE_TEST_NAME: monitor display name
+#   LISTMONK_ROUNDTRIP_TIMEOUT: seconds for the subscribe POST (default 20)
+#   LISTMONK_LIVENESS_ATTEMPTS: liveness probes before restarting (default 2)
+#   LISTMONK_LIVENESS_RETRY_SLEEP: seconds between those probes (default 60)
+#   LISTMONK_LAUNCH_SCRIPT: launcher path (default <repo>/scripts/launch-listmonk.sh)
+#   LISTMONK_LAUNCH_TIMEOUT: seconds to allow the launcher (default 90)
+#   LISTMONK_START_ATTEMPTS: post-start probes (default 6)
+#   LISTMONK_START_RETRY_SLEEP: seconds between probes (default 5)
+#   LISTMONK_REPO_MAX_AGE_HOURS: fail when the last git fetch is older (default 6, 0 disables)
+#   LOG_DIR / LOG_LINES_KEEP: shared server log settings
 #
 set -euo pipefail
 
@@ -64,6 +74,8 @@ source "$SCRIPT_DIR/log.sh"
 source "$SCRIPT_DIR/lib/listmonk-roundtrip.sh"
 # shellcheck disable=SC1091
 source "$SCRIPT_DIR/lib/listmonk-health-verdict.sh"
+# shellcheck disable=SC1091
+source "$SCRIPT_DIR/lib/hc-ping.sh"
 
 init_scripts_file_log "$(resolve_server_log_dir "$PROJECT_DIR")" "healthcheck-listmonk.log" "$(resolve_server_log_lines_keep)"
 
@@ -84,6 +96,10 @@ LAUNCH_SCRIPT="${LISTMONK_LAUNCH_SCRIPT:-$SCRIPT_DIR/launch-listmonk.sh}"
 LAUNCH_TIMEOUT="${LISTMONK_LAUNCH_TIMEOUT:-90}"
 START_ATTEMPTS="${LISTMONK_START_ATTEMPTS:-6}"
 START_RETRY_SLEEP="${LISTMONK_START_RETRY_SLEEP:-5}"
+LIVENESS_ATTEMPTS="${LISTMONK_LIVENESS_ATTEMPTS:-2}"
+LIVENESS_RETRY_SLEEP="${LISTMONK_LIVENESS_RETRY_SLEEP:-60}"
+if [[ ! "$LIVENESS_ATTEMPTS" =~ ^[1-9][0-9]*$ ]]; then LIVENESS_ATTEMPTS=2; fi
+if [[ ! "$LIVENESS_RETRY_SLEEP" =~ ^[0-9]+$ ]]; then LIVENESS_RETRY_SLEEP=60; fi
 
 SUBSCRIBE_URL="${LISTMONK_SUBSCRIBE_URL:-}"
 # RFC 2606 reserves example.com, so this address can never be delivered to or
@@ -102,11 +118,15 @@ fi
 HEALTH_URL="${ROOT_URL%/}$HEALTH_PATH"
 SUBSCRIPTION_URL="${ROOT_URL%/}$SUBSCRIPTION_PATH"
 
-hc_post() {
-  local url="$1" body="$2"
-  [[ -n "$PING_URL" ]] || return 0
-  # A failed ping must never crash the monitor.
-  curl -fsS --max-time 10 --retry 3 --data-raw "$body" "$url" >/dev/null 2>&1 || true
+WORK_DIR="$(mktemp -d)"
+trap 'rm -rf "$WORK_DIR"' EXIT
+
+# send_ping <suffix> <body>: suffix is empty for success, or "fail". hc_ping hands
+# the URL to curl on stdin, so the ping credential stays out of argv where other
+# accounts on this shared host could read it.
+send_ping() {
+  printf '%s\n' "$2" >"$WORK_DIR/ping"
+  hc_ping "$PING_URL" "$1" "$WORK_DIR/ping"
 }
 
 # 503 pages and Cloudflare errors are long; keep just enough to tell them apart.
@@ -114,26 +134,33 @@ snippet() {
   printf '%s' "$1" | tr -d '\n' | cut -c1-200
 }
 
+# fetch <url>: sets FETCH_BODY, and FETCH_INFO to the HTTP status and curl's exit
+# code. A miss used to log only "got: " with nothing after it, which could not
+# tell a timeout (curl_exit=28) from a refused connection (7) or DNS (6).
+FETCH_BODY=""
+FETCH_INFO=""
 fetch() {
-  curl -s -m 5 "$1" 2>/dev/null || true
+  local out rc=0
+  out="$(curl -s -m 5 -w $'\n%{http_code}' "$1" 2>/dev/null)" || rc=$?
+  FETCH_BODY="${out%$'\n'*}"
+  FETCH_INFO="http=${out##*$'\n'} curl_exit=$rc"
 }
 
 # Liveness only: is something answering on listmonk's own port?
 probe_liveness() {
-  local body
-  body="$(fetch "$HEALTH_URL")"
-  if grep -qF "$HEALTH_MARKER" <<<"$body"; then
+  fetch "$HEALTH_URL"
+  if grep -qF "$HEALTH_MARKER" <<<"$FETCH_BODY"; then
     echo "OK: listmonk API is responding at $HEALTH_URL"
     return 0
   fi
-  echo "FAIL: health API check (got: $(snippet "$body"))"
+  echo "FAIL: health API check ($FETCH_INFO, got: $(snippet "$FETCH_BODY"))"
   # Fallback: the subscription page is public even when the API session check moves.
-  body="$(fetch "$SUBSCRIPTION_URL")"
-  if grep -qF "$SUBSCRIPTION_MARKER" <<<"$body"; then
+  fetch "$SUBSCRIPTION_URL"
+  if grep -qF "$SUBSCRIPTION_MARKER" <<<"$FETCH_BODY"; then
     echo "OK: listmonk web interface is serving content at $SUBSCRIPTION_URL"
     return 0
   fi
-  echo "FAIL: subscription page check ('$SUBSCRIPTION_MARKER' not found)"
+  echo "FAIL: subscription page check ('$SUBSCRIPTION_MARKER' not found; $FETCH_INFO)"
   return 1
 }
 
@@ -176,21 +203,27 @@ run_roundtrip() {
 }
 
 liveness_ok=false
-if probe_liveness; then
-  liveness_ok=true
-fi
+for ((liveness_attempt = 1; ; liveness_attempt++)); do
+  if probe_liveness; then
+    liveness_ok=true
+    break
+  fi
+  if ((liveness_attempt >= LIVENESS_ATTEMPTS)); then break; fi
+  echo "Liveness attempt $liveness_attempt/$LIVENESS_ATTEMPTS got no answer; probing again in ${LIVENESS_RETRY_SLEEP}s before restarting anything."
+  sleep "$LIVENESS_RETRY_SLEEP"
+done
 
 run_roundtrip "initial"
 
 # Restart only for problems a listmonk restart can actually fix. A rate-limited
-# probe proves nothing, and a dead site API or a malformed probe is not listmonk's
-# fault - bouncing the service on those just adds an outage to an outage.
-needs_restart=false
-if [[ "$liveness_ok" == false ]]; then
-  needs_restart=true
-elif [[ "$ROUNDTRIP_VERDICT" == "FAIL" ]]; then
+# probe proves nothing, a dead site API or a malformed probe is not listmonk's
+# fault, and a subscribe that just went through proves listmonk is serving.
+# Bouncing the service on any of those just adds an outage to an outage.
+needs_restart="$(restart_needed "$liveness_ok" "$ROUNDTRIP_VERDICT")"
+if [[ "$needs_restart" == true && "$liveness_ok" == true ]]; then
   echo "Listmonk is listening but the subscribe path is broken; restarting anyway."
-  needs_restart=true
+elif [[ "$needs_restart" == false && "$liveness_ok" == false ]]; then
+  echo "Not restarting: the round trip just subscribed through listmonk, so it is serving. The probe's path from this host is what failed."
 fi
 
 restarted=false
@@ -211,14 +244,14 @@ if [[ "$needs_restart" == true ]]; then
     liveness_ok=false
     for ((attempt = 1; attempt <= START_ATTEMPTS; attempt++)); do
       sleep "$START_RETRY_SLEEP"
-      RETRY_BODY="$(fetch "$HEALTH_URL")"
-      if grep -qF "$HEALTH_MARKER" <<<"$RETRY_BODY"; then
+      fetch "$HEALTH_URL"
+      if grep -qF "$HEALTH_MARKER" <<<"$FETCH_BODY"; then
         echo "OK: listmonk started (health API confirmed after $((attempt * START_RETRY_SLEEP))s)"
         liveness_ok=true
         restarted=true
         break
       fi
-      echo "  ... attempt $attempt/$START_ATTEMPTS: not up yet (got: $(snippet "$RETRY_BODY"))"
+      echo "  ... attempt $attempt/$START_ATTEMPTS: not up yet ($FETCH_INFO, got: $(snippet "$FETCH_BODY"))"
     done
 
     [[ "$liveness_ok" == false ]] && echo "FAIL: listmonk did not come back up"
@@ -243,20 +276,26 @@ repo_stale="$(repo_is_stale "$fetch_mtime" "$(date +%s)" "${LISTMONK_REPO_MAX_AG
 repo_rev="$(git -C "$PROJECT_DIR" rev-parse --short HEAD 2>/dev/null || echo unknown)"
 
 verdict="$(health_verdict "$needs_restart" "$liveness_ok" "$ROUNDTRIP_VERDICT" "$repo_stale")"
-status_line="verdict=$verdict liveness=$liveness_ok roundtrip=$ROUNDTRIP_VERDICT restarted=$restarted repo_stale=$repo_stale rev=$repo_rev"
+status_line="verdict=$verdict liveness=$liveness_ok liveness_attempt=$liveness_attempt/$LIVENESS_ATTEMPTS roundtrip=$ROUNDTRIP_VERDICT restarted=$restarted repo_stale=$repo_stale rev=$repo_rev"
 
 case "$verdict" in
   OK) reason="" ;;
   RECOVERED) reason="listmonk was down on arrival and had to be restarted" ;;
   STALE) reason="server checkout has not fetched in ${LISTMONK_REPO_MAX_AGE_HOURS:-6}h - is sync-repo.sh scheduled?" ;;
-  *) reason="listmonk is down" ;;
+  *)
+    if [[ "$liveness_ok" == false && "$ROUNDTRIP_VERDICT" == PASS ]]; then
+      reason="listmonk's public URL did not answer this host, though a subscribe through the site went through"
+    else
+      reason="listmonk is down"
+    fi
+    ;;
 esac
 
 if [[ "$verdict" == OK ]]; then
-  hc_post "${PING_URL%/}" "healthcheck-listmonk ok $(date -u +"%Y-%m-%dT%H:%M:%SZ") url=$HEALTH_URL $status_line"
+  send_ping "" "healthcheck-listmonk ok $(date -u +"%Y-%m-%dT%H:%M:%SZ") url=$HEALTH_URL $status_line"
   [[ -n "$PING_URL" ]] && echo "Health check ping sent ($status_line)" || echo "No LISTMONK_HEALTHCHECK_PING_URL set; ping skipped ($status_line)"
 else
-  hc_post "${PING_URL%/}/fail" "healthcheck-listmonk failed $(date -u +"%Y-%m-%dT%H:%M:%SZ") $reason url=$HEALTH_URL $status_line"
+  send_ping fail "healthcheck-listmonk failed $(date -u +"%Y-%m-%dT%H:%M:%SZ") $reason url=$HEALTH_URL $status_line"
   [[ -n "$PING_URL" ]] && echo "Sent fail ping - $reason ($status_line)" || echo "$reason ($status_line; no ping URL configured)"
   echo "=== Check complete ==="
   exit 1

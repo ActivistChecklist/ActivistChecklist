@@ -59,6 +59,32 @@ describe('health_verdict', () => {
   });
 });
 
+describe('restart_needed', () => {
+  const restart = (liveness, roundtrip) => run('restart_needed', liveness, roundtrip);
+
+  it('restarts when listmonk does not answer and nothing shows it serving', () => {
+    for (const roundtrip of ['FAIL', 'UPSTREAM_DOWN', 'BAD_REQUEST', 'INCONCLUSIVE', 'SKIPPED']) {
+      expect(restart(false, roundtrip)).toBe('true');
+    }
+  });
+
+  // 2026-11-23: the probe got no answer while a subscribe in the same run went
+  // through. Restarting then took down a listmonk that was serving fine.
+  it('leaves listmonk alone when the probe misses but a subscribe just went through', () => {
+    expect(restart(false, 'PASS')).toBe('false');
+  });
+
+  it('restarts a listmonk that answers but refuses the subscribe', () => {
+    expect(restart(true, 'FAIL')).toBe('true');
+  });
+
+  it('does not restart for problems that are not listmonk', () => {
+    for (const roundtrip of ['PASS', 'UPSTREAM_DOWN', 'BAD_REQUEST', 'INCONCLUSIVE', 'SKIPPED']) {
+      expect(restart(true, roundtrip)).toBe('false');
+    }
+  });
+});
+
 describe('repo_is_stale', () => {
   const now = 1_800_000_000;
   const hoursAgo = (h) => now - h * 3600;
