@@ -1062,6 +1062,7 @@ export default config({
             ...guideAndPageComponents,
             ChecklistItem: checklistItemComponent,
             ChecklistItemGroup: checklistItemGroupComponent,
+            RiskLevel: riskLevelComponent,
           },
         }),
       },
