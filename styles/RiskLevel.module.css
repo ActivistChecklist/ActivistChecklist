@@ -1,8 +1,9 @@
 @reference "./globals.css";
 
-/* Risk Level block - tinted background, no border. Bullets rendered as arrows. */
+/* Risk Level block - tinted background, no border. The pill sits on its own line above the
+   text. Bullets rendered as arrows. */
 .riskLevel {
-  @apply relative w-full rounded-md p-4 [&:not(:first-child)]:mt-3 !text-inherit;
+  @apply relative flex w-full flex-col gap-2.5 rounded-md p-4 [&:not(:first-child)]:mt-3 !text-inherit;
   border: none;
 }
 
@@ -33,38 +34,22 @@
   }
 }
 
-.riskLevelBadgeInline {
-  @apply mr-2;
-}
-
-/* Signal bars only (e.g. floating section header on narrow viewports). */
-.riskLevelBadgeBarsOnly {
-  @apply gap-0 px-2 py-1;
-}
-
-.riskLevelFloatWrap {
-  overflow: auto;
-}
-
-.riskLevelBadgeFloat {
-  float: left;
-  @apply mr-2 mt-0.5;
-}
-
-.riskLevelFirstRow {
-  /* row with badge and either inline body or intro text */
+/* Dots only (e.g. floating section header on narrow viewports). */
+.riskLevelBadgeIconOnly {
+  @apply gap-0 px-2 py-2;
 }
 
 .riskLevelIntro {
-  /* "This section might be for you if:" - bold, same line as badge when multi */
+  /* "This section is for you if:" - bold, on its own line under the pill */
 }
 
-.riskLevelBody {
-  @apply mt-2;
-}
-
-.riskLevelBodyInline {
+/* The block's gap spaces the pill, intro and body, so drop the prose margins at the edges. */
+.riskLevelBody > :first-child {
   @apply mt-0;
+}
+
+.riskLevelBody > :last-child {
+  @apply mb-0;
 }
 
 /* Bullets as right arrows - override prose list styling */
