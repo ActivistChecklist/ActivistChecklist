@@ -1,0 +1,67 @@
+{
+  "title": "Les flics à ta porte",
+  "intro": "Les étapes à suivre si les flics sont à ta porte — police locale, FBI, ICE ou n'importe quel autre agent du gouvernement",
+  "fillIn": {
+    "whoToCall": {
+      "heading": "Qui appeler (à remplir)",
+      "fields": {
+        "emergencyContact1": "Contact d'urgence 1",
+        "emergencyContact2": "Contact d'urgence 2",
+        "emergencyContact3": "Contact d'urgence 3",
+        "legalSupport": "Soutien juridique"
+      }
+    },
+    "otherNumbers": {
+      "heading": "Autres numéros",
+      "fields": {
+        "iceRaidHotline": "Ligne d'urgence locale contre les raids de l'ICE",
+        "other": "Autre :"
+      }
+    }
+  },
+  "moreInfo": "Plus d'infos et d'autres guides sur :",
+  "steps": {
+    "doNotInvite": {
+      "heading": "1. Ne les invite pas à entrer",
+      "bullets": {
+        "doNotOpen": "<b>N'ouvre PAS la porte</b> sauf s'ils ont un mandat, ou « warrant », signé par un·e juge (pas par un·e agent·e)",
+        "ifOpened": "<b>Si tu as ouvert la porte,</b> sors et referme-la derrière toi. Dis « Je ne consens pas à une fouille », en anglais : « I do not consent to a search »",
+        "remainSilent": "<b>Garde le silence</b> pour protéger tes droits"
+      }
+    },
+    "magicWords": {
+      "heading": "2. Dis les phrases magiques",
+      "intro": "Dis ces phrases pour protéger tes droits :",
+      "phrases": {
+        "noConsent": "« Je ne consens pas à une fouille » — en anglais : « I do not consent to a search »",
+        "remainSilent": "« Je vais garder le silence » — en anglais : « I am going to remain silent »",
+        "attorney": "« Je veux parler à un·e avocat·e » — en anglais : « I want to speak to an attorney »",
+        "card": "« Puis-je avoir votre carte ? » — en anglais : « May I have your card? »"
+      }
+    },
+    "warrant": {
+      "heading": "3. S'ils ont un mandat…",
+      "numbered": {
+        "ask": "Demande : <b>« Avez-vous un mandat ? »</b>, en anglais : « Do you have a warrant? ». Vérifie qu'il est <b>signé par un·e juge</b> (il doit y être écrit « court » et non « agency »)",
+        "doNotInterfere": "Si c'est le cas, n'interviens pas pendant la fouille ou l'arrestation",
+        "phoneOff": "<b>Éteins ton téléphone</b> pour protéger tes données",
+        "video": "Demande à une personne qui vit avec toi de <b>filmer</b> si possible",
+        "callContacts": "Demande à une personne qui vit avec toi d'<b>appeler tes contacts d'urgence</b>"
+      }
+    },
+    "afterTheyLeave": {
+      "heading": "4. Après leur départ",
+      "numbered": {
+        "callContacts": "<b>Appelle ou écris à tes contacts d'urgence</b>",
+        "writeDown": "<b>Note tout</b> ce qui s'est passé"
+      }
+    },
+    "remember": {
+      "heading": "À retenir",
+      "bullets": {
+        "copsLie": "<b>Les flics ont le droit de te mentir</b> et le font souvent pour obtenir les infos qu'ils veulent. Toi, ne leur mens pas.",
+        "solidarity": "<b>On ne parle pas aux flics</b>. Notre solidarité face à la répression de l'État protège tout le monde."
+      }
+    }
+  }
+}
