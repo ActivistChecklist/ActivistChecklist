@@ -235,10 +235,12 @@
     "highLabel": "personas en alto riesgo",
     "everyoneDefault": "Esta sección es para cualquier persona que haga trabajo de activismo o incidencia.",
     "mediumDefault": "Esta sección es para ti si tienes un rol de liderazgo o haces un activismo que tiene más chance de ser atacado por el Estado o tu oposición.",
-    "highDefault": "Esta sección es para ti si ocupas un rol de alto perfil o tu activismo implica trabajo de alto riesgo que podría traer consecuencias graves o represalias.",
+    "highDefault": "Esta sección es para ti si tu activismo implica trabajo de alto riesgo que podría traer consecuencias graves o represalias, o si tienes un rol de alto perfil.",
     "forYouIf": "Esta sección es para ti si:",
     "forYou": "Esta sección es para:",
-    "whoIsThisFor": "¿Para quién es esta sección?"
+    "whoIsThisFor": "¿Para quién es esta sección?",
+    "thisSection": "Esta sección",
+    "keyFooter": "Cada nivel se basa en los anteriores, así que asegúrate de hacer también las secciones de los niveles por debajo del tuyo."
   },
   "checklistItem": {
     "informationalItem": "Elemento informativo",
