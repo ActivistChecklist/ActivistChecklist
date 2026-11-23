@@ -566,10 +566,10 @@
       "deviceMaxOsWarningTitle": "Nota sobre el SO de tu dispositivo",
       "deviceMaxOsWarning": "Tu {label} solo admite hasta {os} {maxVersion}. {os} {maxVersion} dejará de recibir actualizaciones de seguridad antes que {os} {latestVersion}. Los dispositivos más nuevos seguirán recibiendo actualizaciones por más tiempo.",
       "deviceMaxOsWarningWithDate": "Tu {label} solo admite hasta {os} {maxVersion}, que se espera deje de recibir actualizaciones de seguridad cerca del {eolDate}. Los dispositivos más nuevos que pueden correr {os} {latestVersion} seguirán recibiendo actualizaciones por más tiempo.",
-      "deviceMaxOsEolWarning": "Tu {label} llega como máximo a {os} {maxVersion}, cuya oficialidad de soporte ya terminó. Puede que todavía recibas actualizaciones ocasionales, pero trata este dispositivo como de baja confianza para trabajo sensible y planifica reemplazarlo.",
+      "deviceMaxOsEolWarning": "Tu {label} no puede actualizarse más allá de {os} {maxVersion}, que ya no tiene soporte oficial. Es posible que todavía recibas alguna actualización de vez en cuando, pero no confíes en este dispositivo para trabajo delicado y planea reemplazarlo.",
       "deviceUpgradePlan": "Si la seguridad a largo plazo importa para tu trabajo, planifica un cambio de hardware.",
       "threatModelHeader": "Por qué esto importa",
-      "threatModel": "Cada semana sin una actualización, se hacen públicas más formas de meterse a tu dispositivo. Si los cops te incautan el teléfono en una <protestLink>protesta</protestLink> o en un <borderLink>cruce fronterizo</borderLink> (o si alguien te apunta con <spywareLink>spyware</spywareLink>), esas vulnerabilidades conocidas son las que van a usar para entrar y leer todo lo que tienes.  ",
+      "threatModel": "Cada semana que pasas sin actualizar tu dispositivo, se hacen públicas más formas de entrar en él. Si la policía te quita el teléfono en una <protestLink>protesta</protestLink> o en un <borderLink>cruce de frontera</borderLink> (o si alguien te ataca con <spywareLink>spyware</spywareLink>), van a usar esas fallas conocidas para meterse y leer todo lo que tiene.  ",
       "threatModelSoft": "Hasta que lo confirmes, trata este dispositivo como posiblemente desactualizado para trabajo sensible.",
       "viewEssentialsCta": "Mira nuestros fundamentos de seguridad digital →",
       "essentialsNextSteps": {
@@ -794,7 +794,7 @@
     },
     "two-factor-authentication": {
       "term": "Verificación en dos pasos (2FA)",
-      "definition": "Un paso extra al iniciar sesión: después de tu contraseña, confirmas tu identidad de una segunda forma. Puede ser un código de 6 dígitos de una [app de autenticación](term:authenticator-app), un mensaje de texto o, a veces, una [llave de acceso](term:passkey). Es como necesitar una llave y también el código de la alarma para entrar a tu casa. Aunque alguien robe tu contraseña, no podrá entrar a tu cuenta sin el segundo paso.",
+      "definition": "Un paso extra al iniciar sesión: después de tu contraseña, confirmas tu identidad de una segunda forma. Puede ser un código de 6 dígitos de una [app de autenticación](term:authenticator-app), un mensaje de texto o, a veces, una [llave de acceso](term:passkey). Aunque alguien te robe la contraseña, no puede entrar a tu cuenta sin el segundo paso.",
       "source": "Fundamentos de seguridad",
       "url": "/essentials/#mfa"
     },
