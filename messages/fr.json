@@ -566,10 +566,10 @@
       "deviceMaxOsWarningTitle": "À propos du système de ton appareil",
       "deviceMaxOsWarning": "Ton {label} ne peut pas dépasser {os} {maxVersion}. {os} {maxVersion} cessera de recevoir des mises à jour de sécurité avant {os} {latestVersion}. Les appareils plus récents recevront des mises à jour plus longtemps.",
       "deviceMaxOsWarningWithDate": "Ton {label} ne peut pas dépasser {os} {maxVersion}, qui devrait cesser de recevoir des mises à jour de sécurité vers {eolDate}. Les appareils plus récents capables de faire tourner {os} {latestVersion} recevront des mises à jour plus longtemps.",
-      "deviceMaxOsEolWarning": "Ton {label} ne peut pas dépasser {os} {maxVersion}, qui n'est officiellement plus pris en charge. Tu recevras peut-être encore quelques mises à jour ponctuelles, mais considère cet appareil comme peu fiable pour les activités sensibles et prévois de le remplacer.",
+      "deviceMaxOsEolWarning": "Ton {label} ne peut pas aller au-delà de {os} {maxVersion}, qui n'est officiellement plus pris en charge. Tu recevras peut-être encore quelques mises à jour de temps en temps, mais considère cet appareil comme non fiable pour tout ce qui est sensible, et prévois de le remplacer.",
       "deviceUpgradePlan": "Si la sécurité à long terme compte pour tes activités, prévois de changer d'appareil.",
       "threatModelHeader": "Pourquoi c'est important",
-      "threatModel": "Chaque semaine sans mise à jour, de nouvelles façons de s'introduire dans ton appareil deviennent publiques. Si les flics saisissent ton téléphone en <protestLink>manif</protestLink> ou à un <borderLink>passage de frontière</borderLink> (ou si quelqu'un te cible avec des <spywareLink>logiciels espions</spywareLink>), ce sont ces failles connues qu'ils utiliseront pour y entrer et tout lire.  ",
+      "threatModel": "Chaque semaine où tu ne mets pas ton appareil à jour, de nouvelles façons de s'y introduire deviennent publiques. Si les flics saisissent ton téléphone lors d'une <protestLink>manif</protestLink> ou d'un <borderLink>passage de frontière</borderLink> (ou si quelqu'un te cible avec un <spywareLink>logiciel espion</spywareLink>), ce sont ces failles connues qu'ils utiliseront pour y entrer et lire tout ce qu'il contient.  ",
       "threatModelSoft": "Tant que tu n'as pas vérifié, considère cet appareil comme potentiellement pas à jour pour les activités sensibles.",
       "viewEssentialsCta": "Voir nos bases de la sécurité numérique →",
       "essentialsNextSteps": {
@@ -794,7 +794,7 @@
     },
     "two-factor-authentication": {
       "term": "Authentification à deux facteurs (2FA)",
-      "definition": "Une étape de connexion en plus : après ton mot de passe, tu confirmes ton identité d'une deuxième façon. Ça peut être un code à 6 chiffres venant d'une [appli d'authentification](term:authenticator-app), un message texte, ou parfois une [clé d'accès](term:passkey). C'est comme avoir besoin à la fois d'une clé et du code de l'alarme pour entrer chez toi. Même si quelqu'un vole ton mot de passe, il ne peut pas accéder à ton compte sans la deuxième étape.",
+      "definition": "Une étape de connexion en plus : après ton mot de passe, tu confirmes ton identité d'une deuxième manière. Ça peut être un code à 6 chiffres généré par une [application d'authentification](term:authenticator-app), un texto, ou parfois une [clé d'accès](term:passkey). Même si quelqu'un vole ton mot de passe, cette personne ne peut pas accéder à ton compte sans la deuxième étape.",
       "source": "Les essentiels de la sécurité",
       "url": "/essentials/#mfa"
     },
