@@ -231,11 +231,11 @@
   },
   "riskLevel": {
     "everyoneLabel": "tuttə",
-    "mediumLabel": "rischio medio",
-    "highLabel": "rischio alto",
+    "mediumLabel": "persone a rischio medio",
+    "highLabel": "persone ad alto rischio",
     "everyoneDefault": "Questa sezione è per chiunque faccia attivismo o advocacy.",
     "mediumDefault": "Questa sezione fa per te se hai un ruolo di leadership o se fai attivismo che ha più probabilità di finire nel mirino dello Stato o di chi ti si oppone.",
-    "highDefault": "Questa sezione è per te se hai un ruolo molto visibile o se il tuo attivismo comporta attività ad alto rischio che potrebbero portare a conseguenze serie o ritorsioni.",
+    "highDefault": "Questa sezione fa per te se hai un ruolo molto in vista o se il tuo attivismo comporta attività ad alto rischio che potrebbero avere conseguenze gravi o portare a ritorsioni.",
     "forYouIf": "Questa sezione è per te se:",
     "forYou": "Questa sezione è per:",
     "whoIsThisFor": "A chi è rivolta questa sezione?"
