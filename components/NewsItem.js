@@ -29,7 +29,9 @@ function PaywallBypassNotice({ originalUrl }) {
   );
 }
 
-const NewsItem = ({ entry }) => {
+// showTags: the homepage leaves the tags off, since they aren't links and a
+// long row of them crowds a short list. The news page keeps them.
+const NewsItem = ({ entry, showTags = true }) => {
   const isMobile = useIsMobile();
   // Must run before the early return below (Rules of Hooks), and must be given a
   // value that does not depend on the current time: see useRelativeDate.
@@ -52,7 +54,7 @@ const NewsItem = ({ entry }) => {
     <div className="text-sm text-muted-foreground mb-2">
       <div className="flex flex-wrap items-center gap-1">
         <span>{relativeDate}</span>
-        {tags && tags.length > 0 && (
+        {showTags && tags && tags.length > 0 && (
           <>
             <span>•</span>
             {tags.map((tag, index) => (

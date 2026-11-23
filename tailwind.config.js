@@ -202,6 +202,9 @@ module.exports = {
         'collapsible-down': 'collapsible-down 0.2s ease-out',
         'collapsible-up': 'collapsible-up 0.2s ease-out',
         spin: 'spin 0.6s linear infinite',
+        // One turn of the passcode generator's refresh icon. PasscodeGenerator.jsx
+        // re-keys the icon on each click so the turn plays again.
+        'spin-once': 'spin 500ms ease-in-out',
         'rainbow-shift': 'rainbow-shift 3s linear infinite',
         // One-shot reveal beats applied to the success icon and title via
         // motion-safe:animate-success-icon-pop / motion-safe:animate-success-title-shimmer.

@@ -20,7 +20,9 @@ const os = require('os');
 const path = require('path');
 const readline = require('readline');
 const { execFileSync } = require('child_process');
-const { stringifyFrontmatter } = require('../lib/frontmatter.cjs');
+const { parseFrontmatter, stringifyFrontmatter } = require('../lib/frontmatter.cjs');
+const { stripSourceSuffix } = require('../lib/news-title.cjs');
+const { findNewsItemsWithUrl, parseGitCatFileBatch } = require('../lib/news-duplicates.cjs');
 const ogs = require('open-graph-scraper');
 
 const { loadNewsItems } = require('./fetch-news-images.js');
@@ -510,6 +512,50 @@ async function maybeCreatePullRequest({ branchName, articleTitle, articleUrl }) 
   }
 }
 
+/**
+ * News items on the latest origin/main. New items are committed on top of
+ * origin/main (see transactionalCommitToContentBranch), which can have items
+ * this checkout hasn't pulled yet, so the duplicate check looks there too.
+ * If git can't reach the remote, this warns and returns [], and only this
+ * checkout gets checked.
+ */
+function loadNewsItemsOnMain() {
+  const fetched = tryGit(['fetch', 'origin', 'main', '--quiet']);
+  const listed = fetched.ok
+    ? tryGit(['ls-tree', '-r', '--name-only', 'origin/main', '--', 'content/en/news/'])
+    : fetched;
+  if (!listed.ok) {
+    console.warn(
+      '⚠️  Could not read origin/main, so only this checkout was checked for an existing copy of this link.',
+    );
+    return [];
+  }
+  const files = listed.value.split('\n').filter((file) => file.endsWith('.mdx'));
+  if (files.length === 0) return [];
+  const output = execFileSync('git', ['cat-file', '--batch'], {
+    cwd: REPO_ROOT,
+    env: GIT_ENV,
+    input: `${files.map((file) => `origin/main:${file}`).join('\n')}\n`,
+    maxBuffer: 64 * 1024 * 1024,
+  });
+  return parseGitCatFileBatch(output).flatMap((content, i) =>
+    content === null
+      ? []
+      : [{ slug: path.basename(files[i], '.mdx'), frontmatter: parseFrontmatter(content).data }],
+  );
+}
+
+/** Stops the wizard if this article is already a news item, here or on origin/main. */
+function assertLinkIsNew(articleUrl) {
+  const matches = findNewsItemsWithUrl([...loadNewsItems(), ...loadNewsItemsOnMain()], articleUrl);
+  const slugs = [...new Set(matches.map((item) => item.slug))];
+  if (slugs.length === 0) return;
+  const files = slugs.map((slug) => `  content/en/news/${slug}.mdx`).join('\n');
+  throw new Error(
+    `This link is already on the site:\n${files}\nEdit that file instead of adding a second copy.`,
+  );
+}
+
 function buildContentBranchName(slug) {
   const now = new Date();
   const date = [
@@ -657,12 +703,13 @@ async function main() {
     if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
       throw new Error('URL must be http or https.');
     }
+    assertLinkIsNew(articleUrl);
 
     const og = await fetchOg(articleUrl);
 
     // `\s` covers non-breaking spaces, common in page titles. Left in, YAML
     // stores one as `\_` and Crowdin's AI translates it to literal "\u00a0".
-    const title = (flagTitle || pickTitle(og) || titleFromUrlPath(articleUrl) || '')
+    let title = (flagTitle || pickTitle(og) || titleFromUrlPath(articleUrl) || '')
       .replace(/\s+/g, ' ')
       .trim();
     if (!title) {
@@ -687,6 +734,9 @@ async function main() {
         og.articlePublisher && String(og.articlePublisher).trim(),
       ].find(Boolean) || '';
     const sourceField = pickSourceDisplayName(articleUrl, publisherHint, explicitSource);
+    // The page title often ends with the publication's name, which the news
+    // list already shows next to it.
+    if (!flagTitle) title = stripSourceSuffix(title, sourceField);
 
     const baseSlug = slugify(title);
     const slug = uniqueSlug(baseSlug);

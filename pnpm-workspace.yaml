@@ -29,26 +29,15 @@ overrides:
   #
   # ── How to retire one ────────────────────────────────────────────────
   # None of these are permanent. Parents catch up, and a stale override silently forces a major on some transitive consumer for no reason. The check is the same for every entry and takes about a minute: (1) comment the line out, (2) `pnpm install --lockfile-only`, (3) `pnpm audit --audit-level=low`, (4) `git checkout pnpm-lock.yaml`, then re-install for real. If audit is clean the override is dead, so delete it. Each entry below records who is capping the version, so you can tell whether re-testing is even worth it.
-  # Last swept 2026-09-03, against pnpm 11.4.0 / next 15.5.23 / pm2 7.0.3. That sweep deleted 16 of 20 entries and added none. Expect that rot rate: the default answer to "should this be an override?" is no.
+  # Last swept 2026-11-18, against pnpm 12.16.1 / next 16.4.6 / pm2 7.1.2 / satori 0.63.2. That sweep deleted 3 of 5 entries and added none; the 2026-09-03 sweep before it deleted 16 of 20. Expect that rot rate: the default answer to "should this be an override?" is no.
   # ─────────────────────────────────────────────────────────────────────
 
-  # NOT a security floor. 1.3.3 is current latest stable. Guards against a stale parallel node_modules resolving an old copy ("createSlot is not exported"); see the outputFileTracingRoot note in next.config.js.
+  # NOT a security floor. Guards against a stale parallel node_modules resolving an old copy ("createSlot is not exported"); see the outputFileTracingRoot note in next.config.js.
+  # The `$` makes it follow the version in package.json, so a Dependabot bump moves the lockfile too. It used to be a literal 1.3.3, which went stale when Dependabot moved package.json to 1.5.0 on 2026-10-19: the lockfile stayed on 1.3.3, and every daily Dependabot run after that failed with NoChangeError on this package.
   # Delete it when: never, unless outputFileTracingRoot stops pointing outside this directory.
-  "@radix-ui/react-slot": "1.3.3"
+  "@radix-ui/react-slot": "$@radix-ui/react-slot"
 
-  # next@15.5.23 bundles postcss 8.4.31. Four advisories apply to it, the newest fixed in 8.5.23 (GHSA-fxqj-rqcc-2cmp, GHSA-r28c-9q8g-f849). Resolves to 8.5.26 (our own direct devDependency) with this in place.
-  # Delete it when: `npm view next@latest dependencies | grep postcss` is >=8.5.23 and we are on that Next.
-  postcss: ">=8.5.23"
-
-  # next@15.5.23 bundles sharp 0.34.5 (GHSA-f88m-g3jw-g9cj, fixed 0.35.0).
-  # Delete it when: Next's bundled sharp is >=0.35.0.
-  sharp: ">=0.35.0"
-
-  # pm2@7.0.3 pins js-yaml 4.3.0 (GHSA-5p4m-2wfm-xmqj, fixed 4.3.1). The `<5` half is the one exception to "floors, never ceilings": it enforces the js-yaml v5 hold recorded in .github/dependabot.yml (no default export, dates load as strings), because a bare floor would resolve straight to v5. The scope is `js-yaml@4` so it cannot touch gray-matter's js-yaml 3.x, which needs no override.
-  # Delete it when: pm2 ships js-yaml >=4.3.1 AND that hold is lifted.
-  "js-yaml@4": ">=4.3.1 <5"
-
-  # satori@0.33.4 pins fflate EXACTLY at 0.7.3 (GHSA-px8p-9vwx-vf98, infinite loop in unzipSync on a malformed ZIP64 archive). An exact pin is a hard cap, so an override is the only thing that moves it. satori 0.33.4 is already latest and its main branch still pins 0.7.3, so waiting for upstream is not a plan.
+  # satori pins fflate EXACTLY at 0.7.3 (GHSA-px8p-9vwx-vf98, infinite loop in unzipSync on a malformed ZIP64 archive). An exact pin is a hard cap, so an override is the only thing that moves it. Re-checked 2026-11-18: satori 0.63.2 is latest and both it and satori's main branch still pin 0.7.3, so waiting for upstream is not a plan.
   # Not reachable today, for the record: the bug is in unzipSync, and the only two consumers here (satori and @shuding/opentype.js) import inflateSync and nothing else. Taken to clear the alert, not to close an exposure.
   # Deliberately a bare floor even though 0.8.0 carries a breaking change, because the break does not reach us. fflate 0.8.0 changed the synchronous decompress signature: `inflateSync(buf, out)` became `inflateSync(buf, { out })`. Both consumers still call the two-positional-arg form, so on 0.8.x the buffer is parsed as an options object, `out` is undefined, and fflate returns its own buffer while leaving the caller's untouched, silently, no throw. satori discards the return value and reads the buffer.
   # But that is satori's WOFF1 decoder, and lib/og-image.js feeds it TTF (the .woff2 files in public/fonts are Brotli, for the browser, and never reach satori), so the code path never executes. Verified 2026-09-19 by rendering a real OG image on 0.7.5 and again on 0.8.3: byte-identical PNG, same sha256, plus a clean audit, 2511 tests and a green buildstatic on both.
@@ -56,9 +45,16 @@ overrides:
   # Delete it when: `npm view satori dependencies | grep fflate` is >=0.8.3.
   fflate: ">=0.8.3"
 
-  # ── Deleted in the 2026-09-03 sweep ──────────────────────────────────
+  # ── Deleted sweep by sweep ───────────────────────────────────────────
   # Kept as a record so nobody re-adds one without re-testing. Restated reasons rot; if you think one is needed again, run the check above.
   #
+  # 2026-11-18: commenting these out left `pnpm audit --audit-level=low` clean apart from an unrelated minimatch advisory under @keystatic/core.
+  #   postcss    ">=8.5.23"     next@16.4.6 pins postcss 8.5.23 itself (the old reason was next 15 bundling 8.4.31). Next now resolves 8.5.23 and our own devDependency stays on 8.5.33.
+  #   sharp      ">=0.35.0"     next@16.4.6 lists sharp ^0.35.5 (the old reason was next 15 bundling 0.34.5). The tree resolves 0.35.5 unaided.
+  #   js-yaml@4  ">=4.3.1 <5"   pm2@7.1.2 pins js-yaml 4.3.2. The `<5` half only kept this entry's own floor off v5; the v5 hold lives in .github/dependabot.yml and still applies.
+  # All three were also rewriting the lockfile specifiers of our direct js-yaml, postcss and sharp dependencies. Those follow package.json again.
+  #
+  # 2026-09-03:
   # Gone from the tree entirely, nothing depended on them any more: markdown-it ">=14.1.1", rollup ">=4.59.0" (vite 8 uses rolldown), systeminformation ">=5.31.0", yauzl ">=3.2.1".
   #
   # Never needed: the parent's range already allowed the patched version, so moving the stuck lockfile entry was the whole fix. Added and removed the same day, 2026-09-03.

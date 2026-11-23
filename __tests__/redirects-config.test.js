@@ -3,8 +3,8 @@ import { REDIRECTS, toApacheRedirectLine, redirectTarget } from '@/lib/redirects
 
 describe('toApacheRedirectLine', () => {
   it('matches an exact source only, with or without the trailing slash', () => {
-    expect(toApacheRedirectLine({ source: '/government', destination: '/federal' })).toBe(
-      'RedirectMatch 301 ^/government/?$ /federal',
+    expect(toApacheRedirectLine({ source: '/organizing', destination: '/action-safety' })).toBe(
+      'RedirectMatch 301 ^/organizing/?$ /action-safety',
     );
   });
 
@@ -77,5 +77,8 @@ describe('redirectTarget', () => {
   it('covers the retired pages old links still point at', () => {
     expect(redirectTarget('/resources/')).toBe('/');
     expect(redirectTarget('/organizing/')).toBe('/action-safety/');
+    expect(redirectTarget('/federal/')).toBe('/');
+    expect(redirectTarget('/ja/federal/')).toBe('/ja/');
+    expect(redirectTarget('/government/')).toBe('/');
   });
 });

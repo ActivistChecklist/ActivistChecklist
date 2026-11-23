@@ -36,22 +36,25 @@ jobs:
 
       - name: Run watchlist diff
         id: diff
+        # The diff goes in RUNNER_TEMP, outside the checkout, so the PR step
+        # below can't commit it along with the watchlist.
         run: |
-          node scripts/sofa-watchlist-diff.mjs > diff.json
-          echo "dropped_count=$(jq '.dropped | length' diff.json)" >> "$GITHUB_OUTPUT"
-          echo "novel_count=$(jq '.novel | length' diff.json)" >> "$GITHUB_OUTPUT"
+          DIFF="$RUNNER_TEMP/sofa-diff.json"
+          node scripts/sofa-watchlist-diff.mjs > "$DIFF"
+          echo "dropped_count=$(jq '.dropped | length' "$DIFF")" >> "$GITHUB_OUTPUT"
+          echo "novel_count=$(jq '.novel | length' "$DIFF")" >> "$GITHUB_OUTPUT"
           {
             echo 'dropped_list<<EOF'
-            jq -r '.dropped[]' diff.json
+            jq -r '.dropped[]' "$DIFF"
             echo 'EOF'
           } >> "$GITHUB_OUTPUT"
           {
             echo 'novel_list<<EOF'
-            jq -r '.novel[]' diff.json
+            jq -r '.novel[]' "$DIFF"
             echo 'EOF'
           } >> "$GITHUB_OUTPUT"
-          echo '----- diff.json -----'
-          cat diff.json
+          echo '----- sofa-diff.json -----'
+          cat "$DIFF"
 
       # ── Drops: open a tracking issue ──────────────────────────────────────
       - name: Open issue when SOFA dropped a watched model
@@ -121,7 +124,7 @@ jobs:
               '',
               '---',
               '',
-              '*Opened automatically by `.github/workflows/sofa-watchlist-check.yml`. Closes via the next weekly run when the drop set is empty.*',
+              '*Opened automatically by `.github/workflows/sofa-watchlist-check.yml`. Nothing closes it automatically, so close it once the fix is merged.*',
               '',
               fingerprint,
             ].join('\n');
@@ -141,7 +144,7 @@ jobs:
         run: |
           node -e "
             const fs = require('fs');
-            const diff = JSON.parse(fs.readFileSync('diff.json', 'utf8'));
+            const diff = JSON.parse(fs.readFileSync(process.env.RUNNER_TEMP + '/sofa-diff.json', 'utf8'));
             const wl = JSON.parse(fs.readFileSync('data/sofa-watchlist.json', 'utf8'));
             const merged = [...new Set([...wl.expected, ...diff.novel])].sort();
             wl.expected = merged;
@@ -164,6 +167,7 @@ jobs:
             Adding them to the watchlist enables drop-detection on these models in future runs (so we'll know if/when SOFA stops publishing them and we need to move them to `data/legacy-mac-models.json`).
 
             *Opened automatically by `.github/workflows/sofa-watchlist-check.yml`.*
+          add-paths: data/sofa-watchlist.json
           branch: sofa-watchlist/auto-update
           delete-branch: true
           labels: sofa-watchlist

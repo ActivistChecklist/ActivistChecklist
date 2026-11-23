@@ -21,7 +21,8 @@
  * Unhide is conservative (obsolete MDX matches or messages/en.json collisions only), so a path
  * bug cannot mass-unhide every hidden string.
  *
- * Exits 1 if any Crowdin call fails, after trying the rest.
+ * Exits 1 if any Crowdin call fails, after trying the rest. A call on a string Crowdin deleted
+ * mid-run gets one more pass instead (see reportFailure).
  *
  * Add to package.json:
  *   "scripts": {
@@ -65,6 +66,8 @@ const DRY_RUN = !process.argv.includes('--apply');
 // Read-only audit: run Pass 2's lookups and tally what --apply would delete, without deleting.
 const COUNT_TRANSLATIONS = process.argv.includes('--count-translations');
 const BASE_URL = 'https://api.crowdin.com/api/v2';
+// How long to give Crowdin to finish a re-import before the second pass (see reportFailure).
+const RELIST_WAIT_SEC = 60;
 
 if (!TOKEN || !PROJECT_ID) {
   console.error(`
@@ -227,7 +230,13 @@ async function crowdinFetch(path, { method = 'GET', body } = {}) {
     if (method === 'DELETE' && (res.status === 204 || res.status === 404)) return null;
     if (!res.ok) {
       const text = await res.text();
-      throw new Error(`Crowdin API ${res.status}: ${text}`);
+      const err = new Error(`Crowdin API ${res.status}: ${text}`);
+      // A string deleted since we listed it: a lookup by stringId says invalidStringId, and a
+      // call on /strings/<id> itself is a 404.
+      err.stringGone =
+        (res.status === 400 && text.includes('"invalidStringId"')) ||
+        (res.status === 404 && /\/strings\/\d+$/.test(path));
+      throw err;
     }
     return res.status === 204 ? null : res.json();
   }
@@ -242,8 +251,23 @@ const crowdinDelete = (path) => crowdinFetch(path, { method: 'DELETE' });
 // Each per-string call is tried on its own so one rejection doesn't stop the rest, but any
 // failure fails the run. A token missing the string write scope once left every hide failing
 // while the sync job stayed green.
+//
+// The exception is a string Crowdin deleted after we listed it. That happens when this runs
+// while Crowdin is still re-importing a source file the push changed: the file's strings get new
+// IDs, and calls on the old ones come back invalidStringId. Those only bump `vanished`, and
+// run() makes one more pass to catch the new IDs. On that last pass they count as failures: the
+// strings that replaced them may still be visible to translators.
 const failures = [];
+let vanished = 0;
+let lastPass = false;
 function reportFailure(label, err) {
+  if (err.stringGone && !lastPass) {
+    vanished++;
+    console.log(
+      `  ${c.yellow}○${c.reset} ${label}${c.yellow}: deleted in Crowdin mid-run${c.reset}`,
+    );
+    return;
+  }
   failures.push(err.message);
   console.log(`  ${c.red}✗${c.reset} ${label}${c.red}: ${err.message}${c.reset}`);
 }
@@ -441,6 +465,42 @@ async function run() {
     }
   }
 
+  let hidden = await syncPass(stringsMap, untranslatableValues);
+  if (hidden === null) return;
+
+  if (vanished > 0 && !DRY_RUN) {
+    console.log(
+      `${c.yellow}${vanished} call(s) hit strings deleted since they were listed, so Crowdin is still re-importing a changed file. Waiting ${RELIST_WAIT_SEC}s, then going again with fresh string IDs.${c.reset}\n`,
+    );
+    await new Promise((r) => setTimeout(r, RELIST_WAIT_SEC * 1000));
+    lastPass = true;
+    hidden += (await syncPass(stringsMap, untranslatableValues)) ?? 0;
+  }
+
+  if (failures.length > 0) {
+    console.log(`${c.red}${c.bold}✗ ${failures.length} Crowdin call(s) failed:${c.reset}`);
+    for (const reason of new Set(failures)) {
+      console.log(`  ${c.red}${reason}${c.reset}`);
+    }
+    console.log();
+    process.exitCode = 1;
+    return;
+  }
+
+  if (DRY_RUN) {
+    console.log(
+      `${c.yellow}${c.bold}Dry run complete.${c.reset} Run with ${c.cyan}--apply${c.reset} to hide strings and clear translations.\n`,
+    );
+  } else {
+    console.log(
+      `${c.green}${c.bold}✓ Done!${c.reset} Hidden ${c.bold}${hidden}${c.reset} strings, cleared existing translations.\n`,
+    );
+  }
+}
+
+// One pass over Crowdin: list its strings, then unhide, hide and clear translations. Returns how
+// many strings it hid, or null when nothing matched at all.
+async function syncPass(stringsMap, untranslatableValues) {
   const branchId = await getDefaultBranchId();
   const projectFiles = await listAllProjectFiles(branchId);
   const fileIdToPath = new Map(projectFiles.map((f) => [f.id, f.path]));
@@ -563,7 +623,7 @@ async function run() {
 
   if (allMatched.length === 0 && toUnhide.length === 0) {
     console.log(`${c.green}${c.bold}✓ Nothing to do!${c.reset}\n`);
-    return;
+    return null;
   }
 
   console.log();
@@ -656,25 +716,7 @@ async function run() {
     }
   }
 
-  if (failures.length > 0) {
-    console.log(`${c.red}${c.bold}✗ ${failures.length} Crowdin call(s) failed:${c.reset}`);
-    for (const reason of new Set(failures)) {
-      console.log(`  ${c.red}${reason}${c.reset}`);
-    }
-    console.log();
-    process.exitCode = 1;
-    return;
-  }
-
-  if (DRY_RUN) {
-    console.log(
-      `${c.yellow}${c.bold}Dry run complete.${c.reset} Run with ${c.cyan}--apply${c.reset} to hide strings and clear translations.\n`,
-    );
-  } else {
-    console.log(
-      `${c.green}${c.bold}✓ Done!${c.reset} Hidden ${c.bold}${hidden}${c.reset} strings, cleared existing translations.\n`,
-    );
-  }
+  return hidden;
 }
 
 run().catch((err) => {

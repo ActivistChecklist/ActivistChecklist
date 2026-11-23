@@ -367,7 +367,7 @@ const Search = ({ variant = 'icon', className }) => {
         aria-label={t('search.dialogTitle')}
         className={cn(
           'h-9 w-9 hover:bg-muted',
-          variant === 'header' && 'shrink-0 topnav:hidden',
+          variant === 'header' && 'h-10 w-10 shrink-0 topnav:hidden',
           className,
         )}
       >

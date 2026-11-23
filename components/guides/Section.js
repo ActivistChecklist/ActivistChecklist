@@ -3,7 +3,7 @@ import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react'
 import { Check, ChevronsDown, ChevronsUp } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
-import { RiskLevelBadge } from '@/components/RiskLevel';
+import { RiskLevelBadgeButton, RiskLevelBody } from '@/components/RiskLevel';
 import { SectionContext } from '@/contexts/SectionContext';
 import { useChecklistItems } from '@/contexts/ChecklistItemsContext';
 import {
@@ -11,7 +11,6 @@ import {
   useSectionProgress,
 } from '@/contexts/ChecklistProgressContext';
 import SectionProgressBar from '@/components/guides/SectionProgressBar';
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 
@@ -264,35 +263,24 @@ const Section = ({ slug, title, description, children }) => {
                       aria-hidden
                     />
                   )}
-                  {sectionRiskLevel != null &&
-                    (mdUp ? (
-                      <span aria-hidden className="inline-flex shrink-0">
-                        <RiskLevelBadge level={sectionRiskLevel} className="mr-0! shrink-0" />
-                      </span>
-                    ) : (
-                      // Bars only fit on a phone, so tapping them opens the section's
-                      // risk callout to explain who the section is for.
-                      <Sheet>
-                        <SheetTrigger
-                          className="-m-1.5 inline-flex shrink-0 rounded-full p-1.5 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
-                          aria-label={t('riskLevel.whoIsThisFor')}
+                  {sectionRiskLevelElement && (
+                    // Only the dots fit on a phone. The key shows this section's own callout
+                    // text in its highlighted row, since the callout has scrolled out of view.
+                    <RiskLevelBadgeButton
+                      level={sectionRiskLevel}
+                      showLabel={mdUp}
+                      sectionTitle={title}
+                      detail={
+                        <RiskLevelBody
+                          level={sectionRiskLevel}
+                          mode={sectionRiskLevelElement.props.mode}
                         >
-                          <RiskLevelBadge
-                            level={sectionRiskLevel}
-                            showLabel={false}
-                            className="mr-0! shrink-0"
-                          />
-                        </SheetTrigger>
-                        <SheetContent
-                          side="bottom"
-                          aria-describedby={undefined}
-                          className="rounded-t-xl px-4 pt-5 pb-[max(1.5rem,env(safe-area-inset-bottom))]"
-                        >
-                          <SheetTitle className="mb-4 pr-8 text-base font-bold">{title}</SheetTitle>
-                          {sectionRiskLevelElement}
-                        </SheetContent>
-                      </Sheet>
-                    ))}
+                          {sectionRiskLevelElement.props.children}
+                        </RiskLevelBody>
+                      }
+                      className="shrink-0"
+                    />
+                  )}
                 </div>
                 {progress && (
                   <span

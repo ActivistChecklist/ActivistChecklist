@@ -3,31 +3,41 @@ title: Imposta un codice di sblocco del telefono di 8-10 cifre casuali
 preview: |
   Agli sbirri servono anni per craccare un codice casuale di 8 cifre. Con strumenti automatici, probabilmente riescono a indovinare il tuo codice attuale in meno di 5 minuti.
 do: |
-  Usa un [generatore di codici casuali](https://strongphrase.net/passcode) per creare un codice di 8-10 cifre
+  Usa il tuo password manager o il nostro generatore di codici integrato per creare un codice casuale da 8 a 10 cifre
 dont: |
-  Usare un codice che hai inventato tu (date, sequenze sulla tastiera, ecc.). Se puoi, non usare codici di 6 cifre.
+  Usare un codice che hai inventato tu (date, sequenze sulla tastiera, ecc.). Se puoi, non usare codici di sblocco a 6 cifre.
 firstPublished: 2025-05-12
-lastUpdated: 2026-01-31
+lastUpdated: 2026-11-18
 ---
 
 <HowTo title="Come cambiare il codice di sblocco">
-  1. Genera un codice casuale di 8-10 cifre con questo [generatore di codici casuali](https://strongphrase.net/passcode). (Non inventarlo tu: noi umani siamo pessimi a scegliere a caso!)
+  1. **Scegli un codice casuale lungo da 8 a 10 cifre.** Il modo più sicuro per generare un codice casuale è usare la funzione di generazione di password casuali del tuo password manager (impostala su solo numeri), ma puoi anche usare il nostro generatore di codici. (Noi umani non siamo bravi a inventare codici casuali, quindi ti consigliamo di non provare a pensarne uno da te.)
+
+     <PasscodeGenerator />
   2. Cambia il codice di sblocco:
 
      <MenuPath>*iPhone:* **Impostazioni** > **Face ID e codice** > **Cambia codice** > **Opzioni codice** > **Codice numerico personalizzato**</MenuPath>
 
      <MenuPath>*Android:* **Impostazioni** > **Sicurezza** > **Blocco schermo** > Inserisci il blocco attuale > **PIN/Password** > Inserisci un codice</MenuPath>
-  3. **Esercitati con il nuovo codice** almeno 10 volte di fila adesso, così sarà più facile ricordarlo. (Se disattivi la biometria, il telefono ti chiederà il codice ogni volta che lo blocchi.)
+  3. **Esercitati con il nuovo codice** almeno 10 volte di fila adesso, così sarà più facile ricordarlo. (Se disattivi lo sblocco con il volto o l'impronta digitale, dovrai inserire il codice ogni volta che apri il telefono.)
   4. Scrivi il nuovo codice su un foglio e tienilo in un posto sicuro a casa finché non l'hai memorizzato. Poi distruggilo dopo 2-3 settimane. Può esserti utile impostare un promemoria sul telefono.
 </HowTo>
 
+<Collapsible title="Per una sicurezza in più, usa un cronometro per scegliere le tue cifre casuali">
+  Usare un generatore di codici online comporta qualche piccolo rischio. Se vuoi il massimo livello di sicurezza, puoi usare la funzione cronometro del tuo telefono.
+
+  1. Avvia il cronometro e fermalo senza guardare lo schermo.
+  2. Scrivi l'ultima cifra (i centesimi di secondo).
+  3. Ripeti finché non hai da 8 a 10 cifre.
+</Collapsible>
+
 **Quanto ci vuole per craccare un codice?**
 
-| Tipo                                           | Tempo necessario per craccarlo (media) | Esempio                                                                                      |
-| ---------------------------------------------- | -------------------------------------- | -------------------------------------------------------------------------------------------- |
-| Sequenza di 6 cifre ***facile da indovinare*** | **Meno di 24 ore** per craccarlo       | *333666 (sequenza comune)* o *110585 (data nel formato statunitense per il 5 novembre 1982)* |
-| Codice ***casuale*** di 6 cifre                | **200 giorni** per craccarlo           | *238253*                                                                                     |
-| Codice ***casuale*** di 8 cifre                | **Oltre 40 anni** per craccarlo        | *34780026*                                                                                   |
+| Tipo                                           | Tempo necessario per craccarlo (media) | Esempio                                                                                           |
+| ---------------------------------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Sequenza di 6 cifre ***facile da indovinare*** | **Meno di 24 ore** per craccarlo       | *333666 (sequenza comune)* oppure *110582 (data nel formato statunitense per il 5 novembre 1982)* |
+| Codice ***casuale*** di 6 cifre                | **200 giorni** per craccarlo           | *238253*                                                                                          |
+| Codice ***casuale*** di 8 cifre                | **Oltre 40 anni** per craccarlo        | *34780026*                                                                                        |
 
 *Nota*: questi tempi valgono solo per i telefoni. I computer si possono craccare molto più in fretta e hanno bisogno di password molto più robuste.
 

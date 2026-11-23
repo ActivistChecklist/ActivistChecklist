@@ -84,17 +84,19 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
       >
         {/* Normal top nav bar. From `topnav:` up the logo keeps its full width and the
             search field is the only thing that narrows (see the breakpoint in globals.css).
-            Below it the logo narrows instead. The icon buttons are shrink-0 so they keep
-            their full tap size at every width. */}
+            Below it the logo is the only thing that narrows: the icon group is shrink-0
+            there, so its 40px+ tap targets never get pushed past the edge of a phone. The
+            first and last buttons pull out by -ml-2 / -mr-2 so their icons line up with the
+            page text, which gives the logo that much more room. */}
         <div className={cn(maxWidth, 'mx-auto px-4')}>
           <div className="flex h-14 items-center justify-between">
-            <div className="flex items-center topnav:shrink-0">
+            <div className="flex min-w-0 items-center topnav:shrink-0">
               <Sheet>
                 <SheetTrigger asChild>
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="topnav:hidden mr-2 shrink-0 text-foreground hover:text-foreground/80"
+                    className="topnav:hidden -ml-2 mr-2 shrink-0 text-foreground hover:text-foreground/80"
                     aria-label="Open navigation menu"
                   >
                     <Menu className="h-6 w-6" aria-hidden="true" />
@@ -186,14 +188,17 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
               </Sheet>
               <Link
                 href={navigationConfig.logo.href}
-                className="flex items-center space-x-2 ml-0 font-bold text-xl"
+                className="flex min-w-0 items-center font-bold text-xl"
                 aria-label={navigationConfig.logo.ariaLabel}
               >
+                {/* Eager because it's at the top of every page. Lazy loading left the
+                    header blank for a moment, which is longer on slow connections like Tor. */}
                 <Image
                   src={navigationConfig.logo.image}
                   alt={navigationConfig.logo.ariaLabel}
                   width={250}
                   height={30}
+                  loading="eager"
                   className="dark:hidden"
                 />
                 <Image
@@ -201,11 +206,12 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
                   alt={navigationConfig.logo.ariaLabel}
                   width={250}
                   height={30}
+                  loading="eager"
                   className="hidden dark:block"
                 />
               </Link>
             </div>
-            <div className="flex min-w-0 items-center gap-4">
+            <div className="flex shrink-0 items-center gap-4 topnav:min-w-0 topnav:shrink">
               <div className="hidden topnav:flex items-center space-x-4">
                 <NavigationMenu>
                   <NavigationMenuList>
@@ -308,8 +314,8 @@ const TopNav = ({ hideOnScroll = false, maxWidth }) => {
               </div>
               <div className="flex min-w-0 items-center md:gap-2">
                 <Search variant="header" />
-                <LanguageSwitcher className="shrink-0" />
-                <DarkModeToggle className="h-9 w-9 shrink-0 hover:bg-muted" />
+                <LanguageSwitcher className="h-10 w-10 shrink-0 topnav:h-9 topnav:w-9" />
+                <DarkModeToggle className="-mr-2 h-10 w-10 shrink-0 hover:bg-muted topnav:mr-0 topnav:h-9 topnav:w-9" />
               </div>
             </div>
           </div>

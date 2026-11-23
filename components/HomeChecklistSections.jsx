@@ -8,8 +8,13 @@ import SectionReadLinks from '@/components/SectionReadLinks';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { CHECKLIST_SECTIONS, SECURITY_CHECKLISTS } from '@/config/navigation';
+import { TOOLS } from '@/config/tools';
 import { createIntlTranslator, getTranslatedNavItemFields } from '@/lib/navigation-i18n';
 import { cn } from '@/lib/utils';
+
+// Tools get their own section further down the homepage, so they're left out
+// of the explainer links here rather than shown twice.
+const TOOL_HREFS = new Set(TOOLS.map((tool) => tool.href));
 
 /**
  * Homepage checklists, grouped by section. The section heading sits in a left
@@ -17,7 +22,11 @@ import { cn } from '@/lib/utils';
  * as a heading and not as one more card: no description, just a quiet link to
  * everything in the section. Its featured checklists get the same large cards
  * the homepage has always used, and explainers sit underneath as plain links.
+ *
+ * Headings use the section's short title, the same one the Checklists menu and
+ * the situation links above use, so the three read as one set.
  */
+
 export default function HomeChecklistSections({ readMinutes = {}, estimatedTimes = {} }) {
   const t = useTranslations();
   const translateText = createIntlTranslator(t);
@@ -34,7 +43,9 @@ export default function HomeChecklistSections({ readMinutes = {}, estimatedTimes
           // checklists fill it, or with none to show, the last card goes full width.
           const fillGap = section.featured.length % 2 === 1;
           // Three at most: past that they start to compete with the cards.
-          const reads = section.reads.filter((item) => !featuredKeys.has(item.key)).slice(0, 3);
+          const reads = section.reads
+            .filter((item) => !featuredKeys.has(item.key) && !TOOL_HREFS.has(item.href))
+            .slice(0, 3);
           return (
             <section
               key={section.key}
@@ -42,7 +53,7 @@ export default function HomeChecklistSections({ readMinutes = {}, estimatedTimes
             >
               <div>
                 <h2 className="text-3xl font-extrabold tracking-tight text-balance">
-                  {t(`checklistSections.${section.key}.heading`)}
+                  {t(`checklistSections.${section.key}.title`)}
                 </h2>
                 <Link
                   href={section.href}

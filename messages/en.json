@@ -1,7 +1,7 @@
 {
   "site": {
     "title": "Digital Security Checklists for Activists",
-    "description": "Plain language steps for digital security. Because protecting yourself helps keep your whole community safer."
+    "description": "Plain language steps for digital security and protest safety."
   },
   "faq": {
     "defaultTitle": "Frequently asked questions"
@@ -47,33 +47,32 @@
   },
   "hero": {
     "title": "Digital Security Checklists for Activists",
-    "description": "Plain language steps for digital security. Because protecting yourself helps keep your whole community safer.",
+    "description": "Plain language steps for digital security and protest safety.",
     "primaryCta": "Digital Security Essentials",
     "secondaryCta": "Host a security party"
   },
   "trustPoints": {
-    "experienceTitle": "Built from experience",
-    "experienceDescription": "Our guides draw from real organizing work and direct feedback from activists. While every situation is unique, we aim to share practical insights that can help inform your decisions.",
-    "updatedTitle": "Regularly updated",
-    "updatedDescription": "Our content is regularly reviewed by organizers who understand security concerns. We work to keep information current as risks and technologies evolve."
+    "whyTitle": "Why we built this site",
+    "whyDescription": "Looking around, we found that existing resources were either too simple or too complicated. We wanted to create a way for folks to achieve better security without needing to become experts themselves.",
+    "reviewedTitle": "Reviewed by folks on the front lines",
+    "reviewedDescription": "All of our guides are reviewed by multiple experts in security and safety who are working closely with activists and organizers on the front lines.",
+    "privacyTitle": "Protecting your privacy",
+    "privacyDescription": "We know that sites like this can become the target of state surveillance, so we went to great lengths to <privacy>not collect identifiable information</privacy>. We also put a lot of energy into the site's <security>security</security>."
   },
   "misconceptions": {
-    "sectionTitle": "Common Misconceptions",
-    "sectionDescription": "When we start talking about digital security, we often hear these concerns. We think there's more to the story.",
     "nothingToHideTitle": "\"I have nothing to hide\"",
-    "nothingToHideDescription": "The more engaged you are in any social movement work, the more your data can be used to map networks of activists. The best time to start protecting yourself is <b>before</b> you're as deeply involved.",
-    "alreadyKnowTitle": "\"They already know everything\"",
-    "alreadyKnowDescription": "While data collection is widespread, you can significantly reduce your digital footprint and protect future activities.",
-    "dontCareTitle": "\"They don't care about what I'm doing\"",
-    "dontCareDescription": "Mass surveillance affects everyone. Your data can be used to profile communities, predict protests, or target those you care about. Protecting your communications helps protect all of us."
+    "nothingToHideNetworks": "We hear this concern a lot when training folks on activist privacy. Here's the deal: When police access one person's phone, they can map entire activist networks (your contacts, your Signal chats, your location history, and more). So it's not just about your personal security. Ask yourself: \"If my devices and data were in the hands of the government, is my security strong enough to keep the people in my network safe?\""
   },
   "featured": {
     "sectionTitle": "Sites that have shared our guides"
   },
   "homepage": {
+    "situationLinksLabel": "Checklists by situation",
     "browseAll": "See all checklists",
-    "trustHeading": "Simple guides to keep us more safe",
-    "trustDescription": "We built this because digital security shouldn't be overwhelming. We take a harm reduction approach: start where you are and do what you can.",
+    "whoBuiltHeading": "Who built this",
+    "whoBuiltDescription": "The crew that built this has been doing community organizing, activism, and direct actions for decades.",
+    "whoBuiltAnonymous": "We are currently choosing to remain anonymous in an attempt to preserve our own privacy given the risks involved in this kind of work.",
+    "aboutLink": "About this site",
     "latestNewsHeading": "Latest Surveillance News",
     "viewAllNews": "View all news",
     "toolsHeading": "Tools we built",
@@ -125,7 +124,7 @@
   "footer": {
     "branding": {
       "title": "Activist Checklist",
-      "description": "Plain language steps for digital security, because protecting yourself helps keep your whole community safer."
+      "description": "Plain language steps for digital security and protest safety."
     },
     "stayUpdated": "Stay Updated",
     "sections": {
@@ -154,11 +153,9 @@
     }
   },
   "inlineCta": {
-    "heading": "When their tactics change, our advice does too",
-    "description": "ICE, police, and corporate surveillance keep adding new tools. We update these guides to keep pace. Subscribe to hear when something important shifts.",
+    "title": "Get email updates when we add new guides",
     "buttonText": "Subscribe",
     "emailAriaLabel": "Email address",
-    "privacyLink": "Privacy policy",
     "dismissLabel": "Don't show this again"
   },
   "common": {
@@ -234,14 +231,16 @@
   },
   "riskLevel": {
     "everyoneLabel": "everyone",
-    "mediumLabel": "medium-threat",
-    "highLabel": "high-threat",
+    "mediumLabel": "people at medium risk",
+    "highLabel": "people at high risk",
     "everyoneDefault": "This section is for anyone doing activism or advocacy work.",
     "mediumDefault": "This section is for you if you are in a leadership role or you are doing activism that is more likely to be targeted by the state or your opposition.",
-    "highDefault": "This section is for you are in a high-profile role or your activism involves high-risk work that could result in serious consequences or retaliation.",
+    "highDefault": "This section is for you if your activism involves high-risk work that could result in serious consequences or retaliation, or you are in a high-profile role.",
     "forYouIf": "This section is for you if:",
     "forYou": "This section is for:",
-    "whoIsThisFor": "Who is this section for?"
+    "whoIsThisFor": "Who is this section for?",
+    "thisSection": "This section",
+    "keyFooter": "Each level builds on the ones before it, so make sure to do the sections for the levels below yours too."
   },
   "checklistItem": {
     "informationalItem": "Informational item",
@@ -270,6 +269,20 @@
     "more": "Show {count} more",
     "moreWithLabel": "{label} ({count} more)",
     "less": "Show less"
+  },
+  "passcodeGenerator": {
+    "label": "Randomly generated passcode",
+    "newPasscode": "New passcode",
+    "numberOfDigits": "Number of digits",
+    "digits": "digits",
+    "sixDigitWarning": "A randomly generated 6-digit passcode is better than one you thought of yourself, but much easier to crack than one that is 8+ digits.",
+    "privacy": "This passcode is made on your device and is never sent to us. You can save it in your <link>password manager</link> (but not your notes app or screenshots). If you write it on paper, destroy it after you memorize it.",
+    "page": {
+      "metaTitle": "Phone passcode generator | Activist Checklist",
+      "metaDescription": "Get a random 8 to 10-digit passcode for your phone, made on your device and never sent to us, plus steps to set it on an iPhone or Android.",
+      "title": "Phone passcode generator",
+      "intro": "A randomly generated 8+ digit passcode makes it much harder for the cops to break into your phone."
+    }
   },
   "canaryStatus": {
     "current": "<b>Up to date.</b> Our warrant canary was last updated on {date}, and is valid through {validThrough}. (After that date, this will turn red if there's no newer canary.)",
@@ -553,10 +566,10 @@
       "deviceMaxOsWarningTitle": "A note about your device's OS",
       "deviceMaxOsWarning": "Your {label} only supports up to {os} {maxVersion}. {os} {maxVersion} will stop receiving security updates before {os} {latestVersion} does. Newer devices will keep receiving updates longer.",
       "deviceMaxOsWarningWithDate": "Your {label} only supports up to {os} {maxVersion}, which is expected to stop receiving security updates around {eolDate}. Newer devices that can run {os} {latestVersion} will keep receiving updates longer.",
-      "deviceMaxOsEolWarning": "Your {label} tops out at {os} {maxVersion}, which has officially ended support. You may still receive occasional updates, but treat this device as low-trust for sensitive work and plan to replace it.",
+      "deviceMaxOsEolWarning": "Your {label} tops out at {os} {maxVersion}, which has officially ended support. You may still receive occasional updates, but treat this device as not trustworthy for sensitive work and plan to replace it.",
       "deviceUpgradePlan": "If long-term security matters for your work, plan a hardware upgrade.",
       "threatModelHeader": "Why this matters",
-      "threatModel": "Every week without an update, more ways to break into your device become public knowledge. If the cops seize your phone at a <protestLink>protest</protestLink> or a <borderLink>border crossing</borderLink> (or if someone targets you with <spywareLink>spyware</spywareLink>) those known weaknesses are what they'll use to get inside and read everything on it.  ",
+      "threatModel": "Every week you go without updating your device, more ways to break into your device become public knowledge. If the cops seize your phone at a <protestLink>protest</protestLink> or a <borderLink>border crossing</borderLink> (or if someone targets you with <spywareLink>spyware</spywareLink>) those known weaknesses are what they'll use to get inside and read everything on it.  ",
       "threatModelSoft": "Until you confirm, treat this device as potentially out-of-date for sensitive work.",
       "viewEssentialsCta": "View our digital security essentials →",
       "essentialsNextSteps": {
@@ -781,7 +794,7 @@
     },
     "two-factor-authentication": {
       "term": "Two-Factor Authentication (2FA)",
-      "definition": "An extra login step: after your password, you also verify your identity a second way. This could be a 6-digit code from an [authenticator app](term:authenticator-app), a text message, or sometimes a [passkey](term:passkey). It's like needing both a key and an alarm code to get into your house. Even if someone steals your password, they can't get into your account without the second step.",
+      "definition": "An extra login step: after your password, you also verify your identity a second way. This could be a 6-digit code from an [authenticator app](term:authenticator-app), a text message, or sometimes a [passkey](term:passkey). Even if someone steals your password, they can't get into your account without the second step.",
       "source": "Security Essentials",
       "url": "/essentials/#mfa"
     },

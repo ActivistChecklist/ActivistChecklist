@@ -25,7 +25,6 @@ import { LOCALES } from '@/lib/i18n-config';
 import { parseRelatedGuides } from '@/lib/related-guides';
 import { formatContentDate } from '@/lib/utils';
 import PageNotices from '@/components/layout/PageNotices';
-import AnswerCapsule from '@/components/AnswerCapsule';
 import { MobileTableOfContents } from '@/components/layout/TableOfContentsSidebar';
 import PrintNotice from '@/components/guides/PrintNotice';
 import { pdfDownloadName, pdfPathFor } from '@/lib/pdf-export.mjs';
@@ -95,7 +94,7 @@ export default function Guide({
 
   if (frontmatter.lastUpdated) {
     metaBarItems.push({
-      icon: <Calendar className="h-4 w-4 mr-1" />,
+      icon: <Calendar className="h-4 w-4 mr-1 shrink-0" />,
       label: t('meta.lastUpdatedOn'),
       value: formatContentDate(frontmatter.lastUpdated, dateLocale),
     });
@@ -103,7 +102,7 @@ export default function Guide({
 
   if (frontmatter.estimatedTime) {
     metaBarItems.push({
-      icon: <Clock className="h-4 w-4 mr-0.5" />,
+      icon: <Clock className="h-4 w-4 mr-0.5 shrink-0" />,
       label: t('meta.takesAbout'),
       value: frontmatter.estimatedTime,
     });
@@ -121,11 +120,15 @@ export default function Guide({
         {metaBarItems.length > 0 && (
           <div className="relative flex flex-wrap items-center gap-y-2 gap-x-6 text-sm text-muted-foreground print:mb-0">
             {metaBarItems.map((item, index) => (
-              <div key={index} className="flex items-center whitespace-nowrap">
+              <div key={index} className="flex items-center">
                 {item.icon}&nbsp;
+                {/* Same wrapping as MetaBar: break between label and value, never inside
+                    either, so a long translation isn't cut off by overflow-hidden above. */}
                 <span>
-                  {item.label}&nbsp;
-                  <span className="text-foreground font-semibold">{item.value}</span>
+                  <span className="whitespace-nowrap">{item.label}</span>{' '}
+                  <span className="whitespace-nowrap text-foreground font-semibold">
+                    {item.value}
+                  </span>
                 </span>
               </div>
             ))}
@@ -162,7 +165,6 @@ export default function Guide({
       {/* Body */}
       <div className="mx-auto">
         <div className="relative">
-          <AnswerCapsule text={frontmatter.answerCapsule} />
           {serializedIntro && (
             <div className="prose prose-slate max-w-none">
               <MDXRemote {...serializedIntro} components={mdxComponents} />

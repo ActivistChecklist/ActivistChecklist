@@ -37,10 +37,6 @@
     "research": {
       "href": "/research/"
     },
-    "federal": {
-      "href": "/federal/",
-      "lowPriority": true
-    },
     "doxxing": {
       "href": "/doxxing/"
     },
@@ -167,7 +163,7 @@
     },
     {
       "key": "targeted",
-      "items": ["doxxing", "emergency", "spyware", "federal"],
+      "items": ["doxxing", "emergency", "spyware"],
       "featured": ["doxxing", "emergency"],
       "reads": ["lockdown", "police-door-poster"]
     }

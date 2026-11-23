@@ -5,35 +5,12 @@ const {
   evaluatePage,
   findDuplicateDescriptions,
   formatReport,
-  hasFaqBlock,
-  wordCount,
   TOP_GUIDE_SLUGS,
-  FAQ_GUIDE_SLUGS,
 } = require('../scripts/seo-audit.cjs');
 
 function msgs(findings) {
   return findings.map((f) => f.message);
 }
-
-describe('wordCount', () => {
-  it('counts whitespace-separated words', () => {
-    expect(wordCount('hello world')).toBe(2);
-    expect(wordCount('  a  b  c  ')).toBe(3);
-    expect(wordCount('')).toBe(0);
-    expect(wordCount(null)).toBe(0);
-  });
-});
-
-describe('hasFaqBlock', () => {
-  it('detects an <FAQ> element', () => {
-    expect(hasFaqBlock('<FAQ>...</FAQ>')).toBe(true);
-    expect(hasFaqBlock('<FAQ title="x">...')).toBe(true);
-  });
-  it('does not match unrelated content', () => {
-    expect(hasFaqBlock('FAQ as plain text')).toBe(false);
-    expect(hasFaqBlock('')).toBe(false);
-  });
-});
 
 describe('evaluatePage', () => {
   const validDesc = 'A '.repeat(45).trim() + ' end.'; // ~95 chars
@@ -99,7 +76,7 @@ describe('evaluatePage', () => {
     expect(msgs(findings)).toContain('lastUpdated missing');
   });
 
-  it('flags top-8 guides missing seoTitle and answerCapsule', () => {
+  it('flags top-8 guides missing seoTitle', () => {
     const findings = evaluatePage({
       kind: 'guide',
       slug: 'signal', // top-8
@@ -108,13 +85,12 @@ describe('evaluatePage', () => {
         firstPublished: '2025-01-01',
         lastUpdated: '2026-01-01',
       },
-      body: '<FAQ />',
+      body: '',
     });
     expect(msgs(findings)).toContain('top-8 guide is missing seoTitle');
-    expect(msgs(findings)).toContain('top-8 guide is missing answerCapsule');
   });
 
-  it('does not flag seoTitle/answerCapsule on non-top guides', () => {
+  it('does not flag seoTitle on non-top guides', () => {
     const findings = evaluatePage({
       kind: 'guide',
       slug: 'research', // not top-8
@@ -135,45 +111,12 @@ describe('evaluatePage', () => {
       frontmatter: {
         seoTitle: 'a'.repeat(70),
         seoDescription: validDesc,
-        answerCapsule: 'word '.repeat(40).trim(),
         firstPublished: '2025-01-01',
         lastUpdated: '2026-01-01',
       },
-      body: '<FAQ>x</FAQ>',
+      body: '',
     });
     expect(msgs(findings).some((m) => /seoTitle is \d+ chars/.test(m))).toBe(true);
-  });
-
-  it('flags answerCapsule outside the 30–90 word range', () => {
-    const tooShort = evaluatePage({
-      kind: 'guide',
-      slug: 'signal',
-      frontmatter: {
-        seoTitle: 'X',
-        seoDescription: validDesc,
-        answerCapsule: 'only a few words',
-        firstPublished: '2025-01-01',
-        lastUpdated: '2026-01-01',
-      },
-      body: '<FAQ>x</FAQ>',
-    });
-    expect(msgs(tooShort).some((m) => /answerCapsule is \d+ words/.test(m))).toBe(true);
-  });
-
-  it('flags missing <FAQ> on FAQ_GUIDE_SLUGS pages', () => {
-    const findings = evaluatePage({
-      kind: 'guide',
-      slug: 'signal',
-      frontmatter: {
-        seoTitle: 'X',
-        seoDescription: validDesc,
-        answerCapsule: 'word '.repeat(40).trim(),
-        firstPublished: '2025-01-01',
-        lastUpdated: '2026-01-01',
-      },
-      body: 'no FAQ here',
-    });
-    expect(msgs(findings)).toContain('top-3 guide is missing a <FAQ> block in the body');
   });
 });
 
@@ -219,13 +162,10 @@ describe('formatReport', () => {
   });
 });
 
-describe('Top/FAQ slug lists', () => {
+describe('Top slug list', () => {
   it('top guides match the spec', () => {
     expect(TOP_GUIDE_SLUGS).toContain('signal');
     expect(TOP_GUIDE_SLUGS).toContain('emergency');
     expect(TOP_GUIDE_SLUGS).toHaveLength(8);
-  });
-  it('FAQ guides are a subset of top guides', () => {
-    for (const s of FAQ_GUIDE_SLUGS) expect(TOP_GUIDE_SLUGS).toContain(s);
   });
 });
