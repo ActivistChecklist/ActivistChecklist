@@ -201,6 +201,12 @@ export function RiskLevelBadgeButton({ level, showLabel = true, detail, sectionT
     );
   }
 
+  const openKey = () => {
+    // Reopening can cut a hover close short before its focus handling runs, so reset it here.
+    closingByHoverRef.current = false;
+    setOpen(true);
+  };
+
   const scheduleClose = () => {
     clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => {
@@ -212,7 +218,7 @@ export function RiskLevelBadgeButton({ level, showLabel = true, detail, sectionT
   const handlePointerEnter = (event) => {
     if (event.pointerType !== 'mouse') return;
     clearTimeout(timerRef.current);
-    if (!open) timerRef.current = setTimeout(() => setOpen(true), HOVER_OPEN_MS);
+    if (!open) timerRef.current = setTimeout(openKey, HOVER_OPEN_MS);
   };
 
   const handlePointerLeave = (event) => {
@@ -230,7 +236,7 @@ export function RiskLevelBadgeButton({ level, showLabel = true, detail, sectionT
       setOpen(false);
     } else {
       pinnedRef.current = true;
-      setOpen(true);
+      openKey();
     }
   };
 

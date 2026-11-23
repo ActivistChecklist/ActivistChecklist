@@ -240,7 +240,7 @@
     "forYou": "This section is for:",
     "whoIsThisFor": "Who is this section for?",
     "thisSection": "This section",
-    "keyFooter": "Each level builds on the ones before it, so make sure to do the sections for everyone first."
+    "keyFooter": "Each level builds on the ones before it, so make sure to do the sections for the levels below yours too."
   },
   "checklistItem": {
     "informationalItem": "Informational item",
