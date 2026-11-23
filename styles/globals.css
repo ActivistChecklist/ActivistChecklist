@@ -928,18 +928,17 @@
     font-weight: bold;
     color: hsl(var(--brand-gray-80));
     background-color: hsl(var(--brand-gray-5));
-    border: 1px solid hsl(var(--brand-gray-20));
+    box-shadow: inset 0 0 0 1px hsl(var(--brand-gray-40));
   }
-
   /* list marker connector */
   .steps > ol > li::after {
     content: '';
     position: absolute;
-    top: calc(var(--bullet-size) + var(--bullet-margin));
+    top: var(--bullet-size);
     width: var(--line-width);
-    bottom: calc(var(--bullet-margin) - var(--item-spacing));
+    bottom: calc(-1 * var(--item-spacing));
     inset-inline-start: calc((var(--bullet-size) - var(--line-width)) / 2);
-    background-color: hsl(var(--brand-gray-20));
+    background-color: hsl(var(--brand-gray-40));
   }
 
   /* prevent the last line from drawing through the bottom margin */
