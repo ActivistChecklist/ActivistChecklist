@@ -24,7 +24,7 @@ export default function FeatureLogo({ logo }) {
 
   // url is optional: some orgs are listed without linking to a specific page
   return (
-    <div className="flex justify-center items-center py-1">
+    <div className="flex w-1/3 min-w-0 justify-center items-center px-3 py-1 md:w-auto md:flex-1">
       {logo.url ? (
         <a href={logo.url} target="_blank">
           {image}
