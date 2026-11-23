@@ -31,7 +31,6 @@ On a choisi [May First](https://mayfirst.coop) comme hébergeur précisément pa
   * C'est un hébergement géré : May First tient les logiciels du serveur à jour, et on n'a pas besoin de faire les mises à niveau nous-mêmes.
   * La majeure partie du site est générée de façon statique, ce qui veut dire que chaque page est un simple fichier HTML. Il n'y a ni base de données ni système de connexion, donc il y a très peu de choses à cibler pour un·e attaquant·e, dès le départ.
   * HSTS (`Strict-Transport-Security`), pour que les navigateurs se connectent à notre site uniquement en HTTPS, et une politique de sécurité du contenu stricte, ou « Content Security Policy », qui empêche les scripts de nos pages de se connecter à tout autre domaine et empêche d'autres sites d'intégrer les nôtres dans un cadre. On envoie aussi `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, une Referrer-Policy `strict-origin-when-cross-origin`, et une Permissions-Policy qui désactive la caméra, le micro et la géolocalisation.
-  * Les nouveaux déploiements sont déclenchés par un webhook, qu'on a verrouillé avec un peu de magie cryptographique pour que seul le pipeline GitHub Actions puisse lancer un déploiement.
 
 </Collapsible>
 
