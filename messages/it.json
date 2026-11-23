@@ -566,10 +566,10 @@
       "deviceMaxOsWarningTitle": "Una nota sul sistema operativo del tuo dispositivo",
       "deviceMaxOsWarning": "Il tuo {label} supporta al massimo {os} {maxVersion}. {os} {maxVersion} smetterà di ricevere aggiornamenti di sicurezza prima di {os} {latestVersion}. I dispositivi più recenti continueranno a ricevere aggiornamenti più a lungo.",
       "deviceMaxOsWarningWithDate": "Il tuo {label} supporta al massimo {os} {maxVersion}, che dovrebbe smettere di ricevere aggiornamenti di sicurezza intorno a {eolDate}. I dispositivi più recenti in grado di usare {os} {latestVersion} continueranno a ricevere aggiornamenti più a lungo.",
-      "deviceMaxOsEolWarning": "Il tuo {label} non va oltre {os} {maxVersion}, che non è più supportato ufficialmente. Potresti ricevere ancora qualche aggiornamento occasionale, ma considera questo dispositivo poco affidabile per le attività sensibili e pianifica di sostituirlo.",
+      "deviceMaxOsEolWarning": "Il tuo {label} non va oltre {os} {maxVersion}, che non è più supportato ufficialmente. Potresti ricevere ancora qualche aggiornamento occasionale, ma considera questo dispositivo non affidabile per le attività sensibili e pianifica di sostituirlo.",
       "deviceUpgradePlan": "Se la sicurezza a lungo termine è importante per il tuo lavoro, pianifica di cambiare dispositivo.",
       "threatModelHeader": "Perché è importante",
-      "threatModel": "Ogni settimana senza aggiornamenti, diventano di dominio pubblico nuovi modi per entrare nel tuo dispositivo. Se gli sbirri ti sequestrano il telefono a una <protestLink>manifestazione</protestLink> o a un <borderLink>passaggio di frontiera</borderLink> (o se qualcuno ti prende di mira con uno <spywareLink>spyware</spywareLink>), useranno proprio queste vulnerabilità note per entrarci e leggere tutto quello che contiene.  ",
+      "threatModel": "Ogni settimana che passi senza aggiornare il tuo dispositivo, diventano di dominio pubblico nuovi modi per entrarci. Se gli sbirri ti sequestrano il telefono a una <protestLink>manifestazione</protestLink> o a un <borderLink>passaggio di frontiera</borderLink> (o se qualcuno ti prende di mira con uno <spywareLink>spyware</spywareLink>), useranno proprio queste vulnerabilità note per entrarci e leggere tutto quello che contiene.  ",
       "threatModelSoft": "Finché non hai verificato, considera questo dispositivo potenzialmente non aggiornato per le attività sensibili.",
       "viewEssentialsCta": "Scopri le nostre basi di sicurezza digitale →",
       "essentialsNextSteps": {
@@ -794,7 +794,7 @@
     },
     "two-factor-authentication": {
       "term": "Autenticazione a due fattori (2FA)",
-      "definition": "Un passaggio in più per accedere: dopo la password, confermi la tua identità in un secondo modo. Può essere un codice di 6 cifre da un'[app di autenticazione](term:authenticator-app), un messaggio di testo o a volte una [passkey](term:passkey). È come aver bisogno sia della chiave sia del codice dell'allarme per entrare in casa. Anche se qualcunə ti ruba la password, non può entrare nel tuo account senza il secondo passaggio.",
+      "definition": "Un passaggio in più quando accedi: dopo la password, confermi la tua identità anche in un secondo modo. Può essere un codice a 6 cifre da un'[app di autenticazione](term:authenticator-app), un SMS o a volte una [passkey](term:passkey). Anche se qualcuno ti ruba la password, non può entrare nel tuo account senza il secondo passaggio.",
       "source": "Sicurezza di base",
       "url": "/essentials/#mfa"
     },
