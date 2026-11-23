@@ -231,8 +231,8 @@
   },
   "riskLevel": {
     "everyoneLabel": "todo el mundo",
-    "mediumLabel": "amenaza media",
-    "highLabel": "amenaza alta",
+    "mediumLabel": "personas en riesgo medio",
+    "highLabel": "personas en alto riesgo",
     "everyoneDefault": "Esta sección es para cualquier persona que haga trabajo de activismo o incidencia.",
     "mediumDefault": "Esta sección es para ti si tienes un rol de liderazgo o haces un activismo que tiene más chance de ser atacado por el Estado o tu oposición.",
     "highDefault": "Esta sección es para ti si ocupas un rol de alto perfil o tu activismo implica trabajo de alto riesgo que podría traer consecuencias graves o represalias.",
