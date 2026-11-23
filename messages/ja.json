@@ -566,10 +566,10 @@
       "deviceMaxOsWarningTitle": "デバイスのOSについてのメモ",
       "deviceMaxOsWarning": "{label}は{os} {maxVersion}までしか対応していません。{os} {maxVersion}は、{os} {latestVersion}より先にセキュリティアップデートの提供が終わります。新しいデバイスのほうが、より長くアップデートを受け取れます。",
       "deviceMaxOsWarningWithDate": "{label}は{os} {maxVersion}までしか対応していません。このバージョンは{eolDate}ごろにセキュリティアップデートの提供が終わる見込みです。{os} {latestVersion}を動かせる新しいデバイスのほうが、より長くアップデートを受け取れます。",
-      "deviceMaxOsEolWarning": "{label}は{os} {maxVersion}までしか対応しておらず、このバージョンは公式サポートがすでに終了しています。今後もたまにアップデートが届くことはあるかもしれませんが、センシティブな作業をするには信頼性の低いデバイスとして扱い、新しい機種への変更を計画しましょう。",
+      "deviceMaxOsEolWarning": "{label}は{os} {maxVersion}までしか対応しておらず、このバージョンは公式サポートがすでに終了しています。今後もたまにアップデートが届くことはあるかもしれませんが、センシティブな作業には信頼できないデバイスとして扱い、新しい機種への変更を計画しましょう。",
       "deviceUpgradePlan": "活動のために長期的なセキュリティが重要なら、ハードウェアのアップグレードを計画しましょう。",
       "threatModelHeader": "なぜこれが大事なのか",
-      "threatModel": "アップデートしないままだとどうなるか。毎週ごとにデバイスに侵入する方法が次々と公開されていきます。<protestLink>抗議行動</protestLink>や<borderLink>出入国</borderLink>の際に警察にスマホを押収されたら（あるいは誰かに<spywareLink>スパイウェア</spywareLink>で狙われたら）、そうした既知の弱点を突かれて中に侵入され、データを全部見られてしまいます。  ",
+      "threatModel": "デバイスをアップデートしないまま週を重ねるごとに、デバイスに侵入する方法が次々と公開されていきます。<protestLink>抗議行動</protestLink>や<borderLink>出入国</borderLink>の際に警察にスマホを押収されたら（あるいは誰かに<spywareLink>スパイウェア</spywareLink>で狙われたら）、そうした既知の弱点を突かれて中に侵入され、データを全部見られてしまいます。  ",
       "threatModelSoft": "確認できるまでは、このデバイスは古いままの可能性があるものとして、センシティブな作業には使わないようにしましょう。",
       "viewEssentialsCta": "デジタルセキュリティの基本へ →",
       "essentialsNextSteps": {
@@ -794,7 +794,7 @@
     },
     "two-factor-authentication": {
       "term": "2要素認証（2FA）",
-      "definition": "ログイン時の追加ステップ。パスワードを入力したあと、別の方法でもう一度本人確認を行う。[認証アプリ](term:authenticator-app)の6桁のコード、テキストメッセージ、場合によっては[パスキー](term:passkey)など。家に入るのに鍵と暗証番号の両方が必要なようなもの。たとえパスワードを盗まれても、二つ目のステップなしではアカウントに侵入できない。",
+      "definition": "ログイン時の追加ステップ。パスワードを入力したあと、別の方法でもう一度本人確認を行う。[認証アプリ](term:authenticator-app)の6桁のコード、テキストメッセージ、場合によっては[パスキー](term:passkey)など。たとえパスワードを盗まれても、二つ目のステップなしではアカウントに侵入できない。",
       "source": "セキュリティの基本",
       "url": "/essentials/#mfa"
     },
