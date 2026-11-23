@@ -39,6 +39,74 @@
   @apply gap-0 px-2 py-2;
 }
 
+/* The badge as a button that opens the key to all three levels. */
+.riskLevelBadgeButton {
+  @apply relative cursor-pointer transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current;
+}
+
+/* A taller tap target without making the pill itself bigger. */
+.riskLevelBadgeButton::before {
+  content: '';
+  @apply absolute -inset-x-1 -inset-y-2;
+}
+
+/* Hover underlines the label and darkens the pill one shade, the same shade it keeps while the key
+   is open. Hover only where a real hover exists, so it doesn't stick after a tap. Flat `.dark`
+   selectors, for the reason given further down. */
+@media (hover: hover) {
+  .riskLevelBadgeButton:hover .riskLevelBadgeLabel {
+    @apply underline decoration-1 underline-offset-2;
+  }
+
+  .badgeToneEveryone.riskLevelBadgeButton:hover {
+    @apply bg-green-300;
+  }
+
+  .badgeToneMedium.riskLevelBadgeButton:hover {
+    @apply bg-amber-300;
+  }
+
+  .badgeToneHigh.riskLevelBadgeButton:hover {
+    @apply bg-red-300;
+  }
+
+  :global(.dark) .badgeToneEveryone.riskLevelBadgeButton:hover {
+    @apply bg-green-700/70;
+  }
+
+  :global(.dark) .badgeToneMedium.riskLevelBadgeButton:hover {
+    @apply bg-amber-700/70;
+  }
+
+  :global(.dark) .badgeToneHigh.riskLevelBadgeButton:hover {
+    @apply bg-red-700/70;
+  }
+}
+
+.badgeToneEveryone.riskLevelBadgeButton[data-state='open'] {
+  @apply bg-green-300;
+}
+
+.badgeToneMedium.riskLevelBadgeButton[data-state='open'] {
+  @apply bg-amber-300;
+}
+
+.badgeToneHigh.riskLevelBadgeButton[data-state='open'] {
+  @apply bg-red-300;
+}
+
+:global(.dark) .badgeToneEveryone.riskLevelBadgeButton[data-state='open'] {
+  @apply bg-green-700/70;
+}
+
+:global(.dark) .badgeToneMedium.riskLevelBadgeButton[data-state='open'] {
+  @apply bg-amber-700/70;
+}
+
+:global(.dark) .badgeToneHigh.riskLevelBadgeButton[data-state='open'] {
+  @apply bg-red-700/70;
+}
+
 .riskLevelIntro {
   /* "This section is for you if:" - bold, on its own line under the pill */
 }
