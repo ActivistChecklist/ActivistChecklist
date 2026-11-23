@@ -17,7 +17,6 @@ describe('OG Image Configuration', () => {
         'emergency',
         'spyware',
         'research',
-        'federal',
         'doxxing',
         'action',
         'ice',
@@ -81,13 +80,13 @@ describe('OG Image Configuration', () => {
     });
 
     it('should handle lucide-react icons', async () => {
-      const { Landmark } = await import('lucide-react');
+      const { Printer } = await import('lucide-react');
 
       // Lucide-react exports forwardRef components (objects), not plain functions
-      expect(Landmark).toBeDefined();
-      expect(typeof Landmark).toBe('object');
+      expect(Printer).toBeDefined();
+      expect(typeof Printer).toBe('object');
       // Check it has the render property of a forwardRef component
-      expect(Landmark.$$typeof || Landmark.render).toBeDefined();
+      expect(Printer.$$typeof || Printer.render).toBeDefined();
     });
   });
 

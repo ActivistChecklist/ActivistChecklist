@@ -16,7 +16,7 @@ import {
   IoCafe,
   IoMegaphone,
 } from 'react-icons/io5';
-import { BookOpen, Landmark, Printer, Smartphone } from 'lucide-react';
+import { BookOpen, Printer, Smartphone } from 'lucide-react';
 import React from 'react';
 
 const svgProps = {
@@ -68,7 +68,6 @@ export const GUIDE_ICONS = {
   emergency: IoNotifications,
   spyware: IoEyeOff,
   research: IoGlobe,
-  federal: Landmark,
   doxxing: IoLockClosedThick,
   action: IoHandRight,
   'action-safety': IoMegaphone,
