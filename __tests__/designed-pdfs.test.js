@@ -136,6 +136,7 @@ describe('config/pdfs.mjs', () => {
           const { content } = localizeContent(source, translation);
           const html = layout.renderPosterHtml({
             content,
+            source,
             config,
             lang: LOCALES[locale].intlLocale,
             href: `https://activistchecklist.org${config.pagePath}`,
@@ -275,6 +276,51 @@ describe('steps-with-contacts layout', async () => {
     });
     expect(html).toMatch(/<p class="step-intro">Say:<\/p><ul class="phrases"><li><svg/);
     expect(html).toContain('<ul class="bullets"><li>y</li></ul>');
+  });
+
+  // Phrases are said to US police, so a translated poster prints the English
+  // phrase and puts the reader's language underneath.
+  describe('phrases', () => {
+    const withPhrases = (phrases) => ({
+      ...base,
+      steps: { s: { heading: 'S', phrases } },
+    });
+    const english = withPhrases({ a: 'I do not consent', b: 'I want a lawyer' });
+
+    it('prints English phrases once on the English poster', () => {
+      const html = render(english);
+      expect(html).toContain('<span lang="en">I do not consent</span></li>');
+      expect(html).not.toContain('class="phrase-meaning"');
+    });
+
+    it('prints the English phrase with the translation underneath', () => {
+      const html = layout.renderPosterHtml({
+        content: withPhrases({ a: 'No consiento', b: 'Quiero un abogado' }),
+        source: english,
+        config: { printedUrl: 'x' },
+        lang: 'es-MX',
+        href: 'https://activistchecklist.org/es/police/',
+        paper: { width: 816, height: 1056 },
+        fontCss: '',
+      });
+      expect(html).toContain(
+        '<span lang="en">I want a lawyer</span><span class="phrase-meaning">Quiero un abogado</span>',
+      );
+      expect(html).not.toContain('<span lang="en">No consiento');
+    });
+
+    it('prints an untranslated phrase once', () => {
+      const html = layout.renderPosterHtml({
+        content: withPhrases({ a: 'No consiento', b: 'I want a lawyer' }),
+        source: english,
+        config: { printedUrl: 'x' },
+        lang: 'es-MX',
+        href: 'https://activistchecklist.org/es/police/',
+        paper: { width: 816, height: 1056 },
+        fontCss: '',
+      });
+      expect(html.match(/phrase-meaning">/g)).toHaveLength(1);
+    });
   });
 
   it('names the step and the allowed kinds when a step has an unknown part', () => {
