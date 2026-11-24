@@ -1,8 +1,10 @@
 @reference "./globals.css";
 
-/* Alert styles - !text-inherit overrides prose's font-size so alert matches its container */
+/* Alert styles - !text-inherit overrides prose's font-size so alert matches its container.
+   One line of text is shorter than min-h, so justify-center splits the spare room
+   above and below it. Taller alerts have no spare room, so it does nothing there. */
 .alert {
-  @apply relative w-full rounded-md border-l-[6px] py-2 px-5 [&:not(:first-child)]:mt-3 !text-inherit min-h-[2.7rem];
+  @apply relative w-full rounded-md border-l-[6px] py-2 px-5 [&:not(:first-child)]:mt-3 !text-inherit min-h-[2.7rem] flex flex-col justify-center;
 }
 
 @media print {
@@ -20,8 +22,11 @@
   @apply h-6 w-6;
 }
 
+/* The icon is h-6, so 50% minus 0.75rem centers it. That only wins over the
+   usual top offset in a short alert, so wrapped text keeps the icon at the top. */
 .alertIcon {
-  @apply absolute left-3 top-3 text-foreground;
+  @apply absolute left-3 text-foreground;
+  top: min(0.75rem, 50% - 0.75rem);
 }
 
 .alertTitle {
@@ -44,8 +49,11 @@
   @apply py-2;
 }
 
-:global(.checklist-item) .alert .alertIcon {
-  @apply top-2.5;
+/* Newsletter alerts share the checklist icon offset, which keeps the icon level
+   with their first line of text when it wraps */
+:global(.checklist-item) .alert .alertIcon,
+:global(.newsletter-alert) .alertIcon {
+  top: min(0.625rem, 50% - 0.75rem);
 }
 
 :global(.checklist-item) .alert .alertDescription {
@@ -54,11 +62,6 @@
 
 :global(.checklist-item) .alert .alertTitle {
   @apply !text-base;
-}
-
-/* Newsletter subscribe alerts: align text with icon (top padding so text matches icon placement) */
-:global(.newsletter-alert) .alertContentWithIcon {
-  @apply pt-1;
 }
 
 /* Variant styles */
