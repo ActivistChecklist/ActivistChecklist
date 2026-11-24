@@ -393,7 +393,7 @@
   },
   "updates": {
     "metaTitle": "Ton appareil reçoit-il encore des mises à jour de sécurité ? | Activist Checklist",
-    "metaDescription": "Vérifie si ton téléphone, ta tablette, ta montre ou ton ordinateur portable reçoit encore des mises à jour de sécurité. Les appareils pas à jour accumulent des failles connues publiquement et sont plus faciles à pirater s'ils sont saisis ou ciblés.",
+    "metaDescription": "Check whether your phone, tablet, watch, or laptop is still getting security updates. Out-of-date devices accumulate publicly known vulnerabilities and are easier to hack if they are seized or targeted.",
     "title": "Ton appareil reçoit-il encore des mises à jour de sécurité ?",
     "intro": "Si ton appareil n'utilise pas la dernière version de son système d'exploitation, des hackers et les flics peuvent s'y introduire et accéder à toutes tes données.",
     "searchLabel": "Saisis le modèle de ton appareil",
