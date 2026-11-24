@@ -155,7 +155,7 @@ for (const { status, path } of changes) {
       before = JSON.parse(show(base, path) ?? '{}');
     } catch {}
     // messages/<locale>.json keys stand alone; any other JSON file (designed
-    // PDFs in content/<locale>/pdf/) is named, so its keys aren't mistaken for UI strings.
+    // PDFs in content/<locale>/posters/) is named, so its keys aren't mistaken for UI strings.
     const prefix = path === `messages/${target.locale}.json` ? '' : `${path}: `;
     for (const change of diffMessages(before, tr)) {
       entry.strings.push({

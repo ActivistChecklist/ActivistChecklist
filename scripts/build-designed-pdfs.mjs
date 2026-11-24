@@ -6,7 +6,8 @@
  * a site page. Each one is its own design, filled with text from a translatable
  * file, so Crowdin can translate the words and the build lays them out again.
  *
- *   content/<locale>/pdf/<slug>.json   the words. English is the Crowdin source
+ *   content/<locale>/posters/<slug>.json
+ *                                      the words. English is the Crowdin source
  *                                      and sets the structure; Crowdin writes the
  *                                      other languages.
  *   config/pdfs.mjs                    everything else, including which
@@ -179,11 +180,11 @@ async function collectTargets() {
   for (const slug of slugs) {
     const config = PDFS[slug];
     const { file: layoutFile, layout } = await loadLayout(config.layout);
-    const source = readJson(path.join(ROOT, 'content', DEFAULT_LOCALE, 'pdf', `${slug}.json`));
+    const source = readJson(path.join(ROOT, 'content', DEFAULT_LOCALE, 'posters', `${slug}.json`));
 
     for (const locale of config.locales) {
       if (args.locale && locale !== args.locale) continue;
-      const contentFile = path.join(ROOT, 'content', locale, 'pdf', `${slug}.json`);
+      const contentFile = path.join(ROOT, 'content', locale, 'posters', `${slug}.json`);
       // The site links every listed language, so a missing one is a broken link.
       if (!Object.hasOwn(LOCALES, locale))
         throw new Error(`${slug}: "${locale}" is not a site locale`);

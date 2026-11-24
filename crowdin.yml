@@ -24,5 +24,5 @@ files:
   - source: /messages/en.json
     translation: /messages/%two_letters_code%.json
   # Designed PDFs such as the "Police at the door" poster (scripts/build-designed-pdfs.mjs).
-  - source: /content/en/pdf/*.json
-    translation: /content/%two_letters_code%/pdf/%original_file_name%
+  - source: /content/en/posters/*.json
+    translation: /content/%two_letters_code%/posters/%original_file_name%
