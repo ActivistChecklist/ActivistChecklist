@@ -85,6 +85,43 @@ describe('restart_needed', () => {
   });
 });
 
+describe('should_page', () => {
+  const now = 1_800_000_000;
+  const page = (verdict, minutesAgo) =>
+    run('should_page', verdict, now, minutesAgo === undefined ? '' : now - minutesAgo * 60);
+
+  it('never pages when listmonk was up', () => {
+    expect(page('OK')).toBe('false');
+    expect(page('OK', 5)).toBe('false');
+  });
+
+  it('always pages for a checkout that has stopped syncing', () => {
+    expect(page('STALE')).toBe('true');
+  });
+
+  // 2026-11-24: a host reboot, fixed by the next run, paged for an outage that
+  // was already over.
+  it('stays quiet for the first bad run in an hour', () => {
+    for (const verdict of ['DOWN', 'RECOVERED']) {
+      expect(page(verdict)).toBe('false');
+      expect(page(verdict, 60)).toBe('false');
+      expect(page(verdict, 600)).toBe('false');
+    }
+  });
+
+  // A restart loop is a bad run every five minutes; it must still page.
+  it('pages when another bad run was within the hour', () => {
+    for (const verdict of ['DOWN', 'RECOVERED']) {
+      expect(page(verdict, 5)).toBe('true');
+      expect(page(verdict, 59)).toBe('true');
+    }
+  });
+
+  it('reads a damaged record as no earlier trouble', () => {
+    expect(run('should_page', 'DOWN', now, 'garbage')).toBe('false');
+  });
+});
+
 describe('repo_is_stale', () => {
   const now = 1_800_000_000;
   const hoursAgo = (h) => now - h * 3600;

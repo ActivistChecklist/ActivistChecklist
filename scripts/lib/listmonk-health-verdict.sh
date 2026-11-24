@@ -4,16 +4,17 @@
 # Source this file (do not run standalone):
 #   source "$SCRIPT_DIR/lib/listmonk-health-verdict.sh"
 #
-# The rule that matters: green means listmonk was ALREADY up when we looked.
-# "It was down but I restarted it" is an outage, and it is reported as one.
+# Two layers. health_verdict says what happened: OK means listmonk was ALREADY
+# up when we looked, and "it was down but I restarted it" is RECOVERED, never OK.
+# should_page then decides whether that is worth waking someone for.
 #
-# Why (2026-10-06): the check found listmonk down, started it inside the
-# Type=oneshot job's cgroup, saw it answer within 5s, pinged OK and exited -
-# and systemd reaped listmonk on exit. That repeated every 5 minutes, so
+# Why RECOVERED is never OK (2026-10-06): the check found listmonk down, started
+# it inside the Type=oneshot job's cgroup, saw it answer within 5s, pinged OK and
+# exited - and systemd reaped listmonk on exit. That repeated every 5 minutes, so
 # listmonk served ~5s out of every 300 while healthchecks.io showed an unbroken
-# run of green pings. Any restart mechanism that silently stops sticking ends
-# the same way if a successful restart counts as healthy. With this rule, a
-# restart loop is a continuous run of fail pings no matter what causes it.
+# run of green pings. Any restart mechanism that silently stops sticking ends the
+# same way if a successful restart counts as healthy. should_page keeps that
+# lesson: a restart loop pages on its second run.
 
 # restart_needed <liveness_ok> <roundtrip_verdict>
 #
@@ -45,8 +46,9 @@ restart_needed() {
 # Echoes exactly one of:
 #   OK        - up on arrival, subscribe path not broken, checkout current
 #   DOWN      - still not working after any restart attempt
-#   RECOVERED - was down on arrival; a restart brought it back. Pinged as a
-#               failure: readers could not subscribe until we got there.
+#   RECOVERED - was down on arrival; a restart brought it back. Readers could
+#               not subscribe until we got there, so it counts as trouble for
+#               should_page.
 #   STALE     - listmonk is fine, but the server checkout has stopped syncing,
 #               so fixes merged to main are not reaching this box.
 #
@@ -72,6 +74,42 @@ health_verdict() {
   else
     printf 'OK'
   fi
+}
+
+# should_page <verdict> <now_epoch> <last_trouble_epoch>
+#
+# Echoes true when this run should send a fail ping, false when it should only
+# be recorded. <last_trouble_epoch> is when an earlier run last ended DOWN or
+# RECOVERED; empty when none is on record.
+#   OK               never pages
+#   STALE            always pages: a checkout that stopped syncing stays stopped
+#   DOWN, RECOVERED  page only when another run ended DOWN or RECOVERED within
+#                    the last hour
+#
+# So one bad run on its own stays quiet. That covers a host reboot (listmonk's
+# transient unit dies with it, and the next run restarts it) and a probe that
+# misses twice in one run. A real outage is a second bad run five minutes
+# later, so it pages after 5 to 10 minutes, and so does a restart loop. A
+# listmonk that keeps dying between good runs pages on its second restart
+# within the hour.
+#
+# Why (2026-11-24): a May First kernel reboot took listmonk down for three and
+# a half minutes. The first run after boot restarted it, and the RECOVERED
+# fail ping paged for an outage that was already over and needed nobody.
+should_page() {
+  local verdict="$1" now="$2" last="$3"
+
+  case "$verdict" in
+    OK) printf 'false' ;;
+    STALE) printf 'true' ;;
+    *)
+      if [[ "$last" =~ ^[0-9]+$ ]] && ((now - last < 3600)); then
+        printf 'true'
+      else
+        printf 'false'
+      fi
+      ;;
+  esac
 }
 
 # repo_is_stale <fetch_head_mtime_epoch> <now_epoch> <max_age_hours>
