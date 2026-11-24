@@ -8,13 +8,12 @@ import SectionReadLinks from '@/components/SectionReadLinks';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { CHECKLIST_SECTIONS, SECURITY_CHECKLISTS } from '@/config/navigation';
-import { TOOLS } from '@/config/tools';
+import { HOMEPAGE_TOOL_HREFS as TOOL_HREFS } from '@/config/tools';
 import { createIntlTranslator, getTranslatedNavItemFields } from '@/lib/navigation-i18n';
 import { cn } from '@/lib/utils';
 
 // Tools get their own section further down the homepage, so they're left out
 // of the explainer links here rather than shown twice.
-const TOOL_HREFS = new Set(TOOLS.map((tool) => tool.href));
 
 /**
  * Homepage checklists, grouped by section. The section heading sits in a left

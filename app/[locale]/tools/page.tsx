@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { DEFAULT_LOCALE } from '@/lib/i18n-config';
 import { getBaseUrl } from '@/lib/utils';
 import { getOgImagePathForSlug } from '@/lib/og-image';
-import { TOOLS } from '@/config/tools';
+import { GENERATORS, TOOLS } from '@/config/tools';
 import { cn } from '@/lib/utils';
 
 function isExternal(href) {
@@ -50,7 +50,7 @@ export async function generateMetadata({ params }) {
 }
 
 function ToolRow({ tool, tinted, reversed, t }) {
-  const { key, id, accent, href, screenshot } = tool;
+  const { key, id, href, screenshot } = tool;
   const item = (field) => t(`tools.items.${key}.${field}`);
 
   return (
@@ -75,8 +75,10 @@ function ToolRow({ tool, tinted, reversed, t }) {
           <ul className="mt-4 flex flex-col gap-2.5">
             {['bullet1', 'bullet2', 'bullet3'].map((field) => (
               <li key={field} className="flex gap-2.5 text-sm leading-relaxed sm:text-base">
+                {/* Primary on the bg-muted panels lands near 4.1:1: enough for
+                    an icon (3:1), not for small colored text. */}
                 <Check
-                  className={cn('mt-1 h-4 w-4 shrink-0', accent)}
+                  className="mt-1 h-4 w-4 shrink-0 text-primary"
                   aria-hidden="true"
                   strokeWidth={3}
                 />
@@ -116,6 +118,42 @@ function ToolRow({ tool, tinted, reversed, t }) {
   );
 }
 
+// One small row above the big ones (see GENERATORS in config/tools).
+function GeneratorsRow({ t }) {
+  return (
+    <section className="rounded-lg px-1 py-8 sm:p-8">
+      <h2 id="generators" className="mb-5 text-xl font-bold tracking-tight sm:text-2xl">
+        {t('tools.generators.title')}
+      </h2>
+      <div className="grid gap-4 sm:grid-cols-2">
+        {GENERATORS.map(({ key, href, Icon }) => (
+          <Link
+            key={key}
+            href={href}
+            className="group flex items-start gap-4 rounded-lg border border-border bg-card p-5 transition-colors hover:border-primary/40"
+          >
+            <span className="shrink-0 rounded-lg bg-primary/10 p-2 text-primary">
+              <Icon className="h-5 w-5" aria-hidden="true" />
+            </span>
+            <span className="flex-1">
+              <span className="block text-lg font-semibold leading-tight">
+                {t(`${key}.page.title`)}
+              </span>
+              <span className="mt-1 block text-sm text-muted-foreground sm:text-base">
+                {t(`${key}.page.intro`)}
+              </span>
+            </span>
+            <ArrowRight
+              className="h-5 w-5 shrink-0 self-center text-primary transition-transform group-hover:translate-x-1"
+              aria-hidden="true"
+            />
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export default async function ToolsPage({ params }) {
   const { locale } = await params;
   setRequestLocale(locale);
@@ -142,6 +180,7 @@ export default async function ToolsPage({ params }) {
       <PageNotices />
 
       <div className="mt-8 flex flex-col gap-4 sm:gap-6">
+        <GeneratorsRow t={t} />
         {TOOLS.map((tool, index) => (
           <ToolRow
             key={tool.key}

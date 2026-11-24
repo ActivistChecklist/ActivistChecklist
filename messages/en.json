@@ -743,7 +743,7 @@
     "metaDescription": "Tools we built to go with our checklists: map your risks before an action, check if your phone still gets security updates, and clear out old AI chats.",
     "documentTitle": "Tools we built | Activist Checklist",
     "title": "Tools we built",
-    "intro": "Three tools we built to go along with the checklists. Each one covers a step that is hard to finish from written instructions alone.",
+    "intro": "Tools we built to go along with the checklists. Each one covers a step that is hard to finish from written instructions alone.",
     "items": {
       "riskMapper": {
         "name": "Risk Mapper",
@@ -781,7 +781,10 @@
       "body": "If you're new to this, start with our Security Essentials checklist. It covers the steps everyone should take to protect themselves from surveillance and attackers.",
       "primaryCta": "Digital Security Essentials",
       "secondaryCta": "See all checklists",
-      "openSource": "All three are <repos>open source</repos>. If one is broken, or you need something we have not built yet, <contact>let us know</contact>."
+      "openSource": "All of them are <repos>open source</repos>. If one is broken, or you need something we have not built yet, <contact>let us know</contact>."
+    },
+    "generators": {
+      "title": "Passcode and passphrase generators"
     }
   },
   "terms": {
