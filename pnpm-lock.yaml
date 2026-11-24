@@ -184,7 +184,7 @@ importers:
         version: 0.3.1(@types/react@19.3.0)(next@16.4.6(@types/node@26.6.6)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(socks@2.8.9)
       '@activistchecklist/umami-extra-privacy':
         specifier: github:ActivistChecklist/umami-extra-privacy#cdc7422d143c17ca647133200785d52ac589e259
-        version: https://codeload.github.com/ActivistChecklist/umami-extra-privacy/tar.gz/cdc7422d143c17ca647133200785d52ac589e259(fastify@5.12.8)
+        version: https://codeload.github.com/ActivistChecklist/umami-extra-privacy/tar.gz/cdc7422d143c17ca647133200785d52ac589e259
       '@fastify/cors':
         specifier: ^11.4.3
         version: 11.4.3
@@ -192,8 +192,8 @@ importers:
         specifier: ^13.2.0
         version: 13.2.0
       '@fastify/rate-limit':
-        specifier: ^11.2.2
-        version: 11.2.2
+        specifier: ^11.3.0
+        version: 11.3.0
       '@hookform/resolvers':
         specifier: ^7.0.8
         version: 7.0.8(ajv-formats@3.0.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.92.0(@types/react@19.3.0)(react@19.3.1))(superstruct@1.0.4)(zod@4.6.7)
@@ -490,11 +490,6 @@ packages:
     resolution: {gitHosted: true, integrity: sha512-Qo0XFVI6tsWZlMO7NHYi6St+wjEJzyJYrAPMBhNFxW1v7daY8JKb8PF3oeOTYmsmxsLrCy6UDcb5P4P7KsA7mw==, tarball: https://codeload.github.com/ActivistChecklist/umami-extra-privacy/tar.gz/cdc7422d143c17ca647133200785d52ac589e259}
     version: 1.0.0
     engines: {node: '>=18'}
-    peerDependencies:
-      fastify: '>=4'
-    peerDependenciesMeta:
-      fastify:
-        optional: true
 
   '@alloc/quick-lru@5.2.0':
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
@@ -770,8 +765,8 @@ packages:
   '@fastify/proxy-addr@5.1.0':
     resolution: {integrity: sha512-INS+6gh91cLUjB+PVHfu1UqcB76Sqtpyp7bnL+FYojhjygvOPA9ctiD/JDKsyD9Xgu4hUhCSJBPig/w7duNajw==}
 
-  '@fastify/rate-limit@11.2.2':
-    resolution: {integrity: sha512-Ynxk9BU82Y5Ux7NOk9NqyZpTMdFes8EY8quXrN6ePDsbtG4G9Afb3l9mD8Vw2nv0hXg0iFjV+gkdABReFPlShw==}
+  '@fastify/rate-limit@11.3.0':
+    resolution: {integrity: sha512-n+gmOdTRReRA+UGI/cPAvG4bW4FCDLofInXNkTX42/rkMPy/8ii8LsLWHUU1KC+jJRdBtOD9Zs+Js8168eS/4A==}
 
   '@floating-ui/core@1.8.0':
     resolution: {integrity: sha512-0CIZ5itps/8x7BG8dEIhs53BvCUH2PCoogtakwRTut+Arm58sJooJ0AuZhLw2HJYIR5cMLNPBSS728sPho2khQ==}
@@ -5037,7 +5032,7 @@ snapshots:
       - snappy
       - socks
 
-  '@activistchecklist/umami-extra-privacy@https://codeload.github.com/ActivistChecklist/umami-extra-privacy/tar.gz/cdc7422d143c17ca647133200785d52ac589e259(fastify@5.12.8)':
+  '@activistchecklist/umami-extra-privacy@https://codeload.github.com/ActivistChecklist/umami-extra-privacy/tar.gz/cdc7422d143c17ca647133200785d52ac589e259':
     optionalDependencies:
       fastify: 5.12.8
 
@@ -5274,7 +5269,7 @@ snapshots:
       '@fastify/forwarded': 3.0.2
       ipaddr.js: 2.5.0
 
-  '@fastify/rate-limit@11.2.2':
+  '@fastify/rate-limit@11.3.0':
     dependencies:
       '@lukeed/ms': 2.0.2
       fastify-plugin: 6.0.0

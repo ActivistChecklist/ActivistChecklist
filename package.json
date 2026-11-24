@@ -82,7 +82,7 @@
     "@activistchecklist/umami-extra-privacy": "github:ActivistChecklist/umami-extra-privacy#cdc7422d143c17ca647133200785d52ac589e259",
     "@fastify/cors": "^11.4.3",
     "@fastify/helmet": "^13.2.0",
-    "@fastify/rate-limit": "^11.2.2",
+    "@fastify/rate-limit": "^11.3.0",
     "@hookform/resolvers": "^7.0.8",
     "@keystar/ui": "~0.10.1",
     "@keystatic/core": "^0.6.10",
