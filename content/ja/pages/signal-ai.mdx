@@ -30,7 +30,7 @@ lastUpdated: 2025-10-21
 🟡 <StyledSpan className="text-warning font-bold">一部正確</StyledSpan>\
 **Apple Intelligenceが「Signalのメッセージをスキャンしている」**
 
-* **The truth is that Apple Intelligence is creating summaries based on the contents of your Signal *notifications*, not all of your messages inside the app**. 通知のプレビューをオフにすれば、SignalでApple Intelligenceが使われることはありません。
+* **実際のところ、Apple Intelligenceが要約を作っているのはSignalの*通知*の内容であって、アプリ内のすべてのメッセージではありません**。通知のプレビューをオフにすれば、SignalでApple Intelligenceが使われることはありません。
 * 重要なのは、**Apple Intelligenceは保存されているメッセージにはアクセスしていない**ということです。
 * また、このツールがメッセージを「読んでいる」かどうかは、実はそれほど本質的な問題ではない、ということも言っておきたいと思います。そもそも、スマホのOSは画面に表示されているものには何でも常にアクセスできるのです。**本当に問うべきなのは、「この情報がデバイスの外に出て、Appleのサーバーに送られることはあるのか？」ということです。**
 * AI通知の要約がデバイス上だけで処理されている可能性もあります（その場合、メッセージの安全は保たれます）。ただ、Appleは、どのAIリクエストがデバイス上にとどまり、どれがAppleのサーバーに送られるのかを、ユーザーが知る手段を提供していません。なので、スマホのAI機能をオフにする（またはSignalの通知をオフにする）ことをおすすめします。
@@ -84,7 +84,7 @@ Signalをできるだけ安全に設定する方法をまとめたガイドが�
 
 <Button title="Signalチェックリスト →" href="/signal/" target="_self" size="lg" />
 
-This guide will help you configure disappearing messages by default, require Face ID to open the app, and more.
+このガイドでは、消えるメッセージをデフォルトにする設定や、アプリを開くときにFace IDを必須にする設定などを紹介します。
 
 [ほかのチェックリスト](/checklists/)もぜひ見てみてください。
 
@@ -97,8 +97,8 @@ Signalのグループでセキュリティのアドバイスを共有したい�
 > Apple IntelligenceがSignalのメッセージを「読める」という話が出回っています。それを見た人のために、もう少し正確な情報を共有しておきます：
 >
 > * Apple Intelligenceがアクセスしているのは、Signalの通知だけです（すべてのメッセージではありません）。これは「通知の要約」機能の一部です。現在この機能が使えるのは、iOS 18.1以降のiPhone 15 Pro/Pro MaxとiPhone 16（全モデル）だけです。
-> * どの情報がデバイスの外に送られるのか、Appleは明らかにしていません。なので、Apple Intelligenceをオフにするのが一番安全です。 You can do this on your phone and computer under <MenuPath inline>**Settings** > **Apple Intelligence & Siri** > **Disable**</MenuPath>.
-> * If you want to keep Apple Intelligence on, you can disable message previews in Signal notifications by going to <MenuPath inline>Open Signal > Tap your profile picture > **Settings** > **Notifications** > **Notification Content** > Select **No Name or Content**</MenuPath>. (This is a good security mechanism anyway in case your device is ever confiscated or out of your possession.)
+> * どの情報がデバイスの外に送られるのか、Appleは明らかにしていません。なので、Apple Intelligenceをオフにするのが一番安全です。スマホとパソコンの<MenuPath inline>**設定** > **Apple IntelligenceとSiri** > **オフにする**</MenuPath>から設定できます。
+> * Apple Intelligenceをオンのままにしておきたい場合は、<MenuPath inline>Signalを開く > プロフィール写真をタップ > **設定** > **通知** > **通知内容** > **名前もコンテンツもなし**を選択</MenuPath>で、Signalの通知のメッセージプレビューをオフにできます。（デバイスが没収されたり手元から離れたりしたときのためにも、これはそもそも有効なセキュリティ対策です。）
 >
 > 詳しい手順と背景はこちら：[https://activistchecklist.org/signal-ai](https://activistchecklist.org/signal-ai)
 
@@ -106,10 +106,10 @@ Signalのグループでセキュリティのアドバイスを共有したい�
 
 ## AndroidスマホでAIをオフにする方法
 
-Newer Android phones offer Gemini AI (from Google). どの情報がデバイスの外に送られるのかについて、GoogleはAppleよりもさらに不透明です。そのため、[AndroidデバイスでGeminiをオフにする](https://www.cnet.com/tech/mobile/i-tried-to-turn-off-the-ai-on-my-pixel-9-it-wasnt-easy/)ことをおすすめします。
+新しいAndroidスマホには、Gemini AI（Google製）が搭載されています。どの情報がデバイスの外に送られるのかについて、GoogleはAppleよりもさらに不透明です。そのため、[AndroidデバイスでGeminiをオフにする](https://www.cnet.com/tech/mobile/i-tried-to-turn-off-the-ai-on-my-pixel-9-it-wasnt-easy/)ことをおすすめします。
 
 ## 関連記事
 
 * [Signalは安全？](/signal-secure/) Signalのセキュリティについての記事。暗号化、Signalが共有しうる情報、オープンソース、よくある誤解などを解説しています。
-* [Why "Private Cloud Compute" isn't the same level of privacy as end-to-end encryption](https://www.eff.org/deeplinks/2026/09/secure-messaging-and-ai-remain-conflict-despite-promise-tees) - EFF
+* [「Private Cloud Compute」がエンドツーエンド暗号化と同じレベルのプライバシーではない理由](https://www.eff.org/deeplinks/2026/09/secure-messaging-and-ai-remain-conflict-despite-promise-tees) - EFF
 * [ボットは暗号化されたメッセージを読めるのか？暗号化、プライバシー、そして新たなAIのジレンマ](https://www.techpolicy.press/can-bots-read-your-encrypted-messages-encryption-privacy-and-the-emerging-ai-dilemma/)
