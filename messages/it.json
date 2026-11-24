@@ -284,6 +284,49 @@
       "intro": "Un codice di sblocco generato a caso di almeno 8 cifre rende molto più difficile per la polizia entrare nel tuo telefono."
     }
   },
+  "passphraseGenerator": {
+    "label": "Passphrase generata in modo casuale",
+    "newPassphrase": "Nuova passphrase",
+    "numberOfWords": "Numero di parole",
+    "words": "parole",
+    "options": "Opzioni",
+    "copy": "Copia",
+    "copied": "Copiato",
+    "strength": "Robustezza",
+    "strengthLabel": "Robustezza: circa {bits} bit di entropia",
+    "strengthBits": "Circa <num>{bits} bit</num> di entropia",
+    "strengthExplainer": "L'<link>entropia</link> è la quantità di casualità nella tua passphrase. Più lettere non aiutano davvero (e possono renderla più difficile da digitare).",
+    "perLetter": "Casualità per lettera:",
+    "bitsPerLetter": "{bits, number} bit per lettera",
+    "shortWarning": "Una passphrase di {count} parole generata in modo casuale è meglio di una inventata da te, ma è molto più facile da craccare rispetto a una passphrase più lunga.",
+    "privacy": "Questa passphrase viene creata sul tuo dispositivo e non ci viene mai inviata. Puoi salvarla nel tuo <link>password manager</link> (ma non nell'app delle note o negli screenshot). Dopo averla incollata, copia qualcos'altro per svuotare gli appunti. Se la scrivi su carta, distruggila dopo averla memorizzata. Se temi che qualcuno possa aver compromesso il tuo computer, puoi aprire un libro su una pagina a caso e scegliere una parola a caso, più e più volte, finché non hai 6-8 parole.",
+    "optionsPanel": {
+      "wordList": "Elenco di parole",
+      "listShort": "Parole più corte",
+      "listShortDescription": "1.296 parole corte e facili da digitare ({bits, number} bit di entropia per lettera).",
+      "listLong": "Parole più lunghe",
+      "listLongDescription": "17.576 parole più lunghe, così devi memorizzare meno parole ({bits, number} bit di entropia per lettera).",
+      "listLoadError": "Non riusciamo a scaricare l'elenco delle parole più lunghe. Controlla la tua connessione internet e riprova.",
+      "listCredit": "Entrambi gli elenchi provengono da <link>Orchard Street Wordlists</link> (CC BY-SA 4.0).",
+      "separator": "Tra le parole",
+      "separatorSpace": "Spazio",
+      "separatorHyphen": "Trattino",
+      "separatorPeriod": "Punto",
+      "separatorNone": "Niente",
+      "extras": "Lettere maiuscole, numeri e simboli",
+      "capitalize": "Iniziale maiuscola per ogni parola",
+      "addNumber": "Aggiungi un numero",
+      "addSymbol": "Aggiungi un simbolo",
+      "reset": "Ripristina le impostazioni predefinite"
+    },
+    "page": {
+      "metaTitle": "Generatore di passphrase | Activist Checklist",
+      "metaDescription": "Ottieni una passphrase casuale per il tuo portatile o il tuo password manager, creata sul tuo dispositivo e mai inviata a noi.",
+      "title": "Generatore di passphrase",
+      "intro": "Una passphrase generata a caso rende molto più difficile per gli sbirri entrare nel tuo portatile o nel tuo password manager.",
+      "whenToUse": "<b>Quando usare una passphrase:</b> di solito ti serve una passphrase solo in questi casi: la password del portatile, la password principale del tuo password manager e (se vuoi) il codice di sblocco del telefono (se cerchi il massimo livello di sicurezza). Per tutto il resto, lascia che sia il tuo password manager a generare le password."
+    }
+  },
   "canaryStatus": {
     "current": "<b>Aggiornato.</b> Il nostro warrant canary è stato aggiornato l'ultima volta il {date} ed è valido fino al {validThrough}. (Dopo quella data, questo indicatore diventerà rosso se non ci sarà un canary più recente.)",
     "overdue": "<b>Scaduto.</b> Il nostro warrant canary è stato aggiornato l'ultima volta il {date} ed era valido fino al {validThrough}. È un segnale che è il caso di fare domande, come spiegato qui sotto.",

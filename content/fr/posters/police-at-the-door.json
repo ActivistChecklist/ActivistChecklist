@@ -33,10 +33,10 @@
       "heading": "2. Dis les phrases magiques",
       "intro": "Dis ces phrases pour protéger tes droits :",
       "phrases": {
-        "noConsent": "« Je ne consens pas à une fouille » — en anglais : « I do not consent to a search »",
-        "remainSilent": "« Je vais garder le silence » — en anglais : « I am going to remain silent »",
-        "attorney": "« Je veux parler à un·e avocat·e » — en anglais : « I want to speak to an attorney »",
-        "card": "« Puis-je avoir votre carte ? » — en anglais : « May I have your card? »"
+        "noConsent": "« Je ne consens pas à une fouille »",
+        "remainSilent": "« Je vais garder le silence »",
+        "attorney": "« Je veux parler à un·e avocat·e »",
+        "card": "« Puis-je avoir votre carte ? »"
       }
     },
     "warrant": {

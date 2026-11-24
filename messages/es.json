@@ -284,6 +284,49 @@
       "intro": "Un código aleatorio de 8 dígitos o más hace que a la policía le cueste mucho más entrar a tu celular."
     }
   },
+  "passphraseGenerator": {
+    "label": "Frase de contraseña generada al azar",
+    "newPassphrase": "Nueva frase de contraseña",
+    "numberOfWords": "Número de palabras",
+    "words": "palabras",
+    "options": "Opciones",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "strength": "Seguridad",
+    "strengthLabel": "Seguridad: unos {bits} bits de entropía",
+    "strengthBits": "Unos <num>{bits} bits</num> de entropía",
+    "strengthExplainer": "La <link>entropía</link> es la cantidad de aleatoriedad en tu frase de contraseña. Tener más letras no ayuda tanto como parece (y puede hacer que sea más difícil de escribir).",
+    "perLetter": "Aleatoriedad por letra:",
+    "bitsPerLetter": "{bits, number} bits por letra",
+    "shortWarning": "Una frase de contraseña de {count} palabras generada al azar es mejor que una que inventes tú, pero es mucho más fácil de descifrar que una frase más larga.",
+    "privacy": "Esta frase de contraseña se crea en tu dispositivo y nunca se nos envía. Puedes guardarla en tu <link>gestor de contraseñas</link> (pero no en tu app de notas ni en capturas de pantalla). Después de pegarla, copia otra cosa para borrar tu portapapeles. Si la escribes en papel, destrúyelo cuando te la memorices. Si te preocupa que alguien con malas intenciones haya comprometido tu computadora, puedes abrir un libro en una página al azar y elegir una palabra, una y otra vez, hasta tener de 6 a 8 palabras.",
+    "optionsPanel": {
+      "wordList": "Lista de palabras",
+      "listShort": "Palabras más cortas",
+      "listShortDescription": "1.296 palabras cortas y fáciles de escribir ({bits, number} bits de entropía por letra).",
+      "listLong": "Palabras más largas",
+      "listLongDescription": "17.576 palabras más largas, para que tengas que memorizar menos palabras ({bits, number} bits de entropía por letra).",
+      "listLoadError": "No pudimos descargar la lista de palabras más largas. Revisa tu conexión a internet e inténtalo de nuevo.",
+      "listCredit": "Ambas listas vienen de <link>Orchard Street Wordlists</link> (CC BY-SA 4.0).",
+      "separator": "Entre palabras",
+      "separatorSpace": "Espacio",
+      "separatorHyphen": "Guion",
+      "separatorPeriod": "Punto",
+      "separatorNone": "Nada",
+      "extras": "Mayúsculas, números y símbolos",
+      "capitalize": "Poner en mayúscula cada palabra",
+      "addNumber": "Agregar un número",
+      "addSymbol": "Agregar un símbolo",
+      "reset": "Restablecer valores predeterminados"
+    },
+    "page": {
+      "metaTitle": "Generador de frases de contraseña | Activist Checklist",
+      "metaDescription": "Obtén una frase de contraseña aleatoria para tu laptop o tu gestor de contraseñas. Se crea en tu dispositivo y nunca nos llega.",
+      "title": "Generador de frases de contraseña",
+      "intro": "Una frase de contraseña generada al azar hace que a la policía le cueste mucho más meterse en tu laptop o tu gestor de contraseñas.",
+      "whenToUse": "<b>Cuándo usar una frase de contraseña:</b> Normalmente solo necesitas una frase de contraseña en estos casos: la contraseña de tu laptop, la contraseña maestra de tu gestor de contraseñas y (si quieres) el código de tu celular (si buscas el nivel más alto de seguridad). Todas las demás contraseñas las debe generar tu gestor de contraseñas."
+    }
+  },
   "canaryStatus": {
     "current": "<b>Al día.</b> Nuestro warrant canary —aviso de órdenes judiciales— se actualizó por última vez el {date} y es válido hasta el {validThrough}. (Después de esa fecha, esto se pondrá en rojo si no hay un canary más reciente).",
     "overdue": "<b>Vencido.</b> Nuestro warrant canary —aviso de órdenes judiciales— se actualizó por última vez el {date} y era válido hasta el {validThrough}. Es una señal para hacer preguntas, como explicamos más abajo.",

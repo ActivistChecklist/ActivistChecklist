@@ -284,6 +284,49 @@
       "intro": "Avec un code d'au moins 8 chiffres généré au hasard, les flics auront beaucoup plus de mal à forcer l'accès à ton téléphone."
     }
   },
+  "passphraseGenerator": {
+    "label": "Phrase de passe générée aléatoirement",
+    "newPassphrase": "Nouvelle phrase de passe",
+    "numberOfWords": "Nombre de mots",
+    "words": "mots",
+    "options": "Options",
+    "copy": "Copier",
+    "copied": "Copié",
+    "strength": "Robustesse",
+    "strengthLabel": "Robustesse : environ {bits} bits d'entropie",
+    "strengthBits": "Environ <num>{bits} bits</num> d'entropie",
+    "strengthExplainer": "L'<link>entropie</link>, c'est la quantité de hasard dans ta phrase de passe. Plus de lettres, ça n'aide pas vraiment (et ça peut la rendre plus difficile à taper).",
+    "perLetter": "Hasard par lettre :",
+    "bitsPerLetter": "{bits, number} bits par lettre",
+    "shortWarning": "Une phrase de passe de {count} mots générée aléatoirement, c'est mieux qu'une phrase que tu as inventée toi-même, mais c'est beaucoup plus facile à cracker qu'une phrase de passe plus longue.",
+    "privacy": "Cette phrase de passe est créée sur ton appareil et ne nous est jamais envoyée. Tu peux l'enregistrer dans ton <link>gestionnaire de mots de passe</link> (mais pas dans ton appli de notes ni dans des captures d'écran). Après l'avoir collée, copie autre chose pour vider ton presse-papiers. Si tu l'écris sur papier, détruis le papier une fois que tu l'as mémorisée. Si tu crains que ton ordinateur soit compromis par une personne malveillante, tu peux ouvrir un livre au hasard et choisir un mot sur la page, encore et encore, jusqu'à avoir 6 à 8 mots.",
+    "optionsPanel": {
+      "wordList": "Liste de mots",
+      "listShort": "Mots plus courts",
+      "listShortDescription": "1 296 mots courts faciles à taper ({bits, number} bits d'entropie par lettre).",
+      "listLong": "Mots plus longs",
+      "listLongDescription": "17 576 mots plus longs, pour avoir moins de mots à mémoriser ({bits, number} bits d'entropie par lettre).",
+      "listLoadError": "On n'a pas réussi à télécharger la liste de mots plus longs. Vérifie ta connexion internet et réessaie.",
+      "listCredit": "Les deux listes viennent de <link>Orchard Street Wordlists</link> (CC BY-SA 4.0).",
+      "separator": "Entre les mots",
+      "separatorSpace": "Espace",
+      "separatorHyphen": "Trait d'union",
+      "separatorPeriod": "Point",
+      "separatorNone": "Rien",
+      "extras": "Majuscules, chiffres et symboles",
+      "capitalize": "Mettre une majuscule à chaque mot",
+      "addNumber": "Ajouter un chiffre",
+      "addSymbol": "Ajouter un symbole",
+      "reset": "Rétablir les paramètres par défaut"
+    },
+    "page": {
+      "metaTitle": "Générateur de phrases de passe | Activist Checklist",
+      "metaDescription": "Obtiens une phrase de passe aléatoire pour ton ordi ou ton gestionnaire de mots de passe, créée sur ton appareil et qui ne nous est jamais envoyée.",
+      "title": "Générateur de phrases de passe",
+      "intro": "Avec une phrase de passe générée au hasard, les flics auront beaucoup plus de mal à accéder à ton ordi ou à ton gestionnaire de mots de passe.",
+      "whenToUse": "<b>Quand utiliser une phrase de passe :</b> en général, tu n'as besoin d'une phrase de passe qu'à ces endroits : le mot de passe de ton ordi, le mot de passe principal de ton gestionnaire de mots de passe et (en option) le code de ton téléphone (si tu veux le niveau de sécurité le plus élevé). Pour tout le reste, laisse ton gestionnaire de mots de passe générer les mots de passe."
+    }
+  },
   "canaryStatus": {
     "current": "<b>À jour.</b> Notre warrant canary, ou « canari de mandat », a été mis à jour pour la dernière fois le {date} et reste valide jusqu'au {validThrough}. (Après cette date, cet indicateur passera au rouge s'il n'y a pas de canary plus récent.)",
     "overdue": "<b>En retard.</b> Notre warrant canary, ou « canari de mandat », a été mis à jour pour la dernière fois le {date} et était valide jusqu'au {validThrough}. C'est un signal pour poser des questions, comme expliqué ci-dessous.",
