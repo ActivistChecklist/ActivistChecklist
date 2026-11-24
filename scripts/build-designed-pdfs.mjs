@@ -206,6 +206,7 @@ async function collectTargets() {
       const paper = PAPER[pdfPaperFormat(locale)];
       const html = layout.renderPosterHtml({
         content,
+        source,
         config,
         lang: LOCALES[locale].intlLocale,
         href: pageHref(locale, config.pagePath),
