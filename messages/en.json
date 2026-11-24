@@ -688,7 +688,7 @@
         "checkAnotherDevice": "Check another device"
       }
     },
-    "footer": "Powered by <eolLink>endoflife.date</eolLink> and <sofaLink>SOFA</sofaLink> · Updated {date}."
+    "footer": "Source: <eolLink>endoflife.date</eolLink> and <sofaLink>SOFA</sofaLink> · Updated {date}."
   },
   "tools": {
     "metaTitle": "Tools we built | Activist Checklist",
