@@ -393,7 +393,7 @@
   },
   "updates": {
     "metaTitle": "Is your device still receiving security updates? | Activist Checklist",
-    "metaDescription": "Check whether your phone, tablet, watch, or laptop is still getting security updates. Out-of-date devices accumulate publicly known vulnerabilities and are easier to hack if it is seized or targeted.",
+    "metaDescription": "Check whether your phone, tablet, watch, or laptop is still getting security updates. Out-of-date devices accumulate publicly known vulnerabilities and are easier to hack if they are seized or targeted.",
     "title": "Is your device still receiving security updates?",
     "intro": "If your device isn't using the latest operating system, hackers and law enforcement can break into it and access all your data.",
     "searchLabel": "Type your device model",
