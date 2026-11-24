@@ -3,8 +3,7 @@
 import { Fragment, useEffect, useId, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 import { useTranslations } from 'next-intl';
-import { Check, Copy, Lock, RefreshCw, SlidersHorizontal, TriangleAlert } from 'lucide-react';
-import Link from '@/components/Link';
+import { Check, Copy, Info, Lock, RefreshCw, SlidersHorizontal, TriangleAlert } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -14,12 +13,15 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useAnalytics } from '@/hooks/use-analytics';
 import { useIsPrinting } from '@/hooks/use-is-printing';
 import { cn } from '@/lib/utils';
 import {
   DEFAULT_OPTIONS,
   DEFAULT_WORD_COUNT,
+  FULL_METER_BITS,
+  LIST_BITS_PER_LETTER,
   SEPARATORS,
   WEAK_BITS,
   WORD_COUNTS,
@@ -132,7 +134,7 @@ function Segments({ name, choices, value, onChange, labelClassName, className })
  * - Each new draw the reader asks for sends one `passphrase_generated` event
  *   with no data, as the passcode does.
  */
-export default function PassphraseGenerator() {
+export default function PassphraseGenerator({ anchorId }) {
   const t = useTranslations();
   const isPrinting = useIsPrinting();
   const { trackEvent } = useAnalytics();
@@ -150,6 +152,12 @@ export default function PassphraseGenerator() {
   const [copiedText, setCopiedText] = useState(null);
   const copiedTimer = useRef(null);
   const phraseRef = useRef(null);
+  const [strengthOpen, setStrengthOpen] = useState(false);
+  // True while the strength popover is open because of a mouse hover, rather
+  // than a click, tap or key press. A hover-opened popover doesn't take focus,
+  // and a click on the bar doesn't close it again.
+  const strengthByHover = useRef(false);
+  const strengthCloseTimer = useRef(null);
   // The list the reader picked last, so a slow load for a list they have
   // already switched away from doesn't replace the passphrase.
   const chosenList = useRef(DEFAULT_OPTIONS.list);
@@ -183,6 +191,7 @@ export default function PassphraseGenerator() {
     return () => {
       unmounted = true;
       clearTimeout(copiedTimer.current);
+      clearTimeout(strengthCloseTimer.current);
     };
   }, []);
 
@@ -319,6 +328,125 @@ export default function PassphraseGenerator() {
     </fieldset>
   );
 
+  const strongPhraseLink = (chunks) => (
+    <a href="https://strongphrase.net/" target="_blank" rel="noopener noreferrer" className="link">
+      {chunks}
+    </a>
+  );
+
+  // Hover opens the strength popover for mice. Touch and keyboard use the
+  // popover's own click and Enter handling.
+  const hoverStrength = (entering) => (event) => {
+    if (event.pointerType !== 'mouse') return;
+    clearTimeout(strengthCloseTimer.current);
+    if (entering) {
+      if (!strengthOpen) strengthByHover.current = true;
+      setStrengthOpen(true);
+    } else if (strengthByHover.current) {
+      // A short delay, so the pointer can cross the gap into the popover
+      strengthCloseTimer.current = setTimeout(() => {
+        strengthByHover.current = false;
+        setStrengthOpen(false);
+      }, 150);
+    }
+  };
+
+  const onStrengthOpenChange = (open) => {
+    if (!open) strengthByHover.current = false;
+    setStrengthOpen(open);
+  };
+
+  const meterFill = bits === null ? 0 : Math.min(bits / FULL_METER_BITS, 1);
+
+  const strengthMeter = (
+    <Popover open={strengthOpen} onOpenChange={onStrengthOpenChange}>
+      <PopoverTrigger asChild>
+        <button
+          type="button"
+          disabled={bits === null}
+          aria-label={
+            bits === null
+              ? t('passphraseGenerator.strength')
+              : t('passphraseGenerator.strengthLabel', { bits })
+          }
+          onPointerEnter={hoverStrength(true)}
+          onPointerLeave={hoverStrength(false)}
+          onClick={(event) => {
+            // Keep a hover-opened popover open when the bar is clicked
+            if (strengthOpen && strengthByHover.current) event.preventDefault();
+          }}
+          className="flex w-full items-center gap-2.5 rounded-md px-1 py-1 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-default"
+        >
+          <span
+            aria-hidden="true"
+            className="font-heading text-xs font-bold uppercase tracking-wider"
+          >
+            {t('passphraseGenerator.strength')}
+          </span>
+          <span
+            aria-hidden="true"
+            className="h-1.5 flex-1 overflow-hidden rounded-full bg-foreground/10"
+          >
+            <span
+              className={cn(
+                'block h-full rounded-full transition-[width,background-color] duration-300',
+                bits !== null && bits < WEAK_BITS ? 'bg-warning' : 'bg-success',
+              )}
+              // Width follows the passphrase's bits, so it can't be a class
+              style={{ width: `${meterFill * 100}%` }}
+            />
+          </span>
+          {/* The popover opens from the icon, not the middle of the bar */}
+          <PopoverAnchor asChild>
+            <Info aria-hidden="true" className="h-4 w-4 shrink-0" />
+          </PopoverAnchor>
+        </button>
+      </PopoverTrigger>
+      <PopoverContent
+        side="top"
+        align="end"
+        alignOffset={-8}
+        collisionPadding={16}
+        className="grid w-80 gap-2.5 text-sm"
+        onOpenAutoFocus={(event) => {
+          if (strengthByHover.current) event.preventDefault();
+        }}
+        onPointerEnter={hoverStrength(true)}
+        onPointerLeave={hoverStrength(false)}
+      >
+        {bits !== null && (
+          <p className="m-0 font-semibold text-foreground">
+            {t.rich('passphraseGenerator.optionsDialog.strength', {
+              bits,
+              link: strongPhraseLink,
+            })}
+          </p>
+        )}
+        <p className="m-0 text-muted-foreground">{t('passphraseGenerator.strengthExplainer')}</p>
+        <div className="grid gap-1">
+          <p className="m-0 font-semibold text-foreground">{t('passphraseGenerator.perLetter')}</p>
+          <dl className="m-0 grid grid-cols-[1fr_auto] gap-x-4 gap-y-0.5 text-muted-foreground">
+            {Object.keys(WORDLISTS).map((key) => (
+              <Fragment key={key}>
+                <dt className={cn(key === options.list && 'font-semibold text-foreground')}>
+                  {t(`passphraseGenerator.optionsDialog.${LIST_LABELS[key][0]}`)}
+                </dt>
+                <dd
+                  className={cn(
+                    'm-0 text-right tabular-nums',
+                    key === options.list && 'font-semibold text-foreground',
+                  )}
+                >
+                  {t('passphraseGenerator.bitsPerLetter', { bits: LIST_BITS_PER_LETTER[key] })}
+                </dd>
+              </Fragment>
+            ))}
+          </dl>
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+
   const shortWarning = bits !== null && bits < WEAK_BITS && (
     <p className="m-0 flex items-start gap-2 justify-self-stretch rounded-md border border-warning/40 bg-warning/10 px-3 py-2 text-sm text-foreground">
       <TriangleAlert className="mt-0.5 h-4 w-4 shrink-0 text-warning" aria-hidden="true" />
@@ -354,16 +482,7 @@ export default function PassphraseGenerator() {
             <p className="m-0 text-center text-sm text-muted-foreground">
               {t.rich('passphraseGenerator.optionsDialog.strength', {
                 bits,
-                link: (chunks) => (
-                  <a
-                    href="https://strongphrase.net/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="link"
-                  >
-                    {chunks}
-                  </a>
-                ),
+                link: strongPhraseLink,
               })}
             </p>
           )}
@@ -393,7 +512,9 @@ export default function PassphraseGenerator() {
                     {t(`passphraseGenerator.optionsDialog.${label}`)}
                   </span>
                   <span className="text-sm text-muted-foreground">
-                    {t(`passphraseGenerator.optionsDialog.${description}`)}
+                    {t(`passphraseGenerator.optionsDialog.${description}`, {
+                      bits: LIST_BITS_PER_LETTER[key],
+                    })}
                   </span>
                 </span>
               </label>
@@ -470,6 +591,7 @@ export default function PassphraseGenerator() {
 
   return (
     <div
+      id={anchorId}
       data-passphrase-generator
       data-pagefind-ignore
       className="not-prose mx-auto grid w-full max-w-2xl gap-3.5 print:hidden"
@@ -498,12 +620,13 @@ export default function PassphraseGenerator() {
             clickToCopy && 'cursor-pointer hover:border-primary/60',
           )}
         >
-          {/* Straddles the bottom edge so it never covers the words. It fades
-              back out when `copied` turns off two seconds later. */}
+          {/* Straddles the top edge so it never covers the words or the
+              strength bar. It fades back out when `copied` turns off two
+              seconds later. */}
           <span
             aria-hidden="true"
             className={cn(
-              'pointer-events-none absolute -bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-1 rounded-full bg-primary px-2.5 py-0.5 font-heading text-sm font-semibold text-primary-foreground shadow-sm transition-opacity duration-500',
+              'pointer-events-none absolute -top-3 left-1/2 flex -translate-x-1/2 items-center gap-1 rounded-full bg-primary px-2.5 py-0.5 font-heading text-sm font-semibold text-primary-foreground shadow-sm transition-opacity duration-500',
               copied ? 'opacity-100' : 'opacity-0',
             )}
           >
@@ -528,6 +651,7 @@ export default function PassphraseGenerator() {
           </span>
           {announcement}
         </div>
+        {strengthMeter}
         {/* One row: actions on the left, settings on the right. On phones it
             wraps into those two groups, with Copy and Options as icons. */}
         <div className="flex w-full flex-wrap items-center justify-center gap-x-3 gap-y-2.5">
@@ -583,10 +707,14 @@ export default function PassphraseGenerator() {
         <Lock className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
         <span>
           {t.rich('passphraseGenerator.privacy', {
+            // The password manager checklist item is pinned open further down
+            // /passphrase/, so jump to it there. A bare hash keeps the reader
+            // on the current page in every locale, so this isn't the Link
+            // component.
             link: (chunks) => (
-              <Link href="/essentials/#password-manager" className="link">
+              <a href="#password-manager" className="link">
                 {chunks}
-              </Link>
+              </a>
             ),
           })}
         </span>

@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   DEFAULT_OPTIONS,
   DEFAULT_WORD_COUNT,
+  LIST_BITS_PER_LETTER,
   SYMBOLS,
   WEAK_BITS,
   WORD_COUNTS,
@@ -95,6 +96,15 @@ describe('word lists', () => {
     ['long', LONG_WORDS],
   ])('the %s list is uniquely decodable, so words can be joined with nothing', (_, words) => {
     expect(isUniquelyDecodable(words)).toBe(true);
+  });
+
+  it.each([
+    ['short', SHORT_WORDS],
+    ['long', LONG_WORDS],
+  ])('the bits per letter shown for the %s list match the list', (key, words) => {
+    const meanLength = words.join('').length / words.length;
+    const bitsPerLetter = Math.log2(words.length) / meanLength;
+    expect(LIST_BITS_PER_LETTER[key]).toBe(Math.round(bitsPerLetter * 10) / 10);
   });
 
   it('the uniquely decodable check catches lists that can be split two ways', () => {

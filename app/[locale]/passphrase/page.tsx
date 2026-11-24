@@ -90,7 +90,9 @@ export default async function PassphraseGeneratorPage({ params }) {
           </p>
         </header>
 
-        <PassphraseGenerator />
+        {/* Links to the generator from content use /passphrase/#generator, so a
+            reader who is already on this page gets scrolled back up to it */}
+        <PassphraseGenerator anchorId="generator" />
 
         {/* role="note": the Alert component defaults to role="alert", which is
             for messages that need announcing right away */}
