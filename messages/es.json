@@ -698,7 +698,6 @@
     "intro": "Tres herramientas que creamos para acompañar las listas de verificación. Cada una te ayuda con un paso que cuesta completar solo con instrucciones escritas.",
     "items": {
       "riskMapper": {
-        "eyebrow": "Planifica una acción",
         "name": "Risk Mapper",
         "short": "Mapea los riesgos en tu trabajo y las precauciones que puedes tomar.",
         "lede": "Piensa qué podría salir mal antes de una acción y decidan en grupo qué harán al respecto.",
@@ -709,7 +708,6 @@
         "shotAlt": "Risk Mapper a mitad de sesión, con riesgos ubicados en una cuadrícula de qué tan probables son y qué tan graves serían."
       },
       "updates": {
-        "eyebrow": "Verifica tu dispositivo",
         "name": "Verificador de actualizaciones de seguridad",
         "short": "Revisa si tu teléfono sigue recibiendo actualizaciones de seguridad.",
         "lede": "Averigua si tu teléfono, tableta o laptop sigue recibiendo actualizaciones de seguridad.",
@@ -720,22 +718,21 @@
         "shotAlt": "El verificador de actualizaciones reportando que un teléfono buscado dejó de recibir actualizaciones de seguridad, con consejos sobre qué hacer."
       },
       "autoDelete": {
-        "eyebrow": "Elimina chats viejos de IA",
         "name": "Autoeliminación de chats de IA",
         "short": "Elimina tus chats viejos de Claude de forma programada.",
-        "lede": "Una extensión de Chrome que elimina tus conversaciones viejas de Claude según el horario que tú elijas.",
+        "lede": "Una extensión de navegador para Chrome y Firefox que borra tus conversaciones viejas de Claude según el calendario que tú elijas.",
         "bullet1": "Tú eliges por cuánto tiempo guardarlos. Por defecto, cualquier cosa de más de 30 días.",
         "bullet2": "Marca con estrella los chats que quieras conservar y los dejará en paz. Puede preguntarte antes, o correr solo.",
         "bullet3": "Registra cuántos chats eliminó, no cuáles. No se nos envía nada.",
         "cta": "Agregar a Chrome",
-        "shotAlt": "La extensión configurada para eliminar chats de más de 30 días cada semana, con la barra que muestra en claude.ai cuando hay eliminaciones pendientes."
+        "shotAlt": "La extensión configurada para borrar cada semana los chats de más de 30 días."
       }
     },
     "closing": {
-      "title": "¿No estás seguro de cuál necesitas?",
-      "body": "Cada una sale de alguna de nuestras listas. Empieza por la lista y te llevará a la herramienta cuando llegues a ese paso.",
+      "title": "Más guías de seguridad digital",
+      "body": "Si apenas estás empezando, arranca con nuestra checklist de Seguridad básica. Cubre los pasos que todes deberíamos seguir para protegernos de la vigilancia y de los ataques.",
       "primaryCta": "Fundamentos de seguridad digital",
-      "secondaryCta": "Lista de defensa contra doxxing",
+      "secondaryCta": "Ver todas las listas",
       "openSource": "Las tres son de <repos>código abierto</repos>. Si alguna no funciona, o necesitas algo que todavía no hemos creado, <contact>avísanos</contact>."
     }
   },
