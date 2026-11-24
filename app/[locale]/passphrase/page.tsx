@@ -2,6 +2,7 @@
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import Layout from '@/components/layout/Layout';
 import PassphraseGenerator from '@/components/guides/PassphraseGenerator';
+import GeneratorSwitcher from '@/components/guides/GeneratorSwitcher';
 import PinnedChecklistItem from '@/components/guides/PinnedChecklistItem';
 import RelatedGuides from '@/components/RelatedGuides';
 import { Alert } from '@/components/ui/alert';
@@ -82,6 +83,7 @@ export default async function PassphraseGeneratorPage({ params }) {
     <Layout>
       <div className="mx-auto grid w-full max-w-3xl gap-8 py-2 sm:py-4">
         <header className="space-y-3 text-center">
+          <GeneratorSwitcher current="passphrase" />
           <h1 className="text-balance text-3xl font-bold leading-tight text-foreground sm:text-4xl">
             {t('passphraseGenerator.page.title')}
           </h1>
