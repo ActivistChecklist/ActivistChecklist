@@ -393,7 +393,7 @@
   },
   "updates": {
     "metaTitle": "あなたのデバイスはまだセキュリティアップデートを受け取れる？ | Activist Checklist",
-    "metaDescription": "Check whether your phone, tablet, watch, or laptop is still getting security updates. Out-of-date devices accumulate publicly known vulnerabilities and are easier to hack if they are seized or targeted.",
+    "metaDescription": "スマホ、タブレット、スマートウォッチ、ノートパソコンがまだセキュリティアップデートを受けられているか確認しよう。古いデバイスには公に知られた脆弱性がたまっていき、押収されたり標的にされたりしたときにハッキングされやすくなります。",
     "title": "デバイスのセキュリティアップデートはまだ大丈夫？",
     "intro": "最新のOSになっていないと、ハッカーや警察に侵入されて、データをすべて見られてしまう危険があります。",
     "searchLabel": "デバイスのモデル名を入力",
