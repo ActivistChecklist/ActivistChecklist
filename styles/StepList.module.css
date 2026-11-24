@@ -1,0 +1,79 @@
+/* Numbered steps joined by a line (components/guides/StepList.jsx). The list
+   comes from MDX, so these rules style the plain ol/li inside the wrapper. */
+.stepList {
+  /* 1lh resolves where it is used: on each li and its ::before/::after, which
+     all share the li's line height, so the circle matches one line of text. */
+  --bullet-size: 1lh;
+  --bullet-margin: 0.375rem;
+  --item-spacing: calc(var(--spacing) * 4);
+  --line-width: 1px;
+  /* Tints of the text color, so the circle and line follow light and dark mode. */
+  --line-color: hsl(var(--foreground) / 0.4);
+
+  margin-block: 1rem;
+}
+
+.stepList > ol {
+  list-style: none;
+  counter-reset: steps-counter;
+  padding-inline-start: 0;
+  margin-inline-start: 1rem;
+}
+
+.stepList > ol > li {
+  counter-increment: steps-counter;
+  position: relative;
+  padding-inline-start: calc(var(--bullet-size) + 1rem);
+  min-height: calc(var(--bullet-size) + var(--bullet-margin));
+  margin-top: var(--item-spacing);
+}
+
+.stepList > ol > li:first-child {
+  margin-top: 0;
+}
+
+/* Number in a circle. The outline is an inset shadow, so it takes no room
+   inside the circle and the number stays centered. */
+.stepList > ol > li::before {
+  content: counter(steps-counter);
+  position: absolute;
+  top: 0;
+  inset-inline-start: 0;
+  width: var(--bullet-size);
+  height: var(--bullet-size);
+  line-height: var(--bullet-size);
+  border-radius: 9999px;
+  box-shadow: inset 0 0 0 1px var(--line-color);
+  background-color: hsl(var(--foreground) / 0.05);
+  color: hsl(var(--foreground) / 0.8);
+  font-size: small;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Line from the bottom of this circle to the top of the next one. */
+.stepList > ol > li::after {
+  content: '';
+  position: absolute;
+  top: var(--bullet-size);
+  bottom: calc(-1 * var(--item-spacing));
+  inset-inline-start: calc((var(--bullet-size) - var(--line-width)) / 2);
+  width: var(--line-width);
+  background-color: var(--line-color);
+}
+
+/* The last line stops short of the bottom of the list. */
+.stepList > ol > li:last-child::after {
+  bottom: var(--bullet-margin);
+}
+
+/* Narrow screens: give the text more of the width. */
+@media (width < 40rem) {
+  .stepList > ol {
+    margin-inline-start: 0;
+  }
+
+  .stepList > ol > li {
+    padding-inline-start: calc(var(--bullet-size) + 0.5rem);
+  }
+}

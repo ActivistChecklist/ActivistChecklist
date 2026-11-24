@@ -1,8 +1,14 @@
-'use client';
+import styles from '@/styles/StepList.module.css';
 
 /**
- * StepList — Formats a numbered list into a sequence of step-by-step items
+ * StepList: shows the ordered list inside it as numbered steps joined by a line.
+ *
+ * Usage in MDX:
+ *   <StepList>
+ *     1. First step
+ *     2. Second step
+ *   </StepList>
  */
 export default function StepList({ children }) {
-  return <div className="steps">{children}</div>;
+  return <div className={styles.stepList}>{children}</div>;
 }
