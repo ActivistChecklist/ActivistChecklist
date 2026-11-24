@@ -698,7 +698,6 @@
     "intro": "Tre strumenti che abbiamo creato da usare insieme alle checklist. Ognuno copre un passaggio difficile da completare seguendo solo istruzioni scritte.",
     "items": {
       "riskMapper": {
-        "eyebrow": "Pianifica un'azione",
         "name": "Mappa dei rischi",
         "short": "Mappa i rischi del tuo lavoro e le precauzioni che puoi prendere.",
         "lede": "Capisci cosa potrebbe andare storto prima di un'azione e decidi cosa farà il tuo gruppo al riguardo.",
@@ -709,7 +708,6 @@
         "shotAlt": "Risk Mapper durante una sessione, con i rischi posizionati su una griglia in base a quanto sono probabili e a quanto sarebbero gravi."
       },
       "updates": {
-        "eyebrow": "Controlla il tuo dispositivo",
         "name": "Verifica aggiornamenti di sicurezza",
         "short": "Controlla se il tuo telefono riceve ancora gli aggiornamenti di sicurezza.",
         "lede": "Scopri se il tuo telefono, tablet o laptop riceve ancora gli aggiornamenti di sicurezza.",
@@ -720,22 +718,21 @@
         "shotAlt": "Lo strumento di controllo aggiornamenti che segnala che il telefono cercato non riceve più aggiornamenti di sicurezza, con consigli su cosa fare."
       },
       "autoDelete": {
-        "eyebrow": "Elimina le vecchie chat con l'IA",
         "name": "Eliminazione automatica delle chat con l'IA",
         "short": "Elimina automaticamente le tue vecchie chat di Claude a intervalli regolari.",
-        "lede": "Un'estensione per Chrome che elimina le tue vecchie conversazioni con Claude secondo una pianificazione che scegli tu.",
+        "lede": "Un'estensione per Chrome e Firefox che elimina le tue vecchie conversazioni con Claude secondo una pianificazione che scegli tu.",
         "bullet1": "Scegli tu per quanto tempo tenerle. Di default viene eliminato tutto ciò che ha più di 30 giorni.",
         "bullet2": "Metti la stella alle chat che vuoi tenere e le lascia stare. Può chiederti conferma prima o fare tutto da sola.",
         "bullet3": "Registra quante chat ha eliminato, non quali. Non ci viene inviato niente.",
         "cta": "Aggiungi a Chrome",
-        "shotAlt": "L'estensione impostata per eliminare ogni settimana le chat più vecchie di 30 giorni, con la barra che mostra su claude.ai quando ci sono eliminazioni in attesa."
+        "shotAlt": "L'estensione impostata per eliminare ogni settimana le chat più vecchie di 30 giorni."
       }
     },
     "closing": {
-      "title": "Non sai quale ti serve?",
-      "body": "Ognuno di questi strumenti nasce da una delle nostre checklist. Parti dalla checklist: quando arrivi a quel passaggio, ti indicherà lo strumento giusto.",
+      "title": "Altre guide sulla sicurezza digitale",
+      "body": "Se sei alle prime armi, inizia dalla nostra checklist Sicurezza di base. Spiega i passi che tuttə dovrebbero fare per proteggersi dalla sorveglianza e dagli attacchi.",
       "primaryCta": "Le basi della sicurezza digitale",
-      "secondaryCta": "Checklist per difendersi dal doxxing",
+      "secondaryCta": "Vedi tutte le checklist",
       "openSource": "Sono tutti e tre <repos>open source</repos>. Se qualcosa non funziona o ti serve qualcosa che non abbiamo ancora creato, <contact>faccelo sapere</contact>."
     }
   },

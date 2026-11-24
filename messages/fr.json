@@ -698,7 +698,6 @@
     "intro": "Trois outils qu'on a créés pour accompagner les checklists. Chacun t'aide à franchir une étape difficile à mener à bien avec de simples instructions écrites.",
     "items": {
       "riskMapper": {
-        "eyebrow": "Préparer une action",
         "name": "Risk Mapper",
         "short": "Cartographie les risques liés à tes activités et les précautions possibles.",
         "lede": "Identifie ce qui pourrait mal tourner avant une action et décide ce que ton groupe fera pour y répondre.",
@@ -709,7 +708,6 @@
         "shotAlt": "Risk Mapper en cours de session, avec des risques placés sur une grille selon leur probabilité et leur gravité."
       },
       "updates": {
-        "eyebrow": "Vérifier ton appareil",
         "name": "Vérificateur de mises à jour de sécurité",
         "short": "Vérifie si ton téléphone reçoit encore des mises à jour de sécurité.",
         "lede": "Découvre si ton téléphone, ta tablette ou ton ordinateur portable reçoit encore des mises à jour de sécurité.",
@@ -720,22 +718,21 @@
         "shotAlt": "Le vérificateur de mises à jour indiquant qu'un téléphone recherché ne reçoit plus de mises à jour de sécurité, avec des conseils sur quoi faire."
       },
       "autoDelete": {
-        "eyebrow": "Supprimer tes anciennes conversations IA",
         "name": "Suppression auto des conversations IA",
         "short": "Supprime automatiquement tes anciennes conversations Claude.",
-        "lede": "Une extension Chrome qui supprime tes anciennes conversations Claude selon un calendrier que tu choisis.",
+        "lede": "Une extension de navigateur pour Chrome et Firefox qui supprime tes anciennes conversations Claude selon le calendrier que tu choisis.",
         "bullet1": "Tu choisis combien de temps les garder. Par défaut, tout ce qui a plus de 30 jours.",
         "bullet2": "Mets une étoile aux conversations que tu veux garder et elle n'y touchera pas. Elle peut te demander avant, ou fonctionner toute seule.",
         "bullet3": "Elle enregistre combien de conversations elle a supprimées, pas lesquelles. Rien ne nous est envoyé.",
         "cta": "Ajouter à Chrome",
-        "shotAlt": "L'extension réglée pour supprimer chaque semaine les conversations de plus de 30 jours, avec la barre qu'elle affiche sur claude.ai quand des suppressions sont en attente."
+        "shotAlt": "L'extension configurée pour supprimer chaque semaine les conversations de plus de 30 jours."
       }
     },
     "closing": {
-      "title": "Tu ne sais pas lequel il te faut ?",
-      "body": "Chacun de ces outils vient d'une de nos checklists. Commence par la checklist : elle t'orientera vers l'outil quand tu arriveras à cette étape.",
+      "title": "Plus de conseils en sécurité numérique",
+      "body": "Si tu débutes, commence par notre checklist Les bases de la sécurité. Elle présente les étapes que tout le monde devrait suivre pour se protéger de la surveillance et des attaques.",
       "primaryCta": "Les bases de la sécurité numérique",
-      "secondaryCta": "Checklist de défense contre le doxxing",
+      "secondaryCta": "Voir toutes les checklists",
       "openSource": "Les trois sont <repos>open source</repos>. Si l'un d'eux ne marche pas, ou s'il te faut quelque chose qu'on n'a pas encore créé, <contact>fais-nous signe</contact>."
     }
   },
