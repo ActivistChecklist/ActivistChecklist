@@ -6,20 +6,15 @@ import { useTranslations } from 'next-intl';
 import { Check, Copy, Info, Lock, RefreshCw, SlidersHorizontal, TriangleAlert } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useAnalytics } from '@/hooks/use-analytics';
 import { useIsPrinting } from '@/hooks/use-is-printing';
 import { cn } from '@/lib/utils';
 import {
   DEFAULT_OPTIONS,
   DEFAULT_WORD_COUNT,
+  EMPTY_METER_BITS,
   FULL_METER_BITS,
   LIST_BITS_PER_LETTER,
   SEPARATORS,
@@ -28,6 +23,7 @@ import {
   drawPassphrase,
   formatWords,
   joinWords,
+  meterFill,
   passphraseBits,
 } from '@/lib/passphrase-generator';
 
@@ -91,9 +87,10 @@ function PassphraseWords({ words, separator }) {
   ));
 }
 
-function Segments({ name, choices, value, onChange, labelClassName, className }) {
+function Segments({ name, choices, value, onChange, labelClassName, className, ...props }) {
   return (
     <div
+      {...props}
       className={cn(
         'inline-flex flex-wrap gap-0.5 rounded-lg border border-border bg-background p-0.5',
         className,
@@ -132,7 +129,10 @@ function Segments({ name, choices, value, onChange, labelClassName, className })
  * - Changing the separator, capitals, number or symbol rewrites the same
  *   draw. Only New passphrase, a new word count or a new list draws again.
  * - Each new draw the reader asks for sends one `passphrase_generated` event
- *   with no data, as the passcode does.
+ *   with the settings that made it (see `generate`), so we can count New
+ *   passphrase presses and see which word counts and lists people use. Unlike
+ *   the passcode's event, which carries no data. The first passphrase, made
+ *   on load, isn't counted.
  */
 export default function PassphraseGenerator({ anchorId }) {
   const t = useTranslations();
@@ -152,12 +152,6 @@ export default function PassphraseGenerator({ anchorId }) {
   const [copiedText, setCopiedText] = useState(null);
   const copiedTimer = useRef(null);
   const phraseRef = useRef(null);
-  const [strengthOpen, setStrengthOpen] = useState(false);
-  // True while the strength popover is open because of a mouse hover, rather
-  // than a click, tap or key press. A hover-opened popover doesn't take focus,
-  // and a click on the bar doesn't close it again.
-  const strengthByHover = useRef(false);
-  const strengthCloseTimer = useRef(null);
   // The list the reader picked last, so a slow load for a list they have
   // already switched away from doesn't replace the passphrase.
   const chosenList = useRef(DEFAULT_OPTIONS.list);
@@ -191,7 +185,6 @@ export default function PassphraseGenerator({ anchorId }) {
     return () => {
       unmounted = true;
       clearTimeout(copiedTimer.current);
-      clearTimeout(strengthCloseTimer.current);
     };
   }, []);
 
@@ -217,18 +210,23 @@ export default function PassphraseGenerator({ anchorId }) {
 
   if (isPrinting || unavailable) return null;
 
-  const generate = (n, words = wordlist) => {
+  // `trigger` says which control asked for the passphrase: 'button' (New
+  // passphrase), 'word_count' or 'word_list'. The event carries settings only,
+  // never the passphrase: the trigger, how many words and which list. Anyone
+  // can see those options on the page, so they say nothing about which words
+  // came up.
+  const generate = (n, trigger, fromList = wordlist, listKey = options.list) => {
     // Nothing to draw from until the list has loaded
-    if (!words) return;
+    if (!fromList) return;
     countRef.current = n;
     setCount(n);
-    setDraw(makeDraw(words, n));
-    trackEvent({ name: 'passphrase_generated' });
+    setDraw(makeDraw(fromList, n));
+    trackEvent({ name: 'passphrase_generated', data: { trigger, words: n, list: listKey } });
   };
 
   const refresh = () => {
     setRefreshes((n) => n + 1);
-    generate(count);
+    generate(count, 'button');
   };
 
   const chooseList = async (key) => {
@@ -244,7 +242,7 @@ export default function PassphraseGenerator({ anchorId }) {
         // The list couldn't be downloaded (a dropped connection, or a deploy
         // since the page loaded removed the old file). Go back to the list
         // the passphrase on screen came from, and say so, so the reader
-        // doesn't think they have the bigger list.
+        // doesn't think they have the longer words.
         if (chosenList.current === key) {
           chosenList.current = previous;
           setOptions((o) => ({ ...o, list: previous }));
@@ -255,7 +253,7 @@ export default function PassphraseGenerator({ anchorId }) {
     }
     if (chosenList.current !== key) return;
     setLoadedLists((lists) => ({ ...lists, [key]: words }));
-    generate(countRef.current, words);
+    generate(countRef.current, 'word_list', words, key);
   };
 
   const copy = async () => {
@@ -318,7 +316,7 @@ export default function PassphraseGenerator({ anchorId }) {
         name={`${id}-count`}
         choices={WORD_COUNTS.map((n) => ({ value: n, label: n }))}
         value={count}
-        onChange={(n) => generate(n)}
+        onChange={(n) => generate(n, 'word_count')}
         labelClassName="h-full min-w-9 px-2 text-[0.9375rem] tabular-nums"
         className="h-10 flex-nowrap"
       />
@@ -334,117 +332,91 @@ export default function PassphraseGenerator({ anchorId }) {
     </a>
   );
 
-  // Hover opens the strength popover for mice. Touch and keyboard use the
-  // popover's own click and Enter handling.
-  const hoverStrength = (entering) => (event) => {
-    if (event.pointerType !== 'mouse') return;
-    clearTimeout(strengthCloseTimer.current);
-    if (entering) {
-      if (!strengthOpen) strengthByHover.current = true;
-      setStrengthOpen(true);
-    } else if (strengthByHover.current) {
-      // A short delay, so the pointer can cross the gap into the popover
-      strengthCloseTimer.current = setTimeout(() => {
-        strengthByHover.current = false;
-        setStrengthOpen(false);
-      }, 150);
-    }
-  };
+  const fill = bits === null ? 0 : meterFill(bits);
 
-  const onStrengthOpenChange = (open) => {
-    if (!open) strengthByHover.current = false;
-    setStrengthOpen(open);
-  };
-
-  const meterFill = bits === null ? 0 : Math.min(bits / FULL_METER_BITS, 1);
-
+  // The bar only shows strength. The details open from the "i" button next to
+  // it, on click, tap or Enter, never on hover.
   const strengthMeter = (
-    <Popover open={strengthOpen} onOpenChange={onStrengthOpenChange}>
-      <PopoverTrigger asChild>
-        <button
-          type="button"
-          disabled={bits === null}
-          aria-label={
-            bits === null
-              ? t('passphraseGenerator.strength')
-              : t('passphraseGenerator.strengthLabel', { bits })
-          }
-          onPointerEnter={hoverStrength(true)}
-          onPointerLeave={hoverStrength(false)}
-          onClick={(event) => {
-            // Keep a hover-opened popover open when the bar is clicked
-            if (strengthOpen && strengthByHover.current) event.preventDefault();
-          }}
-          className="flex w-full items-center gap-2.5 rounded-md px-1 py-1 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-default"
-        >
-          <span
-            aria-hidden="true"
-            className="font-heading text-xs font-bold uppercase tracking-wider"
-          >
-            {t('passphraseGenerator.strength')}
-          </span>
-          <span
-            aria-hidden="true"
-            className="h-1.5 flex-1 overflow-hidden rounded-full bg-foreground/10"
-          >
-            <span
-              className={cn(
-                'block h-full rounded-full transition-[width,background-color] duration-300',
-                bits !== null && bits < WEAK_BITS ? 'bg-warning' : 'bg-success',
-              )}
-              // Width follows the passphrase's bits, so it can't be a class
-              style={{ width: `${meterFill * 100}%` }}
-            />
-          </span>
-          {/* The popover opens from the icon, not the middle of the bar */}
-          <PopoverAnchor asChild>
-            <Info aria-hidden="true" className="h-4 w-4 shrink-0" />
-          </PopoverAnchor>
-        </button>
-      </PopoverTrigger>
-      <PopoverContent
-        side="top"
-        align="end"
-        alignOffset={-8}
-        collisionPadding={16}
-        className="grid w-80 gap-2.5 text-sm"
-        onOpenAutoFocus={(event) => {
-          if (strengthByHover.current) event.preventDefault();
-        }}
-        onPointerEnter={hoverStrength(true)}
-        onPointerLeave={hoverStrength(false)}
+    <div className="flex w-full items-center gap-2.5 px-1 text-muted-foreground">
+      <span aria-hidden="true" className="font-heading text-xs font-bold uppercase tracking-wider">
+        {t('passphraseGenerator.strength')}
+      </span>
+      <div
+        role="meter"
+        aria-label={t('passphraseGenerator.strength')}
+        aria-valuemin={EMPTY_METER_BITS}
+        aria-valuemax={FULL_METER_BITS}
+        aria-valuenow={bits ?? EMPTY_METER_BITS}
+        aria-valuetext={
+          bits === null ? undefined : t('passphraseGenerator.strengthLabel', { bits })
+        }
+        className="h-1.5 flex-1 overflow-hidden rounded-full bg-foreground/10"
       >
-        {bits !== null && (
-          <p className="m-0 font-semibold text-foreground">
-            {t.rich('passphraseGenerator.optionsDialog.strength', {
-              bits,
-              link: strongPhraseLink,
-            })}
-          </p>
-        )}
-        <p className="m-0 text-muted-foreground">{t('passphraseGenerator.strengthExplainer')}</p>
-        <div className="grid gap-1">
-          <p className="m-0 font-semibold text-foreground">{t('passphraseGenerator.perLetter')}</p>
-          <dl className="m-0 grid grid-cols-[1fr_auto] gap-x-4 gap-y-0.5 text-muted-foreground">
-            {Object.keys(WORDLISTS).map((key) => (
-              <Fragment key={key}>
-                <dt className={cn(key === options.list && 'font-semibold text-foreground')}>
-                  {t(`passphraseGenerator.optionsDialog.${LIST_LABELS[key][0]}`)}
-                </dt>
-                <dd
-                  className={cn(
-                    'm-0 text-right tabular-nums',
-                    key === options.list && 'font-semibold text-foreground',
-                  )}
-                >
-                  {t('passphraseGenerator.bitsPerLetter', { bits: LIST_BITS_PER_LETTER[key] })}
-                </dd>
-              </Fragment>
-            ))}
-          </dl>
-        </div>
-      </PopoverContent>
-    </Popover>
+        <div
+          className={cn(
+            'h-full rounded-full transition-[width,background-color] duration-300',
+            bits !== null && bits < WEAK_BITS ? 'bg-warning' : 'bg-success',
+          )}
+          // Width follows the passphrase's bits, so it can't be a class
+          style={{ width: `${fill * 100}%` }}
+        />
+      </div>
+      <Popover>
+        <PopoverTrigger asChild>
+          <button
+            type="button"
+            disabled={bits === null}
+            aria-label={
+              bits === null
+                ? t('passphraseGenerator.strength')
+                : t('passphraseGenerator.strengthLabel', { bits })
+            }
+            className="grid h-8 w-8 shrink-0 place-items-center rounded-full transition-colors hover:bg-primary/10 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-default"
+          >
+            <Info aria-hidden="true" className="h-4 w-4" />
+          </button>
+        </PopoverTrigger>
+        <PopoverContent
+          side="top"
+          align="end"
+          alignOffset={-8}
+          collisionPadding={16}
+          className="grid w-80 gap-2.5 text-sm"
+        >
+          {bits !== null && (
+            <p className="m-0 font-heading text-xl font-bold leading-tight text-foreground">
+              {t.rich('passphraseGenerator.strengthBits', {
+                bits,
+                link: strongPhraseLink,
+              })}
+            </p>
+          )}
+          <p className="m-0 text-muted-foreground">{t('passphraseGenerator.strengthExplainer')}</p>
+          <div className="grid gap-1">
+            <p className="m-0 font-semibold text-foreground">
+              {t('passphraseGenerator.perLetter')}
+            </p>
+            <dl className="m-0 grid grid-cols-[auto_auto] justify-start gap-x-3 gap-y-0.5 text-muted-foreground">
+              {Object.keys(WORDLISTS).map((key) => (
+                <Fragment key={key}>
+                  <dt className={cn(key === options.list && 'font-semibold text-foreground')}>
+                    {t(`passphraseGenerator.optionsPanel.${LIST_LABELS[key][0]}`)}
+                  </dt>
+                  <dd
+                    className={cn(
+                      'm-0 tabular-nums',
+                      key === options.list && 'font-semibold text-foreground',
+                    )}
+                  >
+                    {t('passphraseGenerator.bitsPerLetter', { bits: LIST_BITS_PER_LETTER[key] })}
+                  </dd>
+                </Fragment>
+              ))}
+            </dl>
+          </div>
+        </PopoverContent>
+      </Popover>
+    </div>
   );
 
   const shortWarning = bits !== null && bits < WEAK_BITS && (
@@ -454,79 +426,85 @@ export default function PassphraseGenerator({ anchorId }) {
     </p>
   );
 
-  const optionsDialog = (
-    <Dialog open={optionsOpen} onOpenChange={setOptionsOpen}>
-      {/* print:hidden as well as the isPrinting check, since the dialog is
-          portaled outside the generator's print:hidden wrapper */}
-      <DialogContent
-        aria-describedby={undefined}
-        className="max-h-[90dvh] gap-5 overflow-y-auto sm:max-w-lg print:hidden"
-      >
-        <DialogHeader>
-          <DialogTitle className="font-heading text-xl">
-            {t('passphraseGenerator.optionsDialog.title')}
-          </DialogTitle>
-        </DialogHeader>
+  const optionLabelClasses =
+    'font-heading text-xs font-bold uppercase tracking-wider text-muted-foreground';
 
-        {/* The passphrase is behind the dialog, so show it here too and let
-            the reader watch each option change it */}
+  // Opens under the toolbar, inside the card, so the passphrase and strength
+  // bar stay in view while the reader changes options. Labels sit to the left
+  // of each control on wider screens and above it on phones. The panel has to
+  // clip for its open and close animation, so the inner padding leaves room
+  // for focus outlines and hover backgrounds on the controls at its edges.
+  const optionsPanel = (
+    <CollapsibleContent className="w-full overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
+      <div className="grid gap-x-4 gap-y-3 border-t border-border px-1 pb-1 pt-4 text-sm sm:grid-cols-[auto_1fr] sm:items-baseline">
+        <span id={`${id}-list-label`} className={optionLabelClasses}>
+          {t('passphraseGenerator.optionsPanel.wordList')}
+        </span>
         <div className="grid gap-1.5">
-          <div
-            translate="no"
-            aria-live="polite"
-            className="rounded-lg border border-primary/20 bg-muted px-3 py-2.5 text-center font-mono text-lg font-semibold leading-snug text-foreground"
-          >
-            {shownWords && <PassphraseWords words={shownWords} separator={options.separator} />}
-          </div>
-          {bits !== null && (
-            <p className="m-0 text-center text-sm text-muted-foreground">
-              {t.rich('passphraseGenerator.optionsDialog.strength', {
-                bits,
-                link: strongPhraseLink,
-              })}
-            </p>
-          )}
-        </div>
-
-        <fieldset className="m-0 grid min-w-0 gap-2 border-0 p-0">
-          <legend className="mb-2 font-heading text-sm font-bold text-foreground">
-            {t('passphraseGenerator.optionsDialog.wordList')}
-          </legend>
-          {Object.keys(WORDLISTS).map((key) => {
-            const [label, description] = LIST_LABELS[key];
-            return (
-              <label
-                key={key}
-                className="flex cursor-pointer items-start gap-3 rounded-lg border border-border bg-background p-3 transition-colors hover:bg-muted has-[:checked]:border-primary has-[:checked]:bg-primary/5 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-primary"
-              >
-                <input
-                  type="radio"
-                  name={`${id}-list`}
-                  value={key}
-                  checked={options.list === key}
-                  onChange={() => chooseList(key)}
-                  className="mt-1 h-4 w-4 shrink-0 accent-primary focus-visible:outline-none dark:[color-scheme:dark]"
-                />
-                <span className="grid gap-0.5">
-                  <span className="font-semibold text-foreground">
-                    {t(`passphraseGenerator.optionsDialog.${label}`)}
-                  </span>
-                  <span className="text-sm text-muted-foreground">
-                    {t(`passphraseGenerator.optionsDialog.${description}`, {
-                      bits: LIST_BITS_PER_LETTER[key],
-                    })}
-                  </span>
-                </span>
-              </label>
-            );
-          })}
+          <Segments
+            name={`${id}-list`}
+            role="radiogroup"
+            aria-labelledby={`${id}-list-label`}
+            choices={Object.keys(WORDLISTS).map((key) => ({
+              value: key,
+              label: t(`passphraseGenerator.optionsPanel.${LIST_LABELS[key][0]}`),
+            }))}
+            value={options.list}
+            onChange={chooseList}
+            labelClassName="h-9 text-sm"
+            className="justify-self-start"
+          />
+          {/* Only the chosen list's description, to keep the panel short */}
+          <p className="m-0 text-muted-foreground">
+            {t(`passphraseGenerator.optionsPanel.${LIST_LABELS[options.list][1]}`, {
+              bits: LIST_BITS_PER_LETTER[options.list],
+            })}
+          </p>
           {/* Always in the tree so screen readers announce the error when it
               appears */}
-          <p role="status" className={cn('m-0 text-sm text-destructive', !listError && 'sr-only')}>
-            {listError ? t('passphraseGenerator.optionsDialog.listLoadError') : ''}
+          <p role="status" className={cn('m-0 text-destructive', !listError && 'sr-only')}>
+            {listError ? t('passphraseGenerator.optionsPanel.listLoadError') : ''}
           </p>
+        </div>
+
+        <span id={`${id}-separator-label`} className={optionLabelClasses}>
+          {t('passphraseGenerator.optionsPanel.separator')}
+        </span>
+        <Segments
+          name={`${id}-separator`}
+          role="radiogroup"
+          aria-labelledby={`${id}-separator-label`}
+          choices={Object.keys(SEPARATORS).map((key) => ({
+            value: key,
+            label: t(`passphraseGenerator.optionsPanel.${SEPARATOR_LABELS[key]}`),
+          }))}
+          value={options.separator}
+          onChange={(key) => setOption('separator', key)}
+          labelClassName="h-9 text-sm"
+          className="justify-self-start"
+        />
+
+        {/* The checkbox labels say what each one does, so the group's name is
+            for screen readers only, which saves a row */}
+        <fieldset className="m-0 flex min-w-0 flex-wrap gap-x-5 gap-y-2 border-0 p-0 sm:col-start-2">
+          <legend className="sr-only">{t('passphraseGenerator.optionsPanel.extras')}</legend>
+          {['capitalize', 'addNumber', 'addSymbol'].map((name) => (
+            <div key={name} className="flex items-center gap-2">
+              <Checkbox
+                id={`${id}-${name}`}
+                checked={options[name]}
+                onCheckedChange={(checked) => setOption(name, checked === true)}
+              />
+              <label htmlFor={`${id}-${name}`} className="cursor-pointer text-foreground">
+                {t(`passphraseGenerator.optionsPanel.${name}`)}
+              </label>
+            </div>
+          ))}
+        </fieldset>
+
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 sm:col-span-2">
           <p className="m-0 text-xs text-muted-foreground">
-            {t.rich('passphraseGenerator.optionsDialog.listCredit', {
+            {t.rich('passphraseGenerator.optionsPanel.listCredit', {
               link: (chunks) => (
                 <a
                   href="https://sts10.github.io/2023/04/03/orchard-street-wordlists.html"
@@ -539,54 +517,18 @@ export default function PassphraseGenerator({ anchorId }) {
               ),
             })}
           </p>
-        </fieldset>
-
-        <fieldset className="m-0 grid min-w-0 gap-2 border-0 p-0">
-          <legend className="mb-2 font-heading text-sm font-bold text-foreground">
-            {t('passphraseGenerator.optionsDialog.separator')}
-          </legend>
-          <Segments
-            name={`${id}-separator`}
-            choices={Object.keys(SEPARATORS).map((key) => ({
-              value: key,
-              label: t(`passphraseGenerator.optionsDialog.${SEPARATOR_LABELS[key]}`),
-            }))}
-            value={options.separator}
-            onChange={(key) => setOption('separator', key)}
-            labelClassName="text-sm"
-            className="justify-self-start"
-          />
-        </fieldset>
-
-        <fieldset className="m-0 grid min-w-0 gap-3 border-0 p-0">
-          <legend className="mb-2 font-heading text-sm font-bold text-foreground">
-            {t('passphraseGenerator.optionsDialog.extras')}
-          </legend>
-          {['capitalize', 'addNumber', 'addSymbol'].map((name) => (
-            <div key={name} className="flex items-center gap-3">
-              <Checkbox
-                id={`${id}-${name}`}
-                checked={options[name]}
-                onCheckedChange={(checked) => setOption(name, checked === true)}
-                className="h-5 w-5"
-              />
-              <label htmlFor={`${id}-${name}`} className="cursor-pointer text-foreground">
-                {t(`passphraseGenerator.optionsDialog.${name}`)}
-              </label>
-            </div>
-          ))}
-        </fieldset>
-
-        <DialogFooter className="gap-2 sm:justify-between">
-          <Button type="button" variant="ghost" onClick={resetOptions}>
-            {t('passphraseGenerator.optionsDialog.reset')}
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={resetOptions}
+            className="text-muted-foreground"
+          >
+            {t('passphraseGenerator.optionsPanel.reset')}
           </Button>
-          <Button type="button" onClick={() => setOptionsOpen(false)} className="font-heading">
-            {t('passphraseGenerator.optionsDialog.done')}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        </div>
+      </div>
+    </CollapsibleContent>
   );
 
   return (
@@ -652,56 +594,66 @@ export default function PassphraseGenerator({ anchorId }) {
           {announcement}
         </div>
         {strengthMeter}
-        {/* One row: actions on the left, settings on the right. On phones it
+        {shortWarning}
+        <Collapsible
+          open={optionsOpen}
+          onOpenChange={setOptionsOpen}
+          className="grid w-full justify-items-center gap-4"
+        >
+          {/* One row: actions on the left, settings on the right. On phones it
             wraps into those two groups, with Copy and Options as icons. */}
-        <div className="flex w-full flex-wrap items-center justify-center gap-x-3 gap-y-2.5">
-          <div className="flex items-center gap-2">
-            <Button
-              type="button"
-              onClick={refresh}
-              disabled={!draw}
-              className={TOOLBAR_BUTTON_CLASSES}
-            >
-              {refreshIcon}
-              {t('passphraseGenerator.newPassphrase')}
-            </Button>
-            {!clipboardMissing && (
+          <div className="flex w-full flex-wrap items-center justify-center gap-x-3 gap-y-2.5">
+            <div className="flex items-center gap-2">
               <Button
                 type="button"
-                variant="outline"
-                onClick={copy}
+                onClick={refresh}
                 disabled={!draw}
-                title={t('passphraseGenerator.copy')}
-                className={cn(TOOLBAR_BUTTON_CLASSES, 'px-3 sm:px-3.5')}
+                className={TOOLBAR_BUTTON_CLASSES}
               >
-                {copied ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}
-                {/* The label stays "Copy" so the button never changes width
+                {refreshIcon}
+                {t('passphraseGenerator.newPassphrase')}
+              </Button>
+              {!clipboardMissing && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={copy}
+                  disabled={!draw}
+                  title={t('passphraseGenerator.copy')}
+                  className={cn(TOOLBAR_BUTTON_CLASSES, 'px-3 sm:px-3.5')}
+                >
+                  {copied ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}
+                  {/* The label stays "Copy" so the button never changes width
                     and wraps the toolbar. The pill on the passphrase says
                     "Copied", and the live region below announces it. */}
-                <span className="sr-only sm:not-sr-only">{t('passphraseGenerator.copy')}</span>
-              </Button>
-            )}
+                  <span className="sr-only sm:not-sr-only">{t('passphraseGenerator.copy')}</span>
+                </Button>
+              )}
+            </div>
+            <div aria-hidden="true" className="hidden h-6 w-px bg-border md:block" />
+            <div className="flex items-center gap-2">
+              {countPicker}
+              <CollapsibleTrigger asChild>
+                <Button
+                  type="button"
+                  variant="outline"
+                  title={t('passphraseGenerator.options')}
+                  className={cn(
+                    TOOLBAR_BUTTON_CLASSES,
+                    'px-3 data-[state=open]:bg-accent data-[state=open]:text-accent-foreground sm:px-3.5',
+                  )}
+                >
+                  <SlidersHorizontal aria-hidden="true" />
+                  <span className="sr-only sm:not-sr-only">{t('passphraseGenerator.options')}</span>
+                </Button>
+              </CollapsibleTrigger>
+            </div>
+            <span className="sr-only" aria-live="polite">
+              {copied ? t('passphraseGenerator.copied') : ''}
+            </span>
           </div>
-          <div aria-hidden="true" className="hidden h-6 w-px bg-border md:block" />
-          <div className="flex items-center gap-2">
-            {countPicker}
-            <Button
-              type="button"
-              variant="outline"
-              aria-haspopup="dialog"
-              onClick={() => setOptionsOpen(true)}
-              title={t('passphraseGenerator.options')}
-              className={cn(TOOLBAR_BUTTON_CLASSES, 'px-3 sm:px-3.5')}
-            >
-              <SlidersHorizontal aria-hidden="true" />
-              <span className="sr-only sm:not-sr-only">{t('passphraseGenerator.options')}</span>
-            </Button>
-          </div>
-          <span className="sr-only" aria-live="polite">
-            {copied ? t('passphraseGenerator.copied') : ''}
-          </span>
-        </div>
-        {shortWarning}
+          {optionsPanel}
+        </Collapsible>
       </section>
       <p className="m-0 flex items-start gap-2 px-1 text-sm text-muted-foreground">
         <Lock className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
@@ -719,7 +671,6 @@ export default function PassphraseGenerator({ anchorId }) {
           })}
         </span>
       </p>
-      {optionsDialog}
     </div>
   );
 }

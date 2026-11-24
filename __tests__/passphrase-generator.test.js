@@ -10,6 +10,7 @@ import {
   drawPassphrase,
   formatWords,
   joinWords,
+  meterFill,
   passphraseBits,
   randomBelow,
 } from '../lib/passphrase-generator';
@@ -205,6 +206,21 @@ describe('formatWords and joinWords', () => {
   it("doesn't change the draw it was given", () => {
     formatWords(draw, { capitalize: true, addNumber: true, addSymbol: true });
     expect(draw.words).toEqual(['pine', 'egg', 'zen']);
+  });
+});
+
+describe('meterFill', () => {
+  it('fills about a fifth of the bar for the weakest option, 5 short words', () => {
+    const fill = meterFill(passphraseBits(1296, 5, DEFAULT_OPTIONS));
+    expect(fill).toBeGreaterThan(0.15);
+    expect(fill).toBeLessThan(0.3);
+  });
+
+  it('keeps the fill between empty and full', () => {
+    expect(meterFill(0)).toBe(0);
+    expect(meterFill(500)).toBe(1);
+    // The default, 7 short words, is well short of full
+    expect(meterFill(passphraseBits(1296, 7, DEFAULT_OPTIONS))).toBeLessThan(0.8);
   });
 });
 
