@@ -80,8 +80,7 @@
     "viewAllTools": "Ver todas las herramientas",
     "recentUpdatesHeading": "Actualizaciones recientes del sitio",
     "viewAllUpdates": "Ver todas las actualizaciones",
-    "noRecentChanges": "No hay cambios recientes disponibles",
-    "newsletterDescription": "Alojamos nuestro propio software de boletín para que tu correo electrónico esté más protegido. Para más privacidad, puedes usar un <link>servicio de alias de correo</link>."
+    "noRecentChanges": "No hay cambios recientes disponibles"
   },
   "translationFallback": {
     "message": "Esta página todavía no está disponible en tu idioma. Estás viendo la versión en inglés.",
@@ -232,14 +231,16 @@
   },
   "riskLevel": {
     "everyoneLabel": "todo el mundo",
-    "mediumLabel": "amenaza media",
-    "highLabel": "amenaza alta",
+    "mediumLabel": "personas en riesgo medio",
+    "highLabel": "personas en alto riesgo",
     "everyoneDefault": "Esta sección es para cualquier persona que haga trabajo de activismo o incidencia.",
     "mediumDefault": "Esta sección es para ti si tienes un rol de liderazgo o haces un activismo que tiene más chance de ser atacado por el Estado o tu oposición.",
-    "highDefault": "Esta sección es para ti si ocupas un rol de alto perfil o tu activismo implica trabajo de alto riesgo que podría traer consecuencias graves o represalias.",
+    "highDefault": "Esta sección es para ti si tu activismo implica trabajo de alto riesgo que podría traer consecuencias graves o represalias, o si tienes un rol de alto perfil.",
     "forYouIf": "Esta sección es para ti si:",
     "forYou": "Esta sección es para:",
-    "whoIsThisFor": "¿Para quién es esta sección?"
+    "whoIsThisFor": "¿Para quién es esta sección?",
+    "thisSection": "Esta sección",
+    "keyFooter": "Cada nivel se basa en los anteriores, así que asegúrate de hacer también las secciones de los niveles por debajo del tuyo."
   },
   "checklistItem": {
     "informationalItem": "Elemento informativo",
@@ -392,7 +393,7 @@
   },
   "updates": {
     "metaTitle": "¿Tu dispositivo aún recibe actualizaciones de seguridad? | Activist Checklist",
-    "metaDescription": "Verifica si tu teléfono, tableta, reloj o laptop sigue recibiendo actualizaciones de seguridad. Los dispositivos desactualizados acumulan vulnerabilidades públicamente conocidas y son más fáciles de hackear si los incautan o te los apuntan.",
+    "metaDescription": "Revisa si tu teléfono, tableta, reloj o computadora portátil todavía recibe actualizaciones de seguridad. Los dispositivos desactualizados van acumulando vulnerabilidades conocidas públicamente y son más fáciles de hackear si te los quitan o si te convierten en blanco.",
     "title": "¿Tu dispositivo aún recibe actualizaciones de seguridad?",
     "intro": "Si tu dispositivo no está en el último sistema operativo, hackers y la cops pueden entrar y acceder a todos tus datos.",
     "searchLabel": "Escribe el modelo de tu dispositivo",
@@ -565,10 +566,10 @@
       "deviceMaxOsWarningTitle": "Nota sobre el SO de tu dispositivo",
       "deviceMaxOsWarning": "Tu {label} solo admite hasta {os} {maxVersion}. {os} {maxVersion} dejará de recibir actualizaciones de seguridad antes que {os} {latestVersion}. Los dispositivos más nuevos seguirán recibiendo actualizaciones por más tiempo.",
       "deviceMaxOsWarningWithDate": "Tu {label} solo admite hasta {os} {maxVersion}, que se espera deje de recibir actualizaciones de seguridad cerca del {eolDate}. Los dispositivos más nuevos que pueden correr {os} {latestVersion} seguirán recibiendo actualizaciones por más tiempo.",
-      "deviceMaxOsEolWarning": "Tu {label} llega como máximo a {os} {maxVersion}, cuya oficialidad de soporte ya terminó. Puede que todavía recibas actualizaciones ocasionales, pero trata este dispositivo como de baja confianza para trabajo sensible y planifica reemplazarlo.",
+      "deviceMaxOsEolWarning": "Tu {label} no puede actualizarse más allá de {os} {maxVersion}, que ya no tiene soporte oficial. Es posible que todavía recibas alguna actualización de vez en cuando, pero no confíes en este dispositivo para trabajo delicado y planea reemplazarlo.",
       "deviceUpgradePlan": "Si la seguridad a largo plazo importa para tu trabajo, planifica un cambio de hardware.",
       "threatModelHeader": "Por qué esto importa",
-      "threatModel": "Cada semana sin una actualización, se hacen públicas más formas de meterse a tu dispositivo. Si los cops te incautan el teléfono en una <protestLink>protesta</protestLink> o en un <borderLink>cruce fronterizo</borderLink> (o si alguien te apunta con <spywareLink>spyware</spywareLink>), esas vulnerabilidades conocidas son las que van a usar para entrar y leer todo lo que tienes.  ",
+      "threatModel": "Cada semana que pasas sin actualizar tu dispositivo, se hacen públicas más formas de entrar en él. Si la policía te quita el teléfono en una <protestLink>protesta</protestLink> o en un <borderLink>cruce de frontera</borderLink> (o si alguien te ataca con <spywareLink>spyware</spywareLink>), van a usar esas fallas conocidas para meterse y leer todo lo que tiene.  ",
       "threatModelSoft": "Hasta que lo confirmes, trata este dispositivo como posiblemente desactualizado para trabajo sensible.",
       "viewEssentialsCta": "Mira nuestros fundamentos de seguridad digital →",
       "essentialsNextSteps": {
@@ -793,7 +794,7 @@
     },
     "two-factor-authentication": {
       "term": "Verificación en dos pasos (2FA)",
-      "definition": "Un paso extra al iniciar sesión: después de tu contraseña, confirmas tu identidad de una segunda forma. Puede ser un código de 6 dígitos de una [app de autenticación](term:authenticator-app), un mensaje de texto o, a veces, una [llave de acceso](term:passkey). Es como necesitar una llave y también el código de la alarma para entrar a tu casa. Aunque alguien robe tu contraseña, no podrá entrar a tu cuenta sin el segundo paso.",
+      "definition": "Un paso extra al iniciar sesión: después de tu contraseña, confirmas tu identidad de una segunda forma. Puede ser un código de 6 dígitos de una [app de autenticación](term:authenticator-app), un mensaje de texto o, a veces, una [llave de acceso](term:passkey). Aunque alguien te robe la contraseña, no puede entrar a tu cuenta sin el segundo paso.",
       "source": "Fundamentos de seguridad",
       "url": "/essentials/#mfa"
     },

@@ -1,5 +1,5 @@
 ---
-title: Usa un navegador enfocado en privacidad para tu navegación diaria (en vez de Chrome)
+title: Usa un navegador que bloquee anuncios para navegar todos los días (en lugar de Chrome)
 preview: |
   Reduce el rastreo, así dejas menos rastro digital.
 do: |
@@ -7,30 +7,29 @@ do: |
 dont: |
   Usar Google Chrome, Microsoft Edge, etc.
 firstPublished: 2026-01-28
-lastUpdated: 2026-01-28
+lastUpdated: 2026-11-23
 ---
 
-Recomendamos **Brave** porque ofrece la mayor privacidad sin necesidad de configuración adicional, que es nuestro objetivo en este sitio.
+Recomendamos **Brave** porque ofrece el mayor bloqueo de anuncios y la mayor privacidad sin necesidad de configuración adicional. (Que las cosas sean fáciles de usar para la mayoría de la gente es uno de los objetivos de este sitio). Las funciones de criptomonedas de Brave son molestas y absurdas, pero puedes ignorarlas o desactivarlas.
 
-**Tips extra para configurar Brave:**
+Firefox también es una gran opción, pero requiere [configuración adicional](https://www.privacyguides.org/en/desktop-browsers/#firefox) para tener el [bloqueo de anuncios](https://addons.mozilla.org/en-US/firefox/addon/ublock-origin/) y los beneficios de privacidad. Usa [**Tor Browser**](/research/) para navegación muy sensible que sea realmente anónima.
 
-* Instala [Privacy Badger](https://privacybadger.org/) para tener protección adicional.
-* También puedes instalar la app de Brave para [iPhone](https://apps.apple.com/us/app/brave-private-web-browser-vpn/id1052879175) o [Android](https://play.google.com/store/apps/details?id=com.brave.browser\&hl=en).
-
-**Otras opciones de navegador:**
+Bloquear anuncios es importante porque los anuncios permiten que los [corredores de datos](term:data-broker) recopilen información sobre ti, que luego se vende a empresas que [la poli usa para rastrear tu ubicación e identidad](https://www.404media.co/inside-ices-tool-to-monitor-phones-in-entire-neighborhoods/). Los anuncios también se están usando para meter [spyware en los teléfonos de disidentes](https://www.wired.com/story/nightmare-scenario-zero-click-spyware-is-infecting-phones-via-targeted-ads/).
 
 <HowTo title="Cómo configurar Brave">
   Brave es un navegador enfocado en privacidad que te permite instalar extensiones de Google Chrome.
 
-  1. [**Instala Brave**](https://brave.com/download/) en tu computadora (o [celular](https://brave.com/download/#brave-mobile)).
-  2. Sigue los pasos después de abrirlo para importar tu configuración desde Chrome u [otro navegador](https://support.brave.com/hc/en-us/articles/360019782291-How-do-I-import-or-export-browsing-data). (Mira la advertencia más abajo sobre cómo los plugins te hacen más identificable.)
-  3. **Configura los ajustes de privacidad:** En el navegador de escritorio, ve a <MenuPath inline>Brave > **Configuración** > **Shields**</MenuPath> y selecciona lo siguiente: (La aplicación móvil no tendrá todos estos ajustes)
-     * Selecciona **Agresivo** en "Bloqueo de rastreadores y anuncios"
-     * Selecciona **Estricto** en "Actualizar conexiones a HTTPS"
-     * Desmarca todo en **Bloqueo de redes sociales**
-     * (Opcional) Activa **Olvídame cuando cierre este sitio.** (En la app móvil, esta opción se llama "Borrar datos del sitio") El sitio no podrá guardar nada sobre ti después de que reinicies tu navegador.
+  <StepList>
+    1. [**Install Brave**](https://brave.com/download/) on your computer (or [phone](https://brave.com/download/#brave-mobile)).
+    2. Follow the steps after you launch to import your configuration from Chrome or [another browser](https://support.brave.com/hc/en-us/articles/360019782291-How-do-I-import-or-export-browsing-data). (See warning below about how plugins make you more identifiable.)
+    3. **Configure privacy settings:** On the desktop browser, go to <MenuPath inline>Brave > **Settings** > **Shields**</MenuPath> then select the following: (The mobile app will not have all these settings)
+       * Select **Aggressive** under "Trackers & ads blocking"
+       * Select **Strict** under "Upgrade connections to HTTPS"
+       * Uncheck everything under **Social media blocking**
+       * (Optional) Enable **Forget me when I close this site.** (On the mobile app, the setting is called "Shred Site Data") The site won't be able to store anything about you after you reset your browser.
 
-       Esto hará más difícil que los sitios te rastreen por internet. Es bueno para la privacidad, pero querrás desactivarlo manualmente para sitios específicos. <MenuPath inline>Entra al sitio > Haz clic en el logo de Brave (el león) en la barra de URL > **Controles avanzados** > **Desactiva Olvídame cuando cierre este sitio**</MenuPath>
+         This will make it harder for sites to track you across the internet. It's good for privacy, but you'll want to manually override this for specific sites. <MenuPath inline>Visit the site > Click the Brave (lion) logo in the URL bar > **Advanced controls** > **Disable Forget me when I close this site**</MenuPath>
+  </StepList>
 
   **Opcional:**
 
@@ -38,9 +37,11 @@ Recomendamos **Brave** porque ofrece la mayor privacidad sin necesidad de config
   2. Desactiva los elementos de la barra de herramientas: <MenuPath inline>Brave > **Configuración** > **Apariencia** > **Barra de herramientas** > Desactiva todos los botones de la barra que no quieras (Brave Rewards, VPN, Wallet, Leo AI, etc.)</MenuPath>
 </HowTo>
 
+**Tips extra para configurar Brave:**
+
+* Instala [Privacy Badger](https://privacybadger.org/) para tener protección adicional.
+* También puedes instalar la app de Brave para [iPhone](https://apps.apple.com/us/app/brave-private-web-browser-vpn/id1052879175) o [Android](https://play.google.com/store/apps/details?id=com.brave.browser\&hl=en).
+
 <Alert type="warning">
   **Advertencia sobre plugins:** Cada plugin que instalas hace que tu navegador se distinga de "la multitud" y te vuelve más identificable, reduciendo la efectividad de las funciones de privacidad que vienen integradas en Brave.
 </Alert>
-
-* **Firefox** puede ofrecer aún más privacidad si te tomas el tiempo de [instalar los plugins correctos y configurarlo bien](https://www.privacyguides.org/en/desktop-browsers/#firefox).
-* Usa [**Tor Browser**](/research/) para navegación muy sensible que sea realmente anónima

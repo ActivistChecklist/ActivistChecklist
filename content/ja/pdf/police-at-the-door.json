@@ -1,0 +1,67 @@
+{
+  "title": "警察が家に来たら",
+  "intro": "警察が家に来たときの対応手順 — 地元警察でも、FBIでも、移民当局のICEでも、その他の政府機関の職員でも同じです",
+  "fillIn": {
+    "whoToCall": {
+      "heading": "連絡先（記入してください）",
+      "fields": {
+        "emergencyContact1": "緊急連絡先 1",
+        "emergencyContact2": "緊急連絡先 2",
+        "emergencyContact3": "緊急連絡先 3",
+        "legalSupport": "法的サポート"
+      }
+    },
+    "otherNumbers": {
+      "heading": "その他の電話番号",
+      "fields": {
+        "iceRaidHotline": "地域のICE強制捜査ホットライン",
+        "other": "その他:"
+      }
+    }
+  },
+  "moreInfo": "詳しい情報やほかのガイドはこちら:",
+  "steps": {
+    "doNotInvite": {
+      "heading": "1. 中に入れない",
+      "bullets": {
+        "doNotOpen": "裁判官（職員ではなく）が署名した令状がない限り、<b>ドアを開けない</b>",
+        "ifOpened": "<b>ドアを開けてしまったら、</b>外に出て後ろ手でドアを閉める。「捜索には同意しません」と言う",
+        "remainSilent": "自分の権利を守るために<b>黙秘する</b>"
+      }
+    },
+    "magicWords": {
+      "heading": "2. 魔法の言葉を使う",
+      "intro": "自分の権利を守るために、次のフレーズを言いましょう:",
+      "phrases": {
+        "noConsent": "「捜索には同意しません」",
+        "remainSilent": "「黙秘します」",
+        "attorney": "「弁護士と話したいです」",
+        "card": "「名刺をいただけますか？」"
+      }
+    },
+    "warrant": {
+      "heading": "3. 令状がある場合…",
+      "numbered": {
+        "ask": "<b>「令状はありますか？」</b>と聞く。<b>裁判官の署名</b>があるか確認する（機関を示す「agency」ではなく、裁判所を示す「court」と書かれているか）",
+        "doNotInterfere": "令状があるなら、捜索や逮捕を妨害しない",
+        "phoneOff": "データを守るために<b>スマホの電源を切る</b>",
+        "video": "できれば同居人に<b>動画を撮ってもらう</b>",
+        "callContacts": "同居人に<b>緊急連絡先へ電話してもらう</b>"
+      }
+    },
+    "afterTheyLeave": {
+      "heading": "4. 警察が去った後",
+      "numbered": {
+        "callContacts": "<b>緊急連絡先に電話・メッセージする</b>",
+        "writeDown": "起きたことを<b>すべて書き留める</b>"
+      }
+    },
+    "remember": {
+      "heading": "覚えておくこと",
+      "bullets": {
+        "copsLie": "<b>警察は嘘をついてもいい</b>ことになっていて、欲しい情報を得るために実際によく嘘をつきます。でも、こちらからは嘘をつかないこと。",
+        "solidarity": "<b>警察とは話さない</b>。国家による弾圧に対して連帯することが、全員を守ることにつながります。"
+      }
+    }
+  }
+}

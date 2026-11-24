@@ -80,8 +80,7 @@
     "viewAllTools": "Voir tous les outils",
     "recentUpdatesHeading": "Mises à jour récentes du site",
     "viewAllUpdates": "Voir toutes les mises à jour",
-    "noRecentChanges": "Aucun changement récent",
-    "newsletterDescription": "On héberge notre propre logiciel de newsletter pour mieux protéger ton adresse e-mail. Tu peux utiliser un <link>service d'alias e-mail</link> pour encore plus de confidentialité."
+    "noRecentChanges": "Aucun changement récent"
   },
   "translationFallback": {
     "message": "Cette page n'est pas encore disponible dans ta langue. Tu consultes la version anglaise.",
@@ -232,14 +231,16 @@
   },
   "riskLevel": {
     "everyoneLabel": "tout le monde",
-    "mediumLabel": "risque moyen",
-    "highLabel": "risque élevé",
+    "mediumLabel": "personnes à risque moyen",
+    "highLabel": "personnes à risque élevé",
     "everyoneDefault": "Cette section s'adresse à toute personne qui milite ou fait du plaidoyer.",
     "mediumDefault": "Cette section est pour toi si tu occupes un rôle de leader ou si ton militantisme a plus de chances d'être ciblé par l'État ou par tes adversaires.",
-    "highDefault": "Cette section est pour toi si tu occupes un rôle très exposé ou si ton militantisme implique des activités à haut risque pouvant entraîner de graves conséquences ou des représailles.",
+    "highDefault": "Cette section est pour toi si ton militantisme implique des actions à haut risque qui pourraient entraîner de graves conséquences ou des représailles, ou si tu occupes un rôle très exposé.",
     "forYouIf": "Cette section est pour toi si :",
     "forYou": "Cette section s'adresse à :",
-    "whoIsThisFor": "À qui s'adresse cette section ?"
+    "whoIsThisFor": "À qui s'adresse cette section ?",
+    "thisSection": "Cette section",
+    "keyFooter": "Chaque niveau s'appuie sur les précédents, alors pense à faire aussi les sections des niveaux inférieurs au tien."
   },
   "checklistItem": {
     "informationalItem": "Élément informatif",
@@ -392,7 +393,7 @@
   },
   "updates": {
     "metaTitle": "Ton appareil reçoit-il encore des mises à jour de sécurité ? | Activist Checklist",
-    "metaDescription": "Vérifie si ton téléphone, ta tablette, ta montre ou ton ordinateur portable reçoit encore des mises à jour de sécurité. Les appareils pas à jour accumulent des failles connues publiquement et sont plus faciles à pirater s'ils sont saisis ou ciblés.",
+    "metaDescription": "Vérifie si ton téléphone, ta tablette, ta montre ou ton ordinateur portable reçoit encore des mises à jour de sécurité. Les appareils obsolètes accumulent des failles connues de tout le monde et sont plus faciles à pirater s'ils sont saisis ou ciblés.",
     "title": "Ton appareil reçoit-il encore des mises à jour de sécurité ?",
     "intro": "Si ton appareil n'utilise pas la dernière version de son système d'exploitation, des hackers et les flics peuvent s'y introduire et accéder à toutes tes données.",
     "searchLabel": "Saisis le modèle de ton appareil",
@@ -565,10 +566,10 @@
       "deviceMaxOsWarningTitle": "À propos du système de ton appareil",
       "deviceMaxOsWarning": "Ton {label} ne peut pas dépasser {os} {maxVersion}. {os} {maxVersion} cessera de recevoir des mises à jour de sécurité avant {os} {latestVersion}. Les appareils plus récents recevront des mises à jour plus longtemps.",
       "deviceMaxOsWarningWithDate": "Ton {label} ne peut pas dépasser {os} {maxVersion}, qui devrait cesser de recevoir des mises à jour de sécurité vers {eolDate}. Les appareils plus récents capables de faire tourner {os} {latestVersion} recevront des mises à jour plus longtemps.",
-      "deviceMaxOsEolWarning": "Ton {label} ne peut pas dépasser {os} {maxVersion}, qui n'est officiellement plus pris en charge. Tu recevras peut-être encore quelques mises à jour ponctuelles, mais considère cet appareil comme peu fiable pour les activités sensibles et prévois de le remplacer.",
+      "deviceMaxOsEolWarning": "Ton {label} ne peut pas aller au-delà de {os} {maxVersion}, qui n'est officiellement plus pris en charge. Tu recevras peut-être encore quelques mises à jour de temps en temps, mais considère cet appareil comme non fiable pour tout ce qui est sensible, et prévois de le remplacer.",
       "deviceUpgradePlan": "Si la sécurité à long terme compte pour tes activités, prévois de changer d'appareil.",
       "threatModelHeader": "Pourquoi c'est important",
-      "threatModel": "Chaque semaine sans mise à jour, de nouvelles façons de s'introduire dans ton appareil deviennent publiques. Si les flics saisissent ton téléphone en <protestLink>manif</protestLink> ou à un <borderLink>passage de frontière</borderLink> (ou si quelqu'un te cible avec des <spywareLink>logiciels espions</spywareLink>), ce sont ces failles connues qu'ils utiliseront pour y entrer et tout lire.  ",
+      "threatModel": "Chaque semaine où tu ne mets pas ton appareil à jour, de nouvelles façons de s'y introduire deviennent publiques. Si les flics saisissent ton téléphone lors d'une <protestLink>manif</protestLink> ou d'un <borderLink>passage de frontière</borderLink> (ou si quelqu'un te cible avec un <spywareLink>logiciel espion</spywareLink>), ce sont ces failles connues qu'ils utiliseront pour y entrer et lire tout ce qu'il contient.  ",
       "threatModelSoft": "Tant que tu n'as pas vérifié, considère cet appareil comme potentiellement pas à jour pour les activités sensibles.",
       "viewEssentialsCta": "Voir nos bases de la sécurité numérique →",
       "essentialsNextSteps": {
@@ -793,7 +794,7 @@
     },
     "two-factor-authentication": {
       "term": "Authentification à deux facteurs (2FA)",
-      "definition": "Une étape de connexion en plus : après ton mot de passe, tu confirmes ton identité d'une deuxième façon. Ça peut être un code à 6 chiffres venant d'une [appli d'authentification](term:authenticator-app), un message texte, ou parfois une [clé d'accès](term:passkey). C'est comme avoir besoin à la fois d'une clé et du code de l'alarme pour entrer chez toi. Même si quelqu'un vole ton mot de passe, il ne peut pas accéder à ton compte sans la deuxième étape.",
+      "definition": "Une étape de connexion en plus : après ton mot de passe, tu confirmes ton identité d'une deuxième manière. Ça peut être un code à 6 chiffres généré par une [application d'authentification](term:authenticator-app), un texto, ou parfois une [clé d'accès](term:passkey). Même si quelqu'un vole ton mot de passe, cette personne ne peut pas accéder à ton compte sans la deuxième étape.",
       "source": "Les essentiels de la sécurité",
       "url": "/essentials/#mfa"
     },

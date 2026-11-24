@@ -80,8 +80,7 @@
     "viewAllTools": "Vedi tutti gli strumenti",
     "recentUpdatesHeading": "Aggiornamenti recenti del sito",
     "viewAllUpdates": "Vedi tutti gli aggiornamenti",
-    "noRecentChanges": "Nessuna modifica recente",
-    "newsletterDescription": "Gestiamo in autonomia il software della nostra newsletter, così il tuo indirizzo email è più protetto. Per una privacy ancora maggiore, puoi usare un <link>servizio di alias email</link>."
+    "noRecentChanges": "Nessuna modifica recente"
   },
   "translationFallback": {
     "message": "Questa pagina non è ancora disponibile nella tua lingua. Stai vedendo la versione in inglese.",
@@ -232,14 +231,16 @@
   },
   "riskLevel": {
     "everyoneLabel": "tuttə",
-    "mediumLabel": "rischio medio",
-    "highLabel": "rischio alto",
+    "mediumLabel": "persone a rischio medio",
+    "highLabel": "persone ad alto rischio",
     "everyoneDefault": "Questa sezione è per chiunque faccia attivismo o advocacy.",
     "mediumDefault": "Questa sezione fa per te se hai un ruolo di leadership o se fai attivismo che ha più probabilità di finire nel mirino dello Stato o di chi ti si oppone.",
-    "highDefault": "Questa sezione è per te se hai un ruolo molto visibile o se il tuo attivismo comporta attività ad alto rischio che potrebbero portare a conseguenze serie o ritorsioni.",
+    "highDefault": "Questa sezione fa per te se il tuo attivismo comprende attività ad alto rischio che potrebbero avere conseguenze gravi o portare a ritorsioni, oppure se hai un ruolo molto in vista.",
     "forYouIf": "Questa sezione è per te se:",
     "forYou": "Questa sezione è per:",
-    "whoIsThisFor": "A chi è rivolta questa sezione?"
+    "whoIsThisFor": "A chi è rivolta questa sezione?",
+    "thisSection": "Questa sezione",
+    "keyFooter": "Ogni livello si basa su quelli precedenti, quindi assicurati di completare anche le sezioni dei livelli sotto il tuo."
   },
   "checklistItem": {
     "informationalItem": "Voce informativa",
@@ -565,10 +566,10 @@
       "deviceMaxOsWarningTitle": "Una nota sul sistema operativo del tuo dispositivo",
       "deviceMaxOsWarning": "Il tuo {label} supporta al massimo {os} {maxVersion}. {os} {maxVersion} smetterà di ricevere aggiornamenti di sicurezza prima di {os} {latestVersion}. I dispositivi più recenti continueranno a ricevere aggiornamenti più a lungo.",
       "deviceMaxOsWarningWithDate": "Il tuo {label} supporta al massimo {os} {maxVersion}, che dovrebbe smettere di ricevere aggiornamenti di sicurezza intorno a {eolDate}. I dispositivi più recenti in grado di usare {os} {latestVersion} continueranno a ricevere aggiornamenti più a lungo.",
-      "deviceMaxOsEolWarning": "Il tuo {label} non va oltre {os} {maxVersion}, che non è più supportato ufficialmente. Potresti ricevere ancora qualche aggiornamento occasionale, ma considera questo dispositivo poco affidabile per le attività sensibili e pianifica di sostituirlo.",
+      "deviceMaxOsEolWarning": "Il tuo {label} non va oltre {os} {maxVersion}, che non è più supportato ufficialmente. Potresti ricevere ancora qualche aggiornamento occasionale, ma considera questo dispositivo non affidabile per le attività sensibili e pianifica di sostituirlo.",
       "deviceUpgradePlan": "Se la sicurezza a lungo termine è importante per il tuo lavoro, pianifica di cambiare dispositivo.",
       "threatModelHeader": "Perché è importante",
-      "threatModel": "Ogni settimana senza aggiornamenti, diventano di dominio pubblico nuovi modi per entrare nel tuo dispositivo. Se gli sbirri ti sequestrano il telefono a una <protestLink>manifestazione</protestLink> o a un <borderLink>passaggio di frontiera</borderLink> (o se qualcuno ti prende di mira con uno <spywareLink>spyware</spywareLink>), useranno proprio queste vulnerabilità note per entrarci e leggere tutto quello che contiene.  ",
+      "threatModel": "Ogni settimana che passi senza aggiornare il tuo dispositivo, diventano di dominio pubblico nuovi modi per entrarci. Se gli sbirri ti sequestrano il telefono a una <protestLink>manifestazione</protestLink> o a un <borderLink>passaggio di frontiera</borderLink> (o se qualcuno ti prende di mira con uno <spywareLink>spyware</spywareLink>), useranno proprio queste vulnerabilità note per entrarci e leggere tutto quello che contiene.  ",
       "threatModelSoft": "Finché non hai verificato, considera questo dispositivo potenzialmente non aggiornato per le attività sensibili.",
       "viewEssentialsCta": "Scopri le nostre basi di sicurezza digitale →",
       "essentialsNextSteps": {
@@ -793,7 +794,7 @@
     },
     "two-factor-authentication": {
       "term": "Autenticazione a due fattori (2FA)",
-      "definition": "Un passaggio in più per accedere: dopo la password, confermi la tua identità in un secondo modo. Può essere un codice di 6 cifre da un'[app di autenticazione](term:authenticator-app), un messaggio di testo o a volte una [passkey](term:passkey). È come aver bisogno sia della chiave sia del codice dell'allarme per entrare in casa. Anche se qualcunə ti ruba la password, non può entrare nel tuo account senza il secondo passaggio.",
+      "definition": "Un passaggio in più quando accedi: dopo la password, confermi la tua identità anche in un secondo modo. Può essere un codice a 6 cifre da un'[app di autenticazione](term:authenticator-app), un SMS o a volte una [passkey](term:passkey). Anche se qualcuno ti ruba la password, non può entrare nel tuo account senza il secondo passaggio.",
       "source": "Sicurezza di base",
       "url": "/essentials/#mfa"
     },

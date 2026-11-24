@@ -8,7 +8,7 @@ dont: |
   Usar solo una contraseña
 ---
 
-Después de escribir tu contraseña, tendrás que ingresar un código desde tu teléfono para confirmar que realmente eres tú. Imagínalo como tener una llave y también un código de alarma para entrar a tu casa: alguien necesita ambas cosas para entrar.
+Después de escribir tu contraseña, tendrás que ingresar un código desde tu teléfono para confirmar que realmente eres tú.
 
 Tu correo electrónico es la cuenta más importante que debes proteger con autenticación de dos factores. Si una persona atacante accede a tu correo, puede restablecer todas tus demás contraseñas.
 
@@ -16,22 +16,25 @@ Tu correo electrónico es la cuenta más importante que debes proteger con auten
   **Instala una [app de autenticación](term:authenticator-app):**
 
   1. **Opción 1: 1Password:** Si usas [1Password](#password-manager), tiene una función de "autenticador" integrada ([más detalles aquí](https://support.1password.com/one-time-passwords/)).
-  2. **Opción 2: Ente Auth:** Instala [Ente Auth](https://ente.io/auth/) (iPhone, Android)
+  2. **Opción 2: Ente Auth:** Instala [Ente Auth](https://ente.io/auth/) (iPhone, Android).
      * Opcional: puedes crear una cuenta. Tus datos están cifrados de extremo a extremo. O puedes no tener cuenta, pero podrías perder tus contraseñas de un solo uso si tu teléfono no tiene respaldo.
 
   **Para configurar la autenticación de dos factores:**
 
-  1. Ve a la configuración de seguridad o privacidad
-  2. Busca "2FA", "autenticación de dos factores" o "autenticación de múltiples factores"
-  3. Si está disponible la opción de "app de autenticación", ¡elige esa! (Acuérdate de guardar los códigos de respaldo en un lugar seguro, como tu gestor de contraseñas.)
-  4. Si la única opción es "verificación por mensaje de texto/SMS", selecciónala y sigue las instrucciones.
-  5. Enlaces para configurar 2FA en sitios comunes:
-     * [Google](https://myaccount.google.com/signinoptions/two-step-verification)
-     * [Apple ID](https://support.apple.com/en-us/HT204915)
-     * [Facebook](https://www.facebook.com/settings?tab=security)
-     * [Twitter / X](https://twitter.com/settings/security)
-     * [Instagram](https://help.instagram.com/566810106808145)
-     * O busca si un sitio web, servicio o app tiene 2FA en el [Directorio 2FA](https://2fa.directory/us/).
+  <StepList>
+    1. Go to Security/Privacy settings
+    2. Look for "2FA" or "two-factor authentication" or "multi-factor authentication"
+    3. If an “authenticator app” option is available, select that! (Remember to save the backup codes somewhere secure, like your password manager.)
+    4. If “text/SMS verification” is the only option, select that and follow the instructions.
+  </StepList>
+
+  Links to set up 2FA on common sites:
+  * [Google](https://myaccount.google.com/signinoptions/two-step-verification)
+  * [Apple ID](https://support.apple.com/en-us/HT204915)
+  * [Facebook](https://www.facebook.com/settings?tab=security)
+  * [Twitter / X](https://twitter.com/settings/security)
+  * [Instagram](https://help.instagram.com/566810106808145)
+  * Or look up whether a website/service/app has 2FA on the [2FA Directory](https://2fa.directory/us/).
 </HowTo>
 
 Nota: Cuando un servicio te permite elegir entre una **app de autenticación** y **códigos de verificación por SMS**, siempre es mejor elegir la app de autenticación. Es posible que alguien [intercepte tus mensajes SMS](https://www.wired.com/2016/06/hey-stop-using-texts-two-factor-authentication/).

@@ -1,0 +1,67 @@
+{
+  "title": "Gli sbirri alla porta",
+  "intro": "Cosa fare se gli sbirri sono alla tua porta: polizia locale, FBI, ICE o qualsiasi altro agente governativo",
+  "fillIn": {
+    "whoToCall": {
+      "heading": "Chi chiamare (da compilare)",
+      "fields": {
+        "emergencyContact1": "Contatto di emergenza 1",
+        "emergencyContact2": "Contatto di emergenza 2",
+        "emergencyContact3": "Contatto di emergenza 3",
+        "legalSupport": "Supporto legale"
+      }
+    },
+    "otherNumbers": {
+      "heading": "Altri numeri",
+      "fields": {
+        "iceRaidHotline": "Numero di emergenza locale per le retate dell'ICE",
+        "other": "Altro:"
+      }
+    }
+  },
+  "moreInfo": "Più info e altre guide su:",
+  "steps": {
+    "doNotInvite": {
+      "heading": "1. Non farli entrare",
+      "bullets": {
+        "doNotOpen": "<b>NON aprire la porta</b> a meno che non abbiano un mandato firmato da un giudice (non da un agente)",
+        "ifOpened": "<b>Se hai aperto la porta,</b> esci e chiuditela alle spalle. Di' “Non acconsento a una perquisizione”",
+        "remainSilent": "<b>Resta in silenzio</b> per proteggere i tuoi diritti"
+      }
+    },
+    "magicWords": {
+      "heading": "2. Usa le parole magiche",
+      "intro": "Di' queste frasi per proteggere i tuoi diritti:",
+      "phrases": {
+        "noConsent": "“Non acconsento a una perquisizione”",
+        "remainSilent": "“Mi avvalgo della facoltà di non rispondere”",
+        "attorney": "“Voglio parlare con un avvocato”",
+        "card": "“Mi può dare il suo biglietto da visita?”"
+      }
+    },
+    "warrant": {
+      "heading": "3. Se hanno un mandato…",
+      "numbered": {
+        "ask": "Chiedi: <b>“Avete un mandato?”</b> Controlla che sia <b>firmato da un giudice</b> (deve esserci scritto “court”, non “agency”)",
+        "doNotInterfere": "Se ce l'hanno, non ostacolare la perquisizione o l'arresto",
+        "phoneOff": "<b>Spegni il telefono</b> per proteggere i tuoi dati",
+        "video": "Chiedi a chi vive con te di <b>fare un video</b>, se possibile",
+        "callContacts": "Chiedi a chi vive con te di <b>chiamare i tuoi contatti di emergenza</b>"
+      }
+    },
+    "afterTheyLeave": {
+      "heading": "4. Dopo che se ne sono andati",
+      "numbered": {
+        "callContacts": "<b>Chiama o scrivi ai tuoi contatti di emergenza</b>",
+        "writeDown": "<b>Scrivi tutto</b> quello che è successo"
+      }
+    },
+    "remember": {
+      "heading": "Ricorda",
+      "bullets": {
+        "copsLie": "<b>Gli sbirri possono mentirti</b>, e spesso lo fanno per ottenere le informazioni che vogliono. Tu non mentire a loro.",
+        "solidarity": "<b>Noi non parliamo con gli sbirri</b>. La nostra solidarietà contro la repressione dello Stato aiuta a proteggere tuttə."
+      }
+    }
+  }
+}

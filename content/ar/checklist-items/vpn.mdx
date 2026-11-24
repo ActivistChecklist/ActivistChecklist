@@ -5,7 +5,7 @@ preview: |
 do: |
   ثبّت تطبيق VPN موثوقًا على جهازك (أو أجهزتك) وخلّيه شغّالًا دائمًا. نوصي بـ [IVPN](https://www.ivpn.net/) (6$ شهريًا).
 dont: |
-  استخدام VPN عشوائي تجده على الإنترنت. Nord VPN وSurfshark وExpressVPN وغيرها مشهورة، لكنها ليست جديرة بالثقة بنفس الدرجة.
+  استخدام VPN عشوائي تجده على الإنترنت. NordVPN وSurfshark وExpressVPN وغيرها مشهورة، لكنها ليست جديرة بالثقة بنفس القدر.
 firstPublished: 2025-06-13
 lastUpdated: 2026-07-20
 ---
@@ -30,14 +30,16 @@ lastUpdated: 2026-07-20
 * [**Proton VPN**](https://protonvpn.com/) لديه خطة مجانية جيدة، لكنها لجهاز 1 فقط. للحصول على ميزة حجب الإعلانات، تحتاج إلى خطة مدفوعة. (إذا كنت تستخدم Proton، اطلع على [دليلنا لاستخدام Proton بأمان](/proton/).)
 
 <HowTo title="كيفية إعداد IVPN">
-  1. **أنشئ حسابك:** ادخل إلى IVPN واضغط على [Generate IVPN Account](https://www.ivpn.net/en/pricing/) (6$ شهريًا أو 60$ سنويًا). تحت **Standard Plan** اضغط على **Select** (اختر **Pro Plan** إذا كان لديك أكثر من 2 جهاز).
-  2. **دوّن الـ Account ID الخاص بك:** احفظه في مكان آمن مثل مدير كلمات المرور. لا يوجد خيار "نسيت كلمة المرور"، لذا إن فقدته لن يستطيع أحد استعادته لك.
-  3. **ادفع:** اختر شهريًا أو سنويًا، وحدد خانة **Automatic renewal**، وأدخل بيانات الدفع، ثم اضغط **Make Payment**.
-     * بدلًا من بطاقة الائتمان، يمكنك أيضًا طلب [بطاقة قسيمة لـ IVPN](https://digitalgoods.proxysto.re/en) لحماية هويتك بشكل أكبر.
-  4. **ثبّت تطبيق سطح المكتب** ([Mac](https://www.ivpn.net/en/apps-macos/)، [Windows](https://www.ivpn.net/en/apps-windows)) وسجّل الدخول باستخدام Account ID الخاص بك.
-  5. **فعّل الاتصال التلقائي:** <MenuPath inline>ابحث عن IVPN في شريط الأدوات > **Show IVPN** > ⚙️ **Gear Icon** > **Settings** > **General**</MenuPath> وفعّل **Launch at login** و**Autoconnect on launch** و**Allow background daemon to manage autoconnect**.
-  6. **فعّل حجب الإعلانات:** شغّل **AntiTracker** من الشاشة الرئيسية لتطبيق IVPN لحجب الإعلانات (وهذا يساعد على إبقاء موقعك خاصًا، خصوصًا على هاتفك).
-  7. **ثبّت تطبيق الهاتف** ([iPhone](https://www.ivpn.net/en/apps-ios)، [Android](https://www.ivpn.net/en/apps-android)) وسجّل الدخول باستخدام نفس Account ID، ثم فعّل نفس الإعدادات المذكورة أعلاه. (الاتصال التلقائي ليس إعدادًا على iPhone لأنه مُفعّل افتراضيًا.)
+  <StepList>
+    1. **Generate your account:** Go to IVPN and click [Generate IVPN Account](https://www.ivpn.net/en/pricing/) ($6/mo or $60/yr). Under **Standard Plan** click **Select** (choose the **Pro Plan** if you have more than 2 devices).
+    2. **Write down your Account ID:** Save it somewhere safe like your password manager. There is no "forgot password" option, so if you lose it, no one can recover it for you.
+    3. **Pay:** Select monthly or yearly, check the **Automatic renewal** box, enter your payment details, and click **Make Payment**.
+       * Instead of a credit card, you can also order a [voucher card for IVPN](https://digitalgoods.proxysto.re/en) so that your identity is even more protected.
+    4. **Install the desktop app** ([Mac](https://www.ivpn.net/en/apps-macos/), [Windows](https://www.ivpn.net/en/apps-windows)) and sign in with your Account ID.
+    5. **Enable autoconnect:** <MenuPath inline>Find IVPN in your toolbar > **Show IVPN** > ⚙️ **Gear Icon** > **Settings** > **General**</MenuPath> and enable **Launch at login**, **Autoconnect on launch**, and **Allow background daemon to manage autoconnect**.
+    6. **Enable ad-blocking:** Turn on **AntiTracker** in the main IVPN app screen to block ads (which can help you keep your location private, especially on your phone).
+    7. **Install the mobile app** ([iPhone](https://www.ivpn.net/en/apps-ios), [Android](https://www.ivpn.net/en/apps-android)) and sign in with the same Account ID, then turn on the same settings listed above. (Autoconnect is not a setting on iPhones because it is on by default.)
+  </StepList>
 
   ننصح بإبقاء الـ VPN مُشغّلًا طوال الوقت إلا إذا واجهت مشكلة في الاتصال بموقع ما (انظر قائمتنا لـ[سلبيات استخدام VPN](/vpn/#downsides)).
 </HowTo>
