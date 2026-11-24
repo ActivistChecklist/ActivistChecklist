@@ -30,17 +30,22 @@
 # Those generated units are Type=oneshot, which is why launch-listmonk.sh has to
 # run listmonk in its own systemd unit - see the note in that file.
 #
-# Green means listmonk was up when we arrived. A run that had to restart it pings
-# FAIL even when the restart worked, and so does a checkout that has stopped
-# syncing from main. See scripts/lib/listmonk-health-verdict.sh for why.
+# Paging: one bad run on its own does not page. A run that found listmonk down
+# (and restarted it, or could not) sends a fail ping only when another run in the
+# last hour also found trouble, so a host reboot that the next run fixes stays
+# quiet, while an outage still pages on its second run, 5 to 10 minutes in. The
+# time of the last bad run is kept in $LOG_DIR/healthcheck-listmonk.last-trouble.
+# A quiet bad run still sends a success ping whose body names the verdict, so it
+# shows in Healthchecks' event log, and it still exits 1. A checkout that has
+# stopped syncing from main pages straight away. See should_page in
+# scripts/lib/listmonk-health-verdict.sh for why.
 #
 # A liveness probe that gets no answer is tried again after a pause before
 # anything is restarted. Now and then the probe from this host to listmonk's
 # public URL gets nothing back while listmonk is fine, and restarting on that one
-# miss took down a healthy listmonk and paged "down", then "up" five minutes
-# later. A real outage still fails the later probe and alerts a minute or so
-# later. Each ping's status line says which attempt answered, so blips stay
-# visible in Healthchecks without paging anyone.
+# miss took down a healthy listmonk. Each ping's status line says which attempt
+# answered. The pause is skipped when systemd says listmonk's unit is not running
+# at all (after a reboot, say), since then there is no blip to wait out.
 #
 # Required env (see .env.production on the newsletter server):
 #   LISTMONK_HEALTHCHECK_PING_URL: Healthchecks.io ping URL
@@ -55,6 +60,7 @@
 #   LISTMONK_ROUNDTRIP_TIMEOUT: seconds for the subscribe POST (default 20)
 #   LISTMONK_LIVENESS_ATTEMPTS: liveness probes before restarting (default 2)
 #   LISTMONK_LIVENESS_RETRY_SLEEP: seconds between those probes (default 60)
+#   LISTMONK_SYSTEMD_UNIT / LISTMONK_SERVICE_MANAGER: as in launch-listmonk.sh
 #   LISTMONK_LAUNCH_SCRIPT: launcher path (default <repo>/scripts/launch-listmonk.sh)
 #   LISTMONK_LAUNCH_TIMEOUT: seconds to allow the launcher (default 90)
 #   LISTMONK_START_ATTEMPTS: post-start probes (default 6)
@@ -78,6 +84,8 @@ source "$SCRIPT_DIR/lib/listmonk-health-verdict.sh"
 source "$SCRIPT_DIR/lib/hc-ping.sh"
 
 init_scripts_file_log "$(resolve_server_log_dir "$PROJECT_DIR")" "healthcheck-listmonk.log" "$(resolve_server_log_lines_keep)"
+TROUBLE_FILE="$LOG_DIR/healthcheck-listmonk.last-trouble"
+RUN_STARTED="$(date +%s)"
 
 # Rotate BEFORE redirecting stdout. trim_log replaces the file via mv, so trimming
 # afterwards would leave our fd pointing at the unlinked inode and silently drop
@@ -100,6 +108,7 @@ LIVENESS_ATTEMPTS="${LISTMONK_LIVENESS_ATTEMPTS:-2}"
 LIVENESS_RETRY_SLEEP="${LISTMONK_LIVENESS_RETRY_SLEEP:-60}"
 if [[ ! "$LIVENESS_ATTEMPTS" =~ ^[1-9][0-9]*$ ]]; then LIVENESS_ATTEMPTS=2; fi
 if [[ ! "$LIVENESS_RETRY_SLEEP" =~ ^[0-9]+$ ]]; then LIVENESS_RETRY_SLEEP=60; fi
+SYSTEMD_UNIT="${LISTMONK_SYSTEMD_UNIT:-listmonk.service}"
 
 SUBSCRIBE_URL="${LISTMONK_SUBSCRIBE_URL:-}"
 # RFC 2606 reserves example.com, so this address can never be delivered to or
@@ -164,6 +173,17 @@ probe_liveness() {
   return 1
 }
 
+# True only when systemd says listmonk's unit is not running. When we cannot
+# tell (no systemctl, no user manager, or listmonk runs under PM2) this is false,
+# and the liveness retry waits as usual.
+listmonk_not_running() {
+  [[ "${LISTMONK_SERVICE_MANAGER:-auto}" != pm2 ]] || return 1
+  command -v systemctl >/dev/null 2>&1 || return 1
+  export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+  systemctl --user show-environment >/dev/null 2>&1 || return 1
+  ! systemctl --user is-active --quiet "$SYSTEMD_UNIT"
+}
+
 # Sets ROUNDTRIP_VERDICT. Budget note: the Fastify limiter on /subscribe allows 5
 # posts per 15 minutes per IP, and a */5 schedule spends 3 of them, so this runs
 # at most twice per invocation (once up front, once to confirm a restart).
@@ -209,6 +229,10 @@ for ((liveness_attempt = 1; ; liveness_attempt++)); do
     break
   fi
   if ((liveness_attempt >= LIVENESS_ATTEMPTS)); then break; fi
+  if listmonk_not_running; then
+    echo "Liveness attempt $liveness_attempt/$LIVENESS_ATTEMPTS got no answer and $SYSTEMD_UNIT is not running; not waiting to probe again."
+    break
+  fi
   echo "Liveness attempt $liveness_attempt/$LIVENESS_ATTEMPTS got no answer; probing again in ${LIVENESS_RETRY_SLEEP}s before restarting anything."
   sleep "$LIVENESS_RETRY_SLEEP"
 done
@@ -276,7 +300,17 @@ repo_stale="$(repo_is_stale "$fetch_mtime" "$(date +%s)" "${LISTMONK_REPO_MAX_AG
 repo_rev="$(git -C "$PROJECT_DIR" rev-parse --short HEAD 2>/dev/null || echo unknown)"
 
 verdict="$(health_verdict "$needs_restart" "$liveness_ok" "$ROUNDTRIP_VERDICT" "$repo_stale")"
-status_line="verdict=$verdict liveness=$liveness_ok liveness_attempt=$liveness_attempt/$LIVENESS_ATTEMPTS roundtrip=$ROUNDTRIP_VERDICT restarted=$restarted repo_stale=$repo_stale rev=$repo_rev"
+
+last_trouble=""
+[[ -r "$TROUBLE_FILE" ]] && last_trouble="$(head -n 1 "$TROUBLE_FILE" || true)"
+page="$(should_page "$verdict" "$RUN_STARTED" "$last_trouble")"
+if [[ "$verdict" == DOWN || "$verdict" == RECOVERED ]]; then
+  printf '%s\n' "$RUN_STARTED" >"$TROUBLE_FILE" || echo "WARN: could not record this run in $TROUBLE_FILE"
+fi
+prev_trouble=none
+[[ "$last_trouble" =~ ^[0-9]+$ ]] && prev_trouble="$(((RUN_STARTED - last_trouble) / 60))m_ago"
+
+status_line="verdict=$verdict liveness=$liveness_ok liveness_attempt=$liveness_attempt/$LIVENESS_ATTEMPTS roundtrip=$ROUNDTRIP_VERDICT restarted=$restarted repo_stale=$repo_stale prev_trouble=$prev_trouble rev=$repo_rev"
 
 case "$verdict" in
   OK) reason="" ;;
@@ -294,6 +328,13 @@ esac
 if [[ "$verdict" == OK ]]; then
   send_ping "" "healthcheck-listmonk ok $(date -u +"%Y-%m-%dT%H:%M:%SZ") url=$HEALTH_URL $status_line"
   [[ -n "$PING_URL" ]] && echo "Health check ping sent ($status_line)" || echo "No LISTMONK_HEALTHCHECK_PING_URL set; ping skipped ($status_line)"
+elif [[ "$page" == false ]]; then
+  # A success ping keeps the check green until a second bad run. Its body
+  # carries the verdict, so the run still shows in Healthchecks' event log.
+  send_ping "" "healthcheck-listmonk not paging $(date -u +"%Y-%m-%dT%H:%M:%SZ") $reason; no other run found trouble in the last hour url=$HEALTH_URL $status_line"
+  echo "Not paging - $reason, but no other run found trouble in the last hour ($status_line)"
+  echo "=== Check complete ==="
+  exit 1
 else
   send_ping fail "healthcheck-listmonk failed $(date -u +"%Y-%m-%dT%H:%M:%SZ") $reason url=$HEALTH_URL $status_line"
   [[ -n "$PING_URL" ]] && echo "Sent fail ping - $reason ($status_line)" || echo "$reason ($status_line; no ping URL configured)"

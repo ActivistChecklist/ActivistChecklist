@@ -58,6 +58,25 @@ const LAUNCH_STUB = `#!/usr/bin/env bash
 echo launch >>"$STUB_DIR/calls"
 `;
 
+// Stands in for systemctl, so a real user manager on the test machine never
+// decides the result. With no $STUB_DIR/unit-state there is no user manager;
+// otherwise the file says whether listmonk's unit is "active".
+const SYSTEMCTL_STUB = `#!/usr/bin/env bash
+[[ -r "$STUB_DIR/unit-state" ]] || exit 1
+case " $* " in
+  *" is-active "*) [[ $(cat "$STUB_DIR/unit-state") == active ]] ;;
+  *) exit 0 ;;
+esac
+`;
+
+// Plans that several tests below share.
+const PROBE_BLIP = { '/api/health': ['timeout', 'ok'], '/subscription': ['timeout'] };
+const LISTMONK_DOWN = {
+  '/api/health': ['refused', 'refused', 'ok'],
+  '/subscription': ['refused'],
+  '/api-server/subscribe': ['reject', 'ok'],
+};
+
 let tmp;
 let stubDir;
 
@@ -67,14 +86,25 @@ beforeEach(() => {
   mkdirSync(stubDir);
   writeFileSync(path.join(stubDir, 'curl'), CURL_STUB, { mode: 0o755 });
   writeFileSync(path.join(stubDir, 'launch'), LAUNCH_STUB, { mode: 0o755 });
+  writeFileSync(path.join(stubDir, 'systemctl'), SYSTEMCTL_STUB, { mode: 0o755 });
 });
 
 afterEach(() => {
   rmSync(tmp, { recursive: true, force: true });
 });
 
+const troubleFile = () => path.join(tmp, 'logs', 'healthcheck-listmonk.last-trouble');
+
+/** Record a bad run some minutes ago, as an earlier run of the check would. */
+function troubleMinutesAgo(minutes) {
+  mkdirSync(path.join(tmp, 'logs'), { recursive: true });
+  writeFileSync(troubleFile(), `${Math.floor(Date.now() / 1000) - minutes * 60}\n`);
+}
+
 /** Run the check with per-path plans for the stub, e.g. { '/api/health': ['timeout', 'ok'] }. */
 function runCheck(plans = {}, env = {}) {
+  // Each run starts its own call count, as each scheduled run would.
+  rmSync(path.join(stubDir, 'calls'), { force: true });
   for (const [page, steps] of Object.entries(plans)) {
     writeFileSync(path.join(stubDir, `plan${page.replaceAll('/', '_')}`), steps.join(' '));
   }
@@ -123,57 +153,102 @@ describe('healthcheck-listmonk.sh', () => {
 
   // The 2026-11-23 false alarm: one probe got no answer while listmonk was fine.
   it('does not restart or report a probe that misses once and answers on the retry', () => {
-    const run = runCheck({ '/api/health': ['timeout', 'ok'], '/subscription': ['timeout'] });
+    const run = runCheck(PROBE_BLIP);
     expect(run.status).toBe(0);
     expect(run.healthFetches).toBe(2);
     expect(run.launched).toBe(false);
     expect(run.pings).toEqual([PING]);
     expect(run.pingBody).toContain('liveness_attempt=2/2');
+    expect(existsSync(troubleFile())).toBe(false);
   });
 
   it("logs curl's exit code when a probe gets no answer", () => {
-    const run = runCheck({ '/api/health': ['timeout', 'ok'], '/subscription': ['timeout'] });
+    const run = runCheck(PROBE_BLIP);
     expect(run.log).toContain('FAIL: health API check (http=000 curl_exit=28');
   });
 
-  it('reports but does not restart when the probe keeps missing while subscribes work', () => {
+  it('does not restart when the probe keeps missing while subscribes work', () => {
     const run = runCheck({ '/api/health': ['timeout'], '/subscription': ['timeout'] });
     expect(run.status).toBe(1);
     expect(run.healthFetches).toBe(2);
     expect(run.launched).toBe(false);
-    expect(run.pings).toEqual([`${PING}/fail`]);
     expect(run.pingBody).toContain('did not answer this host');
   });
 
-  it('restarts and reports a listmonk that is down on both probes and refuses the subscribe', () => {
-    const run = runCheck({
-      '/api/health': ['refused', 'refused', 'ok'],
-      '/subscription': ['refused'],
-      '/api-server/subscribe': ['reject', 'ok'],
-    });
+  it('restarts a listmonk that is down on both probes and refuses the subscribe', () => {
+    const run = runCheck(LISTMONK_DOWN);
     expect(run.status).toBe(1);
     expect(run.launched).toBe(true);
+    expect(run.pingBody).toContain('verdict=RECOVERED');
+  });
+
+  // 2026-11-24: a host reboot killed listmonk, the next run brought it back, and
+  // the page arrived after the outage was already over.
+  it('does not page for the first bad run in an hour', () => {
+    const run = runCheck(LISTMONK_DOWN);
+    expect(run.status).toBe(1);
+    expect(run.pings).toEqual([PING]);
+    expect(run.pingBody).toContain('not paging');
+    expect(run.pingBody).toContain('prev_trouble=none');
+  });
+
+  it('pages when the next run finds trouble again', () => {
+    runCheck(LISTMONK_DOWN);
+    const run = runCheck(LISTMONK_DOWN);
     expect(run.pings).toEqual([`${PING}/fail`]);
     expect(run.pingBody).toContain('verdict=RECOVERED');
   });
 
-  it('honours LISTMONK_LIVENESS_ATTEMPTS', () => {
-    const run = runCheck(
-      { '/api/health': ['timeout', 'ok'], '/subscription': ['timeout'] },
-      { LISTMONK_LIVENESS_ATTEMPTS: '1' },
-    );
-    expect(run.healthFetches).toBe(1);
+  it('pages on a bad run 45 minutes after the last one, though runs in between were fine', () => {
+    troubleMinutesAgo(45);
+    const run = runCheck({ '/api/health': ['timeout'], '/subscription': ['timeout'] });
     expect(run.pings).toEqual([`${PING}/fail`]);
+    expect(run.pingBody).toContain('prev_trouble=45m_ago');
+  });
+
+  it('does not page when the last bad run was over an hour ago', () => {
+    troubleMinutesAgo(61);
+    const run = runCheck(LISTMONK_DOWN);
+    expect(run.pings).toEqual([PING]);
+    expect(run.pingBody).toContain('not paging');
+  });
+
+  it('skips the retry wait when systemd says listmonk is not running', () => {
+    writeFileSync(path.join(stubDir, 'unit-state'), 'inactive');
+    // Had the check waited and probed again, that probe would have answered
+    // and nothing would have been launched.
+    const run = runCheck({ ...LISTMONK_DOWN, '/api/health': ['refused', 'ok'] });
+    expect(run.healthFetches).toBe(2);
+    expect(run.launched).toBe(true);
+    expect(run.log).toContain('is not running; not waiting');
+  });
+
+  it('still retries when systemd says listmonk is running', () => {
+    writeFileSync(path.join(stubDir, 'unit-state'), 'active');
+    const run = runCheck(PROBE_BLIP);
+    expect(run.healthFetches).toBe(2);
+    expect(run.launched).toBe(false);
+    expect(run.pings).toEqual([PING]);
+  });
+
+  it('still retries under PM2, where the systemd unit says nothing about listmonk', () => {
+    writeFileSync(path.join(stubDir, 'unit-state'), 'inactive');
+    const run = runCheck(PROBE_BLIP, { LISTMONK_SERVICE_MANAGER: 'pm2' });
+    expect(run.healthFetches).toBe(2);
+    expect(run.launched).toBe(false);
+  });
+
+  it('honours LISTMONK_LIVENESS_ATTEMPTS', () => {
+    const run = runCheck(PROBE_BLIP, { LISTMONK_LIVENESS_ATTEMPTS: '1' });
+    expect(run.healthFetches).toBe(1);
+    expect(run.pingBody).toContain('liveness_attempt=1/1');
   });
 
   it('reads a damaged LISTMONK_LIVENESS_ATTEMPTS as the default rather than never retrying', () => {
     for (const value of ['0', 'two', '-1']) {
-      rmSync(path.join(stubDir, 'calls'), { force: true });
-      const run = runCheck(
-        { '/api/health': ['timeout', 'ok'], '/subscription': ['timeout'] },
-        { LISTMONK_LIVENESS_ATTEMPTS: value },
-      );
+      const run = runCheck(PROBE_BLIP, { LISTMONK_LIVENESS_ATTEMPTS: value });
       expect(run.pings).toEqual([PING]);
+      expect(run.pingBody).toContain('verdict=OK');
     }
   });
 });
