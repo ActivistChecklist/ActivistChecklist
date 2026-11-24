@@ -14,7 +14,7 @@ relatedGuides:
 
 En ligne, on débat beaucoup de l'utilité d'un VPN. La réponse dépend de ce que tu cherches à protéger, et de qui tu veux le protéger.
 
-**Qu'est-ce qu'un VPN ?** Un VPN (réseau privé virtuel) est une appli que tu installes sur ton téléphone ou ton ordinateur et qui, une fois activée, redirige tout ton trafic internet via ses serveurs. Son but principal, c'est de masquer ton [adresse IP](term:ip-address) (en gros, ton « adresse postale » sur Internet). Normally all the devices on your home wifi have the same IP address, and all of your traffic is carried by your internet provider. Si tu utilises un VPN, tu partages la même adresse IP avec des milliers d'autres utilisateur·ices, et ton trafic passe par l'entreprise du VPN au lieu de ton fournisseur d'accès internet.
+**Qu'est-ce qu'un VPN ?** Un VPN (réseau privé virtuel) est une appli que tu installes sur ton téléphone ou ton ordinateur et qui, une fois activée, redirige tout ton trafic internet via ses serveurs. Son but principal, c'est de masquer ton [adresse IP](term:ip-address) (en gros, ton « adresse postale » sur Internet). Normalement, tous les appareils connectés à ton Wi-Fi à la maison ont la même adresse IP, et tout ton trafic passe par ton fournisseur d'accès à internet. Si tu utilises un VPN, tu partages la même adresse IP avec des milliers d'autres utilisateur·ices, et ton trafic passe par l'entreprise du VPN au lieu de ton fournisseur d'accès internet.
 
 Ça fait deux choses : ça tient tes données de navigation à l'écart de ton fournisseur d'accès internet, et ça cache ta vraie adresse IP aux sites que tu visites. Ça permet aussi de contourner les blocages géographiques, parce que l'adresse IP que te donne le VPN peut être située dans un autre État ou un autre pays.
 
@@ -83,7 +83,7 @@ Et ça va plus loin que la pub. Kape Technologies possède ExpressVPN, CyberGhos
 
 ## Les limites d'un VPN {#limits}
 
-A VPN does two narrow things: it masks your IP address and keeps your browsing data from your internet provider. Voici ce que les gens attendent de lui et qu'il ne fait pas.
+Un VPN fait deux choses bien précises : il masque ton adresse IP et cache tes données de navigation à ton fournisseur d'accès à internet. Voici ce que les gens attendent de lui et qu'il ne fait pas.
 
 #### Un VPN ne te rend pas anonyme
 
@@ -105,9 +105,9 @@ Les États-Unis ont ce qu'on appelle un « traité d'entraide judiciaire » (MLA
 
 Même si ton VPN ne conserve pas de logs, les flics pourraient lui demander tes informations de paiement si tu utilises un VPN lié à ton adresse e-mail. (C'est pour ça qu'on recommande un service comme IVPN, qui te donne un identifiant de compte unique, non lié à un e-mail.)
 
-#### You do not need a VPN on public wifi
+#### Tu n'as pas besoin de VPN sur un Wi-Fi public
 
-Aujourd'hui, [la plupart des sites web utilisent une connexion sécurisée](https://medium.com/@boblord/attack-of-the-evil-baristas-b204436f0853) (HTTPS) par défaut. Le café, l'aéroport et toutes les autres personnes sur le réseau peuvent voir les domaines que tu visites (`example.com`), mais pas ce que tu y fais (comme les articles que tu lis, les publications que tu regardes, ou ton mot de passe ou ton numéro de carte bancaire). Ils ne peuvent pas non plus savoir qui tu es, seulement qu'un appareil du réseau a visité ces domaines. The advice to use a VPN when on public wifi was popular around 2010-2015, and it stuck around long after it stopped being true.
+Aujourd'hui, [la plupart des sites web utilisent une connexion sécurisée](https://medium.com/@boblord/attack-of-the-evil-baristas-b204436f0853) (HTTPS) par défaut. Le café, l'aéroport et toutes les autres personnes sur le réseau peuvent voir les domaines que tu visites (`example.com`), mais pas ce que tu y fais (comme les articles que tu lis, les publications que tu regardes, ou ton mot de passe ou ton numéro de carte bancaire). Ils ne peuvent pas non plus savoir qui tu es, seulement qu'un appareil du réseau a visité ces domaines. Le conseil d'utiliser un VPN sur un Wi-Fi public était populaire vers 2010-2015, et il a continué à circuler longtemps après avoir cessé d'être vrai.
 
 #### Un VPN ne te protège pas du piratage
 
@@ -134,7 +134,7 @@ Là où un VPN aide, c'est avec les applis mobiles qui n'utilisent pas de naviga
 * Tu tomberas sur plus de CAPTCHA sur les sites web (ces petits tests « prouve que tu es humain »)
 * Certains sites peuvent bloquer l'accès via VPN, et tu devras le désactiver puis penser à le réactiver plus tard
 * Certains services de streaming peuvent ne pas fonctionner quand le VPN est connecté
-* Public wifi that makes you sign in on a pop-up page (airports, planes, hotels) often won't load while the VPN is on. Ça peut être particulièrement pénible si tu oublies que le VPN est peut-être la cause du problème. En général, tu dois désactiver le VPN pour te connecter, puis le réactiver.
+* Les Wi-Fi publics qui te demandent de te connecter sur une page pop-up (aéroports, avions, hôtels) ne se chargent souvent pas quand le VPN est activé. Ça peut être particulièrement pénible si tu oublies que le VPN est peut-être la cause du problème. En général, tu dois désactiver le VPN pour te connecter, puis le réactiver.
 
 Si un site web se comporte bizarrement, essaie de désactiver temporairement le VPN pour voir s'il se charge. IVPN propose une option « pause de 5 minutes », qui t'évite d'avoir à penser à le réactiver plus tard.
 
@@ -190,7 +190,7 @@ Un VPN a accès au nom de domaine (`example.com`) de chaque site que tu visites,
   * **[PureVPN](https://www.purevpn.com/)** : malgré une promesse « no logs », c'est-à-dire de ne conserver aucun journal, ils ont remis des logs d'utilisateur·ices au FBI en 2017 (voir le lien plus haut). Un bon rappel qu'une promesse « no logs » ne vaut pas grand-chose sans audit indépendant.
   * **[Urban VPN](https://www.urban-vpn.com/)** et **SuperVPN** : des applis gratuites avec un nombre énorme de téléchargements et des problèmes récurrents de malware et de revente de données.
   * **[Hola VPN](https://hola.org/)** : fait passer le trafic en peer-to-peer par les appareils d'autres utilisateur·ices, ce qui veut dire que ta connexion peut servir de nœud de sortie à quelqu'un d'autre, et a déjà revendu la bande passante de ses utilisateur·ices. Ça peut te mettre en danger si le trafic de quelqu'un d'autre passe par ton appareil.
-  * **[TorGuard](https://torguard.net/)**: Owned by a US company.
+  * **[TorGuard](https://torguard.net/)** : appartient à une entreprise américaine.
 
   **Si un VPN ne figure pas sur cette liste, pars du principe qu'il n'a pas été vérifié ou qu'il n'est pas digne de confiance.**
 </Collapsible>
