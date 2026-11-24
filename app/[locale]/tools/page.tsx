@@ -102,16 +102,20 @@ function ToolRow({ tool, tinted, reversed, t }) {
         </div>
 
         <div className="min-w-0 lg:w-[63%] lg:grow">
-          {/* Capped height keeps the portrait screenshots from towering over the text. */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={screenshot.src}
-            width={screenshot.width}
-            height={screenshot.height}
-            alt={item('shotAlt')}
-            data-pagefind-ignore
-            className="mx-auto h-auto max-h-[35rem] w-auto max-w-full rounded-lg border border-border shadow-md"
-          />
+          {/* The screenshot goes where the button goes. It is left out of the
+              tab order so keyboard users don't reach the same link twice. */}
+          <Link href={href} tabIndex={-1} className="group mx-auto block w-fit max-w-full">
+            {/* Capped height keeps the portrait screenshots from towering over the text. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={screenshot.src}
+              width={screenshot.width}
+              height={screenshot.height}
+              alt={item('shotAlt')}
+              data-pagefind-ignore
+              className="h-auto max-h-[35rem] w-auto max-w-full rounded-lg border border-border shadow-md transition-shadow group-hover:shadow-xl"
+            />
+          </Link>
         </div>
       </div>
     </section>
