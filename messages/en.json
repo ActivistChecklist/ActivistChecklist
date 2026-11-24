@@ -698,7 +698,6 @@
     "intro": "Three tools we built to go along with the checklists. Each one covers a step that is hard to finish from written instructions alone.",
     "items": {
       "riskMapper": {
-        "eyebrow": "Plan an action",
         "name": "Risk Mapper",
         "short": "Map out the risks in your work and precautions you can take.",
         "lede": "Work out what could go wrong before an action, and decide what your group will do about it.",
@@ -709,7 +708,6 @@
         "shotAlt": "Risk Mapper mid-session, with risks placed on a grid of how likely they are and how bad they would be."
       },
       "updates": {
-        "eyebrow": "Check your device",
         "name": "Security update checker",
         "short": "Check whether your phone still gets security updates.",
         "lede": "Find out whether your phone, tablet, or laptop is still getting security updates.",
@@ -720,22 +718,21 @@
         "shotAlt": "The update checker reporting that a searched phone stopped getting security updates, with advice on what to do about it."
       },
       "autoDelete": {
-        "eyebrow": "Delete old AI chats",
         "name": "AI chat auto-delete",
         "short": "Delete your old Claude chats on a schedule.",
-        "lede": "A Chrome extension that deletes your old Claude conversations on a schedule you set.",
+        "lede": "A browser extension for Chrome and Firefox that deletes your old Claude conversations on a schedule you set.",
         "bullet1": "You pick how long to keep them. Anything older than 30 days is the default.",
         "bullet2": "Star the chats you want to keep and it leaves them alone. It can ask you first, or run on its own.",
         "bullet3": "It records how many chats it deleted, not which ones. Nothing gets sent to us.",
         "cta": "Add to Chrome",
-        "shotAlt": "The extension set to delete chats older than 30 days every week, with the bar it shows on claude.ai when deletions are waiting."
+        "shotAlt": "The extension set to delete chats older than 30 days every week."
       }
     },
     "closing": {
-      "title": "Not sure which one you need?",
-      "body": "Each of these comes out of one of our checklists. Start with the checklist and it will point you to the tool when you get to that step.",
+      "title": "More digital security guidance",
+      "body": "If you're new to this, start with our Security Essentials checklist. It covers the steps everyone should take to protect themselves from surveillance and attackers.",
       "primaryCta": "Digital Security Essentials",
-      "secondaryCta": "Doxxing Defense Checklist",
+      "secondaryCta": "See all checklists",
       "openSource": "All three are <repos>open source</repos>. If one is broken, or you need something we have not built yet, <contact>let us know</contact>."
     }
   },
