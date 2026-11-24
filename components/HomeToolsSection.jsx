@@ -5,29 +5,34 @@ import { useTranslations } from 'next-intl';
 import Link from '@/components/Link';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import ToolThumb from '@/components/tools/ToolThumb';
 import { TOOLS, TOOLS_HREF } from '@/config/tools';
 
 /**
- * Compact teaser for /tools/ near the bottom of the homepage.
+ * Compact teaser for /tools/ near the bottom of the homepage. Each card opens
+ * with a cropped picture of the tool; config/tools picks the image and crop.
  *
- * Each card opens with a small preview distilled from that tool's full
- * illustration on /tools/ (see ToolThumb). Not an icon badge: a heat grid, an
- * alert, a list of chats clearing out. They give the card a bit of the tool's
- * character without pretending to be a screenshot.
- *
- * The one glyph that earns its place is the small external mark after the name:
- * two of the three leave the site, and readers should know that before they
- * click.
+ * The small external mark after the name is there because two of the three
+ * leave the site, and readers should know that before they click.
  */
 function ToolCard({ tool }) {
   const t = useTranslations();
-  const { key, href } = tool;
+  const { key, href, thumbPosition } = tool;
+  const image = tool.cardImage ?? tool.screenshot;
 
   return (
     <Link href={href} className="group block">
       <Card className="flex h-full flex-col overflow-hidden border-primary/10 bg-linear-to-br from-card via-card to-primary/5 transition-all duration-200 ease-in-out hover:scale-101 hover:border-primary/30 hover:shadow-xl dark:to-primary/25">
-        <ToolThumb toolKey={key} />
+        {/* Decorative: the name and description below carry the meaning. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={image.src}
+          width={image.width}
+          height={image.height}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          className={`aspect-video w-full border-b border-border object-cover ${thumbPosition}`}
+        />
         <CardHeader className="space-y-0 p-5">
           <CardTitle className="text-lg leading-snug">
             {t(`tools.items.${key}.name`)}

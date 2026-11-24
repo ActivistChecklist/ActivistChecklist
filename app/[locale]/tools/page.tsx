@@ -5,22 +5,11 @@ import Layout from '@/components/layout/Layout';
 import PageNotices from '@/components/layout/PageNotices';
 import Link from '@/components/Link';
 import { Button } from '@/components/ui/button';
-import BrowserFrame from '@/components/tools/BrowserFrame';
-import RiskMapperShot from '@/components/tools/RiskMapperShot';
-import UpdateCheckerShot from '@/components/tools/UpdateCheckerShot';
-import AutoDeleteShot from '@/components/tools/AutoDeleteShot';
 import { DEFAULT_LOCALE } from '@/lib/i18n-config';
 import { getBaseUrl } from '@/lib/utils';
 import { getOgImagePathForSlug } from '@/lib/og-image';
 import { TOOLS } from '@/config/tools';
 import { cn } from '@/lib/utils';
-
-/** Each tool's illustration. Everything else about them lives in config/tools. */
-const SHOTS = {
-  riskMapper: RiskMapperShot,
-  updates: UpdateCheckerShot,
-  autoDelete: AutoDeleteShot,
-};
 
 function isExternal(href) {
   return href.startsWith('http');
@@ -61,8 +50,7 @@ export async function generateMetadata({ params }) {
 }
 
 function ToolRow({ tool, tinted, reversed, t }) {
-  const { key, id, icon: Icon, accent, href, shotUrl } = tool;
-  const Shot = SHOTS[key];
+  const { key, id, accent, href, screenshot } = tool;
   const item = (field) => t(`tools.items.${key}.${field}`);
 
   return (
@@ -79,10 +67,6 @@ function ToolRow({ tool, tinted, reversed, t }) {
         )}
       >
         <div className="lg:w-[37%] lg:shrink-0">
-          <p className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
-            <Icon className={cn('h-4 w-4 shrink-0', accent)} aria-hidden="true" />
-            {item('eyebrow')}
-          </p>
           <h2 id={id} className="mb-3 text-2xl font-bold tracking-tight sm:text-3xl">
             {item('name')}
           </h2>
@@ -116,9 +100,16 @@ function ToolRow({ tool, tinted, reversed, t }) {
         </div>
 
         <div className="min-w-0 lg:w-[63%] lg:grow">
-          <BrowserFrame label={item('shotAlt')} url={shotUrl}>
-            <Shot />
-          </BrowserFrame>
+          {/* Capped height keeps the portrait screenshots from towering over the text. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={screenshot.src}
+            width={screenshot.width}
+            height={screenshot.height}
+            alt={item('shotAlt')}
+            data-pagefind-ignore
+            className="mx-auto h-auto max-h-[35rem] w-auto max-w-full rounded-lg border border-border shadow-md"
+          />
         </div>
       </div>
     </section>
@@ -162,6 +153,22 @@ export default async function ToolsPage({ params }) {
         ))}
       </div>
 
+      <p className="mt-6 text-sm text-muted-foreground">
+        {t.rich('tools.closing.openSource', {
+          /* The claim needs somewhere to go: the org page carries all three repos. */
+          repos: (chunks) => (
+            <Link href="https://github.com/ActivistChecklist" className="link">
+              {chunks}
+            </Link>
+          ),
+          contact: (chunks) => (
+            <Link href="/contact/" className="link">
+              {chunks}
+            </Link>
+          ),
+        })}
+      </p>
+
       <section className="mt-10 rounded-lg border border-border bg-linear-to-br from-muted via-muted to-accent/5 p-6 sm:p-8">
         <h2 className="mb-2 text-xl font-bold tracking-tight sm:text-2xl">
           {t('tools.closing.title')}
@@ -177,24 +184,9 @@ export default async function ToolsPage({ params }) {
             </Link>
           </Button>
           <Button asChild variant="outline">
-            <Link href="/doxxing/">{t('tools.closing.secondaryCta')}</Link>
+            <Link href="/checklists/">{t('tools.closing.secondaryCta')}</Link>
           </Button>
         </div>
-        <p className="mt-5 border-t border-border pt-4 text-sm text-muted-foreground">
-          {t.rich('tools.closing.openSource', {
-            /* The claim needs somewhere to go: the org page carries all three repos. */
-            repos: (chunks) => (
-              <Link href="https://github.com/ActivistChecklist" className="link">
-                {chunks}
-              </Link>
-            ),
-            contact: (chunks) => (
-              <Link href="/contact/" className="link">
-                {chunks}
-              </Link>
-            ),
-          })}
-        </p>
       </section>
     </Layout>
   );
