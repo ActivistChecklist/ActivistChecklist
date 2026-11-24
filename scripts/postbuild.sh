@@ -67,7 +67,7 @@ if [ "$BUILD_MODE" = "static" ]; then
   build_section_done 0 "Guide PDFs → out/pdf/ (cache: public/pdf/, .pdf-cache.json)"
 
   build_section "🪧" "Post-build: designed PDFs"
-  build_detail "Lays out posters from content/<locale>/pdf/ in every language they have"
+  build_detail "Lays out posters from content/<locale>/posters/ in every language they have"
   node scripts/build-designed-pdfs.mjs
   build_section_done 0 "Designed PDFs → out/files/pdf/ (cache: public/files/pdf/, .designed-pdf-cache.json)"
 else

@@ -7,8 +7,8 @@
  * source file as soon as it arrives from GitHub; this puts the human version on
  * top as the approved translation, so Crowdin exports it instead.
  *
- *   node scripts/crowdin-import-approved.mjs content/es/pdf/police-at-the-door.json
- *   node scripts/crowdin-import-approved.mjs content/es/pdf/police-at-the-door.json --apply
+ *   node scripts/crowdin-import-approved.mjs content/es/posters/police-at-the-door.json
+ *   node scripts/crowdin-import-approved.mjs content/es/posters/police-at-the-door.json --apply
  *
  * The path must be one crowdin.yml writes translations to. Without --apply it
  * only looks the file and language up in Crowdin and reports what it would do.

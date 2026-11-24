@@ -2,7 +2,7 @@
  * Designed PDFs, such as the "Police at the door" poster: everything about
  * each one except its words.
  *
- * The words live in content/<locale>/pdf/<slug>.json. The English file is the
+ * The words live in content/<locale>/posters/<slug>.json. The English file is the
  * Crowdin source and Crowdin writes the other languages. Each PDF is rendered
  * by scripts/build-designed-pdfs.mjs and offered on the site by
  * <PdfDownload slug="..."> (components/PdfDownload.jsx).
@@ -20,6 +20,6 @@ export const PDFS = {
     layout: 'steps-with-contacts',
     pagePath: '/police/',
     printedUrl: 'ActivistChecklist.org/police',
-    locales: ['en', 'es'],
+    locales: ['en', 'es', 'fr', 'it', 'ja'],
   },
 };

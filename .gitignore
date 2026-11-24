@@ -62,7 +62,7 @@ public/images/og/
 public/pdf/
 .pdf-cache.json
 .pdf-deferred.json
-# Designed PDFs (scripts/build-designed-pdfs.mjs): same idea, from content/<locale>/pdf/
+# Designed PDFs (scripts/build-designed-pdfs.mjs): same idea, from content/<locale>/posters/
 public/files/pdf/
 .designed-pdf-cache.json
 

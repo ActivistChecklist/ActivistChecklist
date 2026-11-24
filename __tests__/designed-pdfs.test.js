@@ -110,7 +110,7 @@ describe('config/pdfs.mjs', () => {
   for (const [slug, config] of Object.entries(PDFS)) {
     describe(slug, async () => {
       const layout = await import(`../lib/pdf/layouts/${config.layout}.mjs`);
-      const source = readJson(path.join(ROOT, 'content', 'en', 'pdf', `${slug}.json`));
+      const source = readJson(path.join(ROOT, 'content', 'en', 'posters', `${slug}.json`));
 
       it('links to a page and prints its address', () => {
         expect(config.pagePath).toMatch(/^\/[a-z0-9-/]+\/$/);
@@ -122,7 +122,7 @@ describe('config/pdfs.mjs', () => {
         expect(config.locales).toContain('en');
         for (const locale of config.locales) {
           expect(Object.keys(LOCALES)).toContain(locale);
-          expect(fs.existsSync(path.join(ROOT, 'content', locale, 'pdf', `${slug}.json`))).toBe(
+          expect(fs.existsSync(path.join(ROOT, 'content', locale, 'posters', `${slug}.json`))).toBe(
             true,
           );
         }
@@ -130,7 +130,9 @@ describe('config/pdfs.mjs', () => {
 
       for (const locale of config.locales) {
         it(`renders in ${locale}`, () => {
-          const translation = readJson(path.join(ROOT, 'content', locale, 'pdf', `${slug}.json`));
+          const translation = readJson(
+            path.join(ROOT, 'content', locale, 'posters', `${slug}.json`),
+          );
           const { content } = localizeContent(source, translation);
           const html = layout.renderPosterHtml({
             content,
@@ -201,9 +203,9 @@ describe('designedPdfVersions', () => {
     const root = tmp();
     write(root, 'config/pdfs.mjs', 'export const PDFS = {};');
     write(root, 'lib/pdf/layouts/a.mjs', 'layout');
-    write(root, 'content/en/pdf/poster.json', '{"title":"Poster"}');
-    write(root, 'content/es/pdf/poster.json', '{"title":"Cartel"}');
-    write(root, 'content/es/pdf/orphan.json', '{"title":"Huérfano"}');
+    write(root, 'content/en/posters/poster.json', '{"title":"Poster"}');
+    write(root, 'content/es/posters/poster.json', '{"title":"Cartel"}');
+    write(root, 'content/es/posters/orphan.json', '{"title":"Huérfano"}');
     return root;
   };
 
@@ -222,12 +224,12 @@ describe('designedPdfVersions', () => {
     const root = fixture();
     try {
       const before = designedPdfVersions(root);
-      write(root, 'content/es/pdf/poster.json', '{"title":"Póster"}');
+      write(root, 'content/es/posters/poster.json', '{"title":"Póster"}');
       const afterSpanish = designedPdfVersions(root);
       expect(afterSpanish['es/poster']).not.toBe(before['es/poster']);
       expect(afterSpanish['en/poster']).toBe(before['en/poster']);
 
-      write(root, 'content/en/pdf/poster.json', '{"title":"The poster"}');
+      write(root, 'content/en/posters/poster.json', '{"title":"The poster"}');
       const afterEnglish = designedPdfVersions(root);
       expect(afterEnglish['es/poster']).not.toBe(afterSpanish['es/poster']);
 
