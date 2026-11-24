@@ -164,6 +164,11 @@ module.exports = {
             transform: 'rotate(360deg)',
           },
         },
+        'half-turn': {
+          to: {
+            transform: 'rotate(180deg)',
+          },
+        },
         'rainbow-shift': {
           '0%, 100%': {
             color: '#f472b6', // pink-400
@@ -202,9 +207,9 @@ module.exports = {
         'collapsible-down': 'collapsible-down 0.2s ease-out',
         'collapsible-up': 'collapsible-up 0.2s ease-out',
         spin: 'spin 0.6s linear infinite',
-        // One turn of the passcode generator's refresh icon. PasscodeGenerator.jsx
-        // re-keys the icon on each click so the turn plays again.
-        'spin-once': 'spin 500ms ease-in-out',
+        // Half a turn of the passcode and passphrase generators' refresh icon.
+        // The generators re-key the icon on each click so the turn plays again.
+        'half-turn': 'half-turn 400ms ease-in-out',
         'rainbow-shift': 'rainbow-shift 3s linear infinite',
         // One-shot reveal beats applied to the success icon and title via
         // motion-safe:animate-success-icon-pop / motion-safe:animate-success-title-shimmer.

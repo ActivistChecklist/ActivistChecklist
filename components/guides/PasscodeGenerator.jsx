@@ -75,7 +75,7 @@ export default function PasscodeGenerator({ variant = 'inline' }) {
   const [code, setCode] = useState(null);
   const [unavailable, setUnavailable] = useState(false);
   // Counts New passcode clicks. Keying the refresh icon on it remounts the
-  // icon, so its one-turn spin plays on every click, not just the first.
+  // icon, so its half turn plays on every click, not just the first.
   const [refreshes, setRefreshes] = useState(0);
 
   useEffect(() => {
@@ -122,7 +122,7 @@ export default function PasscodeGenerator({ variant = 'inline' }) {
       aria-hidden="true"
       className={cn(
         variant === 'inline' && 'h-5 w-5',
-        refreshes > 0 && 'motion-safe:animate-spin-once',
+        refreshes > 0 && 'motion-safe:animate-half-turn',
       )}
     />
   );
