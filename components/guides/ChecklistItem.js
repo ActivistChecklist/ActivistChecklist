@@ -296,15 +296,6 @@ const ChecklistItem = ({
                       </Badge>
                     )}
                     {itemTitle}
-                    <span
-                      className={cn(
-                        'inline-flex h-7 shrink-0 items-center justify-center align-middle ml-2 print:hidden',
-                        expanded ? 'w-7' : 'w-px',
-                      )}
-                      aria-hidden={!expanded}
-                    >
-                      {expanded && <CopyLinkButton slug={itemSlug} onCopy={handleLinkCopy} />}
-                    </span>
                   </h3>
                 </CardTitle>
 
@@ -408,16 +399,17 @@ const ChecklistItem = ({
               />
               {serializedBody && <MDXRemote {...serializedBody} components={bodyComponents} />}
 
-              {/* Mark as done button row */}
-              {itemType !== 'info' && (
-                <div
-                  data-pagefind-ignore
-                  className={cn(
-                    'pt-4 border-muted-foreground/20 print:hidden',
-                    'flex flex-col sm:flex-row items-start sm:items-center gap-3',
-                    'w-full',
-                  )}
-                >
+              {/* Mark as done button row, with the copy-link icon beside it.
+                  Info items have no button but keep the icon. */}
+              <div
+                data-pagefind-ignore
+                className={cn(
+                  'pt-4 border-muted-foreground/20 print:hidden',
+                  'flex flex-row items-center gap-3',
+                  'w-full',
+                )}
+              >
+                {itemType !== 'info' && (
                   <Button
                     variant="outline"
                     size="sm"
@@ -427,7 +419,7 @@ const ChecklistItem = ({
                     }}
                     className={cn(
                       'flex items-center justify-center sm:justify-start gap-3 transition-all duration-300',
-                      'w-full sm:w-auto sm:min-w-[140px] py-3 sm:py-2',
+                      'flex-1 sm:flex-none sm:min-w-[140px] py-3 sm:py-2',
                       // Primary outline styling for unchecked state
                       !isChecked &&
                         'border-primary text-primary hover:bg-primary/10 hover:text-primary hover:border-primary',
@@ -447,8 +439,9 @@ const ChecklistItem = ({
                     />
                     {isChecked ? t('checklistItem.completed') : t('checklistItem.markAsDone')}
                   </Button>
-                </div>
-              )}
+                )}
+                <CopyLinkButton slug={itemSlug} onCopy={handleLinkCopy} />
+              </div>
             </CardContent>
           </div>
         </div>
