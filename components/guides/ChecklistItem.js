@@ -15,6 +15,7 @@ import CopyLinkButton from '@/components/CopyLinkButton';
 import { useAnalytics } from '@/hooks/use-analytics';
 import { useTranslations } from 'next-intl';
 import { useChecklistProgressActions } from '@/contexts/ChecklistProgressContext';
+import { ChecklistItemProvider } from '@/contexts/ChecklistItemContext';
 import { checklistItemAnchorId } from '@/lib/search';
 
 const InfoItemIcon = () => {
@@ -397,7 +398,11 @@ const ChecklistItem = ({
                   },
                 ]}
               />
-              {serializedBody && <MDXRemote {...serializedBody} components={bodyComponents} />}
+              {serializedBody && (
+                <ChecklistItemProvider value={{ expanded }}>
+                  <MDXRemote {...serializedBody} components={bodyComponents} />
+                </ChecklistItemProvider>
+              )}
 
               {/* Mark as done button row, with the copy-link icon beside it.
                   Info items have no button but keep the icon. */}

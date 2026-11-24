@@ -36,6 +36,7 @@ import { osProductForDevice, latestSupportedOsRelease } from '@/lib/updates/snap
 import { formatMonthYear } from '@/lib/updates/format-date';
 import { buildDisplayLabel } from '@/lib/updates/search';
 import { useAnalytics } from '@/hooks/use-analytics';
+import { useUpdateCheckerSurface } from './checker-surface';
 
 const ESSENTIALS_HREF = '/essentials/';
 
@@ -90,6 +91,25 @@ const boldDateChunks = (chunks) => (
  * doesn't fix it because inline-block boundaries override nbsp's break-prevent.
  */
 const nowrapChunks = (chunks) => <span className="whitespace-nowrap">{chunks}</span>;
+
+// Inline, the checker sits in a checklist item's .prose body, and the site's own
+// .prose heading rules in globals.css don't skip not-prose content: an h2 gets top
+// padding and a divider line, an h3 a top margin. These cancel them (utilities win
+// over that base layer).
+const INLINE_H2_RESET = 'pt-0 before:hidden';
+const INLINE_H3_RESET = 'mt-0';
+
+/**
+ * trackEvent that marks events from the inline checker (inside the "updates"
+ * checklist item) with `surface: 'inline'`, so its use can be told apart from
+ * the /updates/ page. Page events are sent unchanged.
+ */
+function useCheckerTrackEvent() {
+  const { trackEvent } = useAnalytics();
+  const { inline } = useUpdateCheckerSurface();
+  return (event) =>
+    trackEvent(inline ? { ...event, data: { ...event.data, surface: 'inline' } } : event);
+}
 
 /**
  * Map a classifyResult variant to the analytics patch-state value. Kept narrow on
@@ -269,13 +289,14 @@ function ResultBox({
   // text-2xl/3xl heading. mt-1 keeps the icon's TOP edge anchored at the
   // same position as the smaller h-6 variant would have used, so the icon
   // grows downward from a consistent flow line through the box stack.
-  const iconSizeClass = iconSize === 'md' ? 'h-10 w-10' : 'h-12 w-12';
+  const { inline } = useUpdateCheckerSurface();
+  const iconSizeClass = inline ? 'h-8 w-8' : iconSize === 'md' ? 'h-10 w-10' : 'h-12 w-12';
   // Asymmetric padding (pl-4 instead of p-6) plus gap-3 (instead of gap-4) so
   // the heading inside a big-icon ResultBox doesn't sit visibly further right
   // than the smaller-panel headings (DeviceConfirmedSummary etc) sharing the
   // same column. Saves ~12px of left offset without shrinking the icon.
   return (
-    <div className={cn('rounded-lg border-2 py-6 pl-4 pr-6', TONE_RING[tone])}>
+    <div className={cn('rounded-lg border-2 py-6 pl-4 pr-6', inline && 'p-4', TONE_RING[tone])}>
       <div className="flex items-start gap-3">
         <IconProp
           className={cn(iconSizeClass, 'shrink-0', TONE_ICON_COLOR[tone], iconClassName)}
@@ -285,12 +306,15 @@ function ResultBox({
           <h2
             className={cn(
               'text-2xl font-semibold leading-tight text-foreground sm:text-3xl',
+              inline && ['text-xl sm:text-xl', INLINE_H2_RESET],
               titleClassName,
             )}
           >
             {title}
           </h2>
-          {subtitle ? <p className="text-base text-foreground/80">{subtitle}</p> : null}
+          {subtitle ? (
+            <p className={cn('text-base text-foreground/80', inline && 'text-sm')}>{subtitle}</p>
+          ) : null}
           {children}
         </div>
       </div>
@@ -345,6 +369,20 @@ function EssentialsPanel() {
 }
 
 /**
+ * The essentials panel and the connector above it, after the usual delay. Left
+ * out inline: the reader is already in a guide, often the essentials guide itself.
+ */
+function EssentialsSlot({ connectorTone }) {
+  const { inline } = useUpdateCheckerSurface();
+  if (inline) return null;
+  return (
+    <DelayedSlideInBox delayMs={ESSENTIALS_DELAY_MS} connectorTone={connectorTone}>
+      <EssentialsPanel />
+    </DelayedSlideInBox>
+  );
+}
+
+/**
  * Block heading with an inline icon — used by the in-box context panels
  * (Why this matters, When you replace it) so the eye can pick them out
  * faster than a wall of body text.
@@ -366,12 +404,18 @@ function BlockHeading({ icon: IconProp, children }) {
 function PrescriptionLine({ formFactor, urgency }) {
   const t = useTranslations();
   const locale = useLocale();
+  const { inline } = useUpdateCheckerSurface();
   const namespace = urgency === 'plan' ? 'ctaPlan' : 'ctaReplace';
   const key = ['phone', 'tablet', 'laptop', 'desktop', 'watch'].includes(formFactor)
     ? formFactor
     : 'generic';
   return (
-    <p className="text-xl font-bold leading-snug text-foreground sm:text-2xl">
+    <p
+      className={cn(
+        'text-xl font-bold leading-snug text-foreground sm:text-2xl',
+        inline && 'text-lg sm:text-lg',
+      )}
+    >
       {t(`updates.result.${namespace}.${key}`)}
     </p>
   );
@@ -385,6 +429,9 @@ function PrescriptionLine({ formFactor, urgency }) {
 function ThreatModelBlock({ soft = false }) {
   const t = useTranslations();
   const locale = useLocale();
+  const { inline } = useUpdateCheckerSurface();
+  // Inline, the checklist item around the checker already explains why updates matter.
+  if (inline) return null;
   return (
     <div className="rounded-md border border-border bg-background/60 p-3">
       <BlockHeading icon={ShieldAlert}>{t('updates.result.threatModelHeader')}</BlockHeading>
@@ -540,9 +587,15 @@ function noUpdatesAvailableLabel(t, osId) {
  * Pass the resolved path content; this component just styles it.
  */
 function PromMenuPath({ children }) {
+  const { inline } = useUpdateCheckerSurface();
   if (!children) return null;
   return (
-    <p className="rounded-md bg-background/60 px-4 py-3 text-base font-semibold text-foreground sm:text-lg">
+    <p
+      className={cn(
+        'rounded-md bg-background/60 px-4 py-3 text-base font-semibold text-foreground sm:text-lg',
+        inline && 'px-3 py-2 sm:text-base',
+      )}
+    >
       {children}
     </p>
   );
@@ -660,7 +713,8 @@ function DeviceConfirmedSummary({ product, release, displayLabel, classification
 function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder }) {
   const t = useTranslations();
   const locale = useLocale();
-  const { trackEvent } = useAnalytics();
+  const trackEvent = useCheckerTrackEvent();
+  const { inline } = useUpdateCheckerSurface();
   const options = buildOsCheckOptions(snapshot, product, release);
 
   const osProduct = osProductForDevice(snapshot, product);
@@ -707,8 +761,15 @@ function OsPickerStep({ snapshot, product, release, onPickLatest, onPickOlder })
     : null;
 
   return (
-    <div className="rounded-lg border-2 border-primary/50 bg-primary/5 p-6">
-      <h3 className="text-xl font-semibold leading-tight text-foreground sm:text-2xl">{heading}</h3>
+    <div className={cn('rounded-lg border-2 border-primary/50 bg-primary/5 p-6', inline && 'p-4')}>
+      <h3
+        className={cn(
+          'text-xl font-semibold leading-tight text-foreground sm:text-2xl',
+          inline && ['text-lg sm:text-lg', INLINE_H3_RESET],
+        )}
+      >
+        {heading}
+      </h3>
 
       {osId && menuPath ? (
         <div className="mt-3 space-y-2">
@@ -1058,6 +1119,7 @@ function OsNeedsUpdateBox({
   // Prefer the dedicated update-path copy; fall back to the version-finding path so
   // we never end up with a "How to update:" heading sitting above empty space when a
   // settingsPath translation is missing for the resolved OS id.
+  const { inline } = useUpdateCheckerSurface();
   const updatePath = osId ? osUpdatePath(t, osId) || osVersionPath(t, osId) : null;
 
   const osLabel = shortOsLabel(t, osProduct);
@@ -1091,11 +1153,19 @@ function OsNeedsUpdateBox({
   })();
 
   return (
-    <div className="rounded-lg border-2 border-warning/50 bg-warning/5 p-6">
-      <div className="flex items-start gap-4">
-        <AlertTriangle className="h-12 w-12 shrink-0 text-warning" aria-hidden="true" />
+    <div className={cn('rounded-lg border-2 border-warning/50 bg-warning/5 p-6', inline && 'p-4')}>
+      <div className={cn('flex items-start gap-4', inline && 'gap-3')}>
+        <AlertTriangle
+          className={cn('h-12 w-12 shrink-0 text-warning', inline && 'h-8 w-8')}
+          aria-hidden="true"
+        />
         <div className="min-w-0 flex-1 space-y-3">
-          <h2 className="text-2xl font-semibold leading-tight text-foreground sm:text-3xl">
+          <h2
+            className={cn(
+              'text-2xl font-semibold leading-tight text-foreground sm:text-3xl',
+              inline && ['text-xl sm:text-xl', INLINE_H2_RESET],
+            )}
+          >
             {heading}
           </h2>
           <p className="text-base text-foreground/80">{t('updates.result.osNeedsUpdate.body')}</p>
@@ -1320,11 +1390,7 @@ function DeviceSupported({ snapshot, product, release, classification, onReset }
         </SlideInBox>
       ) : null}
 
-      {showFirst && showEssentials ? (
-        <DelayedSlideInBox delayMs={ESSENTIALS_DELAY_MS} connectorTone={essentialsTone}>
-          <EssentialsPanel />
-        </DelayedSlideInBox>
-      ) : null}
+      {showFirst && showEssentials ? <EssentialsSlot connectorTone={essentialsTone} /> : null}
     </div>
   );
 }
@@ -1442,9 +1508,7 @@ function DeviceUncertain({ snapshot, product, release, classification, onReset }
           <ResultActions product={product} onReset={onReset} />
         </ResultBox>
       </DelayedSlideInBox>
-      <DelayedSlideInBox delayMs={ESSENTIALS_DELAY_MS} connectorTone="warning">
-        <EssentialsPanel />
-      </DelayedSlideInBox>
+      <EssentialsSlot connectorTone="warning" />
     </>
   );
 }
@@ -1608,9 +1672,7 @@ function DeviceEol(props) {
       <DelayedSlideInBox delayMs={STAGGER_FIRST_MS}>
         <DeviceEolBox {...props} />
       </DelayedSlideInBox>
-      <DelayedSlideInBox delayMs={ESSENTIALS_DELAY_MS} connectorTone="destructive">
-        <EssentialsPanel />
-      </DelayedSlideInBox>
+      <EssentialsSlot connectorTone="destructive" />
     </>
   );
 }
@@ -1738,7 +1800,7 @@ function OsPatchPickerStep({
 }) {
   const t = useTranslations();
   const locale = useLocale();
-  const { trackEvent } = useAnalytics();
+  const trackEvent = useCheckerTrackEvent();
 
   // Windows publishes a build family (e.g. 10.0.28000) but winver / Settings
   // show "OS Build 28000.4946" with a monthly cumulative-update suffix we don't
@@ -1746,6 +1808,7 @@ function OsPatchPickerStep({
   // sees that "10.0." prefix anyway. Fall through to the updates-available
   // question, which points them at Settings → Windows Update where they can
   // actually see whether anything is pending.
+  const { inline } = useUpdateCheckerSurface();
   const hasPatchVersion = !!release.latestVersion && product.id !== 'windows';
   const menuPath = hasPatchVersion ? osVersionPath(t, product.id) : osUpdatePath(t, product.id);
 
@@ -1767,8 +1830,15 @@ function OsPatchPickerStep({
     : t('updates.result.osCheckStep.subheadingUpdatesHelp');
 
   return (
-    <div className="rounded-lg border-2 border-primary/50 bg-primary/5 p-6">
-      <h3 className="text-xl font-semibold leading-tight text-foreground sm:text-2xl">{heading}</h3>
+    <div className={cn('rounded-lg border-2 border-primary/50 bg-primary/5 p-6', inline && 'p-4')}>
+      <h3
+        className={cn(
+          'text-xl font-semibold leading-tight text-foreground sm:text-2xl',
+          inline && ['text-lg sm:text-lg', INLINE_H3_RESET],
+        )}
+      >
+        {heading}
+      </h3>
 
       {menuPath ? (
         <div className="mt-3 space-y-2">
@@ -1958,11 +2028,7 @@ function OsResultFlow({ snapshot, product, release, classification, onReset }) {
         </SlideInBox>
       ) : null}
 
-      {showFirst && showEssentials ? (
-        <DelayedSlideInBox delayMs={ESSENTIALS_DELAY_MS} connectorTone={essentialsTone}>
-          <EssentialsPanel />
-        </DelayedSlideInBox>
-      ) : null}
+      {showFirst && showEssentials ? <EssentialsSlot connectorTone={essentialsTone} /> : null}
     </div>
   );
 }
@@ -1970,6 +2036,7 @@ function OsResultFlow({ snapshot, product, release, classification, onReset }) {
 function OsEol({ product, release, onReset }) {
   const t = useTranslations();
   const locale = useLocale();
+  const { inline } = useUpdateCheckerSurface();
   const displayLabel = buildDisplayLabel(product, release);
 
   let advice = null;
@@ -1998,7 +2065,14 @@ function OsEol({ product, release, onReset }) {
         >
           {advice ? (
             <div className="space-y-2">
-              <p className="text-xl font-bold leading-snug text-foreground sm:text-2xl">{advice}</p>
+              <p
+                className={cn(
+                  'text-xl font-bold leading-snug text-foreground sm:text-2xl',
+                  inline && 'text-lg sm:text-lg',
+                )}
+              >
+                {advice}
+              </p>
               <p className="text-sm text-foreground/90">{t('updates.result.osCheckDeviceHint')}</p>
             </div>
           ) : null}
@@ -2006,9 +2080,7 @@ function OsEol({ product, release, onReset }) {
           <ResultActions product={product} onReset={onReset} />
         </ResultBox>
       </DelayedSlideInBox>
-      <DelayedSlideInBox delayMs={ESSENTIALS_DELAY_MS} connectorTone="destructive">
-        <EssentialsPanel />
-      </DelayedSlideInBox>
+      <EssentialsSlot connectorTone="destructive" />
     </>
   );
 }
@@ -2017,7 +2089,7 @@ function OsEol({ product, release, onReset }) {
 
 export default function ResultCard({ snapshot, product, release, onReset }) {
   const classification = classifyResult({ product, release }, { snapshot });
-  const { trackEvent } = useAnalytics();
+  const trackEvent = useCheckerTrackEvent();
   // Fire once per ResultCard mount. UpdatesPage keys this component by product/release,
   // so a new selection re-mounts and re-fires; reset/edit unmounts so we don't double-log.
   // The hasFiredRef guard prevents React 18 strict-mode dev double-fire (effect runs
