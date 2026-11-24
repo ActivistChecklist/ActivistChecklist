@@ -384,14 +384,22 @@ export default function PassphraseGenerator({ anchorId }) {
           className="grid w-80 gap-2.5 text-sm"
         >
           {bits !== null && (
-            <p className="m-0 font-heading text-xl font-bold leading-tight text-foreground">
+            <p className="m-0 font-heading text-base font-semibold leading-snug text-foreground">
               {t.rich('passphraseGenerator.strengthBits', {
                 bits,
-                link: strongPhraseLink,
+                // The number is what changes with each option, so it gets the
+                // highlight rather than the whole line
+                num: (chunks) => (
+                  <span className="rounded-md bg-primary/10 px-1.5 py-0.5 font-bold tabular-nums text-primary">
+                    {chunks}
+                  </span>
+                ),
               })}
             </p>
           )}
-          <p className="m-0 text-muted-foreground">{t('passphraseGenerator.strengthExplainer')}</p>
+          <p className="m-0 text-muted-foreground">
+            {t.rich('passphraseGenerator.strengthExplainer', { link: strongPhraseLink })}
+          </p>
           <div className="grid gap-1">
             <p className="m-0 font-semibold text-foreground">
               {t('passphraseGenerator.perLetter')}
