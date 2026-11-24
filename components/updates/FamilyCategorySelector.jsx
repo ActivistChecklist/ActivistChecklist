@@ -8,6 +8,7 @@ import { FaWindows } from 'react-icons/fa';
 import { cn } from '@/lib/utils';
 import { SUB_CATEGORIES_BY_PLATFORM, leafForPlatform } from '@/lib/updates/categories';
 import { PLATFORM_GROUP_ICON, BRAND_ICON } from '@/lib/updates/family-icons';
+import { useUpdateCheckerSurface } from './checker-surface';
 
 // Inline icon for menu-path text: inline-block + align below baseline so it
 // centres on x-height; h-[1em] scales with surrounding font size; mr-1 is the
@@ -31,6 +32,7 @@ const PLATFORMS = ['apple', 'android', 'windows', 'other'];
  */
 export default function FamilyCategorySelector({ value, onChange }) {
   const t = useTranslations();
+  const { inline } = useUpdateCheckerSurface();
   const platform = value?.platform ?? null;
   const subCategory = value?.subCategory ?? null;
   const step = subCategory ? 'l3' : platform ? 'l2' : 'l1';
@@ -68,7 +70,7 @@ export default function FamilyCategorySelector({ value, onChange }) {
     // Mobile: let height follow content so the panel doesn't reserve empty space below
     // shorter steps. Desktop keeps a small min-height so L1→L2→L3 transitions don't
     // shove the search input around.
-    <div className="sm:min-h-[8rem]">
+    <div className={inline ? undefined : 'sm:min-h-[8rem]'}>
       {step === 'l1' ? <L1 onPick={pickPlatform} /> : null}
       {step === 'l2' ? <L2 platform={platform} onPick={pickSubCategory} onBack={backToL1} /> : null}
       {step === 'l3' ? (
@@ -85,6 +87,7 @@ export default function FamilyCategorySelector({ value, onChange }) {
 
 function L1({ onPick }) {
   const t = useTranslations();
+  const { inline } = useUpdateCheckerSurface();
   return (
     <div key="l1" className="animate-in fade-in slide-in-from-left-2 duration-500 space-y-3">
       <p className="block text-sm font-medium text-foreground">
@@ -101,13 +104,17 @@ function L1({ onPick }) {
               className={cn(
                 'group flex flex-col items-center gap-2 rounded-lg border-2 border-border bg-background p-4 text-center transition-colors',
                 'hover:border-primary hover:bg-primary/5 focus:outline-hidden focus:ring-2 focus:ring-primary/40',
+                inline && 'gap-1.5 p-3',
               )}
             >
               <Icon
-                className="h-8 w-8 text-foreground/80 group-hover:text-primary"
+                className={cn(
+                  'h-8 w-8 text-foreground/80 group-hover:text-primary',
+                  inline && 'h-6 w-6',
+                )}
                 aria-hidden="true"
               />
-              <div className="text-base font-semibold text-foreground">
+              <div className={cn('text-base font-semibold text-foreground', inline && 'text-sm')}>
                 {t(`updates.platform.${p}`)}
               </div>
             </button>

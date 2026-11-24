@@ -531,6 +531,21 @@ const passcodeGeneratorComponent = block({
   },
 });
 
+/** The /updates/ checker, inline in a checklist item (components/updates/InlineUpdateChecker.jsx). */
+const updateCheckerComponent = block({
+  label: 'Update checker',
+  description:
+    'Checks whether a phone or computer still gets security updates, like the /updates/ page',
+  schema: {},
+  ContentView() {
+    return (
+      <div style={{ fontSize: 13, color: '#64748b' }}>
+        🔄 Update checker (prints as a link to /updates/)
+      </div>
+    );
+  },
+});
+
 // ─── Guide-specific components ────────────────────────────────────────────────
 
 const sectionComponent = wrapper({
@@ -1007,6 +1022,7 @@ export default config({
             ...contentComponents,
             Badge: badgeComponent,
             PasscodeGenerator: passcodeGeneratorComponent,
+            UpdateChecker: updateCheckerComponent,
           },
         }),
       },

@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
+import { cn } from '@/lib/utils';
 import { useEolSnapshot } from '@/hooks/use-eol-snapshot';
 import { findRelease } from '@/lib/updates/snapshot';
 import { buildDisplayLabel } from '@/lib/updates/search';
@@ -11,6 +12,7 @@ import DeviceInfoCard from './DeviceInfoCard';
 import DeviceSearchInput from './DeviceSearchInput';
 import FamilyCategorySelector from './FamilyCategorySelector';
 import ResultCard from './ResultCard';
+import { UpdateCheckerSurfaceProvider } from './checker-surface';
 import PageNotices from '@/components/layout/PageNotices';
 
 // Snapshot is regenerated daily by the cron prebuild. Anything older than this
@@ -41,9 +43,17 @@ function formatStaleDate(iso) {
   return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 }
 
-export default function UpdatesPage() {
+/**
+ * The whole checker: platform picker, device search, device card and result
+ * steps. The /updates/ page renders it as is. `inline` renders the compact copy
+ * that sits inside the "updates" checklist item (see checker-surface.js): no
+ * hero or page notices, no autofocus, and the selection stays out of the URL so
+ * it doesn't touch the guide's address or history.
+ */
+export function UpdateChecker({ inline = false }) {
   const t = useTranslations();
   const { status, snapshot } = useEolSnapshot();
+  const surface = useMemo(() => ({ inline }), [inline]);
 
   // Drill-down state: { platform, subCategory } | null
   const [category, setCategory] = useState(null);
@@ -62,7 +72,7 @@ export default function UpdatesPage() {
 
   // Restore selection from URL on mount + when snapshot loads.
   useEffect(() => {
-    if (!snapshot) return;
+    if (inline || !snapshot) return;
     const params = new URLSearchParams(window.location.search);
     const q = params.get('q');
     if (!q) return;
@@ -70,7 +80,7 @@ export default function UpdatesPage() {
     if (productId && releaseId && findRelease(snapshot, productId, releaseId)) {
       setSelection({ productId, releaseId });
     }
-  }, [snapshot]);
+  }, [inline, snapshot]);
 
   // Sync selection back to URL. We pushState so each user-driven selection
   // change creates a history entry — pressing Back returns to the blank form
@@ -78,7 +88,7 @@ export default function UpdatesPage() {
   // duplicate entries on initial mount/restore and on popstate-driven syncs,
   // where the URL already matches the new selection.
   useEffect(() => {
-    if (!snapshot) return;
+    if (inline || !snapshot) return;
     const url = new URL(window.location.href);
     if (selection) {
       url.searchParams.set('q', `${selection.productId}/${selection.releaseId}`);
@@ -88,7 +98,7 @@ export default function UpdatesPage() {
     const next = url.toString();
     if (next === window.location.href) return;
     window.history.pushState({}, '', next);
-  }, [selection, snapshot]);
+  }, [inline, selection, snapshot]);
 
   // Clear stale selection if the URL points at a product/release no longer in the snapshot.
   useEffect(() => {
@@ -100,6 +110,7 @@ export default function UpdatesPage() {
 
   // Browser back/forward — keep state in sync if the user navigates.
   useEffect(() => {
+    if (inline) return undefined;
     function onPop() {
       const params = new URLSearchParams(window.location.search);
       const q = params.get('q');
@@ -112,7 +123,7 @@ export default function UpdatesPage() {
     }
     window.addEventListener('popstate', onPop);
     return () => window.removeEventListener('popstate', onPop);
-  }, []);
+  }, [inline]);
 
   function handleCategoryChange(next) {
     setCategory(next);
@@ -148,8 +159,8 @@ export default function UpdatesPage() {
   // Loading state ─────────────────────────────────────
   if (status === 'loading') {
     return (
-      <div className="space-y-6">
-        <PageHero />
+      <div className={inline ? 'space-y-4' : 'space-y-6'}>
+        {inline ? null : <PageHero />}
         <LoadingSkeleton label={t('updates.loading')} />
       </div>
     );
@@ -158,8 +169,8 @@ export default function UpdatesPage() {
   // Error state ───────────────────────────────────────
   if (status === 'error' || !snapshot) {
     return (
-      <div className="space-y-6">
-        <PageHero />
+      <div className={inline ? 'space-y-4' : 'space-y-6'}>
+        {inline ? null : <PageHero />}
         <div className="rounded-md border border-destructive/30 bg-destructive/5 p-4 text-sm">
           {t.rich('updates.loadError', {
             retryLink: (chunks) => (
@@ -224,49 +235,58 @@ export default function UpdatesPage() {
     // the bottom fills in naturally when the user picks a device and the
     // result + EssentialsPanel stack expands. Works for mobile and desktop —
     // the viewport-height baseline is always at least dropdown-height + chrome.
-    <div className="min-h-screen space-y-6">
-      <PageHero />
-      <PageNotices initialNotices={pageNotices} />
+    // Inline, the checker sits in a checklist item whose body clips overflow, so
+    // the dropdown is in the page flow there instead (see DeviceSearchInput) and
+    // there is no height to reserve.
+    <UpdateCheckerSurfaceProvider value={surface}>
+      <div className={cn(inline ? 'space-y-4' : 'min-h-screen space-y-6')}>
+        {inline ? null : <PageHero />}
+        {inline ? null : <PageNotices initialNotices={pageNotices} />}
 
-      {found ? null : <FamilyCategorySelector value={category} onChange={handleCategoryChange} />}
+        {found ? null : <FamilyCategorySelector value={category} onChange={handleCategoryChange} />}
 
-      {/* When a device is selected, group the device card and result block in a
+        {/* When a device is selected, group the device card and result block in a
           single space-y-0 stack so the connector arrows inside ResultCard can sit
           flush against the device card above. The page-level space-y-6 still
           separates this group from PageHero / FamilyCategorySelector. */}
-      {found ? (
-        <div className="space-y-0">
-          <DeviceInfoCard
-            product={found.product}
-            release={found.release}
-            onReset={handleReset}
-            onEdit={handleEdit}
-          />
-          <ResultCard
-            key={`${found.product.id}/${found.release.id}`}
+        {found ? (
+          <div className="space-y-0">
+            <DeviceInfoCard
+              product={found.product}
+              release={found.release}
+              onReset={handleReset}
+              onEdit={handleEdit}
+            />
+            <ResultCard
+              key={`${found.product.id}/${found.release.id}`}
+              snapshot={snapshot}
+              product={found.product}
+              release={found.release}
+              onReset={handleReset}
+            />
+          </div>
+        ) : (
+          <DeviceSearchInput
+            key={resetKey}
             snapshot={snapshot}
-            product={found.product}
-            release={found.release}
-            onReset={handleReset}
+            priorityProductIds={priorityProductIds}
+            selectedLabel={selectedLabel}
+            seedQuery={seedQuery}
+            onSeedConsumed={() => setSeedQuery(null)}
+            onSelect={handleSelect}
+            onClear={handleReset}
+            autoFocus={!inline}
           />
-        </div>
-      ) : (
-        <DeviceSearchInput
-          key={resetKey}
-          snapshot={snapshot}
-          priorityProductIds={priorityProductIds}
-          selectedLabel={selectedLabel}
-          seedQuery={seedQuery}
-          onSeedConsumed={() => setSeedQuery(null)}
-          onSelect={handleSelect}
-          onClear={handleReset}
-          autoFocus
-        />
-      )}
+        )}
 
-      <FooterCredit snapshot={snapshot} />
-    </div>
+        <FooterCredit snapshot={snapshot} />
+      </div>
+    </UpdateCheckerSurfaceProvider>
   );
+}
+
+export default function UpdatesPage() {
+  return <UpdateChecker />;
 }
 
 /**

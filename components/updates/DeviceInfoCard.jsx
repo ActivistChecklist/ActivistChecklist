@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { buildDisplayLabel } from '@/lib/updates/search';
 import { iconForFamily } from '@/lib/updates/family-icons';
 import { formatMonthYear } from '@/lib/updates/format-date';
+import { useUpdateCheckerSurface } from './checker-surface';
 
 /**
  * Compact info card showing the picked device/OS with its brand icon, display name,
@@ -23,6 +24,7 @@ export default function DeviceInfoCard({ product, release, onReset, onEdit }) {
   // Was hardcoded to en-US here while ResultCard already localized the same date.
   // Pass the page locale so /es/ readers get a Spanish month name either way.
   const locale = useLocale();
+  const { inline } = useUpdateCheckerSurface();
   const Icon = iconForFamily(product.family);
   const label = buildDisplayLabel(product, release);
 
@@ -83,6 +85,8 @@ export default function DeviceInfoCard({ product, release, onReset, onEdit }) {
         // /50 tone borders on the result boxes below, so the device card no
         // longer looks dim relative to the colored boxes.
         'group flex items-center gap-3 rounded-lg border-2 border-muted-foreground/50 bg-background px-4 py-4 shadow-sm transition-colors sm:py-5',
+        // Matches the inline search input's shell, for the same reason as above.
+        inline && 'px-3 py-2.5 sm:py-2.5',
         // hover gets a subtle primary-tinted bg in addition to the primary
         // border, mirroring the L1 platform-card hover state for consistency.
         onEdit

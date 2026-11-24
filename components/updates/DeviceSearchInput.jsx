@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { Command as CommandPrimitive } from 'cmdk';
 import { HelpCircle, Search, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -10,6 +10,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { buildFuse, buildSearchIndex, searchIndex } from '@/lib/updates/search';
 import { iconForFamily } from '@/lib/updates/family-icons';
 import { looksLikeWindowsLaptopQuery } from '@/lib/updates/no-match-hints';
+import { useUpdateCheckerSurface } from './checker-surface';
 
 function RowIcon({ family }) {
   const Icon = iconForFamily(family);
@@ -157,6 +158,10 @@ export default function DeviceSearchInput({
   autoFocus = false,
 }) {
   const t = useTranslations();
+  const { inline } = useUpdateCheckerSurface();
+  // Generated rather than fixed so the label still points at the right input if a
+  // page ever holds more than one checker.
+  const inputId = useId();
   const [query, setQuery] = useState(selectedLabel || '');
   const [open, setOpen] = useState(false);
   const [hasSelection, setHasSelection] = useState(Boolean(selectedLabel));
@@ -313,10 +318,7 @@ export default function DeviceSearchInput({
   return (
     <div ref={containerRef} className="relative w-full">
       <div className="mb-1.5 flex items-center gap-1.5">
-        <label
-          htmlFor="updates-device-search"
-          className="block text-sm font-medium text-foreground"
-        >
+        <label htmlFor={inputId} className="block text-sm font-medium text-foreground">
           {t('updates.searchLabel')}
         </label>
         <TooltipProvider delayDuration={150}>
@@ -357,18 +359,25 @@ export default function DeviceSearchInput({
             className={cn(
               'flex items-center gap-2 rounded-lg border-2 border-input bg-background px-4 py-4 shadow-sm transition-colors sm:py-5',
               'focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20',
+              inline && 'px-3 py-2.5 sm:py-2.5',
             )}
           >
-            <Search className="h-6 w-6 shrink-0 text-muted-foreground" aria-hidden="true" />
+            <Search
+              className={cn('h-6 w-6 shrink-0 text-muted-foreground', inline && 'h-5 w-5')}
+              aria-hidden="true"
+            />
             <CommandPrimitive.Input
               ref={inputRef}
-              id="updates-device-search"
+              id={inputId}
               value={query}
               onValueChange={handleChange}
               onFocus={() => setOpen(true)}
               placeholder={t('updates.searchPlaceholder')}
               aria-label={t('updates.searchAriaLabel')}
-              className="flex-1 bg-transparent text-lg outline-hidden placeholder:text-muted-foreground sm:text-xl"
+              className={cn(
+                'flex-1 bg-transparent text-lg outline-hidden placeholder:text-muted-foreground sm:text-xl',
+                inline && 'min-w-0 text-base sm:text-base',
+              )}
             />
             {showClearButton ? (
               <button
@@ -383,7 +392,15 @@ export default function DeviceSearchInput({
           </div>
 
           {showResults || showNoMatches ? (
-            <div className="absolute left-0 right-0 top-full z-20 mt-2 overflow-hidden rounded-lg border border-border bg-popover shadow-lg">
+            // Inline, the results push the content below them down instead of
+            // floating over it: a checklist item's body clips anything that
+            // overflows it, so a floating list would be cut off.
+            <div
+              className={cn(
+                'mt-2 overflow-hidden rounded-lg border border-border bg-popover shadow-lg',
+                inline ? 'relative' : 'absolute left-0 right-0 top-full z-20',
+              )}
+            >
               {showResults ? (
                 <>
                   {/* If the query looks like a Windows-laptop brand we may have
