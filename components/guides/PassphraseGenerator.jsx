@@ -28,12 +28,13 @@ import {
   joinWords,
   passphraseBits,
 } from '@/lib/passphrase-generator';
-import SHORT_WORDS from '@/lib/wordlists/orchard-street-alpha';
 
-// The short list ships with the page. The long one is about 158 KB, so it
-// only loads if the reader picks it in Options.
+// Neither list ships in the page's main JavaScript, so a slow phone can show
+// the page before it has the words. The short list (about 7 KB) starts
+// loading when the generator mounts. The long one (about 158 KB) only loads
+// if the reader picks it in Options.
 const WORDLISTS = {
-  short: () => Promise.resolve(SHORT_WORDS),
+  short: () => import('@/lib/wordlists/orchard-street-alpha').then((m) => m.default),
   long: () => import('@/lib/wordlists/orchard-street-long').then((m) => m.default),
 };
 const LIST_LABELS = {
@@ -118,8 +119,9 @@ function Segments({ name, choices, value, onChange, labelClassName, className })
  * so the two pages feel the same: a large result, a New passphrase button and a
  * word count picker, with everything else behind Options.
  *
- * - Made only in the reader's browser, after mount, for the same reasons as
- *   the passcode: no passphrase in the static HTML or the search index.
+ * - Made only in the reader's browser, once the word list has loaded after
+ *   mount, for the same reasons as the passcode: no passphrase in the static
+ *   HTML or the search index.
  * - Renders nothing while printing.
  * - Unlike the passcode, this one can be copied, since password managers and
  *   laptop setup screens accept paste: with the Copy button, or by clicking
@@ -137,7 +139,7 @@ export default function PassphraseGenerator() {
   const id = useId();
   const [count, setCount] = useState(DEFAULT_WORD_COUNT);
   const [options, setOptions] = useState(DEFAULT_OPTIONS);
-  const [loadedLists, setLoadedLists] = useState({ short: SHORT_WORDS });
+  const [loadedLists, setLoadedLists] = useState({});
   const [draw, setDraw] = useState(null);
   const [unavailable, setUnavailable] = useState(false);
   const [refreshes, setRefreshes] = useState(0);
@@ -152,16 +154,30 @@ export default function PassphraseGenerator() {
   // already switched away from doesn't replace the passphrase.
   const chosenList = useRef(DEFAULT_OPTIONS.list);
 
-  const wordlist = loadedLists[options.list] ?? SHORT_WORDS;
+  // Undefined until the chosen list has loaded
+  const wordlist = loadedLists[options.list];
 
   useEffect(() => {
-    try {
-      setDraw(makeDraw(SHORT_WORDS, DEFAULT_WORD_COUNT));
-    } catch {
-      setUnavailable(true);
-    }
+    let unmounted = false;
+    const list = DEFAULT_OPTIONS.list;
+    WORDLISTS[list]()
+      .then((words) => {
+        if (unmounted) return;
+        setLoadedLists((lists) => ({ ...lists, [list]: words }));
+        // The reader may have picked the other list while this one loaded
+        if (chosenList.current === list) setDraw(makeDraw(words, DEFAULT_WORD_COUNT));
+      })
+      .catch(() => {
+        // No crypto.getRandomValues, or the list couldn't be downloaded.
+        // Either way there's no passphrase to show, so hide the generator
+        // rather than leave a placeholder that never fills in.
+        if (!unmounted) setUnavailable(true);
+      });
     if (!navigator.clipboard?.writeText) setClipboardMissing(true);
-    return () => clearTimeout(copiedTimer.current);
+    return () => {
+      unmounted = true;
+      clearTimeout(copiedTimer.current);
+    };
   }, []);
 
   useEffect(() => {
@@ -170,7 +186,9 @@ export default function PassphraseGenerator() {
     const replaceOnPageHide = (event) => {
       if (!event.persisted) return;
       flushSync(() =>
-        setDraw((current) => (current ? makeDraw(wordlist, current.words.length) : current)),
+        setDraw((current) =>
+          current && wordlist ? makeDraw(wordlist, current.words.length) : current,
+        ),
       );
     };
     window.addEventListener('pagehide', replaceOnPageHide);
@@ -180,6 +198,8 @@ export default function PassphraseGenerator() {
   if (isPrinting || unavailable) return null;
 
   const generate = (n, words = wordlist) => {
+    // Nothing to draw from until the list has loaded
+    if (!words) return;
     setCount(n);
     setDraw(makeDraw(words, n));
     trackEvent({ name: 'passphrase_generated' });
@@ -191,9 +211,23 @@ export default function PassphraseGenerator() {
   };
 
   const chooseList = async (key) => {
+    const previous = chosenList.current;
     chosenList.current = key;
     setOptions((o) => ({ ...o, list: key }));
-    const words = loadedLists[key] ?? (await WORDLISTS[key]());
+    let words = loadedLists[key];
+    if (!words) {
+      try {
+        words = await WORDLISTS[key]();
+      } catch {
+        // The list couldn't be downloaded (a dropped connection, say). Go back
+        // to the list the passphrase on screen came from.
+        if (chosenList.current === key) {
+          chosenList.current = previous;
+          setOptions((o) => ({ ...o, list: previous }));
+        }
+        return;
+      }
+    }
     if (chosenList.current !== key) return;
     setLoadedLists((lists) => ({ ...lists, [key]: words }));
     generate(count, words);
@@ -294,7 +328,12 @@ export default function PassphraseGenerator() {
               {t.rich('passphraseGenerator.optionsDialog.strength', {
                 bits,
                 link: (chunks) => (
-                  <a href="https://strongphrase.net/" className="link">
+                  <a
+                    href="https://strongphrase.net/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="link"
+                  >
                     {chunks}
                   </a>
                 ),
@@ -338,6 +377,8 @@ export default function PassphraseGenerator() {
               link: (chunks) => (
                 <a
                   href="https://sts10.github.io/2023/04/03/orchard-street-wordlists.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="link"
                 >
                   {chunks}
@@ -365,12 +406,9 @@ export default function PassphraseGenerator() {
         </fieldset>
 
         <fieldset className="m-0 grid min-w-0 gap-3 border-0 p-0">
-          <legend className="mb-1 font-heading text-sm font-bold text-foreground">
+          <legend className="mb-2 font-heading text-sm font-bold text-foreground">
             {t('passphraseGenerator.optionsDialog.extras')}
           </legend>
-          <p className="m-0 text-sm text-muted-foreground">
-            {t('passphraseGenerator.optionsDialog.extrasHint')}
-          </p>
           {['capitalize', 'addNumber', 'addSymbol'].map((name) => (
             <div key={name} className="flex items-center gap-3">
               <Checkbox
@@ -460,7 +498,12 @@ export default function PassphraseGenerator() {
             wraps into those two groups, with Copy and Options as icons. */}
         <div className="flex w-full flex-wrap items-center justify-center gap-x-3 gap-y-2.5">
           <div className="flex items-center gap-2">
-            <Button type="button" onClick={refresh} className={TOOLBAR_BUTTON_CLASSES}>
+            <Button
+              type="button"
+              onClick={refresh}
+              disabled={!draw}
+              className={TOOLBAR_BUTTON_CLASSES}
+            >
               {refreshIcon}
               {t('passphraseGenerator.newPassphrase')}
             </Button>
@@ -474,9 +517,10 @@ export default function PassphraseGenerator() {
                 className={cn(TOOLBAR_BUTTON_CLASSES, 'px-3 sm:px-3.5')}
               >
                 {copied ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}
-                <span className="sr-only sm:not-sr-only">
-                  {t(copied ? 'passphraseGenerator.copied' : 'passphraseGenerator.copy')}
-                </span>
+                {/* The label stays "Copy" so the button never changes width
+                    and wraps the toolbar. The pill on the passphrase says
+                    "Copied", and the live region below announces it. */}
+                <span className="sr-only sm:not-sr-only">{t('passphraseGenerator.copy')}</span>
               </Button>
             )}
           </div>

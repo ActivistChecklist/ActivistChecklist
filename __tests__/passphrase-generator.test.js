@@ -23,6 +23,49 @@ function scriptedFill(...values) {
   };
 }
 
+// Sardinas-Patterson test. True when no string of joined words can be split
+// back into words in two different ways. That is what makes the "Nothing"
+// separator safe and keeps the strength shown accurate. A list doesn't need to
+// be free of prefix words for this (both lists have some), so check the real
+// property instead.
+function isUniquelyDecodable(words) {
+  const codes = new Set(words);
+  const sorted = [...codes].sort();
+  function* startingWith(s) {
+    let lo = 0;
+    let hi = sorted.length;
+    while (lo < hi) {
+      const mid = (lo + hi) >> 1;
+      if (sorted[mid] < s) lo = mid + 1;
+      else hi = mid;
+    }
+    for (let i = lo; i < sorted.length && sorted[i].startsWith(s); i++) yield sorted[i];
+  }
+  // Leftover tails from lining words up against each other. A tail that is
+  // itself a word means two different splits of the same string.
+  const seen = new Set();
+  const queue = [];
+  const add = (tail) => {
+    if (codes.has(tail)) return false;
+    if (tail && !seen.has(tail)) {
+      seen.add(tail);
+      queue.push(tail);
+    }
+    return true;
+  };
+  for (const a of sorted) {
+    for (const b of startingWith(a)) if (b !== a && !add(b.slice(a.length))) return false;
+  }
+  while (queue.length) {
+    const s = queue.pop();
+    for (let k = 1; k < s.length; k++) {
+      if (codes.has(s.slice(0, k)) && !add(s.slice(k))) return false;
+    }
+    for (const b of startingWith(s)) if (b !== s && !add(b.slice(s.length))) return false;
+  }
+  return true;
+}
+
 describe('word lists', () => {
   it.each([
     ['short', SHORT_WORDS, 1296],
@@ -31,6 +74,21 @@ describe('word lists', () => {
     expect(words).toHaveLength(size);
     expect(new Set(words).size).toBe(size);
     for (const word of words) expect(word).toMatch(/^[a-z]+$/);
+  });
+
+  it.each([
+    ['short', SHORT_WORDS],
+    ['long', LONG_WORDS],
+  ])('the %s list is uniquely decodable, so words can be joined with nothing', (_, words) => {
+    expect(isUniquelyDecodable(words)).toBe(true);
+  });
+
+  it('the uniquely decodable check catches lists that can be split two ways', () => {
+    // "adda" + "go" and "add" + "ago" are both "addago"
+    expect(isUniquelyDecodable(['add', 'ago', 'adda', 'go'])).toBe(false);
+    expect(isUniquelyDecodable(['a', 'ab', 'bc', 'c'])).toBe(false);
+    // A prefix word on its own is fine
+    expect(isUniquelyDecodable(['a', 'ab'])).toBe(true);
   });
 });
 

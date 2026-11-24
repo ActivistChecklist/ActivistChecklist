@@ -296,7 +296,7 @@
     "privacy": "This passphrase is made on your device and is never sent to us. You can save it in your <link>password manager</link> (but not your notes app or screenshots). If you write it on paper, destroy it after you memorize it.",
     "optionsDialog": {
       "title": "Passphrase options",
-      "strength": "About {bits} bits of entropy (<link>StrongPhrase.net</link>)",
+      "strength": "About {bits} bits of <link>entropy</link>",
       "wordList": "Word list",
       "listShort": "Short words",
       "listShortDescription": "1,296 short words that are easy to type.",
@@ -309,7 +309,6 @@
       "separatorPeriod": "Period",
       "separatorNone": "Nothing",
       "extras": "Capital letters, numbers and symbols",
-      "extrasHint": "Turn these on if a site or app requires them.",
       "capitalize": "Capitalize each word",
       "addNumber": "Add a number",
       "addSymbol": "Add a symbol",
