@@ -153,6 +153,12 @@ export default function PassphraseGenerator() {
   // The list the reader picked last, so a slow load for a list they have
   // already switched away from doesn't replace the passphrase.
   const chosenList = useRef(DEFAULT_OPTIONS.list);
+  // The word count picked last, for a list that finishes loading after the
+  // reader changed the count
+  const countRef = useRef(DEFAULT_WORD_COUNT);
+  // How the last press on the passphrase was made: "mouse", "touch" or "pen"
+  const pointerType = useRef(null);
+  const [listError, setListError] = useState(false);
 
   // Undefined until the chosen list has loaded
   const wordlist = loadedLists[options.list];
@@ -182,7 +188,12 @@ export default function PassphraseGenerator() {
 
   useEffect(() => {
     // Same as PasscodeGenerator: don't let Back show the same passphrase again
-    // from the back/forward cache.
+    // from the back/forward cache. This only covers full page loads. Client
+    // navigations unmount the page, so Back draws a new one, but turning on
+    // `cacheComponents` in next.config.js would change that: Next would keep
+    // the page alive in <Activity> and Back would show the same passphrase,
+    // with no pagehide. Reset the draw when the page is hidden before turning
+    // it on (see "Preserving UI state" in node_modules/next/dist/docs).
     const replaceOnPageHide = (event) => {
       if (!event.persisted) return;
       flushSync(() =>
@@ -200,6 +211,7 @@ export default function PassphraseGenerator() {
   const generate = (n, words = wordlist) => {
     // Nothing to draw from until the list has loaded
     if (!words) return;
+    countRef.current = n;
     setCount(n);
     setDraw(makeDraw(words, n));
     trackEvent({ name: 'passphrase_generated' });
@@ -213,24 +225,28 @@ export default function PassphraseGenerator() {
   const chooseList = async (key) => {
     const previous = chosenList.current;
     chosenList.current = key;
+    setListError(false);
     setOptions((o) => ({ ...o, list: key }));
     let words = loadedLists[key];
     if (!words) {
       try {
         words = await WORDLISTS[key]();
       } catch {
-        // The list couldn't be downloaded (a dropped connection, say). Go back
-        // to the list the passphrase on screen came from.
+        // The list couldn't be downloaded (a dropped connection, or a deploy
+        // since the page loaded removed the old file). Go back to the list
+        // the passphrase on screen came from, and say so, so the reader
+        // doesn't think they have the bigger list.
         if (chosenList.current === key) {
           chosenList.current = previous;
           setOptions((o) => ({ ...o, list: previous }));
+          setListError(true);
         }
         return;
       }
     }
     if (chosenList.current !== key) return;
     setLoadedLists((lists) => ({ ...lists, [key]: words }));
-    generate(count, words);
+    generate(countRef.current, words);
   };
 
   const copy = async () => {
@@ -259,6 +275,13 @@ export default function PassphraseGenerator() {
   const bits = draw ? passphraseBits(draw.listSize, draw.words.length, options) : null;
   const copied = draw !== null && copiedText === text;
   const clickToCopy = draw !== null && !clipboardMissing;
+  // A tap on a phone fires click too, and a tap is often just to look or
+  // zoom. Copying then would put the passphrase on the clipboard (and into
+  // keyboard clipboard history, or a synced clipboard) without the reader
+  // asking. So only a mouse click copies; everyone else uses the Copy button.
+  const copyOnMouseClick = () => {
+    if (pointerType.current === 'mouse') copy();
+  };
 
   const refreshIcon = (
     <RefreshCw
@@ -269,7 +292,9 @@ export default function PassphraseGenerator() {
   );
 
   // translate="no" so browser translation never sends the passphrase off to be
-  // translated. Only mounted once there is a passphrase, so the first one
+  // translated. Some things outside the page still see it and can't be
+  // switched off from here: app switcher snapshots, Windows Recall, screen
+  // reader speech history and AI assistants that read the page. Only mounted once there is a passphrase, so the first one
   // isn't announced on page load.
   const announcement = draw && (
     <span translate="no" className="sr-only" aria-live="polite">
@@ -303,9 +328,11 @@ export default function PassphraseGenerator() {
 
   const optionsDialog = (
     <Dialog open={optionsOpen} onOpenChange={setOptionsOpen}>
+      {/* print:hidden as well as the isPrinting check, since the dialog is
+          portaled outside the generator's print:hidden wrapper */}
       <DialogContent
         aria-describedby={undefined}
-        className="max-h-[90dvh] gap-5 overflow-y-auto sm:max-w-lg"
+        className="max-h-[90dvh] gap-5 overflow-y-auto sm:max-w-lg print:hidden"
       >
         <DialogHeader>
           <DialogTitle className="font-heading text-xl">
@@ -372,6 +399,11 @@ export default function PassphraseGenerator() {
               </label>
             );
           })}
+          {/* Always in the tree so screen readers announce the error when it
+              appears */}
+          <p role="status" className={cn('m-0 text-sm text-destructive', !listError && 'sr-only')}>
+            {listError ? t('passphraseGenerator.optionsDialog.listLoadError') : ''}
+          </p>
           <p className="m-0 text-xs text-muted-foreground">
             {t.rich('passphraseGenerator.optionsDialog.listCredit', {
               link: (chunks) => (
@@ -453,11 +485,13 @@ export default function PassphraseGenerator() {
         >
           {t('passphraseGenerator.label')}
         </span>
-        {/* Clicking the passphrase copies it too. This is for mice only: the
-            Copy button is the way in for keyboards and screen readers, so the
-            box doesn't add a second tab stop that does the same thing. */}
+        {/* Clicking the passphrase copies it too. This is for mice only (see
+            copyOnMouseClick): the Copy button is the way in for touch,
+            keyboards and screen readers, so the box doesn't add a second tab
+            stop that does the same thing. */}
         <div
-          onClick={clickToCopy ? copy : undefined}
+          onPointerDown={(event) => (pointerType.current = event.pointerType)}
+          onClick={clickToCopy ? copyOnMouseClick : undefined}
           title={clickToCopy ? t('passphraseGenerator.copy') : undefined}
           className={cn(
             'relative grid min-h-[6.25rem] w-full place-items-center rounded-xl border border-primary/20 bg-muted px-3 py-4 transition-colors sm:min-h-[7.5rem] sm:px-6',

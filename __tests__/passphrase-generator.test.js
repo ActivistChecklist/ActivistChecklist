@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   DEFAULT_OPTIONS,
@@ -74,6 +75,19 @@ describe('word lists', () => {
     expect(words).toHaveLength(size);
     expect(new Set(words).size).toBe(size);
     for (const word of words) expect(word).toMatch(/^[a-z]+$/);
+  });
+
+  // SHA-256 of each upstream .txt file at the commit in the list's header
+  // (one word per line, ending in a newline). A changed word would still pass
+  // the checks above, so pin the exact contents.
+  it.each([
+    ['short', SHORT_WORDS, 'f50e9890e62c5cfac535f51193914018591e49e50b56b38b8fd60bcbe7af8796'],
+    ['long', LONG_WORDS, '21b00942246dc7f0ecf5321dc22bc4ce2326b51ea72ea55697d754601ca115d2'],
+  ])('the %s list matches the upstream file byte for byte', (_, words, sha256) => {
+    const hash = createHash('sha256')
+      .update(`${words.join('\n')}\n`)
+      .digest('hex');
+    expect(hash).toBe(sha256);
   });
 
   it.each([

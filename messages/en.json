@@ -293,7 +293,7 @@
     "copy": "Copy",
     "copied": "Copied",
     "shortWarning": "A randomly generated {count}-word passphrase is better than one you thought of yourself, but much easier to crack than a longer passphrase.",
-    "privacy": "This passphrase is made on your device and is never sent to us. You can save it in your <link>password manager</link> (but not your notes app or screenshots). If you write it on paper, destroy it after you memorize it.",
+    "privacy": "This passphrase is made on your device and is never sent to us. You can save it in your <link>password manager</link> (but not your notes app or screenshots). After you paste it, copy something else to clear your clipboard. If you write it on paper, destroy it after you memorize it.",
     "optionsDialog": {
       "title": "Passphrase options",
       "strength": "About {bits} bits of <link>entropy</link>",
@@ -302,6 +302,7 @@
       "listShortDescription": "1,296 short words that are easy to type.",
       "listLong": "Bigger list",
       "listLongDescription": "17,576 longer words, so each word is harder to guess and you need fewer of them.",
+      "listLoadError": "We couldn't download the bigger list. Check your internet connection and try again.",
       "listCredit": "Both lists are from <link>Orchard Street Wordlists</link> (CC BY-SA 4.0).",
       "separator": "Between words",
       "separatorSpace": "Space",
