@@ -1,29 +1,53 @@
 ---
 title: 'Disable AI notification summaries'
 ---
-Google and Apple and Microsoft are all integrating AI features across their platforms in a way that can put your Signal messages at risk of being sent off your device to their servers. Notification summaries are one place where your messages data gets sent off device.
+Google, Apple, and Microsoft are all integrating AI features across their platforms in a way that can put your Signal messages at risk of being sent off your device to their servers. Notification summaries are one place where your message data can get sent off device.
 
 We wrote a separate article on this topic here: [Is Apple Intelligence reading my Signal messages?](/signal-ai/)
 
 Signal has also implemented [some protections against other AI features](https://signal.org/blog/protecting-your-privacy/) that read your screen.
 
-<HowTo title="Option A: How to disable AI notification summaries just for Signal">
+<HowTo title="How to disable AI notification summaries just for Signal">
   #### Option A: Disable AI notification summaries just for Signal
 
   <MenuPath>*iPhone:* Open the **Settings** app > **Notifications** > **Summarize Notifications** > Toggle off **Signal**</MenuPath>
 
-  <MenuPath>*Android:* **Settings** > **Notifications** > **Notification summaries** > **Manage apps** (under **Don't include these apps**) > Toggle off **Signal**</MenuPath>
+  <MenuPath>*Mac:* **System Settings** > **Notifications** > **Summarize Notifications** > Toggle off **Signal**</MenuPath>
 
+  <MenuPath>*Android (Pixel):* **Settings** > **Notifications** > **Notification summaries** > **Manage apps** (under **Don't include these apps**) > Toggle off **Signal**</MenuPath>
+
+  If Signal isn't in the Pixel list, tap **Most recent** and switch it to **All apps**.
+
+  *Android (Samsung):* Samsung doesn't let you turn off summaries for individual apps. Use Option B instead.
 </HowTo>
 
-<HowTo title="How to entirely disable AI notification summaries">
-  #### Option B: Entirely disable AI notification summaries
+<Collapse title="Option B: How to entirely disable AI notification summaries">
+  <HowTo title="Option B: How to entirely disable AI notification summaries">
+    #### Option B: Entirely disable AI notification summaries
+  
+    <MenuPath>*iPhone:* Open the **Settings** app > **Notifications** > **Summarize Notifications** > Toggle off **Summarize Notifications**</MenuPath>
+  
+    <MenuPath>*Mac:* **System Settings** > **Notifications** > **Summarize Notifications** > Toggle off **Summarize Notifications**</MenuPath>
+  
+    <MenuPath>*Android (Pixel):* **Settings** > **Notifications** > **Notification summaries** > Toggle off</MenuPath>
+  
+    <MenuPath>*Android (Samsung):* **Settings** > **Galaxy AI** > **Notification highlights** > **Summarize notifications** > Toggle off</MenuPath>
+  
+    Notes on availability:
+    - **Mac:** Only on Macs with Apple silicon (M1 or newer).
+    - **Pixel:** Only on Pixel 9 and Pixel 10 phones (not the "a" models), and only in English. It's off by default.
+    - **Samsung:** Only on phones running One UI 8.5 or newer, such as the Galaxy S26 and S25.
+  </HowTo>
+<Collapse>
 
-  <MenuPath>*iPhone:* **Settings** > **Notifications** > Toggle off **Summarize Notifications **</MenuPath>
+<HowTo title="Windows: How to keep Windows Recall from capturing Signal">
+  #### Windows: Keep Recall from capturing Signal
 
-  <MenuPath>*Android:* Open **Settings** > **Notifications** > Toggle off **Use notification summaries** (or **Notification summaries**)</MenuPath>
+  Windows doesn't currently summarize notifications with AI. The bigger risk is **Recall**, a feature on some newer "Copilot+" PCs that takes screenshots of your screen every few seconds. If you don't see **Recall & snapshots** in Settings, your PC doesn't have Recall.
 
-  <MenuPath>*Mac:*  > **System Settings** > **Apple Intelligence & Siri** > Toggle off **Apple Intelligence** > **Confirm**</MenuPath>
+  <MenuPath>*Check that Signal's Screen security is on:* Signal Desktop > **Settings** > **Privacy** > **Screen security**</MenuPath>
 
-  *(Mac requires an Apple computer with an M1 processor or newer.)*
+  <MenuPath>*Turn off Recall:* **Settings** > **Privacy & security** > **Recall & snapshots** > Toggle off **Save snapshots** > 
+  On the same page, delete any snapshots Recall has already saved.</MenuPath>
+
 </HowTo>
