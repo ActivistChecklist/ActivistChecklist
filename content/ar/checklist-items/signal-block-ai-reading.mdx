@@ -1,0 +1,35 @@
+---
+title: امنع الذكاء الاصطناعي من قراءة شاشتك أثناء استخدام Signal
+preview: |
+  يحافظ على خصوصية رسائلك حتى لا تُرسَل خارج جهازك لتعالجها أدوات الذكاء الاصطناعي
+---
+
+**لماذا هذا مهم:** صار بإمكان مساعدات الذكاء الاصطناعي المدمجة في الهواتف وأجهزة الكمبيوتر (مثل Siri AI من Apple وGemini من Google) قراءة ما يظهر على شاشتك، وهذا قد يرسل رسائلك خارج جهازك إلى خوادمها. [بدأ Signal بمنع هذا](https://signal.org/blog/protecting-your-privacy/): على أجهزة iPhone التي تعمل بنظام iOS 27، يمنع التقاط لقطات الشاشة داخل التطبيق. وعلى Android، يشغّل خاصية أمان الشاشة Screen Security تلقائيًا عندما يكتشف أن مساعد ذكاء اصطناعي يقرأ الشاشة.
+
+<HowTo title="كيف تشغّل حماية Signal من الذكاء الاصطناعي">
+  <MenuPath>*iPhone:* (iOS 27 أو أحدث) افتح Signal > اضغط على صورة ملفك الشخصي > **الإعدادات** > **الخصوصية** > فعّل **Block Siri AI**</MenuPath>
+
+  <MenuPath>*Android:* افتح Signal > اضغط على صورة ملفك الشخصي لفتح **الإعدادات** > **الخصوصية** > فعّل **Screen Security**</MenuPath>
+</HowTo>
+
+<HowTo title="كيف تمنع أدوات الذكاء الاصطناعي من قراءة Signal على مستوى نظام التشغيل">
+  **iPhone:** خاصية "استبعاد التطبيق" تمنع أكثر من مجرد لقطات شاشة الذكاء الاصطناعي، لذلك من الجيد تفعيلها.
+
+  <MenuPath>*iPhone:* (iOS 27.2 أو أحدث) افتح تطبيق **الإعدادات** > **Siri** > **Excluded Apps** > **Add Apps** > اختر **Signal**</MenuPath>
+
+  **Mac:** في Signal Desktop على Mac، لا توجد حماية افتراضية (مثل الموجودة على iPhone)، لذلك هذا الإعداد هو الطريقة الأساسية لحماية رسائلك.
+
+  <MenuPath>*Mac:* **إعدادات النظام** > **Siri** > **Excluded Apps** > أضف **Signal**</MenuPath>
+
+  **Gemini على Android:** لا يسمح لك Gemini بمنع تطبيقات معيّنة من قراءة شاشتك، لذلك هذا الإعداد يوقف قراءة الشاشة لكل التطبيقات.
+
+  <MenuPath>*Android:* افتح تطبيق **Gemini** > **Settings** > **Device controls** > **Screen context** > أوقف **Use screen and app data**</MenuPath>
+
+  **Windows:** ‏**Recall** خاصية موجودة على بعض أجهزة الكمبيوتر الأحدث، تلتقط صورًا لشاشتك كل بضع ثوانٍ. إذا لم تجد **Recall & snapshots** في الإعدادات، فجهازك لا يحتوي على Recall.
+
+  <MenuPath>*Windows:* Signal Desktop > **Settings** > **Privacy** > **Screen security** > فعّل **Screen security**. (هذا الإعداد يمنع Recall وأدوات لقطات الشاشة الأخرى من التقاط نافذة Signal. وهو مفعّل تلقائيًا على Windows 11.)</MenuPath>
+
+  <MenuPath>*Windows:* *أوقف Recall:* **الإعدادات** > **الخصوصية والأمان** > **Recall & snapshots** > أوقف تشغيل **Save snapshots**. ومن نفس الصفحة، احذف أي لقطات حفظها Recall من قبل.</MenuPath>
+
+  <MenuPath>*Windows:* *احذف Recall نهائيًا (اختياري):* افتح قائمة **ابدأ** > ابحث عن **تشغيل ميزات Windows أو إيقاف تشغيلها** > ألغِ تحديد **Recall**</MenuPath>
+</HowTo>
