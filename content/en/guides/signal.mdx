@@ -13,7 +13,7 @@ relatedGuides:
   - travel
   - spyware
 firstPublished: 2025-01-27
-lastUpdated: 2026-04-03
+lastUpdated: 2026-11-26
 ---
 This guide helps you make sure you are securing your [Signal](https://signal.org/) communications as much as possible. While Signal already [encrypts everything you send](term:end-to-end-encryption), these extra steps ensure your chats stay private, even if your phone is lost, taken, or hacked. You'll learn simple ways to protect your messages, notifications, and identity.
 
@@ -31,10 +31,9 @@ This guide helps you make sure you are securing your [Signal](https://signal.org
 
     <ChecklistItem slug="signal-enable-username" />
 
-    <ChecklistItem slug="signal-link-previews" />
-
     <ChecklistItem slug="signal-relay-calls" />
   </ChecklistItemGroup>
+
 </Section>
 
 <Section title="Protect your messages & calls" slug="messages">
@@ -47,6 +46,10 @@ This guide helps you make sure you are securing your [Signal](https://signal.org
 
     <ChecklistItem slug="signal-disable-notifications" />
 
+    <ChecklistItem slug="signal-block-ai-screen-reading" />
+
+    <ChecklistItem slug="signal-disable-ai" />
+
     <ChecklistItem slug="screen-lock" />
 
     <ChecklistItem slug="signal-hide-calls-in-recent" />
@@ -56,8 +59,6 @@ This guide helps you make sure you are securing your [Signal](https://signal.org
     <ChecklistItem slug="signal-pin" />
 
     <ChecklistItem slug="signal-private-keyboard" />
-
-    <ChecklistItem slug="signal-disable-ai" />
 
     <ChecklistItem slug="fake-signal-support" />
   </ChecklistItemGroup>
@@ -91,21 +92,27 @@ This guide helps you make sure you are securing your [Signal](https://signal.org
   </ChecklistItemGroup>
 </Section>
 
+<Section title="FAQ" slug="FAQ">
+  **What about disabling link previews?**
+
+  Rumors went around that link previews could be used to exploit your device. There's no evidence that was true. You can disable link previews if you like, but we don't list it here since there's no evidence it provides any protections. Your IP address is also protected when your phone fetches a link preview, because Signal sends the request through their servers (not your phone).
+</Section>
+
 <Section title="Has Signal been hacked? Is it safe? Is it secure?" slug="secure">
   Every few months, we see posts circulate claiming that Signal isn't secure or has been hacked.
-
+  
   **Has Signal been hacked?** [**Almost certainly not**](https://hassignalbeenhacked.info/)**.**
-
+  
   For a fuller explanation on Signal's security, including nonprofit ownership, encryption, open source, funding rumors, and device risks, read our article: [Is Signal secure?](/signal-secure/).
-
+  
   There are risks to using Signal, but they are usually related to using it securely, rather than the technology itself.
-
+  
   For example, if someone infiltrates a private Signal group, they could screenshot all of the messages and post them online.
-
+  
   It's also possible that the cops can confiscate your phone and break into it if you have a weak passcode. That's not a failing of Signal, though. All your messages are available to anyone if they have physical access to your phone and can unlock it. That's why we recommend having a [strong passcode](/essentials/) and [always updating your device operating system](/essentials/).
 </Section>
 
-<Section title="Other resources">
+<Section title="Other resources" slug="resources">
   * [Is Signal secure?](/signal-secure/) — how Signal works, what data it can share, and common myths about its security.
   * Here's a great guide on [how to use Signal groups for activism](https://micahflee.com/using-signal-groups-for-activism/).
   * [Locking down Signal](https://freedom.press/digisec/blog/locking-down-signal/) — Freedom of the Press Foundation

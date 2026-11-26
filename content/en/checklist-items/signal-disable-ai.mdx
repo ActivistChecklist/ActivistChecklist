@@ -1,29 +1,35 @@
 ---
-title: 'Disable AI notification summaries'
+title: Disable AI notification summaries
+preview: ''
+do: ''
+dont: ''
 ---
-Google and Apple and Microsoft are all integrating AI features across their platforms in a way that can put your Signal messages at risk of being sent off your device to their servers. Notification summaries are one place where your messages data gets sent off device.
+Google and Apple are all integrating AI features across their platforms in a way that can put your Signal messages at risk of being sent off your device to their servers. Notification summaries are one place where your message data can get sent off your device.
 
 We wrote a separate article on this topic here: [Is Apple Intelligence reading my Signal messages?](/signal-ai/)
 
 Signal has also implemented [some protections against other AI features](https://signal.org/blog/protecting-your-privacy/) that read your screen.
 
-<HowTo title="Option A: How to disable AI notification summaries just for Signal">
-  #### Option A: Disable AI notification summaries just for Signal
+<HowTo title="Option A: How to entirely disable AI notification summaries">
+  <MenuPath inline={false}>*iPhone:* Open the **Settings** app > **Notifications** > **Summarize Notifications** > Toggle off **Summarize Notifications**</MenuPath>
 
-  <MenuPath>*iPhone:* Open the **Settings** app > **Notifications** > **Summarize Notifications** > Toggle off **Signal**</MenuPath>
+  <MenuPath inline={false}>*Mac:* **System Settings** > **Notifications** > **Summarize Notifications** > Toggle off **Summarize Notifications**</MenuPath>
 
-  <MenuPath>*Android:* **Settings** > **Notifications** > **Notification summaries** > **Manage apps** (under **Don't include these apps**) > Toggle off **Signal**</MenuPath>
+  <MenuPath inline={false}>*Android (Pixel):* **Settings** > **Notifications** > **Notification summaries** > Toggle off</MenuPath>
 
+  <MenuPath inline={false}>*Android (Samsung):* **Settings** > **Galaxy AI** > **Notification highlights** > **Summarize notifications** > Toggle off</MenuPath>
+
+  *Note on availability:* Only newer devices have these AI features. If you don't see some settings listed here, it's probably because your device doesn't have the AI feature to begin with.
 </HowTo>
 
-<HowTo title="How to entirely disable AI notification summaries">
-  #### Option B: Entirely disable AI notification summaries
+<Collapsible title="Option B: Disable AI notification summaries just for Signal" defaultOpen={false}>
+  <HowTo title="How to disable AI notification summaries just for Signal">
+    <MenuPath inline={false}>*iPhone:* Open the **Settings** app > **Notifications** > **Summarize Notifications** > Toggle off **Signal**</MenuPath>
 
-  <MenuPath>*iPhone:* **Settings** > **Notifications** > Toggle off **Summarize Notifications **</MenuPath>
+    <MenuPath inline={false}>*Mac:* **System Settings** > **Notifications** > **Summarize Notifications** > Toggle off **Signal**</MenuPath>
 
-  <MenuPath>*Android:* Open **Settings** > **Notifications** > Toggle off **Use notification summaries** (or **Notification summaries**)</MenuPath>
+    <MenuPath inline={false}>*Android (Pixel):* **Settings** > **Notifications** > **Notification summaries** > **Manage apps** (under **Don't include these apps**) > Toggle off **Signal**</MenuPath>. (If Signal isn't in the Pixel list, tap **Most recent** and switch it to **All apps**.)
 
-  <MenuPath>*Mac:*  > **System Settings** > **Apple Intelligence & Siri** > Toggle off **Apple Intelligence** > **Confirm**</MenuPath>
-
-  *(Mac requires an Apple computer with an M1 processor or newer.)*
-</HowTo>
+    *Android (Samsung):* Samsung doesn't let you turn off summaries for individual apps. Use Option A (above) instead.
+  </HowTo>
+</Collapsible>

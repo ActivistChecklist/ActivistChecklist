@@ -1,0 +1,34 @@
+---
+title: Block AI from reading your screen when using Signal
+preview: |
+  Keeps your messages private so they are not sent off your device to be processed by AI
+---
+**Why this is important:** AI assistants built into phones and computers (like Apple's Siri AI and Google's Gemini) can now read what's on your screen, which can send your messages off your device to their servers. [Signal has started blocking this](https://signal.org/blog/protecting-your-privacy/): on iPhones running iOS 27 it blocks screenshots in the app. On Android it turns on Screen Security automatically when it detects an AI assistant reading the screen.
+
+<HowTo title="How to turn on Signal's AI blocking">
+  <MenuPath>*iPhone:* (iOS 27 or newer) Open Signal > Tap your profile picture > **Settings** > **Privacy** > Enable **Block Siri AI**</MenuPath>
+
+  <MenuPath>*Android:* Open Signal > Tap your profile picture to open **Settings** > **Privacy** > Enable **Screen Security**</MenuPath>
+</HowTo>
+
+<HowTo title="How to block AI tools from reading Signal at the operating system level">
+  **iPhone:** The "exclude app" feature blocks more than just AI screenshots, so it's good to enable.
+  
+  <MenuPath>*iPhone:* (iOS 27.2 or newer) Open the **Settings** app > **Siri** > **Excluded Apps** > **Add Apps** > Select **Signal**</MenuPath>
+
+  **Mac:** On Signal Desktop for Mac, there are no default protections (the way there is for an iPhone), so this setting is the main way to protect your messages.
+
+  <MenuPath>*Mac:* **System Settings** > **Siri** > **Excluded Apps** > Add **Signal**</MenuPath>
+  
+  **Android Gemini:** Gemini doesn't let you block individual apps from reading your screen, so this turns off screen reading for all apps.
+
+  <MenuPath>*Android:* Open the **Gemini** app > **Settings** > **Device controls** > **Screen context** > Toggle off **Use screen and app data**</MenuPath>
+
+  **Windows:** **Recall** is a feature on some newer PCs that takes screenshots of your screen every few seconds. If you don't see **Recall & snapshots** in Settings, your PC doesn't have Recall.
+
+  <MenuPath>*Windows:* Signal Desktop > **Settings** > **Privacy** > **Screen security** > Enable **Screen security**. (This blocks Recall and other screenshot tools from capturing Signal's window. It's on by default on Windows 11.)</MenuPath> 
+  
+  <MenuPath>*Windows:* *Turn off Recall:* **Settings** > **Privacy & security** > **Recall & snapshots** > Toggle off **Save snapshots**. On the same page, delete any snapshots Recall has already saved.</MenuPath>
+
+  <MenuPath>*Windows:* *Remove Recall entirely (optional):* Open the **Start** menu > search for **Turn Windows features on or off** > Uncheck **Recall**</MenuPath>
+</HowTo>
