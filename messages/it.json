@@ -327,6 +327,11 @@
       "whenToUse": "<b>Quando usare una passphrase:</b> di solito ti serve una passphrase solo in questi casi: la password del portatile, la password principale del tuo password manager e (se vuoi) il codice di sblocco del telefono (se cerchi il massimo livello di sicurezza). Per tutto il resto, lascia che sia il tuo password manager a generare le password."
     }
   },
+  "generatorSwitcher": {
+    "ariaLabel": "Generatori",
+    "passcode": "Codice di sblocco del telefono",
+    "passphrase": "Passphrase"
+  },
   "canaryStatus": {
     "current": "<b>Aggiornato.</b> Il nostro warrant canary è stato aggiornato l'ultima volta il {date} ed è valido fino al {validThrough}. (Dopo quella data, questo indicatore diventerà rosso se non ci sarà un canary più recente.)",
     "overdue": "<b>Scaduto.</b> Il nostro warrant canary è stato aggiornato l'ultima volta il {date} ed era valido fino al {validThrough}. È un segnale che è il caso di fare domande, come spiegato qui sotto.",
@@ -731,14 +736,14 @@
         "checkAnotherDevice": "Controlla un altro dispositivo"
       }
     },
-    "footer": "Dati forniti da <eolLink>endoflife.date</eolLink> e <sofaLink>SOFA</sofaLink> · Aggiornato il {date}."
+    "footer": "Fonte: <eolLink>endoflife.date</eolLink> e <sofaLink>SOFA</sofaLink> · Aggiornato il {date}."
   },
   "tools": {
     "metaTitle": "Strumenti che abbiamo creato | Activist Checklist",
     "metaDescription": "Strumenti che abbiamo creato da usare con le nostre checklist: mappa i rischi prima di un'azione, controlla se il tuo telefono riceve ancora gli aggiornamenti di sicurezza e cancella le vecchie chat con l'IA.",
     "documentTitle": "Strumenti che abbiamo creato | Activist Checklist",
     "title": "Strumenti che abbiamo creato",
-    "intro": "Tre strumenti che abbiamo creato da usare insieme alle checklist. Ognuno copre un passaggio difficile da completare seguendo solo istruzioni scritte.",
+    "intro": "Strumenti che abbiamo creato da usare insieme alle checklist. Ognuno copre un passaggio difficile da completare seguendo solo istruzioni scritte.",
     "items": {
       "riskMapper": {
         "name": "Mappa dei rischi",
@@ -776,7 +781,10 @@
       "body": "Se sei alle prime armi, inizia dalla nostra checklist Sicurezza di base. Spiega i passi che tuttə dovrebbero fare per proteggersi dalla sorveglianza e dagli attacchi.",
       "primaryCta": "Le basi della sicurezza digitale",
       "secondaryCta": "Vedi tutte le checklist",
-      "openSource": "Sono tutti e tre <repos>open source</repos>. Se qualcosa non funziona o ti serve qualcosa che non abbiamo ancora creato, <contact>faccelo sapere</contact>."
+      "openSource": "Sono tutti <repos>open source</repos>. Se qualcosa non funziona o ti serve qualcosa che non abbiamo ancora creato, <contact>faccelo sapere</contact>."
+    },
+    "generators": {
+      "title": "Generatori di codici di sblocco e passphrase"
     }
   },
   "terms": {

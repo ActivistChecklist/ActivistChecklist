@@ -327,6 +327,11 @@
       "whenToUse": "<b>Cuándo usar una frase de contraseña:</b> Normalmente solo necesitas una frase de contraseña en estos casos: la contraseña de tu laptop, la contraseña maestra de tu gestor de contraseñas y (si quieres) el código de tu celular (si buscas el nivel más alto de seguridad). Todas las demás contraseñas las debe generar tu gestor de contraseñas."
     }
   },
+  "generatorSwitcher": {
+    "ariaLabel": "Generadores",
+    "passcode": "Código del celular",
+    "passphrase": "Frase de contraseña"
+  },
   "canaryStatus": {
     "current": "<b>Al día.</b> Nuestro warrant canary —aviso de órdenes judiciales— se actualizó por última vez el {date} y es válido hasta el {validThrough}. (Después de esa fecha, esto se pondrá en rojo si no hay un canary más reciente).",
     "overdue": "<b>Vencido.</b> Nuestro warrant canary —aviso de órdenes judiciales— se actualizó por última vez el {date} y era válido hasta el {validThrough}. Es una señal para hacer preguntas, como explicamos más abajo.",
@@ -731,14 +736,14 @@
         "checkAnotherDevice": "Revisar otro dispositivo"
       }
     },
-    "footer": "Con la ayuda de <eolLink>endoflife.date</eolLink> y <sofaLink>SOFA</sofaLink> · Actualizado el {date}."
+    "footer": "Fuente: <eolLink>endoflife.date</eolLink> y <sofaLink>SOFA</sofaLink> · Actualizado el {date}."
   },
   "tools": {
     "metaTitle": "Herramientas que hicimos | Activist Checklist",
     "metaDescription": "Herramientas que creamos para acompañar nuestras listas de verificación: mapea tus riesgos antes de una acción, revisa si tu teléfono todavía recibe actualizaciones de seguridad y borra tus chats viejos con IA.",
     "documentTitle": "Herramientas que creamos | Activist Checklist",
     "title": "Herramientas que creamos",
-    "intro": "Tres herramientas que creamos para acompañar las listas de verificación. Cada una te ayuda con un paso que cuesta completar solo con instrucciones escritas.",
+    "intro": "Herramientas que creamos para acompañar las listas de verificación. Cada una te ayuda con un paso que es difícil de completar solo con instrucciones escritas.",
     "items": {
       "riskMapper": {
         "name": "Risk Mapper",
@@ -776,7 +781,10 @@
       "body": "Si apenas estás empezando, arranca con nuestra checklist de Seguridad básica. Cubre los pasos que todes deberíamos seguir para protegernos de la vigilancia y de los ataques.",
       "primaryCta": "Fundamentos de seguridad digital",
       "secondaryCta": "Ver todas las listas",
-      "openSource": "Las tres son de <repos>código abierto</repos>. Si alguna no funciona, o necesitas algo que todavía no hemos creado, <contact>avísanos</contact>."
+      "openSource": "Todas son de <repos>código abierto</repos>. Si alguna no funciona, o necesitas algo que todavía no hemos creado, <contact>avísanos</contact>."
+    },
+    "generators": {
+      "title": "Generadores de códigos y frases de contraseña"
     }
   },
   "terms": {

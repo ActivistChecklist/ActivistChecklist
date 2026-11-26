@@ -327,6 +327,11 @@
       "whenToUse": "<b>Quand utiliser une phrase de passe :</b> en général, tu n'as besoin d'une phrase de passe qu'à ces endroits : le mot de passe de ton ordi, le mot de passe principal de ton gestionnaire de mots de passe et (en option) le code de ton téléphone (si tu veux le niveau de sécurité le plus élevé). Pour tout le reste, laisse ton gestionnaire de mots de passe générer les mots de passe."
     }
   },
+  "generatorSwitcher": {
+    "ariaLabel": "Générateurs",
+    "passcode": "Code de déverrouillage du téléphone",
+    "passphrase": "Phrase secrète"
+  },
   "canaryStatus": {
     "current": "<b>À jour.</b> Notre warrant canary, ou « canari de mandat », a été mis à jour pour la dernière fois le {date} et reste valide jusqu'au {validThrough}. (Après cette date, cet indicateur passera au rouge s'il n'y a pas de canary plus récent.)",
     "overdue": "<b>En retard.</b> Notre warrant canary, ou « canari de mandat », a été mis à jour pour la dernière fois le {date} et était valide jusqu'au {validThrough}. C'est un signal pour poser des questions, comme expliqué ci-dessous.",
@@ -731,14 +736,14 @@
         "checkAnotherDevice": "Vérifier un autre appareil"
       }
     },
-    "footer": "Données fournies par <eolLink>endoflife.date</eolLink> et <sofaLink>SOFA</sofaLink> · Mis à jour le {date}."
+    "footer": "Source : <eolLink>endoflife.date</eolLink> et <sofaLink>SOFA</sofaLink> · Mis à jour le {date}."
   },
   "tools": {
     "metaTitle": "Nos outils | Activist Checklist",
     "metaDescription": "Des outils qu'on a créés pour accompagner nos checklists : évaluer tes risques avant une action, vérifier si ton téléphone reçoit encore des mises à jour de sécurité et faire le ménage dans tes vieilles conversations avec l'IA.",
     "documentTitle": "Nos outils | Activist Checklist",
     "title": "Nos outils",
-    "intro": "Trois outils qu'on a créés pour accompagner les checklists. Chacun t'aide à franchir une étape difficile à mener à bien avec de simples instructions écrites.",
+    "intro": "Des outils qu'on a créés pour accompagner les checklists. Chacun t'aide à faire une étape difficile à terminer avec de simples instructions écrites.",
     "items": {
       "riskMapper": {
         "name": "Risk Mapper",
@@ -776,7 +781,10 @@
       "body": "Si tu débutes, commence par notre checklist Les bases de la sécurité. Elle présente les étapes que tout le monde devrait suivre pour se protéger de la surveillance et des attaques.",
       "primaryCta": "Les bases de la sécurité numérique",
       "secondaryCta": "Voir toutes les checklists",
-      "openSource": "Les trois sont <repos>open source</repos>. Si l'un d'eux ne marche pas, ou s'il te faut quelque chose qu'on n'a pas encore créé, <contact>fais-nous signe</contact>."
+      "openSource": "Ils sont tous <repos>open source</repos>. Si l'un d'eux ne marche pas, ou si tu as besoin de quelque chose qu'on n'a pas encore créé, <contact>fais-le-nous savoir</contact>."
+    },
+    "generators": {
+      "title": "Générateurs de codes de déverrouillage et de phrases secrètes"
     }
   },
   "terms": {
