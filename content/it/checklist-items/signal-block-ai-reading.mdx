@@ -1,0 +1,35 @@
+---
+title: Impedisci all'IA di leggere il tuo schermo quando usi Signal
+preview: |
+  Mantiene privati i tuoi messaggi, così non escono dal tuo dispositivo per essere elaborati dall'IA
+---
+
+**Perché è importante:** gli assistenti IA integrati in telefoni e computer (come Siri AI di Apple e Gemini di Google) ora possono leggere quello che c'è sul tuo schermo, e questo può far uscire i tuoi messaggi dal tuo dispositivo e mandarli ai loro server. [Signal ha iniziato a bloccare tutto questo](https://signal.org/blog/protecting-your-privacy/): sugli iPhone con iOS 27 blocca gli screenshot nell'app. Su Android attiva automaticamente Sicurezza schermo quando rileva un assistente IA che legge lo schermo.
+
+<HowTo title="Come attivare il blocco dell'IA di Signal">
+  <MenuPath>*iPhone:* (iOS 27 o successivo) Apri Signal > Tocca la tua immagine del profilo > **Impostazioni** > **Privacy** > Attiva **Blocca Siri AI**</MenuPath>
+
+  <MenuPath>*Android:* Apri Signal > Tocca la tua immagine del profilo per aprire le **Impostazioni** > **Privacy** > Attiva **Sicurezza schermo**</MenuPath>
+</HowTo>
+
+<HowTo title="Come impedire agli strumenti di IA di leggere Signal a livello di sistema operativo">
+  **iPhone:** la funzione "escludi app" blocca più dei soli screenshot dell'IA, quindi conviene attivarla.
+
+  <MenuPath>*iPhone:* (iOS 27.2 o successivo) Apri l'app **Impostazioni** > **Siri** > **App escluse** > **Aggiungi app** > Seleziona **Signal**</MenuPath>
+
+  **Mac:** su Signal Desktop per Mac non ci sono protezioni predefinite (come invece succede su iPhone), quindi questa impostazione è il modo principale per proteggere i tuoi messaggi.
+
+  <MenuPath>*Mac:* **Impostazioni di Sistema** > **Siri** > **App escluse** > Aggiungi **Signal**</MenuPath>
+
+  **Gemini su Android:** Gemini non ti permette di impedire a singole app di leggere il tuo schermo, quindi questa impostazione disattiva la lettura dello schermo per tutte le app.
+
+  <MenuPath>*Android:* Apri l'app **Gemini** > **Impostazioni** > **Device controls** > **Screen context** > Disattiva **Use screen and app data**</MenuPath>
+
+  **Windows:** **Recall** è una funzione presente su alcuni PC più recenti che fa screenshot del tuo schermo ogni pochi secondi. Se non vedi **Recall e snapshot** nelle Impostazioni, il tuo PC non ha Recall.
+
+  <MenuPath>*Windows:* Signal Desktop > **Impostazioni** > **Privacy** > **Sicurezza schermo** > Attiva **Sicurezza schermo**. (Così Recall e altri strumenti di screenshot non possono catturare la finestra di Signal. Su Windows 11 è attiva di default.)</MenuPath>
+
+  <MenuPath>*Windows:* *Disattiva Recall:* **Impostazioni** > **Privacy e sicurezza** > **Recall e snapshot** > Disattiva **Salva snapshot**. Nella stessa pagina, elimina gli snapshot che Recall ha già salvato.</MenuPath>
+
+  <MenuPath>*Windows:* *Rimuovi del tutto Recall (facoltativo):* Apri il menu **Start** > cerca **Attiva o disattiva funzionalità Windows** > Togli la spunta a **Recall**</MenuPath>
+</HowTo>
