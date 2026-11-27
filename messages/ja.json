@@ -122,7 +122,8 @@
     "lastUpdatedOn": "最終更新日：",
     "takesAbout": "所要時間の目安：",
     "viewLatestGuideAt": "最新版のガイドはこちら：",
-    "downloadPdf": "PDFをダウンロード"
+    "downloadPdf": "PDFをダウンロード",
+    "jumpToChecklist": "Jump to checklist"
   },
   "printNotice": {
     "madeOn": "このコピーは {date} に作成。",
