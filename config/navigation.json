@@ -111,12 +111,20 @@
       "href": "/proton/",
       "kind": "explainer"
     },
+    "tools": {
+      "href": "/tools/"
+    },
     "updates": {
       "href": "/updates/",
       "kind": "tool"
     },
-    "tools": {
-      "href": "/tools/"
+    "passcode": {
+      "href": "/passcode/"
+      "kind": "tool"
+    },
+    "passphrase": {
+      "href": "/passphrase/"
+      "kind": "tool"
     },
     "glossary": {
       "href": "/glossary/"
