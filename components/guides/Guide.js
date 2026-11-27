@@ -118,7 +118,7 @@ export default function Guide({
         </div>
         <SectionBreadcrumb section={section} className="relative mb-3" />
         <h1 className="relative mb-3 print:mb-0 print:pr-[260px]">{frontmatter.title}</h1>
-        {metaBarItems.length > 0 && (
+        {(metaBarItems.length > 0 || checklistAnchor) && (
           <div className="relative flex flex-wrap items-center gap-y-2 gap-x-6 text-sm text-muted-foreground print:mb-0">
             {metaBarItems.map((item, index) => (
               <div key={index} className="flex items-center">
