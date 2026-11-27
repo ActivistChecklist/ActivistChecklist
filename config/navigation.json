@@ -141,7 +141,7 @@
       "footerLink": true
     },
     "resources": {
-      "items": ["news", "tools", "flyer", "movies", "glossary"]
+      "items": ["news", "tools", "updates", "passcode", "passphrase", "flyer", "movies", "glossary"]
     },
     "about": {
       "href": "/about/",
