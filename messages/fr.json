@@ -28,6 +28,14 @@
       "title": "Vérificateur de mises à jour de sécurité",
       "label": "Vérificateur de mises à jour de sécurité"
     },
+    "passcode": {
+      "title": "Générateur de code de téléphone",
+      "label": "Générateur de code de téléphone"
+    },
+    "passphrase": {
+      "title": "Générateur de phrases de passe",
+      "label": "Générateur de phrases de passe"
+    },
     "tools": {
       "title": "Nos outils",
       "label": "Nos outils"
