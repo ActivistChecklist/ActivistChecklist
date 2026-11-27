@@ -9,7 +9,7 @@ import Guide from '@/components/guides/Guide';
 import ContentPage from '@/components/pages/Page';
 import { ChecklistItemsProvider } from '@/contexts/ChecklistItemsContext';
 import { serializeMdx } from '@/lib/serialize-mdx';
-import { splitGuideBodyForCta } from '@/lib/inline-cta-split';
+import { firstChecklistSectionSlug, splitGuideBodyForCta } from '@/lib/inline-cta-split';
 import {
   getRouteTranslationStatus,
   shouldShowTranslationUnreviewedNotice,
@@ -220,6 +220,7 @@ export default async function SlugPage({ params }) {
     const { beforeCta, afterCta, didSplit } = hideInlineCta
       ? { beforeCta: sectionContent, afterCta: '', didSplit: false }
       : splitGuideBodyForCta(sectionContent);
+    const checklistAnchor = firstChecklistSectionSlug(sectionContent);
     const serializedBodyBeforeCta = beforeCta ? await serializeMdx(beforeCta) : null;
     const serializedBodyAfterCta = afterCta ? await serializeMdx(afterCta) : null;
     const showInlineCta = didSplit && !hideInlineCta;
@@ -314,6 +315,7 @@ export default async function SlugPage({ params }) {
           serializedBodyBeforeCta={serializedBodyBeforeCta}
           serializedBodyAfterCta={serializedBodyAfterCta}
           showInlineCta={showInlineCta}
+          checklistAnchor={checklistAnchor}
           checklistItems={checklistItems}
           slug={slug}
           locale={locale}
