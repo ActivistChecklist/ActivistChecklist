@@ -122,7 +122,8 @@
     "lastUpdatedOn": "آخر تحديث في",
     "takesAbout": "يستغرق حوالي",
     "viewLatestGuideAt": "عرض أحدث نسخة من الدليل على",
-    "downloadPdf": "تنزيل PDF"
+    "downloadPdf": "تنزيل PDF",
+    "jumpToChecklist": "Jump to checklist"
   },
   "printNotice": {
     "madeOn": "أُعدّت هذه النسخة بتاريخ {date}.",
