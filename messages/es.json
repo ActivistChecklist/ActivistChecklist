@@ -122,7 +122,8 @@
     "lastUpdatedOn": "Última actualización",
     "takesAbout": "Toma unos",
     "viewLatestGuideAt": "Consulta la versión más reciente de esta guía en",
-    "downloadPdf": "Descargar PDF"
+    "downloadPdf": "Descargar PDF",
+    "jumpToChecklist": "Jump to checklist"
   },
   "printNotice": {
     "madeOn": "Esta copia se hizo el {date}.",
