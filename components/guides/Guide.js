@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 import { useGuideHashScroll } from '@/hooks/use-guide-hash-scroll';
 import { MDXRemote } from 'next-mdx-remote';
-import { Clock, Calendar, Download } from 'lucide-react';
+import { ArrowDown, Clock, Calendar, Download } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
 import { mdxComponents } from '@/lib/mdx-components';
 import { ChecklistItemsContext } from '@/contexts/ChecklistItemsContext';
@@ -50,6 +50,7 @@ export default function Guide({
   serializedBodyBeforeCta,
   serializedBodyAfterCta,
   showInlineCta = false,
+  checklistAnchor = null,
   checklistItems = {},
   slug,
   locale,
@@ -117,7 +118,7 @@ export default function Guide({
         </div>
         <SectionBreadcrumb section={section} className="relative mb-3" />
         <h1 className="relative mb-3 print:mb-0 print:pr-[260px]">{frontmatter.title}</h1>
-        {metaBarItems.length > 0 && (
+        {(metaBarItems.length > 0 || checklistAnchor) && (
           <div className="relative flex flex-wrap items-center gap-y-2 gap-x-6 text-sm text-muted-foreground print:mb-0">
             {metaBarItems.map((item, index) => (
               <div key={index} className="flex items-center">
@@ -132,14 +133,25 @@ export default function Guide({
                 </span>
               </div>
             ))}
+            {checklistAnchor && (
+              // Plain <a>: a same-page hash, which useGuideHashScroll handles.
+              <a
+                href={`#${checklistAnchor}`}
+                className="flex items-center whitespace-nowrap font-semibold text-primary hover:underline underline-offset-4 print:hidden"
+              >
+                <ArrowDown className="h-4 w-4 mr-1" aria-hidden="true" />
+                {t('meta.jumpToChecklist')}
+              </a>
+            )}
             {PDF_EXPORT_ENABLED && (
               // Plain <a>, not @/components/Link: this is a file download, and the
               // path already carries its locale, so it must not be prefixed again.
+              // Muted like the meta items so it reads apart from the jump link.
               <a
                 href={pdfPathFor(intlLocale, slug)}
                 download={pdfDownloadName(intlLocale, slug)}
                 onClick={() => trackFileDownload(pdfDownloadName(intlLocale, slug))}
-                className="flex items-center whitespace-nowrap font-semibold text-primary hover:underline underline-offset-4 print:hidden"
+                className="flex items-center whitespace-nowrap text-muted-foreground hover:text-foreground hover:underline underline-offset-4 print:hidden"
               >
                 <Download className="h-4 w-4 mr-1" aria-hidden="true" />
                 {t('meta.downloadPdf')}

@@ -122,7 +122,8 @@
     "lastUpdatedOn": "Last updated on",
     "takesAbout": "Takes about",
     "viewLatestGuideAt": "View the latest guide at",
-    "downloadPdf": "Download PDF"
+    "downloadPdf": "Download PDF",
+    "jumpToChecklist": "Jump to checklist"
   },
   "printNotice": {
     "madeOn": "This copy was made on {date}.",
