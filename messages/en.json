@@ -28,6 +28,14 @@
       "title": "Security update checker",
       "label": "Security update checker"
     },
+    "passcode": {
+      "title": "Phone passcode generator",
+      "label": "Phone passcode generator"
+    },
+    "passphrase": {
+      "title": "Passphrase generator",
+      "label": "Passphrase generator"
+    },
     "tools": {
       "title": "Tools we built",
       "label": "Tools we built"

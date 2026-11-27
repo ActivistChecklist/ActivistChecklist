@@ -111,12 +111,20 @@
       "href": "/proton/",
       "kind": "explainer"
     },
+    "tools": {
+      "href": "/tools/"
+    },
     "updates": {
       "href": "/updates/",
       "kind": "tool"
     },
-    "tools": {
-      "href": "/tools/"
+    "passcode": {
+      "href": "/passcode/",
+      "kind": "tool"
+    },
+    "passphrase": {
+      "href": "/passphrase/",
+      "kind": "tool"
     },
     "glossary": {
       "href": "/glossary/"
@@ -141,11 +149,11 @@
       "footerLink": true
     },
     "resources": {
-      "items": ["news", "tools", "flyer", "movies", "glossary"]
+      "items": ["news", "tools", "updates", "passcode", "passphrase", "movies", "glossary"]
     },
     "about": {
       "href": "/about/",
-      "items": ["about", "contribute", "changelog", "contact", "privacy", "security"]
+      "items": ["about", "contribute", "changelog", "privacy", "security", "flyer", "contact"]
     }
   },
   "checklistSections": [
