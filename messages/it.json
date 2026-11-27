@@ -122,7 +122,8 @@
     "lastUpdatedOn": "Ultimo aggiornamento:",
     "takesAbout": "Tempo stimato: circa",
     "viewLatestGuideAt": "Trovi la versione più recente della guida su",
-    "downloadPdf": "Scarica il PDF"
+    "downloadPdf": "Scarica il PDF",
+    "jumpToChecklist": "Jump to checklist"
   },
   "printNotice": {
     "madeOn": "Questa copia è stata creata il {date}.",
