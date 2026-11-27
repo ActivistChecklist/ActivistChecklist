@@ -119,11 +119,11 @@
       "kind": "tool"
     },
     "passcode": {
-      "href": "/passcode/"
+      "href": "/passcode/",
       "kind": "tool"
     },
     "passphrase": {
-      "href": "/passphrase/"
+      "href": "/passphrase/",
       "kind": "tool"
     },
     "glossary": {
