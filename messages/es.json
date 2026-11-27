@@ -28,6 +28,14 @@
       "title": "Verificador de actualizaciones de seguridad",
       "label": "Verificador de actualizaciones de seguridad"
     },
+    "passcode": {
+      "title": "Generador de códigos para tu celular",
+      "label": "Generador de códigos para tu celular"
+    },
+    "passphrase": {
+      "title": "Generador de frases de contraseña",
+      "label": "Generador de frases de contraseña"
+    },
     "tools": {
       "title": "Herramientas que hicimos",
       "label": "Herramientas que creamos"
