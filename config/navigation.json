@@ -149,11 +149,11 @@
       "footerLink": true
     },
     "resources": {
-      "items": ["news", "tools", "updates", "passcode", "passphrase", "flyer", "movies", "glossary"]
+      "items": ["news", "tools", "updates", "passcode", "passphrase", "movies", "glossary"]
     },
     "about": {
       "href": "/about/",
-      "items": ["about", "contribute", "changelog", "contact", "privacy", "security"]
+      "items": ["about", "contribute", "changelog", "privacy", "security", "flyer", "contact"]
     }
   },
   "checklistSections": [
