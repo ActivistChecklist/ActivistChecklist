@@ -1,30 +1,36 @@
 ---
 title: تعطيل ملخصات الإشعارات بالذكاء الاصطناعي
+preview: ""
+do: ""
+dont: ""
 ---
 
-لم توضح Google وApple متى ترسل أدوات الذكاء الاصطناعي الخاصة بهما معلوماتنا الخاصة (مثل رسائل Signal) من جهازنا إلى خدماتهما. إذا أُرسلت إلى خوادمهما، فإنها تكون عرضة للوصول إليها عبر أمر من المحكمة الحكومية.
+تدمج Google وApple ميزات الذكاء الاصطناعي في كل منصاتهما بطريقة قد تعرّض رسائلك على Signal لخطر إرسالها من جهازك إلى خوادمهما. ملخصات الإشعارات هي واحدة من الطرق التي قد تُرسَل بها بيانات رسائلك خارج جهازك.
 
-على حد فهمنا، فإن ميزات الذكاء الاصطناعي هذه ***حالياً*** تكتفي بتلخيص الإشعارات. لكن مع الاتجاه الذي تسير فيه الأمور، قد يحاولون أن يكونوا أكثر تطفلاً.
+كتبنا مقال منفصل عن الموضوع ده هنا: [هل Apple Intelligence بيقرأ رسائلي على Signal؟](/signal-ai/)
 
-اقرأ مقالنا حول [هل يقرأ Apple Intelligence رسائل Signal الخاصة بي؟](/signal-ai/)
+Signal كمان طبّق [شوية حمايات ضد ميزات ذكاء اصطناعي تانية](https://signal.org/blog/protecting-your-privacy/) بتقرأ شاشتك.
 
-<HowTo title="الخيار أ: كيف توقف ملخصات الإشعارات بالذكاء الاصطناعي لتطبيق Signal فقط">
-  #### الخيار أ: أوقف ملخصات الإشعارات بالذكاء الاصطناعي لتطبيق Signal فقط
+<HowTo title="الخيار أ: كيف توقف ملخصات الإشعارات بالذكاء الاصطناعي تمامًا">
+  <MenuPath inline={false}>*iPhone:* افتح تطبيق **Settings** > **Notifications** > **Summarize Notifications** > أوقف تشغيل **Summarize Notifications**</MenuPath>
 
-  <MenuPath>*iPhone:* افتح تطبيق **الإعدادات** > **الإشعارات** > **تلخيص الإشعارات** > أوقف تشغيل **Signal**</MenuPath>
+  <MenuPath inline={false}>*Mac:* **System Settings** > **Notifications** > **Summarize Notifications** > أوقف تشغيل **Summarize Notifications**</MenuPath>
 
-  <MenuPath>*Android:* **الإعدادات** > **الإشعارات** > **ملخصات الإشعارات** > **إدارة التطبيقات** (تحت **عدم تضمين هذه التطبيقات**) > أوقف تشغيل **Signal**</MenuPath>
+  <MenuPath inline={false}>*Android (Pixel):* **Settings** > **Notifications** > **Notification summaries** > أوقف التشغيل</MenuPath>
 
+  <MenuPath inline={false}>*Android (Samsung):* **Settings** > **Galaxy AI** > **Notification highlights** > **Summarize notifications** > أوقف التشغيل</MenuPath>
+
+  *ملاحظة حول التوفّر:* هذه الميزات موجودة فقط في الأجهزة الأحدث. إذا لم تجد بعض الإعدادات المذكورة هنا، فالسبب على الأغلب أن جهازك لا يحتوي على ميزة الذكاء الاصطناعي من الأساس.
 </HowTo>
 
-<HowTo title="كيف توقف ملخصات الإشعارات بالذكاء الاصطناعي بالكامل">
-  #### الخيار ب: أوقف ملخصات الإشعارات بالذكاء الاصطناعي بالكامل
+<Collapsible title="الخيار ب: أوقف ملخصات الإشعارات بالذكاء الاصطناعي لتطبيق Signal فقط" defaultOpen={false}>
+  <HowTo title="كيف توقف ملخصات الإشعارات بالذكاء الاصطناعي لتطبيق Signal فقط">
+    <MenuPath inline={false}>*iPhone:* افتح تطبيق **Settings** > **Notifications** > **Summarize Notifications** > أوقف تشغيل **Signal**</MenuPath>
 
-  <MenuPath>*iPhone:* افتح تطبيق **الإعدادات** > **Apple Intelligence وSiri** > أوقف تشغيل **Apple Intelligence**</MenuPath>
+    <MenuPath inline={false}>*Mac:* **System Settings** > **Notifications** > **Summarize Notifications** > أوقف تشغيل **Signal**</MenuPath>
 
-  <MenuPath>*Android:* افتح **الإعدادات** > **الإشعارات** > أوقف تشغيل **استخدام ملخصات الإشعارات** (أو **ملخصات الإشعارات**)</MenuPath>
+    <MenuPath inline={false}>*Android (Pixel):* **Settings** > **Notifications** > **Notification summaries** > **Manage apps** (تحت **Don't include these apps**) > أوقف تشغيل **Signal**</MenuPath>. (إذا لم يظهر Signal في القائمة على Pixel، اضغط على **Most recent** وغيّرها إلى **All apps**.)
 
-  <MenuPath>*Mac:*  > **إعدادات النظام** > **Apple Intelligence وSiri** > أوقف تشغيل **Apple Intelligence** > **تأكيد**</MenuPath>
-
-  *(يتطلب Mac جهاز كمبيوتر من Apple بمعالج M1 أو أحدث.)*
-</HowTo>
+    *Android (Samsung):* لا تسمح Samsung بإيقاف الملخصات لكل تطبيق على حدة. استخدم الخيار أ (أعلاه) بدلًا من ذلك.
+  </HowTo>
+</Collapsible>

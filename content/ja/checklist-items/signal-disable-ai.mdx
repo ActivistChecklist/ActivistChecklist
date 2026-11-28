@@ -1,30 +1,36 @@
 ---
 title: AIによる通知の要約をオフにする
+preview: ""
+do: ""
+dont: ""
 ---
 
-GoogleもAppleも、自社のAIツールがいつ私たちのプライベートな情報（Signalのメッセージなど）をデバイスから自社のサービスに送信しているのか、はっきりさせていません。もし情報が企業のサーバーに送られていれば、政府の裁判所命令によってアクセスされるおそれがあります。
+GoogleやAppleは、自社のプラットフォーム全体にAI機能を組み込んでいます。そのせいで、あなたのSignalのメッセージがデバイスから外に出て、企業のサーバーに送られてしまうおそれがあります。メッセージのデータがデバイスの外に送られてしまう場面のひとつが、通知の要約機能です。
 
-私たちの理解では、これらのAI機能は***今のところ***通知を要約するだけです。でも今の流れを見ると、今後もっと踏み込んだことをしようとするかもしれません。
+このテーマについては別の記事を書いています：[Apple IntelligenceはSignalのメッセージを読んでいる？](/signal-ai/)
 
-記事「[Apple IntelligenceはSignalのメッセージを読んでいる？](/signal-ai/)」もチェックしてください
+Signalは、画面を読み取るほかのAI機能に対しても[いくつかの保護機能](https://signal.org/blog/protecting-your-privacy/)を導入しています。
 
-<HowTo title="オプションA：Signalだけ通知のAI要約をオフにする方法">
-  #### オプションA：Signalだけ通知のAI要約をオフにする
+<HowTo title="オプションA：AIによる通知の要約を完全にオフにする方法">
+  <MenuPath inline={false}>*iPhone:* **設定**アプリを開く > **通知** > **通知を要約** > **通知を要約**をオフにする</MenuPath>
 
-  <MenuPath>*iPhone:* **設定**アプリを開く > **通知** > **通知を要約** > **Signal**をオフにする</MenuPath>
+  <MenuPath inline={false}>*Mac:* **システム設定** > **通知** > **通知を要約** > **通知を要約**をオフにする</MenuPath>
 
-  <MenuPath>*Android:* **設定** > **通知** > **Notification summaries** > **Manage apps**（**Don't include these apps**の下） > **Signal**をオフにする</MenuPath>
+  <MenuPath inline={false}>*Android (Pixel):* **設定** > **通知** > **Notification summaries** > オフにする</MenuPath>
 
+  <MenuPath inline={false}>*Android (Samsung):* **設定** > **Galaxy AI** > **Notification highlights** > **Summarize notifications** > オフにする</MenuPath>
+
+  *対応機種について:* これらのAI機能があるのは新しいデバイスだけです。ここに載っている設定が見つからない場合は、たぶんそのデバイスにはもともとそのAI機能がないからです。
 </HowTo>
 
-<HowTo title="AIによる通知の要約を完全にオフにする方法">
-  #### オプションB：通知のAI要約を完全にオフにする
+<Collapsible title="オプションB：Signalだけ、AIによる通知の要約をオフにする" defaultOpen={false}>
+  <HowTo title="Signalだけ、AIによる通知の要約をオフにする方法">
+    <MenuPath inline={false}>*iPhone:* **設定**アプリを開く > **通知** > **通知を要約** > **Signal**をオフにする</MenuPath>
 
-  <MenuPath>*iPhone:* **設定**アプリを開く > **Apple IntelligenceとSiri** > **Apple Intelligence**をオフにする</MenuPath>
+    <MenuPath inline={false}>*Mac:* **システム設定** > **通知** > **通知を要約** > **Signal**をオフにする</MenuPath>
 
-  <MenuPath>*Android:* **設定**を開く > **通知** > **Use notification summaries**（または**Notification summaries**）をオフにする</MenuPath>
+    <MenuPath inline={false}>*Android (Pixel):* **設定** > **通知** > **Notification summaries** > **Manage apps**（**Don't include these apps**の下）> **Signal**をオフにする</MenuPath>。 （PixelのリストにSignalが見当たらない場合は、**Most recent** をタップして **All apps** に切り替えてください。）
 
-  <MenuPath>*Mac:*  > **システム設定** > **Apple IntelligenceとSiri** > **Apple Intelligence**をオフにする > **確認**</MenuPath>
-
-  *（Macの場合、M1以降のプロセッサを搭載したAppleのコンピュータが必要です。）*
-</HowTo>
+    *Android (Samsung):* Samsungでは、アプリごとに要約をオフにすることはできません。代わりにオプションA（上記）を使ってください。
+  </HowTo>
+</Collapsible>

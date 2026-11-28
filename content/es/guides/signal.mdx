@@ -10,10 +10,10 @@ excerpt: |
 relatedGuides:
   - essentials
   - protest
-  - travel
+  - action
   - spyware
 firstPublished: 2025-01-27
-lastUpdated: 2026-04-03
+lastUpdated: 2026-11-26
 ---
 
 Esta guía te ayuda a asegurarte de que tus comunicaciones en [Signal](https://signal.org/) estén lo más protegidas posible. Aunque Signal ya [cifra todo lo que envías](term:end-to-end-encryption), estos pasos extra hacen que tus chats sigan siendo privados, incluso si pierdes tu teléfono, te lo quitan o lo hackean. Vas a aprender formas sencillas de proteger tus mensajes, notificaciones e identidad.
@@ -30,10 +30,9 @@ Esta guía te ayuda a asegurarte de que tus comunicaciones en [Signal](https://s
 
     <ChecklistItem slug="signal-enable-username" />
 
-    <ChecklistItem slug="signal-link-previews" />
-
     <ChecklistItem slug="signal-relay-calls" />
   </ChecklistItemGroup>
+
 </Section>
 
 <Section title="Protege tus mensajes y llamadas" slug="messages">
@@ -44,6 +43,10 @@ Esta guía te ayuda a asegurarte de que tus comunicaciones en [Signal](https://s
 
     <ChecklistItem slug="signal-disable-notifications" />
 
+    <ChecklistItem slug="signal-block-ai-reading" />
+
+    <ChecklistItem slug="signal-disable-ai" />
+
     <ChecklistItem slug="screen-lock" />
 
     <ChecklistItem slug="signal-hide-calls-in-recent" />
@@ -53,8 +56,6 @@ Esta guía te ayuda a asegurarte de que tus comunicaciones en [Signal](https://s
     <ChecklistItem slug="signal-pin" />
 
     <ChecklistItem slug="signal-private-keyboard" />
-
-    <ChecklistItem slug="signal-disable-ai" />
 
     <ChecklistItem slug="fake-signal-support" />
   </ChecklistItemGroup>
@@ -84,6 +85,12 @@ Esta guía te ayuda a asegurarte de que tus comunicaciones en [Signal](https://s
   </ChecklistItemGroup>
 </Section>
 
+<Section title="FAQ" slug="FAQ">
+  **¿Y desactivar las vistas previas de enlaces?**
+
+  Circularon rumores de que las vistas previas de enlaces podían usarse para hackear tu dispositivo. No hay pruebas de que eso fuera cierto. Puedes desactivar las vistas previas de enlaces si quieres, pero no lo incluimos aquí porque no hay pruebas de que te proteja de algo. Además, tu dirección IP queda protegida cuando tu teléfono carga una vista previa de enlace, porque Signal envía la solicitud a través de sus servidores (no desde tu teléfono).
+</Section>
+
 <Section title="¿Hackearon Signal? ¿Es seguro? ¿Es confiable?" slug="secure">
   Cada par de meses vemos circular publicaciones que aseguran que Signal no es seguro o que lo hackearon.
 
@@ -98,7 +105,7 @@ Esta guía te ayuda a asegurarte de que tus comunicaciones en [Signal](https://s
   También es posible que los cops confisquen tu teléfono y logren entrar si tienes un passcode débil. Pero eso no es una falla de Signal. Cualquier persona que tenga tu teléfono en sus manos y pueda desbloquearlo puede ver todos tus mensajes. Por eso recomendamos tener un [passcode fuerte](/essentials/) y [mantener siempre actualizado el sistema operativo de tu dispositivo](/essentials/).
 </Section>
 
-<Section title="Otros recursos">
+<Section title="Otros recursos" slug="resources">
   * [¿Es seguro Signal?](/signal-secure/) — cómo funciona Signal, qué datos puede compartir y mitos comunes sobre su seguridad.
   * Aquí tienes una excelente guía sobre [cómo usar los grupos de Signal para el activismo](https://micahflee.com/using-signal-groups-for-activism/).
   * [Asegurando Signal](https://freedom.press/digisec/blog/locking-down-signal/) — Freedom of the Press Foundation

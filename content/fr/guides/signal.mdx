@@ -10,10 +10,10 @@ excerpt: |
 relatedGuides:
   - essentials
   - protest
-  - travel
+  - action
   - spyware
 firstPublished: 2025-01-27
-lastUpdated: 2026-04-03
+lastUpdated: 2026-11-26
 ---
 
 Ce guide t'aide à sécuriser au maximum tes communications sur [Signal](https://signal.org/). Signal [chiffre déjà tout ce que tu envoies](term:end-to-end-encryption), mais ces étapes supplémentaires garantissent que tes conversations restent privées, même si ton téléphone est perdu, confisqué ou piraté. Tu vas découvrir des moyens simples de protéger tes messages, tes notifications et ton identité.
@@ -30,10 +30,9 @@ Ce guide t'aide à sécuriser au maximum tes communications sur [Signal](https:/
 
     <ChecklistItem slug="signal-enable-username" />
 
-    <ChecklistItem slug="signal-link-previews" />
-
     <ChecklistItem slug="signal-relay-calls" />
   </ChecklistItemGroup>
+
 </Section>
 
 <Section title="Protège tes messages et tes appels" slug="messages">
@@ -44,6 +43,10 @@ Ce guide t'aide à sécuriser au maximum tes communications sur [Signal](https:/
 
     <ChecklistItem slug="signal-disable-notifications" />
 
+    <ChecklistItem slug="signal-block-ai-reading" />
+
+    <ChecklistItem slug="signal-disable-ai" />
+
     <ChecklistItem slug="screen-lock" />
 
     <ChecklistItem slug="signal-hide-calls-in-recent" />
@@ -53,8 +56,6 @@ Ce guide t'aide à sécuriser au maximum tes communications sur [Signal](https:/
     <ChecklistItem slug="signal-pin" />
 
     <ChecklistItem slug="signal-private-keyboard" />
-
-    <ChecklistItem slug="signal-disable-ai" />
 
     <ChecklistItem slug="fake-signal-support" />
   </ChecklistItemGroup>
@@ -84,6 +85,12 @@ Ce guide t'aide à sécuriser au maximum tes communications sur [Signal](https:/
   </ChecklistItemGroup>
 </Section>
 
+<Section title="FAQ" slug="FAQ">
+  **Et désactiver les aperçus de liens ?**
+
+  Des rumeurs ont circulé selon lesquelles les aperçus de liens pourraient servir à pirater ton appareil. Rien ne prouve que c'était vrai. Tu peux désactiver les aperçus de liens si tu veux, mais on ne le mentionne pas ici, car rien ne prouve que ça protège quoi que ce soit. Ton adresse IP est aussi protégée quand ton téléphone charge un aperçu de lien, parce que Signal envoie la requête via ses serveurs (et pas depuis ton téléphone).
+</Section>
+
 <Section title="Signal a-t-il été piraté ? Est-ce sûr ? Est-ce sécurisé ?" slug="secure">
   Tous les quelques mois, on voit circuler des posts affirmant que Signal n'est pas sécurisé ou qu'il a été piraté.
 
@@ -98,7 +105,7 @@ Ce guide t'aide à sécuriser au maximum tes communications sur [Signal](https:/
   Il est aussi possible que les flics confisquent ton téléphone et parviennent à y accéder si ton code de déverrouillage est faible. Mais ce n'est pas une faille de Signal. N'importe qui peut lire tous tes messages s'il a ton téléphone entre les mains et qu'il arrive à le déverrouiller. C'est pour ça qu'on recommande d'avoir un [code de déverrouillage solide](/essentials/) et de [toujours mettre à jour le système d'exploitation de ton appareil](/essentials/).
 </Section>
 
-<Section title="Autres ressources">
+<Section title="Autres ressources" slug="resources">
   * [Signal est-il sécurisé ?](/signal-secure/) — comment fonctionne Signal, quelles données il peut partager et les mythes courants sur sa sécurité.
   * Voici un excellent guide sur [comment utiliser les groupes Signal pour le militantisme](https://micahflee.com/using-signal-groups-for-activism/).
   * [Verrouiller Signal](https://freedom.press/digisec/blog/locking-down-signal/) — Freedom of the Press Foundation

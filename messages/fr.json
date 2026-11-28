@@ -28,6 +28,14 @@
       "title": "Vérificateur de mises à jour de sécurité",
       "label": "Vérificateur de mises à jour de sécurité"
     },
+    "passcode": {
+      "title": "Générateur de code de téléphone",
+      "label": "Générateur de code de téléphone"
+    },
+    "passphrase": {
+      "title": "Générateur de phrases de passe",
+      "label": "Générateur de phrases de passe"
+    },
     "tools": {
       "title": "Nos outils",
       "label": "Nos outils"
@@ -114,7 +122,8 @@
     "lastUpdatedOn": "Dernière mise à jour le",
     "takesAbout": "Durée : environ",
     "viewLatestGuideAt": "Consulte la dernière version du guide sur",
-    "downloadPdf": "Télécharger le PDF"
+    "downloadPdf": "Télécharger le PDF",
+    "jumpToChecklist": "Aller à la checklist"
   },
   "printNotice": {
     "madeOn": "Cette copie a été faite le {date}.",

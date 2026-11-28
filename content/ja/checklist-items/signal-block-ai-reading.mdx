@@ -1,0 +1,35 @@
+---
+title: Signal使用中にAIが画面を読み取れないようにする
+preview: |
+  メッセージがAIの処理のためにデバイスの外へ送信されるのを防ぎ、プライバシーを守ります
+---
+
+**なぜ大事なのか：** スマホやパソコンに組み込まれたAIアシスタント（AppleのSiri AIやGoogleのGeminiなど）は、いまや画面に表示されている内容を読み取れるようになっています。そのため、メッセージがデバイスの外にある企業のサーバーへ送られてしまう可能性があります。 [Signalはこれをブロックし始めています](https://signal.org/blog/protecting-your-privacy/)。iOS 27搭載のiPhoneでは、アプリ内のスクリーンショットをブロックします。 Androidでは、AIアシスタントが画面を読み取っていることを検出すると、自動的に「画面セキュリティ」をオンにします。
+
+<HowTo title="SignalのAIブロックをオンにする方法">
+  <MenuPath>*iPhone:*（iOS 27以降）Signalを開く > プロフィール写真をタップ > **設定** > **プライバシー** > **Block Siri AI** をオンにする</MenuPath>
+
+  <MenuPath>*Android:* Signalを開く > プロフィール写真をタップして **設定** を開く > **プライバシー** > **画面セキュリティ** をオンにする</MenuPath>
+</HowTo>
+
+<HowTo title="OSレベルでAIツールがSignalを読み取れないようにする方法">
+  **iPhone:** 「アプリを除外」機能はAIによるスクリーンショット以外もブロックしてくれるので、オンにしておくのがおすすめです。
+
+  <MenuPath>*iPhone:*（iOS 27.2以降）**設定** アプリを開く > **Siri** > **Excluded Apps** > **Add Apps** > **Signal** を選択</MenuPath>
+
+  **Mac:** Mac版のSignal Desktopには（iPhoneのような）デフォルトの保護機能がないため、この設定がメッセージを守るための主な方法になります。
+
+  <MenuPath>*Mac:* **システム設定** > **Siri** > **Excluded Apps** > **Signal** を追加</MenuPath>
+
+  **Android Gemini:** Geminiでは個別のアプリごとに画面の読み取りをブロックできないため、この設定ではすべてのアプリで画面の読み取りがオフになります。
+
+  <MenuPath>*Android:* **Gemini** アプリを開く > **Settings** > **Device controls** > **Screen context** > **Use screen and app data** をオフにする</MenuPath>
+
+  **Windows:** **Recall** は一部の新しいPCに搭載されている機能で、数秒ごとに画面のスクリーンショットを撮ります。設定に **Recall & snapshots** が見当たらなければ、そのPCにはRecallは搭載されていません。
+
+  <MenuPath>*Windows:* Signal Desktop > **設定** > **プライバシー** > **画面セキュリティ** > **画面セキュリティ**をオンにする。（これで、Recall などのスクリーンショットツールが Signal のウィンドウを記録できなくなります。 Windows 11 ではデフォルトでオンになっています。）</MenuPath>
+
+  <MenuPath>*Windows:* *Recall をオフにする:* **設定** > **プライバシーとセキュリティ** > **リコールとスナップショット** > **スナップショットを保存する**をオフにする。同じページで、Recall がすでに保存したスナップショットを削除しましょう。</MenuPath>
+
+  <MenuPath>*Windows:* *Recall を完全に削除する（任意）:* **スタート** メニューを開く > **Windows の機能の有効化または無効化** を検索 > **Recall** のチェックを外す</MenuPath>
+</HowTo>

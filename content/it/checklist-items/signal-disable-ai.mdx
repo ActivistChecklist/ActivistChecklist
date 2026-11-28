@@ -1,30 +1,36 @@
 ---
 title: Disattiva i riepiloghi IA delle notifiche
+preview: ""
+do: ""
+dont: ""
 ---
 
-Google e Apple non hanno chiarito quando i loro strumenti di IA mandano le nostre informazioni private (come i messaggi di Signal) dal nostro dispositivo ai loro servizi. Se finiscono sui loro server, il governo potrebbe accedervi con un ordine del tribunale.
+Google e Apple stanno integrando funzioni di IA in tutte le loro piattaforme, in un modo che può mettere a rischio i tuoi messaggi Signal, che potrebbero essere inviati dal tuo dispositivo ai loro server. I riepiloghi delle notifiche sono uno dei punti da cui i dati dei tuoi messaggi possono uscire dal tuo dispositivo.
 
-Da quello che sappiamo, queste funzioni di IA ***per ora*** si limitano a riassumere le notifiche. Ma con l'aria che tira, potrebbero diventare ancora più invasive.
+Abbiamo scritto un articolo a parte su questo argomento: [Apple Intelligence legge i miei messaggi di Signal?](/signal-ai/)
 
-Leggi il nostro articolo [Apple Intelligence legge i miei messaggi di Signal?](/signal-ai/)
+Signal ha anche introdotto [alcune protezioni contro altre funzioni di IA](https://signal.org/blog/protecting-your-privacy/) che leggono il tuo schermo.
 
-<HowTo title="Opzione A: come disattivare i riepiloghi IA delle notifiche solo per Signal">
-  #### Opzione A: disattiva i riepiloghi IA delle notifiche solo per Signal
+<HowTo title="Opzione A: come disattivare completamente i riepiloghi IA delle notifiche">
+  <MenuPath inline={false}>*iPhone:* Apri l'app **Impostazioni** > **Notifiche** > **Riepiloga notifiche** > Disattiva **Riepiloga notifiche**</MenuPath>
 
-  <MenuPath>*iPhone:* Apri l'app **Impostazioni** > **Notifiche** > **Riepiloga notifiche** > Disattiva **Signal**</MenuPath>
+  <MenuPath inline={false}>*Mac:* **Impostazioni di Sistema** > **Notifiche** > **Riepiloga notifiche** > Disattiva **Riepiloga notifiche**</MenuPath>
 
-  <MenuPath>*Android:* **Impostazioni** > **Notifiche** > **Notification summaries** > **Manage apps** (sotto **Don't include these apps**) > Disattiva **Signal**</MenuPath>
+  <MenuPath inline={false}>*Android (Pixel):* **Impostazioni** > **Notifiche** > **Riepiloghi delle notifiche** > Disattiva</MenuPath>
 
+  <MenuPath inline={false}>*Android (Samsung):* **Impostazioni** > **Galaxy AI** > **Notification highlights** > **Summarize notifications** > Disattiva</MenuPath>
+
+  *Nota sulla disponibilità:* solo i dispositivi più recenti hanno queste funzioni di IA. Se non vedi alcune delle impostazioni elencate qui, probabilmente è perché il tuo dispositivo non ha proprio quella funzione di IA.
 </HowTo>
 
-<HowTo title="Come disattivare completamente i riepiloghi IA delle notifiche">
-  #### Opzione B: disattiva completamente i riepiloghi IA delle notifiche
+<Collapsible title="Opzione B: disattiva i riepiloghi IA delle notifiche solo per Signal" defaultOpen={false}>
+  <HowTo title="Come disattivare i riepiloghi IA delle notifiche solo per Signal">
+    <MenuPath inline={false}>*iPhone:* Apri l'app **Impostazioni** > **Notifiche** > **Riepiloga notifiche** > Disattiva **Signal**</MenuPath>
 
-  <MenuPath>*iPhone:* Apri l'app **Impostazioni** > **Apple Intelligence e Siri** > Disattiva **Apple Intelligence**</MenuPath>
+    <MenuPath inline={false}>*Mac:* **Impostazioni di Sistema** > **Notifiche** > **Riepiloga notifiche** > Disattiva **Signal**</MenuPath>
 
-  <MenuPath>*Android:* Apri **Impostazioni** > **Notifiche** > Disattiva **Use notification summaries** (o **Notification summaries**)</MenuPath>
+    <MenuPath inline={false}>*Android (Pixel):* **Impostazioni** > **Notifiche** > **Riepiloghi delle notifiche** > **Manage apps** (sotto **Don't include these apps**) > Disattiva **Signal**</MenuPath>. (Se Signal non compare nell'elenco del Pixel, tocca **Most recent** e cambialo in **All apps**.)
 
-  <MenuPath>*Mac:*  > **Impostazioni di Sistema** > **Apple Intelligence e Siri** > Disattiva **Apple Intelligence** > **Conferma**</MenuPath>
-
-  *(Su Mac serve un computer Apple con processore M1 o più recente.)*
-</HowTo>
+    *Android (Samsung):* Samsung non ti permette di disattivare i riepiloghi per singole app. Usa invece l'Opzione A (qui sopra).
+  </HowTo>
+</Collapsible>

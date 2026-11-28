@@ -28,6 +28,14 @@
       "title": "Verificador de actualizaciones de seguridad",
       "label": "Verificador de actualizaciones de seguridad"
     },
+    "passcode": {
+      "title": "Generador de códigos para tu celular",
+      "label": "Generador de códigos para tu celular"
+    },
+    "passphrase": {
+      "title": "Generador de frases de contraseña",
+      "label": "Generador de frases de contraseña"
+    },
     "tools": {
       "title": "Herramientas que hicimos",
       "label": "Herramientas que creamos"
@@ -114,7 +122,8 @@
     "lastUpdatedOn": "Última actualización",
     "takesAbout": "Toma unos",
     "viewLatestGuideAt": "Consulta la versión más reciente de esta guía en",
-    "downloadPdf": "Descargar PDF"
+    "downloadPdf": "Descargar PDF",
+    "jumpToChecklist": "Ir a la lista"
   },
   "printNotice": {
     "madeOn": "Esta copia se hizo el {date}.",

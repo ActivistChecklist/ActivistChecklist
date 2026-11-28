@@ -1,30 +1,36 @@
 ---
 title: Désactiver les résumés de notifications par IA
+preview: ""
+do: ""
+dont: ""
 ---
 
-Google et Apple ne disent pas clairement quand leurs outils d’IA envoient nos informations privées (comme nos messages Signal) depuis notre appareil vers leurs services. Si elles sont envoyées sur leurs serveurs, le gouvernement risque d’y accéder grâce à une décision de justice.
+Google et Apple intègrent tous deux des fonctionnalités d'IA dans leurs plateformes, d'une façon qui peut exposer vos messages Signal au risque d'être envoyés depuis votre appareil vers leurs serveurs. Les résumés de notifications sont l'un des endroits où les données de vos messages peuvent quitter votre appareil.
 
-D’après ce qu’on comprend, ces fonctionnalités d’IA se contentent ***actuellement*** de résumer les notifications. Mais vu la tournure que prennent les choses, elles pourraient devenir plus intrusives.
+On a écrit un article à part sur ce sujet ici : [Apple Intelligence lit-elle mes messages Signal ?](/signal-ai/)
 
-Lis notre article [Apple Intelligence lit-elle mes messages Signal ?](/signal-ai/)
+Signal a aussi mis en place [certaines protections contre d'autres fonctionnalités d'IA](https://signal.org/blog/protecting-your-privacy/) qui lisent ton écran.
 
-<HowTo title="Option A : comment désactiver les résumés de notifications par IA seulement pour Signal">
-  #### Option A : désactiver les résumés de notifications par IA seulement pour Signal
+<HowTo title="Option A : comment désactiver complètement les résumés de notifications par IA">
+  <MenuPath inline={false}>*iPhone :* Ouvrez l'app **Réglages** > **Notifications** > **Résumer les notifications** > Désactivez **Résumer les notifications**</MenuPath>
 
-  <MenuPath>*iPhone :* Ouvre l’app **Réglages** > **Notifications** > **Résumer les notifications** > Désactive **Signal**</MenuPath>
+  <MenuPath inline={false}>*Mac :* **Réglages Système** > **Notifications** > **Résumer les notifications** > Désactivez **Résumer les notifications**</MenuPath>
 
-  <MenuPath>*Android :* **Paramètres** > **Notifications** > **Résumés des notifications** > **Gérer les applis** (sous **Ne pas inclure ces applis**) > Désactive **Signal**</MenuPath>
+  <MenuPath inline={false}>*Android (Pixel) :* **Paramètres** > **Notifications** > **Notification summaries** > Désactivez</MenuPath>
 
+  <MenuPath inline={false}>*Android (Samsung) :* **Paramètres** > **Galaxy AI** > **Notification highlights** > **Summarize notifications** > Désactivez</MenuPath>
+
+  *Remarque sur la disponibilité :* seuls les appareils récents ont ces fonctionnalités d'IA. Si vous ne voyez pas certains des réglages indiqués ici, c'est sans doute parce que votre appareil n'a tout simplement pas cette fonctionnalité d'IA.
 </HowTo>
 
-<HowTo title="Comment désactiver complètement les résumés de notifications par IA">
-  #### Option B : désactiver complètement les résumés de notifications par IA
+<Collapsible title="Option B : désactiver les résumés de notifications par IA uniquement pour Signal" defaultOpen={false}>
+  <HowTo title="Comment désactiver les résumés de notifications par IA uniquement pour Signal">
+    <MenuPath inline={false}>*iPhone :* Ouvrez l'app **Réglages** > **Notifications** > **Résumer les notifications** > Désactivez **Signal**</MenuPath>
 
-  <MenuPath>*iPhone :* Ouvre l’app **Réglages** > **Apple Intelligence et Siri** > Désactive **Apple Intelligence**</MenuPath>
+    <MenuPath inline={false}>*Mac :* **Réglages Système** > **Notifications** > **Résumer les notifications** > Désactivez **Signal**</MenuPath>
 
-  <MenuPath>*Android :* Ouvre **Paramètres** > **Notifications** > Désactive **Utiliser les résumés des notifications** (ou **Résumés des notifications**)</MenuPath>
+    <MenuPath inline={false}>*Android (Pixel) :* **Paramètres** > **Notifications** > **Notification summaries** > **Manage apps** (sous **Don't include these apps**) > Désactivez **Signal**</MenuPath>. (Si Signal n'apparaît pas dans la liste sur Pixel, appuyez sur **Most recent** et passez à **All apps**.)
 
-  <MenuPath>*Mac :*  > **Réglages Système** > **Apple Intelligence et Siri** > Désactive **Apple Intelligence** > **Confirmer**</MenuPath>
-
-  *(Sur Mac, il faut un ordinateur Apple équipé d’un processeur M1 ou plus récent.)*
-</HowTo>
+    *Android (Samsung) :* Samsung ne permet pas de désactiver les résumés pour une app en particulier. Utilisez plutôt l'option A (ci-dessus).
+  </HowTo>
+</Collapsible>

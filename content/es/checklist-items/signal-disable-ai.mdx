@@ -1,30 +1,36 @@
 ---
 title: Desactiva los resúmenes de notificaciones con IA
+preview: ""
+do: ""
+dont: ""
 ---
 
-Google y Apple no han dejado claro cuándo sus herramientas de IA envían nuestra información privada (como los mensajes de Signal) fuera de nuestro dispositivo a sus servicios. Si se envían a sus servidores, corren el riesgo de ser accedidos mediante una orden judicial del gobierno.
+Google y Apple están metiendo funciones de IA en todas sus plataformas de una forma que puede poner en riesgo tus mensajes de Signal, porque podrían salir de tu dispositivo y terminar en sus servidores. Los resúmenes de notificaciones son una de las formas en que los datos de tus mensajes pueden salir de tu dispositivo.
 
-Por lo que entendemos, estas funciones de IA ***por ahora*** solo resumen las notificaciones. Pero por cómo van las cosas, podrían volverse más invasivas.
+Escribimos un artículo aparte sobre este tema: [¿Apple Intelligence está leyendo mis mensajes de Signal?](/signal-ai/)
 
-Lee nuestro artículo sobre [¿Apple Intelligence está leyendo mis mensajes de Signal?](/signal-ai/)
+Signal también agregó [algunas protecciones contra otras funciones de IA](https://signal.org/blog/protecting-your-privacy/) que leen tu pantalla.
 
-<HowTo title="Opción A: Cómo desactivar los resúmenes de notificaciones con IA solo para Signal">
-  #### Opción A: Desactiva los resúmenes de notificaciones con IA solo para Signal
+<HowTo title="Opción A: Cómo desactivar por completo los resúmenes de notificaciones con IA">
+  <MenuPath inline={false}>*iPhone:* Abre la app **Configuración** > **Notificaciones** > **Resumir notificaciones** > Desactiva **Resumir notificaciones**</MenuPath>
 
-  <MenuPath>*iPhone:* Abre la app **Ajustes** > **Notificaciones** > **Resumir notificaciones** > Desactiva **Signal**</MenuPath>
+  <MenuPath inline={false}>*Mac:* **Configuración del Sistema** > **Notificaciones** > **Resumir notificaciones** > Desactiva **Resumir notificaciones**</MenuPath>
 
-  <MenuPath>*Android:* **Ajustes** > **Notificaciones** > **Resúmenes de notificaciones** > **Administrar apps** (en **No incluir estas apps**) > Desactiva **Signal**</MenuPath>
+  <MenuPath inline={false}>*Android (Pixel):* **Configuración** > **Notificaciones** > **Notification summaries** > Desactívalo</MenuPath>
 
+  <MenuPath inline={false}>*Android (Samsung):* **Ajustes** > **Galaxy AI** > **Notification highlights** > **Summarize notifications** > Desactívalo</MenuPath>
+
+  *Sobre la disponibilidad:* Solo los dispositivos más nuevos tienen estas funciones de IA. Si no ves algunas de las opciones que aparecen aquí, probablemente es porque tu dispositivo ni siquiera tiene esa función de IA.
 </HowTo>
 
-<HowTo title="Cómo desactivar por completo los resúmenes de notificaciones con IA">
-  #### Opción B: Desactiva por completo los resúmenes de notificaciones con IA
+<Collapsible title="Opción B: Desactiva los resúmenes de notificaciones con IA solo para Signal" defaultOpen={false}>
+  <HowTo title="Cómo desactivar los resúmenes de notificaciones con IA solo para Signal">
+    <MenuPath inline={false}>*iPhone:* Abre la app **Configuración** > **Notificaciones** > **Resumir notificaciones** > Desactiva **Signal**</MenuPath>
 
-  <MenuPath>*iPhone:* Abre la app **Ajustes** > **Apple Intelligence y Siri** > Desactiva **Apple Intelligence**</MenuPath>
+    <MenuPath inline={false}>*Mac:* **Configuración del Sistema** > **Notificaciones** > **Resumir notificaciones** > Desactiva **Signal**</MenuPath>
 
-  <MenuPath>*Android:* Abre **Ajustes** > **Notificaciones** > Desactiva **Usar resúmenes de notificaciones** (o **Resúmenes de notificaciones**)</MenuPath>
+    <MenuPath inline={false}>*Android (Pixel):* **Configuración** > **Notificaciones** > **Notification summaries** > **Manage apps** (debajo de **Don't include these apps**) > Desactiva **Signal**</MenuPath>. (Si Signal no aparece en la lista del Pixel, toca **Most recent** y cámbialo a **All apps**.)
 
-  <MenuPath>*Mac:*  > **Ajustes del Sistema** > **Apple Intelligence y Siri** > Desactiva **Apple Intelligence** > **Confirmar**</MenuPath>
-
-  *(Para Mac se necesita una computadora Apple con procesador M1 o más reciente.)*
-</HowTo>
+    *Android (Samsung):* Samsung no te deja desactivar los resúmenes para apps específicas. Mejor usa la Opción A (arriba).
+  </HowTo>
+</Collapsible>

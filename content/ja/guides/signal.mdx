@@ -10,10 +10,10 @@ excerpt: |
 relatedGuides:
   - essentials
   - protest
-  - travel
+  - action
   - spyware
 firstPublished: 2025-01-27
-lastUpdated: 2026-04-03
+lastUpdated: 2026-11-26
 ---
 
 このガイドでは、[Signal](https://signal.org/)でのやりとりをできるかぎり安全に守れているか、確認していきます。 Signalはもともと[送信内容すべてを暗号化](term:end-to-end-encryption)していますが、ここで紹介する追加の対策をしておけば、スマホをなくしたり、取り上げられたり、ハッキングされたりしても、チャットのプライバシーを守れます。メッセージ、通知、自分の身元を守るための簡単な方法を学びましょう。
@@ -30,10 +30,9 @@ lastUpdated: 2026-04-03
 
     <ChecklistItem slug="signal-enable-username" />
 
-    <ChecklistItem slug="signal-link-previews" />
-
     <ChecklistItem slug="signal-relay-calls" />
   </ChecklistItemGroup>
+
 </Section>
 
 <Section title="メッセージと通話を守る" slug="messages">
@@ -44,6 +43,10 @@ lastUpdated: 2026-04-03
 
     <ChecklistItem slug="signal-disable-notifications" />
 
+    <ChecklistItem slug="signal-block-ai-reading" />
+
+    <ChecklistItem slug="signal-disable-ai" />
+
     <ChecklistItem slug="screen-lock" />
 
     <ChecklistItem slug="signal-hide-calls-in-recent" />
@@ -53,8 +56,6 @@ lastUpdated: 2026-04-03
     <ChecklistItem slug="signal-pin" />
 
     <ChecklistItem slug="signal-private-keyboard" />
-
-    <ChecklistItem slug="signal-disable-ai" />
 
     <ChecklistItem slug="fake-signal-support" />
   </ChecklistItemGroup>
@@ -84,6 +85,12 @@ lastUpdated: 2026-04-03
   </ChecklistItemGroup>
 </Section>
 
+<Section title="FAQ" slug="FAQ">
+  **リンクプレビューはオフにしたほうがいい？**
+
+  リンクプレビューがデバイスへの攻撃に悪用されるおそれがある、という噂が広まったことがあります。でも、それが本当だという証拠はありません。気になるならリンクプレビューをオフにしてもかまいません。ただ、それで何かを防げるという証拠はないので、ここでは項目に入れていません。スマホがリンクプレビューを取得するときも、IPアドレスは守られています。SignalがSignalのサーバー経由でリクエストを送るからです（スマホからではありません）。
+</Section>
+
 <Section title="Signalがハッキングされた？安全なの？セキュアなの？" slug="secure">
   数か月ごとに、「Signalは安全じゃない」「ハッキングされた」と主張する投稿が出回ります。
 
@@ -98,7 +105,7 @@ lastUpdated: 2026-04-03
   警察にスマホを押収されてしまい、パスコードが弱いロックを突破されるおそれもあります。ただし、それはSignalの欠陥ではありません。誰であれ、スマホを物理的に手にしてロックを解除できれば、メッセージはすべて見られてしまう。だからこそ、[強力なパスコードを設定すること](/essentials/)と、[デバイスのOSを常に最新の状態にすること](/essentials/)をおすすめしています。
 </Section>
 
-<Section title="その他のリソース">
+<Section title="その他のリソース" slug="resources">
   * [Signalは安全？](/signal-secure/) — Signalの仕組み、共有されうるデータ、セキュリティをめぐるよくある誤解について。
   * [アクティビズムでSignalグループを使う方法](https://micahflee.com/using-signal-groups-for-activism/)についての、とても役立つガイドはこちら。
   * [Signalをしっかり守る設定：Locking down Signal](https://freedom.press/digisec/blog/locking-down-signal/) — Freedom of the Press Foundation

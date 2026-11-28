@@ -28,6 +28,14 @@
       "title": "セキュリティアップデート確認ツール",
       "label": "セキュリティアップデート確認ツール"
     },
+    "passcode": {
+      "title": "スマホのパスコード生成ツール",
+      "label": "スマホのパスコード生成ツール"
+    },
+    "passphrase": {
+      "title": "パスフレーズ生成ツール",
+      "label": "パスフレーズ生成ツール"
+    },
     "tools": {
       "title": "私たちが作ったツール",
       "label": "私たちが作ったツール"
@@ -114,7 +122,8 @@
     "lastUpdatedOn": "最終更新日：",
     "takesAbout": "所要時間の目安：",
     "viewLatestGuideAt": "最新版のガイドはこちら：",
-    "downloadPdf": "PDFをダウンロード"
+    "downloadPdf": "PDFをダウンロード",
+    "jumpToChecklist": "チェックリストへ移動"
   },
   "printNotice": {
     "madeOn": "このコピーは {date} に作成。",

@@ -28,6 +28,14 @@
       "title": "Verifica aggiornamenti di sicurezza",
       "label": "Verifica aggiornamenti di sicurezza"
     },
+    "passcode": {
+      "title": "Generatore di codici di sblocco per il telefono",
+      "label": "Generatore di codici di sblocco per il telefono"
+    },
+    "passphrase": {
+      "title": "Generatore di passphrase",
+      "label": "Generatore di passphrase"
+    },
     "tools": {
       "title": "Strumenti che abbiamo creato",
       "label": "Strumenti che abbiamo creato"
@@ -114,7 +122,8 @@
     "lastUpdatedOn": "Ultimo aggiornamento:",
     "takesAbout": "Tempo stimato: circa",
     "viewLatestGuideAt": "Trovi la versione più recente della guida su",
-    "downloadPdf": "Scarica il PDF"
+    "downloadPdf": "Scarica il PDF",
+    "jumpToChecklist": "Vai alla checklist"
   },
   "printNotice": {
     "madeOn": "Questa copia è stata creata il {date}.",
